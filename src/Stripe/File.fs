@@ -59,10 +59,31 @@ type File =
         Url: string option
     }
 
+type File with
+    static member New(created: DateTime, expiresAt: DateTime option, filename: string option, id: string, purpose: FilePurpose, size: int, title: string option, ``type``: string option, url: string option, ?links: FileLinks option) =
+        {
+            Created = created
+            ExpiresAt = expiresAt
+            Filename = filename
+            Id = id
+            Purpose = purpose
+            Size = size
+            Title = title
+            Type = ``type``
+            Url = url
+            Links = links |> Option.flatten
+        }
+
 module File =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "file"
 
 /// Occurs whenever a new Stripe-generated file is available for your account.
 type FileCreated = { Object: File }
+
+type FileCreated with
+    static member New(object: File) =
+        {
+            Object = object
+        }
 

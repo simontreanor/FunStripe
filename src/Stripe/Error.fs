@@ -9,3 +9,9 @@ open Stripe.PaymentMethod
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type Error = { Error: ApiErrors }
 
+type Error with
+    static member New(error: ApiErrors) =
+        {
+            Error = error
+        }
+

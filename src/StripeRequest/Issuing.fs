@@ -41,6 +41,19 @@ module IssuingAuthorizations =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(?card: string, ?cardholder: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                Card = card
+                Cardholder = cardholder
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -74,6 +87,13 @@ module IssuingAuthorizations =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(authorization: string, ?expand: string list) =
+            {
+                Authorization = authorization
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -96,6 +116,14 @@ module IssuingAuthorizations =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(authorization: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Authorization = authorization
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -143,6 +171,15 @@ module IssuingAuthorizationsApprove =
             Metadata: Map<string, string> option
         }
 
+    type ApproveOptions with
+        static member New(authorization: string, ?amount: int, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Authorization = authorization
+                Amount = amount
+                Expand = expand
+                Metadata = metadata
+            }
+
     module ApproveOptions =
         let create
             (
@@ -175,6 +212,14 @@ module IssuingAuthorizationsDecline =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type DeclineOptions with
+        static member New(authorization: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Authorization = authorization
+                Expand = expand
+                Metadata = metadata
+            }
 
     module DeclineOptions =
         let create
@@ -227,6 +272,20 @@ module IssuingCardholders =
             Type: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?email: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?phoneNumber: string, ?startingAfter: string, ?status: string, ?type': string) =
+            {
+                Created = created
+                Email = email
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                PhoneNumber = phoneNumber
+                StartingAfter = startingAfter
+                Status = status
+                Type = type'
+            }
+
     module ListOptions =
         let create
             (
@@ -238,7 +297,7 @@ module IssuingCardholders =
                 phoneNumber: string option,
                 startingAfter: string option,
                 status: string option,
-                ``type``: string option
+                type': string option
             ) : ListOptions
             =
             {
@@ -250,7 +309,7 @@ module IssuingCardholders =
               PhoneNumber = phoneNumber
               StartingAfter = startingAfter
               Status = status
-              Type = ``type``
+              Type = type'
             }
 
     type Create'BillingAddress =
@@ -274,6 +333,17 @@ module IssuingCardholders =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'BillingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'BillingAddress =
         let create
@@ -302,6 +372,12 @@ module IssuingCardholders =
             Address: Create'BillingAddress option
         }
 
+    type Create'Billing with
+        static member New(?address: Create'BillingAddress) =
+            {
+                Address = address
+            }
+
     module Create'Billing =
         let create
             (
@@ -318,6 +394,12 @@ module IssuingCardholders =
             [<Config.Form>]
             TaxId: string option
         }
+
+    type Create'Company with
+        static member New(?taxId: string) =
+            {
+                TaxId = taxId
+            }
 
     module Create'Company =
         let create
@@ -342,6 +424,14 @@ module IssuingCardholders =
             UserAgent: Choice<string,string> option
         }
 
+    type Create'IndividualCardIssuingUserTermsAcceptance with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: Choice<string,string>) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Create'IndividualCardIssuingUserTermsAcceptance =
         let create
             (
@@ -362,6 +452,12 @@ module IssuingCardholders =
             [<Config.Form>]
             UserTermsAcceptance: Create'IndividualCardIssuingUserTermsAcceptance option
         }
+
+    type Create'IndividualCardIssuing with
+        static member New(?userTermsAcceptance: Create'IndividualCardIssuingUserTermsAcceptance) =
+            {
+                UserTermsAcceptance = userTermsAcceptance
+            }
 
     module Create'IndividualCardIssuing =
         let create
@@ -385,6 +481,14 @@ module IssuingCardholders =
             [<Config.Form>]
             Year: int option
         }
+
+    type Create'IndividualDob with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
 
     module Create'IndividualDob =
         let create
@@ -410,6 +514,13 @@ module IssuingCardholders =
             Front: string option
         }
 
+    type Create'IndividualVerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'IndividualVerificationDocument =
         let create
             (
@@ -428,6 +539,12 @@ module IssuingCardholders =
             [<Config.Form>]
             Document: Create'IndividualVerificationDocument option
         }
+
+    type Create'IndividualVerification with
+        static member New(?document: Create'IndividualVerificationDocument) =
+            {
+                Document = document
+            }
 
     module Create'IndividualVerification =
         let create
@@ -457,6 +574,16 @@ module IssuingCardholders =
             [<Config.Form>]
             Verification: Create'IndividualVerification option
         }
+
+    type Create'Individual with
+        static member New(?cardIssuing: Create'IndividualCardIssuing, ?dob: Create'IndividualDob, ?firstName: string, ?lastName: string, ?verification: Create'IndividualVerification) =
+            {
+                CardIssuing = cardIssuing
+                Dob = dob
+                FirstName = firstName
+                LastName = lastName
+                Verification = verification
+            }
 
     module Create'Individual =
         let create
@@ -1403,6 +1530,14 @@ module IssuingCardholders =
             Interval: Create'SpendingControlsSpendingLimitsInterval option
         }
 
+    type Create'SpendingControlsSpendingLimits with
+        static member New(?amount: int, ?categories: Create'SpendingControlsSpendingLimitsCategories list, ?interval: Create'SpendingControlsSpendingLimitsInterval) =
+            {
+                Amount = amount
+                Categories = categories
+                Interval = interval
+            }
+
     module Create'SpendingControlsSpendingLimits =
         let create
             (
@@ -1444,6 +1579,19 @@ module IssuingCardholders =
             [<Config.Form>]
             SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
         }
+
+    type Create'SpendingControls with
+        static member New(?allowedCardPresences: Create'SpendingControlsAllowedCardPresences list, ?allowedCategories: Create'SpendingControlsAllowedCategories list, ?allowedMerchantCountries: string list, ?blockedCardPresences: Create'SpendingControlsBlockedCardPresences list, ?blockedCategories: Create'SpendingControlsBlockedCategories list, ?blockedMerchantCountries: string list, ?spendingLimits: Create'SpendingControlsSpendingLimits list, ?spendingLimitsCurrency: IsoTypes.IsoCurrencyCode) =
+            {
+                AllowedCardPresences = allowedCardPresences
+                AllowedCategories = allowedCategories
+                AllowedMerchantCountries = allowedMerchantCountries
+                BlockedCardPresences = blockedCardPresences
+                BlockedCategories = blockedCategories
+                BlockedMerchantCountries = blockedMerchantCountries
+                SpendingLimits = spendingLimits
+                SpendingLimitsCurrency = spendingLimitsCurrency
+            }
 
     module Create'SpendingControls =
         let create
@@ -1518,6 +1666,23 @@ module IssuingCardholders =
             Type: Create'Type option
         }
 
+    type CreateOptions with
+        static member New(billing: Create'Billing, name: string, ?company: Create'Company, ?email: string, ?expand: string list, ?individual: Create'Individual, ?metadata: Map<string, string>, ?phoneNumber: string, ?preferredLocales: Create'PreferredLocales list, ?spendingControls: Create'SpendingControls, ?status: Create'Status, ?type': Create'Type) =
+            {
+                Billing = billing
+                Name = name
+                Company = company
+                Email = email
+                Expand = expand
+                Individual = individual
+                Metadata = metadata
+                PhoneNumber = phoneNumber
+                PreferredLocales = preferredLocales
+                SpendingControls = spendingControls
+                Status = status
+                Type = type'
+            }
+
     module CreateOptions =
         let create
             (
@@ -1548,6 +1713,13 @@ module IssuingCardholders =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(cardholder: string, ?expand: string list) =
+            {
+                Cardholder = cardholder
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -1582,6 +1754,17 @@ module IssuingCardholders =
             State: string option
         }
 
+    type Update'BillingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Update'BillingAddress =
         let create
             (
@@ -1609,6 +1792,12 @@ module IssuingCardholders =
             Address: Update'BillingAddress option
         }
 
+    type Update'Billing with
+        static member New(?address: Update'BillingAddress) =
+            {
+                Address = address
+            }
+
     module Update'Billing =
         let create
             (
@@ -1625,6 +1814,12 @@ module IssuingCardholders =
             [<Config.Form>]
             TaxId: string option
         }
+
+    type Update'Company with
+        static member New(?taxId: string) =
+            {
+                TaxId = taxId
+            }
 
     module Update'Company =
         let create
@@ -1649,6 +1844,14 @@ module IssuingCardholders =
             UserAgent: Choice<string,string> option
         }
 
+    type Update'IndividualCardIssuingUserTermsAcceptance with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: Choice<string,string>) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Update'IndividualCardIssuingUserTermsAcceptance =
         let create
             (
@@ -1669,6 +1872,12 @@ module IssuingCardholders =
             [<Config.Form>]
             UserTermsAcceptance: Update'IndividualCardIssuingUserTermsAcceptance option
         }
+
+    type Update'IndividualCardIssuing with
+        static member New(?userTermsAcceptance: Update'IndividualCardIssuingUserTermsAcceptance) =
+            {
+                UserTermsAcceptance = userTermsAcceptance
+            }
 
     module Update'IndividualCardIssuing =
         let create
@@ -1692,6 +1901,14 @@ module IssuingCardholders =
             [<Config.Form>]
             Year: int option
         }
+
+    type Update'IndividualDob with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
 
     module Update'IndividualDob =
         let create
@@ -1717,6 +1934,13 @@ module IssuingCardholders =
             Front: string option
         }
 
+    type Update'IndividualVerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Update'IndividualVerificationDocument =
         let create
             (
@@ -1735,6 +1959,12 @@ module IssuingCardholders =
             [<Config.Form>]
             Document: Update'IndividualVerificationDocument option
         }
+
+    type Update'IndividualVerification with
+        static member New(?document: Update'IndividualVerificationDocument) =
+            {
+                Document = document
+            }
 
     module Update'IndividualVerification =
         let create
@@ -1764,6 +1994,16 @@ module IssuingCardholders =
             [<Config.Form>]
             Verification: Update'IndividualVerification option
         }
+
+    type Update'Individual with
+        static member New(?cardIssuing: Update'IndividualCardIssuing, ?dob: Update'IndividualDob, ?firstName: string, ?lastName: string, ?verification: Update'IndividualVerification) =
+            {
+                CardIssuing = cardIssuing
+                Dob = dob
+                FirstName = firstName
+                LastName = lastName
+                Verification = verification
+            }
 
     module Update'Individual =
         let create
@@ -2710,6 +2950,14 @@ module IssuingCardholders =
             Interval: Update'SpendingControlsSpendingLimitsInterval option
         }
 
+    type Update'SpendingControlsSpendingLimits with
+        static member New(?amount: int, ?categories: Update'SpendingControlsSpendingLimitsCategories list, ?interval: Update'SpendingControlsSpendingLimitsInterval) =
+            {
+                Amount = amount
+                Categories = categories
+                Interval = interval
+            }
+
     module Update'SpendingControlsSpendingLimits =
         let create
             (
@@ -2751,6 +2999,19 @@ module IssuingCardholders =
             [<Config.Form>]
             SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
         }
+
+    type Update'SpendingControls with
+        static member New(?allowedCardPresences: Update'SpendingControlsAllowedCardPresences list, ?allowedCategories: Update'SpendingControlsAllowedCategories list, ?allowedMerchantCountries: string list, ?blockedCardPresences: Update'SpendingControlsBlockedCardPresences list, ?blockedCategories: Update'SpendingControlsBlockedCategories list, ?blockedMerchantCountries: string list, ?spendingLimits: Update'SpendingControlsSpendingLimits list, ?spendingLimitsCurrency: IsoTypes.IsoCurrencyCode) =
+            {
+                AllowedCardPresences = allowedCardPresences
+                AllowedCategories = allowedCategories
+                AllowedMerchantCountries = allowedMerchantCountries
+                BlockedCardPresences = blockedCardPresences
+                BlockedCategories = blockedCategories
+                BlockedMerchantCountries = blockedMerchantCountries
+                SpendingLimits = spendingLimits
+                SpendingLimitsCurrency = spendingLimitsCurrency
+            }
 
     module Update'SpendingControls =
         let create
@@ -2816,6 +3077,22 @@ module IssuingCardholders =
             [<Config.Form>]
             Status: Update'Status option
         }
+
+    type UpdateOptions with
+        static member New(cardholder: string, ?billing: Update'Billing, ?company: Update'Company, ?email: string, ?expand: string list, ?individual: Update'Individual, ?metadata: Map<string, string>, ?phoneNumber: string, ?preferredLocales: Update'PreferredLocales list, ?spendingControls: Update'SpendingControls, ?status: Update'Status) =
+            {
+                Cardholder = cardholder
+                Billing = billing
+                Company = company
+                Email = email
+                Expand = expand
+                Individual = individual
+                Metadata = metadata
+                PhoneNumber = phoneNumber
+                PreferredLocales = preferredLocales
+                SpendingControls = spendingControls
+                Status = status
+            }
 
     module UpdateOptions =
         let create
@@ -2900,6 +3177,23 @@ module IssuingCards =
             Type: string option
         }
 
+    type ListOptions with
+        static member New(?cardholder: string, ?created: int, ?endingBefore: string, ?expMonth: int, ?expYear: int, ?expand: string list, ?last4: string, ?limit: int, ?personalizationDesign: string, ?startingAfter: string, ?status: string, ?type': string) =
+            {
+                Cardholder = cardholder
+                Created = created
+                EndingBefore = endingBefore
+                ExpMonth = expMonth
+                ExpYear = expYear
+                Expand = expand
+                Last4 = last4
+                Limit = limit
+                PersonalizationDesign = personalizationDesign
+                StartingAfter = startingAfter
+                Status = status
+                Type = type'
+            }
+
     module ListOptions =
         let create
             (
@@ -2914,7 +3208,7 @@ module IssuingCards =
                 personalizationDesign: string option,
                 startingAfter: string option,
                 status: string option,
-                ``type``: string option
+                type': string option
             ) : ListOptions
             =
             {
@@ -2929,7 +3223,7 @@ module IssuingCards =
               PersonalizationDesign = personalizationDesign
               StartingAfter = startingAfter
               Status = status
-              Type = ``type``
+              Type = type'
             }
 
     type Create'LifecycleControlsCancelAfter =
@@ -2938,6 +3232,12 @@ module IssuingCards =
             [<Config.Form>]
             PaymentCount: int option
         }
+
+    type Create'LifecycleControlsCancelAfter with
+        static member New(?paymentCount: int) =
+            {
+                PaymentCount = paymentCount
+            }
 
     module Create'LifecycleControlsCancelAfter =
         let create
@@ -2956,6 +3256,12 @@ module IssuingCards =
             CancelAfter: Create'LifecycleControlsCancelAfter option
         }
 
+    type Create'LifecycleControls with
+        static member New(?cancelAfter: Create'LifecycleControlsCancelAfter) =
+            {
+                CancelAfter = cancelAfter
+            }
+
     module Create'LifecycleControls =
         let create
             (
@@ -2972,6 +3278,12 @@ module IssuingCards =
             [<Config.Form>]
             EncryptedNumber: string option
         }
+
+    type Create'Pin with
+        static member New(?encryptedNumber: string) =
+            {
+                EncryptedNumber = encryptedNumber
+            }
 
     module Create'Pin =
         let create
@@ -3011,6 +3323,17 @@ module IssuingCards =
             State: string option
         }
 
+    type Create'ShippingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'ShippingAddress =
         let create
             (
@@ -3043,6 +3366,12 @@ module IssuingCards =
             Mode: Create'ShippingAddressValidationMode option
         }
 
+    type Create'ShippingAddressValidation with
+        static member New(?mode: Create'ShippingAddressValidationMode) =
+            {
+                Mode = mode
+            }
+
     module Create'ShippingAddressValidation =
         let create
             (
@@ -3059,6 +3388,12 @@ module IssuingCards =
             [<Config.Form>]
             EoriNumber: string option
         }
+
+    type Create'ShippingCustoms with
+        static member New(?eoriNumber: string) =
+            {
+                EoriNumber = eoriNumber
+            }
 
     module Create'ShippingCustoms =
         let create
@@ -3107,6 +3442,19 @@ module IssuingCards =
             Type: Create'ShippingType option
         }
 
+    type Create'Shipping with
+        static member New(?address: Create'ShippingAddress, ?addressValidation: Create'ShippingAddressValidation, ?customs: Create'ShippingCustoms, ?name: string, ?phoneNumber: string, ?requireSignature: bool, ?service: Create'ShippingService, ?type': Create'ShippingType) =
+            {
+                Address = address
+                AddressValidation = addressValidation
+                Customs = customs
+                Name = name
+                PhoneNumber = phoneNumber
+                RequireSignature = requireSignature
+                Service = service
+                Type = type'
+            }
+
     module Create'Shipping =
         let create
             (
@@ -3117,7 +3465,7 @@ module IssuingCards =
                 phoneNumber: string option,
                 requireSignature: bool option,
                 service: Create'ShippingService option,
-                ``type``: Create'ShippingType option
+                type': Create'ShippingType option
             ) : Create'Shipping
             =
             {
@@ -3128,7 +3476,7 @@ module IssuingCards =
               PhoneNumber = phoneNumber
               RequireSignature = requireSignature
               Service = service
-              Type = ``type``
+              Type = type'
             }
 
     type Create'SpendingControlsAllowedCardPresences =
@@ -4051,6 +4399,14 @@ module IssuingCards =
             Interval: Create'SpendingControlsSpendingLimitsInterval option
         }
 
+    type Create'SpendingControlsSpendingLimits with
+        static member New(?amount: int, ?categories: Create'SpendingControlsSpendingLimitsCategories list, ?interval: Create'SpendingControlsSpendingLimitsInterval) =
+            {
+                Amount = amount
+                Categories = categories
+                Interval = interval
+            }
+
     module Create'SpendingControlsSpendingLimits =
         let create
             (
@@ -4089,6 +4445,18 @@ module IssuingCards =
             [<Config.Form>]
             SpendingLimits: Create'SpendingControlsSpendingLimits list option
         }
+
+    type Create'SpendingControls with
+        static member New(?allowedCardPresences: Create'SpendingControlsAllowedCardPresences list, ?allowedCategories: Create'SpendingControlsAllowedCategories list, ?allowedMerchantCountries: string list, ?blockedCardPresences: Create'SpendingControlsBlockedCardPresences list, ?blockedCategories: Create'SpendingControlsBlockedCategories list, ?blockedMerchantCountries: string list, ?spendingLimits: Create'SpendingControlsSpendingLimits list) =
+            {
+                AllowedCardPresences = allowedCardPresences
+                AllowedCategories = allowedCategories
+                AllowedMerchantCountries = allowedMerchantCountries
+                BlockedCardPresences = blockedCardPresences
+                BlockedCategories = blockedCategories
+                BlockedMerchantCountries = blockedMerchantCountries
+                SpendingLimits = spendingLimits
+            }
 
     module Create'SpendingControls =
         let create
@@ -4175,16 +4543,38 @@ module IssuingCards =
             Type: Create'Type
         }
 
+    type CreateOptions with
+        static member New(currency: IsoTypes.IsoCurrencyCode, type': Create'Type, ?cardholder: string, ?expMonth: int, ?expYear: int, ?expand: string list, ?financialAccount: string, ?lifecycleControls: Create'LifecycleControls, ?metadata: Map<string, string>, ?personalizationDesign: string, ?pin: Create'Pin, ?replacementFor: string, ?replacementReason: Create'ReplacementReason, ?secondLine: Choice<string,string>, ?shipping: Create'Shipping, ?spendingControls: Create'SpendingControls, ?status: Create'Status) =
+            {
+                Currency = currency
+                Type = type'
+                Cardholder = cardholder
+                ExpMonth = expMonth
+                ExpYear = expYear
+                Expand = expand
+                FinancialAccount = financialAccount
+                LifecycleControls = lifecycleControls
+                Metadata = metadata
+                PersonalizationDesign = personalizationDesign
+                Pin = pin
+                ReplacementFor = replacementFor
+                ReplacementReason = replacementReason
+                SecondLine = secondLine
+                Shipping = shipping
+                SpendingControls = spendingControls
+                Status = status
+            }
+
     module CreateOptions =
         let create
             (
                 currency: IsoTypes.IsoCurrencyCode,
-                ``type``: Create'Type
+                type': Create'Type
             ) : CreateOptions
             =
             {
               Currency = currency
-              Type = ``type``
+              Type = type'
               Cardholder = None
               ExpMonth = None
               ExpYear = None
@@ -4211,6 +4601,13 @@ module IssuingCards =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(card: string, ?expand: string list) =
+            {
+                Card = card
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -4232,6 +4629,12 @@ module IssuingCards =
             [<Config.Form>]
             EncryptedNumber: string option
         }
+
+    type Update'Pin with
+        static member New(?encryptedNumber: string) =
+            {
+                EncryptedNumber = encryptedNumber
+            }
 
     module Update'Pin =
         let create
@@ -4265,6 +4668,17 @@ module IssuingCards =
             State: string option
         }
 
+    type Update'ShippingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Update'ShippingAddress =
         let create
             (
@@ -4297,6 +4711,12 @@ module IssuingCards =
             Mode: Update'ShippingAddressValidationMode option
         }
 
+    type Update'ShippingAddressValidation with
+        static member New(?mode: Update'ShippingAddressValidationMode) =
+            {
+                Mode = mode
+            }
+
     module Update'ShippingAddressValidation =
         let create
             (
@@ -4313,6 +4733,12 @@ module IssuingCards =
             [<Config.Form>]
             EoriNumber: string option
         }
+
+    type Update'ShippingCustoms with
+        static member New(?eoriNumber: string) =
+            {
+                EoriNumber = eoriNumber
+            }
 
     module Update'ShippingCustoms =
         let create
@@ -4361,6 +4787,19 @@ module IssuingCards =
             Type: Update'ShippingType option
         }
 
+    type Update'Shipping with
+        static member New(?address: Update'ShippingAddress, ?addressValidation: Update'ShippingAddressValidation, ?customs: Update'ShippingCustoms, ?name: string, ?phoneNumber: string, ?requireSignature: bool, ?service: Update'ShippingService, ?type': Update'ShippingType) =
+            {
+                Address = address
+                AddressValidation = addressValidation
+                Customs = customs
+                Name = name
+                PhoneNumber = phoneNumber
+                RequireSignature = requireSignature
+                Service = service
+                Type = type'
+            }
+
     module Update'Shipping =
         let create
             (
@@ -4371,7 +4810,7 @@ module IssuingCards =
                 phoneNumber: string option,
                 requireSignature: bool option,
                 service: Update'ShippingService option,
-                ``type``: Update'ShippingType option
+                type': Update'ShippingType option
             ) : Update'Shipping
             =
             {
@@ -4382,7 +4821,7 @@ module IssuingCards =
               PhoneNumber = phoneNumber
               RequireSignature = requireSignature
               Service = service
-              Type = ``type``
+              Type = type'
             }
 
     type Update'SpendingControlsAllowedCardPresences =
@@ -5305,6 +5744,14 @@ module IssuingCards =
             Interval: Update'SpendingControlsSpendingLimitsInterval option
         }
 
+    type Update'SpendingControlsSpendingLimits with
+        static member New(?amount: int, ?categories: Update'SpendingControlsSpendingLimitsCategories list, ?interval: Update'SpendingControlsSpendingLimitsInterval) =
+            {
+                Amount = amount
+                Categories = categories
+                Interval = interval
+            }
+
     module Update'SpendingControlsSpendingLimits =
         let create
             (
@@ -5343,6 +5790,18 @@ module IssuingCards =
             [<Config.Form>]
             SpendingLimits: Update'SpendingControlsSpendingLimits list option
         }
+
+    type Update'SpendingControls with
+        static member New(?allowedCardPresences: Update'SpendingControlsAllowedCardPresences list, ?allowedCategories: Update'SpendingControlsAllowedCategories list, ?allowedMerchantCountries: string list, ?blockedCardPresences: Update'SpendingControlsBlockedCardPresences list, ?blockedCategories: Update'SpendingControlsBlockedCategories list, ?blockedMerchantCountries: string list, ?spendingLimits: Update'SpendingControlsSpendingLimits list) =
+            {
+                AllowedCardPresences = allowedCardPresences
+                AllowedCategories = allowedCategories
+                AllowedMerchantCountries = allowedMerchantCountries
+                BlockedCardPresences = blockedCardPresences
+                BlockedCategories = blockedCategories
+                BlockedMerchantCountries = blockedMerchantCountries
+                SpendingLimits = spendingLimits
+            }
 
     module Update'SpendingControls =
         let create
@@ -5399,6 +5858,20 @@ module IssuingCards =
             [<Config.Form>]
             Status: Update'Status option
         }
+
+    type UpdateOptions with
+        static member New(card: string, ?cancellationReason: Update'CancellationReason, ?expand: string list, ?metadata: Map<string, string>, ?personalizationDesign: string, ?pin: Update'Pin, ?shipping: Update'Shipping, ?spendingControls: Update'SpendingControls, ?status: Update'Status) =
+            {
+                Card = card
+                CancellationReason = cancellationReason
+                Expand = expand
+                Metadata = metadata
+                PersonalizationDesign = personalizationDesign
+                Pin = pin
+                Shipping = shipping
+                SpendingControls = spendingControls
+                Status = status
+            }
 
     module UpdateOptions =
         let create
@@ -5467,6 +5940,18 @@ module IssuingDisputes =
             Transaction: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string, ?transaction: string) =
+            {
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+                Transaction = transaction
+            }
+
     module ListOptions =
         let create
             (
@@ -5531,6 +6016,21 @@ module IssuingDisputes =
             ReturnedAt: Choice<DateTime,string> option
         }
 
+    type Create'EvidenceCanceledCanceled with
+        static member New(?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<DateTime,string>, ?cancellationPolicyProvided: Choice<bool,string>, ?cancellationReason: Choice<string,string>, ?expectedAt: Choice<DateTime,string>, ?explanation: Choice<string,string>, ?productDescription: Choice<string,string>, ?productType: Create'EvidenceCanceledCanceledProductType, ?returnStatus: Create'EvidenceCanceledCanceledReturnStatus, ?returnedAt: Choice<DateTime,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                CanceledAt = canceledAt
+                CancellationPolicyProvided = cancellationPolicyProvided
+                CancellationReason = cancellationReason
+                ExpectedAt = expectedAt
+                Explanation = explanation
+                ProductDescription = productDescription
+                ProductType = productType
+                ReturnStatus = returnStatus
+                ReturnedAt = returnedAt
+            }
+
     module Create'EvidenceCanceledCanceled =
         let create
             (
@@ -5581,6 +6081,17 @@ module IssuingDisputes =
             OriginalTransaction: string option
         }
 
+    type Create'EvidenceDuplicateDuplicate with
+        static member New(?additionalDocumentation: Choice<string,string>, ?cardStatement: Choice<string,string>, ?cashReceipt: Choice<string,string>, ?checkImage: Choice<string,string>, ?explanation: Choice<string,string>, ?originalTransaction: string) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                CardStatement = cardStatement
+                CashReceipt = cashReceipt
+                CheckImage = checkImage
+                Explanation = explanation
+                OriginalTransaction = originalTransaction
+            }
+
     module Create'EvidenceDuplicateDuplicate =
         let create
             (
@@ -5610,6 +6121,13 @@ module IssuingDisputes =
             [<Config.Form>]
             Explanation: Choice<string,string> option
         }
+
+    type Create'EvidenceFraudulentFraudulent with
+        static member New(?additionalDocumentation: Choice<string,string>, ?explanation: Choice<string,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                Explanation = explanation
+            }
 
     module Create'EvidenceFraudulentFraudulent =
         let create
@@ -5649,6 +6167,17 @@ module IssuingDisputes =
             ReturnedAt: Choice<DateTime,string> option
         }
 
+    type Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed with
+        static member New(?additionalDocumentation: Choice<string,string>, ?explanation: Choice<string,string>, ?receivedAt: Choice<DateTime,string>, ?returnDescription: Choice<string,string>, ?returnStatus: Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus, ?returnedAt: Choice<DateTime,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                Explanation = explanation
+                ReceivedAt = receivedAt
+                ReturnDescription = returnDescription
+                ReturnStatus = returnStatus
+                ReturnedAt = returnedAt
+            }
+
     module Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed =
         let create
             (
@@ -5678,6 +6207,13 @@ module IssuingDisputes =
             [<Config.Form>]
             Explanation: Choice<string,string> option
         }
+
+    type Create'EvidenceNoValidAuthorizationNoValidAuthorization with
+        static member New(?additionalDocumentation: Choice<string,string>, ?explanation: Choice<string,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                Explanation = explanation
+            }
 
     module Create'EvidenceNoValidAuthorizationNoValidAuthorization =
         let create
@@ -5713,6 +6249,16 @@ module IssuingDisputes =
             [<Config.Form>]
             ProductType: Create'EvidenceNotReceivedNotReceivedProductType option
         }
+
+    type Create'EvidenceNotReceivedNotReceived with
+        static member New(?additionalDocumentation: Choice<string,string>, ?expectedAt: Choice<DateTime,string>, ?explanation: Choice<string,string>, ?productDescription: Choice<string,string>, ?productType: Create'EvidenceNotReceivedNotReceivedProductType) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                ExpectedAt = expectedAt
+                Explanation = explanation
+                ProductDescription = productDescription
+                ProductType = productType
+            }
 
     module Create'EvidenceNotReceivedNotReceived =
         let create
@@ -5751,6 +6297,15 @@ module IssuingDisputes =
             [<Config.Form>]
             ProductType: Create'EvidenceOtherOtherProductType option
         }
+
+    type Create'EvidenceOtherOther with
+        static member New(?additionalDocumentation: Choice<string,string>, ?explanation: Choice<string,string>, ?productDescription: Choice<string,string>, ?productType: Create'EvidenceOtherOtherProductType) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                Explanation = explanation
+                ProductDescription = productDescription
+                ProductType = productType
+            }
 
     module Create'EvidenceOtherOther =
         let create
@@ -5796,6 +6351,16 @@ module IssuingDisputes =
             [<Config.Form>]
             ReceivedAt: Choice<DateTime,string> option
         }
+
+    type Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed with
+        static member New(?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<DateTime,string>, ?cancellationReason: Choice<string,string>, ?explanation: Choice<string,string>, ?receivedAt: Choice<DateTime,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                CanceledAt = canceledAt
+                CancellationReason = cancellationReason
+                Explanation = explanation
+                ReceivedAt = receivedAt
+            }
 
     module Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed =
         let create
@@ -5847,6 +6412,20 @@ module IssuingDisputes =
             ServiceNotAsDescribed: Choice<Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string> option
         }
 
+    type Create'Evidence with
+        static member New(?canceled: Choice<Create'EvidenceCanceledCanceled,string>, ?duplicate: Choice<Create'EvidenceDuplicateDuplicate,string>, ?fraudulent: Choice<Create'EvidenceFraudulentFraudulent,string>, ?merchandiseNotAsDescribed: Choice<Create'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed,string>, ?noValidAuthorization: Choice<Create'EvidenceNoValidAuthorizationNoValidAuthorization,string>, ?notReceived: Choice<Create'EvidenceNotReceivedNotReceived,string>, ?other: Choice<Create'EvidenceOtherOther,string>, ?reason: Create'EvidenceReason, ?serviceNotAsDescribed: Choice<Create'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string>) =
+            {
+                Canceled = canceled
+                Duplicate = duplicate
+                Fraudulent = fraudulent
+                MerchandiseNotAsDescribed = merchandiseNotAsDescribed
+                NoValidAuthorization = noValidAuthorization
+                NotReceived = notReceived
+                Other = other
+                Reason = reason
+                ServiceNotAsDescribed = serviceNotAsDescribed
+            }
+
     module Create'Evidence =
         let create
             (
@@ -5880,6 +6459,12 @@ module IssuingDisputes =
             ReceivedDebit: string option
         }
 
+    type Create'Treasury with
+        static member New(?receivedDebit: string) =
+            {
+                ReceivedDebit = receivedDebit
+            }
+
     module Create'Treasury =
         let create
             (
@@ -5912,6 +6497,17 @@ module IssuingDisputes =
             Treasury: Create'Treasury option
         }
 
+    type CreateOptions with
+        static member New(?amount: int, ?evidence: Create'Evidence, ?expand: string list, ?metadata: Map<string, string>, ?transaction: string, ?treasury: Create'Treasury) =
+            {
+                Amount = amount
+                Evidence = evidence
+                Expand = expand
+                Metadata = metadata
+                Transaction = transaction
+                Treasury = treasury
+            }
+
     module CreateOptions =
         let create
             (
@@ -5940,6 +6536,13 @@ module IssuingDisputes =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(dispute: string, ?expand: string list) =
+            {
+                Dispute = dispute
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -5994,6 +6597,21 @@ module IssuingDisputes =
             ReturnedAt: Choice<DateTime,string> option
         }
 
+    type Update'EvidenceCanceledCanceled with
+        static member New(?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<DateTime,string>, ?cancellationPolicyProvided: Choice<bool,string>, ?cancellationReason: Choice<string,string>, ?expectedAt: Choice<DateTime,string>, ?explanation: Choice<string,string>, ?productDescription: Choice<string,string>, ?productType: Update'EvidenceCanceledCanceledProductType, ?returnStatus: Update'EvidenceCanceledCanceledReturnStatus, ?returnedAt: Choice<DateTime,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                CanceledAt = canceledAt
+                CancellationPolicyProvided = cancellationPolicyProvided
+                CancellationReason = cancellationReason
+                ExpectedAt = expectedAt
+                Explanation = explanation
+                ProductDescription = productDescription
+                ProductType = productType
+                ReturnStatus = returnStatus
+                ReturnedAt = returnedAt
+            }
+
     module Update'EvidenceCanceledCanceled =
         let create
             (
@@ -6044,6 +6662,17 @@ module IssuingDisputes =
             OriginalTransaction: string option
         }
 
+    type Update'EvidenceDuplicateDuplicate with
+        static member New(?additionalDocumentation: Choice<string,string>, ?cardStatement: Choice<string,string>, ?cashReceipt: Choice<string,string>, ?checkImage: Choice<string,string>, ?explanation: Choice<string,string>, ?originalTransaction: string) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                CardStatement = cardStatement
+                CashReceipt = cashReceipt
+                CheckImage = checkImage
+                Explanation = explanation
+                OriginalTransaction = originalTransaction
+            }
+
     module Update'EvidenceDuplicateDuplicate =
         let create
             (
@@ -6073,6 +6702,13 @@ module IssuingDisputes =
             [<Config.Form>]
             Explanation: Choice<string,string> option
         }
+
+    type Update'EvidenceFraudulentFraudulent with
+        static member New(?additionalDocumentation: Choice<string,string>, ?explanation: Choice<string,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                Explanation = explanation
+            }
 
     module Update'EvidenceFraudulentFraudulent =
         let create
@@ -6112,6 +6748,17 @@ module IssuingDisputes =
             ReturnedAt: Choice<DateTime,string> option
         }
 
+    type Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed with
+        static member New(?additionalDocumentation: Choice<string,string>, ?explanation: Choice<string,string>, ?receivedAt: Choice<DateTime,string>, ?returnDescription: Choice<string,string>, ?returnStatus: Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribedReturnStatus, ?returnedAt: Choice<DateTime,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                Explanation = explanation
+                ReceivedAt = receivedAt
+                ReturnDescription = returnDescription
+                ReturnStatus = returnStatus
+                ReturnedAt = returnedAt
+            }
+
     module Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed =
         let create
             (
@@ -6141,6 +6788,13 @@ module IssuingDisputes =
             [<Config.Form>]
             Explanation: Choice<string,string> option
         }
+
+    type Update'EvidenceNoValidAuthorizationNoValidAuthorization with
+        static member New(?additionalDocumentation: Choice<string,string>, ?explanation: Choice<string,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                Explanation = explanation
+            }
 
     module Update'EvidenceNoValidAuthorizationNoValidAuthorization =
         let create
@@ -6176,6 +6830,16 @@ module IssuingDisputes =
             [<Config.Form>]
             ProductType: Update'EvidenceNotReceivedNotReceivedProductType option
         }
+
+    type Update'EvidenceNotReceivedNotReceived with
+        static member New(?additionalDocumentation: Choice<string,string>, ?expectedAt: Choice<DateTime,string>, ?explanation: Choice<string,string>, ?productDescription: Choice<string,string>, ?productType: Update'EvidenceNotReceivedNotReceivedProductType) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                ExpectedAt = expectedAt
+                Explanation = explanation
+                ProductDescription = productDescription
+                ProductType = productType
+            }
 
     module Update'EvidenceNotReceivedNotReceived =
         let create
@@ -6214,6 +6878,15 @@ module IssuingDisputes =
             [<Config.Form>]
             ProductType: Update'EvidenceOtherOtherProductType option
         }
+
+    type Update'EvidenceOtherOther with
+        static member New(?additionalDocumentation: Choice<string,string>, ?explanation: Choice<string,string>, ?productDescription: Choice<string,string>, ?productType: Update'EvidenceOtherOtherProductType) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                Explanation = explanation
+                ProductDescription = productDescription
+                ProductType = productType
+            }
 
     module Update'EvidenceOtherOther =
         let create
@@ -6259,6 +6932,16 @@ module IssuingDisputes =
             [<Config.Form>]
             ReceivedAt: Choice<DateTime,string> option
         }
+
+    type Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed with
+        static member New(?additionalDocumentation: Choice<string,string>, ?canceledAt: Choice<DateTime,string>, ?cancellationReason: Choice<string,string>, ?explanation: Choice<string,string>, ?receivedAt: Choice<DateTime,string>) =
+            {
+                AdditionalDocumentation = additionalDocumentation
+                CanceledAt = canceledAt
+                CancellationReason = cancellationReason
+                Explanation = explanation
+                ReceivedAt = receivedAt
+            }
 
     module Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed =
         let create
@@ -6310,6 +6993,20 @@ module IssuingDisputes =
             ServiceNotAsDescribed: Choice<Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string> option
         }
 
+    type Update'Evidence with
+        static member New(?canceled: Choice<Update'EvidenceCanceledCanceled,string>, ?duplicate: Choice<Update'EvidenceDuplicateDuplicate,string>, ?fraudulent: Choice<Update'EvidenceFraudulentFraudulent,string>, ?merchandiseNotAsDescribed: Choice<Update'EvidenceMerchandiseNotAsDescribedMerchandiseNotAsDescribed,string>, ?noValidAuthorization: Choice<Update'EvidenceNoValidAuthorizationNoValidAuthorization,string>, ?notReceived: Choice<Update'EvidenceNotReceivedNotReceived,string>, ?other: Choice<Update'EvidenceOtherOther,string>, ?reason: Update'EvidenceReason, ?serviceNotAsDescribed: Choice<Update'EvidenceServiceNotAsDescribedServiceNotAsDescribed,string>) =
+            {
+                Canceled = canceled
+                Duplicate = duplicate
+                Fraudulent = fraudulent
+                MerchandiseNotAsDescribed = merchandiseNotAsDescribed
+                NoValidAuthorization = noValidAuthorization
+                NotReceived = notReceived
+                Other = other
+                Reason = reason
+                ServiceNotAsDescribed = serviceNotAsDescribed
+            }
+
     module Update'Evidence =
         let create
             (
@@ -6353,6 +7050,16 @@ module IssuingDisputes =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(dispute: string, ?amount: int, ?evidence: Update'Evidence, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Dispute = dispute
+                Amount = amount
+                Evidence = evidence
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -6404,6 +7111,14 @@ module IssuingDisputesSubmit =
             Metadata: Map<string, string> option
         }
 
+    type SubmitOptions with
+        static member New(dispute: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Dispute = dispute
+                Expand = expand
+                Metadata = metadata
+            }
+
     module SubmitOptions =
         let create
             (
@@ -6448,6 +7163,18 @@ module IssuingPersonalizationDesigns =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?lookupKeys: string list, ?preferences: Map<string, string>, ?startingAfter: string, ?status: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                LookupKeys = lookupKeys
+                Preferences = preferences
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -6486,6 +7213,15 @@ module IssuingPersonalizationDesigns =
             HeaderTitle: Choice<string,string> option
         }
 
+    type Create'CarrierText with
+        static member New(?footerBody: Choice<string,string>, ?footerTitle: Choice<string,string>, ?headerBody: Choice<string,string>, ?headerTitle: Choice<string,string>) =
+            {
+                FooterBody = footerBody
+                FooterTitle = footerTitle
+                HeaderBody = headerBody
+                HeaderTitle = headerTitle
+            }
+
     module Create'CarrierText =
         let create
             (
@@ -6508,6 +7244,12 @@ module IssuingPersonalizationDesigns =
             [<Config.Form>]
             IsDefault: bool option
         }
+
+    type Create'Preferences with
+        static member New(?isDefault: bool) =
+            {
+                IsDefault = isDefault
+            }
 
     module Create'Preferences =
         let create
@@ -6550,6 +7292,20 @@ module IssuingPersonalizationDesigns =
             TransferLookupKey: bool option
         }
 
+    type CreateOptions with
+        static member New(physicalBundle: string, ?cardLogo: string, ?carrierText: Create'CarrierText, ?expand: string list, ?lookupKey: string, ?metadata: Map<string, string>, ?name: string, ?preferences: Create'Preferences, ?transferLookupKey: bool) =
+            {
+                PhysicalBundle = physicalBundle
+                CardLogo = cardLogo
+                CarrierText = carrierText
+                Expand = expand
+                LookupKey = lookupKey
+                Metadata = metadata
+                Name = name
+                Preferences = preferences
+                TransferLookupKey = transferLookupKey
+            }
+
     module CreateOptions =
         let create
             (
@@ -6576,6 +7332,13 @@ module IssuingPersonalizationDesigns =
             [<Config.Path>]
             PersonalizationDesign: string
         }
+
+    type RetrieveOptions with
+        static member New(personalizationDesign: string, ?expand: string list) =
+            {
+                PersonalizationDesign = personalizationDesign
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -6604,6 +7367,15 @@ module IssuingPersonalizationDesigns =
             HeaderTitle: Choice<string,string> option
         }
 
+    type Update'CarrierTextCarrierText with
+        static member New(?footerBody: Choice<string,string>, ?footerTitle: Choice<string,string>, ?headerBody: Choice<string,string>, ?headerTitle: Choice<string,string>) =
+            {
+                FooterBody = footerBody
+                FooterTitle = footerTitle
+                HeaderBody = headerBody
+                HeaderTitle = headerTitle
+            }
+
     module Update'CarrierTextCarrierText =
         let create
             (
@@ -6626,6 +7398,12 @@ module IssuingPersonalizationDesigns =
             [<Config.Form>]
             IsDefault: bool option
         }
+
+    type Update'Preferences with
+        static member New(?isDefault: bool) =
+            {
+                IsDefault = isDefault
+            }
 
     module Update'Preferences =
         let create
@@ -6669,6 +7447,21 @@ module IssuingPersonalizationDesigns =
             [<Config.Form>]
             TransferLookupKey: bool option
         }
+
+    type UpdateOptions with
+        static member New(personalizationDesign: string, ?cardLogo: Choice<string,string>, ?carrierText: Choice<Update'CarrierTextCarrierText,string>, ?expand: string list, ?lookupKey: Choice<string,string>, ?metadata: Map<string, string>, ?name: Choice<string,string>, ?physicalBundle: string, ?preferences: Update'Preferences, ?transferLookupKey: bool) =
+            {
+                PersonalizationDesign = personalizationDesign
+                CardLogo = cardLogo
+                CarrierText = carrierText
+                Expand = expand
+                LookupKey = lookupKey
+                Metadata = metadata
+                Name = name
+                PhysicalBundle = physicalBundle
+                Preferences = preferences
+                TransferLookupKey = transferLookupKey
+            }
 
     module UpdateOptions =
         let create
@@ -6735,6 +7528,17 @@ module IssuingPhysicalBundles =
             Type: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string, ?type': string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+                Type = type'
+            }
+
     module ListOptions =
         let create
             (
@@ -6743,7 +7547,7 @@ module IssuingPhysicalBundles =
                 limit: int option,
                 startingAfter: string option,
                 status: string option,
-                ``type``: string option
+                type': string option
             ) : ListOptions
             =
             {
@@ -6752,7 +7556,7 @@ module IssuingPhysicalBundles =
               Limit = limit
               StartingAfter = startingAfter
               Status = status
-              Type = ``type``
+              Type = type'
             }
 
     type RetrieveOptions =
@@ -6763,6 +7567,13 @@ module IssuingPhysicalBundles =
             [<Config.Path>]
             PhysicalBundle: string
         }
+
+    type RetrieveOptions with
+        static member New(physicalBundle: string, ?expand: string list) =
+            {
+                PhysicalBundle = physicalBundle
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -6814,6 +7625,18 @@ module IssuingTokens =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(card: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                Card = card
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -6838,6 +7661,13 @@ module IssuingTokens =
             [<Config.Path>]
             Token: string
         }
+
+    type RetrieveOptions with
+        static member New(token: string, ?expand: string list) =
+            {
+                Token = token
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -6866,6 +7696,14 @@ module IssuingTokens =
             [<Config.Form>]
             Status: Update'Status
         }
+
+    type UpdateOptions with
+        static member New(status: Update'Status, token: string, ?expand: string list) =
+            {
+                Status = status
+                Token = token
+                Expand = expand
+            }
 
     module UpdateOptions =
         let create
@@ -6927,6 +7765,19 @@ module IssuingTransactions =
             Type: string option
         }
 
+    type ListOptions with
+        static member New(?card: string, ?cardholder: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?type': string) =
+            {
+                Card = card
+                Cardholder = cardholder
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Type = type'
+            }
+
     module ListOptions =
         let create
             (
@@ -6937,7 +7788,7 @@ module IssuingTransactions =
                 expand: string list option,
                 limit: int option,
                 startingAfter: string option,
-                ``type``: string option
+                type': string option
             ) : ListOptions
             =
             {
@@ -6948,7 +7799,7 @@ module IssuingTransactions =
               Expand = expand
               Limit = limit
               StartingAfter = startingAfter
-              Type = ``type``
+              Type = type'
             }
 
     type RetrieveOptions =
@@ -6959,6 +7810,13 @@ module IssuingTransactions =
             [<Config.Path>]
             Transaction: string
         }
+
+    type RetrieveOptions with
+        static member New(transaction: string, ?expand: string list) =
+            {
+                Transaction = transaction
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -6982,6 +7840,14 @@ module IssuingTransactions =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(transaction: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Transaction = transaction
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create

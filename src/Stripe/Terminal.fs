@@ -33,12 +33,27 @@ type TerminalReaderReaderResourceCustomText =
         Title: string option
     }
 
+type TerminalReaderReaderResourceCustomText with
+    static member New(description: string option, skipButton: string option, submitButton: string option, title: string option) =
+        {
+            Description = description
+            SkipButton = skipButton
+            SubmitButton = submitButton
+            Title = title
+        }
+
 /// Information about a email being collected using a reader
 type TerminalReaderReaderResourceEmail =
     {
         /// The collected email address
         Value: string option
     }
+
+type TerminalReaderReaderResourceEmail with
+    static member New(value: string option) =
+        {
+            Value = value
+        }
 
 type TerminalReaderReaderResourceInputType =
     | Email
@@ -55,12 +70,24 @@ type TerminalReaderReaderResourceNumeric =
         Value: string option
     }
 
+type TerminalReaderReaderResourceNumeric with
+    static member New(value: string option) =
+        {
+            Value = value
+        }
+
 /// Information about a phone number being collected using a reader
 type TerminalReaderReaderResourcePhone =
     {
         /// The collected phone number
         Value: string option
     }
+
+type TerminalReaderReaderResourcePhone with
+    static member New(value: string option) =
+        {
+            Value = value
+        }
 
 [<Struct>]
 type TerminalReaderReaderResourceChoiceStyle =
@@ -78,6 +105,14 @@ type TerminalReaderReaderResourceChoice =
         Text: string
     }
 
+type TerminalReaderReaderResourceChoice with
+    static member New(id: string option, style: TerminalReaderReaderResourceChoiceStyle option, text: string) =
+        {
+            Id = id
+            Style = style
+            Text = text
+        }
+
 /// Information about a selection being collected using a reader
 type TerminalReaderReaderResourceSelection =
     {
@@ -89,6 +124,14 @@ type TerminalReaderReaderResourceSelection =
         Text: string option
     }
 
+type TerminalReaderReaderResourceSelection with
+    static member New(choices: TerminalReaderReaderResourceChoice list, id: string option, text: string option) =
+        {
+            Choices = choices
+            Id = id
+            Text = text
+        }
+
 /// Information about a signature being collected using a reader
 type TerminalReaderReaderResourceSignature =
     {
@@ -96,12 +139,24 @@ type TerminalReaderReaderResourceSignature =
         Value: string option
     }
 
+type TerminalReaderReaderResourceSignature with
+    static member New(value: string option) =
+        {
+            Value = value
+        }
+
 /// Information about text being collected using a reader
 type TerminalReaderReaderResourceText =
     {
         /// The collected text value
         Value: string option
     }
+
+type TerminalReaderReaderResourceText with
+    static member New(value: string option) =
+        {
+            Value = value
+        }
 
 [<Struct>]
 type TerminalReaderReaderResourceToggleDefaultValue =
@@ -126,6 +181,15 @@ type TerminalReaderReaderResourceToggle =
         Value: TerminalReaderReaderResourceToggleValue option
     }
 
+type TerminalReaderReaderResourceToggle with
+    static member New(defaultValue: TerminalReaderReaderResourceToggleDefaultValue option, description: string option, title: string option, value: TerminalReaderReaderResourceToggleValue option) =
+        {
+            DefaultValue = defaultValue
+            Description = description
+            Title = title
+            Value = value
+        }
+
 /// Represents an input to be collected using the reader
 type TerminalReaderReaderResourceInput =
     {
@@ -147,6 +211,22 @@ type TerminalReaderReaderResourceInput =
         Type: TerminalReaderReaderResourceInputType
     }
 
+type TerminalReaderReaderResourceInput with
+    static member New(customText: TerminalReaderReaderResourceCustomText option, required: bool option, toggles: TerminalReaderReaderResourceToggle list option, ``type``: TerminalReaderReaderResourceInputType, ?email: TerminalReaderReaderResourceEmail, ?numeric: TerminalReaderReaderResourceNumeric, ?phone: TerminalReaderReaderResourcePhone, ?selection: TerminalReaderReaderResourceSelection, ?signature: TerminalReaderReaderResourceSignature, ?skipped: bool, ?text: TerminalReaderReaderResourceText) =
+        {
+            CustomText = customText
+            Required = required
+            Toggles = toggles
+            Type = ``type``
+            Email = email
+            Numeric = numeric
+            Phone = phone
+            Selection = selection
+            Signature = signature
+            Skipped = skipped
+            Text = text
+        }
+
 /// Represents a reader action to collect customer inputs
 type TerminalReaderReaderResourceCollectInputsAction =
     {
@@ -156,12 +236,25 @@ type TerminalReaderReaderResourceCollectInputsAction =
         Metadata: Map<string, string> option
     }
 
+type TerminalReaderReaderResourceCollectInputsAction with
+    static member New(inputs: TerminalReaderReaderResourceInput list, metadata: Map<string, string> option) =
+        {
+            Inputs = inputs
+            Metadata = metadata
+        }
+
 /// Represents a per-transaction tipping configuration
 type TerminalReaderReaderResourceTippingConfig =
     {
         /// Amount used to calculate tip suggestions on tipping selection screen for this transaction. Must be a positive integer in the smallest currency unit (e.g., 100 cents to represent $1.00 or 100 to represent ¥100, a zero-decimal currency).
         AmountEligible: int option
     }
+
+type TerminalReaderReaderResourceTippingConfig with
+    static member New(?amountEligible: int) =
+        {
+            AmountEligible = amountEligible
+        }
 
 /// Represents a per-transaction override of a reader configuration
 type TerminalReaderReaderResourceCollectConfig =
@@ -173,6 +266,14 @@ type TerminalReaderReaderResourceCollectConfig =
         Tipping: TerminalReaderReaderResourceTippingConfig option
     }
 
+type TerminalReaderReaderResourceCollectConfig with
+    static member New(?enableCustomerCancellation: bool, ?skipTipping: bool, ?tipping: TerminalReaderReaderResourceTippingConfig) =
+        {
+            EnableCustomerCancellation = enableCustomerCancellation
+            SkipTipping = skipTipping
+            Tipping = tipping
+        }
+
 /// Represents a reader action to collect a payment method
 type TerminalReaderReaderResourceCollectPaymentMethodAction =
     {
@@ -182,12 +283,26 @@ type TerminalReaderReaderResourceCollectPaymentMethodAction =
         PaymentMethod: PaymentMethod option
     }
 
+type TerminalReaderReaderResourceCollectPaymentMethodAction with
+    static member New(paymentIntent: StripeId<Markers.PaymentIntent>, ?collectConfig: TerminalReaderReaderResourceCollectConfig, ?paymentMethod: PaymentMethod) =
+        {
+            PaymentIntent = paymentIntent
+            CollectConfig = collectConfig
+            PaymentMethod = paymentMethod
+        }
+
 /// Represents a per-transaction override of a reader configuration
 type TerminalReaderReaderResourceConfirmConfig =
     {
         /// If the customer doesn't abandon authenticating the payment, they're redirected to this URL after completion.
         ReturnUrl: string option
     }
+
+type TerminalReaderReaderResourceConfirmConfig with
+    static member New(?returnUrl: string) =
+        {
+            ReturnUrl = returnUrl
+        }
 
 /// Represents a reader action to confirm a payment
 type TerminalReaderReaderResourceConfirmPaymentIntentAction =
@@ -196,6 +311,13 @@ type TerminalReaderReaderResourceConfirmPaymentIntentAction =
         /// Most recent PaymentIntent processed by the reader.
         PaymentIntent: StripeId<Markers.PaymentIntent>
     }
+
+type TerminalReaderReaderResourceConfirmPaymentIntentAction with
+    static member New(paymentIntent: StripeId<Markers.PaymentIntent>, ?confirmConfig: TerminalReaderReaderResourceConfirmConfig) =
+        {
+            PaymentIntent = paymentIntent
+            ConfirmConfig = confirmConfig
+        }
 
 /// Represents a per-transaction override of a reader configuration
 type TerminalReaderReaderResourceProcessConfig =
@@ -209,6 +331,15 @@ type TerminalReaderReaderResourceProcessConfig =
         Tipping: TerminalReaderReaderResourceTippingConfig option
     }
 
+type TerminalReaderReaderResourceProcessConfig with
+    static member New(?enableCustomerCancellation: bool, ?returnUrl: string, ?skipTipping: bool, ?tipping: TerminalReaderReaderResourceTippingConfig) =
+        {
+            EnableCustomerCancellation = enableCustomerCancellation
+            ReturnUrl = returnUrl
+            SkipTipping = skipTipping
+            Tipping = tipping
+        }
+
 /// Represents a reader action to process a payment intent
 type TerminalReaderReaderResourceProcessPaymentIntentAction =
     {
@@ -217,12 +348,25 @@ type TerminalReaderReaderResourceProcessPaymentIntentAction =
         ProcessConfig: TerminalReaderReaderResourceProcessConfig option
     }
 
+type TerminalReaderReaderResourceProcessPaymentIntentAction with
+    static member New(paymentIntent: StripeId<Markers.PaymentIntent>, ?processConfig: TerminalReaderReaderResourceProcessConfig) =
+        {
+            PaymentIntent = paymentIntent
+            ProcessConfig = processConfig
+        }
+
 /// Represents a per-setup override of a reader configuration
 type TerminalReaderReaderResourceProcessSetupConfig =
     {
         /// Enable customer-initiated cancellation when processing this SetupIntent.
         EnableCustomerCancellation: bool option
     }
+
+type TerminalReaderReaderResourceProcessSetupConfig with
+    static member New(?enableCustomerCancellation: bool) =
+        {
+            EnableCustomerCancellation = enableCustomerCancellation
+        }
 
 /// Represents a reader action to process a setup intent
 type TerminalReaderReaderResourceProcessSetupIntentAction =
@@ -233,6 +377,14 @@ type TerminalReaderReaderResourceProcessSetupIntentAction =
         /// Most recent SetupIntent processed by the reader.
         SetupIntent: StripeId<Markers.SetupIntent>
     }
+
+type TerminalReaderReaderResourceProcessSetupIntentAction with
+    static member New(setupIntent: StripeId<Markers.SetupIntent>, ?generatedCard: string, ?processConfig: TerminalReaderReaderResourceProcessSetupConfig) =
+        {
+            SetupIntent = setupIntent
+            GeneratedCard = generatedCard
+            ProcessConfig = processConfig
+        }
 
 [<Struct>]
 type TerminalReaderReaderResourceReaderActionStatus =
@@ -262,6 +414,12 @@ type TerminalReaderReaderResourceRefundPaymentConfig =
         EnableCustomerCancellation: bool option
     }
 
+type TerminalReaderReaderResourceRefundPaymentConfig with
+    static member New(?enableCustomerCancellation: bool) =
+        {
+            EnableCustomerCancellation = enableCustomerCancellation
+        }
+
 /// Represents a reader action to refund a payment
 type TerminalReaderReaderResourceRefundPaymentAction =
     {
@@ -284,6 +442,20 @@ type TerminalReaderReaderResourceRefundPaymentAction =
         ReverseTransfer: bool option
     }
 
+type TerminalReaderReaderResourceRefundPaymentAction with
+    static member New(?amount: int, ?charge: StripeId<Markers.Charge>, ?metadata: Map<string, string>, ?paymentIntent: StripeId<Markers.PaymentIntent>, ?reason: TerminalReaderReaderResourceRefundPaymentActionReason, ?refund: StripeId<Markers.Refund>, ?refundApplicationFee: bool, ?refundPaymentConfig: TerminalReaderReaderResourceRefundPaymentConfig, ?reverseTransfer: bool) =
+        {
+            Amount = amount
+            Charge = charge
+            Metadata = metadata
+            PaymentIntent = paymentIntent
+            Reason = reason
+            Refund = refund
+            RefundApplicationFee = refundApplicationFee
+            RefundPaymentConfig = refundPaymentConfig
+            ReverseTransfer = reverseTransfer
+        }
+
 /// Represents a line item to be displayed on the reader
 type TerminalReaderReaderResourceLineItem =
     {
@@ -294,6 +466,14 @@ type TerminalReaderReaderResourceLineItem =
         /// The quantity of the line item.
         Quantity: int
     }
+
+type TerminalReaderReaderResourceLineItem with
+    static member New(amount: int, description: string, quantity: int) =
+        {
+            Amount = amount
+            Description = description
+            Quantity = quantity
+        }
 
 /// Represents a cart to be displayed on the reader
 type TerminalReaderReaderResourceCart =
@@ -308,12 +488,27 @@ type TerminalReaderReaderResourceCart =
         Total: int
     }
 
+type TerminalReaderReaderResourceCart with
+    static member New(currency: IsoTypes.IsoCurrencyCode, lineItems: TerminalReaderReaderResourceLineItem list, tax: int option, total: int) =
+        {
+            Currency = currency
+            LineItems = lineItems
+            Tax = tax
+            Total = total
+        }
+
 /// Represents a reader action to set the reader display
 type TerminalReaderReaderResourceSetReaderDisplayAction =
     {
         /// Cart object to be displayed by the reader, including line items, amounts, and currency.
         Cart: TerminalReaderReaderResourceCart option
     }
+
+type TerminalReaderReaderResourceSetReaderDisplayAction with
+    static member New(cart: TerminalReaderReaderResourceCart option) =
+        {
+            Cart = cart
+        }
 
 module TerminalReaderReaderResourceSetReaderDisplayAction =
     ///Type of information to be displayed by the reader. Only `cart` is currently supported.
@@ -338,6 +533,22 @@ type TerminalReaderReaderResourceReaderAction =
         /// Type of action performed by the reader.
         Type: TerminalReaderReaderResourceReaderActionType
     }
+
+type TerminalReaderReaderResourceReaderAction with
+    static member New(failureCode: string option, failureMessage: string option, status: TerminalReaderReaderResourceReaderActionStatus, ``type``: TerminalReaderReaderResourceReaderActionType, ?collectInputs: TerminalReaderReaderResourceCollectInputsAction, ?collectPaymentMethod: TerminalReaderReaderResourceCollectPaymentMethodAction, ?confirmPaymentIntent: TerminalReaderReaderResourceConfirmPaymentIntentAction, ?processPaymentIntent: TerminalReaderReaderResourceProcessPaymentIntentAction, ?processSetupIntent: TerminalReaderReaderResourceProcessSetupIntentAction, ?refundPayment: TerminalReaderReaderResourceRefundPaymentAction, ?setReaderDisplay: TerminalReaderReaderResourceSetReaderDisplayAction) =
+        {
+            FailureCode = failureCode
+            FailureMessage = failureMessage
+            Status = status
+            Type = ``type``
+            CollectInputs = collectInputs
+            CollectPaymentMethod = collectPaymentMethod
+            ConfirmPaymentIntent = confirmPaymentIntent
+            ProcessPaymentIntent = processPaymentIntent
+            ProcessSetupIntent = processSetupIntent
+            RefundPayment = refundPayment
+            SetReaderDisplay = setReaderDisplay
+        }
 
 [<Struct>]
 type TerminalReaderStatus =
@@ -374,6 +585,23 @@ type TerminalReader =
         Status: TerminalReaderStatus option
     }
 
+type TerminalReader with
+    static member New(action: TerminalReaderReaderResourceReaderAction option, deviceSwVersion: string option, deviceType: TerminalReaderDeviceType, id: string, ipAddress: string option, label: string, lastSeenAt: DateTime option, livemode: bool, location: StripeId<Markers.TerminalLocation> option, metadata: Map<string, string>, serialNumber: string, status: TerminalReaderStatus option) =
+        {
+            Action = action
+            DeviceSwVersion = deviceSwVersion
+            DeviceType = deviceType
+            Id = id
+            IpAddress = ipAddress
+            Label = label
+            LastSeenAt = lastSeenAt
+            Livemode = livemode
+            Location = location
+            Metadata = metadata
+            SerialNumber = serialNumber
+            Status = status
+        }
+
 module TerminalReader =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.reader"
@@ -381,11 +609,29 @@ module TerminalReader =
 /// Occurs whenever an action sent to a Terminal reader is updated.
 type TerminalReaderActionUpdated = { Object: TerminalReader }
 
+type TerminalReaderActionUpdated with
+    static member New(object: TerminalReader) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an action sent to a Terminal reader was successful.
 type TerminalReaderActionSucceeded = { Object: TerminalReader }
 
+type TerminalReaderActionSucceeded with
+    static member New(object: TerminalReader) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an action sent to a Terminal reader failed.
 type TerminalReaderActionFailed = { Object: TerminalReader }
+
+type TerminalReaderActionFailed with
+    static member New(object: TerminalReader) =
+        {
+            Object = object
+        }
 
 /// Options associated with the Apple Terms and Conditions link type.
 type TerminalOnboardingLinkAppleTermsAndConditions =
@@ -396,12 +642,25 @@ type TerminalOnboardingLinkAppleTermsAndConditions =
         MerchantDisplayName: string
     }
 
+type TerminalOnboardingLinkAppleTermsAndConditions with
+    static member New(allowRelinking: bool option, merchantDisplayName: string) =
+        {
+            AllowRelinking = allowRelinking
+            MerchantDisplayName = merchantDisplayName
+        }
+
 /// Link type options associated with the current onboarding link object.
 type TerminalOnboardingLinkLinkOptions =
     {
         /// The options associated with the Apple Terms and Conditions link type.
         AppleTermsAndConditions: TerminalOnboardingLinkAppleTermsAndConditions option
     }
+
+type TerminalOnboardingLinkLinkOptions with
+    static member New(appleTermsAndConditions: TerminalOnboardingLinkAppleTermsAndConditions option) =
+        {
+            AppleTermsAndConditions = appleTermsAndConditions
+        }
 
 /// Returns redirect links used for onboarding onto Tap to Pay on iPhone.
 type TerminalOnboardingLink =
@@ -412,6 +671,14 @@ type TerminalOnboardingLink =
         /// The link passed back to the user for their onboarding.
         RedirectUrl: string
     }
+
+type TerminalOnboardingLink with
+    static member New(linkOptions: TerminalOnboardingLinkLinkOptions, onBehalfOf: string option, redirectUrl: string) =
+        {
+            LinkOptions = linkOptions
+            OnBehalfOf = onBehalfOf
+            RedirectUrl = redirectUrl
+        }
 
 module TerminalOnboardingLink =
     ///The type of link being generated.
@@ -444,6 +711,22 @@ type TerminalLocation =
         Phone: string option
     }
 
+type TerminalLocation with
+    static member New(address: Address, displayName: string, id: string, livemode: bool, metadata: Map<string, string>, ?addressKana: LegalEntityJapanAddress, ?addressKanji: LegalEntityJapanAddress, ?configurationOverrides: string, ?displayNameKana: string, ?displayNameKanji: string, ?phone: string) =
+        {
+            Address = address
+            DisplayName = displayName
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            AddressKana = addressKana
+            AddressKanji = addressKanji
+            ConfigurationOverrides = configurationOverrides
+            DisplayNameKana = displayNameKana
+            DisplayNameKanji = displayNameKanji
+            Phone = phone
+        }
+
 module TerminalLocation =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.location"
@@ -458,6 +741,13 @@ type TerminalConnectionToken =
         Secret: string
     }
 
+type TerminalConnectionToken with
+    static member New(secret: string, ?location: string) =
+        {
+            Secret = secret
+            Location = location
+        }
+
 module TerminalConnectionToken =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.connection_token"
@@ -468,17 +758,35 @@ type TerminalConfigurationConfigurationResourceCellularConfig =
         Enabled: bool
     }
 
+type TerminalConfigurationConfigurationResourceCellularConfig with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
+
 type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig =
     {
         /// A File ID representing an image to display on the reader
         Splashscreen: StripeId<Markers.File> option
     }
 
+type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig with
+    static member New(?splashscreen: StripeId<Markers.File>) =
+        {
+            Splashscreen = splashscreen
+        }
+
 type TerminalConfigurationConfigurationResourceOfflineConfig =
     {
         /// Determines whether to allow transactions to be collected while reader is offline. Defaults to false.
         Enabled: bool option
     }
+
+type TerminalConfigurationConfigurationResourceOfflineConfig with
+    static member New(enabled: bool option) =
+        {
+            Enabled = enabled
+        }
 
 type TerminalConfigurationConfigurationResourceRebootWindow =
     {
@@ -487,6 +795,13 @@ type TerminalConfigurationConfigurationResourceRebootWindow =
         /// Integer between 0 to 23 that represents the start hour of the reboot time window.
         StartHour: int
     }
+
+type TerminalConfigurationConfigurationResourceRebootWindow with
+    static member New(endHour: int, startHour: int) =
+        {
+            EndHour = endHour
+            StartHour = startHour
+        }
 
 type TerminalConfigurationConfigurationResourceCurrencySpecificConfig =
     {
@@ -497,6 +812,14 @@ type TerminalConfigurationConfigurationResourceCurrencySpecificConfig =
         /// Below this amount, fixed amounts will be displayed; above it, percentages will be displayed
         SmartTipThreshold: int option
     }
+
+type TerminalConfigurationConfigurationResourceCurrencySpecificConfig with
+    static member New(?fixedAmounts: int list option, ?percentages: int list option, ?smartTipThreshold: int) =
+        {
+            FixedAmounts = fixedAmounts |> Option.flatten
+            Percentages = percentages |> Option.flatten
+            SmartTipThreshold = smartTipThreshold
+        }
 
 type TerminalConfigurationConfigurationResourceTipping =
     { Aed: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
@@ -521,6 +844,32 @@ type TerminalConfigurationConfigurationResourceTipping =
       Sgd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
       Usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option }
 
+type TerminalConfigurationConfigurationResourceTipping with
+    static member New(?aed: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?aud: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?cad: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?chf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?czk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?dkk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?eur: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?gbp: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?gip: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?hkd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?huf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?jpy: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?mxn: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?myr: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?nok: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?nzd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?pln: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?ron: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?sek: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?sgd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig) =
+        {
+            Aed = aed
+            Aud = aud
+            Cad = cad
+            Chf = chf
+            Czk = czk
+            Dkk = dkk
+            Eur = eur
+            Gbp = gbp
+            Gip = gip
+            Hkd = hkd
+            Huf = huf
+            Jpy = jpy
+            Mxn = mxn
+            Myr = myr
+            Nok = nok
+            Nzd = nzd
+            Pln = pln
+            Ron = ron
+            Sek = sek
+            Sgd = sgd
+            Usd = usd
+        }
+
 type TerminalConfigurationConfigurationResourceEnterprisePeapWifi =
     {
         /// A File ID representing a PEM file containing the server certificate
@@ -532,6 +881,15 @@ type TerminalConfigurationConfigurationResourceEnterprisePeapWifi =
         /// Username for connecting to the WiFi network
         Username: string
     }
+
+type TerminalConfigurationConfigurationResourceEnterprisePeapWifi with
+    static member New(password: string, ssid: string, username: string, ?caCertificateFile: string) =
+        {
+            Password = password
+            Ssid = ssid
+            Username = username
+            CaCertificateFile = caCertificateFile
+        }
 
 type TerminalConfigurationConfigurationResourceEnterpriseTlsWifi =
     {
@@ -547,6 +905,16 @@ type TerminalConfigurationConfigurationResourceEnterpriseTlsWifi =
         Ssid: string
     }
 
+type TerminalConfigurationConfigurationResourceEnterpriseTlsWifi with
+    static member New(clientCertificateFile: string, privateKeyFile: string, ssid: string, ?caCertificateFile: string, ?privateKeyFilePassword: string) =
+        {
+            ClientCertificateFile = clientCertificateFile
+            PrivateKeyFile = privateKeyFile
+            Ssid = ssid
+            CaCertificateFile = caCertificateFile
+            PrivateKeyFilePassword = privateKeyFilePassword
+        }
+
 type TerminalConfigurationConfigurationResourcePersonalPskWifi =
     {
         /// Password for connecting to the WiFi network
@@ -554,6 +922,13 @@ type TerminalConfigurationConfigurationResourcePersonalPskWifi =
         /// Name of the WiFi network
         Ssid: string
     }
+
+type TerminalConfigurationConfigurationResourcePersonalPskWifi with
+    static member New(password: string, ssid: string) =
+        {
+            Password = password
+            Ssid = ssid
+        }
 
 [<Struct>]
 type TerminalConfigurationConfigurationResourceWifiConfigType =
@@ -569,6 +944,15 @@ type TerminalConfigurationConfigurationResourceWifiConfig =
         /// Security type of the WiFi network. The hash with the corresponding name contains the credentials for this security type.
         Type: TerminalConfigurationConfigurationResourceWifiConfigType
     }
+
+type TerminalConfigurationConfigurationResourceWifiConfig with
+    static member New(``type``: TerminalConfigurationConfigurationResourceWifiConfigType, ?enterpriseEapPeap: TerminalConfigurationConfigurationResourceEnterprisePeapWifi, ?enterpriseEapTls: TerminalConfigurationConfigurationResourceEnterpriseTlsWifi, ?personalPsk: TerminalConfigurationConfigurationResourcePersonalPskWifi) =
+        {
+            Type = ``type``
+            EnterpriseEapPeap = enterpriseEapPeap
+            EnterpriseEapTls = enterpriseEapTls
+            PersonalPsk = personalPsk
+        }
 
 /// A Configurations object represents how features should be configured for terminal readers.
 /// For information about how to use it, see the [Terminal configurations documentation](https://docs.stripe.com/terminal/fleet/configurations-overview).
@@ -597,6 +981,25 @@ type TerminalConfiguration =
         VerifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
         Wifi: TerminalConfigurationConfigurationResourceWifiConfig option
     }
+
+type TerminalConfiguration with
+    static member New(id: string, isAccountDefault: bool option, livemode: bool, name: string option, ?bbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?bbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?cellular: TerminalConfigurationConfigurationResourceCellularConfig, ?offline: TerminalConfigurationConfigurationResourceOfflineConfig, ?rebootWindow: TerminalConfigurationConfigurationResourceRebootWindow, ?stripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?stripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?tipping: TerminalConfigurationConfigurationResourceTipping, ?verifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?wifi: TerminalConfigurationConfigurationResourceWifiConfig) =
+        {
+            Id = id
+            IsAccountDefault = isAccountDefault
+            Livemode = livemode
+            Name = name
+            BbposWisepad3 = bbposWisepad3
+            BbposWiseposE = bbposWiseposE
+            Cellular = cellular
+            Offline = offline
+            RebootWindow = rebootWindow
+            StripeS700 = stripeS700
+            StripeS710 = stripeS710
+            Tipping = tipping
+            VerifoneP400 = verifoneP400
+            Wifi = wifi
+        }
 
 module TerminalConfiguration =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -627,6 +1030,15 @@ type DeletedTerminalReader =
         SerialNumber: string
     }
 
+type DeletedTerminalReader with
+    static member New(deleted: bool, deviceType: DeletedTerminalReaderDeviceType, id: string, serialNumber: string) =
+        {
+            Deleted = deleted
+            DeviceType = deviceType
+            Id = id
+            SerialNumber = serialNumber
+        }
+
 module DeletedTerminalReader =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.reader"
@@ -639,6 +1051,13 @@ type DeletedTerminalLocation =
         Id: string
     }
 
+type DeletedTerminalLocation with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
 module DeletedTerminalLocation =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.location"
@@ -650,6 +1069,13 @@ type DeletedTerminalConfiguration =
         /// Unique identifier for the object.
         Id: string
     }
+
+type DeletedTerminalConfiguration with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedTerminalConfiguration =
     ///String representing the object's type. Objects of the same type share the same value.

@@ -18,6 +18,13 @@ type ShippingRateCurrencyOption =
         TaxBehavior: ShippingRateCurrencyOptionTaxBehavior
     }
 
+type ShippingRateCurrencyOption with
+    static member New(amount: int, taxBehavior: ShippingRateCurrencyOptionTaxBehavior) =
+        {
+            Amount = amount
+            TaxBehavior = taxBehavior
+        }
+
 [<Struct>]
 type ShippingRateDeliveryEstimateBoundUnit =
     | BusinessDay
@@ -34,6 +41,13 @@ type ShippingRateDeliveryEstimateBound =
         Value: int
     }
 
+type ShippingRateDeliveryEstimateBound with
+    static member New(unit: ShippingRateDeliveryEstimateBoundUnit, value: int) =
+        {
+            Unit = unit
+            Value = value
+        }
+
 type ShippingRateDeliveryEstimate =
     {
         /// The upper bound of the estimated range. If empty, represents no upper bound i.e., infinite.
@@ -41,6 +55,13 @@ type ShippingRateDeliveryEstimate =
         /// The lower bound of the estimated range. If empty, represents no lower bound.
         Minimum: ShippingRateDeliveryEstimateBound option
     }
+
+type ShippingRateDeliveryEstimate with
+    static member New(maximum: ShippingRateDeliveryEstimateBound option, minimum: ShippingRateDeliveryEstimateBound option) =
+        {
+            Maximum = maximum
+            Minimum = minimum
+        }
 
 type ShippingRateFixedAmount =
     {
@@ -51,6 +72,14 @@ type ShippingRateFixedAmount =
         /// Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
         CurrencyOptions: Map<string, string list> option
     }
+
+type ShippingRateFixedAmount with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string list>) =
+        {
+            Amount = amount
+            Currency = currency
+            CurrencyOptions = currencyOptions
+        }
 
 [<Struct>]
 type ShippingRateTaxBehavior =
@@ -82,6 +111,21 @@ type ShippingRate =
         /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID. The Shipping tax code is `txcd_92010001`.
         TaxCode: StripeId<Markers.TaxCode> option
     }
+
+type ShippingRate with
+    static member New(active: bool, created: DateTime, deliveryEstimate: ShippingRateDeliveryEstimate option, displayName: string option, id: string, livemode: bool, metadata: Map<string, string>, taxBehavior: ShippingRateTaxBehavior option, taxCode: StripeId<Markers.TaxCode> option, ?fixedAmount: ShippingRateFixedAmount) =
+        {
+            Active = active
+            Created = created
+            DeliveryEstimate = deliveryEstimate
+            DisplayName = displayName
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            FixedAmount = fixedAmount
+        }
 
 module ShippingRate =
     ///String representing the object's type. Objects of the same type share the same value.

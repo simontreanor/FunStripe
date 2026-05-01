@@ -36,6 +36,19 @@ module Charges =
             TransferGroup: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string, ?transferGroup: string) =
+            {
+                Created = created
+                Customer = customer
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                PaymentIntent = paymentIntent
+                StartingAfter = startingAfter
+                TransferGroup = transferGroup
+            }
+
     module ListOptions =
         let create
             (
@@ -70,6 +83,13 @@ module Charges =
             Amount: int option
         }
 
+    type Create'Destination with
+        static member New(?account: string, ?amount: int) =
+            {
+                Account = account
+                Amount = amount
+            }
+
     module Create'Destination =
         let create
             (
@@ -88,6 +108,12 @@ module Charges =
             [<Config.Form>]
             Session: string option
         }
+
+    type Create'RadarOptions with
+        static member New(?session: string) =
+            {
+                Session = session
+            }
 
     module Create'RadarOptions =
         let create
@@ -120,6 +146,17 @@ module Charges =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'ShippingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'ShippingAddress =
         let create
@@ -160,6 +197,16 @@ module Charges =
             TrackingNumber: string option
         }
 
+    type Create'Shipping with
+        static member New(?address: Create'ShippingAddress, ?carrier: string, ?name: string, ?phone: string, ?trackingNumber: string) =
+            {
+                Address = address
+                Carrier = carrier
+                Name = name
+                Phone = phone
+                TrackingNumber = trackingNumber
+            }
+
     module Create'Shipping =
         let create
             (
@@ -187,6 +234,13 @@ module Charges =
             [<Config.Form>]
             Destination: string option
         }
+
+    type Create'TransferData with
+        static member New(?amount: int, ?destination: string) =
+            {
+                Amount = amount
+                Destination = destination
+            }
 
     module Create'TransferData =
         let create
@@ -260,6 +314,30 @@ module Charges =
             TransferGroup: string option
         }
 
+    type CreateOptions with
+        static member New(?amount: int, ?applicationFee: int, ?applicationFeeAmount: int, ?capture: bool, ?currency: IsoTypes.IsoCurrencyCode, ?customer: string, ?description: string, ?destination: Create'Destination, ?expand: string list, ?metadata: Map<string, string>, ?onBehalfOf: string, ?radarOptions: Create'RadarOptions, ?receiptEmail: string, ?shipping: Create'Shipping, ?source: string, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: Create'TransferData, ?transferGroup: string) =
+            {
+                Amount = amount
+                ApplicationFee = applicationFee
+                ApplicationFeeAmount = applicationFeeAmount
+                Capture = capture
+                Currency = currency
+                Customer = customer
+                Description = description
+                Destination = destination
+                Expand = expand
+                Metadata = metadata
+                OnBehalfOf = onBehalfOf
+                RadarOptions = radarOptions
+                ReceiptEmail = receiptEmail
+                Shipping = shipping
+                Source = source
+                StatementDescriptor = statementDescriptor
+                StatementDescriptorSuffix = statementDescriptorSuffix
+                TransferData = transferData
+                TransferGroup = transferGroup
+            }
+
     module CreateOptions =
         let create
             (
@@ -315,6 +393,13 @@ module Charges =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(charge: string, ?expand: string list) =
+            {
+                Charge = charge
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -336,6 +421,12 @@ module Charges =
             [<Config.Form>]
             UserReport: Update'FraudDetailsUserReport option
         }
+
+    type Update'FraudDetails with
+        static member New(?userReport: Update'FraudDetailsUserReport) =
+            {
+                UserReport = userReport
+            }
 
     module Update'FraudDetails =
         let create
@@ -368,6 +459,17 @@ module Charges =
             [<Config.Form>]
             State: string option
         }
+
+    type Update'ShippingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Update'ShippingAddress =
         let create
@@ -407,6 +509,16 @@ module Charges =
             [<Config.Form>]
             TrackingNumber: string option
         }
+
+    type Update'Shipping with
+        static member New(?address: Update'ShippingAddress, ?carrier: string, ?name: string, ?phone: string, ?trackingNumber: string) =
+            {
+                Address = address
+                Carrier = carrier
+                Name = name
+                Phone = phone
+                TrackingNumber = trackingNumber
+            }
 
     module Update'Shipping =
         let create
@@ -455,6 +567,20 @@ module Charges =
             [<Config.Form>]
             TransferGroup: string option
         }
+
+    type UpdateOptions with
+        static member New(charge: string, ?customer: string, ?description: string, ?expand: string list, ?fraudDetails: Update'FraudDetails, ?metadata: Map<string, string>, ?receiptEmail: string, ?shipping: Update'Shipping, ?transferGroup: string) =
+            {
+                Charge = charge
+                Customer = customer
+                Description = description
+                Expand = expand
+                FraudDetails = fraudDetails
+                Metadata = metadata
+                ReceiptEmail = receiptEmail
+                Shipping = shipping
+                TransferGroup = transferGroup
+            }
 
     module UpdateOptions =
         let create
@@ -516,6 +642,15 @@ module ChargesSearch =
             Query: string
         }
 
+    type SearchOptions with
+        static member New(query: string, ?expand: string list, ?limit: int, ?page: string) =
+            {
+                Query = query
+                Expand = expand
+                Limit = limit
+                Page = page
+            }
+
     module SearchOptions =
         let create
             (
@@ -546,6 +681,12 @@ module ChargesCapture =
             [<Config.Form>]
             Amount: int option
         }
+
+    type Capture'TransferData with
+        static member New(?amount: int) =
+            {
+                Amount = amount
+            }
 
     module Capture'TransferData =
         let create
@@ -590,6 +731,21 @@ module ChargesCapture =
             [<Config.Form>]
             TransferGroup: string option
         }
+
+    type CaptureOptions with
+        static member New(charge: string, ?amount: int, ?applicationFee: int, ?applicationFeeAmount: int, ?expand: string list, ?receiptEmail: string, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: Capture'TransferData, ?transferGroup: string) =
+            {
+                Charge = charge
+                Amount = amount
+                ApplicationFee = applicationFee
+                ApplicationFeeAmount = applicationFeeAmount
+                Expand = expand
+                ReceiptEmail = receiptEmail
+                StatementDescriptor = statementDescriptor
+                StatementDescriptorSuffix = statementDescriptorSuffix
+                TransferData = transferData
+                TransferGroup = transferGroup
+            }
 
     module CaptureOptions =
         let create
@@ -637,6 +793,16 @@ module ChargesRefunds =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(charge: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Charge = charge
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -661,6 +827,14 @@ module ChargesRefunds =
             [<Config.Path>]
             Refund: string
         }
+
+    type RetrieveOptions with
+        static member New(charge: string, refund: string, ?expand: string list) =
+            {
+                Charge = charge
+                Refund = refund
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

@@ -12,6 +12,12 @@ type PaymentMethodDomainResourcePaymentMethodStatusDetails =
         ErrorMessage: string
     }
 
+type PaymentMethodDomainResourcePaymentMethodStatusDetails with
+    static member New(errorMessage: string) =
+        {
+            ErrorMessage = errorMessage
+        }
+
 [<Struct>]
 type PaymentMethodDomainResourcePaymentMethodStatusStatus =
     | Active
@@ -24,6 +30,13 @@ type PaymentMethodDomainResourcePaymentMethodStatus =
         Status: PaymentMethodDomainResourcePaymentMethodStatusStatus
         StatusDetails: PaymentMethodDomainResourcePaymentMethodStatusDetails option
     }
+
+type PaymentMethodDomainResourcePaymentMethodStatus with
+    static member New(status: PaymentMethodDomainResourcePaymentMethodStatusStatus, ?statusDetails: PaymentMethodDomainResourcePaymentMethodStatusDetails) =
+        {
+            Status = status
+            StatusDetails = statusDetails
+        }
 
 /// A payment method domain represents a web domain that you have registered with Stripe.
 /// Stripe Elements use registered payment method domains to control where certain payment methods are shown.
@@ -47,6 +60,22 @@ type PaymentMethodDomain =
         Livemode: bool
         Paypal: PaymentMethodDomainResourcePaymentMethodStatus
     }
+
+type PaymentMethodDomain with
+    static member New(amazonPay: PaymentMethodDomainResourcePaymentMethodStatus, applePay: PaymentMethodDomainResourcePaymentMethodStatus, created: DateTime, domainName: string, enabled: bool, googlePay: PaymentMethodDomainResourcePaymentMethodStatus, id: string, klarna: PaymentMethodDomainResourcePaymentMethodStatus, link: PaymentMethodDomainResourcePaymentMethodStatus, livemode: bool, paypal: PaymentMethodDomainResourcePaymentMethodStatus) =
+        {
+            AmazonPay = amazonPay
+            ApplePay = applePay
+            Created = created
+            DomainName = domainName
+            Enabled = enabled
+            GooglePay = googlePay
+            Id = id
+            Klarna = klarna
+            Link = link
+            Livemode = livemode
+            Paypal = paypal
+        }
 
 module PaymentMethodDomain =
     ///String representing the object's type. Objects of the same type share the same value.

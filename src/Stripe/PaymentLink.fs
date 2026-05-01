@@ -33,6 +33,14 @@ type PaymentLinkLineItems =
         Url: string
     }
 
+type PaymentLinkLineItems with
+    static member New(data: Item list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
 module PaymentLinkLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
@@ -164,6 +172,46 @@ type PaymentLink =
         Url: string
     }
 
+type PaymentLink with
+    static member New(active: bool, afterCompletion: PaymentLinksResourceAfterCompletion, allowPromotionCodes: bool, application: PaymentLinkApplication'AnyOf option, applicationFeeAmount: int option, applicationFeePercent: decimal option, automaticTax: PaymentLinksResourceAutomaticTax, billingAddressCollection: PaymentLinkBillingAddressCollection, consentCollection: PaymentLinksResourceConsentCollection option, currency: IsoTypes.IsoCurrencyCode, customFields: PaymentLinksResourceCustomFields list, customText: PaymentLinksResourceCustomText, customerCreation: PaymentLinkCustomerCreation, id: string, inactiveMessage: string option, invoiceCreation: PaymentLinksResourceInvoiceCreation option, livemode: bool, managedPayments: PaymentPagesCheckoutSessionManagedPayments option, metadata: Map<string, string>, onBehalfOf: StripeId<Markers.Account> option, paymentIntentData: PaymentLinksResourcePaymentIntentData option, paymentMethodCollection: PaymentLinkPaymentMethodCollection, paymentMethodTypes: PaymentLinkPaymentMethodTypes list option, phoneNumberCollection: PaymentLinksResourcePhoneNumberCollection, restrictions: PaymentLinksResourceRestrictions option, shippingAddressCollection: PaymentLinksResourceShippingAddressCollection option, shippingOptions: PaymentLinksResourceShippingOption list, submitType: PaymentLinkSubmitType, subscriptionData: PaymentLinksResourceSubscriptionData option, taxIdCollection: PaymentLinksResourceTaxIdCollection, transferData: PaymentLinksResourceTransferData option, url: string, ?lineItems: PaymentLinkLineItems, ?nameCollection: PaymentLinksResourceNameCollection, ?optionalItems: PaymentLinksResourceOptionalItem list option) =
+        {
+            Active = active
+            AfterCompletion = afterCompletion
+            AllowPromotionCodes = allowPromotionCodes
+            Application = application
+            ApplicationFeeAmount = applicationFeeAmount
+            ApplicationFeePercent = applicationFeePercent
+            AutomaticTax = automaticTax
+            BillingAddressCollection = billingAddressCollection
+            ConsentCollection = consentCollection
+            Currency = currency
+            CustomFields = customFields
+            CustomText = customText
+            CustomerCreation = customerCreation
+            Id = id
+            InactiveMessage = inactiveMessage
+            InvoiceCreation = invoiceCreation
+            Livemode = livemode
+            ManagedPayments = managedPayments
+            Metadata = metadata
+            OnBehalfOf = onBehalfOf
+            PaymentIntentData = paymentIntentData
+            PaymentMethodCollection = paymentMethodCollection
+            PaymentMethodTypes = paymentMethodTypes
+            PhoneNumberCollection = phoneNumberCollection
+            Restrictions = restrictions
+            ShippingAddressCollection = shippingAddressCollection
+            ShippingOptions = shippingOptions
+            SubmitType = submitType
+            SubscriptionData = subscriptionData
+            TaxIdCollection = taxIdCollection
+            TransferData = transferData
+            Url = url
+            LineItems = lineItems
+            NameCollection = nameCollection
+            OptionalItems = optionalItems |> Option.flatten
+        }
+
 module PaymentLink =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "payment_link"
@@ -171,6 +219,18 @@ module PaymentLink =
 /// Occurs when a payment link is updated.
 type PaymentLinkUpdated = { Object: PaymentLink }
 
+type PaymentLinkUpdated with
+    static member New(object: PaymentLink) =
+        {
+            Object = object
+        }
+
 /// Occurs when a payment link is created.
 type PaymentLinkCreated = { Object: PaymentLink }
+
+type PaymentLinkCreated with
+    static member New(object: PaymentLink) =
+        {
+            Object = object
+        }
 

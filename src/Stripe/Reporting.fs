@@ -33,12 +33,31 @@ type ReportingReportType =
         Version: int
     }
 
+type ReportingReportType with
+    static member New(dataAvailableEnd: DateTime, dataAvailableStart: DateTime, defaultColumns: string list option, id: string, livemode: bool, name: string, updated: DateTime, version: int) =
+        {
+            DataAvailableEnd = dataAvailableEnd
+            DataAvailableStart = dataAvailableStart
+            DefaultColumns = defaultColumns
+            Id = id
+            Livemode = livemode
+            Name = name
+            Updated = updated
+            Version = version
+        }
+
 module ReportingReportType =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reporting.report_type"
 
 /// Occurs whenever a `ReportType` is updated (typically to indicate that a new day's data has come available).
 type ReportingReportTypeUpdated = { Object: ReportingReportType }
+
+type ReportingReportTypeUpdated with
+    static member New(object: ReportingReportType) =
+        {
+            Object = object
+        }
 
 [<Struct>]
 type FinancialReportingFinanceReportRunRunParametersTimezone =
@@ -64,6 +83,19 @@ type FinancialReportingFinanceReportRunRunParameters =
         /// Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.
         Timezone: FinancialReportingFinanceReportRunRunParametersTimezone option
     }
+
+type FinancialReportingFinanceReportRunRunParameters with
+    static member New(?columns: string list, ?connectedAccount: string, ?currency: IsoTypes.IsoCurrencyCode, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: string, ?timezone: FinancialReportingFinanceReportRunRunParametersTimezone) =
+        {
+            Columns = columns
+            ConnectedAccount = connectedAccount
+            Currency = currency
+            IntervalEnd = intervalEnd
+            IntervalStart = intervalStart
+            Payout = payout
+            ReportingCategory = reportingCategory
+            Timezone = timezone
+        }
 
 /// The Report Run object represents an instance of a report type generated with
 /// specific run parameters. Once the object is created, Stripe begins processing the report.
@@ -98,6 +130,20 @@ type ReportingReportRun =
         SucceededAt: DateTime option
     }
 
+type ReportingReportRun with
+    static member New(created: DateTime, error: string option, id: string, livemode: bool, parameters: FinancialReportingFinanceReportRunRunParameters, reportType: string, result: File option, status: string, succeededAt: DateTime option) =
+        {
+            Created = created
+            Error = error
+            Id = id
+            Livemode = livemode
+            Parameters = parameters
+            ReportType = reportType
+            Result = result
+            Status = status
+            SucceededAt = succeededAt
+        }
+
 module ReportingReportRun =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reporting.report_run"
@@ -105,6 +151,18 @@ module ReportingReportRun =
 /// Occurs whenever a requested `ReportRun` completed successfully.
 type ReportingReportRunSucceeded = { Object: ReportingReportRun }
 
+type ReportingReportRunSucceeded with
+    static member New(object: ReportingReportRun) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a requested `ReportRun` failed to complete.
 type ReportingReportRunFailed = { Object: ReportingReportRun }
+
+type ReportingReportRunFailed with
+    static member New(object: ReportingReportRun) =
+        {
+            Object = object
+        }
 

@@ -29,6 +29,18 @@ type InvoiceRenderingTemplate =
         Version: int
     }
 
+type InvoiceRenderingTemplate with
+    static member New(created: DateTime, id: string, livemode: bool, metadata: Map<string, string> option, nickname: string option, status: InvoiceRenderingTemplateStatus, version: int) =
+        {
+            Created = created
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Nickname = nickname
+            Status = status
+            Version = version
+        }
+
 module InvoiceRenderingTemplate =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "invoice_rendering_template"

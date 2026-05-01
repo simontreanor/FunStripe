@@ -20,6 +20,13 @@ type ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnli
         UserAgent: string option
     }
 
+type ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline with
+    static member New(ipAddress: string option, userAgent: string option) =
+        {
+            IpAddress = ipAddress
+            UserAgent = userAgent
+        }
+
 /// This hash contains details about the customer acceptance of the Mandate.
 type ConfirmationTokensResourceMandateDataResourceCustomerAcceptance =
     {
@@ -29,13 +36,32 @@ type ConfirmationTokensResourceMandateDataResourceCustomerAcceptance =
         Type: string
     }
 
+type ConfirmationTokensResourceMandateDataResourceCustomerAcceptance with
+    static member New(online: ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline option, ``type``: string) =
+        {
+            Online = online
+            Type = ``type``
+        }
+
 /// Data used for generating a Mandate.
 type ConfirmationTokensResourceMandateData =
     { CustomerAcceptance: ConfirmationTokensResourceMandateDataResourceCustomerAcceptance }
 
+type ConfirmationTokensResourceMandateData with
+    static member New(customerAcceptance: ConfirmationTokensResourceMandateDataResourceCustomerAcceptance) =
+        {
+            CustomerAcceptance = customerAcceptance
+        }
+
 /// Installment configuration for payments.
 type ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment =
     { Plan: PaymentMethodDetailsCardInstallmentsPlan option }
+
+type ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment with
+    static member New(?plan: PaymentMethodDetailsCardInstallmentsPlan) =
+        {
+            Plan = plan
+        }
 
 /// This hash contains the card payment method options.
 type ConfirmationTokensResourcePaymentMethodOptionsResourceCard =
@@ -45,12 +71,25 @@ type ConfirmationTokensResourcePaymentMethodOptionsResourceCard =
         Installments: ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment option
     }
 
+type ConfirmationTokensResourcePaymentMethodOptionsResourceCard with
+    static member New(cvcToken: string option, ?installments: ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment) =
+        {
+            CvcToken = cvcToken
+            Installments = installments
+        }
+
 /// Payment-method-specific configuration
 type ConfirmationTokensResourcePaymentMethodOptions =
     {
         /// This hash contains the card payment method options.
         Card: ConfirmationTokensResourcePaymentMethodOptionsResourceCard option
     }
+
+type ConfirmationTokensResourcePaymentMethodOptions with
+    static member New(card: ConfirmationTokensResourcePaymentMethodOptionsResourceCard option) =
+        {
+            Card = card
+        }
 
 [<Struct>]
 type ConfirmationTokensResourcePaymentMethodPreviewAllowRedisplay =
@@ -183,6 +222,70 @@ type ConfirmationTokensResourcePaymentMethodPreview =
         Zip: PaymentMethodZip option
     }
 
+type ConfirmationTokensResourcePaymentMethodPreview with
+    static member New(billingDetails: BillingDetails, customer: StripeId<Markers.Customer> option, customerAccount: string option, ``type``: ConfirmationTokensResourcePaymentMethodPreviewType, ?acssDebit: PaymentMethodAcssDebit, ?affirm: PaymentMethodAffirm, ?afterpayClearpay: PaymentMethodAfterpayClearpay, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipay, ?allowRedisplay: ConfirmationTokensResourcePaymentMethodPreviewAllowRedisplay, ?alma: PaymentMethodAlma, ?amazonPay: PaymentMethodAmazonPay, ?auBecsDebit: PaymentMethodAuBecsDebit, ?bacsDebit: PaymentMethodBacsDebit, ?bancontact: PaymentMethodBancontact, ?billie: PaymentMethodBillie, ?blik: PaymentMethodBlik, ?boleto: PaymentMethodBoleto, ?card: PaymentMethodCard, ?cardPresent: PaymentMethodCardPresent, ?cashapp: PaymentMethodCashapp, ?crypto: PaymentMethodCrypto, ?customerBalance: PaymentMethodCustomerBalance, ?eps: PaymentMethodEps, ?fpx: PaymentMethodFpx, ?giropay: PaymentMethodGiropay, ?grabpay: PaymentMethodGrabpay, ?ideal: PaymentMethodIdeal, ?interacPresent: PaymentMethodInteracPresent, ?kakaoPay: PaymentMethodKakaoPay, ?klarna: PaymentMethodKlarna, ?konbini: PaymentMethodKonbini, ?krCard: PaymentMethodKrCard, ?link: PaymentMethodLink, ?mbWay: PaymentMethodMbWay, ?mobilepay: PaymentMethodMobilepay, ?multibanco: PaymentMethodMultibanco, ?naverPay: PaymentMethodNaverPay, ?nzBankAccount: PaymentMethodNzBankAccount, ?oxxo: PaymentMethodOxxo, ?p24: PaymentMethodP24, ?payByBank: PaymentMethodPayByBank, ?payco: PaymentMethodPayco, ?paynow: PaymentMethodPaynow, ?paypal: PaymentMethodPaypal, ?payto: PaymentMethodPayto, ?pix: PaymentMethodPix, ?promptpay: PaymentMethodPromptpay, ?revolutPay: PaymentMethodRevolutPay, ?samsungPay: PaymentMethodSamsungPay, ?satispay: PaymentMethodSatispay, ?sepaDebit: PaymentMethodSepaDebit, ?sofort: PaymentMethodSofort, ?sunbit: PaymentMethodSunbit, ?swish: PaymentMethodSwish, ?twint: PaymentMethodTwint, ?upi: PaymentMethodUpi, ?usBankAccount: PaymentMethodUsBankAccount, ?wechatPay: PaymentMethodWechatPay, ?zip: PaymentMethodZip) =
+        {
+            BillingDetails = billingDetails
+            Customer = customer
+            CustomerAccount = customerAccount
+            Type = ``type``
+            AcssDebit = acssDebit
+            Affirm = affirm
+            AfterpayClearpay = afterpayClearpay
+            Alipay = alipay
+            AllowRedisplay = allowRedisplay
+            Alma = alma
+            AmazonPay = amazonPay
+            AuBecsDebit = auBecsDebit
+            BacsDebit = bacsDebit
+            Bancontact = bancontact
+            Billie = billie
+            Blik = blik
+            Boleto = boleto
+            Card = card
+            CardPresent = cardPresent
+            Cashapp = cashapp
+            Crypto = crypto
+            CustomerBalance = customerBalance
+            Eps = eps
+            Fpx = fpx
+            Giropay = giropay
+            Grabpay = grabpay
+            Ideal = ideal
+            InteracPresent = interacPresent
+            KakaoPay = kakaoPay
+            Klarna = klarna
+            Konbini = konbini
+            KrCard = krCard
+            Link = link
+            MbWay = mbWay
+            Mobilepay = mobilepay
+            Multibanco = multibanco
+            NaverPay = naverPay
+            NzBankAccount = nzBankAccount
+            Oxxo = oxxo
+            P24 = p24
+            PayByBank = payByBank
+            Payco = payco
+            Paynow = paynow
+            Paypal = paypal
+            Payto = payto
+            Pix = pix
+            Promptpay = promptpay
+            RevolutPay = revolutPay
+            SamsungPay = samsungPay
+            Satispay = satispay
+            SepaDebit = sepaDebit
+            Sofort = sofort
+            Sunbit = sunbit
+            Swish = swish
+            Twint = twint
+            Upi = upi
+            UsBankAccount = usBankAccount
+            WechatPay = wechatPay
+            Zip = zip
+        }
+
 type ConfirmationTokensResourceShipping =
     {
         Address: Address
@@ -191,6 +294,14 @@ type ConfirmationTokensResourceShipping =
         /// Recipient phone (including extension).
         Phone: string option
     }
+
+type ConfirmationTokensResourceShipping with
+    static member New(address: Address, name: string, phone: string option) =
+        {
+            Address = address
+            Name = name
+            Phone = phone
+        }
 
 /// ConfirmationTokens help transport client side data collected by Stripe JS over
 /// to your server for confirming a PaymentIntent or SetupIntent. If the confirmation
@@ -228,6 +339,24 @@ type ConfirmationToken =
         /// Indicates whether the Stripe SDK is used to handle confirmation flow. Defaults to `true` on ConfirmationToken.
         UseStripeSdk: bool
     }
+
+type ConfirmationToken with
+    static member New(created: DateTime, expiresAt: DateTime option, id: string, livemode: bool, paymentIntent: string option, paymentMethodOptions: ConfirmationTokensResourcePaymentMethodOptions option, paymentMethodPreview: ConfirmationTokensResourcePaymentMethodPreview option, returnUrl: string option, setupFutureUsage: ConfirmationTokenSetupFutureUsage option, setupIntent: string option, shipping: ConfirmationTokensResourceShipping option, useStripeSdk: bool, ?mandateData: ConfirmationTokensResourceMandateData option) =
+        {
+            Created = created
+            ExpiresAt = expiresAt
+            Id = id
+            Livemode = livemode
+            PaymentIntent = paymentIntent
+            PaymentMethodOptions = paymentMethodOptions
+            PaymentMethodPreview = paymentMethodPreview
+            ReturnUrl = returnUrl
+            SetupFutureUsage = setupFutureUsage
+            SetupIntent = setupIntent
+            Shipping = shipping
+            UseStripeSdk = useStripeSdk
+            MandateData = mandateData |> Option.flatten
+        }
 
 module ConfirmationToken =
     ///String representing the object's type. Objects of the same type share the same value.

@@ -45,6 +45,22 @@ module Prices =
             Type: string option
         }
 
+    type ListOptions with
+        static member New(?active: bool, ?created: int, ?currency: IsoTypes.IsoCurrencyCode, ?endingBefore: string, ?expand: string list, ?limit: int, ?lookupKeys: string list, ?product: string, ?recurring: Map<string, string>, ?startingAfter: string, ?type': string) =
+            {
+                Active = active
+                Created = created
+                Currency = currency
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                LookupKeys = lookupKeys
+                Product = product
+                Recurring = recurring
+                StartingAfter = startingAfter
+                Type = type'
+            }
+
     module ListOptions =
         let create
             (
@@ -58,7 +74,7 @@ module Prices =
                 product: string option,
                 recurring: Map<string, string> option,
                 startingAfter: string option,
-                ``type``: string option
+                type': string option
             ) : ListOptions
             =
             {
@@ -72,7 +88,7 @@ module Prices =
               Product = product
               Recurring = recurring
               StartingAfter = startingAfter
-              Type = ``type``
+              Type = type'
             }
 
     type Create'BillingScheme =
@@ -94,6 +110,15 @@ module Prices =
             [<Config.Form>]
             Preset: int option
         }
+
+    type Create'CustomUnitAmount with
+        static member New(?enabled: bool, ?maximum: int, ?minimum: int, ?preset: int) =
+            {
+                Enabled = enabled
+                Maximum = maximum
+                Minimum = minimum
+                Preset = preset
+            }
 
     module Create'CustomUnitAmount =
         let create
@@ -136,6 +161,18 @@ module Prices =
             [<Config.Form>]
             UnitLabel: string option
         }
+
+    type Create'ProductData with
+        static member New(?active: bool, ?id: string, ?metadata: Map<string, string>, ?name: string, ?statementDescriptor: string, ?taxCode: string, ?unitLabel: string) =
+            {
+                Active = active
+                Id = id
+                Metadata = metadata
+                Name = name
+                StatementDescriptor = statementDescriptor
+                TaxCode = taxCode
+                UnitLabel = unitLabel
+            }
 
     module Create'ProductData =
         let create
@@ -188,6 +225,16 @@ module Prices =
             UsageType: Create'RecurringUsageType option
         }
 
+    type Create'Recurring with
+        static member New(?interval: Create'RecurringInterval, ?intervalCount: int, ?meter: string, ?trialPeriodDays: int, ?usageType: Create'RecurringUsageType) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+                Meter = meter
+                TrialPeriodDays = trialPeriodDays
+                UsageType = usageType
+            }
+
     module Create'Recurring =
         let create
             (
@@ -232,6 +279,16 @@ module Prices =
             UpTo: Choice<Create'TiersUpTo,int> option
         }
 
+    type Create'Tiers with
+        static member New(?flatAmount: int, ?flatAmountDecimal: string, ?unitAmount: int, ?unitAmountDecimal: string, ?upTo: Choice<Create'TiersUpTo,int>) =
+            {
+                FlatAmount = flatAmount
+                FlatAmountDecimal = flatAmountDecimal
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+                UpTo = upTo
+            }
+
     module Create'Tiers =
         let create
             (
@@ -267,6 +324,13 @@ module Prices =
             [<Config.Form>]
             Round: Create'TransformQuantityRound option
         }
+
+    type Create'TransformQuantity with
+        static member New(?divideBy: int, ?round: Create'TransformQuantityRound) =
+            {
+                DivideBy = divideBy
+                Round = round
+            }
 
     module Create'TransformQuantity =
         let create
@@ -341,6 +405,30 @@ module Prices =
             UnitAmountDecimal: string option
         }
 
+    type CreateOptions with
+        static member New(currency: IsoTypes.IsoCurrencyCode, ?active: bool, ?billingScheme: Create'BillingScheme, ?currencyOptions: Map<string, string>, ?customUnitAmount: Create'CustomUnitAmount, ?expand: string list, ?lookupKey: string, ?metadata: Map<string, string>, ?nickname: string, ?product: string, ?productData: Create'ProductData, ?recurring: Create'Recurring, ?taxBehavior: Create'TaxBehavior, ?tiers: Create'Tiers list, ?tiersMode: Create'TiersMode, ?transferLookupKey: bool, ?transformQuantity: Create'TransformQuantity, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Active = active
+                BillingScheme = billingScheme
+                CurrencyOptions = currencyOptions
+                CustomUnitAmount = customUnitAmount
+                Expand = expand
+                LookupKey = lookupKey
+                Metadata = metadata
+                Nickname = nickname
+                Product = product
+                ProductData = productData
+                Recurring = recurring
+                TaxBehavior = taxBehavior
+                Tiers = tiers
+                TiersMode = tiersMode
+                TransferLookupKey = transferLookupKey
+                TransformQuantity = transformQuantity
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
+
     module CreateOptions =
         let create
             (
@@ -377,6 +465,13 @@ module Prices =
             [<Config.Path>]
             Price: string
         }
+
+    type RetrieveOptions with
+        static member New(price: string, ?expand: string list) =
+            {
+                Price = price
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -423,6 +518,20 @@ module Prices =
             [<Config.Form>]
             TransferLookupKey: bool option
         }
+
+    type UpdateOptions with
+        static member New(price: string, ?active: bool, ?currencyOptions: Choice<Map<string, string>,string>, ?expand: string list, ?lookupKey: string, ?metadata: Map<string, string>, ?nickname: string, ?taxBehavior: Update'TaxBehavior, ?transferLookupKey: bool) =
+            {
+                Price = price
+                Active = active
+                CurrencyOptions = currencyOptions
+                Expand = expand
+                LookupKey = lookupKey
+                Metadata = metadata
+                Nickname = nickname
+                TaxBehavior = taxBehavior
+                TransferLookupKey = transferLookupKey
+            }
 
     module UpdateOptions =
         let create
@@ -481,6 +590,15 @@ module PricesSearch =
             [<Config.Query>]
             Query: string
         }
+
+    type SearchOptions with
+        static member New(query: string, ?expand: string list, ?limit: int, ?page: string) =
+            {
+                Query = query
+                Expand = expand
+                Limit = limit
+                Page = page
+            }
 
     module SearchOptions =
         let create

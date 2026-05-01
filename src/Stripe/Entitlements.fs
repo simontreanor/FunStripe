@@ -23,6 +23,17 @@ type EntitlementsFeature =
         Name: string
     }
 
+type EntitlementsFeature with
+    static member New(active: bool, id: string, livemode: bool, lookupKey: string, metadata: Map<string, string>, name: string) =
+        {
+            Active = active
+            Id = id
+            Livemode = livemode
+            LookupKey = lookupKey
+            Metadata = metadata
+            Name = name
+        }
+
 module EntitlementsFeature =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "entitlements.feature"
@@ -40,6 +51,15 @@ type EntitlementsActiveEntitlement =
         LookupKey: string
     }
 
+type EntitlementsActiveEntitlement with
+    static member New(feature: StripeId<Markers.EntitlementsFeature>, id: string, livemode: bool, lookupKey: string) =
+        {
+            Feature = feature
+            Id = id
+            Livemode = livemode
+            LookupKey = lookupKey
+        }
+
 module EntitlementsActiveEntitlement =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "entitlements.active_entitlement"
@@ -53,6 +73,14 @@ type EntitlementsActiveEntitlementSummaryEntitlements =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+type EntitlementsActiveEntitlementSummaryEntitlements with
+    static member New(data: EntitlementsActiveEntitlement list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module EntitlementsActiveEntitlementSummaryEntitlements =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
@@ -69,6 +97,14 @@ type EntitlementsActiveEntitlementSummary =
         Livemode: bool
     }
 
+type EntitlementsActiveEntitlementSummary with
+    static member New(customer: string, entitlements: EntitlementsActiveEntitlementSummaryEntitlements, livemode: bool) =
+        {
+            Customer = customer
+            Entitlements = entitlements
+            Livemode = livemode
+        }
+
 module EntitlementsActiveEntitlementSummary =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "entitlements.active_entitlement_summary"
@@ -76,4 +112,10 @@ module EntitlementsActiveEntitlementSummary =
 /// Occurs whenever a customer's entitlements change.
 type EntitlementsActiveEntitlementSummaryUpdated =
     { Object: EntitlementsActiveEntitlementSummary }
+
+type EntitlementsActiveEntitlementSummaryUpdated with
+    static member New(object: EntitlementsActiveEntitlementSummary) =
+        {
+            Object = object
+        }
 

@@ -29,6 +29,16 @@ module Accounts =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -60,6 +70,14 @@ module Accounts =
             FiscalYearEnd: string option
         }
 
+    type Create'BusinessProfileAnnualRevenue with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?fiscalYearEnd: string) =
+            {
+                Amount = amount
+                Currency = currency
+                FiscalYearEnd = fiscalYearEnd
+            }
+
     module Create'BusinessProfileAnnualRevenue =
         let create
             (
@@ -90,6 +108,13 @@ module Accounts =
             [<Config.Form>]
             Currency: IsoTypes.IsoCurrencyCode option
         }
+
+    type Create'BusinessProfileMonthlyEstimatedRevenue with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode) =
+            {
+                Amount = amount
+                Currency = currency
+            }
 
     module Create'BusinessProfileMonthlyEstimatedRevenue =
         let create
@@ -124,6 +149,17 @@ module Accounts =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'BusinessProfileSupportAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'BusinessProfileSupportAddress =
         let create
@@ -185,6 +221,23 @@ module Accounts =
             Url: string option
         }
 
+    type Create'BusinessProfile with
+        static member New(?annualRevenue: Create'BusinessProfileAnnualRevenue, ?estimatedWorkerCount: int, ?mcc: string, ?minorityOwnedBusinessDesignation: Create'BusinessProfileMinorityOwnedBusinessDesignation list, ?monthlyEstimatedRevenue: Create'BusinessProfileMonthlyEstimatedRevenue, ?name: string, ?productDescription: string, ?supportAddress: Create'BusinessProfileSupportAddress, ?supportEmail: string, ?supportPhone: string, ?supportUrl: Choice<string,string>, ?url: string) =
+            {
+                AnnualRevenue = annualRevenue
+                EstimatedWorkerCount = estimatedWorkerCount
+                Mcc = mcc
+                MinorityOwnedBusinessDesignation = minorityOwnedBusinessDesignation
+                MonthlyEstimatedRevenue = monthlyEstimatedRevenue
+                Name = name
+                ProductDescription = productDescription
+                SupportAddress = supportAddress
+                SupportEmail = supportEmail
+                SupportPhone = supportPhone
+                SupportUrl = supportUrl
+                Url = url
+            }
+
     module Create'BusinessProfile =
         let create
             (
@@ -230,6 +283,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesAcssDebitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesAcssDebitPayments =
         let create
             (
@@ -246,6 +305,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesAffirmPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesAffirmPayments =
         let create
@@ -264,6 +329,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesAfterpayClearpayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesAfterpayClearpayPayments =
         let create
             (
@@ -280,6 +351,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesAlmaPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesAlmaPayments =
         let create
@@ -298,6 +375,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesAmazonPayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesAmazonPayPayments =
         let create
             (
@@ -314,6 +397,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesAppDistribution with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesAppDistribution =
         let create
@@ -332,6 +421,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesAuBecsDebitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesAuBecsDebitPayments =
         let create
             (
@@ -348,6 +443,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesBacsDebitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesBacsDebitPayments =
         let create
@@ -366,6 +467,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesBancontactPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesBancontactPayments =
         let create
             (
@@ -382,6 +489,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesBankTransferPayments =
         let create
@@ -400,6 +513,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesBilliePayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesBilliePayments =
         let create
             (
@@ -416,6 +535,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesBlikPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesBlikPayments =
         let create
@@ -434,6 +559,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesBoletoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesBoletoPayments =
         let create
             (
@@ -450,6 +581,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesCardIssuing with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesCardIssuing =
         let create
@@ -468,6 +605,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesCardPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesCardPayments =
         let create
             (
@@ -484,6 +627,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesCartesBancairesPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesCartesBancairesPayments =
         let create
@@ -502,6 +651,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesCashappPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesCashappPayments =
         let create
             (
@@ -518,6 +673,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesCryptoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesCryptoPayments =
         let create
@@ -536,6 +697,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesEpsPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesEpsPayments =
         let create
             (
@@ -552,6 +719,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesFpxPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesFpxPayments =
         let create
@@ -570,6 +743,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesGbBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesGbBankTransferPayments =
         let create
             (
@@ -586,6 +765,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesGiropayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesGiropayPayments =
         let create
@@ -604,6 +789,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesGrabpayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesGrabpayPayments =
         let create
             (
@@ -620,6 +811,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesIdealPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesIdealPayments =
         let create
@@ -638,6 +835,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesIndiaInternationalPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesIndiaInternationalPayments =
         let create
             (
@@ -654,6 +857,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesJcbPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesJcbPayments =
         let create
@@ -672,6 +881,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesJpBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesJpBankTransferPayments =
         let create
             (
@@ -688,6 +903,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesKakaoPayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesKakaoPayPayments =
         let create
@@ -706,6 +927,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesKlarnaPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesKlarnaPayments =
         let create
             (
@@ -722,6 +949,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesKonbiniPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesKonbiniPayments =
         let create
@@ -740,6 +973,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesKrCardPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesKrCardPayments =
         let create
             (
@@ -756,6 +995,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesLegacyPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesLegacyPayments =
         let create
@@ -774,6 +1019,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesLinkPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesLinkPayments =
         let create
             (
@@ -790,6 +1041,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesMbWayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesMbWayPayments =
         let create
@@ -808,6 +1065,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesMobilepayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesMobilepayPayments =
         let create
             (
@@ -824,6 +1087,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesMultibancoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesMultibancoPayments =
         let create
@@ -842,6 +1111,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesMxBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesMxBankTransferPayments =
         let create
             (
@@ -858,6 +1133,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesNaverPayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesNaverPayPayments =
         let create
@@ -876,6 +1157,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesNzBankAccountBecsDebitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesNzBankAccountBecsDebitPayments =
         let create
             (
@@ -892,6 +1179,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesOxxoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesOxxoPayments =
         let create
@@ -910,6 +1203,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesP24Payments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesP24Payments =
         let create
             (
@@ -926,6 +1225,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesPayByBankPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesPayByBankPayments =
         let create
@@ -944,6 +1249,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesPaycoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesPaycoPayments =
         let create
             (
@@ -960,6 +1271,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesPaynowPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesPaynowPayments =
         let create
@@ -978,6 +1295,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesPaytoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesPaytoPayments =
         let create
             (
@@ -994,6 +1317,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesPixPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesPixPayments =
         let create
@@ -1012,6 +1341,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesPromptpayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesPromptpayPayments =
         let create
             (
@@ -1028,6 +1363,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesRevolutPayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesRevolutPayPayments =
         let create
@@ -1046,6 +1387,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesSamsungPayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesSamsungPayPayments =
         let create
             (
@@ -1062,6 +1409,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesSatispayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesSatispayPayments =
         let create
@@ -1080,6 +1433,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesSepaBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesSepaBankTransferPayments =
         let create
             (
@@ -1096,6 +1455,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesSepaDebitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesSepaDebitPayments =
         let create
@@ -1114,6 +1479,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesSofortPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesSofortPayments =
         let create
             (
@@ -1130,6 +1501,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesSunbitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesSunbitPayments =
         let create
@@ -1148,6 +1525,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesSwishPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesSwishPayments =
         let create
             (
@@ -1164,6 +1547,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesTaxReportingUs1099K with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesTaxReportingUs1099K =
         let create
@@ -1182,6 +1571,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesTaxReportingUs1099Misc with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesTaxReportingUs1099Misc =
         let create
             (
@@ -1198,6 +1593,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesTransfers with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesTransfers =
         let create
@@ -1216,6 +1617,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesTreasury with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesTreasury =
         let create
             (
@@ -1232,6 +1639,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesTwintPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesTwintPayments =
         let create
@@ -1250,6 +1663,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesUpiPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesUpiPayments =
         let create
             (
@@ -1266,6 +1685,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesUsBankAccountAchPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesUsBankAccountAchPayments =
         let create
@@ -1284,6 +1709,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Create'CapabilitiesUsBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'CapabilitiesUsBankTransferPayments =
         let create
             (
@@ -1300,6 +1731,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'CapabilitiesZipPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'CapabilitiesZipPayments =
         let create
@@ -1507,6 +1944,75 @@ module Accounts =
             ZipPayments: Create'CapabilitiesZipPayments option
         }
 
+    type Create'Capabilities with
+        static member New(?acssDebitPayments: Create'CapabilitiesAcssDebitPayments, ?affirmPayments: Create'CapabilitiesAffirmPayments, ?afterpayClearpayPayments: Create'CapabilitiesAfterpayClearpayPayments, ?almaPayments: Create'CapabilitiesAlmaPayments, ?amazonPayPayments: Create'CapabilitiesAmazonPayPayments, ?appDistribution: Create'CapabilitiesAppDistribution, ?auBecsDebitPayments: Create'CapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: Create'CapabilitiesBacsDebitPayments, ?bancontactPayments: Create'CapabilitiesBancontactPayments, ?bankTransferPayments: Create'CapabilitiesBankTransferPayments, ?billiePayments: Create'CapabilitiesBilliePayments, ?blikPayments: Create'CapabilitiesBlikPayments, ?boletoPayments: Create'CapabilitiesBoletoPayments, ?cardIssuing: Create'CapabilitiesCardIssuing, ?cardPayments: Create'CapabilitiesCardPayments, ?cartesBancairesPayments: Create'CapabilitiesCartesBancairesPayments, ?cashappPayments: Create'CapabilitiesCashappPayments, ?cryptoPayments: Create'CapabilitiesCryptoPayments, ?epsPayments: Create'CapabilitiesEpsPayments, ?fpxPayments: Create'CapabilitiesFpxPayments, ?gbBankTransferPayments: Create'CapabilitiesGbBankTransferPayments, ?giropayPayments: Create'CapabilitiesGiropayPayments, ?grabpayPayments: Create'CapabilitiesGrabpayPayments, ?idealPayments: Create'CapabilitiesIdealPayments, ?indiaInternationalPayments: Create'CapabilitiesIndiaInternationalPayments, ?jcbPayments: Create'CapabilitiesJcbPayments, ?jpBankTransferPayments: Create'CapabilitiesJpBankTransferPayments, ?kakaoPayPayments: Create'CapabilitiesKakaoPayPayments, ?klarnaPayments: Create'CapabilitiesKlarnaPayments, ?konbiniPayments: Create'CapabilitiesKonbiniPayments, ?krCardPayments: Create'CapabilitiesKrCardPayments, ?legacyPayments: Create'CapabilitiesLegacyPayments, ?linkPayments: Create'CapabilitiesLinkPayments, ?mbWayPayments: Create'CapabilitiesMbWayPayments, ?mobilepayPayments: Create'CapabilitiesMobilepayPayments, ?multibancoPayments: Create'CapabilitiesMultibancoPayments, ?mxBankTransferPayments: Create'CapabilitiesMxBankTransferPayments, ?naverPayPayments: Create'CapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: Create'CapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: Create'CapabilitiesOxxoPayments, ?p24Payments: Create'CapabilitiesP24Payments, ?payByBankPayments: Create'CapabilitiesPayByBankPayments, ?paycoPayments: Create'CapabilitiesPaycoPayments, ?paynowPayments: Create'CapabilitiesPaynowPayments, ?paytoPayments: Create'CapabilitiesPaytoPayments, ?pixPayments: Create'CapabilitiesPixPayments, ?promptpayPayments: Create'CapabilitiesPromptpayPayments, ?revolutPayPayments: Create'CapabilitiesRevolutPayPayments, ?samsungPayPayments: Create'CapabilitiesSamsungPayPayments, ?satispayPayments: Create'CapabilitiesSatispayPayments, ?sepaBankTransferPayments: Create'CapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: Create'CapabilitiesSepaDebitPayments, ?sofortPayments: Create'CapabilitiesSofortPayments, ?sunbitPayments: Create'CapabilitiesSunbitPayments, ?swishPayments: Create'CapabilitiesSwishPayments, ?taxReportingUs1099K: Create'CapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: Create'CapabilitiesTaxReportingUs1099Misc, ?transfers: Create'CapabilitiesTransfers, ?treasury: Create'CapabilitiesTreasury, ?twintPayments: Create'CapabilitiesTwintPayments, ?upiPayments: Create'CapabilitiesUpiPayments, ?usBankAccountAchPayments: Create'CapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: Create'CapabilitiesUsBankTransferPayments, ?zipPayments: Create'CapabilitiesZipPayments) =
+            {
+                AcssDebitPayments = acssDebitPayments
+                AffirmPayments = affirmPayments
+                AfterpayClearpayPayments = afterpayClearpayPayments
+                AlmaPayments = almaPayments
+                AmazonPayPayments = amazonPayPayments
+                AppDistribution = appDistribution
+                AuBecsDebitPayments = auBecsDebitPayments
+                BacsDebitPayments = bacsDebitPayments
+                BancontactPayments = bancontactPayments
+                BankTransferPayments = bankTransferPayments
+                BilliePayments = billiePayments
+                BlikPayments = blikPayments
+                BoletoPayments = boletoPayments
+                CardIssuing = cardIssuing
+                CardPayments = cardPayments
+                CartesBancairesPayments = cartesBancairesPayments
+                CashappPayments = cashappPayments
+                CryptoPayments = cryptoPayments
+                EpsPayments = epsPayments
+                FpxPayments = fpxPayments
+                GbBankTransferPayments = gbBankTransferPayments
+                GiropayPayments = giropayPayments
+                GrabpayPayments = grabpayPayments
+                IdealPayments = idealPayments
+                IndiaInternationalPayments = indiaInternationalPayments
+                JcbPayments = jcbPayments
+                JpBankTransferPayments = jpBankTransferPayments
+                KakaoPayPayments = kakaoPayPayments
+                KlarnaPayments = klarnaPayments
+                KonbiniPayments = konbiniPayments
+                KrCardPayments = krCardPayments
+                LegacyPayments = legacyPayments
+                LinkPayments = linkPayments
+                MbWayPayments = mbWayPayments
+                MobilepayPayments = mobilepayPayments
+                MultibancoPayments = multibancoPayments
+                MxBankTransferPayments = mxBankTransferPayments
+                NaverPayPayments = naverPayPayments
+                NzBankAccountBecsDebitPayments = nzBankAccountBecsDebitPayments
+                OxxoPayments = oxxoPayments
+                P24Payments = p24Payments
+                PayByBankPayments = payByBankPayments
+                PaycoPayments = paycoPayments
+                PaynowPayments = paynowPayments
+                PaytoPayments = paytoPayments
+                PixPayments = pixPayments
+                PromptpayPayments = promptpayPayments
+                RevolutPayPayments = revolutPayPayments
+                SamsungPayPayments = samsungPayPayments
+                SatispayPayments = satispayPayments
+                SepaBankTransferPayments = sepaBankTransferPayments
+                SepaDebitPayments = sepaDebitPayments
+                SofortPayments = sofortPayments
+                SunbitPayments = sunbitPayments
+                SwishPayments = swishPayments
+                TaxReportingUs1099K = taxReportingUs1099K
+                TaxReportingUs1099Misc = taxReportingUs1099Misc
+                Transfers = transfers
+                Treasury = treasury
+                TwintPayments = twintPayments
+                UpiPayments = upiPayments
+                UsBankAccountAchPayments = usBankAccountAchPayments
+                UsBankTransferPayments = usBankTransferPayments
+                ZipPayments = zipPayments
+            }
+
     module Create'Capabilities =
         let create
             (
@@ -1665,6 +2171,17 @@ module Accounts =
             State: string option
         }
 
+    type Create'CompanyAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'CompanyAddress =
         let create
             (
@@ -1709,6 +2226,18 @@ module Accounts =
             [<Config.Form>]
             Town: string option
         }
+
+    type Create'CompanyAddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Create'CompanyAddressKana =
         let create
@@ -1757,6 +2286,18 @@ module Accounts =
             Town: string option
         }
 
+    type Create'CompanyAddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
+
     module Create'CompanyAddressKanji =
         let create
             (
@@ -1792,6 +2333,14 @@ module Accounts =
             UserAgent: string option
         }
 
+    type Create'CompanyDirectorshipDeclaration with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Create'CompanyDirectorshipDeclaration =
         let create
             (
@@ -1818,6 +2367,14 @@ module Accounts =
             [<Config.Form>]
             UserAgent: string option
         }
+
+    type Create'CompanyOwnershipDeclaration with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
 
     module Create'CompanyOwnershipDeclaration =
         let create
@@ -1850,6 +2407,14 @@ module Accounts =
             Year: int option
         }
 
+    type Create'CompanyRegistrationDateRegistrationDateSpecs with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
     module Create'CompanyRegistrationDateRegistrationDateSpecs =
         let create
             (
@@ -1876,6 +2441,14 @@ module Accounts =
             [<Config.Form>]
             UserAgent: string option
         }
+
+    type Create'CompanyRepresentativeDeclaration with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
 
     module Create'CompanyRepresentativeDeclaration =
         let create
@@ -1926,6 +2499,13 @@ module Accounts =
             Front: string option
         }
 
+    type Create'CompanyVerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'CompanyVerificationDocument =
         let create
             (
@@ -1944,6 +2524,12 @@ module Accounts =
             [<Config.Form>]
             Document: Create'CompanyVerificationDocument option
         }
+
+    type Create'CompanyVerification with
+        static member New(?document: Create'CompanyVerificationDocument) =
+            {
+                Document = document
+            }
 
     module Create'CompanyVerification =
         let create
@@ -2028,6 +2614,34 @@ module Accounts =
             Verification: Create'CompanyVerification option
         }
 
+    type Create'Company with
+        static member New(?address: Create'CompanyAddress, ?addressKana: Create'CompanyAddressKana, ?addressKanji: Create'CompanyAddressKanji, ?directorsProvided: bool, ?directorshipDeclaration: Create'CompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Create'CompanyOwnershipDeclaration, ?ownershipExemptionReason: Create'CompanyOwnershipExemptionReason, ?phone: string, ?registrationDate: Choice<Create'CompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Create'CompanyRepresentativeDeclaration, ?structure: Create'CompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Create'CompanyVerification) =
+            {
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                DirectorsProvided = directorsProvided
+                DirectorshipDeclaration = directorshipDeclaration
+                ExecutivesProvided = executivesProvided
+                ExportLicenseId = exportLicenseId
+                ExportPurposeCode = exportPurposeCode
+                Name = name
+                NameKana = nameKana
+                NameKanji = nameKanji
+                OwnersProvided = ownersProvided
+                OwnershipDeclaration = ownershipDeclaration
+                OwnershipExemptionReason = ownershipExemptionReason
+                Phone = phone
+                RegistrationDate = registrationDate
+                RegistrationNumber = registrationNumber
+                RepresentativeDeclaration = representativeDeclaration
+                Structure = structure
+                TaxId = taxId
+                TaxIdRegistrar = taxIdRegistrar
+                VatId = vatId
+                Verification = verification
+            }
+
     module Create'Company =
         let create
             (
@@ -2093,6 +2707,12 @@ module Accounts =
             Payer: Create'ControllerFeesPayer option
         }
 
+    type Create'ControllerFees with
+        static member New(?payer: Create'ControllerFeesPayer) =
+            {
+                Payer = payer
+            }
+
     module Create'ControllerFees =
         let create
             (
@@ -2113,6 +2733,12 @@ module Accounts =
             [<Config.Form>]
             Payments: Create'ControllerLossesPayments option
         }
+
+    type Create'ControllerLosses with
+        static member New(?payments: Create'ControllerLossesPayments) =
+            {
+                Payments = payments
+            }
 
     module Create'ControllerLosses =
         let create
@@ -2140,14 +2766,20 @@ module Accounts =
             Type: Create'ControllerStripeDashboardType option
         }
 
+    type Create'ControllerStripeDashboard with
+        static member New(?type': Create'ControllerStripeDashboardType) =
+            {
+                Type = type'
+            }
+
     module Create'ControllerStripeDashboard =
         let create
             (
-                ``type``: Create'ControllerStripeDashboardType option
+                type': Create'ControllerStripeDashboardType option
             ) : Create'ControllerStripeDashboard
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'Controller =
@@ -2165,6 +2797,15 @@ module Accounts =
             [<Config.Form>]
             StripeDashboard: Create'ControllerStripeDashboard option
         }
+
+    type Create'Controller with
+        static member New(?fees: Create'ControllerFees, ?losses: Create'ControllerLosses, ?requirementCollection: Create'ControllerRequirementCollection, ?stripeDashboard: Create'ControllerStripeDashboard) =
+            {
+                Fees = fees
+                Losses = losses
+                RequirementCollection = requirementCollection
+                StripeDashboard = stripeDashboard
+            }
 
     module Create'Controller =
         let create
@@ -2189,6 +2830,12 @@ module Accounts =
             Files: string list option
         }
 
+    type Create'DocumentsBankAccountOwnershipVerification with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     module Create'DocumentsBankAccountOwnershipVerification =
         let create
             (
@@ -2205,6 +2852,12 @@ module Accounts =
             [<Config.Form>]
             Files: string list option
         }
+
+    type Create'DocumentsCompanyLicense with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
 
     module Create'DocumentsCompanyLicense =
         let create
@@ -2223,6 +2876,12 @@ module Accounts =
             Files: string list option
         }
 
+    type Create'DocumentsCompanyMemorandumOfAssociation with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     module Create'DocumentsCompanyMemorandumOfAssociation =
         let create
             (
@@ -2239,6 +2898,12 @@ module Accounts =
             [<Config.Form>]
             Files: string list option
         }
+
+    type Create'DocumentsCompanyMinisterialDecree with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
 
     module Create'DocumentsCompanyMinisterialDecree =
         let create
@@ -2257,6 +2922,12 @@ module Accounts =
             Files: string list option
         }
 
+    type Create'DocumentsCompanyRegistrationVerification with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     module Create'DocumentsCompanyRegistrationVerification =
         let create
             (
@@ -2273,6 +2944,12 @@ module Accounts =
             [<Config.Form>]
             Files: string list option
         }
+
+    type Create'DocumentsCompanyTaxIdVerification with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
 
     module Create'DocumentsCompanyTaxIdVerification =
         let create
@@ -2291,6 +2968,12 @@ module Accounts =
             Files: string list option
         }
 
+    type Create'DocumentsProofOfAddress with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     module Create'DocumentsProofOfAddress =
         let create
             (
@@ -2307,6 +2990,12 @@ module Accounts =
             [<Config.Form>]
             Person: string option
         }
+
+    type Create'DocumentsProofOfRegistrationSigner with
+        static member New(?person: string) =
+            {
+                Person = person
+            }
 
     module Create'DocumentsProofOfRegistrationSigner =
         let create
@@ -2328,6 +3017,13 @@ module Accounts =
             Signer: Create'DocumentsProofOfRegistrationSigner option
         }
 
+    type Create'DocumentsProofOfRegistration with
+        static member New(?files: string list, ?signer: Create'DocumentsProofOfRegistrationSigner) =
+            {
+                Files = files
+                Signer = signer
+            }
+
     module Create'DocumentsProofOfRegistration =
         let create
             (
@@ -2346,6 +3042,12 @@ module Accounts =
             [<Config.Form>]
             Person: string option
         }
+
+    type Create'DocumentsProofOfUltimateBeneficialOwnershipSigner with
+        static member New(?person: string) =
+            {
+                Person = person
+            }
 
     module Create'DocumentsProofOfUltimateBeneficialOwnershipSigner =
         let create
@@ -2366,6 +3068,13 @@ module Accounts =
             [<Config.Form>]
             Signer: Create'DocumentsProofOfUltimateBeneficialOwnershipSigner option
         }
+
+    type Create'DocumentsProofOfUltimateBeneficialOwnership with
+        static member New(?files: string list, ?signer: Create'DocumentsProofOfUltimateBeneficialOwnershipSigner) =
+            {
+                Files = files
+                Signer = signer
+            }
 
     module Create'DocumentsProofOfUltimateBeneficialOwnership =
         let create
@@ -2410,6 +3119,20 @@ module Accounts =
             ProofOfUltimateBeneficialOwnership: Create'DocumentsProofOfUltimateBeneficialOwnership option
         }
 
+    type Create'Documents with
+        static member New(?bankAccountOwnershipVerification: Create'DocumentsBankAccountOwnershipVerification, ?companyLicense: Create'DocumentsCompanyLicense, ?companyMemorandumOfAssociation: Create'DocumentsCompanyMemorandumOfAssociation, ?companyMinisterialDecree: Create'DocumentsCompanyMinisterialDecree, ?companyRegistrationVerification: Create'DocumentsCompanyRegistrationVerification, ?companyTaxIdVerification: Create'DocumentsCompanyTaxIdVerification, ?proofOfAddress: Create'DocumentsProofOfAddress, ?proofOfRegistration: Create'DocumentsProofOfRegistration, ?proofOfUltimateBeneficialOwnership: Create'DocumentsProofOfUltimateBeneficialOwnership) =
+            {
+                BankAccountOwnershipVerification = bankAccountOwnershipVerification
+                CompanyLicense = companyLicense
+                CompanyMemorandumOfAssociation = companyMemorandumOfAssociation
+                CompanyMinisterialDecree = companyMinisterialDecree
+                CompanyRegistrationVerification = companyRegistrationVerification
+                CompanyTaxIdVerification = companyTaxIdVerification
+                ProofOfAddress = proofOfAddress
+                ProofOfRegistration = proofOfRegistration
+                ProofOfUltimateBeneficialOwnership = proofOfUltimateBeneficialOwnership
+            }
+
     module Create'Documents =
         let create
             (
@@ -2443,6 +3166,12 @@ module Accounts =
             PaymentsPricing: Choice<string,string> option
         }
 
+    type Create'Groups with
+        static member New(?paymentsPricing: Choice<string,string>) =
+            {
+                PaymentsPricing = paymentsPricing
+            }
+
     module Create'Groups =
         let create
             (
@@ -2474,6 +3203,17 @@ module Accounts =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'IndividualAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'IndividualAddress =
         let create
@@ -2519,6 +3259,18 @@ module Accounts =
             [<Config.Form>]
             Town: string option
         }
+
+    type Create'IndividualAddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Create'IndividualAddressKana =
         let create
@@ -2567,6 +3319,18 @@ module Accounts =
             Town: string option
         }
 
+    type Create'IndividualAddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
+
     module Create'IndividualAddressKanji =
         let create
             (
@@ -2601,6 +3365,14 @@ module Accounts =
             [<Config.Form>]
             Year: int option
         }
+
+    type Create'IndividualDobDateOfBirthSpecs with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
 
     module Create'IndividualDobDateOfBirthSpecs =
         let create
@@ -2642,6 +3414,17 @@ module Accounts =
             State: string option
         }
 
+    type Create'IndividualRegisteredAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'IndividualRegisteredAddress =
         let create
             (
@@ -2681,6 +3464,16 @@ module Accounts =
             Title: string option
         }
 
+    type Create'IndividualRelationship with
+        static member New(?director: bool, ?executive: bool, ?owner: bool, ?percentOwnership: Choice<decimal,string>, ?title: string) =
+            {
+                Director = director
+                Executive = executive
+                Owner = owner
+                PercentOwnership = percentOwnership
+                Title = title
+            }
+
     module Create'IndividualRelationship =
         let create
             (
@@ -2709,6 +3502,13 @@ module Accounts =
             Front: string option
         }
 
+    type Create'IndividualVerificationAdditionalDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'IndividualVerificationAdditionalDocument =
         let create
             (
@@ -2731,6 +3531,13 @@ module Accounts =
             Front: string option
         }
 
+    type Create'IndividualVerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'IndividualVerificationDocument =
         let create
             (
@@ -2752,6 +3559,13 @@ module Accounts =
             [<Config.Form>]
             Document: Create'IndividualVerificationDocument option
         }
+
+    type Create'IndividualVerification with
+        static member New(?additionalDocument: Create'IndividualVerificationAdditionalDocument, ?document: Create'IndividualVerificationDocument) =
+            {
+                AdditionalDocument = additionalDocument
+                Document = document
+            }
 
     module Create'IndividualVerification =
         let create
@@ -2838,6 +3652,34 @@ module Accounts =
             Verification: Create'IndividualVerification option
         }
 
+    type Create'Individual with
+        static member New(?address: Create'IndividualAddress, ?addressKana: Create'IndividualAddressKana, ?addressKanji: Create'IndividualAddressKanji, ?dob: Choice<Create'IndividualDobDateOfBirthSpecs,string>, ?email: string, ?firstName: string, ?firstNameKana: string, ?firstNameKanji: string, ?fullNameAliases: Choice<string list,string>, ?gender: string, ?idNumber: string, ?idNumberSecondary: string, ?lastName: string, ?lastNameKana: string, ?lastNameKanji: string, ?maidenName: string, ?metadata: Map<string, string>, ?phone: string, ?politicalExposure: Create'IndividualPoliticalExposure, ?registeredAddress: Create'IndividualRegisteredAddress, ?relationship: Create'IndividualRelationship, ?ssnLast4: string, ?verification: Create'IndividualVerification) =
+            {
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                Dob = dob
+                Email = email
+                FirstName = firstName
+                FirstNameKana = firstNameKana
+                FirstNameKanji = firstNameKanji
+                FullNameAliases = fullNameAliases
+                Gender = gender
+                IdNumber = idNumber
+                IdNumberSecondary = idNumberSecondary
+                LastName = lastName
+                LastNameKana = lastNameKana
+                LastNameKanji = lastNameKanji
+                MaidenName = maidenName
+                Metadata = metadata
+                Phone = phone
+                PoliticalExposure = politicalExposure
+                RegisteredAddress = registeredAddress
+                Relationship = relationship
+                SsnLast4 = ssnLast4
+                Verification = verification
+            }
+
     module Create'Individual =
         let create
             (
@@ -2899,6 +3741,12 @@ module Accounts =
             DisplayName: string option
         }
 
+    type Create'SettingsBacsDebitPayments with
+        static member New(?displayName: string) =
+            {
+                DisplayName = displayName
+            }
+
     module Create'SettingsBacsDebitPayments =
         let create
             (
@@ -2924,6 +3772,15 @@ module Accounts =
             [<Config.Form>]
             SecondaryColor: string option
         }
+
+    type Create'SettingsBranding with
+        static member New(?icon: string, ?logo: string, ?primaryColor: string, ?secondaryColor: string) =
+            {
+                Icon = icon
+                Logo = logo
+                PrimaryColor = primaryColor
+                SecondaryColor = secondaryColor
+            }
 
     module Create'SettingsBranding =
         let create
@@ -2954,6 +3811,14 @@ module Accounts =
             UserAgent: Choice<string,string> option
         }
 
+    type Create'SettingsCardIssuingTosAcceptance with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: Choice<string,string>) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Create'SettingsCardIssuingTosAcceptance =
         let create
             (
@@ -2975,6 +3840,12 @@ module Accounts =
             TosAcceptance: Create'SettingsCardIssuingTosAcceptance option
         }
 
+    type Create'SettingsCardIssuing with
+        static member New(?tosAcceptance: Create'SettingsCardIssuingTosAcceptance) =
+            {
+                TosAcceptance = tosAcceptance
+            }
+
     module Create'SettingsCardIssuing =
         let create
             (
@@ -2994,6 +3865,13 @@ module Accounts =
             [<Config.Form>]
             CvcFailure: bool option
         }
+
+    type Create'SettingsCardPaymentsDeclineOn with
+        static member New(?avsFailure: bool, ?cvcFailure: bool) =
+            {
+                AvsFailure = avsFailure
+                CvcFailure = cvcFailure
+            }
 
     module Create'SettingsCardPaymentsDeclineOn =
         let create
@@ -3023,6 +3901,15 @@ module Accounts =
             StatementDescriptorPrefixKanji: Choice<string,string> option
         }
 
+    type Create'SettingsCardPayments with
+        static member New(?declineOn: Create'SettingsCardPaymentsDeclineOn, ?statementDescriptorPrefix: string, ?statementDescriptorPrefixKana: Choice<string,string>, ?statementDescriptorPrefixKanji: Choice<string,string>) =
+            {
+                DeclineOn = declineOn
+                StatementDescriptorPrefix = statementDescriptorPrefix
+                StatementDescriptorPrefixKana = statementDescriptorPrefixKana
+                StatementDescriptorPrefixKanji = statementDescriptorPrefixKanji
+            }
+
     module Create'SettingsCardPayments =
         let create
             (
@@ -3051,6 +3938,12 @@ module Accounts =
             HostedPaymentMethodSave: Create'SettingsInvoicesHostedPaymentMethodSave option
         }
 
+    type Create'SettingsInvoices with
+        static member New(?hostedPaymentMethodSave: Create'SettingsInvoicesHostedPaymentMethodSave) =
+            {
+                HostedPaymentMethodSave = hostedPaymentMethodSave
+            }
+
     module Create'SettingsInvoices =
         let create
             (
@@ -3073,6 +3966,14 @@ module Accounts =
             [<Config.Form>]
             StatementDescriptorKanji: string option
         }
+
+    type Create'SettingsPayments with
+        static member New(?statementDescriptor: string, ?statementDescriptorKana: string, ?statementDescriptorKanji: string) =
+            {
+                StatementDescriptor = statementDescriptor
+                StatementDescriptorKana = statementDescriptorKana
+                StatementDescriptorKanji = statementDescriptorKanji
+            }
 
     module Create'SettingsPayments =
         let create
@@ -3134,6 +4035,17 @@ module Accounts =
             WeeklyPayoutDays: Create'SettingsPayoutsScheduleWeeklyPayoutDays list option
         }
 
+    type Create'SettingsPayoutsSchedule with
+        static member New(?delayDays: Choice<Create'SettingsPayoutsScheduleDelayDays,int>, ?interval: Create'SettingsPayoutsScheduleInterval, ?monthlyAnchor: int, ?monthlyPayoutDays: int list, ?weeklyAnchor: Create'SettingsPayoutsScheduleWeeklyAnchor, ?weeklyPayoutDays: Create'SettingsPayoutsScheduleWeeklyPayoutDays list) =
+            {
+                DelayDays = delayDays
+                Interval = interval
+                MonthlyAnchor = monthlyAnchor
+                MonthlyPayoutDays = monthlyPayoutDays
+                WeeklyAnchor = weeklyAnchor
+                WeeklyPayoutDays = weeklyPayoutDays
+            }
+
     module Create'SettingsPayoutsSchedule =
         let create
             (
@@ -3167,6 +4079,14 @@ module Accounts =
             StatementDescriptor: string option
         }
 
+    type Create'SettingsPayouts with
+        static member New(?debitNegativeBalances: bool, ?schedule: Create'SettingsPayoutsSchedule, ?statementDescriptor: string) =
+            {
+                DebitNegativeBalances = debitNegativeBalances
+                Schedule = schedule
+                StatementDescriptor = statementDescriptor
+            }
+
     module Create'SettingsPayouts =
         let create
             (
@@ -3194,6 +4114,14 @@ module Accounts =
             UserAgent: Choice<string,string> option
         }
 
+    type Create'SettingsTreasuryTosAcceptance with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: Choice<string,string>) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Create'SettingsTreasuryTosAcceptance =
         let create
             (
@@ -3214,6 +4142,12 @@ module Accounts =
             [<Config.Form>]
             TosAcceptance: Create'SettingsTreasuryTosAcceptance option
         }
+
+    type Create'SettingsTreasury with
+        static member New(?tosAcceptance: Create'SettingsTreasuryTosAcceptance) =
+            {
+                TosAcceptance = tosAcceptance
+            }
 
     module Create'SettingsTreasury =
         let create
@@ -3252,6 +4186,19 @@ module Accounts =
             [<Config.Form>]
             Treasury: Create'SettingsTreasury option
         }
+
+    type Create'Settings with
+        static member New(?bacsDebitPayments: Create'SettingsBacsDebitPayments, ?branding: Create'SettingsBranding, ?cardIssuing: Create'SettingsCardIssuing, ?cardPayments: Create'SettingsCardPayments, ?invoices: Create'SettingsInvoices, ?payments: Create'SettingsPayments, ?payouts: Create'SettingsPayouts, ?treasury: Create'SettingsTreasury) =
+            {
+                BacsDebitPayments = bacsDebitPayments
+                Branding = branding
+                CardIssuing = cardIssuing
+                CardPayments = cardPayments
+                Invoices = invoices
+                Payments = payments
+                Payouts = payouts
+                Treasury = treasury
+            }
 
     module Create'Settings =
         let create
@@ -3292,6 +4239,15 @@ module Accounts =
             [<Config.Form>]
             UserAgent: string option
         }
+
+    type Create'TosAcceptance with
+        static member New(?date: DateTime, ?ip: string, ?serviceAgreement: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                ServiceAgreement = serviceAgreement
+                UserAgent = userAgent
+            }
 
     module Create'TosAcceptance =
         let create
@@ -3378,6 +4334,29 @@ module Accounts =
             Type: Create'Type option
         }
 
+    type CreateOptions with
+        static member New(?accountToken: string, ?businessProfile: Create'BusinessProfile, ?businessType: Create'BusinessType, ?capabilities: Create'Capabilities, ?company: Create'Company, ?controller: Create'Controller, ?country: IsoTypes.IsoCountryCode, ?defaultCurrency: IsoTypes.IsoCurrencyCode, ?documents: Create'Documents, ?email: string, ?expand: string list, ?externalAccount: string, ?groups: Create'Groups, ?individual: Create'Individual, ?metadata: Map<string, string>, ?settings: Create'Settings, ?tosAcceptance: Create'TosAcceptance, ?type': Create'Type) =
+            {
+                AccountToken = accountToken
+                BusinessProfile = businessProfile
+                BusinessType = businessType
+                Capabilities = capabilities
+                Company = company
+                Controller = controller
+                Country = country
+                DefaultCurrency = defaultCurrency
+                Documents = documents
+                Email = email
+                Expand = expand
+                ExternalAccount = externalAccount
+                Groups = groups
+                Individual = individual
+                Metadata = metadata
+                Settings = settings
+                TosAcceptance = tosAcceptance
+                Type = type'
+            }
+
     module CreateOptions =
         let create
             (
@@ -3398,7 +4377,7 @@ module Accounts =
                 metadata: Map<string, string> option,
                 settings: Create'Settings option,
                 tosAcceptance: Create'TosAcceptance option,
-                ``type``: Create'Type option
+                type': Create'Type option
             ) : CreateOptions
             =
             {
@@ -3419,12 +4398,18 @@ module Accounts =
               Metadata = metadata
               Settings = settings
               TosAcceptance = tosAcceptance
-              Type = ``type``
+              Type = type'
             }
 
     type DeleteOptions =
         { [<Config.Path>]
           Account: string }
+
+    type DeleteOptions with
+        static member New(account: string) =
+            {
+                Account = account
+            }
 
     module DeleteOptions =
         let create
@@ -3444,6 +4429,13 @@ module Accounts =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(account: string, ?expand: string list) =
+            {
+                Account = account
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -3468,6 +4460,14 @@ module Accounts =
             [<Config.Form>]
             FiscalYearEnd: string option
         }
+
+    type Update'BusinessProfileAnnualRevenue with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?fiscalYearEnd: string) =
+            {
+                Amount = amount
+                Currency = currency
+                FiscalYearEnd = fiscalYearEnd
+            }
 
     module Update'BusinessProfileAnnualRevenue =
         let create
@@ -3499,6 +4499,13 @@ module Accounts =
             [<Config.Form>]
             Currency: IsoTypes.IsoCurrencyCode option
         }
+
+    type Update'BusinessProfileMonthlyEstimatedRevenue with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode) =
+            {
+                Amount = amount
+                Currency = currency
+            }
 
     module Update'BusinessProfileMonthlyEstimatedRevenue =
         let create
@@ -3533,6 +4540,17 @@ module Accounts =
             [<Config.Form>]
             State: string option
         }
+
+    type Update'BusinessProfileSupportAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Update'BusinessProfileSupportAddress =
         let create
@@ -3594,6 +4612,23 @@ module Accounts =
             Url: string option
         }
 
+    type Update'BusinessProfile with
+        static member New(?annualRevenue: Update'BusinessProfileAnnualRevenue, ?estimatedWorkerCount: int, ?mcc: string, ?minorityOwnedBusinessDesignation: Update'BusinessProfileMinorityOwnedBusinessDesignation list, ?monthlyEstimatedRevenue: Update'BusinessProfileMonthlyEstimatedRevenue, ?name: string, ?productDescription: string, ?supportAddress: Update'BusinessProfileSupportAddress, ?supportEmail: string, ?supportPhone: string, ?supportUrl: Choice<string,string>, ?url: string) =
+            {
+                AnnualRevenue = annualRevenue
+                EstimatedWorkerCount = estimatedWorkerCount
+                Mcc = mcc
+                MinorityOwnedBusinessDesignation = minorityOwnedBusinessDesignation
+                MonthlyEstimatedRevenue = monthlyEstimatedRevenue
+                Name = name
+                ProductDescription = productDescription
+                SupportAddress = supportAddress
+                SupportEmail = supportEmail
+                SupportPhone = supportPhone
+                SupportUrl = supportUrl
+                Url = url
+            }
+
     module Update'BusinessProfile =
         let create
             (
@@ -3639,6 +4674,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesAcssDebitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesAcssDebitPayments =
         let create
             (
@@ -3655,6 +4696,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesAffirmPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesAffirmPayments =
         let create
@@ -3673,6 +4720,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesAfterpayClearpayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesAfterpayClearpayPayments =
         let create
             (
@@ -3689,6 +4742,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesAlmaPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesAlmaPayments =
         let create
@@ -3707,6 +4766,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesAmazonPayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesAmazonPayPayments =
         let create
             (
@@ -3723,6 +4788,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesAppDistribution with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesAppDistribution =
         let create
@@ -3741,6 +4812,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesAuBecsDebitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesAuBecsDebitPayments =
         let create
             (
@@ -3757,6 +4834,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesBacsDebitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesBacsDebitPayments =
         let create
@@ -3775,6 +4858,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesBancontactPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesBancontactPayments =
         let create
             (
@@ -3791,6 +4880,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesBankTransferPayments =
         let create
@@ -3809,6 +4904,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesBilliePayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesBilliePayments =
         let create
             (
@@ -3825,6 +4926,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesBlikPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesBlikPayments =
         let create
@@ -3843,6 +4950,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesBoletoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesBoletoPayments =
         let create
             (
@@ -3859,6 +4972,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesCardIssuing with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesCardIssuing =
         let create
@@ -3877,6 +4996,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesCardPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesCardPayments =
         let create
             (
@@ -3893,6 +5018,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesCartesBancairesPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesCartesBancairesPayments =
         let create
@@ -3911,6 +5042,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesCashappPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesCashappPayments =
         let create
             (
@@ -3927,6 +5064,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesCryptoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesCryptoPayments =
         let create
@@ -3945,6 +5088,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesEpsPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesEpsPayments =
         let create
             (
@@ -3961,6 +5110,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesFpxPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesFpxPayments =
         let create
@@ -3979,6 +5134,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesGbBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesGbBankTransferPayments =
         let create
             (
@@ -3995,6 +5156,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesGiropayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesGiropayPayments =
         let create
@@ -4013,6 +5180,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesGrabpayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesGrabpayPayments =
         let create
             (
@@ -4029,6 +5202,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesIdealPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesIdealPayments =
         let create
@@ -4047,6 +5226,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesIndiaInternationalPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesIndiaInternationalPayments =
         let create
             (
@@ -4063,6 +5248,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesJcbPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesJcbPayments =
         let create
@@ -4081,6 +5272,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesJpBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesJpBankTransferPayments =
         let create
             (
@@ -4097,6 +5294,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesKakaoPayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesKakaoPayPayments =
         let create
@@ -4115,6 +5318,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesKlarnaPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesKlarnaPayments =
         let create
             (
@@ -4131,6 +5340,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesKonbiniPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesKonbiniPayments =
         let create
@@ -4149,6 +5364,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesKrCardPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesKrCardPayments =
         let create
             (
@@ -4165,6 +5386,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesLegacyPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesLegacyPayments =
         let create
@@ -4183,6 +5410,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesLinkPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesLinkPayments =
         let create
             (
@@ -4199,6 +5432,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesMbWayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesMbWayPayments =
         let create
@@ -4217,6 +5456,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesMobilepayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesMobilepayPayments =
         let create
             (
@@ -4233,6 +5478,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesMultibancoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesMultibancoPayments =
         let create
@@ -4251,6 +5502,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesMxBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesMxBankTransferPayments =
         let create
             (
@@ -4267,6 +5524,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesNaverPayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesNaverPayPayments =
         let create
@@ -4285,6 +5548,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesNzBankAccountBecsDebitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesNzBankAccountBecsDebitPayments =
         let create
             (
@@ -4301,6 +5570,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesOxxoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesOxxoPayments =
         let create
@@ -4319,6 +5594,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesP24Payments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesP24Payments =
         let create
             (
@@ -4335,6 +5616,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesPayByBankPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesPayByBankPayments =
         let create
@@ -4353,6 +5640,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesPaycoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesPaycoPayments =
         let create
             (
@@ -4369,6 +5662,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesPaynowPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesPaynowPayments =
         let create
@@ -4387,6 +5686,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesPaytoPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesPaytoPayments =
         let create
             (
@@ -4403,6 +5708,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesPixPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesPixPayments =
         let create
@@ -4421,6 +5732,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesPromptpayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesPromptpayPayments =
         let create
             (
@@ -4437,6 +5754,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesRevolutPayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesRevolutPayPayments =
         let create
@@ -4455,6 +5778,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesSamsungPayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesSamsungPayPayments =
         let create
             (
@@ -4471,6 +5800,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesSatispayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesSatispayPayments =
         let create
@@ -4489,6 +5824,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesSepaBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesSepaBankTransferPayments =
         let create
             (
@@ -4505,6 +5846,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesSepaDebitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesSepaDebitPayments =
         let create
@@ -4523,6 +5870,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesSofortPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesSofortPayments =
         let create
             (
@@ -4539,6 +5892,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesSunbitPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesSunbitPayments =
         let create
@@ -4557,6 +5916,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesSwishPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesSwishPayments =
         let create
             (
@@ -4573,6 +5938,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesTaxReportingUs1099K with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesTaxReportingUs1099K =
         let create
@@ -4591,6 +5962,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesTaxReportingUs1099Misc with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesTaxReportingUs1099Misc =
         let create
             (
@@ -4607,6 +5984,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesTransfers with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesTransfers =
         let create
@@ -4625,6 +6008,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesTreasury with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesTreasury =
         let create
             (
@@ -4641,6 +6030,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesTwintPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesTwintPayments =
         let create
@@ -4659,6 +6054,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesUpiPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesUpiPayments =
         let create
             (
@@ -4675,6 +6076,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesUsBankAccountAchPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesUsBankAccountAchPayments =
         let create
@@ -4693,6 +6100,12 @@ module Accounts =
             Requested: bool option
         }
 
+    type Update'CapabilitiesUsBankTransferPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'CapabilitiesUsBankTransferPayments =
         let create
             (
@@ -4709,6 +6122,12 @@ module Accounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'CapabilitiesZipPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'CapabilitiesZipPayments =
         let create
@@ -4916,6 +6335,75 @@ module Accounts =
             ZipPayments: Update'CapabilitiesZipPayments option
         }
 
+    type Update'Capabilities with
+        static member New(?acssDebitPayments: Update'CapabilitiesAcssDebitPayments, ?affirmPayments: Update'CapabilitiesAffirmPayments, ?afterpayClearpayPayments: Update'CapabilitiesAfterpayClearpayPayments, ?almaPayments: Update'CapabilitiesAlmaPayments, ?amazonPayPayments: Update'CapabilitiesAmazonPayPayments, ?appDistribution: Update'CapabilitiesAppDistribution, ?auBecsDebitPayments: Update'CapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: Update'CapabilitiesBacsDebitPayments, ?bancontactPayments: Update'CapabilitiesBancontactPayments, ?bankTransferPayments: Update'CapabilitiesBankTransferPayments, ?billiePayments: Update'CapabilitiesBilliePayments, ?blikPayments: Update'CapabilitiesBlikPayments, ?boletoPayments: Update'CapabilitiesBoletoPayments, ?cardIssuing: Update'CapabilitiesCardIssuing, ?cardPayments: Update'CapabilitiesCardPayments, ?cartesBancairesPayments: Update'CapabilitiesCartesBancairesPayments, ?cashappPayments: Update'CapabilitiesCashappPayments, ?cryptoPayments: Update'CapabilitiesCryptoPayments, ?epsPayments: Update'CapabilitiesEpsPayments, ?fpxPayments: Update'CapabilitiesFpxPayments, ?gbBankTransferPayments: Update'CapabilitiesGbBankTransferPayments, ?giropayPayments: Update'CapabilitiesGiropayPayments, ?grabpayPayments: Update'CapabilitiesGrabpayPayments, ?idealPayments: Update'CapabilitiesIdealPayments, ?indiaInternationalPayments: Update'CapabilitiesIndiaInternationalPayments, ?jcbPayments: Update'CapabilitiesJcbPayments, ?jpBankTransferPayments: Update'CapabilitiesJpBankTransferPayments, ?kakaoPayPayments: Update'CapabilitiesKakaoPayPayments, ?klarnaPayments: Update'CapabilitiesKlarnaPayments, ?konbiniPayments: Update'CapabilitiesKonbiniPayments, ?krCardPayments: Update'CapabilitiesKrCardPayments, ?legacyPayments: Update'CapabilitiesLegacyPayments, ?linkPayments: Update'CapabilitiesLinkPayments, ?mbWayPayments: Update'CapabilitiesMbWayPayments, ?mobilepayPayments: Update'CapabilitiesMobilepayPayments, ?multibancoPayments: Update'CapabilitiesMultibancoPayments, ?mxBankTransferPayments: Update'CapabilitiesMxBankTransferPayments, ?naverPayPayments: Update'CapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: Update'CapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: Update'CapabilitiesOxxoPayments, ?p24Payments: Update'CapabilitiesP24Payments, ?payByBankPayments: Update'CapabilitiesPayByBankPayments, ?paycoPayments: Update'CapabilitiesPaycoPayments, ?paynowPayments: Update'CapabilitiesPaynowPayments, ?paytoPayments: Update'CapabilitiesPaytoPayments, ?pixPayments: Update'CapabilitiesPixPayments, ?promptpayPayments: Update'CapabilitiesPromptpayPayments, ?revolutPayPayments: Update'CapabilitiesRevolutPayPayments, ?samsungPayPayments: Update'CapabilitiesSamsungPayPayments, ?satispayPayments: Update'CapabilitiesSatispayPayments, ?sepaBankTransferPayments: Update'CapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: Update'CapabilitiesSepaDebitPayments, ?sofortPayments: Update'CapabilitiesSofortPayments, ?sunbitPayments: Update'CapabilitiesSunbitPayments, ?swishPayments: Update'CapabilitiesSwishPayments, ?taxReportingUs1099K: Update'CapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: Update'CapabilitiesTaxReportingUs1099Misc, ?transfers: Update'CapabilitiesTransfers, ?treasury: Update'CapabilitiesTreasury, ?twintPayments: Update'CapabilitiesTwintPayments, ?upiPayments: Update'CapabilitiesUpiPayments, ?usBankAccountAchPayments: Update'CapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: Update'CapabilitiesUsBankTransferPayments, ?zipPayments: Update'CapabilitiesZipPayments) =
+            {
+                AcssDebitPayments = acssDebitPayments
+                AffirmPayments = affirmPayments
+                AfterpayClearpayPayments = afterpayClearpayPayments
+                AlmaPayments = almaPayments
+                AmazonPayPayments = amazonPayPayments
+                AppDistribution = appDistribution
+                AuBecsDebitPayments = auBecsDebitPayments
+                BacsDebitPayments = bacsDebitPayments
+                BancontactPayments = bancontactPayments
+                BankTransferPayments = bankTransferPayments
+                BilliePayments = billiePayments
+                BlikPayments = blikPayments
+                BoletoPayments = boletoPayments
+                CardIssuing = cardIssuing
+                CardPayments = cardPayments
+                CartesBancairesPayments = cartesBancairesPayments
+                CashappPayments = cashappPayments
+                CryptoPayments = cryptoPayments
+                EpsPayments = epsPayments
+                FpxPayments = fpxPayments
+                GbBankTransferPayments = gbBankTransferPayments
+                GiropayPayments = giropayPayments
+                GrabpayPayments = grabpayPayments
+                IdealPayments = idealPayments
+                IndiaInternationalPayments = indiaInternationalPayments
+                JcbPayments = jcbPayments
+                JpBankTransferPayments = jpBankTransferPayments
+                KakaoPayPayments = kakaoPayPayments
+                KlarnaPayments = klarnaPayments
+                KonbiniPayments = konbiniPayments
+                KrCardPayments = krCardPayments
+                LegacyPayments = legacyPayments
+                LinkPayments = linkPayments
+                MbWayPayments = mbWayPayments
+                MobilepayPayments = mobilepayPayments
+                MultibancoPayments = multibancoPayments
+                MxBankTransferPayments = mxBankTransferPayments
+                NaverPayPayments = naverPayPayments
+                NzBankAccountBecsDebitPayments = nzBankAccountBecsDebitPayments
+                OxxoPayments = oxxoPayments
+                P24Payments = p24Payments
+                PayByBankPayments = payByBankPayments
+                PaycoPayments = paycoPayments
+                PaynowPayments = paynowPayments
+                PaytoPayments = paytoPayments
+                PixPayments = pixPayments
+                PromptpayPayments = promptpayPayments
+                RevolutPayPayments = revolutPayPayments
+                SamsungPayPayments = samsungPayPayments
+                SatispayPayments = satispayPayments
+                SepaBankTransferPayments = sepaBankTransferPayments
+                SepaDebitPayments = sepaDebitPayments
+                SofortPayments = sofortPayments
+                SunbitPayments = sunbitPayments
+                SwishPayments = swishPayments
+                TaxReportingUs1099K = taxReportingUs1099K
+                TaxReportingUs1099Misc = taxReportingUs1099Misc
+                Transfers = transfers
+                Treasury = treasury
+                TwintPayments = twintPayments
+                UpiPayments = upiPayments
+                UsBankAccountAchPayments = usBankAccountAchPayments
+                UsBankTransferPayments = usBankTransferPayments
+                ZipPayments = zipPayments
+            }
+
     module Update'Capabilities =
         let create
             (
@@ -5074,6 +6562,17 @@ module Accounts =
             State: string option
         }
 
+    type Update'CompanyAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Update'CompanyAddress =
         let create
             (
@@ -5118,6 +6617,18 @@ module Accounts =
             [<Config.Form>]
             Town: string option
         }
+
+    type Update'CompanyAddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Update'CompanyAddressKana =
         let create
@@ -5166,6 +6677,18 @@ module Accounts =
             Town: string option
         }
 
+    type Update'CompanyAddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
+
     module Update'CompanyAddressKanji =
         let create
             (
@@ -5201,6 +6724,14 @@ module Accounts =
             UserAgent: string option
         }
 
+    type Update'CompanyDirectorshipDeclaration with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Update'CompanyDirectorshipDeclaration =
         let create
             (
@@ -5227,6 +6758,14 @@ module Accounts =
             [<Config.Form>]
             UserAgent: string option
         }
+
+    type Update'CompanyOwnershipDeclaration with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
 
     module Update'CompanyOwnershipDeclaration =
         let create
@@ -5259,6 +6798,14 @@ module Accounts =
             Year: int option
         }
 
+    type Update'CompanyRegistrationDateRegistrationDateSpecs with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
     module Update'CompanyRegistrationDateRegistrationDateSpecs =
         let create
             (
@@ -5285,6 +6832,14 @@ module Accounts =
             [<Config.Form>]
             UserAgent: string option
         }
+
+    type Update'CompanyRepresentativeDeclaration with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
 
     module Update'CompanyRepresentativeDeclaration =
         let create
@@ -5335,6 +6890,13 @@ module Accounts =
             Front: string option
         }
 
+    type Update'CompanyVerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Update'CompanyVerificationDocument =
         let create
             (
@@ -5353,6 +6915,12 @@ module Accounts =
             [<Config.Form>]
             Document: Update'CompanyVerificationDocument option
         }
+
+    type Update'CompanyVerification with
+        static member New(?document: Update'CompanyVerificationDocument) =
+            {
+                Document = document
+            }
 
     module Update'CompanyVerification =
         let create
@@ -5436,6 +7004,34 @@ module Accounts =
             Verification: Update'CompanyVerification option
         }
 
+    type Update'Company with
+        static member New(?address: Update'CompanyAddress, ?addressKana: Update'CompanyAddressKana, ?addressKanji: Update'CompanyAddressKanji, ?directorsProvided: bool, ?directorshipDeclaration: Update'CompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Update'CompanyOwnershipDeclaration, ?ownershipExemptionReason: Update'CompanyOwnershipExemptionReason, ?phone: string, ?registrationDate: Choice<Update'CompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Update'CompanyRepresentativeDeclaration, ?structure: Update'CompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Update'CompanyVerification) =
+            {
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                DirectorsProvided = directorsProvided
+                DirectorshipDeclaration = directorshipDeclaration
+                ExecutivesProvided = executivesProvided
+                ExportLicenseId = exportLicenseId
+                ExportPurposeCode = exportPurposeCode
+                Name = name
+                NameKana = nameKana
+                NameKanji = nameKanji
+                OwnersProvided = ownersProvided
+                OwnershipDeclaration = ownershipDeclaration
+                OwnershipExemptionReason = ownershipExemptionReason
+                Phone = phone
+                RegistrationDate = registrationDate
+                RegistrationNumber = registrationNumber
+                RepresentativeDeclaration = representativeDeclaration
+                Structure = structure
+                TaxId = taxId
+                TaxIdRegistrar = taxIdRegistrar
+                VatId = vatId
+                Verification = verification
+            }
+
     module Update'Company =
         let create
             (
@@ -5497,6 +7093,12 @@ module Accounts =
             Files: string list option
         }
 
+    type Update'DocumentsBankAccountOwnershipVerification with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     module Update'DocumentsBankAccountOwnershipVerification =
         let create
             (
@@ -5513,6 +7115,12 @@ module Accounts =
             [<Config.Form>]
             Files: string list option
         }
+
+    type Update'DocumentsCompanyLicense with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
 
     module Update'DocumentsCompanyLicense =
         let create
@@ -5531,6 +7139,12 @@ module Accounts =
             Files: string list option
         }
 
+    type Update'DocumentsCompanyMemorandumOfAssociation with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     module Update'DocumentsCompanyMemorandumOfAssociation =
         let create
             (
@@ -5547,6 +7161,12 @@ module Accounts =
             [<Config.Form>]
             Files: string list option
         }
+
+    type Update'DocumentsCompanyMinisterialDecree with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
 
     module Update'DocumentsCompanyMinisterialDecree =
         let create
@@ -5565,6 +7185,12 @@ module Accounts =
             Files: string list option
         }
 
+    type Update'DocumentsCompanyRegistrationVerification with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     module Update'DocumentsCompanyRegistrationVerification =
         let create
             (
@@ -5581,6 +7207,12 @@ module Accounts =
             [<Config.Form>]
             Files: string list option
         }
+
+    type Update'DocumentsCompanyTaxIdVerification with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
 
     module Update'DocumentsCompanyTaxIdVerification =
         let create
@@ -5599,6 +7231,12 @@ module Accounts =
             Files: string list option
         }
 
+    type Update'DocumentsProofOfAddress with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     module Update'DocumentsProofOfAddress =
         let create
             (
@@ -5615,6 +7253,12 @@ module Accounts =
             [<Config.Form>]
             Person: string option
         }
+
+    type Update'DocumentsProofOfRegistrationSigner with
+        static member New(?person: string) =
+            {
+                Person = person
+            }
 
     module Update'DocumentsProofOfRegistrationSigner =
         let create
@@ -5636,6 +7280,13 @@ module Accounts =
             Signer: Update'DocumentsProofOfRegistrationSigner option
         }
 
+    type Update'DocumentsProofOfRegistration with
+        static member New(?files: string list, ?signer: Update'DocumentsProofOfRegistrationSigner) =
+            {
+                Files = files
+                Signer = signer
+            }
+
     module Update'DocumentsProofOfRegistration =
         let create
             (
@@ -5654,6 +7305,12 @@ module Accounts =
             [<Config.Form>]
             Person: string option
         }
+
+    type Update'DocumentsProofOfUltimateBeneficialOwnershipSigner with
+        static member New(?person: string) =
+            {
+                Person = person
+            }
 
     module Update'DocumentsProofOfUltimateBeneficialOwnershipSigner =
         let create
@@ -5674,6 +7331,13 @@ module Accounts =
             [<Config.Form>]
             Signer: Update'DocumentsProofOfUltimateBeneficialOwnershipSigner option
         }
+
+    type Update'DocumentsProofOfUltimateBeneficialOwnership with
+        static member New(?files: string list, ?signer: Update'DocumentsProofOfUltimateBeneficialOwnershipSigner) =
+            {
+                Files = files
+                Signer = signer
+            }
 
     module Update'DocumentsProofOfUltimateBeneficialOwnership =
         let create
@@ -5718,6 +7382,20 @@ module Accounts =
             ProofOfUltimateBeneficialOwnership: Update'DocumentsProofOfUltimateBeneficialOwnership option
         }
 
+    type Update'Documents with
+        static member New(?bankAccountOwnershipVerification: Update'DocumentsBankAccountOwnershipVerification, ?companyLicense: Update'DocumentsCompanyLicense, ?companyMemorandumOfAssociation: Update'DocumentsCompanyMemorandumOfAssociation, ?companyMinisterialDecree: Update'DocumentsCompanyMinisterialDecree, ?companyRegistrationVerification: Update'DocumentsCompanyRegistrationVerification, ?companyTaxIdVerification: Update'DocumentsCompanyTaxIdVerification, ?proofOfAddress: Update'DocumentsProofOfAddress, ?proofOfRegistration: Update'DocumentsProofOfRegistration, ?proofOfUltimateBeneficialOwnership: Update'DocumentsProofOfUltimateBeneficialOwnership) =
+            {
+                BankAccountOwnershipVerification = bankAccountOwnershipVerification
+                CompanyLicense = companyLicense
+                CompanyMemorandumOfAssociation = companyMemorandumOfAssociation
+                CompanyMinisterialDecree = companyMinisterialDecree
+                CompanyRegistrationVerification = companyRegistrationVerification
+                CompanyTaxIdVerification = companyTaxIdVerification
+                ProofOfAddress = proofOfAddress
+                ProofOfRegistration = proofOfRegistration
+                ProofOfUltimateBeneficialOwnership = proofOfUltimateBeneficialOwnership
+            }
+
     module Update'Documents =
         let create
             (
@@ -5751,6 +7429,12 @@ module Accounts =
             PaymentsPricing: Choice<string,string> option
         }
 
+    type Update'Groups with
+        static member New(?paymentsPricing: Choice<string,string>) =
+            {
+                PaymentsPricing = paymentsPricing
+            }
+
     module Update'Groups =
         let create
             (
@@ -5782,6 +7466,17 @@ module Accounts =
             [<Config.Form>]
             State: string option
         }
+
+    type Update'IndividualAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Update'IndividualAddress =
         let create
@@ -5827,6 +7522,18 @@ module Accounts =
             [<Config.Form>]
             Town: string option
         }
+
+    type Update'IndividualAddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Update'IndividualAddressKana =
         let create
@@ -5875,6 +7582,18 @@ module Accounts =
             Town: string option
         }
 
+    type Update'IndividualAddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
+
     module Update'IndividualAddressKanji =
         let create
             (
@@ -5909,6 +7628,14 @@ module Accounts =
             [<Config.Form>]
             Year: int option
         }
+
+    type Update'IndividualDobDateOfBirthSpecs with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
 
     module Update'IndividualDobDateOfBirthSpecs =
         let create
@@ -5950,6 +7677,17 @@ module Accounts =
             State: string option
         }
 
+    type Update'IndividualRegisteredAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Update'IndividualRegisteredAddress =
         let create
             (
@@ -5989,6 +7727,16 @@ module Accounts =
             Title: string option
         }
 
+    type Update'IndividualRelationship with
+        static member New(?director: bool, ?executive: bool, ?owner: bool, ?percentOwnership: Choice<decimal,string>, ?title: string) =
+            {
+                Director = director
+                Executive = executive
+                Owner = owner
+                PercentOwnership = percentOwnership
+                Title = title
+            }
+
     module Update'IndividualRelationship =
         let create
             (
@@ -6017,6 +7765,13 @@ module Accounts =
             Front: string option
         }
 
+    type Update'IndividualVerificationAdditionalDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Update'IndividualVerificationAdditionalDocument =
         let create
             (
@@ -6039,6 +7794,13 @@ module Accounts =
             Front: string option
         }
 
+    type Update'IndividualVerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Update'IndividualVerificationDocument =
         let create
             (
@@ -6060,6 +7822,13 @@ module Accounts =
             [<Config.Form>]
             Document: Update'IndividualVerificationDocument option
         }
+
+    type Update'IndividualVerification with
+        static member New(?additionalDocument: Update'IndividualVerificationAdditionalDocument, ?document: Update'IndividualVerificationDocument) =
+            {
+                AdditionalDocument = additionalDocument
+                Document = document
+            }
 
     module Update'IndividualVerification =
         let create
@@ -6146,6 +7915,34 @@ module Accounts =
             Verification: Update'IndividualVerification option
         }
 
+    type Update'Individual with
+        static member New(?address: Update'IndividualAddress, ?addressKana: Update'IndividualAddressKana, ?addressKanji: Update'IndividualAddressKanji, ?dob: Choice<Update'IndividualDobDateOfBirthSpecs,string>, ?email: string, ?firstName: string, ?firstNameKana: string, ?firstNameKanji: string, ?fullNameAliases: Choice<string list,string>, ?gender: string, ?idNumber: string, ?idNumberSecondary: string, ?lastName: string, ?lastNameKana: string, ?lastNameKanji: string, ?maidenName: string, ?metadata: Map<string, string>, ?phone: string, ?politicalExposure: Update'IndividualPoliticalExposure, ?registeredAddress: Update'IndividualRegisteredAddress, ?relationship: Update'IndividualRelationship, ?ssnLast4: string, ?verification: Update'IndividualVerification) =
+            {
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                Dob = dob
+                Email = email
+                FirstName = firstName
+                FirstNameKana = firstNameKana
+                FirstNameKanji = firstNameKanji
+                FullNameAliases = fullNameAliases
+                Gender = gender
+                IdNumber = idNumber
+                IdNumberSecondary = idNumberSecondary
+                LastName = lastName
+                LastNameKana = lastNameKana
+                LastNameKanji = lastNameKanji
+                MaidenName = maidenName
+                Metadata = metadata
+                Phone = phone
+                PoliticalExposure = politicalExposure
+                RegisteredAddress = registeredAddress
+                Relationship = relationship
+                SsnLast4 = ssnLast4
+                Verification = verification
+            }
+
     module Update'Individual =
         let create
             (
@@ -6207,6 +8004,12 @@ module Accounts =
             DisplayName: string option
         }
 
+    type Update'SettingsBacsDebitPayments with
+        static member New(?displayName: string) =
+            {
+                DisplayName = displayName
+            }
+
     module Update'SettingsBacsDebitPayments =
         let create
             (
@@ -6232,6 +8035,15 @@ module Accounts =
             [<Config.Form>]
             SecondaryColor: string option
         }
+
+    type Update'SettingsBranding with
+        static member New(?icon: string, ?logo: string, ?primaryColor: string, ?secondaryColor: string) =
+            {
+                Icon = icon
+                Logo = logo
+                PrimaryColor = primaryColor
+                SecondaryColor = secondaryColor
+            }
 
     module Update'SettingsBranding =
         let create
@@ -6262,6 +8074,14 @@ module Accounts =
             UserAgent: Choice<string,string> option
         }
 
+    type Update'SettingsCardIssuingTosAcceptance with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: Choice<string,string>) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Update'SettingsCardIssuingTosAcceptance =
         let create
             (
@@ -6283,6 +8103,12 @@ module Accounts =
             TosAcceptance: Update'SettingsCardIssuingTosAcceptance option
         }
 
+    type Update'SettingsCardIssuing with
+        static member New(?tosAcceptance: Update'SettingsCardIssuingTosAcceptance) =
+            {
+                TosAcceptance = tosAcceptance
+            }
+
     module Update'SettingsCardIssuing =
         let create
             (
@@ -6302,6 +8128,13 @@ module Accounts =
             [<Config.Form>]
             CvcFailure: bool option
         }
+
+    type Update'SettingsCardPaymentsDeclineOn with
+        static member New(?avsFailure: bool, ?cvcFailure: bool) =
+            {
+                AvsFailure = avsFailure
+                CvcFailure = cvcFailure
+            }
 
     module Update'SettingsCardPaymentsDeclineOn =
         let create
@@ -6330,6 +8163,15 @@ module Accounts =
             [<Config.Form>]
             StatementDescriptorPrefixKanji: Choice<string,string> option
         }
+
+    type Update'SettingsCardPayments with
+        static member New(?declineOn: Update'SettingsCardPaymentsDeclineOn, ?statementDescriptorPrefix: string, ?statementDescriptorPrefixKana: Choice<string,string>, ?statementDescriptorPrefixKanji: Choice<string,string>) =
+            {
+                DeclineOn = declineOn
+                StatementDescriptorPrefix = statementDescriptorPrefix
+                StatementDescriptorPrefixKana = statementDescriptorPrefixKana
+                StatementDescriptorPrefixKanji = statementDescriptorPrefixKanji
+            }
 
     module Update'SettingsCardPayments =
         let create
@@ -6362,6 +8204,13 @@ module Accounts =
             HostedPaymentMethodSave: Update'SettingsInvoicesHostedPaymentMethodSave option
         }
 
+    type Update'SettingsInvoices with
+        static member New(?defaultAccountTaxIds: Choice<string list,string>, ?hostedPaymentMethodSave: Update'SettingsInvoicesHostedPaymentMethodSave) =
+            {
+                DefaultAccountTaxIds = defaultAccountTaxIds
+                HostedPaymentMethodSave = hostedPaymentMethodSave
+            }
+
     module Update'SettingsInvoices =
         let create
             (
@@ -6386,6 +8235,14 @@ module Accounts =
             [<Config.Form>]
             StatementDescriptorKanji: string option
         }
+
+    type Update'SettingsPayments with
+        static member New(?statementDescriptor: string, ?statementDescriptorKana: string, ?statementDescriptorKanji: string) =
+            {
+                StatementDescriptor = statementDescriptor
+                StatementDescriptorKana = statementDescriptorKana
+                StatementDescriptorKanji = statementDescriptorKanji
+            }
 
     module Update'SettingsPayments =
         let create
@@ -6447,6 +8304,17 @@ module Accounts =
             WeeklyPayoutDays: Update'SettingsPayoutsScheduleWeeklyPayoutDays list option
         }
 
+    type Update'SettingsPayoutsSchedule with
+        static member New(?delayDays: Choice<Update'SettingsPayoutsScheduleDelayDays,int>, ?interval: Update'SettingsPayoutsScheduleInterval, ?monthlyAnchor: int, ?monthlyPayoutDays: int list, ?weeklyAnchor: Update'SettingsPayoutsScheduleWeeklyAnchor, ?weeklyPayoutDays: Update'SettingsPayoutsScheduleWeeklyPayoutDays list) =
+            {
+                DelayDays = delayDays
+                Interval = interval
+                MonthlyAnchor = monthlyAnchor
+                MonthlyPayoutDays = monthlyPayoutDays
+                WeeklyAnchor = weeklyAnchor
+                WeeklyPayoutDays = weeklyPayoutDays
+            }
+
     module Update'SettingsPayoutsSchedule =
         let create
             (
@@ -6480,6 +8348,14 @@ module Accounts =
             StatementDescriptor: string option
         }
 
+    type Update'SettingsPayouts with
+        static member New(?debitNegativeBalances: bool, ?schedule: Update'SettingsPayoutsSchedule, ?statementDescriptor: string) =
+            {
+                DebitNegativeBalances = debitNegativeBalances
+                Schedule = schedule
+                StatementDescriptor = statementDescriptor
+            }
+
     module Update'SettingsPayouts =
         let create
             (
@@ -6507,6 +8383,14 @@ module Accounts =
             UserAgent: Choice<string,string> option
         }
 
+    type Update'SettingsTreasuryTosAcceptance with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: Choice<string,string>) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Update'SettingsTreasuryTosAcceptance =
         let create
             (
@@ -6527,6 +8411,12 @@ module Accounts =
             [<Config.Form>]
             TosAcceptance: Update'SettingsTreasuryTosAcceptance option
         }
+
+    type Update'SettingsTreasury with
+        static member New(?tosAcceptance: Update'SettingsTreasuryTosAcceptance) =
+            {
+                TosAcceptance = tosAcceptance
+            }
 
     module Update'SettingsTreasury =
         let create
@@ -6565,6 +8455,19 @@ module Accounts =
             [<Config.Form>]
             Treasury: Update'SettingsTreasury option
         }
+
+    type Update'Settings with
+        static member New(?bacsDebitPayments: Update'SettingsBacsDebitPayments, ?branding: Update'SettingsBranding, ?cardIssuing: Update'SettingsCardIssuing, ?cardPayments: Update'SettingsCardPayments, ?invoices: Update'SettingsInvoices, ?payments: Update'SettingsPayments, ?payouts: Update'SettingsPayouts, ?treasury: Update'SettingsTreasury) =
+            {
+                BacsDebitPayments = bacsDebitPayments
+                Branding = branding
+                CardIssuing = cardIssuing
+                CardPayments = cardPayments
+                Invoices = invoices
+                Payments = payments
+                Payouts = payouts
+                Treasury = treasury
+            }
 
     module Update'Settings =
         let create
@@ -6605,6 +8508,15 @@ module Accounts =
             [<Config.Form>]
             UserAgent: string option
         }
+
+    type Update'TosAcceptance with
+        static member New(?date: DateTime, ?ip: string, ?serviceAgreement: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                ServiceAgreement = serviceAgreement
+                UserAgent = userAgent
+            }
 
     module Update'TosAcceptance =
         let create
@@ -6678,6 +8590,27 @@ module Accounts =
             [<Config.Form>]
             TosAcceptance: Update'TosAcceptance option
         }
+
+    type UpdateOptions with
+        static member New(account: string, ?accountToken: string, ?businessProfile: Update'BusinessProfile, ?businessType: Update'BusinessType, ?capabilities: Update'Capabilities, ?company: Update'Company, ?defaultCurrency: IsoTypes.IsoCurrencyCode, ?documents: Update'Documents, ?email: string, ?expand: string list, ?externalAccount: string, ?groups: Update'Groups, ?individual: Update'Individual, ?metadata: Map<string, string>, ?settings: Update'Settings, ?tosAcceptance: Update'TosAcceptance) =
+            {
+                Account = account
+                AccountToken = accountToken
+                BusinessProfile = businessProfile
+                BusinessType = businessType
+                Capabilities = capabilities
+                Company = company
+                DefaultCurrency = defaultCurrency
+                Documents = documents
+                Email = email
+                Expand = expand
+                ExternalAccount = externalAccount
+                Groups = groups
+                Individual = individual
+                Metadata = metadata
+                Settings = settings
+                TosAcceptance = tosAcceptance
+            }
 
     module UpdateOptions =
         let create
@@ -6758,6 +8691,13 @@ module AccountsCapabilities =
             Expand: string list option
         }
 
+    type CapabilitiesOptions with
+        static member New(account: string, ?expand: string list) =
+            {
+                Account = account
+                Expand = expand
+            }
+
     module CapabilitiesOptions =
         let create
             (
@@ -6779,6 +8719,14 @@ module AccountsCapabilities =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(account: string, capability: string, ?expand: string list) =
+            {
+                Account = account
+                Capability = capability
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -6807,6 +8755,15 @@ module AccountsCapabilities =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type UpdateOptions with
+        static member New(account: string, capability: string, ?expand: string list, ?requested: bool) =
+            {
+                Account = account
+                Capability = capability
+                Expand = expand
+                Requested = requested
+            }
 
     module UpdateOptions =
         let create
@@ -6862,6 +8819,17 @@ module AccountsExternalAccounts =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(account: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?object: string, ?startingAfter: string) =
+            {
+                Account = account
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                Object = object
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -6895,6 +8863,16 @@ module AccountsExternalAccounts =
             Metadata: Map<string, string> option
         }
 
+    type CreateOptions with
+        static member New(account: string, externalAccount: string, ?defaultForCurrency: bool, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Account = account
+                ExternalAccount = externalAccount
+                DefaultForCurrency = defaultForCurrency
+                Expand = expand
+                Metadata = metadata
+            }
+
     module CreateOptions =
         let create
             (
@@ -6919,6 +8897,13 @@ module AccountsExternalAccounts =
             Id: string
         }
 
+    type DeleteOptions with
+        static member New(account: string, id: string) =
+            {
+                Account = account
+                Id = id
+            }
+
     module DeleteOptions =
         let create
             (
@@ -6942,6 +8927,14 @@ module AccountsExternalAccounts =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(account: string, id: string, ?expand: string list) =
+            {
+                Account = account
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -6973,6 +8966,12 @@ module AccountsExternalAccounts =
             Files: string list option
         }
 
+    type Update'DocumentsBankAccountOwnershipVerification with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     module Update'DocumentsBankAccountOwnershipVerification =
         let create
             (
@@ -6989,6 +8988,12 @@ module AccountsExternalAccounts =
             [<Config.Form>]
             BankAccountOwnershipVerification: Update'DocumentsBankAccountOwnershipVerification option
         }
+
+    type Update'Documents with
+        static member New(?bankAccountOwnershipVerification: Update'DocumentsBankAccountOwnershipVerification) =
+            {
+                BankAccountOwnershipVerification = bankAccountOwnershipVerification
+            }
 
     module Update'Documents =
         let create
@@ -7055,6 +9060,29 @@ module AccountsExternalAccounts =
             [<Config.Form>]
             Name: string option
         }
+
+    type UpdateOptions with
+        static member New(account: string, id: string, ?accountHolderName: string, ?accountHolderType: Update'AccountHolderType, ?accountType: Update'AccountType, ?addressCity: string, ?addressCountry: IsoTypes.IsoCountryCode, ?addressLine1: string, ?addressLine2: string, ?addressState: string, ?addressZip: string, ?defaultForCurrency: bool, ?documents: Update'Documents, ?expMonth: string, ?expYear: string, ?expand: string list, ?metadata: Map<string, string>, ?name: string) =
+            {
+                Account = account
+                Id = id
+                AccountHolderName = accountHolderName
+                AccountHolderType = accountHolderType
+                AccountType = accountType
+                AddressCity = addressCity
+                AddressCountry = addressCountry
+                AddressLine1 = addressLine1
+                AddressLine2 = addressLine2
+                AddressState = addressState
+                AddressZip = addressZip
+                DefaultForCurrency = defaultForCurrency
+                Documents = documents
+                ExpMonth = expMonth
+                ExpYear = expYear
+                Expand = expand
+                Metadata = metadata
+                Name = name
+            }
 
     module UpdateOptions =
         let create
@@ -7127,6 +9155,13 @@ module AccountsLoginLinks =
             Expand: string list option
         }
 
+    type CreateOptions with
+        static member New(account: string, ?expand: string list) =
+            {
+                Account = account
+                Expand = expand
+            }
+
     module CreateOptions =
         let create
             (
@@ -7167,6 +9202,17 @@ module AccountsPersons =
             StartingAfter: string option
         }
 
+    type PersonsOptions with
+        static member New(account: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?relationship: Map<string, string>, ?startingAfter: string) =
+            {
+                Account = account
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                Relationship = relationship
+                StartingAfter = startingAfter
+            }
+
     module PersonsOptions =
         let create
             (
@@ -7195,6 +9241,14 @@ module AccountsPersons =
             UserAgent: Choice<string,string> option
         }
 
+    type Create'AdditionalTosAcceptancesAccount with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: Choice<string,string>) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Create'AdditionalTosAcceptancesAccount =
         let create
             (
@@ -7215,6 +9269,12 @@ module AccountsPersons =
             [<Config.Form>]
             Account: Create'AdditionalTosAcceptancesAccount option
         }
+
+    type Create'AdditionalTosAcceptances with
+        static member New(?account: Create'AdditionalTosAcceptancesAccount) =
+            {
+                Account = account
+            }
 
     module Create'AdditionalTosAcceptances =
         let create
@@ -7247,6 +9307,17 @@ module AccountsPersons =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'Address with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'Address =
         let create
@@ -7292,6 +9363,18 @@ module AccountsPersons =
             [<Config.Form>]
             Town: string option
         }
+
+    type Create'AddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Create'AddressKana =
         let create
@@ -7340,6 +9423,18 @@ module AccountsPersons =
             Town: string option
         }
 
+    type Create'AddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
+
     module Create'AddressKanji =
         let create
             (
@@ -7375,6 +9470,14 @@ module AccountsPersons =
             Year: int option
         }
 
+    type Create'DobDateOfBirthSpecs with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
     module Create'DobDateOfBirthSpecs =
         let create
             (
@@ -7396,6 +9499,12 @@ module AccountsPersons =
             Files: Choice<string,string> list option
         }
 
+    type Create'DocumentsCompanyAuthorization with
+        static member New(?files: Choice<string,string> list) =
+            {
+                Files = files
+            }
+
     module Create'DocumentsCompanyAuthorization =
         let create
             (
@@ -7413,6 +9522,12 @@ module AccountsPersons =
             Files: Choice<string,string> list option
         }
 
+    type Create'DocumentsPassport with
+        static member New(?files: Choice<string,string> list) =
+            {
+                Files = files
+            }
+
     module Create'DocumentsPassport =
         let create
             (
@@ -7429,6 +9544,12 @@ module AccountsPersons =
             [<Config.Form>]
             Files: Choice<string,string> list option
         }
+
+    type Create'DocumentsVisa with
+        static member New(?files: Choice<string,string> list) =
+            {
+                Files = files
+            }
 
     module Create'DocumentsVisa =
         let create
@@ -7452,6 +9573,14 @@ module AccountsPersons =
             [<Config.Form>]
             Visa: Create'DocumentsVisa option
         }
+
+    type Create'Documents with
+        static member New(?companyAuthorization: Create'DocumentsCompanyAuthorization, ?passport: Create'DocumentsPassport, ?visa: Create'DocumentsVisa) =
+            {
+                CompanyAuthorization = companyAuthorization
+                Passport = passport
+                Visa = visa
+            }
 
     module Create'Documents =
         let create
@@ -7492,6 +9621,17 @@ module AccountsPersons =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'RegisteredAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'RegisteredAddress =
         let create
@@ -7541,6 +9681,19 @@ module AccountsPersons =
             Title: string option
         }
 
+    type Create'Relationship with
+        static member New(?authorizer: bool, ?director: bool, ?executive: bool, ?legalGuardian: bool, ?owner: bool, ?percentOwnership: Choice<decimal,string>, ?representative: bool, ?title: string) =
+            {
+                Authorizer = authorizer
+                Director = director
+                Executive = executive
+                LegalGuardian = legalGuardian
+                Owner = owner
+                PercentOwnership = percentOwnership
+                Representative = representative
+                Title = title
+            }
+
     module Create'Relationship =
         let create
             (
@@ -7583,6 +9736,13 @@ module AccountsPersons =
             [<Config.Form>]
             EthnicityOther: string option
         }
+
+    type Create'UsCfpbDataEthnicityDetails with
+        static member New(?ethnicity: Create'UsCfpbDataEthnicityDetailsEthnicity list, ?ethnicityOther: string) =
+            {
+                Ethnicity = ethnicity
+                EthnicityOther = ethnicityOther
+            }
 
     module Create'UsCfpbDataEthnicityDetails =
         let create
@@ -7632,6 +9792,13 @@ module AccountsPersons =
             RaceOther: string option
         }
 
+    type Create'UsCfpbDataRaceDetails with
+        static member New(?race: Create'UsCfpbDataRaceDetailsRace list, ?raceOther: string) =
+            {
+                Race = race
+                RaceOther = raceOther
+            }
+
     module Create'UsCfpbDataRaceDetails =
         let create
             (
@@ -7657,6 +9824,14 @@ module AccountsPersons =
             SelfIdentifiedGender: string option
         }
 
+    type Create'UsCfpbData with
+        static member New(?ethnicityDetails: Create'UsCfpbDataEthnicityDetails, ?raceDetails: Create'UsCfpbDataRaceDetails, ?selfIdentifiedGender: string) =
+            {
+                EthnicityDetails = ethnicityDetails
+                RaceDetails = raceDetails
+                SelfIdentifiedGender = selfIdentifiedGender
+            }
+
     module Create'UsCfpbData =
         let create
             (
@@ -7681,6 +9856,13 @@ module AccountsPersons =
             Front: string option
         }
 
+    type Create'VerificationAdditionalDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'VerificationAdditionalDocument =
         let create
             (
@@ -7703,6 +9885,13 @@ module AccountsPersons =
             Front: string option
         }
 
+    type Create'VerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'VerificationDocument =
         let create
             (
@@ -7724,6 +9913,13 @@ module AccountsPersons =
             [<Config.Form>]
             Document: Create'VerificationDocument option
         }
+
+    type Create'Verification with
+        static member New(?additionalDocument: Create'VerificationAdditionalDocument, ?document: Create'VerificationDocument) =
+            {
+                AdditionalDocument = additionalDocument
+                Document = document
+            }
 
     module Create'Verification =
         let create
@@ -7830,6 +10026,41 @@ module AccountsPersons =
             Verification: Create'Verification option
         }
 
+    type CreateOptions with
+        static member New(account: string, ?additionalTosAcceptances: Create'AdditionalTosAcceptances, ?address: Create'Address, ?addressKana: Create'AddressKana, ?addressKanji: Create'AddressKanji, ?dob: Choice<Create'DobDateOfBirthSpecs,string>, ?documents: Create'Documents, ?email: string, ?expand: string list, ?firstName: string, ?firstNameKana: string, ?firstNameKanji: string, ?fullNameAliases: Choice<string list,string>, ?gender: string, ?idNumber: string, ?idNumberSecondary: string, ?lastName: string, ?lastNameKana: string, ?lastNameKanji: string, ?maidenName: string, ?metadata: Map<string, string>, ?nationality: string, ?personToken: string, ?phone: string, ?politicalExposure: Create'PoliticalExposure, ?registeredAddress: Create'RegisteredAddress, ?relationship: Create'Relationship, ?ssnLast4: string, ?usCfpbData: Create'UsCfpbData, ?verification: Create'Verification) =
+            {
+                Account = account
+                AdditionalTosAcceptances = additionalTosAcceptances
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                Dob = dob
+                Documents = documents
+                Email = email
+                Expand = expand
+                FirstName = firstName
+                FirstNameKana = firstNameKana
+                FirstNameKanji = firstNameKanji
+                FullNameAliases = fullNameAliases
+                Gender = gender
+                IdNumber = idNumber
+                IdNumberSecondary = idNumberSecondary
+                LastName = lastName
+                LastNameKana = lastNameKana
+                LastNameKanji = lastNameKanji
+                MaidenName = maidenName
+                Metadata = metadata
+                Nationality = nationality
+                PersonToken = personToken
+                Phone = phone
+                PoliticalExposure = politicalExposure
+                RegisteredAddress = registeredAddress
+                Relationship = relationship
+                SsnLast4 = ssnLast4
+                UsCfpbData = usCfpbData
+                Verification = verification
+            }
+
     module CreateOptions =
         let create
             (
@@ -7875,6 +10106,13 @@ module AccountsPersons =
           [<Config.Path>]
           Person: string }
 
+    type DeleteOptions with
+        static member New(account: string, person: string) =
+            {
+                Account = account
+                Person = person
+            }
+
     module DeleteOptions =
         let create
             (
@@ -7897,6 +10135,14 @@ module AccountsPersons =
             [<Config.Path>]
             Person: string
         }
+
+    type RetrieveOptions with
+        static member New(account: string, person: string, ?expand: string list) =
+            {
+                Account = account
+                Person = person
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -7924,6 +10170,14 @@ module AccountsPersons =
             UserAgent: Choice<string,string> option
         }
 
+    type Update'AdditionalTosAcceptancesAccount with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: Choice<string,string>) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Update'AdditionalTosAcceptancesAccount =
         let create
             (
@@ -7944,6 +10198,12 @@ module AccountsPersons =
             [<Config.Form>]
             Account: Update'AdditionalTosAcceptancesAccount option
         }
+
+    type Update'AdditionalTosAcceptances with
+        static member New(?account: Update'AdditionalTosAcceptancesAccount) =
+            {
+                Account = account
+            }
 
     module Update'AdditionalTosAcceptances =
         let create
@@ -7976,6 +10236,17 @@ module AccountsPersons =
             [<Config.Form>]
             State: string option
         }
+
+    type Update'Address with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Update'Address =
         let create
@@ -8021,6 +10292,18 @@ module AccountsPersons =
             [<Config.Form>]
             Town: string option
         }
+
+    type Update'AddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Update'AddressKana =
         let create
@@ -8069,6 +10352,18 @@ module AccountsPersons =
             Town: string option
         }
 
+    type Update'AddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
+
     module Update'AddressKanji =
         let create
             (
@@ -8104,6 +10399,14 @@ module AccountsPersons =
             Year: int option
         }
 
+    type Update'DobDateOfBirthSpecs with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
     module Update'DobDateOfBirthSpecs =
         let create
             (
@@ -8125,6 +10428,12 @@ module AccountsPersons =
             Files: Choice<string,string> list option
         }
 
+    type Update'DocumentsCompanyAuthorization with
+        static member New(?files: Choice<string,string> list) =
+            {
+                Files = files
+            }
+
     module Update'DocumentsCompanyAuthorization =
         let create
             (
@@ -8142,6 +10451,12 @@ module AccountsPersons =
             Files: Choice<string,string> list option
         }
 
+    type Update'DocumentsPassport with
+        static member New(?files: Choice<string,string> list) =
+            {
+                Files = files
+            }
+
     module Update'DocumentsPassport =
         let create
             (
@@ -8158,6 +10473,12 @@ module AccountsPersons =
             [<Config.Form>]
             Files: Choice<string,string> list option
         }
+
+    type Update'DocumentsVisa with
+        static member New(?files: Choice<string,string> list) =
+            {
+                Files = files
+            }
 
     module Update'DocumentsVisa =
         let create
@@ -8181,6 +10502,14 @@ module AccountsPersons =
             [<Config.Form>]
             Visa: Update'DocumentsVisa option
         }
+
+    type Update'Documents with
+        static member New(?companyAuthorization: Update'DocumentsCompanyAuthorization, ?passport: Update'DocumentsPassport, ?visa: Update'DocumentsVisa) =
+            {
+                CompanyAuthorization = companyAuthorization
+                Passport = passport
+                Visa = visa
+            }
 
     module Update'Documents =
         let create
@@ -8221,6 +10550,17 @@ module AccountsPersons =
             [<Config.Form>]
             State: string option
         }
+
+    type Update'RegisteredAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Update'RegisteredAddress =
         let create
@@ -8270,6 +10610,19 @@ module AccountsPersons =
             Title: string option
         }
 
+    type Update'Relationship with
+        static member New(?authorizer: bool, ?director: bool, ?executive: bool, ?legalGuardian: bool, ?owner: bool, ?percentOwnership: Choice<decimal,string>, ?representative: bool, ?title: string) =
+            {
+                Authorizer = authorizer
+                Director = director
+                Executive = executive
+                LegalGuardian = legalGuardian
+                Owner = owner
+                PercentOwnership = percentOwnership
+                Representative = representative
+                Title = title
+            }
+
     module Update'Relationship =
         let create
             (
@@ -8312,6 +10665,13 @@ module AccountsPersons =
             [<Config.Form>]
             EthnicityOther: string option
         }
+
+    type Update'UsCfpbDataEthnicityDetails with
+        static member New(?ethnicity: Update'UsCfpbDataEthnicityDetailsEthnicity list, ?ethnicityOther: string) =
+            {
+                Ethnicity = ethnicity
+                EthnicityOther = ethnicityOther
+            }
 
     module Update'UsCfpbDataEthnicityDetails =
         let create
@@ -8361,6 +10721,13 @@ module AccountsPersons =
             RaceOther: string option
         }
 
+    type Update'UsCfpbDataRaceDetails with
+        static member New(?race: Update'UsCfpbDataRaceDetailsRace list, ?raceOther: string) =
+            {
+                Race = race
+                RaceOther = raceOther
+            }
+
     module Update'UsCfpbDataRaceDetails =
         let create
             (
@@ -8386,6 +10753,14 @@ module AccountsPersons =
             SelfIdentifiedGender: string option
         }
 
+    type Update'UsCfpbData with
+        static member New(?ethnicityDetails: Update'UsCfpbDataEthnicityDetails, ?raceDetails: Update'UsCfpbDataRaceDetails, ?selfIdentifiedGender: string) =
+            {
+                EthnicityDetails = ethnicityDetails
+                RaceDetails = raceDetails
+                SelfIdentifiedGender = selfIdentifiedGender
+            }
+
     module Update'UsCfpbData =
         let create
             (
@@ -8410,6 +10785,13 @@ module AccountsPersons =
             Front: string option
         }
 
+    type Update'VerificationAdditionalDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Update'VerificationAdditionalDocument =
         let create
             (
@@ -8432,6 +10814,13 @@ module AccountsPersons =
             Front: string option
         }
 
+    type Update'VerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Update'VerificationDocument =
         let create
             (
@@ -8453,6 +10842,13 @@ module AccountsPersons =
             [<Config.Form>]
             Document: Update'VerificationDocument option
         }
+
+    type Update'Verification with
+        static member New(?additionalDocument: Update'VerificationAdditionalDocument, ?document: Update'VerificationDocument) =
+            {
+                AdditionalDocument = additionalDocument
+                Document = document
+            }
 
     module Update'Verification =
         let create
@@ -8561,6 +10957,42 @@ module AccountsPersons =
             Verification: Update'Verification option
         }
 
+    type UpdateOptions with
+        static member New(account: string, person: string, ?additionalTosAcceptances: Update'AdditionalTosAcceptances, ?address: Update'Address, ?addressKana: Update'AddressKana, ?addressKanji: Update'AddressKanji, ?dob: Choice<Update'DobDateOfBirthSpecs,string>, ?documents: Update'Documents, ?email: string, ?expand: string list, ?firstName: string, ?firstNameKana: string, ?firstNameKanji: string, ?fullNameAliases: Choice<string list,string>, ?gender: string, ?idNumber: string, ?idNumberSecondary: string, ?lastName: string, ?lastNameKana: string, ?lastNameKanji: string, ?maidenName: string, ?metadata: Map<string, string>, ?nationality: string, ?personToken: string, ?phone: string, ?politicalExposure: Update'PoliticalExposure, ?registeredAddress: Update'RegisteredAddress, ?relationship: Update'Relationship, ?ssnLast4: string, ?usCfpbData: Update'UsCfpbData, ?verification: Update'Verification) =
+            {
+                Account = account
+                Person = person
+                AdditionalTosAcceptances = additionalTosAcceptances
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                Dob = dob
+                Documents = documents
+                Email = email
+                Expand = expand
+                FirstName = firstName
+                FirstNameKana = firstNameKana
+                FirstNameKanji = firstNameKanji
+                FullNameAliases = fullNameAliases
+                Gender = gender
+                IdNumber = idNumber
+                IdNumberSecondary = idNumberSecondary
+                LastName = lastName
+                LastNameKana = lastNameKana
+                LastNameKanji = lastNameKanji
+                MaidenName = maidenName
+                Metadata = metadata
+                Nationality = nationality
+                PersonToken = personToken
+                Phone = phone
+                PoliticalExposure = politicalExposure
+                RegisteredAddress = registeredAddress
+                Relationship = relationship
+                SsnLast4 = ssnLast4
+                UsCfpbData = usCfpbData
+                Verification = verification
+            }
+
     module UpdateOptions =
         let create
             (
@@ -8642,6 +11074,14 @@ module AccountsReject =
             [<Config.Form>]
             Reason: string
         }
+
+    type RejectOptions with
+        static member New(account: string, reason: string, ?expand: string list) =
+            {
+                Account = account
+                Reason = reason
+                Expand = expand
+            }
 
     module RejectOptions =
         let create

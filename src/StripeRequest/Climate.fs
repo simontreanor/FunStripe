@@ -24,6 +24,15 @@ module ClimateOrders =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -46,6 +55,12 @@ module ClimateOrders =
             [<Config.Form>]
             PublicName: string option
         }
+
+    type Create'Beneficiary with
+        static member New(?publicName: string) =
+            {
+                PublicName = publicName
+            }
 
     module Create'Beneficiary =
         let create
@@ -82,6 +97,18 @@ module ClimateOrders =
             Product: string
         }
 
+    type CreateOptions with
+        static member New(product: string, ?amount: int, ?beneficiary: Create'Beneficiary, ?currency: IsoTypes.IsoCurrencyCode, ?expand: string list, ?metadata: Map<string, string>, ?metricTons: string) =
+            {
+                Product = product
+                Amount = amount
+                Beneficiary = beneficiary
+                Currency = currency
+                Expand = expand
+                Metadata = metadata
+                MetricTons = metricTons
+            }
+
     module CreateOptions =
         let create
             (
@@ -108,6 +135,13 @@ module ClimateOrders =
             Order: string
         }
 
+    type RetrieveOptions with
+        static member New(order: string, ?expand: string list) =
+            {
+                Order = order
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -125,6 +159,12 @@ module ClimateOrders =
             [<Config.Form>]
             PublicName: Choice<string,string> option
         }
+
+    type Update'BeneficiaryBeneficiaryParams with
+        static member New(?publicName: Choice<string,string>) =
+            {
+                PublicName = publicName
+            }
 
     module Update'BeneficiaryBeneficiaryParams =
         let create
@@ -151,6 +191,15 @@ module ClimateOrders =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(order: string, ?beneficiary: Choice<Update'BeneficiaryBeneficiaryParams,string>, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Order = order
+                Beneficiary = beneficiary
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -201,6 +250,13 @@ module ClimateOrdersCancel =
             Expand: string list option
         }
 
+    type CancelOptions with
+        static member New(order: string, ?expand: string list) =
+            {
+                Order = order
+                Expand = expand
+            }
+
     module CancelOptions =
         let create
             (
@@ -238,6 +294,15 @@ module ClimateProducts =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -262,6 +327,13 @@ module ClimateProducts =
             [<Config.Path>]
             Product: string
         }
+
+    type RetrieveOptions with
+        static member New(product: string, ?expand: string list) =
+            {
+                Product = product
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -304,6 +376,15 @@ module ClimateSuppliers =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -328,6 +409,13 @@ module ClimateSuppliers =
             [<Config.Path>]
             Supplier: string
         }
+
+    type RetrieveOptions with
+        static member New(supplier: string, ?expand: string list) =
+            {
+                Supplier = supplier
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

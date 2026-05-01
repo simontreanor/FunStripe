@@ -31,6 +31,17 @@ module ApplicationFees =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?charge: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Charge = charge
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -59,6 +70,13 @@ module ApplicationFees =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -96,6 +114,14 @@ module ApplicationFeesRefunds =
             Id: string
         }
 
+    type RetrieveOptions with
+        static member New(fee: string, id: string, ?expand: string list) =
+            {
+                Fee = fee
+                Id = id
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -122,6 +148,15 @@ module ApplicationFeesRefunds =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(fee: string, id: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Fee = fee
+                Id = id
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -155,6 +190,16 @@ module ApplicationFeesRefunds =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(id: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Id = id
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -183,6 +228,15 @@ module ApplicationFeesRefunds =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type CreateOptions with
+        static member New(id: string, ?amount: int, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Id = id
+                Amount = amount
+                Expand = expand
+                Metadata = metadata
+            }
 
     module CreateOptions =
         let create

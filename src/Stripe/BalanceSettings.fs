@@ -29,6 +29,14 @@ type BalanceSettingsResourcePayoutSchedule =
         WeeklyPayoutDays: BalanceSettingsResourcePayoutScheduleWeeklyPayoutDays list option
     }
 
+type BalanceSettingsResourcePayoutSchedule with
+    static member New(interval: BalanceSettingsResourcePayoutScheduleInterval option, ?monthlyPayoutDays: int list, ?weeklyPayoutDays: BalanceSettingsResourcePayoutScheduleWeeklyPayoutDays list) =
+        {
+            Interval = interval
+            MonthlyPayoutDays = monthlyPayoutDays
+            WeeklyPayoutDays = weeklyPayoutDays
+        }
+
 [<Struct>]
 type BalanceSettingsResourcePayoutsStatus =
     | Disabled
@@ -46,6 +54,15 @@ type BalanceSettingsResourcePayouts =
         Status: BalanceSettingsResourcePayoutsStatus
     }
 
+type BalanceSettingsResourcePayouts with
+    static member New(minimumBalanceByCurrency: Map<string, string list> option, schedule: BalanceSettingsResourcePayoutSchedule option, statementDescriptor: string option, status: BalanceSettingsResourcePayoutsStatus) =
+        {
+            MinimumBalanceByCurrency = minimumBalanceByCurrency
+            Schedule = schedule
+            StatementDescriptor = statementDescriptor
+            Status = status
+        }
+
 type BalanceSettingsResourceSettlementTiming =
     {
         /// The number of days charge funds are held before becoming available.
@@ -53,6 +70,13 @@ type BalanceSettingsResourceSettlementTiming =
         /// The number of days charge funds are held before becoming available. If present, overrides the default, or minimum available, for the account.
         DelayDaysOverride: int option
     }
+
+type BalanceSettingsResourceSettlementTiming with
+    static member New(delayDays: int, ?delayDaysOverride: int) =
+        {
+            DelayDays = delayDays
+            DelayDaysOverride = delayDaysOverride
+        }
 
 type BalanceSettingsResourcePayments =
     {
@@ -63,9 +87,23 @@ type BalanceSettingsResourcePayments =
         SettlementTiming: BalanceSettingsResourceSettlementTiming
     }
 
+type BalanceSettingsResourcePayments with
+    static member New(debitNegativeBalances: bool option, payouts: BalanceSettingsResourcePayouts option, settlementTiming: BalanceSettingsResourceSettlementTiming) =
+        {
+            DebitNegativeBalances = debitNegativeBalances
+            Payouts = payouts
+            SettlementTiming = settlementTiming
+        }
+
 /// Options for customizing account balances and payout settings for a Stripe platform’s connected accounts.
 type BalanceSettings =
     { Payments: BalanceSettingsResourcePayments }
+
+type BalanceSettings with
+    static member New(payments: BalanceSettingsResourcePayments) =
+        {
+            Payments = payments
+        }
 
 module BalanceSettings =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -73,4 +111,10 @@ module BalanceSettings =
 
 /// Occurs whenever a balance settings status or property has changed.
 type BalanceSettingsUpdated = { Object: BalanceSettings }
+
+type BalanceSettingsUpdated with
+    static member New(object: BalanceSettings) =
+        {
+            Object = object
+        }
 

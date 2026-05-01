@@ -56,6 +56,25 @@ type CustomerBalanceTransaction =
         Type: CustomerBalanceTransactionType
     }
 
+type CustomerBalanceTransaction with
+    static member New(amount: int, checkoutSession: StripeId<Markers.CheckoutSession> option, created: DateTime, creditNote: StripeId<Markers.CreditNote> option, currency: IsoTypes.IsoCurrencyCode, customer: StripeId<Markers.Customer>, customerAccount: string option, description: string option, endingBalance: int, id: string, invoice: StripeId<Markers.Invoice> option, livemode: bool, metadata: Map<string, string> option, ``type``: CustomerBalanceTransactionType) =
+        {
+            Amount = amount
+            CheckoutSession = checkoutSession
+            Created = created
+            CreditNote = creditNote
+            Currency = currency
+            Customer = customer
+            CustomerAccount = customerAccount
+            Description = description
+            EndingBalance = endingBalance
+            Id = id
+            Invoice = invoice
+            Livemode = livemode
+            Metadata = metadata
+            Type = ``type``
+        }
+
 module CustomerBalanceTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "customer_balance_transaction"

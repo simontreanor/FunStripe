@@ -32,27 +32,18 @@
     <Compile Include="../AsyncResult.fs" Link="AsyncResult.fs" />
     <Compile Include="../WebhookSigning.fs" Link="WebhookSigning.fs" />
     <Compile Include="../IsoTypes.fs" Link="IsoTypes.fs" />
-    <Compile Include="../StripeModel.fs" Link="StripeModel.fs" />
+  </ItemGroup>
+  <!-- Modular generated types (validation: types live in Stripe.{Domain} namespaces,
+       no collision with legacy StripeModel monolith). Set FunStripeIncludeModular=false
+       to exclude. -->
+  <Import Project="../Stripe/Stripe.Modular.props" Condition="'$(FunStripeIncludeModular)' != 'false'" />
+  <ItemGroup>
     <Compile Include="../StripeError.fs" Link="StripeError.fs" />
     <Compile Include="../RestApi.fs" Link="RestApi.fs" />
-    <!-- Core Stripe API requests - always included -->
-    <Compile Include="../StripeRequest.Core.fs" Link="StripeRequest.Core.fs" />
-    <!-- Optional resource groups - set FunStripeExclude<Group>=true to exclude -->
-    <Compile Include="../StripeRequest.Connect.fs" Link="StripeRequest.Connect.fs" Condition="'$(FunStripeExcludeConnect)' != 'true'" />
-    <Compile Include="../StripeRequest.Billing.fs" Link="StripeRequest.Billing.fs" Condition="'$(FunStripeExcludeBilling)' != 'true'" />
-    <Compile Include="../StripeRequest.Checkout.fs" Link="StripeRequest.Checkout.fs" Condition="'$(FunStripeExcludeCheckout)' != 'true'" />
-    <Compile Include="../StripeRequest.FinancialConnections.fs" Link="StripeRequest.FinancialConnections.fs" Condition="'$(FunStripeExcludeFinancialConnections)' != 'true'" />
-    <Compile Include="../StripeRequest.Identity.fs" Link="StripeRequest.Identity.fs" Condition="'$(FunStripeExcludeIdentity)' != 'true'" />
-    <Compile Include="../StripeRequest.Issuing.fs" Link="StripeRequest.Issuing.fs" Condition="'$(FunStripeExcludeIssuing)' != 'true'" />
-    <Compile Include="../StripeRequest.PaymentLinks.fs" Link="StripeRequest.PaymentLinks.fs" Condition="'$(FunStripeExcludePaymentLinks)' != 'true'" />
-    <Compile Include="../StripeRequest.Radar.fs" Link="StripeRequest.Radar.fs" Condition="'$(FunStripeExcludeRadar)' != 'true'" />
-    <Compile Include="../StripeRequest.Reporting.fs" Link="StripeRequest.Reporting.fs" Condition="'$(FunStripeExcludeReporting)' != 'true'" />
-    <Compile Include="../StripeRequest.Sigma.fs" Link="StripeRequest.Sigma.fs" Condition="'$(FunStripeExcludeSigma)' != 'true'" />
-    <Compile Include="../StripeRequest.Terminal.fs" Link="StripeRequest.Terminal.fs" Condition="'$(FunStripeExcludeTerminal)' != 'true'" />
-    <Compile Include="../StripeRequest.TestHelpers.fs" Link="StripeRequest.TestHelpers.fs" Condition="'$(FunStripeExcludeTestHelpers)' != 'true'" />
-    <Compile Include="../StripeRequest.Treasury.fs" Link="StripeRequest.Treasury.fs" Condition="'$(FunStripeExcludeTreasury)' != 'true'" />
     <None Include="../../README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
+  <!-- Modular generated request files. Set FunStripeIncludeModularRequests=false to exclude. -->
+  <Import Project="../StripeRequest/StripeRequest.Modular.props" Condition="'$(FunStripeIncludeModularRequests)' != 'false'" />
   <ItemGroup>
     <PackageReference Update="FSharp.Core" />
     <PackageReference Include="FSharp.SystemTextJson" />

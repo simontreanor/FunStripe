@@ -33,6 +33,19 @@ type TestHelpersTestClock =
         StatusDetails: BillingClocksResourceStatusDetailsStatusDetails
     }
 
+type TestHelpersTestClock with
+    static member New(created: DateTime, deletesAfter: DateTime, frozenTime: DateTime, id: string, livemode: bool, name: string option, status: TestHelpersTestClockStatus, statusDetails: BillingClocksResourceStatusDetailsStatusDetails) =
+        {
+            Created = created
+            DeletesAfter = deletesAfter
+            FrozenTime = frozenTime
+            Id = id
+            Livemode = livemode
+            Name = name
+            Status = status
+            StatusDetails = statusDetails
+        }
+
 module TestHelpersTestClock =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "test_helpers.test_clock"
@@ -40,17 +53,47 @@ module TestHelpersTestClock =
 /// Occurs whenever a test clock transitions to a ready status.
 type TestHelpersTestClockReady = { Object: TestHelpersTestClock }
 
+type TestHelpersTestClockReady with
+    static member New(object: TestHelpersTestClock) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a test clock fails to advance its frozen time.
 type TestHelpersTestClockInternalFailure = { Object: TestHelpersTestClock }
+
+type TestHelpersTestClockInternalFailure with
+    static member New(object: TestHelpersTestClock) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever a test clock is deleted.
 type TestHelpersTestClockDeleted = { Object: TestHelpersTestClock }
 
+type TestHelpersTestClockDeleted with
+    static member New(object: TestHelpersTestClock) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a test clock is created.
 type TestHelpersTestClockCreated = { Object: TestHelpersTestClock }
 
+type TestHelpersTestClockCreated with
+    static member New(object: TestHelpersTestClock) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a test clock starts advancing.
 type TestHelpersTestClockAdvancing = { Object: TestHelpersTestClock }
+
+type TestHelpersTestClockAdvancing with
+    static member New(object: TestHelpersTestClock) =
+        {
+            Object = object
+        }
 
 type DeletedTestHelpersTestClock =
     {
@@ -59,6 +102,13 @@ type DeletedTestHelpersTestClock =
         /// Unique identifier for the object.
         Id: string
     }
+
+type DeletedTestHelpersTestClock with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedTestHelpersTestClock =
     ///String representing the object's type. Objects of the same type share the same value.

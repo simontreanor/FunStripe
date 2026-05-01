@@ -16,6 +16,13 @@ type DeletedSubscriptionItem =
         Id: string
     }
 
+type DeletedSubscriptionItem with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
 module DeletedSubscriptionItem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "subscription_item"
@@ -25,6 +32,12 @@ type SubscriptionItemBillingThresholds =
         /// Usage threshold that triggers the subscription to create an invoice
         UsageGte: int option
     }
+
+type SubscriptionItemBillingThresholds with
+    static member New(usageGte: int option) =
+        {
+            UsageGte = usageGte
+        }
 
 /// Subscription items allow you to create customer subscriptions with more than
 /// one plan, making it easy to represent complex billing relationships.
@@ -54,6 +67,23 @@ type SubscriptionItem =
         TaxRates: TaxRate list option
     }
 
+type SubscriptionItem with
+    static member New(billingThresholds: SubscriptionItemBillingThresholds option, created: int, currentPeriodEnd: DateTime, currentPeriodStart: DateTime, discounts: StripeId<Markers.Discount> list, id: string, metadata: Map<string, string>, plan: Plan, price: Price, subscription: string, taxRates: TaxRate list option, ?quantity: int) =
+        {
+            BillingThresholds = billingThresholds
+            Created = created
+            CurrentPeriodEnd = currentPeriodEnd
+            CurrentPeriodStart = currentPeriodStart
+            Discounts = discounts
+            Id = id
+            Metadata = metadata
+            Plan = plan
+            Price = price
+            Subscription = subscription
+            TaxRates = taxRates
+            Quantity = quantity
+        }
+
 module SubscriptionItem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "subscription_item"
@@ -68,6 +98,14 @@ type SubscriptionItems =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+type SubscriptionItems with
+    static member New(data: SubscriptionItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module SubscriptionItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.

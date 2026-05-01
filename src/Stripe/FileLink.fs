@@ -28,6 +28,19 @@ type FileLink =
         Url: string option
     }
 
+type FileLink with
+    static member New(created: DateTime, expired: bool, expiresAt: DateTime option, file: StripeId<Markers.File>, id: string, livemode: bool, metadata: Map<string, string>, url: string option) =
+        {
+            Created = created
+            Expired = expired
+            ExpiresAt = expiresAt
+            File = file
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Url = url
+        }
+
 module FileLink =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "file_link"
@@ -42,6 +55,14 @@ type FileLinks =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+type FileLinks with
+    static member New(data: FileLink list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module FileLinks =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.

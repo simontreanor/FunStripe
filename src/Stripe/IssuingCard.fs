@@ -925,6 +925,14 @@ type IssuingCardSpendingLimit =
         Interval: IssuingCardSpendingLimitInterval
     }
 
+type IssuingCardSpendingLimit with
+    static member New(amount: int, categories: IssuingCardSpendingLimitCategories list option, interval: IssuingCardSpendingLimitInterval) =
+        {
+            Amount = amount
+            Categories = categories
+            Interval = interval
+        }
+
 type IssuingCardAuthorizationControls =
     {
         /// Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.
@@ -944,6 +952,19 @@ type IssuingCardAuthorizationControls =
         /// Currency of the amounts within `spending_limits`. Always the same as the currency of the card.
         SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
     }
+
+type IssuingCardAuthorizationControls with
+    static member New(allowedCardPresences: IssuingCardAuthorizationControlsAllowedCardPresences list option, allowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option, allowedMerchantCountries: string list option, blockedCardPresences: IssuingCardAuthorizationControlsBlockedCardPresences list option, blockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option, blockedMerchantCountries: string list option, spendingLimits: IssuingCardSpendingLimit list option, spendingLimitsCurrency: IsoTypes.IsoCurrencyCode option) =
+        {
+            AllowedCardPresences = allowedCardPresences
+            AllowedCategories = allowedCategories
+            AllowedMerchantCountries = allowedMerchantCountries
+            BlockedCardPresences = blockedCardPresences
+            BlockedCategories = blockedCategories
+            BlockedMerchantCountries = blockedMerchantCountries
+            SpendingLimits = spendingLimits
+            SpendingLimitsCurrency = spendingLimitsCurrency
+        }
 
 [<Struct>]
 type IssuingCardCancellationReason =
@@ -967,14 +988,33 @@ type IssuingCardFraudWarning =
         Type: IssuingCardFraudWarningType option
     }
 
+type IssuingCardFraudWarning with
+    static member New(startedAt: DateTime option, ``type``: IssuingCardFraudWarningType option) =
+        {
+            StartedAt = startedAt
+            Type = ``type``
+        }
+
 type IssuingCardLifecycleConditions =
     {
         /// The card is automatically cancelled when it makes this number of non-zero payment authorizations and transactions. The count includes penny authorizations, but doesn't include non-payment actions, such as authorization advice.
         PaymentCount: int
     }
 
+type IssuingCardLifecycleConditions with
+    static member New(paymentCount: int) =
+        {
+            PaymentCount = paymentCount
+        }
+
 type IssuingCardLifecycleControls =
     { CancelAfter: IssuingCardLifecycleConditions }
+
+type IssuingCardLifecycleControls with
+    static member New(cancelAfter: IssuingCardLifecycleConditions) =
+        {
+            CancelAfter = cancelAfter
+        }
 
 [<Struct>]
 type IssuingCardReplacementReason =
@@ -1006,6 +1046,14 @@ type IssuingCardShippingAddressValidation =
         Result: IssuingCardShippingAddressValidationResult option
     }
 
+type IssuingCardShippingAddressValidation with
+    static member New(mode: IssuingCardShippingAddressValidationMode, normalizedAddress: Address option, result: IssuingCardShippingAddressValidationResult option) =
+        {
+            Mode = mode
+            NormalizedAddress = normalizedAddress
+            Result = result
+        }
+
 [<Struct>]
 type IssuingCardShippingCarrier =
     | Dhl
@@ -1018,6 +1066,12 @@ type IssuingCardShippingCustoms =
         /// A registration number used for customs in Europe. See [https://www.gov.uk/eori](https://www.gov.uk/eori) for the UK and [https://ec.europa.eu/taxation_customs/business/customs-procedures-import-and-export/customs-procedures/economic-operators-registration-and-identification-number-eori_en](https://ec.europa.eu/taxation_customs/business/customs-procedures-import-and-export/customs-procedures/economic-operators-registration-and-identification-number-eori_en) for the EU.
         EoriNumber: string option
     }
+
+type IssuingCardShippingCustoms with
+    static member New(eoriNumber: string option) =
+        {
+            EoriNumber = eoriNumber
+        }
 
 [<Struct>]
 type IssuingCardShippingService =
@@ -1068,6 +1122,24 @@ type IssuingCardShipping =
         Type: IssuingCardShippingType
     }
 
+type IssuingCardShipping with
+    static member New(address: Address, addressValidation: IssuingCardShippingAddressValidation option, carrier: IssuingCardShippingCarrier option, customs: IssuingCardShippingCustoms option, eta: DateTime option, name: string, phoneNumber: string option, requireSignature: bool option, service: IssuingCardShippingService, status: IssuingCardShippingStatus option, trackingNumber: string option, trackingUrl: string option, ``type``: IssuingCardShippingType) =
+        {
+            Address = address
+            AddressValidation = addressValidation
+            Carrier = carrier
+            Customs = customs
+            Eta = eta
+            Name = name
+            PhoneNumber = phoneNumber
+            RequireSignature = requireSignature
+            Service = service
+            Status = status
+            TrackingNumber = trackingNumber
+            TrackingUrl = trackingUrl
+            Type = ``type``
+        }
+
 [<Struct>]
 type IssuingCardStatus =
     | Active
@@ -1093,6 +1165,13 @@ type IssuingCardApplePay =
         IneligibleReason: IssuingCardApplePayIneligibleReason option
     }
 
+type IssuingCardApplePay with
+    static member New(eligible: bool, ineligibleReason: IssuingCardApplePayIneligibleReason option) =
+        {
+            Eligible = eligible
+            IneligibleReason = ineligibleReason
+        }
+
 [<Struct>]
 type IssuingCardGooglePayIneligibleReason =
     | MissingAgreement
@@ -1107,6 +1186,13 @@ type IssuingCardGooglePay =
         IneligibleReason: IssuingCardGooglePayIneligibleReason option
     }
 
+type IssuingCardGooglePay with
+    static member New(eligible: bool, ineligibleReason: IssuingCardGooglePayIneligibleReason option) =
+        {
+            Eligible = eligible
+            IneligibleReason = ineligibleReason
+        }
+
 type IssuingCardWallets =
     {
         ApplePay: IssuingCardApplePay
@@ -1114,6 +1200,14 @@ type IssuingCardWallets =
         /// Unique identifier for a card used with digital wallets
         PrimaryAccountIdentifier: string option
     }
+
+type IssuingCardWallets with
+    static member New(applePay: IssuingCardApplePay, googlePay: IssuingCardGooglePay, primaryAccountIdentifier: string option) =
+        {
+            ApplePay = applePay
+            GooglePay = googlePay
+            PrimaryAccountIdentifier = primaryAccountIdentifier
+        }
 
 /// You can [create physical or virtual cards](https://docs.stripe.com/issuing) that are issued to cardholders.
 type IssuingCard =
@@ -1171,6 +1265,37 @@ type IssuingCard =
         Wallets: IssuingCardWallets option
     }
 
+type IssuingCard with
+    static member New(brand: string, cancellationReason: IssuingCardCancellationReason option, cardholder: IssuingCardholder, created: DateTime, currency: IsoTypes.IsoCurrencyCode, expMonth: int, expYear: int, id: string, last4: string, latestFraudWarning: IssuingCardFraudWarning option, lifecycleControls: IssuingCardLifecycleControls option, livemode: bool, metadata: Map<string, string>, personalizationDesign: StripeId<Markers.IssuingPersonalizationDesign> option, replacedBy: StripeId<Markers.IssuingCard> option, replacementFor: StripeId<Markers.IssuingCard> option, replacementReason: IssuingCardReplacementReason option, secondLine: string option, shipping: IssuingCardShipping option, spendingControls: IssuingCardAuthorizationControls, status: IssuingCardStatus, ``type``: IssuingCardType, wallets: IssuingCardWallets option, ?cvc: string, ?financialAccount: string option, ?number: string) =
+        {
+            Brand = brand
+            CancellationReason = cancellationReason
+            Cardholder = cardholder
+            Created = created
+            Currency = currency
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Id = id
+            Last4 = last4
+            LatestFraudWarning = latestFraudWarning
+            LifecycleControls = lifecycleControls
+            Livemode = livemode
+            Metadata = metadata
+            PersonalizationDesign = personalizationDesign
+            ReplacedBy = replacedBy
+            ReplacementFor = replacementFor
+            ReplacementReason = replacementReason
+            SecondLine = secondLine
+            Shipping = shipping
+            SpendingControls = spendingControls
+            Status = status
+            Type = ``type``
+            Wallets = wallets
+            Cvc = cvc
+            FinancialAccount = financialAccount |> Option.flatten
+            Number = number
+        }
+
 module IssuingCard =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "issuing.card"
@@ -1178,6 +1303,18 @@ module IssuingCard =
 /// Occurs whenever a card is updated.
 type IssuingCardUpdated = { Object: IssuingCard }
 
+type IssuingCardUpdated with
+    static member New(object: IssuingCard) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a card is created.
 type IssuingCardCreated = { Object: IssuingCard }
+
+type IssuingCardCreated with
+    static member New(object: IssuingCard) =
+        {
+            Object = object
+        }
 

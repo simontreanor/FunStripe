@@ -27,6 +27,16 @@ module TerminalConfigurations =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?isAccountDefault: bool, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                IsAccountDefault = isAccountDefault
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -52,6 +62,12 @@ module TerminalConfigurations =
             Splashscreen: Choice<string,string> option
         }
 
+    type Create'BbposWisepad3 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
     module Create'BbposWisepad3 =
         let create
             (
@@ -68,6 +84,12 @@ module TerminalConfigurations =
             [<Config.Form>]
             Splashscreen: Choice<string,string> option
         }
+
+    type Create'BbposWiseposE with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
 
     module Create'BbposWiseposE =
         let create
@@ -86,6 +108,12 @@ module TerminalConfigurations =
             Enabled: bool option
         }
 
+    type Create'CellularCellular with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
+
     module Create'CellularCellular =
         let create
             (
@@ -102,6 +130,12 @@ module TerminalConfigurations =
             [<Config.Form>]
             Enabled: bool option
         }
+
+    type Create'OfflineOffline with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
 
     module Create'OfflineOffline =
         let create
@@ -123,6 +157,13 @@ module TerminalConfigurations =
             StartHour: int option
         }
 
+    type Create'RebootWindow with
+        static member New(?endHour: int, ?startHour: int) =
+            {
+                EndHour = endHour
+                StartHour = startHour
+            }
+
     module Create'RebootWindow =
         let create
             (
@@ -142,6 +183,12 @@ module TerminalConfigurations =
             Splashscreen: Choice<string,string> option
         }
 
+    type Create'StripeS700 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
     module Create'StripeS700 =
         let create
             (
@@ -158,6 +205,12 @@ module TerminalConfigurations =
             [<Config.Form>]
             Splashscreen: Choice<string,string> option
         }
+
+    type Create'StripeS710 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
 
     module Create'StripeS710 =
         let create
@@ -181,6 +234,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingAed with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingAed =
         let create
@@ -209,6 +270,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Create'TippingTippingAud with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Create'TippingTippingAud =
         let create
             (
@@ -235,6 +304,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingCad with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingCad =
         let create
@@ -263,6 +340,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Create'TippingTippingChf with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Create'TippingTippingChf =
         let create
             (
@@ -289,6 +374,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingCzk with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingCzk =
         let create
@@ -317,6 +410,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Create'TippingTippingDkk with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Create'TippingTippingDkk =
         let create
             (
@@ -343,6 +444,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingEur with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingEur =
         let create
@@ -371,6 +480,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Create'TippingTippingGbp with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Create'TippingTippingGbp =
         let create
             (
@@ -397,6 +514,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingGip with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingGip =
         let create
@@ -425,6 +550,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Create'TippingTippingHkd with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Create'TippingTippingHkd =
         let create
             (
@@ -451,6 +584,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingHuf with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingHuf =
         let create
@@ -479,6 +620,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Create'TippingTippingJpy with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Create'TippingTippingJpy =
         let create
             (
@@ -505,6 +654,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingMxn with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingMxn =
         let create
@@ -533,6 +690,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Create'TippingTippingMyr with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Create'TippingTippingMyr =
         let create
             (
@@ -559,6 +724,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingNok with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingNok =
         let create
@@ -587,6 +760,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Create'TippingTippingNzd with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Create'TippingTippingNzd =
         let create
             (
@@ -613,6 +794,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingPln with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingPln =
         let create
@@ -641,6 +830,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Create'TippingTippingRon with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Create'TippingTippingRon =
         let create
             (
@@ -667,6 +864,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingSek with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingSek =
         let create
@@ -695,6 +900,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Create'TippingTippingSgd with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Create'TippingTippingSgd =
         let create
             (
@@ -721,6 +934,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Create'TippingTippingUsd with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Create'TippingTippingUsd =
         let create
@@ -803,6 +1024,32 @@ module TerminalConfigurations =
             Usd: Create'TippingTippingUsd option
         }
 
+    type Create'TippingTipping with
+        static member New(?aed: Create'TippingTippingAed, ?aud: Create'TippingTippingAud, ?cad: Create'TippingTippingCad, ?chf: Create'TippingTippingChf, ?czk: Create'TippingTippingCzk, ?dkk: Create'TippingTippingDkk, ?eur: Create'TippingTippingEur, ?gbp: Create'TippingTippingGbp, ?gip: Create'TippingTippingGip, ?hkd: Create'TippingTippingHkd, ?huf: Create'TippingTippingHuf, ?jpy: Create'TippingTippingJpy, ?mxn: Create'TippingTippingMxn, ?myr: Create'TippingTippingMyr, ?nok: Create'TippingTippingNok, ?nzd: Create'TippingTippingNzd, ?pln: Create'TippingTippingPln, ?ron: Create'TippingTippingRon, ?sek: Create'TippingTippingSek, ?sgd: Create'TippingTippingSgd, ?usd: Create'TippingTippingUsd) =
+            {
+                Aed = aed
+                Aud = aud
+                Cad = cad
+                Chf = chf
+                Czk = czk
+                Dkk = dkk
+                Eur = eur
+                Gbp = gbp
+                Gip = gip
+                Hkd = hkd
+                Huf = huf
+                Jpy = jpy
+                Mxn = mxn
+                Myr = myr
+                Nok = nok
+                Nzd = nzd
+                Pln = pln
+                Ron = ron
+                Sek = sek
+                Sgd = sgd
+                Usd = usd
+            }
+
     module Create'TippingTipping =
         let create
             (
@@ -860,6 +1107,12 @@ module TerminalConfigurations =
             Splashscreen: Choice<string,string> option
         }
 
+    type Create'VerifoneP400 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
     module Create'VerifoneP400 =
         let create
             (
@@ -885,6 +1138,15 @@ module TerminalConfigurations =
             [<Config.Form>]
             Username: string option
         }
+
+    type Create'WifiWifiEnterpriseEapPeap with
+        static member New(?caCertificateFile: string, ?password: string, ?ssid: string, ?username: string) =
+            {
+                CaCertificateFile = caCertificateFile
+                Password = password
+                Ssid = ssid
+                Username = username
+            }
 
     module Create'WifiWifiEnterpriseEapPeap =
         let create
@@ -921,6 +1183,16 @@ module TerminalConfigurations =
             Ssid: string option
         }
 
+    type Create'WifiWifiEnterpriseEapTls with
+        static member New(?caCertificateFile: string, ?clientCertificateFile: string, ?privateKeyFile: string, ?privateKeyFilePassword: string, ?ssid: string) =
+            {
+                CaCertificateFile = caCertificateFile
+                ClientCertificateFile = clientCertificateFile
+                PrivateKeyFile = privateKeyFile
+                PrivateKeyFilePassword = privateKeyFilePassword
+                Ssid = ssid
+            }
+
     module Create'WifiWifiEnterpriseEapTls =
         let create
             (
@@ -948,6 +1220,13 @@ module TerminalConfigurations =
             [<Config.Form>]
             Ssid: string option
         }
+
+    type Create'WifiWifiPersonalPsk with
+        static member New(?password: string, ?ssid: string) =
+            {
+                Password = password
+                Ssid = ssid
+            }
 
     module Create'WifiWifiPersonalPsk =
         let create
@@ -982,20 +1261,29 @@ module TerminalConfigurations =
             Type: Create'WifiWifiType option
         }
 
+    type Create'WifiWifi with
+        static member New(?enterpriseEapPeap: Create'WifiWifiEnterpriseEapPeap, ?enterpriseEapTls: Create'WifiWifiEnterpriseEapTls, ?personalPsk: Create'WifiWifiPersonalPsk, ?type': Create'WifiWifiType) =
+            {
+                EnterpriseEapPeap = enterpriseEapPeap
+                EnterpriseEapTls = enterpriseEapTls
+                PersonalPsk = personalPsk
+                Type = type'
+            }
+
     module Create'WifiWifi =
         let create
             (
                 enterpriseEapPeap: Create'WifiWifiEnterpriseEapPeap option,
                 enterpriseEapTls: Create'WifiWifiEnterpriseEapTls option,
                 personalPsk: Create'WifiWifiPersonalPsk option,
-                ``type``: Create'WifiWifiType option
+                type': Create'WifiWifiType option
             ) : Create'WifiWifi
             =
             {
               EnterpriseEapPeap = enterpriseEapPeap
               EnterpriseEapTls = enterpriseEapTls
               PersonalPsk = personalPsk
-              Type = ``type``
+              Type = type'
             }
 
     type CreateOptions =
@@ -1038,6 +1326,23 @@ module TerminalConfigurations =
             Wifi: Choice<Create'WifiWifi,string> option
         }
 
+    type CreateOptions with
+        static member New(?bbposWisepad3: Create'BbposWisepad3, ?bbposWiseposE: Create'BbposWiseposE, ?cellular: Choice<Create'CellularCellular,string>, ?expand: string list, ?name: string, ?offline: Choice<Create'OfflineOffline,string>, ?rebootWindow: Create'RebootWindow, ?stripeS700: Create'StripeS700, ?stripeS710: Create'StripeS710, ?tipping: Choice<Create'TippingTipping,string>, ?verifoneP400: Create'VerifoneP400, ?wifi: Choice<Create'WifiWifi,string>) =
+            {
+                BbposWisepad3 = bbposWisepad3
+                BbposWiseposE = bbposWiseposE
+                Cellular = cellular
+                Expand = expand
+                Name = name
+                Offline = offline
+                RebootWindow = rebootWindow
+                StripeS700 = stripeS700
+                StripeS710 = stripeS710
+                Tipping = tipping
+                VerifoneP400 = verifoneP400
+                Wifi = wifi
+            }
+
     module CreateOptions =
         let create
             (
@@ -1074,6 +1379,12 @@ module TerminalConfigurations =
         { [<Config.Path>]
           Configuration: string }
 
+    type DeleteOptions with
+        static member New(configuration: string) =
+            {
+                Configuration = configuration
+            }
+
     module DeleteOptions =
         let create
             (
@@ -1093,6 +1404,13 @@ module TerminalConfigurations =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(configuration: string, ?expand: string list) =
+            {
+                Configuration = configuration
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -1111,6 +1429,12 @@ module TerminalConfigurations =
             Splashscreen: Choice<string,string> option
         }
 
+    type Update'BbposWisepad3BbposWisePad3 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
     module Update'BbposWisepad3BbposWisePad3 =
         let create
             (
@@ -1127,6 +1451,12 @@ module TerminalConfigurations =
             [<Config.Form>]
             Splashscreen: Choice<string,string> option
         }
+
+    type Update'BbposWiseposEBbposWisePose with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
 
     module Update'BbposWiseposEBbposWisePose =
         let create
@@ -1145,6 +1475,12 @@ module TerminalConfigurations =
             Enabled: bool option
         }
 
+    type Update'CellularCellular with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
+
     module Update'CellularCellular =
         let create
             (
@@ -1161,6 +1497,12 @@ module TerminalConfigurations =
             [<Config.Form>]
             Enabled: bool option
         }
+
+    type Update'OfflineOffline with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
 
     module Update'OfflineOffline =
         let create
@@ -1182,6 +1524,13 @@ module TerminalConfigurations =
             StartHour: int option
         }
 
+    type Update'RebootWindowRebootWindow with
+        static member New(?endHour: int, ?startHour: int) =
+            {
+                EndHour = endHour
+                StartHour = startHour
+            }
+
     module Update'RebootWindowRebootWindow =
         let create
             (
@@ -1201,6 +1550,12 @@ module TerminalConfigurations =
             Splashscreen: Choice<string,string> option
         }
 
+    type Update'StripeS700StripeS700 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
     module Update'StripeS700StripeS700 =
         let create
             (
@@ -1217,6 +1572,12 @@ module TerminalConfigurations =
             [<Config.Form>]
             Splashscreen: Choice<string,string> option
         }
+
+    type Update'StripeS710StripeS710 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
 
     module Update'StripeS710StripeS710 =
         let create
@@ -1240,6 +1601,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingAed with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingAed =
         let create
@@ -1268,6 +1637,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Update'TippingTippingAud with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Update'TippingTippingAud =
         let create
             (
@@ -1294,6 +1671,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingCad with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingCad =
         let create
@@ -1322,6 +1707,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Update'TippingTippingChf with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Update'TippingTippingChf =
         let create
             (
@@ -1348,6 +1741,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingCzk with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingCzk =
         let create
@@ -1376,6 +1777,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Update'TippingTippingDkk with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Update'TippingTippingDkk =
         let create
             (
@@ -1402,6 +1811,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingEur with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingEur =
         let create
@@ -1430,6 +1847,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Update'TippingTippingGbp with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Update'TippingTippingGbp =
         let create
             (
@@ -1456,6 +1881,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingGip with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingGip =
         let create
@@ -1484,6 +1917,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Update'TippingTippingHkd with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Update'TippingTippingHkd =
         let create
             (
@@ -1510,6 +1951,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingHuf with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingHuf =
         let create
@@ -1538,6 +1987,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Update'TippingTippingJpy with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Update'TippingTippingJpy =
         let create
             (
@@ -1564,6 +2021,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingMxn with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingMxn =
         let create
@@ -1592,6 +2057,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Update'TippingTippingMyr with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Update'TippingTippingMyr =
         let create
             (
@@ -1618,6 +2091,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingNok with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingNok =
         let create
@@ -1646,6 +2127,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Update'TippingTippingNzd with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Update'TippingTippingNzd =
         let create
             (
@@ -1672,6 +2161,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingPln with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingPln =
         let create
@@ -1700,6 +2197,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Update'TippingTippingRon with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Update'TippingTippingRon =
         let create
             (
@@ -1726,6 +2231,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingSek with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingSek =
         let create
@@ -1754,6 +2267,14 @@ module TerminalConfigurations =
             SmartTipThreshold: int option
         }
 
+    type Update'TippingTippingSgd with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
+
     module Update'TippingTippingSgd =
         let create
             (
@@ -1780,6 +2301,14 @@ module TerminalConfigurations =
             [<Config.Form>]
             SmartTipThreshold: int option
         }
+
+    type Update'TippingTippingUsd with
+        static member New(?fixedAmounts: int list, ?percentages: int list, ?smartTipThreshold: int) =
+            {
+                FixedAmounts = fixedAmounts
+                Percentages = percentages
+                SmartTipThreshold = smartTipThreshold
+            }
 
     module Update'TippingTippingUsd =
         let create
@@ -1862,6 +2391,32 @@ module TerminalConfigurations =
             Usd: Update'TippingTippingUsd option
         }
 
+    type Update'TippingTipping with
+        static member New(?aed: Update'TippingTippingAed, ?aud: Update'TippingTippingAud, ?cad: Update'TippingTippingCad, ?chf: Update'TippingTippingChf, ?czk: Update'TippingTippingCzk, ?dkk: Update'TippingTippingDkk, ?eur: Update'TippingTippingEur, ?gbp: Update'TippingTippingGbp, ?gip: Update'TippingTippingGip, ?hkd: Update'TippingTippingHkd, ?huf: Update'TippingTippingHuf, ?jpy: Update'TippingTippingJpy, ?mxn: Update'TippingTippingMxn, ?myr: Update'TippingTippingMyr, ?nok: Update'TippingTippingNok, ?nzd: Update'TippingTippingNzd, ?pln: Update'TippingTippingPln, ?ron: Update'TippingTippingRon, ?sek: Update'TippingTippingSek, ?sgd: Update'TippingTippingSgd, ?usd: Update'TippingTippingUsd) =
+            {
+                Aed = aed
+                Aud = aud
+                Cad = cad
+                Chf = chf
+                Czk = czk
+                Dkk = dkk
+                Eur = eur
+                Gbp = gbp
+                Gip = gip
+                Hkd = hkd
+                Huf = huf
+                Jpy = jpy
+                Mxn = mxn
+                Myr = myr
+                Nok = nok
+                Nzd = nzd
+                Pln = pln
+                Ron = ron
+                Sek = sek
+                Sgd = sgd
+                Usd = usd
+            }
+
     module Update'TippingTipping =
         let create
             (
@@ -1919,6 +2474,12 @@ module TerminalConfigurations =
             Splashscreen: Choice<string,string> option
         }
 
+    type Update'VerifoneP400VerifoneP400 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
     module Update'VerifoneP400VerifoneP400 =
         let create
             (
@@ -1944,6 +2505,15 @@ module TerminalConfigurations =
             [<Config.Form>]
             Username: string option
         }
+
+    type Update'WifiWifiEnterpriseEapPeap with
+        static member New(?caCertificateFile: string, ?password: string, ?ssid: string, ?username: string) =
+            {
+                CaCertificateFile = caCertificateFile
+                Password = password
+                Ssid = ssid
+                Username = username
+            }
 
     module Update'WifiWifiEnterpriseEapPeap =
         let create
@@ -1980,6 +2550,16 @@ module TerminalConfigurations =
             Ssid: string option
         }
 
+    type Update'WifiWifiEnterpriseEapTls with
+        static member New(?caCertificateFile: string, ?clientCertificateFile: string, ?privateKeyFile: string, ?privateKeyFilePassword: string, ?ssid: string) =
+            {
+                CaCertificateFile = caCertificateFile
+                ClientCertificateFile = clientCertificateFile
+                PrivateKeyFile = privateKeyFile
+                PrivateKeyFilePassword = privateKeyFilePassword
+                Ssid = ssid
+            }
+
     module Update'WifiWifiEnterpriseEapTls =
         let create
             (
@@ -2007,6 +2587,13 @@ module TerminalConfigurations =
             [<Config.Form>]
             Ssid: string option
         }
+
+    type Update'WifiWifiPersonalPsk with
+        static member New(?password: string, ?ssid: string) =
+            {
+                Password = password
+                Ssid = ssid
+            }
 
     module Update'WifiWifiPersonalPsk =
         let create
@@ -2041,20 +2628,29 @@ module TerminalConfigurations =
             Type: Update'WifiWifiType option
         }
 
+    type Update'WifiWifi with
+        static member New(?enterpriseEapPeap: Update'WifiWifiEnterpriseEapPeap, ?enterpriseEapTls: Update'WifiWifiEnterpriseEapTls, ?personalPsk: Update'WifiWifiPersonalPsk, ?type': Update'WifiWifiType) =
+            {
+                EnterpriseEapPeap = enterpriseEapPeap
+                EnterpriseEapTls = enterpriseEapTls
+                PersonalPsk = personalPsk
+                Type = type'
+            }
+
     module Update'WifiWifi =
         let create
             (
                 enterpriseEapPeap: Update'WifiWifiEnterpriseEapPeap option,
                 enterpriseEapTls: Update'WifiWifiEnterpriseEapTls option,
                 personalPsk: Update'WifiWifiPersonalPsk option,
-                ``type``: Update'WifiWifiType option
+                type': Update'WifiWifiType option
             ) : Update'WifiWifi
             =
             {
               EnterpriseEapPeap = enterpriseEapPeap
               EnterpriseEapTls = enterpriseEapTls
               PersonalPsk = personalPsk
-              Type = ``type``
+              Type = type'
             }
 
     type UpdateOptions =
@@ -2098,6 +2694,24 @@ module TerminalConfigurations =
             [<Config.Form>]
             Wifi: Choice<Update'WifiWifi,string> option
         }
+
+    type UpdateOptions with
+        static member New(configuration: string, ?bbposWisepad3: Choice<Update'BbposWisepad3BbposWisePad3,string>, ?bbposWiseposE: Choice<Update'BbposWiseposEBbposWisePose,string>, ?cellular: Choice<Update'CellularCellular,string>, ?expand: string list, ?name: string, ?offline: Choice<Update'OfflineOffline,string>, ?rebootWindow: Choice<Update'RebootWindowRebootWindow,string>, ?stripeS700: Choice<Update'StripeS700StripeS700,string>, ?stripeS710: Choice<Update'StripeS710StripeS710,string>, ?tipping: Choice<Update'TippingTipping,string>, ?verifoneP400: Choice<Update'VerifoneP400VerifoneP400,string>, ?wifi: Choice<Update'WifiWifi,string>) =
+            {
+                Configuration = configuration
+                BbposWisepad3 = bbposWisepad3
+                BbposWiseposE = bbposWiseposE
+                Cellular = cellular
+                Expand = expand
+                Name = name
+                Offline = offline
+                RebootWindow = rebootWindow
+                StripeS700 = stripeS700
+                StripeS710 = stripeS710
+                Tipping = tipping
+                VerifoneP400 = verifoneP400
+                Wifi = wifi
+            }
 
     module UpdateOptions =
         let create
@@ -2160,6 +2774,13 @@ module TerminalConnectionTokens =
             Location: string option
         }
 
+    type CreateOptions with
+        static member New(?expand: string list, ?location: string) =
+            {
+                Expand = expand
+                Location = location
+            }
+
     module CreateOptions =
         let create
             (
@@ -2194,6 +2815,15 @@ module TerminalLocations =
             [<Config.Query>]
             StartingAfter: string option
         }
+
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
 
     module ListOptions =
         let create
@@ -2232,6 +2862,17 @@ module TerminalLocations =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'Address with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'Address =
         let create
@@ -2277,6 +2918,18 @@ module TerminalLocations =
             [<Config.Form>]
             Town: string option
         }
+
+    type Create'AddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Create'AddressKana =
         let create
@@ -2324,6 +2977,18 @@ module TerminalLocations =
             [<Config.Form>]
             Town: string option
         }
+
+    type Create'AddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Create'AddressKanji =
         let create
@@ -2381,6 +3046,21 @@ module TerminalLocations =
             Phone: string option
         }
 
+    type CreateOptions with
+        static member New(?address: Create'Address, ?addressKana: Create'AddressKana, ?addressKanji: Create'AddressKanji, ?configurationOverrides: string, ?displayName: string, ?displayNameKana: string, ?displayNameKanji: string, ?expand: string list, ?metadata: Map<string, string>, ?phone: string) =
+            {
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                ConfigurationOverrides = configurationOverrides
+                DisplayName = displayName
+                DisplayNameKana = displayNameKana
+                DisplayNameKanji = displayNameKanji
+                Expand = expand
+                Metadata = metadata
+                Phone = phone
+            }
+
     module CreateOptions =
         let create
             (
@@ -2413,6 +3093,12 @@ module TerminalLocations =
         { [<Config.Path>]
           Location: string }
 
+    type DeleteOptions with
+        static member New(location: string) =
+            {
+                Location = location
+            }
+
     module DeleteOptions =
         let create
             (
@@ -2431,6 +3117,13 @@ module TerminalLocations =
             [<Config.Path>]
             Location: string
         }
+
+    type RetrieveOptions with
+        static member New(location: string, ?expand: string list) =
+            {
+                Location = location
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -2464,6 +3157,17 @@ module TerminalLocations =
             [<Config.Form>]
             State: string option
         }
+
+    type Update'Address with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Update'Address =
         let create
@@ -2509,6 +3213,18 @@ module TerminalLocations =
             [<Config.Form>]
             Town: string option
         }
+
+    type Update'AddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Update'AddressKana =
         let create
@@ -2556,6 +3272,18 @@ module TerminalLocations =
             [<Config.Form>]
             Town: string option
         }
+
+    type Update'AddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Update'AddressKanji =
         let create
@@ -2614,6 +3342,22 @@ module TerminalLocations =
             [<Config.Form>]
             Phone: Choice<string,string> option
         }
+
+    type UpdateOptions with
+        static member New(location: string, ?address: Update'Address, ?addressKana: Update'AddressKana, ?addressKanji: Update'AddressKanji, ?configurationOverrides: Choice<string,string>, ?displayName: Choice<string,string>, ?displayNameKana: Choice<string,string>, ?displayNameKanji: Choice<string,string>, ?expand: string list, ?metadata: Map<string, string>, ?phone: Choice<string,string>) =
+            {
+                Location = location
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                ConfigurationOverrides = configurationOverrides
+                DisplayName = displayName
+                DisplayNameKana = displayNameKana
+                DisplayNameKanji = displayNameKanji
+                Expand = expand
+                Metadata = metadata
+                Phone = phone
+            }
 
     module UpdateOptions =
         let create
@@ -2675,6 +3419,13 @@ module TerminalOnboardingLinks =
             MerchantDisplayName: string option
         }
 
+    type Create'LinkOptionsAppleTermsAndConditions with
+        static member New(?allowRelinking: bool, ?merchantDisplayName: string) =
+            {
+                AllowRelinking = allowRelinking
+                MerchantDisplayName = merchantDisplayName
+            }
+
     module Create'LinkOptionsAppleTermsAndConditions =
         let create
             (
@@ -2693,6 +3444,12 @@ module TerminalOnboardingLinks =
             [<Config.Form>]
             AppleTermsAndConditions: Create'LinkOptionsAppleTermsAndConditions option
         }
+
+    type Create'LinkOptions with
+        static member New(?appleTermsAndConditions: Create'LinkOptionsAppleTermsAndConditions) =
+            {
+                AppleTermsAndConditions = appleTermsAndConditions
+            }
 
     module Create'LinkOptions =
         let create
@@ -2721,6 +3478,15 @@ module TerminalOnboardingLinks =
             [<Config.Form>]
             OnBehalfOf: string option
         }
+
+    type CreateOptions with
+        static member New(linkOptions: Create'LinkOptions, linkType: Create'LinkType, ?expand: string list, ?onBehalfOf: string) =
+            {
+                LinkOptions = linkOptions
+                LinkType = linkType
+                Expand = expand
+                OnBehalfOf = onBehalfOf
+            }
 
     module CreateOptions =
         let create
@@ -2771,6 +3537,19 @@ module TerminalReaders =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(?deviceType: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?location: string, ?serialNumber: string, ?startingAfter: string, ?status: string) =
+            {
+                DeviceType = deviceType
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                Location = location
+                SerialNumber = serialNumber
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -2814,6 +3593,16 @@ module TerminalReaders =
             RegistrationCode: string
         }
 
+    type CreateOptions with
+        static member New(registrationCode: string, ?expand: string list, ?label: string, ?location: string, ?metadata: Map<string, string>) =
+            {
+                RegistrationCode = registrationCode
+                Expand = expand
+                Label = label
+                Location = location
+                Metadata = metadata
+            }
+
     module CreateOptions =
         let create
             (
@@ -2831,6 +3620,12 @@ module TerminalReaders =
     type DeleteOptions =
         { [<Config.Path>]
           Reader: string }
+
+    type DeleteOptions with
+        static member New(reader: string) =
+            {
+                Reader = reader
+            }
 
     module DeleteOptions =
         let create
@@ -2850,6 +3645,13 @@ module TerminalReaders =
             [<Config.Path>]
             Reader: string
         }
+
+    type RetrieveOptions with
+        static member New(reader: string, ?expand: string list) =
+            {
+                Reader = reader
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -2876,6 +3678,15 @@ module TerminalReaders =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(reader: string, ?expand: string list, ?label: Choice<string,string>, ?metadata: Map<string, string>) =
+            {
+                Reader = reader
+                Expand = expand
+                Label = label
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -2928,6 +3739,13 @@ module TerminalReadersCancelAction =
             Expand: string list option
         }
 
+    type CancelActionOptions with
+        static member New(reader: string, ?expand: string list) =
+            {
+                Reader = reader
+                Expand = expand
+            }
+
     module CancelActionOptions =
         let create
             (
@@ -2962,6 +3780,15 @@ module TerminalReadersCollectInputs =
             Title: string option
         }
 
+    type CollectInputs'InputsCustomText with
+        static member New(?description: string, ?skipButton: string, ?submitButton: string, ?title: string) =
+            {
+                Description = description
+                SkipButton = skipButton
+                SubmitButton = submitButton
+                Title = title
+            }
+
     module CollectInputs'InputsCustomText =
         let create
             (
@@ -2995,6 +3822,14 @@ module TerminalReadersCollectInputs =
             Text: string option
         }
 
+    type CollectInputs'InputsSelectionChoices with
+        static member New(?id: string, ?style: CollectInputs'InputsSelectionChoicesStyle, ?text: string) =
+            {
+                Id = id
+                Style = style
+                Text = text
+            }
+
     module CollectInputs'InputsSelectionChoices =
         let create
             (
@@ -3015,6 +3850,12 @@ module TerminalReadersCollectInputs =
             [<Config.Form>]
             Choices: CollectInputs'InputsSelectionChoices list option
         }
+
+    type CollectInputs'InputsSelection with
+        static member New(?choices: CollectInputs'InputsSelectionChoices list) =
+            {
+                Choices = choices
+            }
 
     module CollectInputs'InputsSelection =
         let create
@@ -3042,6 +3883,14 @@ module TerminalReadersCollectInputs =
             [<Config.Form>]
             Title: string option
         }
+
+    type CollectInputs'InputsToggles with
+        static member New(?defaultValue: CollectInputs'InputsTogglesDefaultValue, ?description: string, ?title: string) =
+            {
+                DefaultValue = defaultValue
+                Description = description
+                Title = title
+            }
 
     module CollectInputs'InputsToggles =
         let create
@@ -3084,6 +3933,16 @@ module TerminalReadersCollectInputs =
             Type: CollectInputs'InputsType option
         }
 
+    type CollectInputs'Inputs with
+        static member New(?customText: CollectInputs'InputsCustomText, ?required: bool, ?selection: CollectInputs'InputsSelection, ?toggles: CollectInputs'InputsToggles list, ?type': CollectInputs'InputsType) =
+            {
+                CustomText = customText
+                Required = required
+                Selection = selection
+                Toggles = toggles
+                Type = type'
+            }
+
     module CollectInputs'Inputs =
         let create
             (
@@ -3091,7 +3950,7 @@ module TerminalReadersCollectInputs =
                 required: bool option,
                 selection: CollectInputs'InputsSelection option,
                 toggles: CollectInputs'InputsToggles list option,
-                ``type``: CollectInputs'InputsType option
+                type': CollectInputs'InputsType option
             ) : CollectInputs'Inputs
             =
             {
@@ -3099,7 +3958,7 @@ module TerminalReadersCollectInputs =
               Required = required
               Selection = selection
               Toggles = toggles
-              Type = ``type``
+              Type = type'
             }
 
     type CollectInputsOptions =
@@ -3116,6 +3975,15 @@ module TerminalReadersCollectInputs =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type CollectInputsOptions with
+        static member New(inputs: CollectInputs'Inputs list, reader: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Inputs = inputs
+                Reader = reader
+                Expand = expand
+                Metadata = metadata
+            }
 
     module CollectInputsOptions =
         let create
@@ -3150,6 +4018,12 @@ module TerminalReadersCollectPaymentMethod =
             AmountEligible: int option
         }
 
+    type CollectPaymentMethod'CollectConfigTipping with
+        static member New(?amountEligible: int) =
+            {
+                AmountEligible = amountEligible
+            }
+
     module CollectPaymentMethod'CollectConfigTipping =
         let create
             (
@@ -3175,6 +4049,15 @@ module TerminalReadersCollectPaymentMethod =
             [<Config.Form>]
             Tipping: CollectPaymentMethod'CollectConfigTipping option
         }
+
+    type CollectPaymentMethod'CollectConfig with
+        static member New(?allowRedisplay: CollectPaymentMethod'CollectConfigAllowRedisplay, ?enableCustomerCancellation: bool, ?skipTipping: bool, ?tipping: CollectPaymentMethod'CollectConfigTipping) =
+            {
+                AllowRedisplay = allowRedisplay
+                EnableCustomerCancellation = enableCustomerCancellation
+                SkipTipping = skipTipping
+                Tipping = tipping
+            }
 
     module CollectPaymentMethod'CollectConfig =
         let create
@@ -3207,6 +4090,15 @@ module TerminalReadersCollectPaymentMethod =
             PaymentIntent: string
         }
 
+    type CollectPaymentMethodOptions with
+        static member New(paymentIntent: string, reader: string, ?collectConfig: CollectPaymentMethod'CollectConfig, ?expand: string list) =
+            {
+                PaymentIntent = paymentIntent
+                Reader = reader
+                CollectConfig = collectConfig
+                Expand = expand
+            }
+
     module CollectPaymentMethodOptions =
         let create
             (
@@ -3235,6 +4127,12 @@ module TerminalReadersConfirmPaymentIntent =
             ReturnUrl: string option
         }
 
+    type ConfirmPaymentIntent'ConfirmConfig with
+        static member New(?returnUrl: string) =
+            {
+                ReturnUrl = returnUrl
+            }
+
     module ConfirmPaymentIntent'ConfirmConfig =
         let create
             (
@@ -3259,6 +4157,15 @@ module TerminalReadersConfirmPaymentIntent =
             [<Config.Form>]
             PaymentIntent: string
         }
+
+    type ConfirmPaymentIntentOptions with
+        static member New(paymentIntent: string, reader: string, ?confirmConfig: ConfirmPaymentIntent'ConfirmConfig, ?expand: string list) =
+            {
+                PaymentIntent = paymentIntent
+                Reader = reader
+                ConfirmConfig = confirmConfig
+                Expand = expand
+            }
 
     module ConfirmPaymentIntentOptions =
         let create
@@ -3293,6 +4200,12 @@ module TerminalReadersProcessPaymentIntent =
             AmountEligible: int option
         }
 
+    type ProcessPaymentIntent'ProcessConfigTipping with
+        static member New(?amountEligible: int) =
+            {
+                AmountEligible = amountEligible
+            }
+
     module ProcessPaymentIntent'ProcessConfigTipping =
         let create
             (
@@ -3321,6 +4234,16 @@ module TerminalReadersProcessPaymentIntent =
             [<Config.Form>]
             Tipping: ProcessPaymentIntent'ProcessConfigTipping option
         }
+
+    type ProcessPaymentIntent'ProcessConfig with
+        static member New(?allowRedisplay: ProcessPaymentIntent'ProcessConfigAllowRedisplay, ?enableCustomerCancellation: bool, ?returnUrl: string, ?skipTipping: bool, ?tipping: ProcessPaymentIntent'ProcessConfigTipping) =
+            {
+                AllowRedisplay = allowRedisplay
+                EnableCustomerCancellation = enableCustomerCancellation
+                ReturnUrl = returnUrl
+                SkipTipping = skipTipping
+                Tipping = tipping
+            }
 
     module ProcessPaymentIntent'ProcessConfig =
         let create
@@ -3355,6 +4278,15 @@ module TerminalReadersProcessPaymentIntent =
             ProcessConfig: ProcessPaymentIntent'ProcessConfig option
         }
 
+    type ProcessPaymentIntentOptions with
+        static member New(paymentIntent: string, reader: string, ?expand: string list, ?processConfig: ProcessPaymentIntent'ProcessConfig) =
+            {
+                PaymentIntent = paymentIntent
+                Reader = reader
+                Expand = expand
+                ProcessConfig = processConfig
+            }
+
     module ProcessPaymentIntentOptions =
         let create
             (
@@ -3388,6 +4320,12 @@ module TerminalReadersProcessSetupIntent =
             EnableCustomerCancellation: bool option
         }
 
+    type ProcessSetupIntent'ProcessConfig with
+        static member New(?enableCustomerCancellation: bool) =
+            {
+                EnableCustomerCancellation = enableCustomerCancellation
+            }
+
     module ProcessSetupIntent'ProcessConfig =
         let create
             (
@@ -3415,6 +4353,16 @@ module TerminalReadersProcessSetupIntent =
             [<Config.Form>]
             SetupIntent: string
         }
+
+    type ProcessSetupIntentOptions with
+        static member New(allowRedisplay: ProcessSetupIntent'AllowRedisplay, reader: string, setupIntent: string, ?expand: string list, ?processConfig: ProcessSetupIntent'ProcessConfig) =
+            {
+                AllowRedisplay = allowRedisplay
+                Reader = reader
+                SetupIntent = setupIntent
+                Expand = expand
+                ProcessConfig = processConfig
+            }
 
     module ProcessSetupIntentOptions =
         let create
@@ -3445,6 +4393,12 @@ module TerminalReadersRefundPayment =
             [<Config.Form>]
             EnableCustomerCancellation: bool option
         }
+
+    type RefundPayment'RefundPaymentConfig with
+        static member New(?enableCustomerCancellation: bool) =
+            {
+                EnableCustomerCancellation = enableCustomerCancellation
+            }
 
     module RefundPayment'RefundPaymentConfig =
         let create
@@ -3486,6 +4440,20 @@ module TerminalReadersRefundPayment =
             ReverseTransfer: bool option
         }
 
+    type RefundPaymentOptions with
+        static member New(reader: string, ?amount: int, ?charge: string, ?expand: string list, ?metadata: Map<string, string>, ?paymentIntent: string, ?refundApplicationFee: bool, ?refundPaymentConfig: RefundPayment'RefundPaymentConfig, ?reverseTransfer: bool) =
+            {
+                Reader = reader
+                Amount = amount
+                Charge = charge
+                Expand = expand
+                Metadata = metadata
+                PaymentIntent = paymentIntent
+                RefundApplicationFee = refundApplicationFee
+                RefundPaymentConfig = refundPaymentConfig
+                ReverseTransfer = reverseTransfer
+            }
+
     module RefundPaymentOptions =
         let create
             (
@@ -3524,6 +4492,14 @@ module TerminalReadersSetReaderDisplay =
             Quantity: int option
         }
 
+    type SetReaderDisplay'CartLineItems with
+        static member New(?amount: int, ?description: string, ?quantity: int) =
+            {
+                Amount = amount
+                Description = description
+                Quantity = quantity
+            }
+
     module SetReaderDisplay'CartLineItems =
         let create
             (
@@ -3553,6 +4529,15 @@ module TerminalReadersSetReaderDisplay =
             [<Config.Form>]
             Total: int option
         }
+
+    type SetReaderDisplay'Cart with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?lineItems: SetReaderDisplay'CartLineItems list, ?tax: int, ?total: int) =
+            {
+                Currency = currency
+                LineItems = lineItems
+                Tax = tax
+                Total = total
+            }
 
     module SetReaderDisplay'Cart =
         let create
@@ -3587,16 +4572,25 @@ module TerminalReadersSetReaderDisplay =
             Type: SetReaderDisplay'Type
         }
 
+    type SetReaderDisplayOptions with
+        static member New(reader: string, type': SetReaderDisplay'Type, ?cart: SetReaderDisplay'Cart, ?expand: string list) =
+            {
+                Reader = reader
+                Type = type'
+                Cart = cart
+                Expand = expand
+            }
+
     module SetReaderDisplayOptions =
         let create
             (
                 reader: string,
-                ``type``: SetReaderDisplay'Type
+                type': SetReaderDisplay'Type
             ) : SetReaderDisplayOptions
             =
             {
               Reader = reader
-              Type = ``type``
+              Type = type'
               Cart = None
               Expand = None
             }

@@ -17,6 +17,14 @@ type ApplicationFeeRefunds =
         Url: string
     }
 
+type ApplicationFeeRefunds with
+    static member New(data: FeeRefund list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
 module ApplicationFeeRefunds =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
@@ -35,6 +43,14 @@ type PlatformEarningFeeSource =
         /// Type of object that created the application fee.
         Type: PlatformEarningFeeSourceType
     }
+
+type PlatformEarningFeeSource with
+    static member New(``type``: PlatformEarningFeeSourceType, ?charge: string, ?payout: string) =
+        {
+            Type = ``type``
+            Charge = charge
+            Payout = payout
+        }
 
 type ApplicationFee =
     {
@@ -68,6 +84,25 @@ type ApplicationFee =
         Refunds: ApplicationFeeRefunds
     }
 
+type ApplicationFee with
+    static member New(account: StripeId<Markers.Account>, amount: int, amountRefunded: int, application: StripeId<Markers.Application>, balanceTransaction: StripeId<Markers.BalanceTransaction> option, charge: StripeId<Markers.Charge>, created: DateTime, currency: IsoTypes.IsoCurrencyCode, feeSource: PlatformEarningFeeSource option, id: string, livemode: bool, originatingTransaction: StripeId<Markers.Charge> option, refunded: bool, refunds: ApplicationFeeRefunds) =
+        {
+            Account = account
+            Amount = amount
+            AmountRefunded = amountRefunded
+            Application = application
+            BalanceTransaction = balanceTransaction
+            Charge = charge
+            Created = created
+            Currency = currency
+            FeeSource = feeSource
+            Id = id
+            Livemode = livemode
+            OriginatingTransaction = originatingTransaction
+            Refunded = refunded
+            Refunds = refunds
+        }
+
 module ApplicationFee =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "application_fee"
@@ -75,9 +110,27 @@ module ApplicationFee =
 /// Occurs whenever an application fee is refunded, whether from refunding a charge or from [refunding the application fee directly](#fee_refunds). This includes partial refunds.
 type ApplicationFeeRefunded = { Object: ApplicationFee }
 
+type ApplicationFeeRefunded with
+    static member New(object: ApplicationFee) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an application fee refund is updated.
 type ApplicationFeeRefundUpdated = { Object: FeeRefund }
 
+type ApplicationFeeRefundUpdated with
+    static member New(object: FeeRefund) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an application fee is created on a charge.
 type ApplicationFeeCreated = { Object: ApplicationFee }
+
+type ApplicationFeeCreated with
+    static member New(object: ApplicationFee) =
+        {
+            Object = object
+        }
 

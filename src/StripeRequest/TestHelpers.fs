@@ -27,6 +27,14 @@ module TestHelpersConfirmationTokens =
             TransitNumber: string option
         }
 
+    type Create'PaymentMethodDataAcssDebit with
+        static member New(?accountNumber: string, ?institutionNumber: string, ?transitNumber: string) =
+            {
+                AccountNumber = accountNumber
+                InstitutionNumber = institutionNumber
+                TransitNumber = transitNumber
+            }
+
     module Create'PaymentMethodDataAcssDebit =
         let create
             (
@@ -56,6 +64,13 @@ module TestHelpersConfirmationTokens =
             BsbNumber: string option
         }
 
+    type Create'PaymentMethodDataAuBecsDebit with
+        static member New(?accountNumber: string, ?bsbNumber: string) =
+            {
+                AccountNumber = accountNumber
+                BsbNumber = bsbNumber
+            }
+
     module Create'PaymentMethodDataAuBecsDebit =
         let create
             (
@@ -77,6 +92,13 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             SortCode: string option
         }
+
+    type Create'PaymentMethodDataBacsDebit with
+        static member New(?accountNumber: string, ?sortCode: string) =
+            {
+                AccountNumber = accountNumber
+                SortCode = sortCode
+            }
 
     module Create'PaymentMethodDataBacsDebit =
         let create
@@ -111,6 +133,17 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
         let create
@@ -151,6 +184,16 @@ module TestHelpersConfirmationTokens =
             TaxId: string option
         }
 
+    type Create'PaymentMethodDataBillingDetails with
+        static member New(?address: Choice<Create'PaymentMethodDataBillingDetailsAddressBillingDetailsAddress,string>, ?email: Choice<string,string>, ?name: Choice<string,string>, ?phone: Choice<string,string>, ?taxId: string) =
+            {
+                Address = address
+                Email = email
+                Name = name
+                Phone = phone
+                TaxId = taxId
+            }
+
     module Create'PaymentMethodDataBillingDetails =
         let create
             (
@@ -175,6 +218,12 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             TaxId: string option
         }
+
+    type Create'PaymentMethodDataBoleto with
+        static member New(?taxId: string) =
+            {
+                TaxId = taxId
+            }
 
     module Create'PaymentMethodDataBoleto =
         let create
@@ -222,6 +271,12 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Bank: Create'PaymentMethodDataEpsBank option
         }
+
+    type Create'PaymentMethodDataEps with
+        static member New(?bank: Create'PaymentMethodDataEpsBank) =
+            {
+                Bank = bank
+            }
 
     module Create'PaymentMethodDataEps =
         let create
@@ -271,6 +326,13 @@ module TestHelpersConfirmationTokens =
             Bank: Create'PaymentMethodDataFpxBank option
         }
 
+    type Create'PaymentMethodDataFpx with
+        static member New(?accountHolderType: Create'PaymentMethodDataFpxAccountHolderType, ?bank: Create'PaymentMethodDataFpxBank) =
+            {
+                AccountHolderType = accountHolderType
+                Bank = bank
+            }
+
     module Create'PaymentMethodDataFpx =
         let create
             (
@@ -312,6 +374,12 @@ module TestHelpersConfirmationTokens =
             Bank: Create'PaymentMethodDataIdealBank option
         }
 
+    type Create'PaymentMethodDataIdeal with
+        static member New(?bank: Create'PaymentMethodDataIdealBank) =
+            {
+                Bank = bank
+            }
+
     module Create'PaymentMethodDataIdeal =
         let create
             (
@@ -335,6 +403,14 @@ module TestHelpersConfirmationTokens =
             Year: int option
         }
 
+    type Create'PaymentMethodDataKlarnaDob with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
     module Create'PaymentMethodDataKlarnaDob =
         let create
             (
@@ -356,6 +432,12 @@ module TestHelpersConfirmationTokens =
             Dob: Create'PaymentMethodDataKlarnaDob option
         }
 
+    type Create'PaymentMethodDataKlarna with
+        static member New(?dob: Create'PaymentMethodDataKlarnaDob) =
+            {
+                Dob = dob
+            }
+
     module Create'PaymentMethodDataKlarna =
         let create
             (
@@ -376,6 +458,12 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Funding: Create'PaymentMethodDataNaverPayFunding option
         }
+
+    type Create'PaymentMethodDataNaverPay with
+        static member New(?funding: Create'PaymentMethodDataNaverPayFunding) =
+            {
+                Funding = funding
+            }
 
     module Create'PaymentMethodDataNaverPay =
         let create
@@ -407,6 +495,17 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Suffix: string option
         }
+
+    type Create'PaymentMethodDataNzBankAccount with
+        static member New(?accountHolderName: string, ?accountNumber: string, ?bankCode: string, ?branchCode: string, ?reference: string, ?suffix: string) =
+            {
+                AccountHolderName = accountHolderName
+                AccountNumber = accountNumber
+                BankCode = bankCode
+                BranchCode = branchCode
+                Reference = reference
+                Suffix = suffix
+            }
 
     module Create'PaymentMethodDataNzBankAccount =
         let create
@@ -463,6 +562,12 @@ module TestHelpersConfirmationTokens =
             Bank: Create'PaymentMethodDataP24Bank option
         }
 
+    type Create'PaymentMethodDataP24 with
+        static member New(?bank: Create'PaymentMethodDataP24Bank) =
+            {
+                Bank = bank
+            }
+
     module Create'PaymentMethodDataP24 =
         let create
             (
@@ -486,6 +591,14 @@ module TestHelpersConfirmationTokens =
             PayId: string option
         }
 
+    type Create'PaymentMethodDataPayto with
+        static member New(?accountNumber: string, ?bsbNumber: string, ?payId: string) =
+            {
+                AccountNumber = accountNumber
+                BsbNumber = bsbNumber
+                PayId = payId
+            }
+
     module Create'PaymentMethodDataPayto =
         let create
             (
@@ -507,6 +620,12 @@ module TestHelpersConfirmationTokens =
             Session: string option
         }
 
+    type Create'PaymentMethodDataRadarOptions with
+        static member New(?session: string) =
+            {
+                Session = session
+            }
+
     module Create'PaymentMethodDataRadarOptions =
         let create
             (
@@ -523,6 +642,12 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Iban: string option
         }
+
+    type Create'PaymentMethodDataSepaDebit with
+        static member New(?iban: string) =
+            {
+                Iban = iban
+            }
 
     module Create'PaymentMethodDataSepaDebit =
         let create
@@ -548,6 +673,12 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Country: Create'PaymentMethodDataSofortCountry option
         }
+
+    type Create'PaymentMethodDataSofort with
+        static member New(?country: Create'PaymentMethodDataSofortCountry) =
+            {
+                Country = country
+            }
 
     module Create'PaymentMethodDataSofort =
         let create
@@ -632,6 +763,15 @@ module TestHelpersConfirmationTokens =
             EndDate: DateTime option
         }
 
+    type Create'PaymentMethodDataUpiMandateOptions with
+        static member New(?amount: int, ?amountType: Create'PaymentMethodDataUpiMandateOptionsAmountType, ?description: string, ?endDate: DateTime) =
+            {
+                Amount = amount
+                AmountType = amountType
+                Description = description
+                EndDate = endDate
+            }
+
     module Create'PaymentMethodDataUpiMandateOptions =
         let create
             (
@@ -654,6 +794,12 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             MandateOptions: Create'PaymentMethodDataUpiMandateOptions option
         }
+
+    type Create'PaymentMethodDataUpi with
+        static member New(?mandateOptions: Create'PaymentMethodDataUpiMandateOptions) =
+            {
+                MandateOptions = mandateOptions
+            }
 
     module Create'PaymentMethodDataUpi =
         let create
@@ -691,6 +837,16 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             RoutingNumber: string option
         }
+
+    type Create'PaymentMethodDataUsBankAccount with
+        static member New(?accountHolderType: Create'PaymentMethodDataUsBankAccountAccountHolderType, ?accountNumber: string, ?accountType: Create'PaymentMethodDataUsBankAccountAccountType, ?financialConnectionsAccount: string, ?routingNumber: string) =
+            {
+                AccountHolderType = accountHolderType
+                AccountNumber = accountNumber
+                AccountType = accountType
+                FinancialConnectionsAccount = financialConnectionsAccount
+                RoutingNumber = routingNumber
+            }
 
     module Create'PaymentMethodDataUsBankAccount =
         let create
@@ -885,6 +1041,68 @@ module TestHelpersConfirmationTokens =
             Zip: string option
         }
 
+    type Create'PaymentMethodData with
+        static member New(?acssDebit: Create'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Create'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Create'PaymentMethodDataAuBecsDebit, ?bacsDebit: Create'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Create'PaymentMethodDataBillingDetails, ?blik: string, ?boleto: Create'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Create'PaymentMethodDataEps, ?fpx: Create'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Create'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Create'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Create'PaymentMethodDataNaverPay, ?nzBankAccount: Create'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Create'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?payto: Create'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Create'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?sepaDebit: Create'PaymentMethodDataSepaDebit, ?sofort: Create'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Create'PaymentMethodDataType, ?upi: Create'PaymentMethodDataUpi, ?usBankAccount: Create'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
+            {
+                AcssDebit = acssDebit
+                Affirm = affirm
+                AfterpayClearpay = afterpayClearpay
+                Alipay = alipay
+                AllowRedisplay = allowRedisplay
+                Alma = alma
+                AmazonPay = amazonPay
+                AuBecsDebit = auBecsDebit
+                BacsDebit = bacsDebit
+                Bancontact = bancontact
+                Billie = billie
+                BillingDetails = billingDetails
+                Blik = blik
+                Boleto = boleto
+                Cashapp = cashapp
+                Crypto = crypto
+                CustomerBalance = customerBalance
+                Eps = eps
+                Fpx = fpx
+                Giropay = giropay
+                Grabpay = grabpay
+                Ideal = ideal
+                InteracPresent = interacPresent
+                KakaoPay = kakaoPay
+                Klarna = klarna
+                Konbini = konbini
+                KrCard = krCard
+                Link = link
+                MbWay = mbWay
+                Metadata = metadata
+                Mobilepay = mobilepay
+                Multibanco = multibanco
+                NaverPay = naverPay
+                NzBankAccount = nzBankAccount
+                Oxxo = oxxo
+                P24 = p24
+                PayByBank = payByBank
+                Payco = payco
+                Paynow = paynow
+                Paypal = paypal
+                Payto = payto
+                Pix = pix
+                Promptpay = promptpay
+                RadarOptions = radarOptions
+                RevolutPay = revolutPay
+                SamsungPay = samsungPay
+                Satispay = satispay
+                SepaDebit = sepaDebit
+                Sofort = sofort
+                Sunbit = sunbit
+                Swish = swish
+                Twint = twint
+                Type = type'
+                Upi = upi
+                UsBankAccount = usBankAccount
+                WechatPay = wechatPay
+                Zip = zip
+            }
+
     module Create'PaymentMethodData =
         let create
             (
@@ -940,7 +1158,7 @@ module TestHelpersConfirmationTokens =
                 sunbit: string option,
                 swish: string option,
                 twint: string option,
-                ``type``: Create'PaymentMethodDataType option,
+                type': Create'PaymentMethodDataType option,
                 upi: Create'PaymentMethodDataUpi option,
                 usBankAccount: Create'PaymentMethodDataUsBankAccount option,
                 wechatPay: string option,
@@ -1000,7 +1218,7 @@ module TestHelpersConfirmationTokens =
               Sunbit = sunbit
               Swish = swish
               Twint = twint
-              Type = ``type``
+              Type = type'
               Upi = upi
               UsBankAccount = usBankAccount
               WechatPay = wechatPay
@@ -1028,18 +1246,26 @@ module TestHelpersConfirmationTokens =
             Type: Create'PaymentMethodOptionsCardInstallmentsPlanType option
         }
 
+    type Create'PaymentMethodOptionsCardInstallmentsPlan with
+        static member New(?count: int, ?interval: Create'PaymentMethodOptionsCardInstallmentsPlanInterval, ?type': Create'PaymentMethodOptionsCardInstallmentsPlanType) =
+            {
+                Count = count
+                Interval = interval
+                Type = type'
+            }
+
     module Create'PaymentMethodOptionsCardInstallmentsPlan =
         let create
             (
                 count: int option,
                 interval: Create'PaymentMethodOptionsCardInstallmentsPlanInterval option,
-                ``type``: Create'PaymentMethodOptionsCardInstallmentsPlanType option
+                type': Create'PaymentMethodOptionsCardInstallmentsPlanType option
             ) : Create'PaymentMethodOptionsCardInstallmentsPlan
             =
             {
               Count = count
               Interval = interval
-              Type = ``type``
+              Type = type'
             }
 
     type Create'PaymentMethodOptionsCardInstallments =
@@ -1049,6 +1275,12 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Plan: Create'PaymentMethodOptionsCardInstallmentsPlan option
         }
+
+    type Create'PaymentMethodOptionsCardInstallments with
+        static member New(?plan: Create'PaymentMethodOptionsCardInstallmentsPlan) =
+            {
+                Plan = plan
+            }
 
     module Create'PaymentMethodOptionsCardInstallments =
         let create
@@ -1067,6 +1299,12 @@ module TestHelpersConfirmationTokens =
             Installments: Create'PaymentMethodOptionsCardInstallments option
         }
 
+    type Create'PaymentMethodOptionsCard with
+        static member New(?installments: Create'PaymentMethodOptionsCardInstallments) =
+            {
+                Installments = installments
+            }
+
     module Create'PaymentMethodOptionsCard =
         let create
             (
@@ -1083,6 +1321,12 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Card: Create'PaymentMethodOptionsCard option
         }
+
+    type Create'PaymentMethodOptions with
+        static member New(?card: Create'PaymentMethodOptionsCard) =
+            {
+                Card = card
+            }
 
     module Create'PaymentMethodOptions =
         let create
@@ -1120,6 +1364,17 @@ module TestHelpersConfirmationTokens =
             State: string option
         }
 
+    type Create'ShippingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'ShippingAddress =
         let create
             (
@@ -1152,6 +1407,14 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Phone: Choice<string,string> option
         }
+
+    type Create'Shipping with
+        static member New(?address: Create'ShippingAddress, ?name: string, ?phone: Choice<string,string>) =
+            {
+                Address = address
+                Name = name
+                Phone = phone
+            }
 
     module Create'Shipping =
         let create
@@ -1192,6 +1455,18 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Shipping: Create'Shipping option
         }
+
+    type CreateOptions with
+        static member New(?expand: string list, ?paymentMethod: string, ?paymentMethodData: Create'PaymentMethodData, ?paymentMethodOptions: Create'PaymentMethodOptions, ?returnUrl: string, ?setupFutureUsage: Create'SetupFutureUsage, ?shipping: Create'Shipping) =
+            {
+                Expand = expand
+                PaymentMethod = paymentMethod
+                PaymentMethodData = paymentMethodData
+                PaymentMethodOptions = paymentMethodOptions
+                ReturnUrl = returnUrl
+                SetupFutureUsage = setupFutureUsage
+                Shipping = shipping
+            }
 
     module CreateOptions =
         let create
@@ -1240,6 +1515,16 @@ module TestHelpersCustomersFundCashBalance =
             Reference: string option
         }
 
+    type FundCashBalanceOptions with
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, customer: string, ?expand: string list, ?reference: string) =
+            {
+                Amount = amount
+                Currency = currency
+                Customer = customer
+                Expand = expand
+                Reference = reference
+            }
+
     module FundCashBalanceOptions =
         let create
             (
@@ -1272,6 +1557,13 @@ module TestHelpersIssuingAuthorizations =
             [<Config.Form>]
             CashbackAmount: int option
         }
+
+    type Create'AmountDetails with
+        static member New(?atmFee: int, ?cashbackAmount: int) =
+            {
+                AtmFee = atmFee
+                CashbackAmount = cashbackAmount
+            }
 
     module Create'AmountDetails =
         let create
@@ -1311,6 +1603,16 @@ module TestHelpersIssuingAuthorizations =
             VehicleNumber: string option
         }
 
+    type Create'FleetCardholderPromptData with
+        static member New(?driverId: string, ?odometer: int, ?unspecifiedId: string, ?userId: string, ?vehicleNumber: string) =
+            {
+                DriverId = driverId
+                Odometer = odometer
+                UnspecifiedId = unspecifiedId
+                UserId = userId
+                VehicleNumber = vehicleNumber
+            }
+
     module Create'FleetCardholderPromptData =
         let create
             (
@@ -1341,6 +1643,12 @@ module TestHelpersIssuingAuthorizations =
             GrossAmountDecimal: string option
         }
 
+    type Create'FleetReportedBreakdownFuel with
+        static member New(?grossAmountDecimal: string) =
+            {
+                GrossAmountDecimal = grossAmountDecimal
+            }
+
     module Create'FleetReportedBreakdownFuel =
         let create
             (
@@ -1357,6 +1665,12 @@ module TestHelpersIssuingAuthorizations =
             [<Config.Form>]
             GrossAmountDecimal: string option
         }
+
+    type Create'FleetReportedBreakdownNonFuel with
+        static member New(?grossAmountDecimal: string) =
+            {
+                GrossAmountDecimal = grossAmountDecimal
+            }
 
     module Create'FleetReportedBreakdownNonFuel =
         let create
@@ -1377,6 +1691,13 @@ module TestHelpersIssuingAuthorizations =
             [<Config.Form>]
             NationalAmountDecimal: string option
         }
+
+    type Create'FleetReportedBreakdownTax with
+        static member New(?localAmountDecimal: string, ?nationalAmountDecimal: string) =
+            {
+                LocalAmountDecimal = localAmountDecimal
+                NationalAmountDecimal = nationalAmountDecimal
+            }
 
     module Create'FleetReportedBreakdownTax =
         let create
@@ -1402,6 +1723,14 @@ module TestHelpersIssuingAuthorizations =
             [<Config.Form>]
             Tax: Create'FleetReportedBreakdownTax option
         }
+
+    type Create'FleetReportedBreakdown with
+        static member New(?fuel: Create'FleetReportedBreakdownFuel, ?nonFuel: Create'FleetReportedBreakdownNonFuel, ?tax: Create'FleetReportedBreakdownTax) =
+            {
+                Fuel = fuel
+                NonFuel = nonFuel
+                Tax = tax
+            }
 
     module Create'FleetReportedBreakdown =
         let create
@@ -1437,6 +1766,15 @@ module TestHelpersIssuingAuthorizations =
             [<Config.Form>]
             ServiceType: Create'FleetServiceType option
         }
+
+    type Create'Fleet with
+        static member New(?cardholderPromptData: Create'FleetCardholderPromptData, ?purchaseType: Create'FleetPurchaseType, ?reportedBreakdown: Create'FleetReportedBreakdown, ?serviceType: Create'FleetServiceType) =
+            {
+                CardholderPromptData = cardholderPromptData
+                PurchaseType = purchaseType
+                ReportedBreakdown = reportedBreakdown
+                ServiceType = serviceType
+            }
 
     module Create'Fleet =
         let create
@@ -1496,12 +1834,22 @@ module TestHelpersIssuingAuthorizations =
             UnitCostDecimal: string option
         }
 
+    type Create'Fuel with
+        static member New(?industryProductCode: string, ?quantityDecimal: string, ?type': Create'FuelType, ?unit: Create'FuelUnit, ?unitCostDecimal: string) =
+            {
+                IndustryProductCode = industryProductCode
+                QuantityDecimal = quantityDecimal
+                Type = type'
+                Unit = unit
+                UnitCostDecimal = unitCostDecimal
+            }
+
     module Create'Fuel =
         let create
             (
                 industryProductCode: string option,
                 quantityDecimal: string option,
-                ``type``: Create'FuelType option,
+                type': Create'FuelType option,
                 unit: Create'FuelUnit option,
                 unitCostDecimal: string option
             ) : Create'Fuel
@@ -1509,7 +1857,7 @@ module TestHelpersIssuingAuthorizations =
             {
               IndustryProductCode = industryProductCode
               QuantityDecimal = quantityDecimal
-              Type = ``type``
+              Type = type'
               Unit = unit
               UnitCostDecimal = unitCostDecimal
             }
@@ -1841,6 +2189,20 @@ module TestHelpersIssuingAuthorizations =
             Url: string option
         }
 
+    type Create'MerchantData with
+        static member New(?category: Create'MerchantDataCategory, ?city: string, ?country: IsoTypes.IsoCountryCode, ?name: string, ?networkId: string, ?postalCode: string, ?state: string, ?terminalId: string, ?url: string) =
+            {
+                Category = category
+                City = city
+                Country = country
+                Name = name
+                NetworkId = networkId
+                PostalCode = postalCode
+                State = state
+                TerminalId = terminalId
+                Url = url
+            }
+
     module Create'MerchantData =
         let create
             (
@@ -1874,6 +2236,12 @@ module TestHelpersIssuingAuthorizations =
             AcquiringInstitutionId: string option
         }
 
+    type Create'NetworkData with
+        static member New(?acquiringInstitutionId: string) =
+            {
+                AcquiringInstitutionId = acquiringInstitutionId
+            }
+
     module Create'NetworkData =
         let create
             (
@@ -1904,6 +2272,14 @@ module TestHelpersIssuingAuthorizations =
             [<Config.Form>]
             Level: Create'RiskAssessmentCardTestingRiskLevel option
         }
+
+    type Create'RiskAssessmentCardTestingRisk with
+        static member New(?invalidAccountNumberDeclineRatePastHour: int, ?invalidCredentialsDeclineRatePastHour: int, ?level: Create'RiskAssessmentCardTestingRiskLevel) =
+            {
+                InvalidAccountNumberDeclineRatePastHour = invalidAccountNumberDeclineRatePastHour
+                InvalidCredentialsDeclineRatePastHour = invalidCredentialsDeclineRatePastHour
+                Level = level
+            }
 
     module Create'RiskAssessmentCardTestingRisk =
         let create
@@ -1937,6 +2313,13 @@ module TestHelpersIssuingAuthorizations =
             Score: decimal option
         }
 
+    type Create'RiskAssessmentFraudRisk with
+        static member New(?level: Create'RiskAssessmentFraudRiskLevel, ?score: decimal) =
+            {
+                Level = level
+                Score = score
+            }
+
     module Create'RiskAssessmentFraudRisk =
         let create
             (
@@ -1967,6 +2350,13 @@ module TestHelpersIssuingAuthorizations =
             Level: Create'RiskAssessmentMerchantDisputeRiskLevel option
         }
 
+    type Create'RiskAssessmentMerchantDisputeRisk with
+        static member New(?disputeRate: int, ?level: Create'RiskAssessmentMerchantDisputeRiskLevel) =
+            {
+                DisputeRate = disputeRate
+                Level = level
+            }
+
     module Create'RiskAssessmentMerchantDisputeRisk =
         let create
             (
@@ -1991,6 +2381,14 @@ module TestHelpersIssuingAuthorizations =
             [<Config.Form>]
             MerchantDisputeRisk: Create'RiskAssessmentMerchantDisputeRisk option
         }
+
+    type Create'RiskAssessment with
+        static member New(?cardTestingRisk: Create'RiskAssessmentCardTestingRisk, ?fraudRisk: Create'RiskAssessmentFraudRisk, ?merchantDisputeRisk: Create'RiskAssessmentMerchantDisputeRisk) =
+            {
+                CardTestingRisk = cardTestingRisk
+                FraudRisk = fraudRisk
+                MerchantDisputeRisk = merchantDisputeRisk
+            }
 
     module Create'RiskAssessment =
         let create
@@ -2035,16 +2433,23 @@ module TestHelpersIssuingAuthorizations =
             Type: Create'VerificationDataAuthenticationExemptionType option
         }
 
+    type Create'VerificationDataAuthenticationExemption with
+        static member New(?claimedBy: Create'VerificationDataAuthenticationExemptionClaimedBy, ?type': Create'VerificationDataAuthenticationExemptionType) =
+            {
+                ClaimedBy = claimedBy
+                Type = type'
+            }
+
     module Create'VerificationDataAuthenticationExemption =
         let create
             (
                 claimedBy: Create'VerificationDataAuthenticationExemptionClaimedBy option,
-                ``type``: Create'VerificationDataAuthenticationExemptionType option
+                type': Create'VerificationDataAuthenticationExemptionType option
             ) : Create'VerificationDataAuthenticationExemption
             =
             {
               ClaimedBy = claimedBy
-              Type = ``type``
+              Type = type'
             }
 
     type Create'VerificationDataCvcCheck =
@@ -2069,6 +2474,12 @@ module TestHelpersIssuingAuthorizations =
             [<Config.Form>]
             Result: Create'VerificationDataThreeDSecureResult option
         }
+
+    type Create'VerificationDataThreeDSecure with
+        static member New(?result: Create'VerificationDataThreeDSecureResult) =
+            {
+                Result = result
+            }
 
     module Create'VerificationDataThreeDSecure =
         let create
@@ -2101,6 +2512,17 @@ module TestHelpersIssuingAuthorizations =
             [<Config.Form>]
             ThreeDSecure: Create'VerificationDataThreeDSecure option
         }
+
+    type Create'VerificationData with
+        static member New(?addressLine1Check: Create'VerificationDataAddressLine1Check, ?addressPostalCodeCheck: Create'VerificationDataAddressPostalCodeCheck, ?authenticationExemption: Create'VerificationDataAuthenticationExemption, ?cvcCheck: Create'VerificationDataCvcCheck, ?expiryCheck: Create'VerificationDataExpiryCheck, ?threeDSecure: Create'VerificationDataThreeDSecure) =
+            {
+                AddressLine1Check = addressLine1Check
+                AddressPostalCodeCheck = addressPostalCodeCheck
+                AuthenticationExemption = authenticationExemption
+                CvcCheck = cvcCheck
+                ExpiryCheck = expiryCheck
+                ThreeDSecure = threeDSecure
+            }
 
     module Create'VerificationData =
         let create
@@ -2182,6 +2604,28 @@ module TestHelpersIssuingAuthorizations =
             Wallet: Create'Wallet option
         }
 
+    type CreateOptions with
+        static member New(card: string, ?amount: int, ?amountDetails: Create'AmountDetails, ?authorizationMethod: Create'AuthorizationMethod, ?currency: IsoTypes.IsoCurrencyCode, ?expand: string list, ?fleet: Create'Fleet, ?fraudDisputabilityLikelihood: Create'FraudDisputabilityLikelihood, ?fuel: Create'Fuel, ?isAmountControllable: bool, ?merchantAmount: int, ?merchantCurrency: IsoTypes.IsoCurrencyCode, ?merchantData: Create'MerchantData, ?networkData: Create'NetworkData, ?riskAssessment: Create'RiskAssessment, ?verificationData: Create'VerificationData, ?wallet: Create'Wallet) =
+            {
+                Card = card
+                Amount = amount
+                AmountDetails = amountDetails
+                AuthorizationMethod = authorizationMethod
+                Currency = currency
+                Expand = expand
+                Fleet = fleet
+                FraudDisputabilityLikelihood = fraudDisputabilityLikelihood
+                Fuel = fuel
+                IsAmountControllable = isAmountControllable
+                MerchantAmount = merchantAmount
+                MerchantCurrency = merchantCurrency
+                MerchantData = merchantData
+                NetworkData = networkData
+                RiskAssessment = riskAssessment
+                VerificationData = verificationData
+                Wallet = wallet
+            }
+
     module CreateOptions =
         let create
             (
@@ -2234,6 +2678,16 @@ module TestHelpersIssuingAuthorizationsCapture =
             VehicleNumber: string option
         }
 
+    type Capture'PurchaseDetailsFleetCardholderPromptData with
+        static member New(?driverId: string, ?odometer: int, ?unspecifiedId: string, ?userId: string, ?vehicleNumber: string) =
+            {
+                DriverId = driverId
+                Odometer = odometer
+                UnspecifiedId = unspecifiedId
+                UserId = userId
+                VehicleNumber = vehicleNumber
+            }
+
     module Capture'PurchaseDetailsFleetCardholderPromptData =
         let create
             (
@@ -2264,6 +2718,12 @@ module TestHelpersIssuingAuthorizationsCapture =
             GrossAmountDecimal: string option
         }
 
+    type Capture'PurchaseDetailsFleetReportedBreakdownFuel with
+        static member New(?grossAmountDecimal: string) =
+            {
+                GrossAmountDecimal = grossAmountDecimal
+            }
+
     module Capture'PurchaseDetailsFleetReportedBreakdownFuel =
         let create
             (
@@ -2280,6 +2740,12 @@ module TestHelpersIssuingAuthorizationsCapture =
             [<Config.Form>]
             GrossAmountDecimal: string option
         }
+
+    type Capture'PurchaseDetailsFleetReportedBreakdownNonFuel with
+        static member New(?grossAmountDecimal: string) =
+            {
+                GrossAmountDecimal = grossAmountDecimal
+            }
 
     module Capture'PurchaseDetailsFleetReportedBreakdownNonFuel =
         let create
@@ -2300,6 +2766,13 @@ module TestHelpersIssuingAuthorizationsCapture =
             [<Config.Form>]
             NationalAmountDecimal: string option
         }
+
+    type Capture'PurchaseDetailsFleetReportedBreakdownTax with
+        static member New(?localAmountDecimal: string, ?nationalAmountDecimal: string) =
+            {
+                LocalAmountDecimal = localAmountDecimal
+                NationalAmountDecimal = nationalAmountDecimal
+            }
 
     module Capture'PurchaseDetailsFleetReportedBreakdownTax =
         let create
@@ -2325,6 +2798,14 @@ module TestHelpersIssuingAuthorizationsCapture =
             [<Config.Form>]
             Tax: Capture'PurchaseDetailsFleetReportedBreakdownTax option
         }
+
+    type Capture'PurchaseDetailsFleetReportedBreakdown with
+        static member New(?fuel: Capture'PurchaseDetailsFleetReportedBreakdownFuel, ?nonFuel: Capture'PurchaseDetailsFleetReportedBreakdownNonFuel, ?tax: Capture'PurchaseDetailsFleetReportedBreakdownTax) =
+            {
+                Fuel = fuel
+                NonFuel = nonFuel
+                Tax = tax
+            }
 
     module Capture'PurchaseDetailsFleetReportedBreakdown =
         let create
@@ -2360,6 +2841,15 @@ module TestHelpersIssuingAuthorizationsCapture =
             [<Config.Form>]
             ServiceType: Capture'PurchaseDetailsFleetServiceType option
         }
+
+    type Capture'PurchaseDetailsFleet with
+        static member New(?cardholderPromptData: Capture'PurchaseDetailsFleetCardholderPromptData, ?purchaseType: Capture'PurchaseDetailsFleetPurchaseType, ?reportedBreakdown: Capture'PurchaseDetailsFleetReportedBreakdown, ?serviceType: Capture'PurchaseDetailsFleetServiceType) =
+            {
+                CardholderPromptData = cardholderPromptData
+                PurchaseType = purchaseType
+                ReportedBreakdown = reportedBreakdown
+                ServiceType = serviceType
+            }
 
     module Capture'PurchaseDetailsFleet =
         let create
@@ -2399,6 +2889,17 @@ module TestHelpersIssuingAuthorizationsCapture =
             StopoverAllowed: bool option
         }
 
+    type Capture'PurchaseDetailsFlightSegments with
+        static member New(?arrivalAirportCode: string, ?carrier: string, ?departureAirportCode: string, ?flightNumber: string, ?serviceClass: string, ?stopoverAllowed: bool) =
+            {
+                ArrivalAirportCode = arrivalAirportCode
+                Carrier = carrier
+                DepartureAirportCode = departureAirportCode
+                FlightNumber = flightNumber
+                ServiceClass = serviceClass
+                StopoverAllowed = stopoverAllowed
+            }
+
     module Capture'PurchaseDetailsFlightSegments =
         let create
             (
@@ -2437,6 +2938,16 @@ module TestHelpersIssuingAuthorizationsCapture =
             [<Config.Form>]
             TravelAgency: string option
         }
+
+    type Capture'PurchaseDetailsFlight with
+        static member New(?departureAt: DateTime, ?passengerName: string, ?refundable: bool, ?segments: Capture'PurchaseDetailsFlightSegments list, ?travelAgency: string) =
+            {
+                DepartureAt = departureAt
+                PassengerName = passengerName
+                Refundable = refundable
+                Segments = segments
+                TravelAgency = travelAgency
+            }
 
     module Capture'PurchaseDetailsFlight =
         let create
@@ -2492,12 +3003,22 @@ module TestHelpersIssuingAuthorizationsCapture =
             UnitCostDecimal: string option
         }
 
+    type Capture'PurchaseDetailsFuel with
+        static member New(?industryProductCode: string, ?quantityDecimal: string, ?type': Capture'PurchaseDetailsFuelType, ?unit: Capture'PurchaseDetailsFuelUnit, ?unitCostDecimal: string) =
+            {
+                IndustryProductCode = industryProductCode
+                QuantityDecimal = quantityDecimal
+                Type = type'
+                Unit = unit
+                UnitCostDecimal = unitCostDecimal
+            }
+
     module Capture'PurchaseDetailsFuel =
         let create
             (
                 industryProductCode: string option,
                 quantityDecimal: string option,
-                ``type``: Capture'PurchaseDetailsFuelType option,
+                type': Capture'PurchaseDetailsFuelType option,
                 unit: Capture'PurchaseDetailsFuelUnit option,
                 unitCostDecimal: string option
             ) : Capture'PurchaseDetailsFuel
@@ -2505,7 +3026,7 @@ module TestHelpersIssuingAuthorizationsCapture =
             {
               IndustryProductCode = industryProductCode
               QuantityDecimal = quantityDecimal
-              Type = ``type``
+              Type = type'
               Unit = unit
               UnitCostDecimal = unitCostDecimal
             }
@@ -2519,6 +3040,13 @@ module TestHelpersIssuingAuthorizationsCapture =
             [<Config.Form>]
             Nights: int option
         }
+
+    type Capture'PurchaseDetailsLodging with
+        static member New(?checkInAt: DateTime, ?nights: int) =
+            {
+                CheckInAt = checkInAt
+                Nights = nights
+            }
 
     module Capture'PurchaseDetailsLodging =
         let create
@@ -2541,6 +3069,15 @@ module TestHelpersIssuingAuthorizationsCapture =
           Total: int option
           [<Config.Form>]
           UnitCost: int option }
+
+    type Capture'PurchaseDetailsReceipt with
+        static member New(?description: string, ?quantity: string, ?total: int, ?unitCost: int) =
+            {
+                Description = description
+                Quantity = quantity
+                Total = total
+                UnitCost = unitCost
+            }
 
     module Capture'PurchaseDetailsReceipt =
         let create
@@ -2580,6 +3117,17 @@ module TestHelpersIssuingAuthorizationsCapture =
             Reference: string option
         }
 
+    type Capture'PurchaseDetails with
+        static member New(?fleet: Capture'PurchaseDetailsFleet, ?flight: Capture'PurchaseDetailsFlight, ?fuel: Capture'PurchaseDetailsFuel, ?lodging: Capture'PurchaseDetailsLodging, ?receipt: Capture'PurchaseDetailsReceipt list, ?reference: string) =
+            {
+                Fleet = fleet
+                Flight = flight
+                Fuel = fuel
+                Lodging = lodging
+                Receipt = receipt
+                Reference = reference
+            }
+
     module Capture'PurchaseDetails =
         let create
             (
@@ -2618,6 +3166,16 @@ module TestHelpersIssuingAuthorizationsCapture =
             PurchaseDetails: Capture'PurchaseDetails option
         }
 
+    type CaptureOptions with
+        static member New(authorization: string, ?captureAmount: int, ?closeAuthorization: bool, ?expand: string list, ?purchaseDetails: Capture'PurchaseDetails) =
+            {
+                Authorization = authorization
+                CaptureAmount = captureAmount
+                CloseAuthorization = closeAuthorization
+                Expand = expand
+                PurchaseDetails = purchaseDetails
+            }
+
     module CaptureOptions =
         let create
             (
@@ -2647,6 +3205,13 @@ module TestHelpersIssuingAuthorizationsExpire =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type ExpireOptions with
+        static member New(authorization: string, ?expand: string list) =
+            {
+                Authorization = authorization
+                Expand = expand
+            }
 
     module ExpireOptions =
         let create
@@ -2685,6 +3250,16 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
             VehicleNumber: string option
         }
 
+    type FinalizeAmount'FleetCardholderPromptData with
+        static member New(?driverId: string, ?odometer: int, ?unspecifiedId: string, ?userId: string, ?vehicleNumber: string) =
+            {
+                DriverId = driverId
+                Odometer = odometer
+                UnspecifiedId = unspecifiedId
+                UserId = userId
+                VehicleNumber = vehicleNumber
+            }
+
     module FinalizeAmount'FleetCardholderPromptData =
         let create
             (
@@ -2715,6 +3290,12 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
             GrossAmountDecimal: string option
         }
 
+    type FinalizeAmount'FleetReportedBreakdownFuel with
+        static member New(?grossAmountDecimal: string) =
+            {
+                GrossAmountDecimal = grossAmountDecimal
+            }
+
     module FinalizeAmount'FleetReportedBreakdownFuel =
         let create
             (
@@ -2731,6 +3312,12 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
             [<Config.Form>]
             GrossAmountDecimal: string option
         }
+
+    type FinalizeAmount'FleetReportedBreakdownNonFuel with
+        static member New(?grossAmountDecimal: string) =
+            {
+                GrossAmountDecimal = grossAmountDecimal
+            }
 
     module FinalizeAmount'FleetReportedBreakdownNonFuel =
         let create
@@ -2751,6 +3338,13 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
             [<Config.Form>]
             NationalAmountDecimal: string option
         }
+
+    type FinalizeAmount'FleetReportedBreakdownTax with
+        static member New(?localAmountDecimal: string, ?nationalAmountDecimal: string) =
+            {
+                LocalAmountDecimal = localAmountDecimal
+                NationalAmountDecimal = nationalAmountDecimal
+            }
 
     module FinalizeAmount'FleetReportedBreakdownTax =
         let create
@@ -2776,6 +3370,14 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
             [<Config.Form>]
             Tax: FinalizeAmount'FleetReportedBreakdownTax option
         }
+
+    type FinalizeAmount'FleetReportedBreakdown with
+        static member New(?fuel: FinalizeAmount'FleetReportedBreakdownFuel, ?nonFuel: FinalizeAmount'FleetReportedBreakdownNonFuel, ?tax: FinalizeAmount'FleetReportedBreakdownTax) =
+            {
+                Fuel = fuel
+                NonFuel = nonFuel
+                Tax = tax
+            }
 
     module FinalizeAmount'FleetReportedBreakdown =
         let create
@@ -2811,6 +3413,15 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
             [<Config.Form>]
             ServiceType: FinalizeAmount'FleetServiceType option
         }
+
+    type FinalizeAmount'Fleet with
+        static member New(?cardholderPromptData: FinalizeAmount'FleetCardholderPromptData, ?purchaseType: FinalizeAmount'FleetPurchaseType, ?reportedBreakdown: FinalizeAmount'FleetReportedBreakdown, ?serviceType: FinalizeAmount'FleetServiceType) =
+            {
+                CardholderPromptData = cardholderPromptData
+                PurchaseType = purchaseType
+                ReportedBreakdown = reportedBreakdown
+                ServiceType = serviceType
+            }
 
     module FinalizeAmount'Fleet =
         let create
@@ -2864,12 +3475,22 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
             UnitCostDecimal: string option
         }
 
+    type FinalizeAmount'Fuel with
+        static member New(?industryProductCode: string, ?quantityDecimal: string, ?type': FinalizeAmount'FuelType, ?unit: FinalizeAmount'FuelUnit, ?unitCostDecimal: string) =
+            {
+                IndustryProductCode = industryProductCode
+                QuantityDecimal = quantityDecimal
+                Type = type'
+                Unit = unit
+                UnitCostDecimal = unitCostDecimal
+            }
+
     module FinalizeAmount'Fuel =
         let create
             (
                 industryProductCode: string option,
                 quantityDecimal: string option,
-                ``type``: FinalizeAmount'FuelType option,
+                type': FinalizeAmount'FuelType option,
                 unit: FinalizeAmount'FuelUnit option,
                 unitCostDecimal: string option
             ) : FinalizeAmount'Fuel
@@ -2877,7 +3498,7 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
             {
               IndustryProductCode = industryProductCode
               QuantityDecimal = quantityDecimal
-              Type = ``type``
+              Type = type'
               Unit = unit
               UnitCostDecimal = unitCostDecimal
             }
@@ -2899,6 +3520,16 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
             [<Config.Form>]
             Fuel: FinalizeAmount'Fuel option
         }
+
+    type FinalizeAmountOptions with
+        static member New(authorization: string, finalAmount: int, ?expand: string list, ?fleet: FinalizeAmount'Fleet, ?fuel: FinalizeAmount'Fuel) =
+            {
+                Authorization = authorization
+                FinalAmount = finalAmount
+                Expand = expand
+                Fleet = fleet
+                Fuel = fuel
+            }
 
     module FinalizeAmountOptions =
         let create
@@ -2933,6 +3564,14 @@ module TestHelpersIssuingAuthorizationsFraudChallengesRespond =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type RespondOptions with
+        static member New(authorization: string, confirmed: bool, ?expand: string list) =
+            {
+                Authorization = authorization
+                Confirmed = confirmed
+                Expand = expand
+            }
 
     module RespondOptions =
         let create
@@ -2969,6 +3608,15 @@ module TestHelpersIssuingAuthorizationsIncrement =
             IsAmountControllable: bool option
         }
 
+    type IncrementOptions with
+        static member New(authorization: string, incrementAmount: int, ?expand: string list, ?isAmountControllable: bool) =
+            {
+                Authorization = authorization
+                IncrementAmount = incrementAmount
+                Expand = expand
+                IsAmountControllable = isAmountControllable
+            }
+
     module IncrementOptions =
         let create
             (
@@ -3002,6 +3650,14 @@ module TestHelpersIssuingAuthorizationsReverse =
             ReverseAmount: int option
         }
 
+    type ReverseOptions with
+        static member New(authorization: string, ?expand: string list, ?reverseAmount: int) =
+            {
+                Authorization = authorization
+                Expand = expand
+                ReverseAmount = reverseAmount
+            }
+
     module ReverseOptions =
         let create
             (
@@ -3030,6 +3686,13 @@ module TestHelpersIssuingCardsShippingDeliver =
             Expand: string list option
         }
 
+    type DeliverCardOptions with
+        static member New(card: string, ?expand: string list) =
+            {
+                Card = card
+                Expand = expand
+            }
+
     module DeliverCardOptions =
         let create
             (
@@ -3056,6 +3719,13 @@ module TestHelpersIssuingCardsShippingFail =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type FailCardOptions with
+        static member New(card: string, ?expand: string list) =
+            {
+                Card = card
+                Expand = expand
+            }
 
     module FailCardOptions =
         let create
@@ -3084,6 +3754,13 @@ module TestHelpersIssuingCardsShippingReturn =
             Expand: string list option
         }
 
+    type ReturnCardOptions with
+        static member New(card: string, ?expand: string list) =
+            {
+                Card = card
+                Expand = expand
+            }
+
     module ReturnCardOptions =
         let create
             (
@@ -3110,6 +3787,13 @@ module TestHelpersIssuingCardsShippingShip =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type ShipCardOptions with
+        static member New(card: string, ?expand: string list) =
+            {
+                Card = card
+                Expand = expand
+            }
 
     module ShipCardOptions =
         let create
@@ -3138,6 +3822,13 @@ module TestHelpersIssuingCardsShippingSubmit =
             Expand: string list option
         }
 
+    type SubmitCardOptions with
+        static member New(card: string, ?expand: string list) =
+            {
+                Card = card
+                Expand = expand
+            }
+
     module SubmitCardOptions =
         let create
             (
@@ -3165,6 +3856,13 @@ module TestHelpersIssuingPersonalizationDesignsActivate =
             Expand: string list option
         }
 
+    type ActivateOptions with
+        static member New(personalizationDesign: string, ?expand: string list) =
+            {
+                PersonalizationDesign = personalizationDesign
+                Expand = expand
+            }
+
     module ActivateOptions =
         let create
             (
@@ -3191,6 +3889,13 @@ module TestHelpersIssuingPersonalizationDesignsDeactivate =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type DeactivateOptions with
+        static member New(personalizationDesign: string, ?expand: string list) =
+            {
+                PersonalizationDesign = personalizationDesign
+                Expand = expand
+            }
 
     module DeactivateOptions =
         let create
@@ -3239,6 +3944,13 @@ module TestHelpersIssuingPersonalizationDesignsReject =
             CarrierText: Reject'RejectionReasonsCarrierText list option
         }
 
+    type Reject'RejectionReasons with
+        static member New(?cardLogo: Reject'RejectionReasonsCardLogo list, ?carrierText: Reject'RejectionReasonsCarrierText list) =
+            {
+                CardLogo = cardLogo
+                CarrierText = carrierText
+            }
+
     module Reject'RejectionReasons =
         let create
             (
@@ -3262,6 +3974,14 @@ module TestHelpersIssuingPersonalizationDesignsReject =
             [<Config.Form>]
             RejectionReasons: Reject'RejectionReasons
         }
+
+    type RejectOptions with
+        static member New(personalizationDesign: string, rejectionReasons: Reject'RejectionReasons, ?expand: string list) =
+            {
+                PersonalizationDesign = personalizationDesign
+                RejectionReasons = rejectionReasons
+                Expand = expand
+            }
 
     module RejectOptions =
         let create
@@ -3610,6 +4330,20 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             Url: string option
         }
 
+    type CreateForceCapture'MerchantData with
+        static member New(?category: CreateForceCapture'MerchantDataCategory, ?city: string, ?country: IsoTypes.IsoCountryCode, ?name: string, ?networkId: string, ?postalCode: string, ?state: string, ?terminalId: string, ?url: string) =
+            {
+                Category = category
+                City = city
+                Country = country
+                Name = name
+                NetworkId = networkId
+                PostalCode = postalCode
+                State = state
+                TerminalId = terminalId
+                Url = url
+            }
+
     module CreateForceCapture'MerchantData =
         let create
             (
@@ -3655,6 +4389,16 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             VehicleNumber: string option
         }
 
+    type CreateForceCapture'PurchaseDetailsFleetCardholderPromptData with
+        static member New(?driverId: string, ?odometer: int, ?unspecifiedId: string, ?userId: string, ?vehicleNumber: string) =
+            {
+                DriverId = driverId
+                Odometer = odometer
+                UnspecifiedId = unspecifiedId
+                UserId = userId
+                VehicleNumber = vehicleNumber
+            }
+
     module CreateForceCapture'PurchaseDetailsFleetCardholderPromptData =
         let create
             (
@@ -3685,6 +4429,12 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             GrossAmountDecimal: string option
         }
 
+    type CreateForceCapture'PurchaseDetailsFleetReportedBreakdownFuel with
+        static member New(?grossAmountDecimal: string) =
+            {
+                GrossAmountDecimal = grossAmountDecimal
+            }
+
     module CreateForceCapture'PurchaseDetailsFleetReportedBreakdownFuel =
         let create
             (
@@ -3701,6 +4451,12 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             [<Config.Form>]
             GrossAmountDecimal: string option
         }
+
+    type CreateForceCapture'PurchaseDetailsFleetReportedBreakdownNonFuel with
+        static member New(?grossAmountDecimal: string) =
+            {
+                GrossAmountDecimal = grossAmountDecimal
+            }
 
     module CreateForceCapture'PurchaseDetailsFleetReportedBreakdownNonFuel =
         let create
@@ -3721,6 +4477,13 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             [<Config.Form>]
             NationalAmountDecimal: string option
         }
+
+    type CreateForceCapture'PurchaseDetailsFleetReportedBreakdownTax with
+        static member New(?localAmountDecimal: string, ?nationalAmountDecimal: string) =
+            {
+                LocalAmountDecimal = localAmountDecimal
+                NationalAmountDecimal = nationalAmountDecimal
+            }
 
     module CreateForceCapture'PurchaseDetailsFleetReportedBreakdownTax =
         let create
@@ -3746,6 +4509,14 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             [<Config.Form>]
             Tax: CreateForceCapture'PurchaseDetailsFleetReportedBreakdownTax option
         }
+
+    type CreateForceCapture'PurchaseDetailsFleetReportedBreakdown with
+        static member New(?fuel: CreateForceCapture'PurchaseDetailsFleetReportedBreakdownFuel, ?nonFuel: CreateForceCapture'PurchaseDetailsFleetReportedBreakdownNonFuel, ?tax: CreateForceCapture'PurchaseDetailsFleetReportedBreakdownTax) =
+            {
+                Fuel = fuel
+                NonFuel = nonFuel
+                Tax = tax
+            }
 
     module CreateForceCapture'PurchaseDetailsFleetReportedBreakdown =
         let create
@@ -3781,6 +4552,15 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             [<Config.Form>]
             ServiceType: CreateForceCapture'PurchaseDetailsFleetServiceType option
         }
+
+    type CreateForceCapture'PurchaseDetailsFleet with
+        static member New(?cardholderPromptData: CreateForceCapture'PurchaseDetailsFleetCardholderPromptData, ?purchaseType: CreateForceCapture'PurchaseDetailsFleetPurchaseType, ?reportedBreakdown: CreateForceCapture'PurchaseDetailsFleetReportedBreakdown, ?serviceType: CreateForceCapture'PurchaseDetailsFleetServiceType) =
+            {
+                CardholderPromptData = cardholderPromptData
+                PurchaseType = purchaseType
+                ReportedBreakdown = reportedBreakdown
+                ServiceType = serviceType
+            }
 
     module CreateForceCapture'PurchaseDetailsFleet =
         let create
@@ -3820,6 +4600,17 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             StopoverAllowed: bool option
         }
 
+    type CreateForceCapture'PurchaseDetailsFlightSegments with
+        static member New(?arrivalAirportCode: string, ?carrier: string, ?departureAirportCode: string, ?flightNumber: string, ?serviceClass: string, ?stopoverAllowed: bool) =
+            {
+                ArrivalAirportCode = arrivalAirportCode
+                Carrier = carrier
+                DepartureAirportCode = departureAirportCode
+                FlightNumber = flightNumber
+                ServiceClass = serviceClass
+                StopoverAllowed = stopoverAllowed
+            }
+
     module CreateForceCapture'PurchaseDetailsFlightSegments =
         let create
             (
@@ -3858,6 +4649,16 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             [<Config.Form>]
             TravelAgency: string option
         }
+
+    type CreateForceCapture'PurchaseDetailsFlight with
+        static member New(?departureAt: DateTime, ?passengerName: string, ?refundable: bool, ?segments: CreateForceCapture'PurchaseDetailsFlightSegments list, ?travelAgency: string) =
+            {
+                DepartureAt = departureAt
+                PassengerName = passengerName
+                Refundable = refundable
+                Segments = segments
+                TravelAgency = travelAgency
+            }
 
     module CreateForceCapture'PurchaseDetailsFlight =
         let create
@@ -3913,12 +4714,22 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             UnitCostDecimal: string option
         }
 
+    type CreateForceCapture'PurchaseDetailsFuel with
+        static member New(?industryProductCode: string, ?quantityDecimal: string, ?type': CreateForceCapture'PurchaseDetailsFuelType, ?unit: CreateForceCapture'PurchaseDetailsFuelUnit, ?unitCostDecimal: string) =
+            {
+                IndustryProductCode = industryProductCode
+                QuantityDecimal = quantityDecimal
+                Type = type'
+                Unit = unit
+                UnitCostDecimal = unitCostDecimal
+            }
+
     module CreateForceCapture'PurchaseDetailsFuel =
         let create
             (
                 industryProductCode: string option,
                 quantityDecimal: string option,
-                ``type``: CreateForceCapture'PurchaseDetailsFuelType option,
+                type': CreateForceCapture'PurchaseDetailsFuelType option,
                 unit: CreateForceCapture'PurchaseDetailsFuelUnit option,
                 unitCostDecimal: string option
             ) : CreateForceCapture'PurchaseDetailsFuel
@@ -3926,7 +4737,7 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             {
               IndustryProductCode = industryProductCode
               QuantityDecimal = quantityDecimal
-              Type = ``type``
+              Type = type'
               Unit = unit
               UnitCostDecimal = unitCostDecimal
             }
@@ -3940,6 +4751,13 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             [<Config.Form>]
             Nights: int option
         }
+
+    type CreateForceCapture'PurchaseDetailsLodging with
+        static member New(?checkInAt: DateTime, ?nights: int) =
+            {
+                CheckInAt = checkInAt
+                Nights = nights
+            }
 
     module CreateForceCapture'PurchaseDetailsLodging =
         let create
@@ -3962,6 +4780,15 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
           Total: int option
           [<Config.Form>]
           UnitCost: int option }
+
+    type CreateForceCapture'PurchaseDetailsReceipt with
+        static member New(?description: string, ?quantity: string, ?total: int, ?unitCost: int) =
+            {
+                Description = description
+                Quantity = quantity
+                Total = total
+                UnitCost = unitCost
+            }
 
     module CreateForceCapture'PurchaseDetailsReceipt =
         let create
@@ -4000,6 +4827,17 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             [<Config.Form>]
             Reference: string option
         }
+
+    type CreateForceCapture'PurchaseDetails with
+        static member New(?fleet: CreateForceCapture'PurchaseDetailsFleet, ?flight: CreateForceCapture'PurchaseDetailsFlight, ?fuel: CreateForceCapture'PurchaseDetailsFuel, ?lodging: CreateForceCapture'PurchaseDetailsLodging, ?receipt: CreateForceCapture'PurchaseDetailsReceipt list, ?reference: string) =
+            {
+                Fleet = fleet
+                Flight = flight
+                Fuel = fuel
+                Lodging = lodging
+                Receipt = receipt
+                Reference = reference
+            }
 
     module CreateForceCapture'PurchaseDetails =
         let create
@@ -4042,6 +4880,17 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
             [<Config.Form>]
             PurchaseDetails: CreateForceCapture'PurchaseDetails option
         }
+
+    type CreateForceCaptureOptions with
+        static member New(amount: int, card: string, ?currency: IsoTypes.IsoCurrencyCode, ?expand: string list, ?merchantData: CreateForceCapture'MerchantData, ?purchaseDetails: CreateForceCapture'PurchaseDetails) =
+            {
+                Amount = amount
+                Card = card
+                Currency = currency
+                Expand = expand
+                MerchantData = merchantData
+                PurchaseDetails = purchaseDetails
+            }
 
     module CreateForceCaptureOptions =
         let create
@@ -4393,6 +5242,20 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             Url: string option
         }
 
+    type CreateUnlinkedRefund'MerchantData with
+        static member New(?category: CreateUnlinkedRefund'MerchantDataCategory, ?city: string, ?country: IsoTypes.IsoCountryCode, ?name: string, ?networkId: string, ?postalCode: string, ?state: string, ?terminalId: string, ?url: string) =
+            {
+                Category = category
+                City = city
+                Country = country
+                Name = name
+                NetworkId = networkId
+                PostalCode = postalCode
+                State = state
+                TerminalId = terminalId
+                Url = url
+            }
+
     module CreateUnlinkedRefund'MerchantData =
         let create
             (
@@ -4438,6 +5301,16 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             VehicleNumber: string option
         }
 
+    type CreateUnlinkedRefund'PurchaseDetailsFleetCardholderPromptData with
+        static member New(?driverId: string, ?odometer: int, ?unspecifiedId: string, ?userId: string, ?vehicleNumber: string) =
+            {
+                DriverId = driverId
+                Odometer = odometer
+                UnspecifiedId = unspecifiedId
+                UserId = userId
+                VehicleNumber = vehicleNumber
+            }
+
     module CreateUnlinkedRefund'PurchaseDetailsFleetCardholderPromptData =
         let create
             (
@@ -4468,6 +5341,12 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             GrossAmountDecimal: string option
         }
 
+    type CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownFuel with
+        static member New(?grossAmountDecimal: string) =
+            {
+                GrossAmountDecimal = grossAmountDecimal
+            }
+
     module CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownFuel =
         let create
             (
@@ -4484,6 +5363,12 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             [<Config.Form>]
             GrossAmountDecimal: string option
         }
+
+    type CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownNonFuel with
+        static member New(?grossAmountDecimal: string) =
+            {
+                GrossAmountDecimal = grossAmountDecimal
+            }
 
     module CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownNonFuel =
         let create
@@ -4504,6 +5389,13 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             [<Config.Form>]
             NationalAmountDecimal: string option
         }
+
+    type CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownTax with
+        static member New(?localAmountDecimal: string, ?nationalAmountDecimal: string) =
+            {
+                LocalAmountDecimal = localAmountDecimal
+                NationalAmountDecimal = nationalAmountDecimal
+            }
 
     module CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownTax =
         let create
@@ -4529,6 +5421,14 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             [<Config.Form>]
             Tax: CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownTax option
         }
+
+    type CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdown with
+        static member New(?fuel: CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownFuel, ?nonFuel: CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownNonFuel, ?tax: CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownTax) =
+            {
+                Fuel = fuel
+                NonFuel = nonFuel
+                Tax = tax
+            }
 
     module CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdown =
         let create
@@ -4564,6 +5464,15 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             [<Config.Form>]
             ServiceType: CreateUnlinkedRefund'PurchaseDetailsFleetServiceType option
         }
+
+    type CreateUnlinkedRefund'PurchaseDetailsFleet with
+        static member New(?cardholderPromptData: CreateUnlinkedRefund'PurchaseDetailsFleetCardholderPromptData, ?purchaseType: CreateUnlinkedRefund'PurchaseDetailsFleetPurchaseType, ?reportedBreakdown: CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdown, ?serviceType: CreateUnlinkedRefund'PurchaseDetailsFleetServiceType) =
+            {
+                CardholderPromptData = cardholderPromptData
+                PurchaseType = purchaseType
+                ReportedBreakdown = reportedBreakdown
+                ServiceType = serviceType
+            }
 
     module CreateUnlinkedRefund'PurchaseDetailsFleet =
         let create
@@ -4603,6 +5512,17 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             StopoverAllowed: bool option
         }
 
+    type CreateUnlinkedRefund'PurchaseDetailsFlightSegments with
+        static member New(?arrivalAirportCode: string, ?carrier: string, ?departureAirportCode: string, ?flightNumber: string, ?serviceClass: string, ?stopoverAllowed: bool) =
+            {
+                ArrivalAirportCode = arrivalAirportCode
+                Carrier = carrier
+                DepartureAirportCode = departureAirportCode
+                FlightNumber = flightNumber
+                ServiceClass = serviceClass
+                StopoverAllowed = stopoverAllowed
+            }
+
     module CreateUnlinkedRefund'PurchaseDetailsFlightSegments =
         let create
             (
@@ -4641,6 +5561,16 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             [<Config.Form>]
             TravelAgency: string option
         }
+
+    type CreateUnlinkedRefund'PurchaseDetailsFlight with
+        static member New(?departureAt: DateTime, ?passengerName: string, ?refundable: bool, ?segments: CreateUnlinkedRefund'PurchaseDetailsFlightSegments list, ?travelAgency: string) =
+            {
+                DepartureAt = departureAt
+                PassengerName = passengerName
+                Refundable = refundable
+                Segments = segments
+                TravelAgency = travelAgency
+            }
 
     module CreateUnlinkedRefund'PurchaseDetailsFlight =
         let create
@@ -4696,12 +5626,22 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             UnitCostDecimal: string option
         }
 
+    type CreateUnlinkedRefund'PurchaseDetailsFuel with
+        static member New(?industryProductCode: string, ?quantityDecimal: string, ?type': CreateUnlinkedRefund'PurchaseDetailsFuelType, ?unit: CreateUnlinkedRefund'PurchaseDetailsFuelUnit, ?unitCostDecimal: string) =
+            {
+                IndustryProductCode = industryProductCode
+                QuantityDecimal = quantityDecimal
+                Type = type'
+                Unit = unit
+                UnitCostDecimal = unitCostDecimal
+            }
+
     module CreateUnlinkedRefund'PurchaseDetailsFuel =
         let create
             (
                 industryProductCode: string option,
                 quantityDecimal: string option,
-                ``type``: CreateUnlinkedRefund'PurchaseDetailsFuelType option,
+                type': CreateUnlinkedRefund'PurchaseDetailsFuelType option,
                 unit: CreateUnlinkedRefund'PurchaseDetailsFuelUnit option,
                 unitCostDecimal: string option
             ) : CreateUnlinkedRefund'PurchaseDetailsFuel
@@ -4709,7 +5649,7 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             {
               IndustryProductCode = industryProductCode
               QuantityDecimal = quantityDecimal
-              Type = ``type``
+              Type = type'
               Unit = unit
               UnitCostDecimal = unitCostDecimal
             }
@@ -4723,6 +5663,13 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             [<Config.Form>]
             Nights: int option
         }
+
+    type CreateUnlinkedRefund'PurchaseDetailsLodging with
+        static member New(?checkInAt: DateTime, ?nights: int) =
+            {
+                CheckInAt = checkInAt
+                Nights = nights
+            }
 
     module CreateUnlinkedRefund'PurchaseDetailsLodging =
         let create
@@ -4745,6 +5692,15 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
           Total: int option
           [<Config.Form>]
           UnitCost: int option }
+
+    type CreateUnlinkedRefund'PurchaseDetailsReceipt with
+        static member New(?description: string, ?quantity: string, ?total: int, ?unitCost: int) =
+            {
+                Description = description
+                Quantity = quantity
+                Total = total
+                UnitCost = unitCost
+            }
 
     module CreateUnlinkedRefund'PurchaseDetailsReceipt =
         let create
@@ -4783,6 +5739,17 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             [<Config.Form>]
             Reference: string option
         }
+
+    type CreateUnlinkedRefund'PurchaseDetails with
+        static member New(?fleet: CreateUnlinkedRefund'PurchaseDetailsFleet, ?flight: CreateUnlinkedRefund'PurchaseDetailsFlight, ?fuel: CreateUnlinkedRefund'PurchaseDetailsFuel, ?lodging: CreateUnlinkedRefund'PurchaseDetailsLodging, ?receipt: CreateUnlinkedRefund'PurchaseDetailsReceipt list, ?reference: string) =
+            {
+                Fleet = fleet
+                Flight = flight
+                Fuel = fuel
+                Lodging = lodging
+                Receipt = receipt
+                Reference = reference
+            }
 
     module CreateUnlinkedRefund'PurchaseDetails =
         let create
@@ -4826,6 +5793,17 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
             PurchaseDetails: CreateUnlinkedRefund'PurchaseDetails option
         }
 
+    type CreateUnlinkedRefundOptions with
+        static member New(amount: int, card: string, ?currency: IsoTypes.IsoCurrencyCode, ?expand: string list, ?merchantData: CreateUnlinkedRefund'MerchantData, ?purchaseDetails: CreateUnlinkedRefund'PurchaseDetails) =
+            {
+                Amount = amount
+                Card = card
+                Currency = currency
+                Expand = expand
+                MerchantData = merchantData
+                PurchaseDetails = purchaseDetails
+            }
+
     module CreateUnlinkedRefundOptions =
         let create
             (
@@ -4861,6 +5839,14 @@ module TestHelpersIssuingTransactionsRefund =
             RefundAmount: int option
         }
 
+    type RefundOptions with
+        static member New(transaction: string, ?expand: string list, ?refundAmount: int) =
+            {
+                Transaction = transaction
+                Expand = expand
+                RefundAmount = refundAmount
+            }
+
     module RefundOptions =
         let create
             (
@@ -4888,6 +5874,13 @@ module TestHelpersRefundsExpire =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type ExpireOptions with
+        static member New(refund: string, ?expand: string list) =
+            {
+                Refund = refund
+                Expand = expand
+            }
 
     module ExpireOptions =
         let create
@@ -4923,6 +5916,15 @@ module TestHelpersTerminalReadersPresentPaymentMethod =
             Number: string option
         }
 
+    type PresentPaymentMethod'Card with
+        static member New(?cvc: string, ?expMonth: int, ?expYear: int, ?number: string) =
+            {
+                Cvc = cvc
+                ExpMonth = expMonth
+                ExpYear = expYear
+                Number = number
+            }
+
     module PresentPaymentMethod'Card =
         let create
             (
@@ -4946,6 +5948,12 @@ module TestHelpersTerminalReadersPresentPaymentMethod =
             Number: string option
         }
 
+    type PresentPaymentMethod'CardPresent with
+        static member New(?number: string) =
+            {
+                Number = number
+            }
+
     module PresentPaymentMethod'CardPresent =
         let create
             (
@@ -4962,6 +5970,12 @@ module TestHelpersTerminalReadersPresentPaymentMethod =
             [<Config.Form>]
             Number: string option
         }
+
+    type PresentPaymentMethod'InteracPresent with
+        static member New(?number: string) =
+            {
+                Number = number
+            }
 
     module PresentPaymentMethod'InteracPresent =
         let create
@@ -5002,6 +6016,18 @@ module TestHelpersTerminalReadersPresentPaymentMethod =
             Type: PresentPaymentMethod'Type option
         }
 
+    type PresentPaymentMethodOptions with
+        static member New(reader: string, ?amountTip: int, ?card: PresentPaymentMethod'Card, ?cardPresent: PresentPaymentMethod'CardPresent, ?expand: string list, ?interacPresent: PresentPaymentMethod'InteracPresent, ?type': PresentPaymentMethod'Type) =
+            {
+                Reader = reader
+                AmountTip = amountTip
+                Card = card
+                CardPresent = cardPresent
+                Expand = expand
+                InteracPresent = interacPresent
+                Type = type'
+            }
+
     module PresentPaymentMethodOptions =
         let create
             (
@@ -5041,6 +6067,14 @@ module TestHelpersTerminalReadersSucceedInputCollection =
             SkipNonRequiredInputs: SucceedInputCollection'SkipNonRequiredInputs option
         }
 
+    type SucceedInputCollectionOptions with
+        static member New(reader: string, ?expand: string list, ?skipNonRequiredInputs: SucceedInputCollection'SkipNonRequiredInputs) =
+            {
+                Reader = reader
+                Expand = expand
+                SkipNonRequiredInputs = skipNonRequiredInputs
+            }
+
     module SucceedInputCollectionOptions =
         let create
             (
@@ -5068,6 +6102,13 @@ module TestHelpersTerminalReadersTimeoutInputCollection =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type TimeoutInputCollectionOptions with
+        static member New(reader: string, ?expand: string list) =
+            {
+                Reader = reader
+                Expand = expand
+            }
 
     module TimeoutInputCollectionOptions =
         let create
@@ -5103,6 +6144,15 @@ module TestHelpersTestClocks =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -5132,6 +6182,14 @@ module TestHelpersTestClocks =
             Name: string option
         }
 
+    type CreateOptions with
+        static member New(frozenTime: DateTime, ?expand: string list, ?name: string) =
+            {
+                FrozenTime = frozenTime
+                Expand = expand
+                Name = name
+            }
+
     module CreateOptions =
         let create
             (
@@ -5147,6 +6205,12 @@ module TestHelpersTestClocks =
     type DeleteOptions =
         { [<Config.Path>]
           TestClock: string }
+
+    type DeleteOptions with
+        static member New(testClock: string) =
+            {
+                TestClock = testClock
+            }
 
     module DeleteOptions =
         let create
@@ -5166,6 +6230,13 @@ module TestHelpersTestClocks =
             [<Config.Path>]
             TestClock: string
         }
+
+    type RetrieveOptions with
+        static member New(testClock: string, ?expand: string list) =
+            {
+                TestClock = testClock
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -5214,6 +6285,14 @@ module TestHelpersTestClocksAdvance =
             FrozenTime: DateTime
         }
 
+    type AdvanceOptions with
+        static member New(frozenTime: DateTime, testClock: string, ?expand: string list) =
+            {
+                FrozenTime = frozenTime
+                TestClock = testClock
+                Expand = expand
+            }
+
     module AdvanceOptions =
         let create
             (
@@ -5256,6 +6335,12 @@ module TestHelpersTreasuryInboundTransfersFail =
             Code: Fail'FailureDetailsCode option
         }
 
+    type Fail'FailureDetails with
+        static member New(?code: Fail'FailureDetailsCode) =
+            {
+                Code = code
+            }
+
     module Fail'FailureDetails =
         let create
             (
@@ -5277,6 +6362,14 @@ module TestHelpersTreasuryInboundTransfersFail =
             [<Config.Form>]
             FailureDetails: Fail'FailureDetails option
         }
+
+    type FailOptions with
+        static member New(id: string, ?expand: string list, ?failureDetails: Fail'FailureDetails) =
+            {
+                Id = id
+                Expand = expand
+                FailureDetails = failureDetails
+            }
 
     module FailOptions =
         let create
@@ -5306,6 +6399,13 @@ module TestHelpersTreasuryInboundTransfersReturn =
             Expand: string list option
         }
 
+    type ReturnInboundTransferOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module ReturnInboundTransferOptions =
         let create
             (
@@ -5333,6 +6433,13 @@ module TestHelpersTreasuryInboundTransfersSucceed =
             Expand: string list option
         }
 
+    type SucceedOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module SucceedOptions =
         let create
             (
@@ -5357,6 +6464,12 @@ module TestHelpersTreasuryOutboundPayments =
             [<Config.Form>]
             TraceId: string option
         }
+
+    type Update'TrackingDetailsAch with
+        static member New(?traceId: string) =
+            {
+                TraceId = traceId
+            }
 
     module Update'TrackingDetailsAch =
         let create
@@ -5385,6 +6498,14 @@ module TestHelpersTreasuryOutboundPayments =
             Omad: string option
         }
 
+    type Update'TrackingDetailsUsDomesticWire with
+        static member New(?chips: string, ?imad: string, ?omad: string) =
+            {
+                Chips = chips
+                Imad = imad
+                Omad = omad
+            }
+
     module Update'TrackingDetailsUsDomesticWire =
         let create
             (
@@ -5412,17 +6533,25 @@ module TestHelpersTreasuryOutboundPayments =
             UsDomesticWire: Update'TrackingDetailsUsDomesticWire option
         }
 
+    type Update'TrackingDetails with
+        static member New(?ach: Update'TrackingDetailsAch, ?type': Update'TrackingDetailsType, ?usDomesticWire: Update'TrackingDetailsUsDomesticWire) =
+            {
+                Ach = ach
+                Type = type'
+                UsDomesticWire = usDomesticWire
+            }
+
     module Update'TrackingDetails =
         let create
             (
                 ach: Update'TrackingDetailsAch option,
-                ``type``: Update'TrackingDetailsType option,
+                type': Update'TrackingDetailsType option,
                 usDomesticWire: Update'TrackingDetailsUsDomesticWire option
             ) : Update'TrackingDetails
             =
             {
               Ach = ach
-              Type = ``type``
+              Type = type'
               UsDomesticWire = usDomesticWire
             }
 
@@ -5437,6 +6566,14 @@ module TestHelpersTreasuryOutboundPayments =
             [<Config.Form>]
             TrackingDetails: Update'TrackingDetails
         }
+
+    type UpdateOptions with
+        static member New(id: string, trackingDetails: Update'TrackingDetails, ?expand: string list) =
+            {
+                Id = id
+                TrackingDetails = trackingDetails
+                Expand = expand
+            }
 
     module UpdateOptions =
         let create
@@ -5467,6 +6604,13 @@ module TestHelpersTreasuryOutboundPaymentsFail =
             Expand: string list option
         }
 
+    type FailOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module FailOptions =
         let create
             (
@@ -5493,6 +6637,13 @@ module TestHelpersTreasuryOutboundPaymentsPost =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type PostOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module PostOptions =
         let create
@@ -5531,6 +6682,12 @@ module TestHelpersTreasuryOutboundPaymentsReturn =
             Code: ReturnOutboundPayment'ReturnedDetailsCode option
         }
 
+    type ReturnOutboundPayment'ReturnedDetails with
+        static member New(?code: ReturnOutboundPayment'ReturnedDetailsCode) =
+            {
+                Code = code
+            }
+
     module ReturnOutboundPayment'ReturnedDetails =
         let create
             (
@@ -5552,6 +6709,14 @@ module TestHelpersTreasuryOutboundPaymentsReturn =
             [<Config.Form>]
             ReturnedDetails: ReturnOutboundPayment'ReturnedDetails option
         }
+
+    type ReturnOutboundPaymentOptions with
+        static member New(id: string, ?expand: string list, ?returnedDetails: ReturnOutboundPayment'ReturnedDetails) =
+            {
+                Id = id
+                Expand = expand
+                ReturnedDetails = returnedDetails
+            }
 
     module ReturnOutboundPaymentOptions =
         let create
@@ -5578,6 +6743,12 @@ module TestHelpersTreasuryOutboundTransfers =
             [<Config.Form>]
             TraceId: string option
         }
+
+    type Update'TrackingDetailsAch with
+        static member New(?traceId: string) =
+            {
+                TraceId = traceId
+            }
 
     module Update'TrackingDetailsAch =
         let create
@@ -5606,6 +6777,14 @@ module TestHelpersTreasuryOutboundTransfers =
             Omad: string option
         }
 
+    type Update'TrackingDetailsUsDomesticWire with
+        static member New(?chips: string, ?imad: string, ?omad: string) =
+            {
+                Chips = chips
+                Imad = imad
+                Omad = omad
+            }
+
     module Update'TrackingDetailsUsDomesticWire =
         let create
             (
@@ -5633,17 +6812,25 @@ module TestHelpersTreasuryOutboundTransfers =
             UsDomesticWire: Update'TrackingDetailsUsDomesticWire option
         }
 
+    type Update'TrackingDetails with
+        static member New(?ach: Update'TrackingDetailsAch, ?type': Update'TrackingDetailsType, ?usDomesticWire: Update'TrackingDetailsUsDomesticWire) =
+            {
+                Ach = ach
+                Type = type'
+                UsDomesticWire = usDomesticWire
+            }
+
     module Update'TrackingDetails =
         let create
             (
                 ach: Update'TrackingDetailsAch option,
-                ``type``: Update'TrackingDetailsType option,
+                type': Update'TrackingDetailsType option,
                 usDomesticWire: Update'TrackingDetailsUsDomesticWire option
             ) : Update'TrackingDetails
             =
             {
               Ach = ach
-              Type = ``type``
+              Type = type'
               UsDomesticWire = usDomesticWire
             }
 
@@ -5658,6 +6845,14 @@ module TestHelpersTreasuryOutboundTransfers =
             [<Config.Form>]
             TrackingDetails: Update'TrackingDetails
         }
+
+    type UpdateOptions with
+        static member New(outboundTransfer: string, trackingDetails: Update'TrackingDetails, ?expand: string list) =
+            {
+                OutboundTransfer = outboundTransfer
+                TrackingDetails = trackingDetails
+                Expand = expand
+            }
 
     module UpdateOptions =
         let create
@@ -5688,6 +6883,13 @@ module TestHelpersTreasuryOutboundTransfersFail =
             Expand: string list option
         }
 
+    type FailOptions with
+        static member New(outboundTransfer: string, ?expand: string list) =
+            {
+                OutboundTransfer = outboundTransfer
+                Expand = expand
+            }
+
     module FailOptions =
         let create
             (
@@ -5714,6 +6916,13 @@ module TestHelpersTreasuryOutboundTransfersPost =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type PostOptions with
+        static member New(outboundTransfer: string, ?expand: string list) =
+            {
+                OutboundTransfer = outboundTransfer
+                Expand = expand
+            }
 
     module PostOptions =
         let create
@@ -5752,6 +6961,12 @@ module TestHelpersTreasuryOutboundTransfersReturn =
             Code: ReturnOutboundTransfer'ReturnedDetailsCode option
         }
 
+    type ReturnOutboundTransfer'ReturnedDetails with
+        static member New(?code: ReturnOutboundTransfer'ReturnedDetailsCode) =
+            {
+                Code = code
+            }
+
     module ReturnOutboundTransfer'ReturnedDetails =
         let create
             (
@@ -5773,6 +6988,14 @@ module TestHelpersTreasuryOutboundTransfersReturn =
             [<Config.Form>]
             ReturnedDetails: ReturnOutboundTransfer'ReturnedDetails option
         }
+
+    type ReturnOutboundTransferOptions with
+        static member New(outboundTransfer: string, ?expand: string list, ?returnedDetails: ReturnOutboundTransfer'ReturnedDetails) =
+            {
+                OutboundTransfer = outboundTransfer
+                Expand = expand
+                ReturnedDetails = returnedDetails
+            }
 
     module ReturnOutboundTransferOptions =
         let create
@@ -5808,6 +7031,14 @@ module TestHelpersTreasuryReceivedCredits =
             RoutingNumber: string option
         }
 
+    type Create'InitiatingPaymentMethodDetailsUsBankAccount with
+        static member New(?accountHolderName: string, ?accountNumber: string, ?routingNumber: string) =
+            {
+                AccountHolderName = accountHolderName
+                AccountNumber = accountNumber
+                RoutingNumber = routingNumber
+            }
+
     module Create'InitiatingPaymentMethodDetailsUsBankAccount =
         let create
             (
@@ -5832,15 +7063,22 @@ module TestHelpersTreasuryReceivedCredits =
             UsBankAccount: Create'InitiatingPaymentMethodDetailsUsBankAccount option
         }
 
+    type Create'InitiatingPaymentMethodDetails with
+        static member New(?type': Create'InitiatingPaymentMethodDetailsType, ?usBankAccount: Create'InitiatingPaymentMethodDetailsUsBankAccount) =
+            {
+                Type = type'
+                UsBankAccount = usBankAccount
+            }
+
     module Create'InitiatingPaymentMethodDetails =
         let create
             (
-                ``type``: Create'InitiatingPaymentMethodDetailsType option,
+                type': Create'InitiatingPaymentMethodDetailsType option,
                 usBankAccount: Create'InitiatingPaymentMethodDetailsUsBankAccount option
             ) : Create'InitiatingPaymentMethodDetails
             =
             {
-              Type = ``type``
+              Type = type'
               UsBankAccount = usBankAccount
             }
 
@@ -5872,6 +7110,18 @@ module TestHelpersTreasuryReceivedCredits =
             [<Config.Form>]
             Network: Create'Network
         }
+
+    type CreateOptions with
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, network: Create'Network, ?description: string, ?expand: string list, ?initiatingPaymentMethodDetails: Create'InitiatingPaymentMethodDetails) =
+            {
+                Amount = amount
+                Currency = currency
+                FinancialAccount = financialAccount
+                Network = network
+                Description = description
+                Expand = expand
+                InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
+            }
 
     module CreateOptions =
         let create
@@ -5914,6 +7164,14 @@ module TestHelpersTreasuryReceivedDebits =
             RoutingNumber: string option
         }
 
+    type Create'InitiatingPaymentMethodDetailsUsBankAccount with
+        static member New(?accountHolderName: string, ?accountNumber: string, ?routingNumber: string) =
+            {
+                AccountHolderName = accountHolderName
+                AccountNumber = accountNumber
+                RoutingNumber = routingNumber
+            }
+
     module Create'InitiatingPaymentMethodDetailsUsBankAccount =
         let create
             (
@@ -5938,15 +7196,22 @@ module TestHelpersTreasuryReceivedDebits =
             UsBankAccount: Create'InitiatingPaymentMethodDetailsUsBankAccount option
         }
 
+    type Create'InitiatingPaymentMethodDetails with
+        static member New(?type': Create'InitiatingPaymentMethodDetailsType, ?usBankAccount: Create'InitiatingPaymentMethodDetailsUsBankAccount) =
+            {
+                Type = type'
+                UsBankAccount = usBankAccount
+            }
+
     module Create'InitiatingPaymentMethodDetails =
         let create
             (
-                ``type``: Create'InitiatingPaymentMethodDetailsType option,
+                type': Create'InitiatingPaymentMethodDetailsType option,
                 usBankAccount: Create'InitiatingPaymentMethodDetailsUsBankAccount option
             ) : Create'InitiatingPaymentMethodDetails
             =
             {
-              Type = ``type``
+              Type = type'
               UsBankAccount = usBankAccount
             }
 
@@ -5976,6 +7241,18 @@ module TestHelpersTreasuryReceivedDebits =
             [<Config.Form>]
             Network: Create'Network
         }
+
+    type CreateOptions with
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, network: Create'Network, ?description: string, ?expand: string list, ?initiatingPaymentMethodDetails: Create'InitiatingPaymentMethodDetails) =
+            {
+                Amount = amount
+                Currency = currency
+                FinancialAccount = financialAccount
+                Network = network
+                Description = description
+                Expand = expand
+                InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
+            }
 
     module CreateOptions =
         let create

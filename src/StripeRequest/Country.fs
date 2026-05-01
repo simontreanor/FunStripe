@@ -24,6 +24,15 @@ module CountrySpecs =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -48,6 +57,13 @@ module CountrySpecs =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(country: IsoTypes.IsoCountryCode, ?expand: string list) =
+            {
+                Country = country
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

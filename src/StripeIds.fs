@@ -9,6 +9,23 @@ module StripeIds =
     /// resource this ID points at. Wire-form is a plain string.
     type StripeId<'phantom> = StripeId of string
 
+    /// A generic paginated list of Stripe objects, including pagination metadata.
+    /// Defined here (independent of any per-domain modular file) so all consumers
+    /// of the modular Stripe.{Domain} namespaces can reference the same wrapper.
+    type StripeList<'T> = {
+        ///The list of objects in this page.
+        Data: 'T list
+        ///True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        ///The URL where this list can be accessed.
+        Url: string
+    }
+        with
+            ///String representing the object's type. Always has the value `list`.
+            member _.Object = "list"
+            static member New (data: 'T list, hasMore: bool, url: string) =
+                { Data = data; HasMore = hasMore; Url = url }
+
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 module Markers =
 

@@ -26,6 +26,16 @@ type AccountSession =
         Livemode: bool
     }
 
+type AccountSession with
+    static member New(account: string, clientSecret: string, components: ConnectEmbeddedAccountSessionCreateComponents, expiresAt: DateTime, livemode: bool) =
+        {
+            Account = account
+            ClientSecret = clientSecret
+            Components = components
+            ExpiresAt = expiresAt
+            Livemode = livemode
+        }
+
 module AccountSession =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "account_session"

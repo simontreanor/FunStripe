@@ -50,6 +50,22 @@ type IssuingToken =
         WalletProvider: IssuingTokenWalletProvider option
     }
 
+type IssuingToken with
+    static member New(card: StripeId<Markers.IssuingCard>, created: DateTime, deviceFingerprint: string option, id: string, livemode: bool, network: IssuingTokenNetwork, networkUpdatedAt: DateTime, status: IssuingTokenStatus, ?last4: string, ?networkData: IssuingNetworkTokenNetworkData, ?walletProvider: IssuingTokenWalletProvider) =
+        {
+            Card = card
+            Created = created
+            DeviceFingerprint = deviceFingerprint
+            Id = id
+            Livemode = livemode
+            Network = network
+            NetworkUpdatedAt = networkUpdatedAt
+            Status = status
+            Last4 = last4
+            NetworkData = networkData
+            WalletProvider = walletProvider
+        }
+
 module IssuingToken =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "issuing.token"
@@ -57,6 +73,18 @@ module IssuingToken =
 /// Occurs whenever an issuing digital wallet token is updated.
 type IssuingTokenUpdated = { Object: IssuingToken }
 
+type IssuingTokenUpdated with
+    static member New(object: IssuingToken) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an issuing digital wallet token is created.
 type IssuingTokenCreated = { Object: IssuingToken }
+
+type IssuingTokenCreated with
+    static member New(object: IssuingToken) =
+        {
+            Object = object
+        }
 

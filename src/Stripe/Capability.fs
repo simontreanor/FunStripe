@@ -30,10 +30,28 @@ type Capability =
         Status: CapabilityStatus
     }
 
+type Capability with
+    static member New(account: StripeId<Markers.Account>, id: string, requested: bool, requestedAt: DateTime option, status: CapabilityStatus, ?futureRequirements: AccountCapabilityFutureRequirements, ?requirements: AccountCapabilityRequirements) =
+        {
+            Account = account
+            Id = id
+            Requested = requested
+            RequestedAt = requestedAt
+            Status = status
+            FutureRequirements = futureRequirements
+            Requirements = requirements
+        }
+
 module Capability =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "capability"
 
 /// Occurs whenever a capability has new requirements or a new status.
 type CapabilityUpdated = { Object: Capability }
+
+type CapabilityUpdated with
+    static member New(object: Capability) =
+        {
+            Object = object
+        }
 

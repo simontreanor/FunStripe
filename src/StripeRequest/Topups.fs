@@ -33,6 +33,18 @@ module Topups =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(?amount: int, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                Amount = amount
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -83,6 +95,19 @@ module Topups =
             TransferGroup: string option
         }
 
+    type CreateOptions with
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?source: string, ?statementDescriptor: string, ?transferGroup: string) =
+            {
+                Amount = amount
+                Currency = currency
+                Description = description
+                Expand = expand
+                Metadata = metadata
+                Source = source
+                StatementDescriptor = statementDescriptor
+                TransferGroup = transferGroup
+            }
+
     module CreateOptions =
         let create
             (
@@ -110,6 +135,13 @@ module Topups =
             Topup: string
         }
 
+    type RetrieveOptions with
+        static member New(topup: string, ?expand: string list) =
+            {
+                Topup = topup
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -135,6 +167,15 @@ module Topups =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(topup: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Topup = topup
+                Description = description
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -181,6 +222,13 @@ module TopupsCancel =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type CancelOptions with
+        static member New(topup: string, ?expand: string list) =
+            {
+                Topup = topup
+                Expand = expand
+            }
 
     module CancelOptions =
         let create

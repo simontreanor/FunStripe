@@ -3,7 +3,6 @@ namespace Stripe.Invoiceitem
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Discount
 open Stripe.PaymentMethod
 open Stripe.TaxRate
 
@@ -18,6 +17,12 @@ type ProrationDetails =
         /// Discount amounts applied when the proration was created.
         DiscountAmounts: DiscountsResourceDiscountAmount list
     }
+
+type ProrationDetails with
+    static member New(discountAmounts: DiscountsResourceDiscountAmount list) =
+        {
+            DiscountAmounts = discountAmounts
+        }
 
 /// Invoice Items represent the component lines of an [invoice](https://docs.stripe.com/api/invoices). When you create an invoice item with an `invoice` field, it is attached to the specified invoice and included as [an invoice line item](https://docs.stripe.com/api/invoices/line_item) within [invoice.lines](https://docs.stripe.com/api/invoices/object#invoice_object-lines).
 /// Invoice Items can be created before you are ready to actually send the invoice. This can be particularly useful when combined
@@ -71,6 +76,33 @@ type Invoiceitem =
         TestClock: StripeId<Markers.TestHelpersTestClock> option
     }
 
+type Invoiceitem with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, customer: InvoiceitemCustomer'AnyOf, customerAccount: string option, date: DateTime, description: string option, discountable: bool, discounts: StripeId<Markers.Discount> list option, id: string, invoice: StripeId<Markers.Invoice> option, livemode: bool, metadata: Map<string, string> option, parent: BillingBillResourceInvoiceItemParentsInvoiceItemParent option, period: InvoiceLineItemPeriod, pricing: BillingBillResourceInvoicingPricingPricing option, proration: bool, quantity: int, quantityDecimal: string, taxRates: TaxRate list option, testClock: StripeId<Markers.TestHelpersTestClock> option, ?netAmount: int, ?prorationDetails: ProrationDetails) =
+        {
+            Amount = amount
+            Currency = currency
+            Customer = customer
+            CustomerAccount = customerAccount
+            Date = date
+            Description = description
+            Discountable = discountable
+            Discounts = discounts
+            Id = id
+            Invoice = invoice
+            Livemode = livemode
+            Metadata = metadata
+            Parent = parent
+            Period = period
+            Pricing = pricing
+            Proration = proration
+            Quantity = quantity
+            QuantityDecimal = quantityDecimal
+            TaxRates = taxRates
+            TestClock = testClock
+            NetAmount = netAmount
+            ProrationDetails = prorationDetails
+        }
+
 module Invoiceitem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "invoiceitem"
@@ -78,8 +110,20 @@ module Invoiceitem =
 /// Occurs whenever an invoice item is deleted.
 type InvoiceitemDeleted = { Object: Invoiceitem }
 
+type InvoiceitemDeleted with
+    static member New(object: Invoiceitem) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an invoice item is created.
 type InvoiceitemCreated = { Object: Invoiceitem }
+
+type InvoiceitemCreated with
+    static member New(object: Invoiceitem) =
+        {
+            Object = object
+        }
 
 type DeletedInvoiceitem =
     {
@@ -88,6 +132,13 @@ type DeletedInvoiceitem =
         /// Unique identifier for the object.
         Id: string
     }
+
+type DeletedInvoiceitem with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedInvoiceitem =
     ///String representing the object's type. Objects of the same type share the same value.

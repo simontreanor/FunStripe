@@ -22,6 +22,12 @@ module Sources =
             ContactEmail: string option
         }
 
+    type Create'MandateAcceptanceOffline with
+        static member New(?contactEmail: string) =
+            {
+                ContactEmail = contactEmail
+            }
+
     module Create'MandateAcceptanceOffline =
         let create
             (
@@ -44,6 +50,14 @@ module Sources =
             [<Config.Form>]
             UserAgent: string option
         }
+
+    type Create'MandateAcceptanceOnline with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
 
     module Create'MandateAcceptanceOnline =
         let create
@@ -94,6 +108,18 @@ module Sources =
             UserAgent: string option
         }
 
+    type Create'MandateAcceptance with
+        static member New(?date: DateTime, ?ip: string, ?offline: Create'MandateAcceptanceOffline, ?online: Create'MandateAcceptanceOnline, ?status: Create'MandateAcceptanceStatus, ?type': Create'MandateAcceptanceType, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                Offline = offline
+                Online = online
+                Status = status
+                Type = type'
+                UserAgent = userAgent
+            }
+
     module Create'MandateAcceptance =
         let create
             (
@@ -102,7 +128,7 @@ module Sources =
                 offline: Create'MandateAcceptanceOffline option,
                 online: Create'MandateAcceptanceOnline option,
                 status: Create'MandateAcceptanceStatus option,
-                ``type``: Create'MandateAcceptanceType option,
+                type': Create'MandateAcceptanceType option,
                 userAgent: string option
             ) : Create'MandateAcceptance
             =
@@ -112,7 +138,7 @@ module Sources =
               Offline = offline
               Online = online
               Status = status
-              Type = ``type``
+              Type = type'
               UserAgent = userAgent
             }
 
@@ -146,6 +172,16 @@ module Sources =
             [<Config.Form>]
             NotificationMethod: Create'MandateNotificationMethod option
         }
+
+    type Create'Mandate with
+        static member New(?acceptance: Create'MandateAcceptance, ?amount: Choice<int,string>, ?currency: IsoTypes.IsoCurrencyCode, ?interval: Create'MandateInterval, ?notificationMethod: Create'MandateNotificationMethod) =
+            {
+                Acceptance = acceptance
+                Amount = amount
+                Currency = currency
+                Interval = interval
+                NotificationMethod = notificationMethod
+            }
 
     module Create'Mandate =
         let create
@@ -187,6 +223,17 @@ module Sources =
             State: string option
         }
 
+    type Create'OwnerAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'OwnerAddress =
         let create
             (
@@ -223,6 +270,15 @@ module Sources =
             Phone: string option
         }
 
+    type Create'Owner with
+        static member New(?address: Create'OwnerAddress, ?email: string, ?name: string, ?phone: string) =
+            {
+                Address = address
+                Email = email
+                Name = name
+                Phone = phone
+            }
+
     module Create'Owner =
         let create
             (
@@ -251,6 +307,12 @@ module Sources =
             RefundAttributesMethod: Create'ReceiverRefundAttributesMethod option
         }
 
+    type Create'Receiver with
+        static member New(?refundAttributesMethod: Create'ReceiverRefundAttributesMethod) =
+            {
+                RefundAttributesMethod = refundAttributesMethod
+            }
+
     module Create'Receiver =
         let create
             (
@@ -267,6 +329,12 @@ module Sources =
             [<Config.Form>]
             ReturnUrl: string option
         }
+
+    type Create'Redirect with
+        static member New(?returnUrl: string) =
+            {
+                ReturnUrl = returnUrl
+            }
 
     module Create'Redirect =
         let create
@@ -302,6 +370,17 @@ module Sources =
             Type: Create'SourceOrderItemsType option
         }
 
+    type Create'SourceOrderItems with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?description: string, ?parent: string, ?quantity: int, ?type': Create'SourceOrderItemsType) =
+            {
+                Amount = amount
+                Currency = currency
+                Description = description
+                Parent = parent
+                Quantity = quantity
+                Type = type'
+            }
+
     module Create'SourceOrderItems =
         let create
             (
@@ -310,7 +389,7 @@ module Sources =
                 description: string option,
                 parent: string option,
                 quantity: int option,
-                ``type``: Create'SourceOrderItemsType option
+                type': Create'SourceOrderItemsType option
             ) : Create'SourceOrderItems
             =
             {
@@ -319,7 +398,7 @@ module Sources =
               Description = description
               Parent = parent
               Quantity = quantity
-              Type = ``type``
+              Type = type'
             }
 
     type Create'SourceOrderShippingAddress =
@@ -343,6 +422,17 @@ module Sources =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'SourceOrderShippingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'SourceOrderShippingAddress =
         let create
@@ -383,6 +473,16 @@ module Sources =
             TrackingNumber: string option
         }
 
+    type Create'SourceOrderShipping with
+        static member New(?address: Create'SourceOrderShippingAddress, ?carrier: string, ?name: string, ?phone: string, ?trackingNumber: string) =
+            {
+                Address = address
+                Carrier = carrier
+                Name = name
+                Phone = phone
+                TrackingNumber = trackingNumber
+            }
+
     module Create'SourceOrderShipping =
         let create
             (
@@ -410,6 +510,13 @@ module Sources =
             [<Config.Form>]
             Shipping: Create'SourceOrderShipping option
         }
+
+    type Create'SourceOrder with
+        static member New(?items: Create'SourceOrderItems list, ?shipping: Create'SourceOrderShipping) =
+            {
+                Items = items
+                Shipping = shipping
+            }
 
     module Create'SourceOrder =
         let create
@@ -477,6 +584,27 @@ module Sources =
             Usage: Create'Usage option
         }
 
+    type CreateOptions with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?customer: string, ?expand: string list, ?flow: Create'Flow, ?mandate: Create'Mandate, ?metadata: Map<string, string>, ?originalSource: string, ?owner: Create'Owner, ?receiver: Create'Receiver, ?redirect: Create'Redirect, ?sourceOrder: Create'SourceOrder, ?statementDescriptor: string, ?token: string, ?type': string, ?usage: Create'Usage) =
+            {
+                Amount = amount
+                Currency = currency
+                Customer = customer
+                Expand = expand
+                Flow = flow
+                Mandate = mandate
+                Metadata = metadata
+                OriginalSource = originalSource
+                Owner = owner
+                Receiver = receiver
+                Redirect = redirect
+                SourceOrder = sourceOrder
+                StatementDescriptor = statementDescriptor
+                Token = token
+                Type = type'
+                Usage = usage
+            }
+
     module CreateOptions =
         let create
             (
@@ -494,7 +622,7 @@ module Sources =
                 sourceOrder: Create'SourceOrder option,
                 statementDescriptor: string option,
                 token: string option,
-                ``type``: string option,
+                type': string option,
                 usage: Create'Usage option
             ) : CreateOptions
             =
@@ -513,7 +641,7 @@ module Sources =
               SourceOrder = sourceOrder
               StatementDescriptor = statementDescriptor
               Token = token
-              Type = ``type``
+              Type = type'
               Usage = usage
             }
 
@@ -528,6 +656,14 @@ module Sources =
             [<Config.Path>]
             Source: string
         }
+
+    type RetrieveOptions with
+        static member New(source: string, ?clientSecret: string, ?expand: string list) =
+            {
+                Source = source
+                ClientSecret = clientSecret
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -547,6 +683,12 @@ module Sources =
             [<Config.Form>]
             ContactEmail: string option
         }
+
+    type Update'MandateAcceptanceOffline with
+        static member New(?contactEmail: string) =
+            {
+                ContactEmail = contactEmail
+            }
 
     module Update'MandateAcceptanceOffline =
         let create
@@ -570,6 +712,14 @@ module Sources =
             [<Config.Form>]
             UserAgent: string option
         }
+
+    type Update'MandateAcceptanceOnline with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
 
     module Update'MandateAcceptanceOnline =
         let create
@@ -620,6 +770,18 @@ module Sources =
             UserAgent: string option
         }
 
+    type Update'MandateAcceptance with
+        static member New(?date: DateTime, ?ip: string, ?offline: Update'MandateAcceptanceOffline, ?online: Update'MandateAcceptanceOnline, ?status: Update'MandateAcceptanceStatus, ?type': Update'MandateAcceptanceType, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                Offline = offline
+                Online = online
+                Status = status
+                Type = type'
+                UserAgent = userAgent
+            }
+
     module Update'MandateAcceptance =
         let create
             (
@@ -628,7 +790,7 @@ module Sources =
                 offline: Update'MandateAcceptanceOffline option,
                 online: Update'MandateAcceptanceOnline option,
                 status: Update'MandateAcceptanceStatus option,
-                ``type``: Update'MandateAcceptanceType option,
+                type': Update'MandateAcceptanceType option,
                 userAgent: string option
             ) : Update'MandateAcceptance
             =
@@ -638,7 +800,7 @@ module Sources =
               Offline = offline
               Online = online
               Status = status
-              Type = ``type``
+              Type = type'
               UserAgent = userAgent
             }
 
@@ -672,6 +834,16 @@ module Sources =
             [<Config.Form>]
             NotificationMethod: Update'MandateNotificationMethod option
         }
+
+    type Update'Mandate with
+        static member New(?acceptance: Update'MandateAcceptance, ?amount: Choice<int,string>, ?currency: IsoTypes.IsoCurrencyCode, ?interval: Update'MandateInterval, ?notificationMethod: Update'MandateNotificationMethod) =
+            {
+                Acceptance = acceptance
+                Amount = amount
+                Currency = currency
+                Interval = interval
+                NotificationMethod = notificationMethod
+            }
 
     module Update'Mandate =
         let create
@@ -713,6 +885,17 @@ module Sources =
             State: string option
         }
 
+    type Update'OwnerAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Update'OwnerAddress =
         let create
             (
@@ -748,6 +931,15 @@ module Sources =
             [<Config.Form>]
             Phone: string option
         }
+
+    type Update'Owner with
+        static member New(?address: Update'OwnerAddress, ?email: string, ?name: string, ?phone: string) =
+            {
+                Address = address
+                Email = email
+                Name = name
+                Phone = phone
+            }
 
     module Update'Owner =
         let create
@@ -789,6 +981,17 @@ module Sources =
             Type: Update'SourceOrderItemsType option
         }
 
+    type Update'SourceOrderItems with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?description: string, ?parent: string, ?quantity: int, ?type': Update'SourceOrderItemsType) =
+            {
+                Amount = amount
+                Currency = currency
+                Description = description
+                Parent = parent
+                Quantity = quantity
+                Type = type'
+            }
+
     module Update'SourceOrderItems =
         let create
             (
@@ -797,7 +1000,7 @@ module Sources =
                 description: string option,
                 parent: string option,
                 quantity: int option,
-                ``type``: Update'SourceOrderItemsType option
+                type': Update'SourceOrderItemsType option
             ) : Update'SourceOrderItems
             =
             {
@@ -806,7 +1009,7 @@ module Sources =
               Description = description
               Parent = parent
               Quantity = quantity
-              Type = ``type``
+              Type = type'
             }
 
     type Update'SourceOrderShippingAddress =
@@ -830,6 +1033,17 @@ module Sources =
             [<Config.Form>]
             State: string option
         }
+
+    type Update'SourceOrderShippingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Update'SourceOrderShippingAddress =
         let create
@@ -870,6 +1084,16 @@ module Sources =
             TrackingNumber: string option
         }
 
+    type Update'SourceOrderShipping with
+        static member New(?address: Update'SourceOrderShippingAddress, ?carrier: string, ?name: string, ?phone: string, ?trackingNumber: string) =
+            {
+                Address = address
+                Carrier = carrier
+                Name = name
+                Phone = phone
+                TrackingNumber = trackingNumber
+            }
+
     module Update'SourceOrderShipping =
         let create
             (
@@ -897,6 +1121,13 @@ module Sources =
             [<Config.Form>]
             Shipping: Update'SourceOrderShipping option
         }
+
+    type Update'SourceOrder with
+        static member New(?items: Update'SourceOrderItems list, ?shipping: Update'SourceOrderShipping) =
+            {
+                Items = items
+                Shipping = shipping
+            }
 
     module Update'SourceOrder =
         let create
@@ -933,6 +1164,18 @@ module Sources =
             [<Config.Form>]
             SourceOrder: Update'SourceOrder option
         }
+
+    type UpdateOptions with
+        static member New(source: string, ?amount: int, ?expand: string list, ?mandate: Update'Mandate, ?metadata: Map<string, string>, ?owner: Update'Owner, ?sourceOrder: Update'SourceOrder) =
+            {
+                Source = source
+                Amount = amount
+                Expand = expand
+                Mandate = mandate
+                Metadata = metadata
+                Owner = owner
+                SourceOrder = sourceOrder
+            }
 
     module UpdateOptions =
         let create
@@ -987,6 +1230,16 @@ module SourcesSourceTransactions =
             StartingAfter: string option
         }
 
+    type SourceTransactionsOptions with
+        static member New(source: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Source = source
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module SourceTransactionsOptions =
         let create
             (
@@ -1020,6 +1273,14 @@ module SourcesVerify =
             [<Config.Form>]
             Values: string list
         }
+
+    type VerifyOptions with
+        static member New(source: string, values: string list, ?expand: string list) =
+            {
+                Source = source
+                Values = values
+                Expand = expand
+            }
 
     module VerifyOptions =
         let create

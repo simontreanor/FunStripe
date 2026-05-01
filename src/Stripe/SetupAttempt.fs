@@ -19,14 +19,38 @@ type SetupAttemptFlowDirections =
 type SetupAttemptPaymentMethodDetailsAcssDebit =
     { SetupAttemptPaymentMethodDetailsAcssDebit: string option }
 
+type SetupAttemptPaymentMethodDetailsAcssDebit with
+    static member New(?setupAttemptPaymentMethodDetailsAcssDebit: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsAcssDebit = setupAttemptPaymentMethodDetailsAcssDebit |> Option.flatten
+        }
+
 type SetupAttemptPaymentMethodDetailsAmazonPay =
     { SetupAttemptPaymentMethodDetailsAmazonPay: string option }
+
+type SetupAttemptPaymentMethodDetailsAmazonPay with
+    static member New(?setupAttemptPaymentMethodDetailsAmazonPay: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsAmazonPay = setupAttemptPaymentMethodDetailsAmazonPay |> Option.flatten
+        }
 
 type SetupAttemptPaymentMethodDetailsAuBecsDebit =
     { SetupAttemptPaymentMethodDetailsAuBecsDebit: string option }
 
+type SetupAttemptPaymentMethodDetailsAuBecsDebit with
+    static member New(?setupAttemptPaymentMethodDetailsAuBecsDebit: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsAuBecsDebit = setupAttemptPaymentMethodDetailsAuBecsDebit |> Option.flatten
+        }
+
 type SetupAttemptPaymentMethodDetailsBacsDebit =
     { SetupAttemptPaymentMethodDetailsBacsDebit: string option }
+
+type SetupAttemptPaymentMethodDetailsBacsDebit with
+    static member New(?setupAttemptPaymentMethodDetailsBacsDebit: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsBacsDebit = setupAttemptPaymentMethodDetailsBacsDebit |> Option.flatten
+        }
 
 [<Struct>]
 type SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage =
@@ -58,8 +82,27 @@ type SetupAttemptPaymentMethodDetailsBancontact =
         VerifiedName: string option
     }
 
+type SetupAttemptPaymentMethodDetailsBancontact with
+    static member New(bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: StripeId<Markers.PaymentMethod> option, generatedSepaDebitMandate: StripeId<Markers.Mandate> option, ibanLast4: string option, preferredLanguage: SetupAttemptPaymentMethodDetailsBancontactPreferredLanguage option, verifiedName: string option) =
+        {
+            BankCode = bankCode
+            BankName = bankName
+            Bic = bic
+            GeneratedSepaDebit = generatedSepaDebit
+            GeneratedSepaDebitMandate = generatedSepaDebitMandate
+            IbanLast4 = ibanLast4
+            PreferredLanguage = preferredLanguage
+            VerifiedName = verifiedName
+        }
+
 type SetupAttemptPaymentMethodDetailsBoleto =
     { SetupAttemptPaymentMethodDetailsBoleto: string option }
+
+type SetupAttemptPaymentMethodDetailsBoleto with
+    static member New(?setupAttemptPaymentMethodDetailsBoleto: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsBoleto = setupAttemptPaymentMethodDetailsBoleto |> Option.flatten
+        }
 
 type SetupAttemptPaymentMethodDetailsCardBrand =
     | Amex
@@ -106,6 +149,14 @@ type SetupAttemptPaymentMethodDetailsCardChecks =
         CvcCheck: SetupAttemptPaymentMethodDetailsCardChecksCvcCheck option
     }
 
+type SetupAttemptPaymentMethodDetailsCardChecks with
+    static member New(addressLine1Check: SetupAttemptPaymentMethodDetailsCardChecksAddressLine1Check option, addressPostalCodeCheck: SetupAttemptPaymentMethodDetailsCardChecksAddressPostalCodeCheck option, cvcCheck: SetupAttemptPaymentMethodDetailsCardChecksCvcCheck option) =
+        {
+            AddressLine1Check = addressLine1Check
+            AddressPostalCodeCheck = addressPostalCodeCheck
+            CvcCheck = cvcCheck
+        }
+
 [<Struct>]
 type SetupAttemptPaymentMethodDetailsCardFunding =
     | Credit
@@ -140,6 +191,14 @@ type SetupAttemptPaymentMethodDetailsCardWallet =
         /// The type of the card wallet, one of `apple_pay`, `google_pay`, or `link`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type.
         Type: SetupAttemptPaymentMethodDetailsCardWalletType
     }
+
+type SetupAttemptPaymentMethodDetailsCardWallet with
+    static member New(``type``: SetupAttemptPaymentMethodDetailsCardWalletType, ?applePay: PaymentMethodDetailsCardWalletApplePay, ?googlePay: PaymentMethodDetailsCardWalletGooglePay) =
+        {
+            Type = ``type``
+            ApplePay = applePay
+            GooglePay = googlePay
+        }
 
 [<Struct>]
 type ThreeDSecureDetailsAuthenticationFlow =
@@ -199,6 +258,17 @@ type ThreeDSecureDetails =
         Version: ThreeDSecureDetailsVersion option
     }
 
+type ThreeDSecureDetails with
+    static member New(authenticationFlow: ThreeDSecureDetailsAuthenticationFlow option, electronicCommerceIndicator: ThreeDSecureDetailsElectronicCommerceIndicator option, result: ThreeDSecureDetailsResult option, resultReason: ThreeDSecureDetailsResultReason option, transactionId: string option, version: ThreeDSecureDetailsVersion option) =
+        {
+            AuthenticationFlow = authenticationFlow
+            ElectronicCommerceIndicator = electronicCommerceIndicator
+            Result = result
+            ResultReason = resultReason
+            TransactionId = transactionId
+            Version = version
+        }
+
 type SetupAttemptPaymentMethodDetailsCard =
     {
         /// Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
@@ -235,6 +305,26 @@ type SetupAttemptPaymentMethodDetailsCard =
         Wallet: SetupAttemptPaymentMethodDetailsCardWallet option
     }
 
+type SetupAttemptPaymentMethodDetailsCard with
+    static member New(brand: SetupAttemptPaymentMethodDetailsCardBrand option, checks: SetupAttemptPaymentMethodDetailsCardChecks option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: SetupAttemptPaymentMethodDetailsCardFunding option, last4: string option, network: SetupAttemptPaymentMethodDetailsCardNetwork option, threeDSecure: ThreeDSecureDetails option, wallet: SetupAttemptPaymentMethodDetailsCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool) =
+        {
+            Brand = brand
+            Checks = checks
+            Country = country
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Funding = funding
+            Last4 = last4
+            Network = network
+            ThreeDSecure = threeDSecure
+            Wallet = wallet
+            Description = description |> Option.flatten
+            Fingerprint = fingerprint |> Option.flatten
+            Iin = iin |> Option.flatten
+            Issuer = issuer |> Option.flatten
+            Moto = moto
+        }
+
 type SetupAttemptPaymentMethodDetailsCardPresent =
     {
         /// The ID of the Card PaymentMethod which was generated by this SetupAttempt.
@@ -243,8 +333,21 @@ type SetupAttemptPaymentMethodDetailsCardPresent =
         Offline: PaymentMethodDetailsCardPresentOffline option
     }
 
+type SetupAttemptPaymentMethodDetailsCardPresent with
+    static member New(generatedCard: StripeId<Markers.PaymentMethod> option, offline: PaymentMethodDetailsCardPresentOffline option) =
+        {
+            GeneratedCard = generatedCard
+            Offline = offline
+        }
+
 type SetupAttemptPaymentMethodDetailsCashapp =
     { SetupAttemptPaymentMethodDetailsCashapp: string option }
+
+type SetupAttemptPaymentMethodDetailsCashapp with
+    static member New(?setupAttemptPaymentMethodDetailsCashapp: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsCashapp = setupAttemptPaymentMethodDetailsCashapp |> Option.flatten
+        }
 
 type SetupAttemptPaymentMethodDetailsIdealBank =
     | AbnAmro
@@ -309,17 +412,52 @@ type SetupAttemptPaymentMethodDetailsIdeal =
         VerifiedName: string option
     }
 
+type SetupAttemptPaymentMethodDetailsIdeal with
+    static member New(bank: SetupAttemptPaymentMethodDetailsIdealBank option, bic: SetupAttemptPaymentMethodDetailsIdealBic option, generatedSepaDebit: StripeId<Markers.PaymentMethod> option, generatedSepaDebitMandate: StripeId<Markers.Mandate> option, ibanLast4: string option, verifiedName: string option) =
+        {
+            Bank = bank
+            Bic = bic
+            GeneratedSepaDebit = generatedSepaDebit
+            GeneratedSepaDebitMandate = generatedSepaDebitMandate
+            IbanLast4 = ibanLast4
+            VerifiedName = verifiedName
+        }
+
 type SetupAttemptPaymentMethodDetailsKakaoPay =
     { SetupAttemptPaymentMethodDetailsKakaoPay: string option }
+
+type SetupAttemptPaymentMethodDetailsKakaoPay with
+    static member New(?setupAttemptPaymentMethodDetailsKakaoPay: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsKakaoPay = setupAttemptPaymentMethodDetailsKakaoPay |> Option.flatten
+        }
 
 type SetupAttemptPaymentMethodDetailsKlarna =
     { SetupAttemptPaymentMethodDetailsKlarna: string option }
 
+type SetupAttemptPaymentMethodDetailsKlarna with
+    static member New(?setupAttemptPaymentMethodDetailsKlarna: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsKlarna = setupAttemptPaymentMethodDetailsKlarna |> Option.flatten
+        }
+
 type SetupAttemptPaymentMethodDetailsKrCard =
     { SetupAttemptPaymentMethodDetailsKrCard: string option }
 
+type SetupAttemptPaymentMethodDetailsKrCard with
+    static member New(?setupAttemptPaymentMethodDetailsKrCard: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsKrCard = setupAttemptPaymentMethodDetailsKrCard |> Option.flatten
+        }
+
 type SetupAttemptPaymentMethodDetailsLink =
     { SetupAttemptPaymentMethodDetailsLink: string option }
+
+type SetupAttemptPaymentMethodDetailsLink with
+    static member New(?setupAttemptPaymentMethodDetailsLink: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsLink = setupAttemptPaymentMethodDetailsLink |> Option.flatten
+        }
 
 type SetupAttemptPaymentMethodDetailsNaverPay =
     {
@@ -327,23 +465,65 @@ type SetupAttemptPaymentMethodDetailsNaverPay =
         BuyerId: string option
     }
 
+type SetupAttemptPaymentMethodDetailsNaverPay with
+    static member New(?buyerId: string) =
+        {
+            BuyerId = buyerId
+        }
+
 type SetupAttemptPaymentMethodDetailsNzBankAccount =
     { SetupAttemptPaymentMethodDetailsNzBankAccount: string option }
+
+type SetupAttemptPaymentMethodDetailsNzBankAccount with
+    static member New(?setupAttemptPaymentMethodDetailsNzBankAccount: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsNzBankAccount = setupAttemptPaymentMethodDetailsNzBankAccount |> Option.flatten
+        }
 
 type SetupAttemptPaymentMethodDetailsPaypal =
     { SetupAttemptPaymentMethodDetailsPaypal: string option }
 
+type SetupAttemptPaymentMethodDetailsPaypal with
+    static member New(?setupAttemptPaymentMethodDetailsPaypal: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsPaypal = setupAttemptPaymentMethodDetailsPaypal |> Option.flatten
+        }
+
 type SetupAttemptPaymentMethodDetailsPayto =
     { SetupAttemptPaymentMethodDetailsPayto: string option }
+
+type SetupAttemptPaymentMethodDetailsPayto with
+    static member New(?setupAttemptPaymentMethodDetailsPayto: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsPayto = setupAttemptPaymentMethodDetailsPayto |> Option.flatten
+        }
 
 type SetupAttemptPaymentMethodDetailsPix =
     { SetupAttemptPaymentMethodDetailsPix: string option }
 
+type SetupAttemptPaymentMethodDetailsPix with
+    static member New(?setupAttemptPaymentMethodDetailsPix: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsPix = setupAttemptPaymentMethodDetailsPix |> Option.flatten
+        }
+
 type SetupAttemptPaymentMethodDetailsRevolutPay =
     { SetupAttemptPaymentMethodDetailsRevolutPay: string option }
 
+type SetupAttemptPaymentMethodDetailsRevolutPay with
+    static member New(?setupAttemptPaymentMethodDetailsRevolutPay: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsRevolutPay = setupAttemptPaymentMethodDetailsRevolutPay |> Option.flatten
+        }
+
 type SetupAttemptPaymentMethodDetailsSepaDebit =
     { SetupAttemptPaymentMethodDetailsSepaDebit: string option }
+
+type SetupAttemptPaymentMethodDetailsSepaDebit with
+    static member New(?setupAttemptPaymentMethodDetailsSepaDebit: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsSepaDebit = setupAttemptPaymentMethodDetailsSepaDebit |> Option.flatten
+        }
 
 [<Struct>]
 type SetupAttemptPaymentMethodDetailsSofortPreferredLanguage =
@@ -375,11 +555,36 @@ type SetupAttemptPaymentMethodDetailsSofort =
         VerifiedName: string option
     }
 
+type SetupAttemptPaymentMethodDetailsSofort with
+    static member New(bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: StripeId<Markers.PaymentMethod> option, generatedSepaDebitMandate: StripeId<Markers.Mandate> option, ibanLast4: string option, preferredLanguage: SetupAttemptPaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
+        {
+            BankCode = bankCode
+            BankName = bankName
+            Bic = bic
+            GeneratedSepaDebit = generatedSepaDebit
+            GeneratedSepaDebitMandate = generatedSepaDebitMandate
+            IbanLast4 = ibanLast4
+            PreferredLanguage = preferredLanguage
+            VerifiedName = verifiedName
+        }
+
 type SetupAttemptPaymentMethodDetailsUpi =
     { SetupAttemptPaymentMethodDetailsUpi: string option }
 
+type SetupAttemptPaymentMethodDetailsUpi with
+    static member New(?setupAttemptPaymentMethodDetailsUpi: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsUpi = setupAttemptPaymentMethodDetailsUpi |> Option.flatten
+        }
+
 type SetupAttemptPaymentMethodDetailsUsBankAccount =
     { SetupAttemptPaymentMethodDetailsUsBankAccount: string option }
+
+type SetupAttemptPaymentMethodDetailsUsBankAccount with
+    static member New(?setupAttemptPaymentMethodDetailsUsBankAccount: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsUsBankAccount = setupAttemptPaymentMethodDetailsUsBankAccount |> Option.flatten
+        }
 
 type SetupAttemptPaymentMethodDetails =
     {
@@ -410,6 +615,36 @@ type SetupAttemptPaymentMethodDetails =
         Upi: SetupAttemptPaymentMethodDetailsUpi option
         UsBankAccount: SetupAttemptPaymentMethodDetailsUsBankAccount option
     }
+
+type SetupAttemptPaymentMethodDetails with
+    static member New(``type``: string, ?acssDebit: SetupAttemptPaymentMethodDetailsAcssDebit, ?amazonPay: SetupAttemptPaymentMethodDetailsAmazonPay, ?auBecsDebit: SetupAttemptPaymentMethodDetailsAuBecsDebit, ?bacsDebit: SetupAttemptPaymentMethodDetailsBacsDebit, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?boleto: SetupAttemptPaymentMethodDetailsBoleto, ?card: SetupAttemptPaymentMethodDetailsCard, ?cardPresent: SetupAttemptPaymentMethodDetailsCardPresent, ?cashapp: SetupAttemptPaymentMethodDetailsCashapp, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?kakaoPay: SetupAttemptPaymentMethodDetailsKakaoPay, ?klarna: SetupAttemptPaymentMethodDetailsKlarna, ?krCard: SetupAttemptPaymentMethodDetailsKrCard, ?link: SetupAttemptPaymentMethodDetailsLink, ?naverPay: SetupAttemptPaymentMethodDetailsNaverPay, ?nzBankAccount: SetupAttemptPaymentMethodDetailsNzBankAccount, ?paypal: SetupAttemptPaymentMethodDetailsPaypal, ?payto: SetupAttemptPaymentMethodDetailsPayto, ?pix: SetupAttemptPaymentMethodDetailsPix, ?revolutPay: SetupAttemptPaymentMethodDetailsRevolutPay, ?sepaDebit: SetupAttemptPaymentMethodDetailsSepaDebit, ?sofort: SetupAttemptPaymentMethodDetailsSofort, ?upi: SetupAttemptPaymentMethodDetailsUpi, ?usBankAccount: SetupAttemptPaymentMethodDetailsUsBankAccount) =
+        {
+            Type = ``type``
+            AcssDebit = acssDebit
+            AmazonPay = amazonPay
+            AuBecsDebit = auBecsDebit
+            BacsDebit = bacsDebit
+            Bancontact = bancontact
+            Boleto = boleto
+            Card = card
+            CardPresent = cardPresent
+            Cashapp = cashapp
+            Ideal = ideal
+            KakaoPay = kakaoPay
+            Klarna = klarna
+            KrCard = krCard
+            Link = link
+            NaverPay = naverPay
+            NzBankAccount = nzBankAccount
+            Paypal = paypal
+            Payto = payto
+            Pix = pix
+            RevolutPay = revolutPay
+            SepaDebit = sepaDebit
+            Sofort = sofort
+            Upi = upi
+            UsBankAccount = usBankAccount
+        }
 
 type SetupAttemptStatus =
     | RequiresConfirmation
@@ -462,6 +697,26 @@ type SetupAttempt =
         /// The value of [usage](https://docs.stripe.com/api/setup_intents/object#setup_intent_object-usage) on the SetupIntent at the time of this confirmation, one of `off_session` or `on_session`.
         Usage: SetupAttemptUsage
     }
+
+type SetupAttempt with
+    static member New(application: StripeId<Markers.Application> option, created: DateTime, customer: SetupAttemptCustomer'AnyOf option, customerAccount: string option, flowDirections: SetupAttemptFlowDirections list option, id: string, livemode: bool, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod>, paymentMethodDetails: SetupAttemptPaymentMethodDetails, setupError: ApiErrors option, setupIntent: StripeId<Markers.SetupIntent>, status: SetupAttemptStatus, usage: SetupAttemptUsage, ?attachToSelf: bool) =
+        {
+            Application = application
+            Created = created
+            Customer = customer
+            CustomerAccount = customerAccount
+            FlowDirections = flowDirections
+            Id = id
+            Livemode = livemode
+            OnBehalfOf = onBehalfOf
+            PaymentMethod = paymentMethod
+            PaymentMethodDetails = paymentMethodDetails
+            SetupError = setupError
+            SetupIntent = setupIntent
+            Status = status
+            Usage = usage
+            AttachToSelf = attachToSelf
+        }
 
 module SetupAttempt =
     ///String representing the object's type. Objects of the same type share the same value.

@@ -27,6 +27,16 @@ module EphemeralKeys =
             VerificationSession: string option
         }
 
+    type CreateOptions with
+        static member New(?customer: string, ?expand: string list, ?issuingCard: string, ?nonce: string, ?verificationSession: string) =
+            {
+                Customer = customer
+                Expand = expand
+                IssuingCard = issuingCard
+                Nonce = nonce
+                VerificationSession = verificationSession
+            }
+
     module CreateOptions =
         let create
             (
@@ -53,6 +63,13 @@ module EphemeralKeys =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type DeleteOptions with
+        static member New(key: string, ?expand: string list) =
+            {
+                Key = key
+                Expand = expand
+            }
 
     module DeleteOptions =
         let create

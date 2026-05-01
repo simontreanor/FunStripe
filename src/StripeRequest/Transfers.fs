@@ -34,6 +34,18 @@ module Transfers =
             TransferGroup: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?destination: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?transferGroup: string) =
+            {
+                Created = created
+                Destination = destination
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                TransferGroup = transferGroup
+            }
+
     module ListOptions =
         let create
             (
@@ -92,6 +104,20 @@ module Transfers =
             TransferGroup: string option
         }
 
+    type CreateOptions with
+        static member New(currency: IsoTypes.IsoCurrencyCode, destination: string, ?amount: int, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?sourceTransaction: string, ?sourceType: Create'SourceType, ?transferGroup: string) =
+            {
+                Currency = currency
+                Destination = destination
+                Amount = amount
+                Description = description
+                Expand = expand
+                Metadata = metadata
+                SourceTransaction = sourceTransaction
+                SourceType = sourceType
+                TransferGroup = transferGroup
+            }
+
     module CreateOptions =
         let create
             (
@@ -120,6 +146,13 @@ module Transfers =
             Transfer: string
         }
 
+    type RetrieveOptions with
+        static member New(transfer: string, ?expand: string list) =
+            {
+                Transfer = transfer
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -145,6 +178,15 @@ module Transfers =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(transfer: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Transfer = transfer
+                Description = description
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -202,6 +244,16 @@ module TransfersReversals =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(id: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Id = id
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -237,6 +289,17 @@ module TransfersReversals =
             RefundApplicationFee: bool option
         }
 
+    type CreateOptions with
+        static member New(id: string, ?amount: int, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?refundApplicationFee: bool) =
+            {
+                Id = id
+                Amount = amount
+                Description = description
+                Expand = expand
+                Metadata = metadata
+                RefundApplicationFee = refundApplicationFee
+            }
+
     module CreateOptions =
         let create
             (
@@ -262,6 +325,14 @@ module TransfersReversals =
             [<Config.Path>]
             Transfer: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, transfer: string, ?expand: string list) =
+            {
+                Id = id
+                Transfer = transfer
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -289,6 +360,15 @@ module TransfersReversals =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(id: string, transfer: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Id = id
+                Transfer = transfer
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create

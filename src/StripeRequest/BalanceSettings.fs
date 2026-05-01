@@ -15,6 +15,12 @@ module BalanceSettings =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(?expand: string list) =
+            {
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -51,6 +57,14 @@ module BalanceSettings =
             WeeklyPayoutDays: Update'PaymentsPayoutsScheduleWeeklyPayoutDays list option
         }
 
+    type Update'PaymentsPayoutsSchedule with
+        static member New(?interval: Update'PaymentsPayoutsScheduleInterval, ?monthlyPayoutDays: int list, ?weeklyPayoutDays: Update'PaymentsPayoutsScheduleWeeklyPayoutDays list) =
+            {
+                Interval = interval
+                MonthlyPayoutDays = monthlyPayoutDays
+                WeeklyPayoutDays = weeklyPayoutDays
+            }
+
     module Update'PaymentsPayoutsSchedule =
         let create
             (
@@ -78,6 +92,14 @@ module BalanceSettings =
             StatementDescriptor: string option
         }
 
+    type Update'PaymentsPayouts with
+        static member New(?minimumBalanceByCurrency: Choice<Map<string, string>,string>, ?schedule: Update'PaymentsPayoutsSchedule, ?statementDescriptor: string) =
+            {
+                MinimumBalanceByCurrency = minimumBalanceByCurrency
+                Schedule = schedule
+                StatementDescriptor = statementDescriptor
+            }
+
     module Update'PaymentsPayouts =
         let create
             (
@@ -98,6 +120,12 @@ module BalanceSettings =
             [<Config.Form>]
             DelayDaysOverride: Choice<int,string> option
         }
+
+    type Update'PaymentsSettlementTiming with
+        static member New(?delayDaysOverride: Choice<int,string>) =
+            {
+                DelayDaysOverride = delayDaysOverride
+            }
 
     module Update'PaymentsSettlementTiming =
         let create
@@ -122,6 +150,14 @@ module BalanceSettings =
             SettlementTiming: Update'PaymentsSettlementTiming option
         }
 
+    type Update'Payments with
+        static member New(?debitNegativeBalances: bool, ?payouts: Update'PaymentsPayouts, ?settlementTiming: Update'PaymentsSettlementTiming) =
+            {
+                DebitNegativeBalances = debitNegativeBalances
+                Payouts = payouts
+                SettlementTiming = settlementTiming
+            }
+
     module Update'Payments =
         let create
             (
@@ -145,6 +181,13 @@ module BalanceSettings =
             [<Config.Form>]
             Payments: Update'Payments option
         }
+
+    type UpdateOptions with
+        static member New(?expand: string list, ?payments: Update'Payments) =
+            {
+                Expand = expand
+                Payments = payments
+            }
 
     module UpdateOptions =
         let create

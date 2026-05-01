@@ -30,6 +30,17 @@ module BillingPortalConfigurations =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?active: bool, ?endingBefore: string, ?expand: string list, ?isDefault: bool, ?limit: int, ?startingAfter: string) =
+            {
+                Active = active
+                EndingBefore = endingBefore
+                Expand = expand
+                IsDefault = isDefault
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -63,6 +74,14 @@ module BillingPortalConfigurations =
             TermsOfServiceUrl: string option
         }
 
+    type Create'BusinessProfile with
+        static member New(?headline: Choice<string,string>, ?privacyPolicyUrl: string, ?termsOfServiceUrl: string) =
+            {
+                Headline = headline
+                PrivacyPolicyUrl = privacyPolicyUrl
+                TermsOfServiceUrl = termsOfServiceUrl
+            }
+
     module Create'BusinessProfile =
         let create
             (
@@ -95,6 +114,13 @@ module BillingPortalConfigurations =
             Enabled: bool option
         }
 
+    type Create'FeaturesCustomerUpdate with
+        static member New(?allowedUpdates: Choice<Create'FeaturesCustomerUpdateAllowedUpdates list,string>, ?enabled: bool) =
+            {
+                AllowedUpdates = allowedUpdates
+                Enabled = enabled
+            }
+
     module Create'FeaturesCustomerUpdate =
         let create
             (
@@ -113,6 +139,12 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Enabled: bool option
         }
+
+    type Create'FeaturesInvoiceHistory with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
 
     module Create'FeaturesInvoiceHistory =
         let create
@@ -133,6 +165,13 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             PaymentMethodConfiguration: Choice<string,string> option
         }
+
+    type Create'FeaturesPaymentMethodUpdate with
+        static member New(?enabled: bool, ?paymentMethodConfiguration: Choice<string,string>) =
+            {
+                Enabled = enabled
+                PaymentMethodConfiguration = paymentMethodConfiguration
+            }
 
     module Create'FeaturesPaymentMethodUpdate =
         let create
@@ -165,6 +204,13 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Options: Choice<Create'FeaturesSubscriptionCancelCancellationReasonOptions list,string> option
         }
+
+    type Create'FeaturesSubscriptionCancelCancellationReason with
+        static member New(?enabled: bool, ?options: Choice<Create'FeaturesSubscriptionCancelCancellationReasonOptions list,string>) =
+            {
+                Enabled = enabled
+                Options = options
+            }
 
     module Create'FeaturesSubscriptionCancelCancellationReason =
         let create
@@ -202,6 +248,15 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             ProrationBehavior: Create'FeaturesSubscriptionCancelProrationBehavior option
         }
+
+    type Create'FeaturesSubscriptionCancel with
+        static member New(?cancellationReason: Create'FeaturesSubscriptionCancelCancellationReason, ?enabled: bool, ?mode: Create'FeaturesSubscriptionCancelMode, ?prorationBehavior: Create'FeaturesSubscriptionCancelProrationBehavior) =
+            {
+                CancellationReason = cancellationReason
+                Enabled = enabled
+                Mode = mode
+                ProrationBehavior = prorationBehavior
+            }
 
     module Create'FeaturesSubscriptionCancel =
         let create
@@ -241,6 +296,14 @@ module BillingPortalConfigurations =
             Minimum: int option
         }
 
+    type Create'FeaturesSubscriptionUpdateProductsAdjustableQuantity with
+        static member New(?enabled: bool, ?maximum: int, ?minimum: int) =
+            {
+                Enabled = enabled
+                Maximum = maximum
+                Minimum = minimum
+            }
+
     module Create'FeaturesSubscriptionUpdateProductsAdjustableQuantity =
         let create
             (
@@ -267,6 +330,14 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Product: string option
         }
+
+    type Create'FeaturesSubscriptionUpdateProducts with
+        static member New(?adjustableQuantity: Create'FeaturesSubscriptionUpdateProductsAdjustableQuantity, ?prices: string list, ?product: string) =
+            {
+                AdjustableQuantity = adjustableQuantity
+                Prices = prices
+                Product = product
+            }
 
     module Create'FeaturesSubscriptionUpdateProducts =
         let create
@@ -298,14 +369,20 @@ module BillingPortalConfigurations =
             Type: Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditionsType option
         }
 
+    type Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions with
+        static member New(?type': Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditionsType) =
+            {
+                Type = type'
+            }
+
     module Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions =
         let create
             (
-                ``type``: Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditionsType option
+                type': Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditionsType option
             ) : Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'FeaturesSubscriptionUpdateScheduleAtPeriodEnd =
@@ -314,6 +391,12 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Conditions: Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions list option
         }
+
+    type Create'FeaturesSubscriptionUpdateScheduleAtPeriodEnd with
+        static member New(?conditions: Create'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions list) =
+            {
+                Conditions = conditions
+            }
 
     module Create'FeaturesSubscriptionUpdateScheduleAtPeriodEnd =
         let create
@@ -353,6 +436,18 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             TrialUpdateBehavior: Create'FeaturesSubscriptionUpdateTrialUpdateBehavior option
         }
+
+    type Create'FeaturesSubscriptionUpdate with
+        static member New(?billingCycleAnchor: Create'FeaturesSubscriptionUpdateBillingCycleAnchor, ?defaultAllowedUpdates: Choice<Create'FeaturesSubscriptionUpdateDefaultAllowedUpdates list,string>, ?enabled: bool, ?products: Choice<Create'FeaturesSubscriptionUpdateProducts list,string>, ?prorationBehavior: Create'FeaturesSubscriptionUpdateProrationBehavior, ?scheduleAtPeriodEnd: Create'FeaturesSubscriptionUpdateScheduleAtPeriodEnd, ?trialUpdateBehavior: Create'FeaturesSubscriptionUpdateTrialUpdateBehavior) =
+            {
+                BillingCycleAnchor = billingCycleAnchor
+                DefaultAllowedUpdates = defaultAllowedUpdates
+                Enabled = enabled
+                Products = products
+                ProrationBehavior = prorationBehavior
+                ScheduleAtPeriodEnd = scheduleAtPeriodEnd
+                TrialUpdateBehavior = trialUpdateBehavior
+            }
 
     module Create'FeaturesSubscriptionUpdate =
         let create
@@ -395,6 +490,16 @@ module BillingPortalConfigurations =
             SubscriptionUpdate: Create'FeaturesSubscriptionUpdate option
         }
 
+    type Create'Features with
+        static member New(?customerUpdate: Create'FeaturesCustomerUpdate, ?invoiceHistory: Create'FeaturesInvoiceHistory, ?paymentMethodUpdate: Create'FeaturesPaymentMethodUpdate, ?subscriptionCancel: Create'FeaturesSubscriptionCancel, ?subscriptionUpdate: Create'FeaturesSubscriptionUpdate) =
+            {
+                CustomerUpdate = customerUpdate
+                InvoiceHistory = invoiceHistory
+                PaymentMethodUpdate = paymentMethodUpdate
+                SubscriptionCancel = subscriptionCancel
+                SubscriptionUpdate = subscriptionUpdate
+            }
+
     module Create'Features =
         let create
             (
@@ -419,6 +524,12 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Enabled: bool option
         }
+
+    type Create'LoginPage with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
 
     module Create'LoginPage =
         let create
@@ -455,6 +566,18 @@ module BillingPortalConfigurations =
             Name: Choice<string,string> option
         }
 
+    type CreateOptions with
+        static member New(features: Create'Features, ?businessProfile: Create'BusinessProfile, ?defaultReturnUrl: Choice<string,string>, ?expand: string list, ?loginPage: Create'LoginPage, ?metadata: Map<string, string>, ?name: Choice<string,string>) =
+            {
+                Features = features
+                BusinessProfile = businessProfile
+                DefaultReturnUrl = defaultReturnUrl
+                Expand = expand
+                LoginPage = loginPage
+                Metadata = metadata
+                Name = name
+            }
+
     module CreateOptions =
         let create
             (
@@ -480,6 +603,13 @@ module BillingPortalConfigurations =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(configuration: string, ?expand: string list) =
+            {
+                Configuration = configuration
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -503,6 +633,14 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             TermsOfServiceUrl: Choice<string,string> option
         }
+
+    type Update'BusinessProfile with
+        static member New(?headline: Choice<string,string>, ?privacyPolicyUrl: Choice<string,string>, ?termsOfServiceUrl: Choice<string,string>) =
+            {
+                Headline = headline
+                PrivacyPolicyUrl = privacyPolicyUrl
+                TermsOfServiceUrl = termsOfServiceUrl
+            }
 
     module Update'BusinessProfile =
         let create
@@ -536,6 +674,13 @@ module BillingPortalConfigurations =
             Enabled: bool option
         }
 
+    type Update'FeaturesCustomerUpdate with
+        static member New(?allowedUpdates: Choice<Update'FeaturesCustomerUpdateAllowedUpdates list,string>, ?enabled: bool) =
+            {
+                AllowedUpdates = allowedUpdates
+                Enabled = enabled
+            }
+
     module Update'FeaturesCustomerUpdate =
         let create
             (
@@ -554,6 +699,12 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Enabled: bool option
         }
+
+    type Update'FeaturesInvoiceHistory with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
 
     module Update'FeaturesInvoiceHistory =
         let create
@@ -574,6 +725,13 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             PaymentMethodConfiguration: Choice<string,string> option
         }
+
+    type Update'FeaturesPaymentMethodUpdate with
+        static member New(?enabled: bool, ?paymentMethodConfiguration: Choice<string,string>) =
+            {
+                Enabled = enabled
+                PaymentMethodConfiguration = paymentMethodConfiguration
+            }
 
     module Update'FeaturesPaymentMethodUpdate =
         let create
@@ -606,6 +764,13 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Options: Choice<Update'FeaturesSubscriptionCancelCancellationReasonOptions list,string> option
         }
+
+    type Update'FeaturesSubscriptionCancelCancellationReason with
+        static member New(?enabled: bool, ?options: Choice<Update'FeaturesSubscriptionCancelCancellationReasonOptions list,string>) =
+            {
+                Enabled = enabled
+                Options = options
+            }
 
     module Update'FeaturesSubscriptionCancelCancellationReason =
         let create
@@ -643,6 +808,15 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             ProrationBehavior: Update'FeaturesSubscriptionCancelProrationBehavior option
         }
+
+    type Update'FeaturesSubscriptionCancel with
+        static member New(?cancellationReason: Update'FeaturesSubscriptionCancelCancellationReason, ?enabled: bool, ?mode: Update'FeaturesSubscriptionCancelMode, ?prorationBehavior: Update'FeaturesSubscriptionCancelProrationBehavior) =
+            {
+                CancellationReason = cancellationReason
+                Enabled = enabled
+                Mode = mode
+                ProrationBehavior = prorationBehavior
+            }
 
     module Update'FeaturesSubscriptionCancel =
         let create
@@ -682,6 +856,14 @@ module BillingPortalConfigurations =
             Minimum: int option
         }
 
+    type Update'FeaturesSubscriptionUpdateProductsAdjustableQuantity with
+        static member New(?enabled: bool, ?maximum: int, ?minimum: int) =
+            {
+                Enabled = enabled
+                Maximum = maximum
+                Minimum = minimum
+            }
+
     module Update'FeaturesSubscriptionUpdateProductsAdjustableQuantity =
         let create
             (
@@ -708,6 +890,14 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Product: string option
         }
+
+    type Update'FeaturesSubscriptionUpdateProducts with
+        static member New(?adjustableQuantity: Update'FeaturesSubscriptionUpdateProductsAdjustableQuantity, ?prices: string list, ?product: string) =
+            {
+                AdjustableQuantity = adjustableQuantity
+                Prices = prices
+                Product = product
+            }
 
     module Update'FeaturesSubscriptionUpdateProducts =
         let create
@@ -739,14 +929,20 @@ module BillingPortalConfigurations =
             Type: Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditionsType option
         }
 
+    type Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions with
+        static member New(?type': Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditionsType) =
+            {
+                Type = type'
+            }
+
     module Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions =
         let create
             (
-                ``type``: Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditionsType option
+                type': Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditionsType option
             ) : Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Update'FeaturesSubscriptionUpdateScheduleAtPeriodEnd =
@@ -755,6 +951,12 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Conditions: Choice<Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions list,string> option
         }
+
+    type Update'FeaturesSubscriptionUpdateScheduleAtPeriodEnd with
+        static member New(?conditions: Choice<Update'FeaturesSubscriptionUpdateScheduleAtPeriodEndConditions list,string>) =
+            {
+                Conditions = conditions
+            }
 
     module Update'FeaturesSubscriptionUpdateScheduleAtPeriodEnd =
         let create
@@ -794,6 +996,18 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             TrialUpdateBehavior: Update'FeaturesSubscriptionUpdateTrialUpdateBehavior option
         }
+
+    type Update'FeaturesSubscriptionUpdate with
+        static member New(?billingCycleAnchor: Update'FeaturesSubscriptionUpdateBillingCycleAnchor, ?defaultAllowedUpdates: Choice<Update'FeaturesSubscriptionUpdateDefaultAllowedUpdates list,string>, ?enabled: bool, ?products: Choice<Update'FeaturesSubscriptionUpdateProducts list,string>, ?prorationBehavior: Update'FeaturesSubscriptionUpdateProrationBehavior, ?scheduleAtPeriodEnd: Update'FeaturesSubscriptionUpdateScheduleAtPeriodEnd, ?trialUpdateBehavior: Update'FeaturesSubscriptionUpdateTrialUpdateBehavior) =
+            {
+                BillingCycleAnchor = billingCycleAnchor
+                DefaultAllowedUpdates = defaultAllowedUpdates
+                Enabled = enabled
+                Products = products
+                ProrationBehavior = prorationBehavior
+                ScheduleAtPeriodEnd = scheduleAtPeriodEnd
+                TrialUpdateBehavior = trialUpdateBehavior
+            }
 
     module Update'FeaturesSubscriptionUpdate =
         let create
@@ -836,6 +1050,16 @@ module BillingPortalConfigurations =
             SubscriptionUpdate: Update'FeaturesSubscriptionUpdate option
         }
 
+    type Update'Features with
+        static member New(?customerUpdate: Update'FeaturesCustomerUpdate, ?invoiceHistory: Update'FeaturesInvoiceHistory, ?paymentMethodUpdate: Update'FeaturesPaymentMethodUpdate, ?subscriptionCancel: Update'FeaturesSubscriptionCancel, ?subscriptionUpdate: Update'FeaturesSubscriptionUpdate) =
+            {
+                CustomerUpdate = customerUpdate
+                InvoiceHistory = invoiceHistory
+                PaymentMethodUpdate = paymentMethodUpdate
+                SubscriptionCancel = subscriptionCancel
+                SubscriptionUpdate = subscriptionUpdate
+            }
+
     module Update'Features =
         let create
             (
@@ -861,6 +1085,12 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Enabled: bool option
         }
+
+    type Update'LoginPage with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
 
     module Update'LoginPage =
         let create
@@ -901,6 +1131,20 @@ module BillingPortalConfigurations =
             [<Config.Form>]
             Name: Choice<string,string> option
         }
+
+    type UpdateOptions with
+        static member New(configuration: string, ?active: bool, ?businessProfile: Update'BusinessProfile, ?defaultReturnUrl: Choice<string,string>, ?expand: string list, ?features: Update'Features, ?loginPage: Update'LoginPage, ?metadata: Map<string, string>, ?name: Choice<string,string>) =
+            {
+                Configuration = configuration
+                Active = active
+                BusinessProfile = businessProfile
+                DefaultReturnUrl = defaultReturnUrl
+                Expand = expand
+                Features = features
+                LoginPage = loginPage
+                Metadata = metadata
+                Name = name
+            }
 
     module UpdateOptions =
         let create
@@ -951,6 +1195,12 @@ module BillingPortalSessions =
             CustomMessage: string option
         }
 
+    type Create'FlowDataAfterCompletionHostedConfirmation with
+        static member New(?customMessage: string) =
+            {
+                CustomMessage = customMessage
+            }
+
     module Create'FlowDataAfterCompletionHostedConfirmation =
         let create
             (
@@ -967,6 +1217,12 @@ module BillingPortalSessions =
             [<Config.Form>]
             ReturnUrl: string option
         }
+
+    type Create'FlowDataAfterCompletionRedirect with
+        static member New(?returnUrl: string) =
+            {
+                ReturnUrl = returnUrl
+            }
 
     module Create'FlowDataAfterCompletionRedirect =
         let create
@@ -996,18 +1252,26 @@ module BillingPortalSessions =
             Type: Create'FlowDataAfterCompletionType option
         }
 
+    type Create'FlowDataAfterCompletion with
+        static member New(?hostedConfirmation: Create'FlowDataAfterCompletionHostedConfirmation, ?redirect: Create'FlowDataAfterCompletionRedirect, ?type': Create'FlowDataAfterCompletionType) =
+            {
+                HostedConfirmation = hostedConfirmation
+                Redirect = redirect
+                Type = type'
+            }
+
     module Create'FlowDataAfterCompletion =
         let create
             (
                 hostedConfirmation: Create'FlowDataAfterCompletionHostedConfirmation option,
                 redirect: Create'FlowDataAfterCompletionRedirect option,
-                ``type``: Create'FlowDataAfterCompletionType option
+                type': Create'FlowDataAfterCompletionType option
             ) : Create'FlowDataAfterCompletion
             =
             {
               HostedConfirmation = hostedConfirmation
               Redirect = redirect
-              Type = ``type``
+              Type = type'
             }
 
     type Create'FlowDataSubscriptionCancelRetentionCouponOffer =
@@ -1016,6 +1280,12 @@ module BillingPortalSessions =
             [<Config.Form>]
             Coupon: string option
         }
+
+    type Create'FlowDataSubscriptionCancelRetentionCouponOffer with
+        static member New(?coupon: string) =
+            {
+                Coupon = coupon
+            }
 
     module Create'FlowDataSubscriptionCancelRetentionCouponOffer =
         let create
@@ -1039,16 +1309,23 @@ module BillingPortalSessions =
             Type: Create'FlowDataSubscriptionCancelRetentionType option
         }
 
+    type Create'FlowDataSubscriptionCancelRetention with
+        static member New(?couponOffer: Create'FlowDataSubscriptionCancelRetentionCouponOffer, ?type': Create'FlowDataSubscriptionCancelRetentionType) =
+            {
+                CouponOffer = couponOffer
+                Type = type'
+            }
+
     module Create'FlowDataSubscriptionCancelRetention =
         let create
             (
                 couponOffer: Create'FlowDataSubscriptionCancelRetentionCouponOffer option,
-                ``type``: Create'FlowDataSubscriptionCancelRetentionType option
+                type': Create'FlowDataSubscriptionCancelRetentionType option
             ) : Create'FlowDataSubscriptionCancelRetention
             =
             {
               CouponOffer = couponOffer
-              Type = ``type``
+              Type = type'
             }
 
     type Create'FlowDataSubscriptionCancel =
@@ -1060,6 +1337,13 @@ module BillingPortalSessions =
             [<Config.Form>]
             Subscription: string option
         }
+
+    type Create'FlowDataSubscriptionCancel with
+        static member New(?retention: Create'FlowDataSubscriptionCancelRetention, ?subscription: string) =
+            {
+                Retention = retention
+                Subscription = subscription
+            }
 
     module Create'FlowDataSubscriptionCancel =
         let create
@@ -1080,6 +1364,12 @@ module BillingPortalSessions =
             Subscription: string option
         }
 
+    type Create'FlowDataSubscriptionUpdate with
+        static member New(?subscription: string) =
+            {
+                Subscription = subscription
+            }
+
     module Create'FlowDataSubscriptionUpdate =
         let create
             (
@@ -1099,6 +1389,13 @@ module BillingPortalSessions =
             [<Config.Form>]
             PromotionCode: string option
         }
+
+    type Create'FlowDataSubscriptionUpdateConfirmDiscounts with
+        static member New(?coupon: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                PromotionCode = promotionCode
+            }
 
     module Create'FlowDataSubscriptionUpdateConfirmDiscounts =
         let create
@@ -1124,6 +1421,14 @@ module BillingPortalSessions =
             [<Config.Form>]
             Quantity: int option
         }
+
+    type Create'FlowDataSubscriptionUpdateConfirmItems with
+        static member New(?id: string, ?price: string, ?quantity: int) =
+            {
+                Id = id
+                Price = price
+                Quantity = quantity
+            }
 
     module Create'FlowDataSubscriptionUpdateConfirmItems =
         let create
@@ -1151,6 +1456,14 @@ module BillingPortalSessions =
             [<Config.Form>]
             Subscription: string option
         }
+
+    type Create'FlowDataSubscriptionUpdateConfirm with
+        static member New(?discounts: Create'FlowDataSubscriptionUpdateConfirmDiscounts list, ?items: Create'FlowDataSubscriptionUpdateConfirmItems list, ?subscription: string) =
+            {
+                Discounts = discounts
+                Items = items
+                Subscription = subscription
+            }
 
     module Create'FlowDataSubscriptionUpdateConfirm =
         let create
@@ -1191,6 +1504,16 @@ module BillingPortalSessions =
             Type: Create'FlowDataType option
         }
 
+    type Create'FlowData with
+        static member New(?afterCompletion: Create'FlowDataAfterCompletion, ?subscriptionCancel: Create'FlowDataSubscriptionCancel, ?subscriptionUpdate: Create'FlowDataSubscriptionUpdate, ?subscriptionUpdateConfirm: Create'FlowDataSubscriptionUpdateConfirm, ?type': Create'FlowDataType) =
+            {
+                AfterCompletion = afterCompletion
+                SubscriptionCancel = subscriptionCancel
+                SubscriptionUpdate = subscriptionUpdate
+                SubscriptionUpdateConfirm = subscriptionUpdateConfirm
+                Type = type'
+            }
+
     module Create'FlowData =
         let create
             (
@@ -1198,7 +1521,7 @@ module BillingPortalSessions =
                 subscriptionCancel: Create'FlowDataSubscriptionCancel option,
                 subscriptionUpdate: Create'FlowDataSubscriptionUpdate option,
                 subscriptionUpdateConfirm: Create'FlowDataSubscriptionUpdateConfirm option,
-                ``type``: Create'FlowDataType option
+                type': Create'FlowDataType option
             ) : Create'FlowData
             =
             {
@@ -1206,7 +1529,7 @@ module BillingPortalSessions =
               SubscriptionCancel = subscriptionCancel
               SubscriptionUpdate = subscriptionUpdate
               SubscriptionUpdateConfirm = subscriptionUpdateConfirm
-              Type = ``type``
+              Type = type'
             }
 
     type Create'Locale =
@@ -1285,6 +1608,19 @@ module BillingPortalSessions =
             [<Config.Form>]
             ReturnUrl: string option
         }
+
+    type CreateOptions with
+        static member New(?configuration: string, ?customer: string, ?customerAccount: string, ?expand: string list, ?flowData: Create'FlowData, ?locale: Create'Locale, ?onBehalfOf: string, ?returnUrl: string) =
+            {
+                Configuration = configuration
+                Customer = customer
+                CustomerAccount = customerAccount
+                Expand = expand
+                FlowData = flowData
+                Locale = locale
+                OnBehalfOf = onBehalfOf
+                ReturnUrl = returnUrl
+            }
 
     module CreateOptions =
         let create

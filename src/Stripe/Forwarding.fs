@@ -14,6 +14,13 @@ type ForwardedRequestContext =
         DestinationIpAddress: string
     }
 
+type ForwardedRequestContext with
+    static member New(destinationDuration: int, destinationIpAddress: string) =
+        {
+            DestinationDuration = destinationDuration
+            DestinationIpAddress = destinationIpAddress
+        }
+
 /// Header data.
 type ForwardedRequestHeader =
     {
@@ -23,6 +30,13 @@ type ForwardedRequestHeader =
         Value: string
     }
 
+type ForwardedRequestHeader with
+    static member New(name: string, value: string) =
+        {
+            Name = name
+            Value = value
+        }
+
 /// Details about the request forwarded to the destination endpoint.
 type ForwardedRequestDetails =
     {
@@ -31,6 +45,13 @@ type ForwardedRequestDetails =
         /// The headers to include in the forwarded request. Can be omitted if no additional headers (excluding Stripe-generated ones such as the Content-Type header) should be included.
         Headers: ForwardedRequestHeader list
     }
+
+type ForwardedRequestDetails with
+    static member New(body: string, headers: ForwardedRequestHeader list) =
+        {
+            Body = body
+            Headers = headers
+        }
 
 module ForwardedRequestDetails =
     ///The HTTP method used to call the destination endpoint.
@@ -46,6 +67,14 @@ type ForwardedResponseDetails =
         /// The HTTP status code that the destination endpoint returned.
         Status: int
     }
+
+type ForwardedResponseDetails with
+    static member New(body: string, headers: ForwardedRequestHeader list, status: int) =
+        {
+            Body = body
+            Headers = headers
+            Status = status
+        }
 
 [<Struct>]
 type ForwardingRequestReplacements =
@@ -90,6 +119,21 @@ type ForwardingRequest =
         /// The destination URL for the forwarded request. Must be supported by the config.
         Url: string option
     }
+
+type ForwardingRequest with
+    static member New(created: DateTime, id: string, livemode: bool, paymentMethod: string, replacements: ForwardingRequestReplacements list, requestContext: ForwardedRequestContext option, requestDetails: ForwardedRequestDetails option, responseDetails: ForwardedResponseDetails option, url: string option, ?metadata: Map<string, string> option) =
+        {
+            Created = created
+            Id = id
+            Livemode = livemode
+            PaymentMethod = paymentMethod
+            Replacements = replacements
+            RequestContext = requestContext
+            RequestDetails = requestDetails
+            ResponseDetails = responseDetails
+            Url = url
+            Metadata = metadata |> Option.flatten
+        }
 
 module ForwardingRequest =
     ///String representing the object's type. Objects of the same type share the same value.

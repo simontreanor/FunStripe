@@ -33,6 +33,18 @@ module Disputes =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?charge: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string) =
+            {
+                Charge = charge
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                PaymentIntent = paymentIntent
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -63,6 +75,13 @@ module Disputes =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(dispute: string, ?expand: string list) =
+            {
+                Dispute = dispute
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -100,6 +119,17 @@ module Disputes =
             [<Config.Form>]
             State: Choice<string,string> option
         }
+
+    type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionShippingAddress with
+        static member New(?city: Choice<string,string>, ?country: Choice<IsoTypes.IsoCountryCode,string>, ?line1: Choice<string,string>, ?line2: Choice<string,string>, ?postalCode: Choice<string,string>, ?state: Choice<string,string>) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionShippingAddress =
         let create
@@ -151,6 +181,19 @@ module Disputes =
                 Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionShippingAddress option
         }
 
+    type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransaction with
+        static member New(?customerAccountId: Choice<string,string>, ?customerDeviceFingerprint: Choice<string,string>, ?customerDeviceId: Choice<string,string>, ?customerEmailAddress: Choice<string,string>, ?customerPurchaseIp: Choice<string,string>, ?merchandiseOrServices: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionMerchandiseOrServices, ?productDescription: Choice<string,string>, ?shippingAddress: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionShippingAddress) =
+            {
+                CustomerAccountId = customerAccountId
+                CustomerDeviceFingerprint = customerDeviceFingerprint
+                CustomerDeviceId = customerDeviceId
+                CustomerEmailAddress = customerEmailAddress
+                CustomerPurchaseIp = customerPurchaseIp
+                MerchandiseOrServices = merchandiseOrServices
+                ProductDescription = productDescription
+                ShippingAddress = shippingAddress
+            }
+
     module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransaction =
         let create
             (
@@ -196,6 +239,17 @@ module Disputes =
             [<Config.Form>]
             State: Choice<string,string> option
         }
+
+    type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactionsShippingAddress with
+        static member New(?city: Choice<string,string>, ?country: Choice<IsoTypes.IsoCountryCode,string>, ?line1: Choice<string,string>, ?line2: Choice<string,string>, ?postalCode: Choice<string,string>, ?state: Choice<string,string>) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactionsShippingAddress =
         let create
@@ -246,6 +300,19 @@ module Disputes =
                 Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactionsShippingAddress option
         }
 
+    type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactions with
+        static member New(?charge: string, ?customerAccountId: Choice<string,string>, ?customerDeviceFingerprint: Choice<string,string>, ?customerDeviceId: Choice<string,string>, ?customerEmailAddress: Choice<string,string>, ?customerPurchaseIp: Choice<string,string>, ?productDescription: Choice<string,string>, ?shippingAddress: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactionsShippingAddress) =
+            {
+                Charge = charge
+                CustomerAccountId = customerAccountId
+                CustomerDeviceFingerprint = customerDeviceFingerprint
+                CustomerDeviceId = customerDeviceId
+                CustomerEmailAddress = customerEmailAddress
+                CustomerPurchaseIp = customerPurchaseIp
+                ProductDescription = productDescription
+                ShippingAddress = shippingAddress
+            }
+
     module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactions =
         let create
             (
@@ -282,6 +349,13 @@ module Disputes =
                 Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactions list option
         }
 
+    type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3 with
+        static member New(?disputedTransaction: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransaction, ?priorUndisputedTransactions: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3PriorUndisputedTransactions list) =
+            {
+                DisputedTransaction = disputedTransaction
+                PriorUndisputedTransactions = priorUndisputedTransactions
+            }
+
     module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3 =
         let create
             (
@@ -300,6 +374,12 @@ module Disputes =
             [<Config.Form>]
             FeeAcknowledged: bool option
         }
+
+    type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompliance with
+        static member New(?feeAcknowledged: bool) =
+            {
+                FeeAcknowledged = feeAcknowledged
+            }
 
     module Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompliance =
         let create
@@ -320,6 +400,13 @@ module Disputes =
             [<Config.Form>]
             VisaCompliance: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompliance option
         }
+
+    type Update'EvidenceEnhancedEvidenceEnhancedEvidence with
+        static member New(?visaCompellingEvidence3: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3, ?visaCompliance: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompliance) =
+            {
+                VisaCompellingEvidence3 = visaCompellingEvidence3
+                VisaCompliance = visaCompliance
+            }
 
     module Update'EvidenceEnhancedEvidenceEnhancedEvidence =
         let create
@@ -421,6 +508,39 @@ module Disputes =
             UncategorizedText: string option
         }
 
+    type Update'Evidence with
+        static member New(?accessActivityLog: string, ?billingAddress: string, ?cancellationPolicy: string, ?cancellationPolicyDisclosure: string, ?cancellationRebuttal: string, ?customerCommunication: string, ?customerEmailAddress: string, ?customerName: string, ?customerPurchaseIp: string, ?customerSignature: string, ?duplicateChargeDocumentation: string, ?duplicateChargeExplanation: string, ?duplicateChargeId: string, ?enhancedEvidence: Choice<Update'EvidenceEnhancedEvidenceEnhancedEvidence,string>, ?productDescription: string, ?receipt: string, ?refundPolicy: string, ?refundPolicyDisclosure: string, ?refundRefusalExplanation: string, ?serviceDate: string, ?serviceDocumentation: string, ?shippingAddress: string, ?shippingCarrier: string, ?shippingDate: string, ?shippingDocumentation: string, ?shippingTrackingNumber: string, ?uncategorizedFile: string, ?uncategorizedText: string) =
+            {
+                AccessActivityLog = accessActivityLog
+                BillingAddress = billingAddress
+                CancellationPolicy = cancellationPolicy
+                CancellationPolicyDisclosure = cancellationPolicyDisclosure
+                CancellationRebuttal = cancellationRebuttal
+                CustomerCommunication = customerCommunication
+                CustomerEmailAddress = customerEmailAddress
+                CustomerName = customerName
+                CustomerPurchaseIp = customerPurchaseIp
+                CustomerSignature = customerSignature
+                DuplicateChargeDocumentation = duplicateChargeDocumentation
+                DuplicateChargeExplanation = duplicateChargeExplanation
+                DuplicateChargeId = duplicateChargeId
+                EnhancedEvidence = enhancedEvidence
+                ProductDescription = productDescription
+                Receipt = receipt
+                RefundPolicy = refundPolicy
+                RefundPolicyDisclosure = refundPolicyDisclosure
+                RefundRefusalExplanation = refundRefusalExplanation
+                ServiceDate = serviceDate
+                ServiceDocumentation = serviceDocumentation
+                ShippingAddress = shippingAddress
+                ShippingCarrier = shippingCarrier
+                ShippingDate = shippingDate
+                ShippingDocumentation = shippingDocumentation
+                ShippingTrackingNumber = shippingTrackingNumber
+                UncategorizedFile = uncategorizedFile
+                UncategorizedText = uncategorizedText
+            }
+
     module Update'Evidence =
         let create
             (
@@ -503,6 +623,16 @@ module Disputes =
             Submit: bool option
         }
 
+    type UpdateOptions with
+        static member New(dispute: string, ?evidence: Update'Evidence, ?expand: string list, ?metadata: Map<string, string>, ?submit: bool) =
+            {
+                Dispute = dispute
+                Evidence = evidence
+                Expand = expand
+                Metadata = metadata
+                Submit = submit
+            }
+
     module UpdateOptions =
         let create
             (
@@ -545,6 +675,13 @@ module DisputesClose =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type CloseOptions with
+        static member New(dispute: string, ?expand: string list) =
+            {
+                Dispute = dispute
+                Expand = expand
+            }
 
     module CloseOptions =
         let create

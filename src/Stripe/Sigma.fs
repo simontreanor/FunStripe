@@ -12,6 +12,12 @@ type SigmaScheduledQueryRunError =
         Message: string
     }
 
+type SigmaScheduledQueryRunError with
+    static member New(message: string) =
+        {
+            Message = message
+        }
+
 /// If you have [scheduled a Sigma query](https://docs.stripe.com/sigma/scheduled-queries), you'll
 /// receive a `sigma.scheduled_query_run.created` webhook each time the query
 /// runs. The webhook contains a `ScheduledQueryRun` object, which you can use to
@@ -39,10 +45,31 @@ type ScheduledQueryRun =
         Title: string
     }
 
+type ScheduledQueryRun with
+    static member New(created: DateTime, dataLoadTime: DateTime, file: File option, id: string, livemode: bool, resultAvailableUntil: DateTime, sql: string, status: string, title: string, ?error: SigmaScheduledQueryRunError) =
+        {
+            Created = created
+            DataLoadTime = dataLoadTime
+            File = file
+            Id = id
+            Livemode = livemode
+            ResultAvailableUntil = resultAvailableUntil
+            Sql = sql
+            Status = status
+            Title = title
+            Error = error
+        }
+
 module ScheduledQueryRun =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "scheduled_query_run"
 
 /// Occurs whenever a Sigma scheduled query run finishes.
 type SigmaScheduledQueryRunCreated = { Object: ScheduledQueryRun }
+
+type SigmaScheduledQueryRunCreated with
+    static member New(object: ScheduledQueryRun) =
+        {
+            Object = object
+        }
 

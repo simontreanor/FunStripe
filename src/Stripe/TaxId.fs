@@ -142,6 +142,14 @@ type TaxIdVerification =
         VerifiedName: string option
     }
 
+type TaxIdVerification with
+    static member New(status: TaxIdVerificationStatus, verifiedAddress: string option, verifiedName: string option) =
+        {
+            Status = status
+            VerifiedAddress = verifiedAddress
+            VerifiedName = verifiedName
+        }
+
 /// You can add one or multiple tax IDs to a [customer](https://docs.stripe.com/api/customers) or account.
 /// Customer and account tax IDs get displayed on related invoices and credit notes.
 /// Related guides: [Customer tax identification numbers](https://docs.stripe.com/billing/taxes/tax-ids), [Account tax IDs](https://docs.stripe.com/invoicing/connect#account-tax-ids)
@@ -169,6 +177,21 @@ type TaxId =
         Verification: TaxIdVerification option
     }
 
+type TaxId with
+    static member New(country: IsoTypes.IsoCountryCode option, created: DateTime, customer: StripeId<Markers.Customer> option, customerAccount: string option, id: string, livemode: bool, owner: TaxIDsOwner option, ``type``: TaxIdType, value: string, verification: TaxIdVerification option) =
+        {
+            Country = country
+            Created = created
+            Customer = customer
+            CustomerAccount = customerAccount
+            Id = id
+            Livemode = livemode
+            Owner = owner
+            Type = ``type``
+            Value = value
+            Verification = verification
+        }
+
 module TaxId =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax_id"
@@ -180,6 +203,13 @@ type DeletedTaxId =
         /// Unique identifier for the object.
         Id: string
     }
+
+type DeletedTaxId with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedTaxId =
     ///String representing the object's type. Objects of the same type share the same value.

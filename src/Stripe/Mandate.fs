@@ -14,6 +14,13 @@ type MandateMultiUse =
         Currency: IsoTypes.IsoCurrencyCode option
     }
 
+type MandateMultiUse with
+    static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode) =
+        {
+            Amount = amount
+            Currency = currency
+        }
+
 [<Struct>]
 type MandateAcssDebitDefaultFor =
     | Invoice
@@ -42,13 +49,34 @@ type MandateAcssDebit =
         TransactionType: MandateAcssDebitTransactionType
     }
 
+type MandateAcssDebit with
+    static member New(intervalDescription: string option, paymentSchedule: MandateAcssDebitPaymentSchedule, transactionType: MandateAcssDebitTransactionType, ?defaultFor: MandateAcssDebitDefaultFor list) =
+        {
+            IntervalDescription = intervalDescription
+            PaymentSchedule = paymentSchedule
+            TransactionType = transactionType
+            DefaultFor = defaultFor
+        }
+
 type MandateAmazonPay = { MandateAmazonPay: string option }
+
+type MandateAmazonPay with
+    static member New(?mandateAmazonPay: string option) =
+        {
+            MandateAmazonPay = mandateAmazonPay |> Option.flatten
+        }
 
 type MandateAuBecsDebit =
     {
         /// The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively.
         Url: string
     }
+
+type MandateAuBecsDebit with
+    static member New(url: string) =
+        {
+            Url = url
+        }
 
 [<Struct>]
 type MandateBacsDebitNetworkStatus =
@@ -81,19 +109,72 @@ type MandateBacsDebit =
         Url: string
     }
 
+type MandateBacsDebit with
+    static member New(displayName: string option, networkStatus: MandateBacsDebitNetworkStatus, reference: string, revocationReason: MandateBacsDebitRevocationReason option, serviceUserNumber: string option, url: string) =
+        {
+            DisplayName = displayName
+            NetworkStatus = networkStatus
+            Reference = reference
+            RevocationReason = revocationReason
+            ServiceUserNumber = serviceUserNumber
+            Url = url
+        }
+
 type MandateCashapp = { MandateCashapp: string option }
+
+type MandateCashapp with
+    static member New(?mandateCashapp: string option) =
+        {
+            MandateCashapp = mandateCashapp |> Option.flatten
+        }
 
 type MandateKakaoPay = { MandateKakaoPay: string option }
 
+type MandateKakaoPay with
+    static member New(?mandateKakaoPay: string option) =
+        {
+            MandateKakaoPay = mandateKakaoPay |> Option.flatten
+        }
+
 type MandateKlarna = { MandateKlarna: string option }
+
+type MandateKlarna with
+    static member New(?mandateKlarna: string option) =
+        {
+            MandateKlarna = mandateKlarna |> Option.flatten
+        }
 
 type MandateKrCard = { MandateKrCard: string option }
 
+type MandateKrCard with
+    static member New(?mandateKrCard: string option) =
+        {
+            MandateKrCard = mandateKrCard |> Option.flatten
+        }
+
 type MandateLink = { MandateLink: string option }
+
+type MandateLink with
+    static member New(?mandateLink: string option) =
+        {
+            MandateLink = mandateLink |> Option.flatten
+        }
 
 type MandateNaverPay = { MandateNaverPay: string option }
 
+type MandateNaverPay with
+    static member New(?mandateNaverPay: string option) =
+        {
+            MandateNaverPay = mandateNaverPay |> Option.flatten
+        }
+
 type MandateNzBankAccount = { MandateNzBankAccount: string option }
+
+type MandateNzBankAccount with
+    static member New(?mandateNzBankAccount: string option) =
+        {
+            MandateNzBankAccount = mandateNzBankAccount |> Option.flatten
+        }
 
 type MandatePaypal =
     {
@@ -102,6 +183,13 @@ type MandatePaypal =
         /// PayPal account PayerID. This identifier uniquely identifies the PayPal customer.
         PayerId: string option
     }
+
+type MandatePaypal with
+    static member New(billingAgreementId: string option, payerId: string option) =
+        {
+            BillingAgreementId = billingAgreementId
+            PayerId = payerId
+        }
 
 [<Struct>]
 type MandatePaytoAmountType =
@@ -149,6 +237,18 @@ type MandatePayto =
         StartDate: string option
     }
 
+type MandatePayto with
+    static member New(amount: int option, amountType: MandatePaytoAmountType, endDate: string option, paymentSchedule: MandatePaytoPaymentSchedule, paymentsPerPeriod: int option, purpose: MandatePaytoPurpose option, startDate: string option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            EndDate = endDate
+            PaymentSchedule = paymentSchedule
+            PaymentsPerPeriod = paymentsPerPeriod
+            Purpose = purpose
+            StartDate = startDate
+        }
+
 [<Struct>]
 type MandatePixAmountIncludesIof =
     | Always
@@ -183,7 +283,24 @@ type MandatePix =
         StartDate: string option
     }
 
+type MandatePix with
+    static member New(?amountIncludesIof: MandatePixAmountIncludesIof, ?amountType: MandatePixAmountType, ?endDate: string, ?paymentSchedule: MandatePixPaymentSchedule, ?reference: string, ?startDate: string) =
+        {
+            AmountIncludesIof = amountIncludesIof
+            AmountType = amountType
+            EndDate = endDate
+            PaymentSchedule = paymentSchedule
+            Reference = reference
+            StartDate = startDate
+        }
+
 type MandateRevolutPay = { MandateRevolutPay: string option }
+
+type MandateRevolutPay with
+    static member New(?mandateRevolutPay: string option) =
+        {
+            MandateRevolutPay = mandateRevolutPay |> Option.flatten
+        }
 
 type MandateSepaDebit =
     {
@@ -192,6 +309,13 @@ type MandateSepaDebit =
         /// The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively.
         Url: string
     }
+
+type MandateSepaDebit with
+    static member New(reference: string, url: string) =
+        {
+            Reference = reference
+            Url = url
+        }
 
 [<Struct>]
 type MandateUpiAmountType =
@@ -209,6 +333,15 @@ type MandateUpi =
         /// End date of the mandate or subscription.
         EndDate: DateTime option
     }
+
+type MandateUpi with
+    static member New(amount: int option, amountType: MandateUpiAmountType option, description: string option, endDate: DateTime option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            Description = description
+            EndDate = endDate
+        }
 
 type MandateUsBankAccount () = 
     ///Mandate collection method
@@ -244,6 +377,31 @@ type MandatePaymentMethodDetails =
         UsBankAccount: MandateUsBankAccount option
     }
 
+type MandatePaymentMethodDetails with
+    static member New(``type``: string, ?acssDebit: MandateAcssDebit, ?amazonPay: MandateAmazonPay, ?auBecsDebit: MandateAuBecsDebit, ?bacsDebit: MandateBacsDebit, ?card: CardMandatePaymentMethodDetails, ?cashapp: MandateCashapp, ?kakaoPay: MandateKakaoPay, ?klarna: MandateKlarna, ?krCard: MandateKrCard, ?link: MandateLink, ?naverPay: MandateNaverPay, ?nzBankAccount: MandateNzBankAccount, ?paypal: MandatePaypal, ?payto: MandatePayto, ?pix: MandatePix, ?revolutPay: MandateRevolutPay, ?sepaDebit: MandateSepaDebit, ?upi: MandateUpi, ?usBankAccount: MandateUsBankAccount) =
+        {
+            Type = ``type``
+            AcssDebit = acssDebit
+            AmazonPay = amazonPay
+            AuBecsDebit = auBecsDebit
+            BacsDebit = bacsDebit
+            Card = card
+            Cashapp = cashapp
+            KakaoPay = kakaoPay
+            Klarna = klarna
+            KrCard = krCard
+            Link = link
+            NaverPay = naverPay
+            NzBankAccount = nzBankAccount
+            Paypal = paypal
+            Payto = payto
+            Pix = pix
+            RevolutPay = revolutPay
+            SepaDebit = sepaDebit
+            Upi = upi
+            UsBankAccount = usBankAccount
+        }
+
 type MandateSingleUse =
     {
         /// The amount of the payment on a single use mandate.
@@ -251,6 +409,13 @@ type MandateSingleUse =
         /// The currency of the payment on a single use mandate.
         Currency: IsoTypes.IsoCurrencyCode
     }
+
+type MandateSingleUse with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode) =
+        {
+            Amount = amount
+            Currency = currency
+        }
 
 [<Struct>]
 type MandateStatus =
@@ -284,12 +449,33 @@ type Mandate =
         Type: MandateType
     }
 
+type Mandate with
+    static member New(customerAcceptance: CustomerAcceptance, id: string, livemode: bool, paymentMethod: StripeId<Markers.PaymentMethod>, paymentMethodDetails: MandatePaymentMethodDetails, status: MandateStatus, ``type``: MandateType, ?multiUse: MandateMultiUse, ?onBehalfOf: string, ?singleUse: MandateSingleUse) =
+        {
+            CustomerAcceptance = customerAcceptance
+            Id = id
+            Livemode = livemode
+            PaymentMethod = paymentMethod
+            PaymentMethodDetails = paymentMethodDetails
+            Status = status
+            Type = ``type``
+            MultiUse = multiUse
+            OnBehalfOf = onBehalfOf
+            SingleUse = singleUse
+        }
+
 module Mandate =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "mandate"
 
 /// Occurs whenever a Mandate is updated.
 type MandateUpdated = { Object: Mandate }
+
+type MandateUpdated with
+    static member New(object: Mandate) =
+        {
+            Object = object
+        }
 
 [<Struct>]
 type MandateOptionsUpiAmountType =
@@ -307,6 +493,15 @@ type MandateOptionsUpi =
         /// End date of the mandate or subscription.
         EndDate: DateTime option
     }
+
+type MandateOptionsUpi with
+    static member New(amount: int option, amountType: MandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            Description = description
+            EndDate = endDate
+        }
 
 [<Struct>]
 type MandateOptionsPaytoAmountType =
@@ -353,4 +548,16 @@ type MandateOptionsPayto =
         /// Date, in YYYY-MM-DD format, from which payments will be collected. Defaults to confirmation time.
         StartDate: string option
     }
+
+type MandateOptionsPayto with
+    static member New(amount: int option, amountType: MandateOptionsPaytoAmountType option, endDate: string option, paymentSchedule: MandateOptionsPaytoPaymentSchedule option, paymentsPerPeriod: int option, purpose: MandateOptionsPaytoPurpose option, startDate: string option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            EndDate = endDate
+            PaymentSchedule = paymentSchedule
+            PaymentsPerPeriod = paymentsPerPeriod
+            Purpose = purpose
+            StartDate = startDate
+        }
 

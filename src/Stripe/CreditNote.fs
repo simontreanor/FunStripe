@@ -4,7 +4,6 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 open Stripe.CreditNoteLineItem
-open Stripe.Discount
 open Stripe.PaymentMethod
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
@@ -23,6 +22,14 @@ type CreditNoteLines =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+type CreditNoteLines with
+    static member New(data: CreditNoteLineItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module CreditNoteLines =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
@@ -51,6 +58,15 @@ type CreditNoteRefund =
         /// Type of the refund, one of `refund` or `payment_record_refund`.
         Type: CreditNoteRefundType option
     }
+
+type CreditNoteRefund with
+    static member New(amountRefunded: int, paymentRecordRefund: CreditNotesPaymentRecordRefund option, refund: StripeId<Markers.Refund>, ``type``: CreditNoteRefundType option) =
+        {
+            AmountRefunded = amountRefunded
+            PaymentRecordRefund = paymentRecordRefund
+            Refund = refund
+            Type = ``type``
+        }
 
 [<Struct>]
 type CreditNoteStatus =
@@ -135,6 +151,44 @@ type CreditNote =
         VoidedAt: DateTime option
     }
 
+type CreditNote with
+    static member New(amount: int, amountShipping: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: CreditNoteCustomer'AnyOf, customerAccount: string option, customerBalanceTransaction: StripeId<Markers.CustomerBalanceTransaction> option, discountAmount: int, discountAmounts: DiscountsResourceDiscountAmount list, effectiveAt: DateTime option, id: string, invoice: StripeId<Markers.Invoice>, lines: CreditNoteLines, livemode: bool, memo: string option, metadata: Map<string, string> option, number: string, outOfBandAmount: int option, pdf: string, postPaymentAmount: int, prePaymentAmount: int, pretaxCreditAmounts: CreditNotesPretaxCreditAmount list, reason: CreditNoteReason option, refunds: CreditNoteRefund list, shippingCost: InvoicesResourceShippingCost option, status: CreditNoteStatus, subtotal: int, subtotalExcludingTax: int option, total: int, totalExcludingTax: int option, totalTaxes: BillingBillResourceInvoicingTaxesTax list option, ``type``: CreditNoteType, voidedAt: DateTime option) =
+        {
+            Amount = amount
+            AmountShipping = amountShipping
+            Created = created
+            Currency = currency
+            Customer = customer
+            CustomerAccount = customerAccount
+            CustomerBalanceTransaction = customerBalanceTransaction
+            DiscountAmount = discountAmount
+            DiscountAmounts = discountAmounts
+            EffectiveAt = effectiveAt
+            Id = id
+            Invoice = invoice
+            Lines = lines
+            Livemode = livemode
+            Memo = memo
+            Metadata = metadata
+            Number = number
+            OutOfBandAmount = outOfBandAmount
+            Pdf = pdf
+            PostPaymentAmount = postPaymentAmount
+            PrePaymentAmount = prePaymentAmount
+            PretaxCreditAmounts = pretaxCreditAmounts
+            Reason = reason
+            Refunds = refunds
+            ShippingCost = shippingCost
+            Status = status
+            Subtotal = subtotal
+            SubtotalExcludingTax = subtotalExcludingTax
+            Total = total
+            TotalExcludingTax = totalExcludingTax
+            TotalTaxes = totalTaxes
+            Type = ``type``
+            VoidedAt = voidedAt
+        }
+
 module CreditNote =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "credit_note"
@@ -142,9 +196,27 @@ module CreditNote =
 /// Occurs whenever a credit note is voided.
 type CreditNoteVoided = { Object: CreditNote }
 
+type CreditNoteVoided with
+    static member New(object: CreditNote) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a credit note is updated.
 type CreditNoteUpdated = { Object: CreditNote }
 
+type CreditNoteUpdated with
+    static member New(object: CreditNote) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a credit note is created.
 type CreditNoteCreated = { Object: CreditNote }
+
+type CreditNoteCreated with
+    static member New(object: CreditNote) =
+        {
+            Object = object
+        }
 

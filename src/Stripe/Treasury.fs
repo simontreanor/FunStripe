@@ -5,7 +5,6 @@ open FunStripe
 open System
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
-open Stripe.Payout
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type TreasuryTransactionEntryFlowType =
@@ -52,6 +51,14 @@ type TreasuryTransactionsResourceBalanceImpact =
         OutboundPending: int
     }
 
+type TreasuryTransactionsResourceBalanceImpact with
+    static member New(cash: int, inboundPending: int, outboundPending: int) =
+        {
+            Cash = cash
+            InboundPending = inboundPending
+            OutboundPending = outboundPending
+        }
+
 [<Struct>]
 type TreasuryCreditReversalNetwork =
     | Ach
@@ -68,6 +75,12 @@ type TreasuryReceivedCreditsResourceStatusTransitions =
         /// Timestamp describing when the CreditReversal changed status to `posted`
         PostedAt: DateTime option
     }
+
+type TreasuryReceivedCreditsResourceStatusTransitions with
+    static member New(postedAt: DateTime option) =
+        {
+            PostedAt = postedAt
+        }
 
 /// You can reverse some [ReceivedCredits](https://api.stripe.com#received_credits) depending on their network and source flow. Reversing a ReceivedCredit leads to the creation of a new object known as a CreditReversal.
 type TreasuryCreditReversal =
@@ -99,6 +112,24 @@ type TreasuryCreditReversal =
         Transaction: StripeId<Markers.TreasuryTransaction> option
     }
 
+type TreasuryCreditReversal with
+    static member New(amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, livemode: bool, metadata: Map<string, string>, network: TreasuryCreditReversalNetwork, receivedCredit: string, status: TreasuryCreditReversalStatus, statusTransitions: TreasuryReceivedCreditsResourceStatusTransitions, transaction: StripeId<Markers.TreasuryTransaction> option) =
+        {
+            Amount = amount
+            Created = created
+            Currency = currency
+            FinancialAccount = financialAccount
+            HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Network = network
+            ReceivedCredit = receivedCredit
+            Status = status
+            StatusTransitions = statusTransitions
+            Transaction = transaction
+        }
+
 module TreasuryCreditReversal =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "treasury.credit_reversal"
@@ -120,11 +151,23 @@ type TreasuryReceivedDebitsResourceDebitReversalLinkedFlows =
         IssuingDispute: string option
     }
 
+type TreasuryReceivedDebitsResourceDebitReversalLinkedFlows with
+    static member New(issuingDispute: string option) =
+        {
+            IssuingDispute = issuingDispute
+        }
+
 type TreasuryReceivedDebitsResourceStatusTransitions =
     {
         /// Timestamp describing when the DebitReversal changed status to `completed`.
         CompletedAt: DateTime option
     }
+
+type TreasuryReceivedDebitsResourceStatusTransitions with
+    static member New(completedAt: DateTime option) =
+        {
+            CompletedAt = completedAt
+        }
 
 /// You can reverse some [ReceivedDebits](https://api.stripe.com#received_debits) depending on their network and source flow. Reversing a ReceivedDebit leads to the creation of a new object known as a DebitReversal.
 type TreasuryDebitReversal =
@@ -157,6 +200,25 @@ type TreasuryDebitReversal =
         /// The Transaction associated with this object.
         Transaction: StripeId<Markers.TreasuryTransaction> option
     }
+
+type TreasuryDebitReversal with
+    static member New(amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, financialAccount: string option, hostedRegulatoryReceiptUrl: string option, id: string, linkedFlows: TreasuryReceivedDebitsResourceDebitReversalLinkedFlows option, livemode: bool, metadata: Map<string, string>, network: TreasuryDebitReversalNetwork, receivedDebit: string, status: TreasuryDebitReversalStatus, statusTransitions: TreasuryReceivedDebitsResourceStatusTransitions, transaction: StripeId<Markers.TreasuryTransaction> option) =
+        {
+            Amount = amount
+            Created = created
+            Currency = currency
+            FinancialAccount = financialAccount
+            HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+            Id = id
+            LinkedFlows = linkedFlows
+            Livemode = livemode
+            Metadata = metadata
+            Network = network
+            ReceivedDebit = receivedDebit
+            Status = status
+            StatusTransitions = statusTransitions
+            Transaction = transaction
+        }
 
 module TreasuryDebitReversal =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -191,6 +253,18 @@ type InboundTransfersPaymentMethodDetailsUsBankAccount =
         RoutingNumber: string option
     }
 
+type InboundTransfersPaymentMethodDetailsUsBankAccount with
+    static member New(accountHolderType: InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType option, accountType: InboundTransfersPaymentMethodDetailsUsBankAccountAccountType option, bankName: string option, fingerprint: string option, last4: string option, routingNumber: string option, ?mandate: StripeId<Markers.Mandate>) =
+        {
+            AccountHolderType = accountHolderType
+            AccountType = accountType
+            BankName = bankName
+            Fingerprint = fingerprint
+            Last4 = last4
+            RoutingNumber = routingNumber
+            Mandate = mandate
+        }
+
 module InboundTransfersPaymentMethodDetailsUsBankAccount =
     ///The network rails used. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
     let network = "ach"
@@ -204,9 +278,24 @@ type TreasurySharedResourceBillingDetails =
         Name: string option
     }
 
+type TreasurySharedResourceBillingDetails with
+    static member New(address: Address, email: string option, name: string option) =
+        {
+            Address = address
+            Email = email
+            Name = name
+        }
+
 type InboundTransfers =
     { BillingDetails: TreasurySharedResourceBillingDetails
       UsBankAccount: InboundTransfersPaymentMethodDetailsUsBankAccount option }
+
+type InboundTransfers with
+    static member New(billingDetails: TreasurySharedResourceBillingDetails, ?usBankAccount: InboundTransfersPaymentMethodDetailsUsBankAccount) =
+        {
+            BillingDetails = billingDetails
+            UsBankAccount = usBankAccount
+        }
 
 module InboundTransfers =
     ///The type of the payment method used in the InboundTransfer.
@@ -240,11 +329,23 @@ type TreasuryInboundTransfersResourceFailureDetails =
         Code: TreasuryInboundTransfersResourceFailureDetailsCode
     }
 
+type TreasuryInboundTransfersResourceFailureDetails with
+    static member New(code: TreasuryInboundTransfersResourceFailureDetailsCode) =
+        {
+            Code = code
+        }
+
 type TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows =
     {
         /// If funds for this flow were returned after the flow went to the `succeeded` state, this field contains a reference to the ReceivedDebit return.
         ReceivedDebit: string option
     }
+
+type TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows with
+    static member New(receivedDebit: string option) =
+        {
+            ReceivedDebit = receivedDebit
+        }
 
 type TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions =
     {
@@ -255,6 +356,14 @@ type TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions =
         /// Timestamp describing when an InboundTransfer changed status to `succeeded`.
         SucceededAt: DateTime option
     }
+
+type TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions with
+    static member New(failedAt: DateTime option, succeededAt: DateTime option, ?canceledAt: DateTime option) =
+        {
+            FailedAt = failedAt
+            SucceededAt = succeededAt
+            CanceledAt = canceledAt |> Option.flatten
+        }
 
 /// Use [InboundTransfers](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/into/inbound-transfers) to add funds to your [FinancialAccount](https://api.stripe.com#financial_accounts) via a PaymentMethod that is owned by you. The funds will be transferred via an ACH debit.
 /// Related guide: [Moving money with Treasury using InboundTransfer objects](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/into/inbound-transfers)
@@ -298,6 +407,30 @@ type TreasuryInboundTransfer =
         Transaction: StripeId<Markers.TreasuryTransaction> option
     }
 
+type TreasuryInboundTransfer with
+    static member New(amount: int, cancelable: bool, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, failureDetails: TreasuryInboundTransfersResourceFailureDetails option, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, linkedFlows: TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows, livemode: bool, metadata: Map<string, string>, originPaymentMethod: string option, originPaymentMethodDetails: InboundTransfers option, returned: bool option, statementDescriptor: string, status: TreasuryInboundTransferStatus, statusTransitions: TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions, transaction: StripeId<Markers.TreasuryTransaction> option) =
+        {
+            Amount = amount
+            Cancelable = cancelable
+            Created = created
+            Currency = currency
+            Description = description
+            FailureDetails = failureDetails
+            FinancialAccount = financialAccount
+            HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+            Id = id
+            LinkedFlows = linkedFlows
+            Livemode = livemode
+            Metadata = metadata
+            OriginPaymentMethod = originPaymentMethod
+            OriginPaymentMethodDetails = originPaymentMethodDetails
+            Returned = returned
+            StatementDescriptor = statementDescriptor
+            Status = status
+            StatusTransitions = statusTransitions
+            Transaction = transaction
+        }
+
 module TreasuryInboundTransfer =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "treasury.inbound_transfer"
@@ -307,6 +440,12 @@ type OutboundPaymentsPaymentMethodDetailsFinancialAccount =
         /// Token of the FinancialAccount.
         Id: string
     }
+
+type OutboundPaymentsPaymentMethodDetailsFinancialAccount with
+    static member New(id: string) =
+        {
+            Id = id
+        }
 
 module OutboundPaymentsPaymentMethodDetailsFinancialAccount =
     ///The rails used to send funds.
@@ -353,6 +492,19 @@ type OutboundPaymentsPaymentMethodDetailsUsBankAccount =
         RoutingNumber: string option
     }
 
+type OutboundPaymentsPaymentMethodDetailsUsBankAccount with
+    static member New(accountHolderType: OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountHolderType option, accountType: OutboundPaymentsPaymentMethodDetailsUsBankAccountAccountType option, bankName: string option, fingerprint: string option, last4: string option, network: OutboundPaymentsPaymentMethodDetailsUsBankAccountNetwork, routingNumber: string option, ?mandate: StripeId<Markers.Mandate>) =
+        {
+            AccountHolderType = accountHolderType
+            AccountType = accountType
+            BankName = bankName
+            Fingerprint = fingerprint
+            Last4 = last4
+            Network = network
+            RoutingNumber = routingNumber
+            Mandate = mandate
+        }
+
 type OutboundPaymentsPaymentMethodDetails =
     {
         BillingDetails: TreasurySharedResourceBillingDetails
@@ -361,6 +513,15 @@ type OutboundPaymentsPaymentMethodDetails =
         Type: OutboundPaymentsPaymentMethodDetailsType
         UsBankAccount: OutboundPaymentsPaymentMethodDetailsUsBankAccount option
     }
+
+type OutboundPaymentsPaymentMethodDetails with
+    static member New(billingDetails: TreasurySharedResourceBillingDetails, ``type``: OutboundPaymentsPaymentMethodDetailsType, ?financialAccount: OutboundPaymentsPaymentMethodDetailsFinancialAccount, ?usBankAccount: OutboundPaymentsPaymentMethodDetailsUsBankAccount) =
+        {
+            BillingDetails = billingDetails
+            Type = ``type``
+            FinancialAccount = financialAccount
+            UsBankAccount = usBankAccount
+        }
 
 [<Struct>]
 type TreasuryOutboundPaymentStatus =
@@ -378,6 +539,13 @@ type TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails =
         Present: bool
     }
 
+type TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails with
+    static member New(ipAddress: string option, present: bool) =
+        {
+            IpAddress = ipAddress
+            Present = present
+        }
+
 type TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions =
     {
         /// Timestamp describing when an OutboundPayment changed status to `canceled`.
@@ -390,11 +558,26 @@ type TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions =
         ReturnedAt: DateTime option
     }
 
+type TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions with
+    static member New(canceledAt: DateTime option, failedAt: DateTime option, postedAt: DateTime option, returnedAt: DateTime option) =
+        {
+            CanceledAt = canceledAt
+            FailedAt = failedAt
+            PostedAt = postedAt
+            ReturnedAt = returnedAt
+        }
+
 type TreasuryOutboundPaymentsResourceAchTrackingDetails =
     {
         /// ACH trace ID of the OutboundPayment for payments sent over the `ach` network.
         TraceId: string
     }
+
+type TreasuryOutboundPaymentsResourceAchTrackingDetails with
+    static member New(traceId: string) =
+        {
+            TraceId = traceId
+        }
 
 [<Struct>]
 type TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetailsType =
@@ -411,6 +594,14 @@ type TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails =
         Omad: string option
     }
 
+type TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails with
+    static member New(chips: string option, imad: string option, omad: string option) =
+        {
+            Chips = chips
+            Imad = imad
+            Omad = omad
+        }
+
 type TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails =
     {
         Ach: TreasuryOutboundPaymentsResourceAchTrackingDetails option
@@ -418,6 +609,14 @@ type TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails =
         Type: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetailsType
         UsDomesticWire: TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails option
     }
+
+type TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails with
+    static member New(``type``: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetailsType, ?ach: TreasuryOutboundPaymentsResourceAchTrackingDetails, ?usDomesticWire: TreasuryOutboundPaymentsResourceUsDomesticWireTrackingDetails) =
+        {
+            Type = ``type``
+            Ach = ach
+            UsDomesticWire = usDomesticWire
+        }
 
 type TreasuryOutboundPaymentsResourceReturnedStatusCode =
     | AccountClosed
@@ -438,6 +637,13 @@ type TreasuryOutboundPaymentsResourceReturnedStatus =
         /// The Transaction associated with this object.
         Transaction: StripeId<Markers.TreasuryTransaction>
     }
+
+type TreasuryOutboundPaymentsResourceReturnedStatus with
+    static member New(code: TreasuryOutboundPaymentsResourceReturnedStatusCode, transaction: StripeId<Markers.TreasuryTransaction>) =
+        {
+            Code = code
+            Transaction = transaction
+        }
 
 /// Use [OutboundPayments](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-payments) to send funds to another party's external bank account or [FinancialAccount](https://api.stripe.com#financial_accounts). To send money to an account belonging to the same user, use an [OutboundTransfer](https://api.stripe.com#outbound_transfers).
 /// Simulate OutboundPayment state changes with the `/v1/test_helpers/treasury/outbound_payments` endpoints. These methods can only be called on test mode objects.
@@ -487,6 +693,32 @@ type TreasuryOutboundPayment =
         Transaction: StripeId<Markers.TreasuryTransaction>
     }
 
+type TreasuryOutboundPayment with
+    static member New(amount: int, cancelable: bool, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: string option, description: string option, destinationPaymentMethod: string option, destinationPaymentMethodDetails: OutboundPaymentsPaymentMethodDetails option, endUserDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceEndUserDetails option, expectedArrivalDate: DateTime, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, livemode: bool, metadata: Map<string, string>, returnedDetails: TreasuryOutboundPaymentsResourceReturnedStatus option, statementDescriptor: string, status: TreasuryOutboundPaymentStatus, statusTransitions: TreasuryOutboundPaymentsResourceOutboundPaymentResourceStatusTransitions, trackingDetails: TreasuryOutboundPaymentsResourceOutboundPaymentResourceTrackingDetails option, transaction: StripeId<Markers.TreasuryTransaction>) =
+        {
+            Amount = amount
+            Cancelable = cancelable
+            Created = created
+            Currency = currency
+            Customer = customer
+            Description = description
+            DestinationPaymentMethod = destinationPaymentMethod
+            DestinationPaymentMethodDetails = destinationPaymentMethodDetails
+            EndUserDetails = endUserDetails
+            ExpectedArrivalDate = expectedArrivalDate
+            FinancialAccount = financialAccount
+            HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            ReturnedDetails = returnedDetails
+            StatementDescriptor = statementDescriptor
+            Status = status
+            StatusTransitions = statusTransitions
+            TrackingDetails = trackingDetails
+            Transaction = transaction
+        }
+
 module TreasuryOutboundPayment =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "treasury.outbound_payment"
@@ -496,6 +728,12 @@ type OutboundTransfersPaymentMethodDetailsFinancialAccount =
         /// Token of the FinancialAccount.
         Id: string
     }
+
+type OutboundTransfersPaymentMethodDetailsFinancialAccount with
+    static member New(id: string) =
+        {
+            Id = id
+        }
 
 module OutboundTransfersPaymentMethodDetailsFinancialAccount =
     ///The rails used to send funds.
@@ -542,6 +780,19 @@ type OutboundTransfersPaymentMethodDetailsUsBankAccount =
         RoutingNumber: string option
     }
 
+type OutboundTransfersPaymentMethodDetailsUsBankAccount with
+    static member New(accountHolderType: OutboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType option, accountType: OutboundTransfersPaymentMethodDetailsUsBankAccountAccountType option, bankName: string option, fingerprint: string option, last4: string option, network: OutboundTransfersPaymentMethodDetailsUsBankAccountNetwork, routingNumber: string option, ?mandate: StripeId<Markers.Mandate>) =
+        {
+            AccountHolderType = accountHolderType
+            AccountType = accountType
+            BankName = bankName
+            Fingerprint = fingerprint
+            Last4 = last4
+            Network = network
+            RoutingNumber = routingNumber
+            Mandate = mandate
+        }
+
 type OutboundTransfersPaymentMethodDetails =
     {
         BillingDetails: TreasurySharedResourceBillingDetails
@@ -550,6 +801,15 @@ type OutboundTransfersPaymentMethodDetails =
         Type: OutboundTransfersPaymentMethodDetailsType
         UsBankAccount: OutboundTransfersPaymentMethodDetailsUsBankAccount option
     }
+
+type OutboundTransfersPaymentMethodDetails with
+    static member New(billingDetails: TreasurySharedResourceBillingDetails, ``type``: OutboundTransfersPaymentMethodDetailsType, ?financialAccount: OutboundTransfersPaymentMethodDetailsFinancialAccount, ?usBankAccount: OutboundTransfersPaymentMethodDetailsUsBankAccount) =
+        {
+            BillingDetails = billingDetails
+            Type = ``type``
+            FinancialAccount = financialAccount
+            UsBankAccount = usBankAccount
+        }
 
 [<Struct>]
 type TreasuryOutboundTransferStatus =
@@ -564,6 +824,12 @@ type TreasuryOutboundTransfersResourceAchTrackingDetails =
         /// ACH trace ID of the OutboundTransfer for transfers sent over the `ach` network.
         TraceId: string
     }
+
+type TreasuryOutboundTransfersResourceAchTrackingDetails with
+    static member New(traceId: string) =
+        {
+            TraceId = traceId
+        }
 
 [<Struct>]
 type TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetailsType =
@@ -580,6 +846,14 @@ type TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails =
         Omad: string option
     }
 
+type TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails with
+    static member New(chips: string option, imad: string option, omad: string option) =
+        {
+            Chips = chips
+            Imad = imad
+            Omad = omad
+        }
+
 type TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails =
     {
         Ach: TreasuryOutboundTransfersResourceAchTrackingDetails option
@@ -587,6 +861,14 @@ type TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails =
         Type: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetailsType
         UsDomesticWire: TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails option
     }
+
+type TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails with
+    static member New(``type``: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetailsType, ?ach: TreasuryOutboundTransfersResourceAchTrackingDetails, ?usDomesticWire: TreasuryOutboundTransfersResourceUsDomesticWireTrackingDetails) =
+        {
+            Type = ``type``
+            Ach = ach
+            UsDomesticWire = usDomesticWire
+        }
 
 type TreasuryOutboundTransfersResourceReturnedDetailsCode =
     | AccountClosed
@@ -608,6 +890,13 @@ type TreasuryOutboundTransfersResourceReturnedDetails =
         Transaction: StripeId<Markers.TreasuryTransaction>
     }
 
+type TreasuryOutboundTransfersResourceReturnedDetails with
+    static member New(code: TreasuryOutboundTransfersResourceReturnedDetailsCode, transaction: StripeId<Markers.TreasuryTransaction>) =
+        {
+            Code = code
+            Transaction = transaction
+        }
+
 type TreasuryOutboundTransfersResourceStatusTransitions =
     {
         /// Timestamp describing when an OutboundTransfer changed status to `canceled`
@@ -619,6 +908,15 @@ type TreasuryOutboundTransfersResourceStatusTransitions =
         /// Timestamp describing when an OutboundTransfer changed status to `returned`
         ReturnedAt: DateTime option
     }
+
+type TreasuryOutboundTransfersResourceStatusTransitions with
+    static member New(canceledAt: DateTime option, failedAt: DateTime option, postedAt: DateTime option, returnedAt: DateTime option) =
+        {
+            CanceledAt = canceledAt
+            FailedAt = failedAt
+            PostedAt = postedAt
+            ReturnedAt = returnedAt
+        }
 
 /// Use [OutboundTransfers](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-transfers) to transfer funds from a [FinancialAccount](https://api.stripe.com#financial_accounts) to a PaymentMethod belonging to the same entity. To send funds to a different party, use [OutboundPayments](https://api.stripe.com#outbound_payments) instead. You can send funds over ACH rails or through a domestic wire transfer to a user's own external bank account.
 /// Simulate OutboundTransfer state changes with the `/v1/test_helpers/treasury/outbound_transfers` endpoints. These methods can only be called on test mode objects.
@@ -663,6 +961,30 @@ type TreasuryOutboundTransfer =
         Transaction: StripeId<Markers.TreasuryTransaction>
     }
 
+type TreasuryOutboundTransfer with
+    static member New(amount: int, cancelable: bool, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, destinationPaymentMethod: string option, destinationPaymentMethodDetails: OutboundTransfersPaymentMethodDetails, expectedArrivalDate: DateTime, financialAccount: string, hostedRegulatoryReceiptUrl: string option, id: string, livemode: bool, metadata: Map<string, string>, returnedDetails: TreasuryOutboundTransfersResourceReturnedDetails option, statementDescriptor: string, status: TreasuryOutboundTransferStatus, statusTransitions: TreasuryOutboundTransfersResourceStatusTransitions, trackingDetails: TreasuryOutboundTransfersResourceOutboundTransferResourceTrackingDetails option, transaction: StripeId<Markers.TreasuryTransaction>) =
+        {
+            Amount = amount
+            Cancelable = cancelable
+            Created = created
+            Currency = currency
+            Description = description
+            DestinationPaymentMethod = destinationPaymentMethod
+            DestinationPaymentMethodDetails = destinationPaymentMethodDetails
+            ExpectedArrivalDate = expectedArrivalDate
+            FinancialAccount = financialAccount
+            HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            ReturnedDetails = returnedDetails
+            StatementDescriptor = statementDescriptor
+            Status = status
+            StatusTransitions = statusTransitions
+            TrackingDetails = trackingDetails
+            Transaction = transaction
+        }
+
 module TreasuryOutboundTransfer =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "treasury.outbound_transfer"
@@ -704,6 +1026,16 @@ type TreasuryReceivedCreditsResourceSourceFlowsDetails =
         Type: TreasuryReceivedCreditsResourceSourceFlowsDetailsType
     }
 
+type TreasuryReceivedCreditsResourceSourceFlowsDetails with
+    static member New(``type``: TreasuryReceivedCreditsResourceSourceFlowsDetailsType, ?creditReversal: TreasuryCreditReversal, ?outboundPayment: TreasuryOutboundPayment, ?outboundTransfer: TreasuryOutboundTransfer, ?payout: Payout) =
+        {
+            Type = ``type``
+            CreditReversal = creditReversal
+            OutboundPayment = outboundPayment
+            OutboundTransfer = outboundTransfer
+            Payout = payout
+        }
+
 type TreasuryReceivedCreditsResourceLinkedFlows =
     {
         /// The CreditReversal created as a result of this ReceivedCredit being reversed.
@@ -719,6 +1051,17 @@ type TreasuryReceivedCreditsResourceLinkedFlows =
         /// The type of flow that originated the ReceivedCredit (for example, `outbound_payment`).
         SourceFlowType: string option
     }
+
+type TreasuryReceivedCreditsResourceLinkedFlows with
+    static member New(creditReversal: string option, issuingAuthorization: string option, issuingTransaction: string option, sourceFlow: string option, sourceFlowType: string option, ?sourceFlowDetails: TreasuryReceivedCreditsResourceSourceFlowsDetails option) =
+        {
+            CreditReversal = creditReversal
+            IssuingAuthorization = issuingAuthorization
+            IssuingTransaction = issuingTransaction
+            SourceFlow = sourceFlow
+            SourceFlowType = sourceFlowType
+            SourceFlowDetails = sourceFlowDetails |> Option.flatten
+        }
 
 [<Struct>]
 type TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason =
@@ -736,11 +1079,24 @@ type TreasuryReceivedCreditsResourceReversalDetails =
         RestrictedReason: TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason option
     }
 
+type TreasuryReceivedCreditsResourceReversalDetails with
+    static member New(deadline: DateTime option, restrictedReason: TreasuryReceivedCreditsResourceReversalDetailsRestrictedReason option) =
+        {
+            Deadline = deadline
+            RestrictedReason = restrictedReason
+        }
+
 type ReceivedPaymentMethodDetailsFinancialAccount =
     {
         /// The FinancialAccount ID.
         Id: string
     }
+
+type ReceivedPaymentMethodDetailsFinancialAccount with
+    static member New(id: string) =
+        {
+            Id = id
+        }
 
 module ReceivedPaymentMethodDetailsFinancialAccount =
     ///The rails the ReceivedCredit was sent over. A FinancialAccount can only send funds over `stripe`.
@@ -765,6 +1121,14 @@ type TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount =
         RoutingNumber: string option
     }
 
+type TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount with
+    static member New(bankName: string option, last4: string option, routingNumber: string option) =
+        {
+            BankName = bankName
+            Last4 = last4
+            RoutingNumber = routingNumber
+        }
+
 type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails =
     {
         BillingDetails: TreasurySharedResourceBillingDetails
@@ -775,6 +1139,16 @@ type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethod
         Type: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType
         UsBankAccount: TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount option
     }
+
+type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails with
+    static member New(billingDetails: TreasurySharedResourceBillingDetails, ``type``: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType, ?financialAccount: ReceivedPaymentMethodDetailsFinancialAccount, ?issuingCard: string, ?usBankAccount: TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount) =
+        {
+            BillingDetails = billingDetails
+            Type = ``type``
+            FinancialAccount = financialAccount
+            IssuingCard = issuingCard
+            UsBankAccount = usBankAccount
+        }
 
 module TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails =
     ///Set when `type` is `balance`.
@@ -813,6 +1187,26 @@ type TreasuryReceivedCredit =
         /// The Transaction associated with this object.
         Transaction: StripeId<Markers.TreasuryTransaction> option
     }
+
+type TreasuryReceivedCredit with
+    static member New(amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string, failureCode: TreasuryReceivedCreditFailureCode option, financialAccount: string option, hostedRegulatoryReceiptUrl: string option, id: string, initiatingPaymentMethodDetails: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails, linkedFlows: TreasuryReceivedCreditsResourceLinkedFlows, livemode: bool, network: TreasuryReceivedCreditNetwork, reversalDetails: TreasuryReceivedCreditsResourceReversalDetails option, status: TreasuryReceivedCreditStatus, transaction: StripeId<Markers.TreasuryTransaction> option) =
+        {
+            Amount = amount
+            Created = created
+            Currency = currency
+            Description = description
+            FailureCode = failureCode
+            FinancialAccount = financialAccount
+            HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+            Id = id
+            InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
+            LinkedFlows = linkedFlows
+            Livemode = livemode
+            Network = network
+            ReversalDetails = reversalDetails
+            Status = status
+            Transaction = transaction
+        }
 
 module TreasuryReceivedCredit =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -853,6 +1247,17 @@ type TreasuryReceivedDebitsResourceLinkedFlows =
         Topup: string option
     }
 
+type TreasuryReceivedDebitsResourceLinkedFlows with
+    static member New(debitReversal: string option, inboundTransfer: string option, issuingAuthorization: string option, issuingTransaction: string option, payout: string option, topup: string option) =
+        {
+            DebitReversal = debitReversal
+            InboundTransfer = inboundTransfer
+            IssuingAuthorization = issuingAuthorization
+            IssuingTransaction = issuingTransaction
+            Payout = payout
+            Topup = topup
+        }
+
 [<Struct>]
 type TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason =
     | AlreadyReversed
@@ -868,6 +1273,13 @@ type TreasuryReceivedDebitsResourceReversalDetails =
         /// Set if a ReceivedDebit can't be reversed.
         RestrictedReason: TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason option
     }
+
+type TreasuryReceivedDebitsResourceReversalDetails with
+    static member New(deadline: DateTime option, restrictedReason: TreasuryReceivedDebitsResourceReversalDetailsRestrictedReason option) =
+        {
+            Deadline = deadline
+            RestrictedReason = restrictedReason
+        }
 
 /// ReceivedDebits represent funds pulled from a [FinancialAccount](https://api.stripe.com#financial_accounts). These are not initiated from the FinancialAccount.
 type TreasuryReceivedDebit =
@@ -903,6 +1315,26 @@ type TreasuryReceivedDebit =
         Transaction: StripeId<Markers.TreasuryTransaction> option
     }
 
+type TreasuryReceivedDebit with
+    static member New(amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string, failureCode: TreasuryReceivedDebitFailureCode option, financialAccount: string option, hostedRegulatoryReceiptUrl: string option, id: string, linkedFlows: TreasuryReceivedDebitsResourceLinkedFlows, livemode: bool, network: TreasuryReceivedDebitNetwork, reversalDetails: TreasuryReceivedDebitsResourceReversalDetails option, status: TreasuryReceivedDebitStatus, transaction: StripeId<Markers.TreasuryTransaction> option, ?initiatingPaymentMethodDetails: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails) =
+        {
+            Amount = amount
+            Created = created
+            Currency = currency
+            Description = description
+            FailureCode = failureCode
+            FinancialAccount = financialAccount
+            HostedRegulatoryReceiptUrl = hostedRegulatoryReceiptUrl
+            Id = id
+            LinkedFlows = linkedFlows
+            Livemode = livemode
+            Network = network
+            ReversalDetails = reversalDetails
+            Status = status
+            Transaction = transaction
+            InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
+        }
+
 module TreasuryReceivedDebit =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "treasury.received_debit"
@@ -932,6 +1364,20 @@ type TreasuryTransactionsResourceFlowDetails =
         Type: TreasuryTransactionsResourceFlowDetailsType
     }
 
+type TreasuryTransactionsResourceFlowDetails with
+    static member New(``type``: TreasuryTransactionsResourceFlowDetailsType, ?creditReversal: TreasuryCreditReversal, ?debitReversal: TreasuryDebitReversal, ?inboundTransfer: TreasuryInboundTransfer, ?issuingAuthorization: IssuingAuthorization, ?outboundPayment: TreasuryOutboundPayment, ?outboundTransfer: TreasuryOutboundTransfer, ?receivedCredit: TreasuryReceivedCredit, ?receivedDebit: TreasuryReceivedDebit) =
+        {
+            Type = ``type``
+            CreditReversal = creditReversal
+            DebitReversal = debitReversal
+            InboundTransfer = inboundTransfer
+            IssuingAuthorization = issuingAuthorization
+            OutboundPayment = outboundPayment
+            OutboundTransfer = outboundTransfer
+            ReceivedCredit = receivedCredit
+            ReceivedDebit = receivedDebit
+        }
+
 /// TransactionEntries represent individual units of money movements within a single [Transaction](https://api.stripe.com#transactions).
 type TreasuryTransactionEntry =
     {
@@ -960,6 +1406,23 @@ type TreasuryTransactionEntry =
         Type: TreasuryTransactionEntryType
     }
 
+type TreasuryTransactionEntry with
+    static member New(balanceImpact: TreasuryTransactionsResourceBalanceImpact, created: DateTime, currency: IsoTypes.IsoCurrencyCode, effectiveAt: DateTime, financialAccount: string, flow: string option, flowType: TreasuryTransactionEntryFlowType, id: string, livemode: bool, transaction: StripeId<Markers.TreasuryTransaction>, ``type``: TreasuryTransactionEntryType, ?flowDetails: TreasuryTransactionsResourceFlowDetails option) =
+        {
+            BalanceImpact = balanceImpact
+            Created = created
+            Currency = currency
+            EffectiveAt = effectiveAt
+            FinancialAccount = financialAccount
+            Flow = flow
+            FlowType = flowType
+            Id = id
+            Livemode = livemode
+            Transaction = transaction
+            Type = ``type``
+            FlowDetails = flowDetails |> Option.flatten
+        }
+
 module TreasuryTransactionEntry =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "treasury.transaction_entry"
@@ -974,6 +1437,14 @@ type TreasuryTransactionEntries =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+type TreasuryTransactionEntries with
+    static member New(data: TreasuryTransactionEntry list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module TreasuryTransactionEntries =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
@@ -1003,6 +1474,13 @@ type TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions =
         /// Timestamp describing when the Transaction changed status to `void`.
         VoidAt: DateTime option
     }
+
+type TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions with
+    static member New(postedAt: DateTime option, voidAt: DateTime option) =
+        {
+            PostedAt = postedAt
+            VoidAt = voidAt
+        }
 
 /// Transactions represent changes to a [FinancialAccount's](https://api.stripe.com#financial_accounts) balance.
 type TreasuryTransaction =
@@ -1035,6 +1513,25 @@ type TreasuryTransaction =
         StatusTransitions: TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions
     }
 
+type TreasuryTransaction with
+    static member New(amount: int, balanceImpact: TreasuryTransactionsResourceBalanceImpact, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string, financialAccount: string, flow: string option, flowType: TreasuryTransactionFlowType, id: string, livemode: bool, status: TreasuryTransactionStatus, statusTransitions: TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions, ?entries: TreasuryTransactionEntries option, ?flowDetails: TreasuryTransactionsResourceFlowDetails option) =
+        {
+            Amount = amount
+            BalanceImpact = balanceImpact
+            Created = created
+            Currency = currency
+            Description = description
+            FinancialAccount = financialAccount
+            Flow = flow
+            FlowType = flowType
+            Id = id
+            Livemode = livemode
+            Status = status
+            StatusTransitions = statusTransitions
+            Entries = entries |> Option.flatten
+            FlowDetails = flowDetails |> Option.flatten
+        }
+
 module TreasuryTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "treasury.transaction"
@@ -1042,68 +1539,200 @@ module TreasuryTransaction =
 /// Occurs whenever a received_debit is created as a result of funds being pulled by another account.
 type TreasuryReceivedDebitCreated = { Object: TreasuryReceivedDebit }
 
+type TreasuryReceivedDebitCreated with
+    static member New(object: TreasuryReceivedDebit) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a received_credit transitions to succeeded state. Only applicable for check deposits.
 type TreasuryReceivedCreditSucceeded = { Object: TreasuryReceivedCredit }
+
+type TreasuryReceivedCreditSucceeded with
+    static member New(object: TreasuryReceivedCredit) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever a received_credit transitions to failed state. Only applicable for check deposits.
 type TreasuryReceivedCreditFailed = { Object: TreasuryReceivedCredit }
 
+type TreasuryReceivedCreditFailed with
+    static member New(object: TreasuryReceivedCredit) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a received_credit is created as a result of funds being pushed by another account.
 type TreasuryReceivedCreditCreated = { Object: TreasuryReceivedCredit }
+
+type TreasuryReceivedCreditCreated with
+    static member New(object: TreasuryReceivedCredit) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever tracking_details on an OutboundTransfer is updated.
 type TreasuryOutboundTransferTrackingDetailsUpdated = { Object: TreasuryOutboundTransfer }
 
+type TreasuryOutboundTransferTrackingDetailsUpdated with
+    static member New(object: TreasuryOutboundTransfer) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an OutboundTransfer is returned.
 type TreasuryOutboundTransferReturned = { Object: TreasuryOutboundTransfer }
+
+type TreasuryOutboundTransferReturned with
+    static member New(object: TreasuryOutboundTransfer) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever an OutboundTransfer is posted.
 type TreasuryOutboundTransferPosted = { Object: TreasuryOutboundTransfer }
 
+type TreasuryOutboundTransferPosted with
+    static member New(object: TreasuryOutboundTransfer) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an OutboundTransfer has failed.
 type TreasuryOutboundTransferFailed = { Object: TreasuryOutboundTransfer }
+
+type TreasuryOutboundTransferFailed with
+    static member New(object: TreasuryOutboundTransfer) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever the arrival date on an OutboundTransfer updates.
 type TreasuryOutboundTransferExpectedArrivalDateUpdated = { Object: TreasuryOutboundTransfer }
 
+type TreasuryOutboundTransferExpectedArrivalDateUpdated with
+    static member New(object: TreasuryOutboundTransfer) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an OutboundTransfer is created.
 type TreasuryOutboundTransferCreated = { Object: TreasuryOutboundTransfer }
+
+type TreasuryOutboundTransferCreated with
+    static member New(object: TreasuryOutboundTransfer) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever an OutboundTransfer is canceled.
 type TreasuryOutboundTransferCanceled = { Object: TreasuryOutboundTransfer }
 
+type TreasuryOutboundTransferCanceled with
+    static member New(object: TreasuryOutboundTransfer) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever tracking_details on an OutboundPayment is updated.
 type TreasuryOutboundPaymentTrackingDetailsUpdated = { Object: TreasuryOutboundPayment }
+
+type TreasuryOutboundPaymentTrackingDetailsUpdated with
+    static member New(object: TreasuryOutboundPayment) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever an OutboundPayment was returned.
 type TreasuryOutboundPaymentReturned = { Object: TreasuryOutboundPayment }
 
+type TreasuryOutboundPaymentReturned with
+    static member New(object: TreasuryOutboundPayment) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an OutboundPayment posts.
 type TreasuryOutboundPaymentPosted = { Object: TreasuryOutboundPayment }
+
+type TreasuryOutboundPaymentPosted with
+    static member New(object: TreasuryOutboundPayment) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever an OutboundPayment fails.
 type TreasuryOutboundPaymentFailed = { Object: TreasuryOutboundPayment }
 
+type TreasuryOutboundPaymentFailed with
+    static member New(object: TreasuryOutboundPayment) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever the arrival date on an OutboundPayment updates.
 type TreasuryOutboundPaymentExpectedArrivalDateUpdated = { Object: TreasuryOutboundPayment }
+
+type TreasuryOutboundPaymentExpectedArrivalDateUpdated with
+    static member New(object: TreasuryOutboundPayment) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever a new OutboundPayment is successfully created.
 type TreasuryOutboundPaymentCreated = { Object: TreasuryOutboundPayment }
 
+type TreasuryOutboundPaymentCreated with
+    static member New(object: TreasuryOutboundPayment) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an OutboundPayment is canceled.
 type TreasuryOutboundPaymentCanceled = { Object: TreasuryOutboundPayment }
+
+type TreasuryOutboundPaymentCanceled with
+    static member New(object: TreasuryOutboundPayment) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever an InboundTransfer has succeeded.
 type TreasuryInboundTransferSucceeded = { Object: TreasuryInboundTransfer }
 
+type TreasuryInboundTransferSucceeded with
+    static member New(object: TreasuryInboundTransfer) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an InboundTransfer has failed.
 type TreasuryInboundTransferFailed = { Object: TreasuryInboundTransfer }
+
+type TreasuryInboundTransferFailed with
+    static member New(object: TreasuryInboundTransfer) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever an InboundTransfer is created.
 type TreasuryInboundTransferCreated = { Object: TreasuryInboundTransfer }
 
+type TreasuryInboundTransferCreated with
+    static member New(object: TreasuryInboundTransfer) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an InboundTransfer is canceled.
 type TreasuryInboundTransferCanceled = { Object: TreasuryInboundTransfer }
+
+type TreasuryInboundTransferCanceled with
+    static member New(object: TreasuryInboundTransfer) =
+        {
+            Object = object
+        }
 
 type TreasuryFinancialAccountActiveFeatures =
     | CardIssuing
@@ -1157,6 +1786,14 @@ type TreasuryFinancialAccountsResourceTogglesSettingStatusDetails =
         Restriction: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsRestriction option
     }
 
+type TreasuryFinancialAccountsResourceTogglesSettingStatusDetails with
+    static member New(code: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsCode, resolution: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsResolution option, ?restriction: TreasuryFinancialAccountsResourceTogglesSettingStatusDetailsRestriction) =
+        {
+            Code = code
+            Resolution = resolution
+            Restriction = restriction
+        }
+
 /// Toggle settings for enabling/disabling the ABA address feature
 type TreasuryFinancialAccountsResourceAbaToggleSettings =
     {
@@ -1168,9 +1805,23 @@ type TreasuryFinancialAccountsResourceAbaToggleSettings =
         StatusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
     }
 
+type TreasuryFinancialAccountsResourceAbaToggleSettings with
+    static member New(requested: bool, status: TreasuryFinancialAccountsResourceAbaToggleSettingsStatus, statusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list) =
+        {
+            Requested = requested
+            Status = status
+            StatusDetails = statusDetails
+        }
+
 /// Settings related to Financial Addresses features on a Financial Account
 type TreasuryFinancialAccountsResourceFinancialAddressesFeatures =
     { Aba: TreasuryFinancialAccountsResourceAbaToggleSettings option }
+
+type TreasuryFinancialAccountsResourceFinancialAddressesFeatures with
+    static member New(?aba: TreasuryFinancialAccountsResourceAbaToggleSettings) =
+        {
+            Aba = aba
+        }
 
 [<Struct>]
 type TreasuryFinancialAccountsResourceInboundAchToggleSettingsStatus =
@@ -1189,9 +1840,23 @@ type TreasuryFinancialAccountsResourceInboundAchToggleSettings =
         StatusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
     }
 
+type TreasuryFinancialAccountsResourceInboundAchToggleSettings with
+    static member New(requested: bool, status: TreasuryFinancialAccountsResourceInboundAchToggleSettingsStatus, statusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list) =
+        {
+            Requested = requested
+            Status = status
+            StatusDetails = statusDetails
+        }
+
 /// InboundTransfers contains inbound transfers features for a FinancialAccount.
 type TreasuryFinancialAccountsResourceInboundTransfers =
     { Ach: TreasuryFinancialAccountsResourceInboundAchToggleSettings option }
+
+type TreasuryFinancialAccountsResourceInboundTransfers with
+    static member New(?ach: TreasuryFinancialAccountsResourceInboundAchToggleSettings) =
+        {
+            Ach = ach
+        }
 
 [<Struct>]
 type TreasuryFinancialAccountsResourceOutboundAchToggleSettingsStatus =
@@ -1210,6 +1875,14 @@ type TreasuryFinancialAccountsResourceOutboundAchToggleSettings =
         StatusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
     }
 
+type TreasuryFinancialAccountsResourceOutboundAchToggleSettings with
+    static member New(requested: bool, status: TreasuryFinancialAccountsResourceOutboundAchToggleSettingsStatus, statusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list) =
+        {
+            Requested = requested
+            Status = status
+            StatusDetails = statusDetails
+        }
+
 [<Struct>]
 type TreasuryFinancialAccountsResourceToggleSettingsStatus =
     | Active
@@ -1227,15 +1900,37 @@ type TreasuryFinancialAccountsResourceToggleSettings =
         StatusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list
     }
 
+type TreasuryFinancialAccountsResourceToggleSettings with
+    static member New(requested: bool, status: TreasuryFinancialAccountsResourceToggleSettingsStatus, statusDetails: TreasuryFinancialAccountsResourceTogglesSettingStatusDetails list) =
+        {
+            Requested = requested
+            Status = status
+            StatusDetails = statusDetails
+        }
+
 /// Settings related to Outbound Payments features on a Financial Account
 type TreasuryFinancialAccountsResourceOutboundPayments =
     { Ach: TreasuryFinancialAccountsResourceOutboundAchToggleSettings option
       UsDomesticWire: TreasuryFinancialAccountsResourceToggleSettings option }
 
+type TreasuryFinancialAccountsResourceOutboundPayments with
+    static member New(?ach: TreasuryFinancialAccountsResourceOutboundAchToggleSettings, ?usDomesticWire: TreasuryFinancialAccountsResourceToggleSettings) =
+        {
+            Ach = ach
+            UsDomesticWire = usDomesticWire
+        }
+
 /// OutboundTransfers contains outbound transfers features for a FinancialAccount.
 type TreasuryFinancialAccountsResourceOutboundTransfers =
     { Ach: TreasuryFinancialAccountsResourceOutboundAchToggleSettings option
       UsDomesticWire: TreasuryFinancialAccountsResourceToggleSettings option }
+
+type TreasuryFinancialAccountsResourceOutboundTransfers with
+    static member New(?ach: TreasuryFinancialAccountsResourceOutboundAchToggleSettings, ?usDomesticWire: TreasuryFinancialAccountsResourceToggleSettings) =
+        {
+            Ach = ach
+            UsDomesticWire = usDomesticWire
+        }
 
 /// Encodes whether a FinancialAccount has access to a particular Feature, with a `status` enum and associated `status_details`.
 /// Stripe or the platform can control Features via the requested field.
@@ -1247,6 +1942,18 @@ type TreasuryFinancialAccountFeatures =
       IntraStripeFlows: TreasuryFinancialAccountsResourceToggleSettings option
       OutboundPayments: TreasuryFinancialAccountsResourceOutboundPayments option
       OutboundTransfers: TreasuryFinancialAccountsResourceOutboundTransfers option }
+
+type TreasuryFinancialAccountFeatures with
+    static member New(?cardIssuing: TreasuryFinancialAccountsResourceToggleSettings, ?depositInsurance: TreasuryFinancialAccountsResourceToggleSettings, ?financialAddresses: TreasuryFinancialAccountsResourceFinancialAddressesFeatures, ?inboundTransfers: TreasuryFinancialAccountsResourceInboundTransfers, ?intraStripeFlows: TreasuryFinancialAccountsResourceToggleSettings, ?outboundPayments: TreasuryFinancialAccountsResourceOutboundPayments, ?outboundTransfers: TreasuryFinancialAccountsResourceOutboundTransfers) =
+        {
+            CardIssuing = cardIssuing
+            DepositInsurance = depositInsurance
+            FinancialAddresses = financialAddresses
+            InboundTransfers = inboundTransfers
+            IntraStripeFlows = intraStripeFlows
+            OutboundPayments = outboundPayments
+            OutboundTransfers = outboundTransfers
+        }
 
 module TreasuryFinancialAccountFeatures =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -1294,6 +2001,14 @@ type TreasuryFinancialAccountsResourceBalance =
         OutboundPending: Map<string, string list>
     }
 
+type TreasuryFinancialAccountsResourceBalance with
+    static member New(cash: Map<string, string list>, inboundPending: Map<string, string list>, outboundPending: Map<string, string list>) =
+        {
+            Cash = cash
+            InboundPending = inboundPending
+            OutboundPending = outboundPending
+        }
+
 /// ABA Records contain U.S. bank account details per the ABA format.
 type TreasuryFinancialAccountsResourceAbaRecord =
     {
@@ -1310,6 +2025,16 @@ type TreasuryFinancialAccountsResourceAbaRecord =
         RoutingNumber: string
     }
 
+type TreasuryFinancialAccountsResourceAbaRecord with
+    static member New(accountHolderName: string, accountNumberLast4: string, bankName: string, routingNumber: string, ?accountNumber: string option) =
+        {
+            AccountHolderName = accountHolderName
+            AccountNumberLast4 = accountNumberLast4
+            BankName = bankName
+            RoutingNumber = routingNumber
+            AccountNumber = accountNumber |> Option.flatten
+        }
+
 [<Struct>]
 type TreasuryFinancialAccountsResourceFinancialAddressSupportedNetworks =
     | Ach
@@ -1322,6 +2047,13 @@ type TreasuryFinancialAccountsResourceFinancialAddress =
         /// The list of networks that the address supports
         SupportedNetworks: TreasuryFinancialAccountsResourceFinancialAddressSupportedNetworks list option
     }
+
+type TreasuryFinancialAccountsResourceFinancialAddress with
+    static member New(?aba: TreasuryFinancialAccountsResourceAbaRecord, ?supportedNetworks: TreasuryFinancialAccountsResourceFinancialAddressSupportedNetworks list) =
+        {
+            Aba = aba
+            SupportedNetworks = supportedNetworks
+        }
 
 module TreasuryFinancialAccountsResourceFinancialAddress =
     ///The type of financial address
@@ -1346,6 +2078,13 @@ type TreasuryFinancialAccountsResourcePlatformRestrictions =
         OutboundFlows: TreasuryFinancialAccountsResourcePlatformRestrictionsOutboundFlows option
     }
 
+type TreasuryFinancialAccountsResourcePlatformRestrictions with
+    static member New(inboundFlows: TreasuryFinancialAccountsResourcePlatformRestrictionsInboundFlows option, outboundFlows: TreasuryFinancialAccountsResourcePlatformRestrictionsOutboundFlows option) =
+        {
+            InboundFlows = inboundFlows
+            OutboundFlows = outboundFlows
+        }
+
 [<Struct>]
 type TreasuryFinancialAccountsResourceClosedStatusDetailsReasons =
     | AccountRejected
@@ -1358,11 +2097,23 @@ type TreasuryFinancialAccountsResourceClosedStatusDetails =
         Reasons: TreasuryFinancialAccountsResourceClosedStatusDetailsReasons list
     }
 
+type TreasuryFinancialAccountsResourceClosedStatusDetails with
+    static member New(reasons: TreasuryFinancialAccountsResourceClosedStatusDetailsReasons list) =
+        {
+            Reasons = reasons
+        }
+
 type TreasuryFinancialAccountsResourceStatusDetails =
     {
         /// Details related to the closure of this FinancialAccount
         Closed: TreasuryFinancialAccountsResourceClosedStatusDetails option
     }
+
+type TreasuryFinancialAccountsResourceStatusDetails with
+    static member New(closed: TreasuryFinancialAccountsResourceClosedStatusDetails option) =
+        {
+            Closed = closed
+        }
 
 /// Stripe Treasury provides users with a container for money called a FinancialAccount that is separate from their Payments balance.
 /// FinancialAccounts serve as the source and destination of Treasury’s money movement APIs.
@@ -1400,6 +2151,28 @@ type TreasuryFinancialAccount =
         SupportedCurrencies: string list
     }
 
+type TreasuryFinancialAccount with
+    static member New(balance: TreasuryFinancialAccountsResourceBalance, country: IsoTypes.IsoCountryCode, created: DateTime, financialAddresses: TreasuryFinancialAccountsResourceFinancialAddress list, id: string, livemode: bool, metadata: Map<string, string> option, status: TreasuryFinancialAccountStatus, statusDetails: TreasuryFinancialAccountsResourceStatusDetails, supportedCurrencies: string list, ?activeFeatures: TreasuryFinancialAccountActiveFeatures list, ?features: TreasuryFinancialAccountFeatures, ?isDefault: bool, ?nickname: string option, ?pendingFeatures: TreasuryFinancialAccountPendingFeatures list, ?platformRestrictions: TreasuryFinancialAccountsResourcePlatformRestrictions option, ?restrictedFeatures: TreasuryFinancialAccountRestrictedFeatures list) =
+        {
+            Balance = balance
+            Country = country
+            Created = created
+            FinancialAddresses = financialAddresses
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Status = status
+            StatusDetails = statusDetails
+            SupportedCurrencies = supportedCurrencies
+            ActiveFeatures = activeFeatures
+            Features = features
+            IsDefault = isDefault
+            Nickname = nickname |> Option.flatten
+            PendingFeatures = pendingFeatures
+            PlatformRestrictions = platformRestrictions |> Option.flatten
+            RestrictedFeatures = restrictedFeatures
+        }
+
 module TreasuryFinancialAccount =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "treasury.financial_account"
@@ -1407,24 +2180,72 @@ module TreasuryFinancialAccount =
 /// Occurs whenever the statuses of any features within an existing FinancialAccount are updated.
 type TreasuryFinancialAccountFeaturesStatusUpdated = { Object: TreasuryFinancialAccount }
 
+type TreasuryFinancialAccountFeaturesStatusUpdated with
+    static member New(object: TreasuryFinancialAccount) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a new FinancialAccount is created.
 type TreasuryFinancialAccountCreated = { Object: TreasuryFinancialAccount }
+
+type TreasuryFinancialAccountCreated with
+    static member New(object: TreasuryFinancialAccount) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever the status of the FinancialAccount becomes closed.
 type TreasuryFinancialAccountClosed = { Object: TreasuryFinancialAccount }
 
+type TreasuryFinancialAccountClosed with
+    static member New(object: TreasuryFinancialAccount) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an initial credit is granted on a DebitReversal.
 type TreasuryDebitReversalInitialCreditGranted = { Object: TreasuryDebitReversal }
+
+type TreasuryDebitReversalInitialCreditGranted with
+    static member New(object: TreasuryDebitReversal) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever a DebitReversal is created.
 type TreasuryDebitReversalCreated = { Object: TreasuryDebitReversal }
 
+type TreasuryDebitReversalCreated with
+    static member New(object: TreasuryDebitReversal) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a DebitReversal is completed.
 type TreasuryDebitReversalCompleted = { Object: TreasuryDebitReversal }
+
+type TreasuryDebitReversalCompleted with
+    static member New(object: TreasuryDebitReversal) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever an CreditReversal post is posted.
 type TreasuryCreditReversalPosted = { Object: TreasuryCreditReversal }
 
+type TreasuryCreditReversalPosted with
+    static member New(object: TreasuryCreditReversal) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an CreditReversal is submitted and created.
 type TreasuryCreditReversalCreated = { Object: TreasuryCreditReversal }
+
+type TreasuryCreditReversalCreated with
+    static member New(object: TreasuryCreditReversal) =
+        {
+            Object = object
+        }
 

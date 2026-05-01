@@ -33,6 +33,18 @@ module ShippingRates =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?active: bool, ?created: int, ?currency: IsoTypes.IsoCurrencyCode, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Active = active
+                Created = created
+                Currency = currency
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -72,6 +84,13 @@ module ShippingRates =
             Value: int option
         }
 
+    type Create'DeliveryEstimateMaximum with
+        static member New(?unit: Create'DeliveryEstimateMaximumUnit, ?value: int) =
+            {
+                Unit = unit
+                Value = value
+            }
+
     module Create'DeliveryEstimateMaximum =
         let create
             (
@@ -101,6 +120,13 @@ module ShippingRates =
             Value: int option
         }
 
+    type Create'DeliveryEstimateMinimum with
+        static member New(?unit: Create'DeliveryEstimateMinimumUnit, ?value: int) =
+            {
+                Unit = unit
+                Value = value
+            }
+
     module Create'DeliveryEstimateMinimum =
         let create
             (
@@ -122,6 +148,13 @@ module ShippingRates =
             [<Config.Form>]
             Minimum: Create'DeliveryEstimateMinimum option
         }
+
+    type Create'DeliveryEstimate with
+        static member New(?maximum: Create'DeliveryEstimateMaximum, ?minimum: Create'DeliveryEstimateMinimum) =
+            {
+                Maximum = maximum
+                Minimum = minimum
+            }
 
     module Create'DeliveryEstimate =
         let create
@@ -147,6 +180,14 @@ module ShippingRates =
             [<Config.Form>]
             CurrencyOptions: Map<string, string> option
         }
+
+    type Create'FixedAmount with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>) =
+            {
+                Amount = amount
+                Currency = currency
+                CurrencyOptions = currencyOptions
+            }
 
     module Create'FixedAmount =
         let create
@@ -197,6 +238,19 @@ module ShippingRates =
             Type: Create'Type option
         }
 
+    type CreateOptions with
+        static member New(displayName: string, ?deliveryEstimate: Create'DeliveryEstimate, ?expand: string list, ?fixedAmount: Create'FixedAmount, ?metadata: Map<string, string>, ?taxBehavior: Create'TaxBehavior, ?taxCode: string, ?type': Create'Type) =
+            {
+                DisplayName = displayName
+                DeliveryEstimate = deliveryEstimate
+                Expand = expand
+                FixedAmount = fixedAmount
+                Metadata = metadata
+                TaxBehavior = taxBehavior
+                TaxCode = taxCode
+                Type = type'
+            }
+
     module CreateOptions =
         let create
             (
@@ -223,6 +277,13 @@ module ShippingRates =
             ShippingRateToken: string
         }
 
+    type RetrieveOptions with
+        static member New(shippingRateToken: string, ?expand: string list) =
+            {
+                ShippingRateToken = shippingRateToken
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -240,6 +301,12 @@ module ShippingRates =
             [<Config.Form>]
             CurrencyOptions: Map<string, string> option
         }
+
+    type Update'FixedAmount with
+        static member New(?currencyOptions: Map<string, string>) =
+            {
+                CurrencyOptions = currencyOptions
+            }
 
     module Update'FixedAmount =
         let create
@@ -276,6 +343,17 @@ module ShippingRates =
             [<Config.Form>]
             TaxBehavior: Update'TaxBehavior option
         }
+
+    type UpdateOptions with
+        static member New(shippingRateToken: string, ?active: bool, ?expand: string list, ?fixedAmount: Update'FixedAmount, ?metadata: Map<string, string>, ?taxBehavior: Update'TaxBehavior) =
+            {
+                ShippingRateToken = shippingRateToken
+                Active = active
+                Expand = expand
+                FixedAmount = fixedAmount
+                Metadata = metadata
+                TaxBehavior = taxBehavior
+            }
 
     module UpdateOptions =
         let create

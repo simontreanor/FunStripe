@@ -36,6 +36,19 @@ module IdentityVerificationReports =
             VerificationSession: string option
         }
 
+    type ListOptions with
+        static member New(?clientReferenceId: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?type': string, ?verificationSession: string) =
+            {
+                ClientReferenceId = clientReferenceId
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Type = type'
+                VerificationSession = verificationSession
+            }
+
     module ListOptions =
         let create
             (
@@ -45,7 +58,7 @@ module IdentityVerificationReports =
                 expand: string list option,
                 limit: int option,
                 startingAfter: string option,
-                ``type``: string option,
+                type': string option,
                 verificationSession: string option
             ) : ListOptions
             =
@@ -56,7 +69,7 @@ module IdentityVerificationReports =
               Expand = expand
               Limit = limit
               StartingAfter = startingAfter
-              Type = ``type``
+              Type = type'
               VerificationSession = verificationSession
             }
 
@@ -68,6 +81,13 @@ module IdentityVerificationReports =
             [<Config.Path>]
             Report: string
         }
+
+    type RetrieveOptions with
+        static member New(report: string, ?expand: string list) =
+            {
+                Report = report
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -125,6 +145,20 @@ module IdentityVerificationSessions =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(?clientReferenceId: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?relatedCustomer: string, ?relatedCustomerAccount: string, ?startingAfter: string, ?status: string) =
+            {
+                ClientReferenceId = clientReferenceId
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                RelatedCustomer = relatedCustomer
+                RelatedCustomerAccount = relatedCustomerAccount
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -172,6 +206,15 @@ module IdentityVerificationSessions =
             RequireMatchingSelfie: bool option
         }
 
+    type Create'OptionsDocumentDocumentOptions with
+        static member New(?allowedTypes: Create'OptionsDocumentDocumentOptionsAllowedTypes list, ?requireIdNumber: bool, ?requireLiveCapture: bool, ?requireMatchingSelfie: bool) =
+            {
+                AllowedTypes = allowedTypes
+                RequireIdNumber = requireIdNumber
+                RequireLiveCapture = requireLiveCapture
+                RequireMatchingSelfie = requireMatchingSelfie
+            }
+
     module Create'OptionsDocumentDocumentOptions =
         let create
             (
@@ -195,6 +238,12 @@ module IdentityVerificationSessions =
             Document: Choice<Create'OptionsDocumentDocumentOptions,string> option
         }
 
+    type Create'Options with
+        static member New(?document: Choice<Create'OptionsDocumentDocumentOptions,string>) =
+            {
+                Document = document
+            }
+
     module Create'Options =
         let create
             (
@@ -214,6 +263,13 @@ module IdentityVerificationSessions =
             [<Config.Form>]
             Phone: string option
         }
+
+    type Create'ProvidedDetails with
+        static member New(?email: string, ?phone: string) =
+            {
+                Email = email
+                Phone = phone
+            }
 
     module Create'ProvidedDetails =
         let create
@@ -236,6 +292,13 @@ module IdentityVerificationSessions =
             [<Config.Form>]
             Person: string option
         }
+
+    type Create'RelatedPerson with
+        static member New(?account: string, ?person: string) =
+            {
+                Account = account
+                Person = person
+            }
 
     module Create'RelatedPerson =
         let create
@@ -290,6 +353,22 @@ module IdentityVerificationSessions =
             VerificationFlow: string option
         }
 
+    type CreateOptions with
+        static member New(?clientReferenceId: string, ?expand: string list, ?metadata: Map<string, string>, ?options: Create'Options, ?providedDetails: Create'ProvidedDetails, ?relatedCustomer: string, ?relatedCustomerAccount: string, ?relatedPerson: Create'RelatedPerson, ?returnUrl: string, ?type': Create'Type, ?verificationFlow: string) =
+            {
+                ClientReferenceId = clientReferenceId
+                Expand = expand
+                Metadata = metadata
+                Options = options
+                ProvidedDetails = providedDetails
+                RelatedCustomer = relatedCustomer
+                RelatedCustomerAccount = relatedCustomerAccount
+                RelatedPerson = relatedPerson
+                ReturnUrl = returnUrl
+                Type = type'
+                VerificationFlow = verificationFlow
+            }
+
     module CreateOptions =
         let create
             (
@@ -302,7 +381,7 @@ module IdentityVerificationSessions =
                 relatedCustomerAccount: string option,
                 relatedPerson: Create'RelatedPerson option,
                 returnUrl: string option,
-                ``type``: Create'Type option,
+                type': Create'Type option,
                 verificationFlow: string option
             ) : CreateOptions
             =
@@ -316,7 +395,7 @@ module IdentityVerificationSessions =
               RelatedCustomerAccount = relatedCustomerAccount
               RelatedPerson = relatedPerson
               ReturnUrl = returnUrl
-              Type = ``type``
+              Type = type'
               VerificationFlow = verificationFlow
             }
 
@@ -328,6 +407,13 @@ module IdentityVerificationSessions =
             [<Config.Path>]
             Session: string
         }
+
+    type RetrieveOptions with
+        static member New(session: string, ?expand: string list) =
+            {
+                Session = session
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -361,6 +447,15 @@ module IdentityVerificationSessions =
             RequireMatchingSelfie: bool option
         }
 
+    type Update'OptionsDocumentDocumentOptions with
+        static member New(?allowedTypes: Update'OptionsDocumentDocumentOptionsAllowedTypes list, ?requireIdNumber: bool, ?requireLiveCapture: bool, ?requireMatchingSelfie: bool) =
+            {
+                AllowedTypes = allowedTypes
+                RequireIdNumber = requireIdNumber
+                RequireLiveCapture = requireLiveCapture
+                RequireMatchingSelfie = requireMatchingSelfie
+            }
+
     module Update'OptionsDocumentDocumentOptions =
         let create
             (
@@ -384,6 +479,12 @@ module IdentityVerificationSessions =
             Document: Choice<Update'OptionsDocumentDocumentOptions,string> option
         }
 
+    type Update'Options with
+        static member New(?document: Choice<Update'OptionsDocumentDocumentOptions,string>) =
+            {
+                Document = document
+            }
+
     module Update'Options =
         let create
             (
@@ -403,6 +504,13 @@ module IdentityVerificationSessions =
             [<Config.Form>]
             Phone: string option
         }
+
+    type Update'ProvidedDetails with
+        static member New(?email: string, ?phone: string) =
+            {
+                Email = email
+                Phone = phone
+            }
 
     module Update'ProvidedDetails =
         let create
@@ -440,6 +548,17 @@ module IdentityVerificationSessions =
             [<Config.Form>]
             Type: Update'Type option
         }
+
+    type UpdateOptions with
+        static member New(session: string, ?expand: string list, ?metadata: Map<string, string>, ?options: Update'Options, ?providedDetails: Update'ProvidedDetails, ?type': Update'Type) =
+            {
+                Session = session
+                Expand = expand
+                Metadata = metadata
+                Options = options
+                ProvidedDetails = providedDetails
+                Type = type'
+            }
 
     module UpdateOptions =
         let create
@@ -496,6 +615,13 @@ module IdentityVerificationSessionsCancel =
             Expand: string list option
         }
 
+    type CancelOptions with
+        static member New(session: string, ?expand: string list) =
+            {
+                Session = session
+                Expand = expand
+            }
+
     module CancelOptions =
         let create
             (
@@ -523,6 +649,13 @@ module IdentityVerificationSessionsRedact =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type RedactOptions with
+        static member New(session: string, ?expand: string list) =
+            {
+                Session = session
+                Expand = expand
+            }
 
     module RedactOptions =
         let create

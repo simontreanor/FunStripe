@@ -27,6 +27,16 @@ module EntitlementsActiveEntitlements =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Customer = customer
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -50,6 +60,13 @@ module EntitlementsActiveEntitlements =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -98,6 +115,17 @@ module EntitlementsFeatures =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?archived: bool, ?endingBefore: string, ?expand: string list, ?limit: int, ?lookupKey: string, ?startingAfter: string) =
+            {
+                Archived = archived
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                LookupKey = lookupKey
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -134,6 +162,15 @@ module EntitlementsFeatures =
             Name: string
         }
 
+    type CreateOptions with
+        static member New(lookupKey: string, name: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                LookupKey = lookupKey
+                Name = name
+                Expand = expand
+                Metadata = metadata
+            }
+
     module CreateOptions =
         let create
             (
@@ -157,6 +194,13 @@ module EntitlementsFeatures =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -186,6 +230,16 @@ module EntitlementsFeatures =
             [<Config.Form>]
             Name: string option
         }
+
+    type UpdateOptions with
+        static member New(id: string, ?active: bool, ?expand: string list, ?metadata: Map<string, string>, ?name: string) =
+            {
+                Id = id
+                Active = active
+                Expand = expand
+                Metadata = metadata
+                Name = name
+            }
 
     module UpdateOptions =
         let create

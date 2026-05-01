@@ -27,6 +27,18 @@ type FeeRefund =
         Metadata: Map<string, string> option
     }
 
+type FeeRefund with
+    static member New(amount: int, balanceTransaction: StripeId<Markers.BalanceTransaction> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, fee: StripeId<Markers.ApplicationFee>, id: string, metadata: Map<string, string> option) =
+        {
+            Amount = amount
+            BalanceTransaction = balanceTransaction
+            Created = created
+            Currency = currency
+            Fee = fee
+            Id = id
+            Metadata = metadata
+        }
+
 module FeeRefund =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "fee_refund"

@@ -2,7 +2,7 @@ namespace StripeRequest.Payouts
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Payout
+open Stripe.PaymentMethod
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
@@ -35,6 +35,19 @@ module Payouts =
             [<Config.Query>]
             Status: string option
         }
+
+    type ListOptions with
+        static member New(?arrivalDate: int, ?created: int, ?destination: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                ArrivalDate = arrivalDate
+                Created = created
+                Destination = destination
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
 
     module ListOptions =
         let create
@@ -103,6 +116,21 @@ module Payouts =
             StatementDescriptor: string option
         }
 
+    type CreateOptions with
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?description: string, ?destination: string, ?expand: string list, ?metadata: Map<string, string>, ?method: Create'Method, ?payoutMethod: string, ?sourceType: Create'SourceType, ?statementDescriptor: string) =
+            {
+                Amount = amount
+                Currency = currency
+                Description = description
+                Destination = destination
+                Expand = expand
+                Metadata = metadata
+                Method = method
+                PayoutMethod = payoutMethod
+                SourceType = sourceType
+                StatementDescriptor = statementDescriptor
+            }
+
     module CreateOptions =
         let create
             (
@@ -132,6 +160,13 @@ module Payouts =
             Payout: string
         }
 
+    type RetrieveOptions with
+        static member New(payout: string, ?expand: string list) =
+            {
+                Payout = payout
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -154,6 +189,14 @@ module Payouts =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(payout: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Payout = payout
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -202,6 +245,13 @@ module PayoutsCancel =
             Expand: string list option
         }
 
+    type CancelOptions with
+        static member New(payout: string, ?expand: string list) =
+            {
+                Payout = payout
+                Expand = expand
+            }
+
     module CancelOptions =
         let create
             (
@@ -231,6 +281,14 @@ module PayoutsReverse =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type ReverseOptions with
+        static member New(payout: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Payout = payout
+                Expand = expand
+                Metadata = metadata
+            }
 
     module ReverseOptions =
         let create

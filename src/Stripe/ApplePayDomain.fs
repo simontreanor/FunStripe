@@ -13,6 +13,13 @@ type DeletedApplePayDomain =
         Id: string
     }
 
+type DeletedApplePayDomain with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
 module DeletedApplePayDomain =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "apple_pay_domain"
@@ -27,6 +34,15 @@ type ApplePayDomain =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
     }
+
+type ApplePayDomain with
+    static member New(created: DateTime, domainName: string, id: string, livemode: bool) =
+        {
+            Created = created
+            DomainName = domainName
+            Id = id
+            Livemode = livemode
+        }
 
 module ApplePayDomain =
     ///String representing the object's type. Objects of the same type share the same value.

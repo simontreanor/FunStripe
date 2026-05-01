@@ -36,6 +36,19 @@ module Events =
             Types: string list option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?deliverySuccess: bool, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?type': string, ?types: string list) =
+            {
+                Created = created
+                DeliverySuccess = deliverySuccess
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Type = type'
+                Types = types
+            }
+
     module ListOptions =
         let create
             (
@@ -45,7 +58,7 @@ module Events =
                 expand: string list option,
                 limit: int option,
                 startingAfter: string option,
-                ``type``: string option,
+                type': string option,
                 types: string list option
             ) : ListOptions
             =
@@ -56,7 +69,7 @@ module Events =
               Expand = expand
               Limit = limit
               StartingAfter = startingAfter
-              Type = ``type``
+              Type = type'
               Types = types
             }
 
@@ -68,6 +81,13 @@ module Events =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

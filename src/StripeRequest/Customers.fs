@@ -3,7 +3,6 @@ namespace StripeRequest.Customers
 open FunStripe
 open System.Text.Json.Serialization
 open Stripe.CustomerBalanceTransaction
-open Stripe.Discount
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 open Stripe.TaxId
@@ -36,6 +35,18 @@ module Customers =
             [<Config.Query>]
             TestClock: string option
         }
+
+    type ListOptions with
+        static member New(?created: int, ?email: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?testClock: string) =
+            {
+                Created = created
+                Email = email
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                TestClock = testClock
+            }
 
     module ListOptions =
         let create
@@ -81,6 +92,17 @@ module Customers =
             State: string option
         }
 
+    type Create'AddressOptionalFieldsCustomerAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'AddressOptionalFieldsCustomerAddress =
         let create
             (
@@ -113,6 +135,12 @@ module Customers =
             ReconciliationMode: Create'CashBalanceSettingsReconciliationMode option
         }
 
+    type Create'CashBalanceSettings with
+        static member New(?reconciliationMode: Create'CashBalanceSettingsReconciliationMode) =
+            {
+                ReconciliationMode = reconciliationMode
+            }
+
     module Create'CashBalanceSettings =
         let create
             (
@@ -130,6 +158,12 @@ module Customers =
             [<Config.Form>]
             Settings: Create'CashBalanceSettings option
         }
+
+    type Create'CashBalance with
+        static member New(?settings: Create'CashBalanceSettings) =
+            {
+                Settings = settings
+            }
 
     module Create'CashBalance =
         let create
@@ -150,6 +184,13 @@ module Customers =
             [<Config.Form>]
             Value: string option
         }
+
+    type Create'InvoiceSettingsCustomFields with
+        static member New(?name: string, ?value: string) =
+            {
+                Name = name
+                Value = value
+            }
 
     module Create'InvoiceSettingsCustomFields =
         let create
@@ -176,6 +217,13 @@ module Customers =
             [<Config.Form>]
             Template: string option
         }
+
+    type Create'InvoiceSettingsRenderingOptionsCustomerRenderingOptions with
+        static member New(?amountTaxDisplay: Create'InvoiceSettingsRenderingOptionsCustomerRenderingOptionsAmountTaxDisplay, ?template: string) =
+            {
+                AmountTaxDisplay = amountTaxDisplay
+                Template = template
+            }
 
     module Create'InvoiceSettingsRenderingOptionsCustomerRenderingOptions =
         let create
@@ -204,6 +252,15 @@ module Customers =
             [<Config.Form>]
             RenderingOptions: Choice<Create'InvoiceSettingsRenderingOptionsCustomerRenderingOptions,string> option
         }
+
+    type Create'InvoiceSettings with
+        static member New(?customFields: Choice<Create'InvoiceSettingsCustomFields list,string>, ?defaultPaymentMethod: string, ?footer: string, ?renderingOptions: Choice<Create'InvoiceSettingsRenderingOptionsCustomerRenderingOptions,string>) =
+            {
+                CustomFields = customFields
+                DefaultPaymentMethod = defaultPaymentMethod
+                Footer = footer
+                RenderingOptions = renderingOptions
+            }
 
     module Create'InvoiceSettings =
         let create
@@ -243,6 +300,17 @@ module Customers =
             State: string option
         }
 
+    type Create'ShippingCustomerShippingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'ShippingCustomerShippingAddress =
         let create
             (
@@ -276,6 +344,14 @@ module Customers =
             Phone: string option
         }
 
+    type Create'ShippingCustomerShipping with
+        static member New(?address: Create'ShippingCustomerShippingAddress, ?name: string, ?phone: string) =
+            {
+                Address = address
+                Name = name
+                Phone = phone
+            }
+
     module Create'ShippingCustomerShipping =
         let create
             (
@@ -303,6 +379,13 @@ module Customers =
             [<Config.Form>]
             ValidateLocation: Create'TaxValidateLocation option
         }
+
+    type Create'Tax with
+        static member New(?ipAddress: Choice<string,string>, ?validateLocation: Create'TaxValidateLocation) =
+            {
+                IpAddress = ipAddress
+                ValidateLocation = validateLocation
+            }
 
     module Create'Tax =
         let create
@@ -449,15 +532,22 @@ module Customers =
             Value: string option
         }
 
+    type Create'TaxIdData with
+        static member New(?type': Create'TaxIdDataType, ?value: string) =
+            {
+                Type = type'
+                Value = value
+            }
+
     module Create'TaxIdData =
         let create
             (
-                ``type``: Create'TaxIdDataType option,
+                type': Create'TaxIdDataType option,
                 value: string option
             ) : Create'TaxIdData
             =
             {
-              Type = ``type``
+              Type = type'
               Value = value
             }
 
@@ -531,6 +621,34 @@ module Customers =
             Validate: bool option
         }
 
+    type CreateOptions with
+        static member New(?address: Choice<Create'AddressOptionalFieldsCustomerAddress,string>, ?balance: int, ?businessName: Choice<string,string>, ?cashBalance: Create'CashBalance, ?description: string, ?email: string, ?expand: string list, ?individualName: Choice<string,string>, ?invoicePrefix: string, ?invoiceSettings: Create'InvoiceSettings, ?metadata: Map<string, string>, ?name: string, ?nextInvoiceSequence: int, ?paymentMethod: string, ?phone: string, ?preferredLocales: string list, ?shipping: Choice<Create'ShippingCustomerShipping,string>, ?source: string, ?tax: Create'Tax, ?taxExempt: Create'TaxExempt, ?taxIdData: Create'TaxIdData list, ?testClock: string, ?validate: bool) =
+            {
+                Address = address
+                Balance = balance
+                BusinessName = businessName
+                CashBalance = cashBalance
+                Description = description
+                Email = email
+                Expand = expand
+                IndividualName = individualName
+                InvoicePrefix = invoicePrefix
+                InvoiceSettings = invoiceSettings
+                Metadata = metadata
+                Name = name
+                NextInvoiceSequence = nextInvoiceSequence
+                PaymentMethod = paymentMethod
+                Phone = phone
+                PreferredLocales = preferredLocales
+                Shipping = shipping
+                Source = source
+                Tax = tax
+                TaxExempt = taxExempt
+                TaxIdData = taxIdData
+                TestClock = testClock
+                Validate = validate
+            }
+
     module CreateOptions =
         let create
             (
@@ -589,6 +707,12 @@ module Customers =
         { [<Config.Path>]
           Customer: string }
 
+    type DeleteOptions with
+        static member New(customer: string) =
+            {
+                Customer = customer
+            }
+
     module DeleteOptions =
         let create
             (
@@ -607,6 +731,13 @@ module Customers =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(customer: string, ?expand: string list) =
+            {
+                Customer = customer
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -641,6 +772,17 @@ module Customers =
             State: string option
         }
 
+    type Update'AddressOptionalFieldsCustomerAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Update'AddressOptionalFieldsCustomerAddress =
         let create
             (
@@ -673,6 +815,12 @@ module Customers =
             ReconciliationMode: Update'CashBalanceSettingsReconciliationMode option
         }
 
+    type Update'CashBalanceSettings with
+        static member New(?reconciliationMode: Update'CashBalanceSettingsReconciliationMode) =
+            {
+                ReconciliationMode = reconciliationMode
+            }
+
     module Update'CashBalanceSettings =
         let create
             (
@@ -690,6 +838,12 @@ module Customers =
             [<Config.Form>]
             Settings: Update'CashBalanceSettings option
         }
+
+    type Update'CashBalance with
+        static member New(?settings: Update'CashBalanceSettings) =
+            {
+                Settings = settings
+            }
 
     module Update'CashBalance =
         let create
@@ -710,6 +864,13 @@ module Customers =
             [<Config.Form>]
             Value: string option
         }
+
+    type Update'InvoiceSettingsCustomFields with
+        static member New(?name: string, ?value: string) =
+            {
+                Name = name
+                Value = value
+            }
 
     module Update'InvoiceSettingsCustomFields =
         let create
@@ -736,6 +897,13 @@ module Customers =
             [<Config.Form>]
             Template: string option
         }
+
+    type Update'InvoiceSettingsRenderingOptionsCustomerRenderingOptions with
+        static member New(?amountTaxDisplay: Update'InvoiceSettingsRenderingOptionsCustomerRenderingOptionsAmountTaxDisplay, ?template: string) =
+            {
+                AmountTaxDisplay = amountTaxDisplay
+                Template = template
+            }
 
     module Update'InvoiceSettingsRenderingOptionsCustomerRenderingOptions =
         let create
@@ -764,6 +932,15 @@ module Customers =
             [<Config.Form>]
             RenderingOptions: Choice<Update'InvoiceSettingsRenderingOptionsCustomerRenderingOptions,string> option
         }
+
+    type Update'InvoiceSettings with
+        static member New(?customFields: Choice<Update'InvoiceSettingsCustomFields list,string>, ?defaultPaymentMethod: string, ?footer: string, ?renderingOptions: Choice<Update'InvoiceSettingsRenderingOptionsCustomerRenderingOptions,string>) =
+            {
+                CustomFields = customFields
+                DefaultPaymentMethod = defaultPaymentMethod
+                Footer = footer
+                RenderingOptions = renderingOptions
+            }
 
     module Update'InvoiceSettings =
         let create
@@ -803,6 +980,17 @@ module Customers =
             State: string option
         }
 
+    type Update'ShippingCustomerShippingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Update'ShippingCustomerShippingAddress =
         let create
             (
@@ -836,6 +1024,14 @@ module Customers =
             Phone: string option
         }
 
+    type Update'ShippingCustomerShipping with
+        static member New(?address: Update'ShippingCustomerShippingAddress, ?name: string, ?phone: string) =
+            {
+                Address = address
+                Name = name
+                Phone = phone
+            }
+
     module Update'ShippingCustomerShipping =
         let create
             (
@@ -864,6 +1060,13 @@ module Customers =
             [<Config.Form>]
             ValidateLocation: Update'TaxValidateLocation option
         }
+
+    type Update'Tax with
+        static member New(?ipAddress: Choice<string,string>, ?validateLocation: Update'TaxValidateLocation) =
+            {
+                IpAddress = ipAddress
+                ValidateLocation = validateLocation
+            }
 
     module Update'Tax =
         let create
@@ -951,6 +1154,33 @@ module Customers =
             Validate: bool option
         }
 
+    type UpdateOptions with
+        static member New(customer: string, ?address: Choice<Update'AddressOptionalFieldsCustomerAddress,string>, ?balance: int, ?businessName: Choice<string,string>, ?cashBalance: Update'CashBalance, ?defaultSource: string, ?description: string, ?email: string, ?expand: string list, ?individualName: Choice<string,string>, ?invoicePrefix: string, ?invoiceSettings: Update'InvoiceSettings, ?metadata: Map<string, string>, ?name: string, ?nextInvoiceSequence: int, ?phone: string, ?preferredLocales: string list, ?shipping: Choice<Update'ShippingCustomerShipping,string>, ?source: string, ?tax: Update'Tax, ?taxExempt: Update'TaxExempt, ?validate: bool) =
+            {
+                Customer = customer
+                Address = address
+                Balance = balance
+                BusinessName = businessName
+                CashBalance = cashBalance
+                DefaultSource = defaultSource
+                Description = description
+                Email = email
+                Expand = expand
+                IndividualName = individualName
+                InvoicePrefix = invoicePrefix
+                InvoiceSettings = invoiceSettings
+                Metadata = metadata
+                Name = name
+                NextInvoiceSequence = nextInvoiceSequence
+                Phone = phone
+                PreferredLocales = preferredLocales
+                Shipping = shipping
+                Source = source
+                Tax = tax
+                TaxExempt = taxExempt
+                Validate = validate
+            }
+
     module UpdateOptions =
         let create
             (
@@ -1028,6 +1258,15 @@ module CustomersSearch =
             Query: string
         }
 
+    type SearchOptions with
+        static member New(query: string, ?expand: string list, ?limit: int, ?page: string) =
+            {
+                Query = query
+                Expand = expand
+                Limit = limit
+                Page = page
+            }
+
     module SearchOptions =
         let create
             (
@@ -1076,6 +1315,18 @@ module CustomersBalanceTransactions =
             StartingAfter: string option
         }
 
+    type BalanceTransactionsOptions with
+        static member New(customer: string, ?created: int, ?endingBefore: string, ?expand: string list, ?invoice: string, ?limit: int, ?startingAfter: string) =
+            {
+                Customer = customer
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Invoice = invoice
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module BalanceTransactionsOptions =
         let create
             (
@@ -1113,6 +1364,17 @@ module CustomersBalanceTransactions =
             Metadata: Map<string, string> option
         }
 
+    type CreateOptions with
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, customer: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Amount = amount
+                Currency = currency
+                Customer = customer
+                Description = description
+                Expand = expand
+                Metadata = metadata
+            }
+
     module CreateOptions =
         let create
             (
@@ -1140,6 +1402,14 @@ module CustomersBalanceTransactions =
             [<Config.Path>]
             Transaction: string
         }
+
+    type RetrieveOptions with
+        static member New(customer: string, transaction: string, ?expand: string list) =
+            {
+                Customer = customer
+                Transaction = transaction
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -1170,6 +1440,16 @@ module CustomersBalanceTransactions =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(customer: string, transaction: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Customer = customer
+                Transaction = transaction
+                Description = description
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -1219,6 +1499,13 @@ module CustomersCashBalance =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(customer: string, ?expand: string list) =
+            {
+                Customer = customer
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -1242,6 +1529,12 @@ module CustomersCashBalance =
             ReconciliationMode: Update'SettingsReconciliationMode option
         }
 
+    type Update'Settings with
+        static member New(?reconciliationMode: Update'SettingsReconciliationMode) =
+            {
+                ReconciliationMode = reconciliationMode
+            }
+
     module Update'Settings =
         let create
             (
@@ -1263,6 +1556,14 @@ module CustomersCashBalance =
             [<Config.Form>]
             Settings: Update'Settings option
         }
+
+    type UpdateOptions with
+        static member New(customer: string, ?expand: string list, ?settings: Update'Settings) =
+            {
+                Customer = customer
+                Expand = expand
+                Settings = settings
+            }
 
     module UpdateOptions =
         let create
@@ -1307,6 +1608,16 @@ module CustomersCashBalanceTransactions =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Customer = customer
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -1331,6 +1642,14 @@ module CustomersCashBalanceTransactions =
             [<Config.Path>]
             Transaction: string
         }
+
+    type RetrieveOptions with
+        static member New(customer: string, transaction: string, ?expand: string list) =
+            {
+                Customer = customer
+                Transaction = transaction
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -1363,6 +1682,12 @@ module CustomersDiscount =
         { [<Config.Path>]
           Customer: string }
 
+    type DeleteDiscountOptions with
+        static member New(customer: string) =
+            {
+                Customer = customer
+            }
+
     module DeleteDiscountOptions =
         let create
             (
@@ -1386,6 +1711,12 @@ module CustomersFundingInstructions =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
         }
+
+    type CreateFundingInstructions'BankTransferEuBankTransfer with
+        static member New(?country: IsoTypes.IsoCountryCode) =
+            {
+                Country = country
+            }
 
     module CreateFundingInstructions'BankTransferEuBankTransfer =
         let create
@@ -1424,18 +1755,26 @@ module CustomersFundingInstructions =
             Type: CreateFundingInstructions'BankTransferType option
         }
 
+    type CreateFundingInstructions'BankTransfer with
+        static member New(?euBankTransfer: CreateFundingInstructions'BankTransferEuBankTransfer, ?requestedAddressTypes: CreateFundingInstructions'BankTransferRequestedAddressTypes list, ?type': CreateFundingInstructions'BankTransferType) =
+            {
+                EuBankTransfer = euBankTransfer
+                RequestedAddressTypes = requestedAddressTypes
+                Type = type'
+            }
+
     module CreateFundingInstructions'BankTransfer =
         let create
             (
                 euBankTransfer: CreateFundingInstructions'BankTransferEuBankTransfer option,
                 requestedAddressTypes: CreateFundingInstructions'BankTransferRequestedAddressTypes list option,
-                ``type``: CreateFundingInstructions'BankTransferType option
+                type': CreateFundingInstructions'BankTransferType option
             ) : CreateFundingInstructions'BankTransfer
             =
             {
               EuBankTransfer = euBankTransfer
               RequestedAddressTypes = requestedAddressTypes
-              Type = ``type``
+              Type = type'
             }
 
     type CreateFundingInstructions'FundingType = | BankTransfer
@@ -1457,6 +1796,16 @@ module CustomersFundingInstructions =
             [<Config.Form>]
             FundingType: CreateFundingInstructions'FundingType
         }
+
+    type CreateFundingInstructionsOptions with
+        static member New(bankTransfer: CreateFundingInstructions'BankTransfer, currency: IsoTypes.IsoCurrencyCode, customer: string, fundingType: CreateFundingInstructions'FundingType, ?expand: string list) =
+            {
+                BankTransfer = bankTransfer
+                Currency = currency
+                Customer = customer
+                FundingType = fundingType
+                Expand = expand
+            }
 
     module CreateFundingInstructionsOptions =
         let create
@@ -1508,6 +1857,18 @@ module CustomersPaymentMethods =
             Type: string option
         }
 
+    type ListPaymentMethodsOptions with
+        static member New(customer: string, ?allowRedisplay: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?type': string) =
+            {
+                Customer = customer
+                AllowRedisplay = allowRedisplay
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Type = type'
+            }
+
     module ListPaymentMethodsOptions =
         let create
             (
@@ -1534,6 +1895,14 @@ module CustomersPaymentMethods =
             [<Config.Path>]
             PaymentMethod: string
         }
+
+    type RetrievePaymentMethodOptions with
+        static member New(customer: string, paymentMethod: string, ?expand: string list) =
+            {
+                Customer = customer
+                PaymentMethod = paymentMethod
+                Expand = expand
+            }
 
     module RetrievePaymentMethodOptions =
         let create
@@ -1583,6 +1952,17 @@ module CustomersSources =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?object: string, ?startingAfter: string) =
+            {
+                Customer = customer
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                Object = object
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -1615,6 +1995,16 @@ module CustomersSources =
             Validate: bool option
         }
 
+    type CreateOptions with
+        static member New(customer: string, source: string, ?expand: string list, ?metadata: Map<string, string>, ?validate: bool) =
+            {
+                Customer = customer
+                Source = source
+                Expand = expand
+                Metadata = metadata
+                Validate = validate
+            }
+
     module CreateOptions =
         let create
             (
@@ -1641,6 +2031,14 @@ module CustomersSources =
             Expand: string list option
         }
 
+    type DeleteOptions with
+        static member New(customer: string, id: string, ?expand: string list) =
+            {
+                Customer = customer
+                Id = id
+                Expand = expand
+            }
+
     module DeleteOptions =
         let create
             (
@@ -1664,6 +2062,14 @@ module CustomersSources =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(customer: string, id: string, ?expand: string list) =
+            {
+                Customer = customer
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -1704,6 +2110,17 @@ module CustomersSources =
             State: string option
         }
 
+    type Update'OwnerAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Update'OwnerAddress =
         let create
             (
@@ -1739,6 +2156,15 @@ module CustomersSources =
             [<Config.Form>]
             Phone: string option
         }
+
+    type Update'Owner with
+        static member New(?address: Update'OwnerAddress, ?email: string, ?name: string, ?phone: string) =
+            {
+                Address = address
+                Email = email
+                Name = name
+                Phone = phone
+            }
 
     module Update'Owner =
         let create
@@ -1804,6 +2230,27 @@ module CustomersSources =
             [<Config.Form>]
             Owner: Update'Owner option
         }
+
+    type UpdateOptions with
+        static member New(customer: string, id: string, ?accountHolderName: string, ?accountHolderType: Update'AccountHolderType, ?addressCity: string, ?addressCountry: IsoTypes.IsoCountryCode, ?addressLine1: string, ?addressLine2: string, ?addressState: string, ?addressZip: string, ?expMonth: string, ?expYear: string, ?expand: string list, ?metadata: Map<string, string>, ?name: string, ?owner: Update'Owner) =
+            {
+                Customer = customer
+                Id = id
+                AccountHolderName = accountHolderName
+                AccountHolderType = accountHolderType
+                AddressCity = addressCity
+                AddressCountry = addressCountry
+                AddressLine1 = addressLine1
+                AddressLine2 = addressLine2
+                AddressState = addressState
+                AddressZip = addressZip
+                ExpMonth = expMonth
+                ExpYear = expYear
+                Expand = expand
+                Metadata = metadata
+                Name = name
+                Owner = owner
+            }
 
     module UpdateOptions =
         let create
@@ -1877,6 +2324,15 @@ module CustomersSourcesVerify =
             Expand: string list option
         }
 
+    type VerifyOptions with
+        static member New(customer: string, id: string, ?amounts: int list, ?expand: string list) =
+            {
+                Customer = customer
+                Id = id
+                Amounts = amounts
+                Expand = expand
+            }
+
     module VerifyOptions =
         let create
             (
@@ -1915,6 +2371,16 @@ module CustomersTaxIds =
             [<Config.Query>]
             StartingAfter: string option
         }
+
+    type ListOptions with
+        static member New(customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Customer = customer
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
 
     module ListOptions =
         let create
@@ -2063,17 +2529,26 @@ module CustomersTaxIds =
             Value: string
         }
 
+    type CreateOptions with
+        static member New(customer: string, type': Create'Type, value: string, ?expand: string list) =
+            {
+                Customer = customer
+                Type = type'
+                Value = value
+                Expand = expand
+            }
+
     module CreateOptions =
         let create
             (
                 customer: string,
-                ``type``: Create'Type,
+                type': Create'Type,
                 value: string
             ) : CreateOptions
             =
             {
               Customer = customer
-              Type = ``type``
+              Type = type'
               Value = value
               Expand = None
             }
@@ -2083,6 +2558,13 @@ module CustomersTaxIds =
           Customer: string
           [<Config.Path>]
           Id: string }
+
+    type DeleteOptions with
+        static member New(customer: string, id: string) =
+            {
+                Customer = customer
+                Id = id
+            }
 
     module DeleteOptions =
         let create
@@ -2106,6 +2588,14 @@ module CustomersTaxIds =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(customer: string, id: string, ?expand: string list) =
+            {
+                Customer = customer
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

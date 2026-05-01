@@ -13,9 +13,23 @@ type CountrySpecVerificationFieldDetails =
         Minimum: string list
     }
 
+type CountrySpecVerificationFieldDetails with
+    static member New(additional: string list, minimum: string list) =
+        {
+            Additional = additional
+            Minimum = minimum
+        }
+
 type CountrySpecVerificationFields =
     { Company: CountrySpecVerificationFieldDetails
       Individual: CountrySpecVerificationFieldDetails }
+
+type CountrySpecVerificationFields with
+    static member New(company: CountrySpecVerificationFieldDetails, individual: CountrySpecVerificationFieldDetails) =
+        {
+            Company = company
+            Individual = individual
+        }
 
 /// Stripe needs to collect certain pieces of information about each account
 /// created. These requirements can differ depending on the account's country. The
@@ -38,6 +52,18 @@ type CountrySpec =
         SupportedTransferCountries: string list
         VerificationFields: CountrySpecVerificationFields
     }
+
+type CountrySpec with
+    static member New(defaultCurrency: IsoTypes.IsoCurrencyCode, id: string, supportedBankAccountCurrencies: Map<string, string list>, supportedPaymentCurrencies: string list, supportedPaymentMethods: string list, supportedTransferCountries: string list, verificationFields: CountrySpecVerificationFields) =
+        {
+            DefaultCurrency = defaultCurrency
+            Id = id
+            SupportedBankAccountCurrencies = supportedBankAccountCurrencies
+            SupportedPaymentCurrencies = supportedPaymentCurrencies
+            SupportedPaymentMethods = supportedPaymentMethods
+            SupportedTransferCountries = supportedTransferCountries
+            VerificationFields = verificationFields
+        }
 
 module CountrySpec =
     ///String representing the object's type. Objects of the same type share the same value.

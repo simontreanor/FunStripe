@@ -24,6 +24,15 @@ module ExchangeRates =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -48,6 +57,13 @@ module ExchangeRates =
             [<Config.Path>]
             RateId: string
         }
+
+    type RetrieveOptions with
+        static member New(rateId: string, ?expand: string list) =
+            {
+                RateId = rateId
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

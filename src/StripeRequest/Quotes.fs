@@ -37,6 +37,19 @@ module Quotes =
             TestClock: string option
         }
 
+    type ListOptions with
+        static member New(?customer: string, ?customerAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string, ?testClock: string) =
+            {
+                Customer = customer
+                CustomerAccount = customerAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+                TestClock = testClock
+            }
+
     module ListOptions =
         let create
             (
@@ -75,16 +88,23 @@ module Quotes =
             Type: Create'AutomaticTaxLiabilityType option
         }
 
+    type Create'AutomaticTaxLiability with
+        static member New(?account: string, ?type': Create'AutomaticTaxLiabilityType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Create'AutomaticTaxLiability =
         let create
             (
                 account: string option,
-                ``type``: Create'AutomaticTaxLiabilityType option
+                type': Create'AutomaticTaxLiabilityType option
             ) : Create'AutomaticTaxLiability
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Create'AutomaticTax =
@@ -96,6 +116,13 @@ module Quotes =
             [<Config.Form>]
             Liability: Create'AutomaticTaxLiability option
         }
+
+    type Create'AutomaticTax with
+        static member New(?enabled: bool, ?liability: Create'AutomaticTaxLiability) =
+            {
+                Enabled = enabled
+                Liability = liability
+            }
 
     module Create'AutomaticTax =
         let create
@@ -126,6 +153,14 @@ module Quotes =
             PromotionCode: string option
         }
 
+    type Create'Discounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
+
     module Create'Discounts =
         let create
             (
@@ -149,6 +184,13 @@ module Quotes =
             [<Config.Form>]
             Quote: string option
         }
+
+    type Create'FromQuote with
+        static member New(?isRevision: bool, ?quote: string) =
+            {
+                IsRevision = isRevision
+                Quote = quote
+            }
 
     module Create'FromQuote =
         let create
@@ -176,16 +218,23 @@ module Quotes =
             Type: Create'InvoiceSettingsIssuerType option
         }
 
+    type Create'InvoiceSettingsIssuer with
+        static member New(?account: string, ?type': Create'InvoiceSettingsIssuerType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Create'InvoiceSettingsIssuer =
         let create
             (
                 account: string option,
-                ``type``: Create'InvoiceSettingsIssuerType option
+                type': Create'InvoiceSettingsIssuerType option
             ) : Create'InvoiceSettingsIssuer
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Create'InvoiceSettings =
@@ -197,6 +246,13 @@ module Quotes =
             [<Config.Form>]
             Issuer: Create'InvoiceSettingsIssuer option
         }
+
+    type Create'InvoiceSettings with
+        static member New(?daysUntilDue: int, ?issuer: Create'InvoiceSettingsIssuer) =
+            {
+                DaysUntilDue = daysUntilDue
+                Issuer = issuer
+            }
 
     module Create'InvoiceSettings =
         let create
@@ -222,6 +278,14 @@ module Quotes =
             [<Config.Form>]
             PromotionCode: string option
         }
+
+    type Create'LineItemsDiscounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
 
     module Create'LineItemsDiscounts =
         let create
@@ -252,6 +316,13 @@ module Quotes =
             [<Config.Form>]
             IntervalCount: int option
         }
+
+    type Create'LineItemsPriceDataRecurring with
+        static member New(?interval: Create'LineItemsPriceDataRecurringInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
 
     module Create'LineItemsPriceDataRecurring =
         let create
@@ -292,6 +363,17 @@ module Quotes =
             UnitAmountDecimal: string option
         }
 
+    type Create'LineItemsPriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Create'LineItemsPriceDataRecurring, ?taxBehavior: Create'LineItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                Recurring = recurring
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
+
     module Create'LineItemsPriceData =
         let create
             (
@@ -331,6 +413,16 @@ module Quotes =
             TaxRates: Choice<string list,string> option
         }
 
+    type Create'LineItems with
+        static member New(?discounts: Choice<Create'LineItemsDiscounts list,string>, ?price: string, ?priceData: Create'LineItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+            {
+                Discounts = discounts
+                Price = price
+                PriceData = priceData
+                Quantity = quantity
+                TaxRates = taxRates
+            }
+
     module Create'LineItems =
         let create
             (
@@ -360,6 +452,12 @@ module Quotes =
             ProrationDiscounts: Create'SubscriptionDataBillingModeFlexibleProrationDiscounts option
         }
 
+    type Create'SubscriptionDataBillingModeFlexible with
+        static member New(?prorationDiscounts: Create'SubscriptionDataBillingModeFlexibleProrationDiscounts) =
+            {
+                ProrationDiscounts = prorationDiscounts
+            }
+
     module Create'SubscriptionDataBillingModeFlexible =
         let create
             (
@@ -384,16 +482,23 @@ module Quotes =
             Type: Create'SubscriptionDataBillingModeType option
         }
 
+    type Create'SubscriptionDataBillingMode with
+        static member New(?flexible: Create'SubscriptionDataBillingModeFlexible, ?type': Create'SubscriptionDataBillingModeType) =
+            {
+                Flexible = flexible
+                Type = type'
+            }
+
     module Create'SubscriptionDataBillingMode =
         let create
             (
                 flexible: Create'SubscriptionDataBillingModeFlexible option,
-                ``type``: Create'SubscriptionDataBillingModeType option
+                type': Create'SubscriptionDataBillingModeType option
             ) : Create'SubscriptionDataBillingMode
             =
             {
               Flexible = flexible
-              Type = ``type``
+              Type = type'
             }
 
     type Create'SubscriptionDataEffectiveDate = | CurrentPeriodEnd
@@ -416,6 +521,16 @@ module Quotes =
             [<Config.Form>]
             TrialPeriodDays: Choice<int,string> option
         }
+
+    type Create'SubscriptionData with
+        static member New(?billingMode: Create'SubscriptionDataBillingMode, ?description: string, ?effectiveDate: Choice<Create'SubscriptionDataEffectiveDate,DateTime,string>, ?metadata: Map<string, string>, ?trialPeriodDays: Choice<int,string>) =
+            {
+                BillingMode = billingMode
+                Description = description
+                EffectiveDate = effectiveDate
+                Metadata = metadata
+                TrialPeriodDays = trialPeriodDays
+            }
 
     module Create'SubscriptionData =
         let create
@@ -447,6 +562,14 @@ module Quotes =
             [<Config.Form>]
             Destination: string option
         }
+
+    type Create'TransferDataTransferDataSpecs with
+        static member New(?amount: int, ?amountPercent: decimal, ?destination: string) =
+            {
+                Amount = amount
+                AmountPercent = amountPercent
+                Destination = destination
+            }
 
     module Create'TransferDataTransferDataSpecs =
         let create
@@ -529,6 +652,32 @@ module Quotes =
             TransferData: Choice<Create'TransferDataTransferDataSpecs,string> option
         }
 
+    type CreateOptions with
+        static member New(?applicationFeeAmount: Choice<int,string>, ?applicationFeePercent: Choice<decimal,string>, ?automaticTax: Create'AutomaticTax, ?collectionMethod: Create'CollectionMethod, ?customer: string, ?customerAccount: string, ?defaultTaxRates: Choice<string list,string>, ?description: Choice<string,string>, ?discounts: Choice<Create'Discounts list,string>, ?expand: string list, ?expiresAt: DateTime, ?footer: Choice<string,string>, ?fromQuote: Create'FromQuote, ?header: Choice<string,string>, ?invoiceSettings: Create'InvoiceSettings, ?lineItems: Create'LineItems list, ?metadata: Map<string, string>, ?onBehalfOf: Choice<string,string>, ?subscriptionData: Create'SubscriptionData, ?testClock: string, ?transferData: Choice<Create'TransferDataTransferDataSpecs,string>) =
+            {
+                ApplicationFeeAmount = applicationFeeAmount
+                ApplicationFeePercent = applicationFeePercent
+                AutomaticTax = automaticTax
+                CollectionMethod = collectionMethod
+                Customer = customer
+                CustomerAccount = customerAccount
+                DefaultTaxRates = defaultTaxRates
+                Description = description
+                Discounts = discounts
+                Expand = expand
+                ExpiresAt = expiresAt
+                Footer = footer
+                FromQuote = fromQuote
+                Header = header
+                InvoiceSettings = invoiceSettings
+                LineItems = lineItems
+                Metadata = metadata
+                OnBehalfOf = onBehalfOf
+                SubscriptionData = subscriptionData
+                TestClock = testClock
+                TransferData = transferData
+            }
+
     module CreateOptions =
         let create
             (
@@ -588,6 +737,13 @@ module Quotes =
             Quote: string
         }
 
+    type RetrieveOptions with
+        static member New(quote: string, ?expand: string list) =
+            {
+                Quote = quote
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -613,16 +769,23 @@ module Quotes =
             Type: Update'AutomaticTaxLiabilityType option
         }
 
+    type Update'AutomaticTaxLiability with
+        static member New(?account: string, ?type': Update'AutomaticTaxLiabilityType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Update'AutomaticTaxLiability =
         let create
             (
                 account: string option,
-                ``type``: Update'AutomaticTaxLiabilityType option
+                type': Update'AutomaticTaxLiabilityType option
             ) : Update'AutomaticTaxLiability
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Update'AutomaticTax =
@@ -634,6 +797,13 @@ module Quotes =
             [<Config.Form>]
             Liability: Update'AutomaticTaxLiability option
         }
+
+    type Update'AutomaticTax with
+        static member New(?enabled: bool, ?liability: Update'AutomaticTaxLiability) =
+            {
+                Enabled = enabled
+                Liability = liability
+            }
 
     module Update'AutomaticTax =
         let create
@@ -664,6 +834,14 @@ module Quotes =
             PromotionCode: string option
         }
 
+    type Update'Discounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
+
     module Update'Discounts =
         let create
             (
@@ -692,16 +870,23 @@ module Quotes =
             Type: Update'InvoiceSettingsIssuerType option
         }
 
+    type Update'InvoiceSettingsIssuer with
+        static member New(?account: string, ?type': Update'InvoiceSettingsIssuerType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Update'InvoiceSettingsIssuer =
         let create
             (
                 account: string option,
-                ``type``: Update'InvoiceSettingsIssuerType option
+                type': Update'InvoiceSettingsIssuerType option
             ) : Update'InvoiceSettingsIssuer
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Update'InvoiceSettings =
@@ -713,6 +898,13 @@ module Quotes =
             [<Config.Form>]
             Issuer: Update'InvoiceSettingsIssuer option
         }
+
+    type Update'InvoiceSettings with
+        static member New(?daysUntilDue: int, ?issuer: Update'InvoiceSettingsIssuer) =
+            {
+                DaysUntilDue = daysUntilDue
+                Issuer = issuer
+            }
 
     module Update'InvoiceSettings =
         let create
@@ -738,6 +930,14 @@ module Quotes =
             [<Config.Form>]
             PromotionCode: string option
         }
+
+    type Update'LineItemsDiscounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
 
     module Update'LineItemsDiscounts =
         let create
@@ -768,6 +968,13 @@ module Quotes =
             [<Config.Form>]
             IntervalCount: int option
         }
+
+    type Update'LineItemsPriceDataRecurring with
+        static member New(?interval: Update'LineItemsPriceDataRecurringInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
 
     module Update'LineItemsPriceDataRecurring =
         let create
@@ -807,6 +1014,17 @@ module Quotes =
             [<Config.Form>]
             UnitAmountDecimal: string option
         }
+
+    type Update'LineItemsPriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Update'LineItemsPriceDataRecurring, ?taxBehavior: Update'LineItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                Recurring = recurring
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
 
     module Update'LineItemsPriceData =
         let create
@@ -850,6 +1068,17 @@ module Quotes =
             TaxRates: Choice<string list,string> option
         }
 
+    type Update'LineItems with
+        static member New(?discounts: Choice<Update'LineItemsDiscounts list,string>, ?id: string, ?price: string, ?priceData: Update'LineItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+            {
+                Discounts = discounts
+                Id = id
+                Price = price
+                PriceData = priceData
+                Quantity = quantity
+                TaxRates = taxRates
+            }
+
     module Update'LineItems =
         let create
             (
@@ -888,6 +1117,15 @@ module Quotes =
             TrialPeriodDays: Choice<int,string> option
         }
 
+    type Update'SubscriptionData with
+        static member New(?description: Choice<string,string>, ?effectiveDate: Choice<Update'SubscriptionDataEffectiveDate,DateTime,string>, ?metadata: Map<string, string>, ?trialPeriodDays: Choice<int,string>) =
+            {
+                Description = description
+                EffectiveDate = effectiveDate
+                Metadata = metadata
+                TrialPeriodDays = trialPeriodDays
+            }
+
     module Update'SubscriptionData =
         let create
             (
@@ -916,6 +1154,14 @@ module Quotes =
             [<Config.Form>]
             Destination: string option
         }
+
+    type Update'TransferDataTransferDataSpecs with
+        static member New(?amount: int, ?amountPercent: decimal, ?destination: string) =
+            {
+                Amount = amount
+                AmountPercent = amountPercent
+                Destination = destination
+            }
 
     module Update'TransferDataTransferDataSpecs =
         let create
@@ -994,6 +1240,31 @@ module Quotes =
             TransferData: Choice<Update'TransferDataTransferDataSpecs,string> option
         }
 
+    type UpdateOptions with
+        static member New(quote: string, ?applicationFeeAmount: Choice<int,string>, ?applicationFeePercent: Choice<decimal,string>, ?automaticTax: Update'AutomaticTax, ?collectionMethod: Update'CollectionMethod, ?customer: string, ?customerAccount: string, ?defaultTaxRates: Choice<string list,string>, ?description: Choice<string,string>, ?discounts: Choice<Update'Discounts list,string>, ?expand: string list, ?expiresAt: DateTime, ?footer: Choice<string,string>, ?header: Choice<string,string>, ?invoiceSettings: Update'InvoiceSettings, ?lineItems: Update'LineItems list, ?metadata: Map<string, string>, ?onBehalfOf: Choice<string,string>, ?subscriptionData: Update'SubscriptionData, ?transferData: Choice<Update'TransferDataTransferDataSpecs,string>) =
+            {
+                Quote = quote
+                ApplicationFeeAmount = applicationFeeAmount
+                ApplicationFeePercent = applicationFeePercent
+                AutomaticTax = automaticTax
+                CollectionMethod = collectionMethod
+                Customer = customer
+                CustomerAccount = customerAccount
+                DefaultTaxRates = defaultTaxRates
+                Description = description
+                Discounts = discounts
+                Expand = expand
+                ExpiresAt = expiresAt
+                Footer = footer
+                Header = header
+                InvoiceSettings = invoiceSettings
+                LineItems = lineItems
+                Metadata = metadata
+                OnBehalfOf = onBehalfOf
+                SubscriptionData = subscriptionData
+                TransferData = transferData
+            }
+
     module UpdateOptions =
         let create
             (
@@ -1056,6 +1327,13 @@ module QuotesAccept =
             Expand: string list option
         }
 
+    type AcceptOptions with
+        static member New(quote: string, ?expand: string list) =
+            {
+                Quote = quote
+                Expand = expand
+            }
+
     module AcceptOptions =
         let create
             (
@@ -1082,6 +1360,13 @@ module QuotesCancel =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type CancelOptions with
+        static member New(quote: string, ?expand: string list) =
+            {
+                Quote = quote
+                Expand = expand
+            }
 
     module CancelOptions =
         let create
@@ -1119,6 +1404,16 @@ module QuotesComputedUpfrontLineItems =
             StartingAfter: string option
         }
 
+    type ListComputedUpfrontLineItemsOptions with
+        static member New(quote: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Quote = quote
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListComputedUpfrontLineItemsOptions =
         let create
             (
@@ -1152,6 +1447,14 @@ module QuotesFinalize =
             [<Config.Form>]
             ExpiresAt: DateTime option
         }
+
+    type FinalizeQuoteOptions with
+        static member New(quote: string, ?expand: string list, ?expiresAt: DateTime) =
+            {
+                Quote = quote
+                Expand = expand
+                ExpiresAt = expiresAt
+            }
 
     module FinalizeQuoteOptions =
         let create
@@ -1190,6 +1493,16 @@ module QuotesLineItems =
             StartingAfter: string option
         }
 
+    type ListLineItemsOptions with
+        static member New(quote: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Quote = quote
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListLineItemsOptions =
         let create
             (
@@ -1220,6 +1533,13 @@ module QuotesPdf =
             [<Config.Path>]
             Quote: string
         }
+
+    type PdfOptions with
+        static member New(quote: string, ?expand: string list) =
+            {
+                Quote = quote
+                Expand = expand
+            }
 
     module PdfOptions =
         let create

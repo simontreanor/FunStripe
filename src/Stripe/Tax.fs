@@ -138,6 +138,13 @@ type TaxProductResourceCustomerDetailsResourceTaxId =
         Value: string
     }
 
+type TaxProductResourceCustomerDetailsResourceTaxId with
+    static member New(``type``: TaxProductResourceCustomerDetailsResourceTaxIdType, value: string) =
+        {
+            Type = ``type``
+            Value = value
+        }
+
 [<Struct>]
 type TaxProductResourceCustomerDetailsTaxabilityOverride =
     | CustomerExempt
@@ -162,6 +169,17 @@ type TaxProductResourcePostalAddress =
         State: string option
     }
 
+type TaxProductResourcePostalAddress with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode, line1: string option, line2: string option, postalCode: string option, state: string option) =
+        {
+            City = city
+            Country = country
+            Line1 = line1
+            Line2 = line2
+            PostalCode = postalCode
+            State = state
+        }
+
 type TaxProductResourceCustomerDetails =
     {
         /// The customer's postal address (for example, home or business location).
@@ -176,14 +194,36 @@ type TaxProductResourceCustomerDetails =
         TaxabilityOverride: TaxProductResourceCustomerDetailsTaxabilityOverride
     }
 
+type TaxProductResourceCustomerDetails with
+    static member New(address: TaxProductResourcePostalAddress option, addressSource: TaxProductResourceCustomerDetailsAddressSource option, ipAddress: string option, taxIds: TaxProductResourceCustomerDetailsResourceTaxId list, taxabilityOverride: TaxProductResourceCustomerDetailsTaxabilityOverride) =
+        {
+            Address = address
+            AddressSource = addressSource
+            IpAddress = ipAddress
+            TaxIds = taxIds
+            TaxabilityOverride = taxabilityOverride
+        }
+
 type TaxProductResourceShipFromDetails =
     { Address: TaxProductResourcePostalAddress }
+
+type TaxProductResourceShipFromDetails with
+    static member New(address: TaxProductResourcePostalAddress) =
+        {
+            Address = address
+        }
 
 type TaxProductResourceTaxTransactionResourceReversal =
     {
         /// The `id` of the reversed `Transaction` object.
         OriginalTransaction: string option
     }
+
+type TaxProductResourceTaxTransactionResourceReversal with
+    static member New(originalTransaction: string option) =
+        {
+            OriginalTransaction = originalTransaction
+        }
 
 [<Struct>]
 type TaxProductResourceJurisdictionLevel =
@@ -204,6 +244,15 @@ type TaxProductResourceJurisdiction =
         /// [ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2), without country prefix. For example, "NY" for New York, United States.
         State: string option
     }
+
+type TaxProductResourceJurisdiction with
+    static member New(country: IsoTypes.IsoCountryCode, displayName: string, level: TaxProductResourceJurisdictionLevel, state: string option) =
+        {
+            Country = country
+            DisplayName = displayName
+            Level = level
+            State = state
+        }
 
 [<Struct>]
 type TaxProductResourceLineItemTaxBreakdownSourcing =
@@ -253,6 +302,14 @@ type TaxProductResourceLineItemTaxRateDetails =
         TaxType: TaxProductResourceLineItemTaxRateDetailsTaxType
     }
 
+type TaxProductResourceLineItemTaxRateDetails with
+    static member New(displayName: string, percentageDecimal: string, taxType: TaxProductResourceLineItemTaxRateDetailsTaxType) =
+        {
+            DisplayName = displayName
+            PercentageDecimal = percentageDecimal
+            TaxType = taxType
+        }
+
 type TaxProductResourceLineItemTaxBreakdown =
     {
         /// The amount of tax, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
@@ -267,6 +324,17 @@ type TaxProductResourceLineItemTaxBreakdown =
         /// The amount on which tax is calculated, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
         TaxableAmount: int
     }
+
+type TaxProductResourceLineItemTaxBreakdown with
+    static member New(amount: int, jurisdiction: TaxProductResourceJurisdiction, sourcing: TaxProductResourceLineItemTaxBreakdownSourcing, taxRateDetails: TaxProductResourceLineItemTaxRateDetails option, taxabilityReason: TaxProductResourceLineItemTaxBreakdownTaxabilityReason, taxableAmount: int) =
+        {
+            Amount = amount
+            Jurisdiction = jurisdiction
+            Sourcing = sourcing
+            TaxRateDetails = taxRateDetails
+            TaxabilityReason = taxabilityReason
+            TaxableAmount = taxableAmount
+        }
 
 [<Struct>]
 type TaxProductResourceTaxTransactionShippingCostTaxBehavior =
@@ -289,11 +357,28 @@ type TaxProductResourceTaxTransactionShippingCost =
         TaxCode: string
     }
 
+type TaxProductResourceTaxTransactionShippingCost with
+    static member New(amount: int, amountTax: int, taxBehavior: TaxProductResourceTaxTransactionShippingCostTaxBehavior, taxCode: string, ?shippingRate: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list) =
+        {
+            Amount = amount
+            AmountTax = amountTax
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            ShippingRate = shippingRate
+            TaxBreakdown = taxBreakdown
+        }
+
 type TaxProductResourceTaxTransactionLineItemResourceReversal =
     {
         /// The `id` of the line item to reverse in the original transaction.
         OriginalLineItem: string
     }
+
+type TaxProductResourceTaxTransactionLineItemResourceReversal with
+    static member New(originalLineItem: string) =
+        {
+            OriginalLineItem = originalLineItem
+        }
 
 [<Struct>]
 type TaxTransactionLineItemTaxBehavior =
@@ -333,6 +418,23 @@ type TaxTransactionLineItem =
         Type: TaxTransactionLineItemType
     }
 
+type TaxTransactionLineItem with
+    static member New(amount: int, amountTax: int, id: string, livemode: bool, metadata: Map<string, string> option, product: string option, quantity: int, reference: string, reversal: TaxProductResourceTaxTransactionLineItemResourceReversal option, taxBehavior: TaxTransactionLineItemTaxBehavior, taxCode: string, ``type``: TaxTransactionLineItemType) =
+        {
+            Amount = amount
+            AmountTax = amountTax
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Product = product
+            Quantity = quantity
+            Reference = reference
+            Reversal = reversal
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            Type = ``type``
+        }
+
 module TaxTransactionLineItem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.transaction_line_item"
@@ -347,6 +449,14 @@ type TaxTransactionLineItems =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+type TaxTransactionLineItems with
+    static member New(data: TaxTransactionLineItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module TaxTransactionLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
@@ -392,6 +502,26 @@ type TaxTransaction =
         Type: TaxTransactionType
     }
 
+type TaxTransaction with
+    static member New(created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: string option, customerDetails: TaxProductResourceCustomerDetails, id: string, livemode: bool, metadata: Map<string, string> option, postedAt: DateTime, reference: string, reversal: TaxProductResourceTaxTransactionResourceReversal option, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxTransactionShippingCost option, taxDate: DateTime, ``type``: TaxTransactionType, ?lineItems: TaxTransactionLineItems option) =
+        {
+            Created = created
+            Currency = currency
+            Customer = customer
+            CustomerDetails = customerDetails
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            PostedAt = postedAt
+            Reference = reference
+            Reversal = reversal
+            ShipFromDetails = shipFromDetails
+            ShippingCost = shippingCost
+            TaxDate = taxDate
+            Type = ``type``
+            LineItems = lineItems |> Option.flatten
+        }
+
 module TaxTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.transaction"
@@ -419,10 +549,30 @@ type TaxProductResourceTaxSettingsDefaults =
         TaxCode: string option
     }
 
+type TaxProductResourceTaxSettingsDefaults with
+    static member New(provider: TaxProductResourceTaxSettingsDefaultsProvider, taxBehavior: TaxProductResourceTaxSettingsDefaultsTaxBehavior option, taxCode: string option) =
+        {
+            Provider = provider
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+        }
+
 type TaxProductResourceTaxSettingsHeadOffice = { Address: Address }
+
+type TaxProductResourceTaxSettingsHeadOffice with
+    static member New(address: Address) =
+        {
+            Address = address
+        }
 
 type TaxProductResourceTaxSettingsStatusDetailsResourceActive =
     { TaxProductResourceTaxSettingsStatusDetailsResourceActive: string option }
+
+type TaxProductResourceTaxSettingsStatusDetailsResourceActive with
+    static member New(?taxProductResourceTaxSettingsStatusDetailsResourceActive: string option) =
+        {
+            TaxProductResourceTaxSettingsStatusDetailsResourceActive = taxProductResourceTaxSettingsStatusDetailsResourceActive |> Option.flatten
+        }
 
 type TaxProductResourceTaxSettingsStatusDetailsResourcePending =
     {
@@ -430,9 +580,22 @@ type TaxProductResourceTaxSettingsStatusDetailsResourcePending =
         MissingFields: string list option
     }
 
+type TaxProductResourceTaxSettingsStatusDetailsResourcePending with
+    static member New(missingFields: string list option) =
+        {
+            MissingFields = missingFields
+        }
+
 type TaxProductResourceTaxSettingsStatusDetails =
     { Active: TaxProductResourceTaxSettingsStatusDetailsResourceActive option
       Pending: TaxProductResourceTaxSettingsStatusDetailsResourcePending option }
+
+type TaxProductResourceTaxSettingsStatusDetails with
+    static member New(?active: TaxProductResourceTaxSettingsStatusDetailsResourceActive, ?pending: TaxProductResourceTaxSettingsStatusDetailsResourcePending) =
+        {
+            Active = active
+            Pending = pending
+        }
 
 [<Struct>]
 type TaxSettingsStatus =
@@ -453,6 +616,16 @@ type TaxSettings =
         StatusDetails: TaxProductResourceTaxSettingsStatusDetails
     }
 
+type TaxSettings with
+    static member New(defaults: TaxProductResourceTaxSettingsDefaults, headOffice: TaxProductResourceTaxSettingsHeadOffice option, livemode: bool, status: TaxSettingsStatus, statusDetails: TaxProductResourceTaxSettingsStatusDetails) =
+        {
+            Defaults = defaults
+            HeadOffice = headOffice
+            Livemode = livemode
+            Status = status
+            StatusDetails = statusDetails
+        }
+
 module TaxSettings =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.settings"
@@ -460,11 +633,23 @@ module TaxSettings =
 /// Occurs whenever tax settings is updated.
 type TaxSettingsUpdated = { Object: TaxSettings }
 
+type TaxSettingsUpdated with
+    static member New(object: TaxSettings) =
+        {
+            Object = object
+        }
+
 type TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard =
     {
         /// Two-letter CA province code ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
         Province: string
     }
+
+type TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard with
+    static member New(province: string) =
+        {
+            Province = province
+        }
 
 [<Struct>]
 type TaxProductRegistrationsResourceCountryOptionsCanadaType =
@@ -478,6 +663,13 @@ type TaxProductRegistrationsResourceCountryOptionsCanada =
         /// Type of registration in Canada.
         Type: TaxProductRegistrationsResourceCountryOptionsCanadaType
     }
+
+type TaxProductRegistrationsResourceCountryOptionsCanada with
+    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsCanadaType, ?provinceStandard: TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard) =
+        {
+            Type = ``type``
+            ProvinceStandard = provinceStandard
+        }
 
 type TaxProductRegistrationsResourceCountryOptionsDefault () = 
     ///Type of registration in `country`.
@@ -499,8 +691,20 @@ type TaxProductRegistrationsResourceCountryOptionsDefaultStandard =
         PlaceOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsDefaultStandardPlaceOfSupplyScheme
     }
 
+type TaxProductRegistrationsResourceCountryOptionsDefaultStandard with
+    static member New(placeOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsDefaultStandardPlaceOfSupplyScheme) =
+        {
+            PlaceOfSupplyScheme = placeOfSupplyScheme
+        }
+
 type TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods =
     { Standard: TaxProductRegistrationsResourceCountryOptionsDefaultStandard option }
+
+type TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods with
+    static member New(?standard: TaxProductRegistrationsResourceCountryOptionsDefaultStandard) =
+        {
+            Standard = standard
+        }
 
 module TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods =
     ///Type of registration in `country`.
@@ -518,6 +722,12 @@ type TaxProductRegistrationsResourceCountryOptionsEuStandard =
         PlaceOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsEuStandardPlaceOfSupplyScheme
     }
 
+type TaxProductRegistrationsResourceCountryOptionsEuStandard with
+    static member New(placeOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsEuStandardPlaceOfSupplyScheme) =
+        {
+            PlaceOfSupplyScheme = placeOfSupplyScheme
+        }
+
 [<Struct>]
 type TaxProductRegistrationsResourceCountryOptionsEuropeType =
     | Ioss
@@ -531,6 +741,13 @@ type TaxProductRegistrationsResourceCountryOptionsEurope =
         /// Type of registration in an EU country.
         Type: TaxProductRegistrationsResourceCountryOptionsEuropeType
     }
+
+type TaxProductRegistrationsResourceCountryOptionsEurope with
+    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsEuropeType, ?standard: TaxProductRegistrationsResourceCountryOptionsEuStandard) =
+        {
+            Type = ``type``
+            Standard = standard
+        }
 
 type TaxProductRegistrationsResourceCountryOptionsSimplified () = 
     ///Type of registration in `country`.
@@ -564,11 +781,23 @@ type TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax =
         Jurisdiction: string
     }
 
+type TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
 type TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax =
     {
         /// A [FIPS code](https://www.census.gov/library/reference/code-lists/ansi.html) representing the local jurisdiction.
         Jurisdiction: string
     }
+
+type TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
 
 [<Struct>]
 type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType =
@@ -584,11 +813,24 @@ type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection =
         Type: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType
     }
 
+type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection with
+    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType, ?jurisdiction: string) =
+        {
+            Type = ``type``
+            Jurisdiction = jurisdiction
+        }
+
 type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax =
     {
         /// Elections for the state sales tax registration.
         Elections: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection list option
     }
+
+type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax with
+    static member New(?elections: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection list) =
+        {
+            Elections = elections
+        }
 
 type TaxProductRegistrationsResourceCountryOptionsUnitedStates =
     {
@@ -600,6 +842,16 @@ type TaxProductRegistrationsResourceCountryOptionsUnitedStates =
         /// Type of registration in the US.
         Type: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType
     }
+
+type TaxProductRegistrationsResourceCountryOptionsUnitedStates with
+    static member New(state: string, ``type``: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType, ?localAmusementTax: TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax, ?localLeaseTax: TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax, ?stateSalesTax: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax) =
+        {
+            State = state
+            Type = ``type``
+            LocalAmusementTax = localAmusementTax
+            LocalLeaseTax = localLeaseTax
+            StateSalesTax = stateSalesTax
+        }
 
 type TaxProductRegistrationsResourceCountryOptions =
     { Ae: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option
@@ -704,6 +956,112 @@ type TaxProductRegistrationsResourceCountryOptions =
       Zm: TaxProductRegistrationsResourceCountryOptionsSimplified option
       Zw: TaxProductRegistrationsResourceCountryOptionsDefault option }
 
+type TaxProductRegistrationsResourceCountryOptions with
+    static member New(?ae: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?al: TaxProductRegistrationsResourceCountryOptionsDefault, ?am: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ao: TaxProductRegistrationsResourceCountryOptionsDefault, ?at: TaxProductRegistrationsResourceCountryOptionsEurope, ?au: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?aw: TaxProductRegistrationsResourceCountryOptionsDefault, ?az: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ba: TaxProductRegistrationsResourceCountryOptionsDefault, ?bb: TaxProductRegistrationsResourceCountryOptionsDefault, ?bd: TaxProductRegistrationsResourceCountryOptionsDefault, ?be: TaxProductRegistrationsResourceCountryOptionsEurope, ?bf: TaxProductRegistrationsResourceCountryOptionsDefault, ?bg: TaxProductRegistrationsResourceCountryOptionsEurope, ?bh: TaxProductRegistrationsResourceCountryOptionsDefault, ?bj: TaxProductRegistrationsResourceCountryOptionsSimplified, ?bs: TaxProductRegistrationsResourceCountryOptionsDefault, ?by: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ca: TaxProductRegistrationsResourceCountryOptionsCanada, ?cd: TaxProductRegistrationsResourceCountryOptionsDefault, ?ch: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?cl: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cm: TaxProductRegistrationsResourceCountryOptionsSimplified, ?co: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cv: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cy: TaxProductRegistrationsResourceCountryOptionsEurope, ?cz: TaxProductRegistrationsResourceCountryOptionsEurope, ?de: TaxProductRegistrationsResourceCountryOptionsEurope, ?dk: TaxProductRegistrationsResourceCountryOptionsEurope, ?ec: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ee: TaxProductRegistrationsResourceCountryOptionsEurope, ?eg: TaxProductRegistrationsResourceCountryOptionsSimplified, ?es: TaxProductRegistrationsResourceCountryOptionsEurope, ?et: TaxProductRegistrationsResourceCountryOptionsDefault, ?fi: TaxProductRegistrationsResourceCountryOptionsEurope, ?fr: TaxProductRegistrationsResourceCountryOptionsEurope, ?gb: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?ge: TaxProductRegistrationsResourceCountryOptionsSimplified, ?gn: TaxProductRegistrationsResourceCountryOptionsDefault, ?gr: TaxProductRegistrationsResourceCountryOptionsEurope, ?hr: TaxProductRegistrationsResourceCountryOptionsEurope, ?hu: TaxProductRegistrationsResourceCountryOptionsEurope, ?id: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ie: TaxProductRegistrationsResourceCountryOptionsEurope, ?``in``: TaxProductRegistrationsResourceCountryOptionsSimplified, ?is: TaxProductRegistrationsResourceCountryOptionsDefault, ?it: TaxProductRegistrationsResourceCountryOptionsEurope, ?jp: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?ke: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kg: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kh: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?la: TaxProductRegistrationsResourceCountryOptionsSimplified, ?lk: TaxProductRegistrationsResourceCountryOptionsSimplified, ?lt: TaxProductRegistrationsResourceCountryOptionsEurope, ?lu: TaxProductRegistrationsResourceCountryOptionsEurope, ?lv: TaxProductRegistrationsResourceCountryOptionsEurope, ?ma: TaxProductRegistrationsResourceCountryOptionsSimplified, ?md: TaxProductRegistrationsResourceCountryOptionsSimplified, ?me: TaxProductRegistrationsResourceCountryOptionsDefault, ?mk: TaxProductRegistrationsResourceCountryOptionsDefault, ?mr: TaxProductRegistrationsResourceCountryOptionsDefault, ?mt: TaxProductRegistrationsResourceCountryOptionsEurope, ?mx: TaxProductRegistrationsResourceCountryOptionsSimplified, ?my: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ng: TaxProductRegistrationsResourceCountryOptionsSimplified, ?nl: TaxProductRegistrationsResourceCountryOptionsEurope, ?no: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?np: TaxProductRegistrationsResourceCountryOptionsSimplified, ?nz: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?om: TaxProductRegistrationsResourceCountryOptionsDefault, ?pe: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ph: TaxProductRegistrationsResourceCountryOptionsSimplified, ?pl: TaxProductRegistrationsResourceCountryOptionsEurope, ?pt: TaxProductRegistrationsResourceCountryOptionsEurope, ?ro: TaxProductRegistrationsResourceCountryOptionsEurope, ?rs: TaxProductRegistrationsResourceCountryOptionsDefault, ?ru: TaxProductRegistrationsResourceCountryOptionsSimplified, ?sa: TaxProductRegistrationsResourceCountryOptionsSimplified, ?se: TaxProductRegistrationsResourceCountryOptionsEurope, ?sg: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?si: TaxProductRegistrationsResourceCountryOptionsEurope, ?sk: TaxProductRegistrationsResourceCountryOptionsEurope, ?sn: TaxProductRegistrationsResourceCountryOptionsSimplified, ?sr: TaxProductRegistrationsResourceCountryOptionsDefault, ?th: TaxProductRegistrationsResourceCountryOptionsThailand, ?tj: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tw: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ua: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ug: TaxProductRegistrationsResourceCountryOptionsSimplified, ?us: TaxProductRegistrationsResourceCountryOptionsUnitedStates, ?uy: TaxProductRegistrationsResourceCountryOptionsDefault, ?uz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?vn: TaxProductRegistrationsResourceCountryOptionsSimplified, ?za: TaxProductRegistrationsResourceCountryOptionsDefault, ?zm: TaxProductRegistrationsResourceCountryOptionsSimplified, ?zw: TaxProductRegistrationsResourceCountryOptionsDefault) =
+        {
+            Ae = ae
+            Al = al
+            Am = am
+            Ao = ao
+            At = at
+            Au = au
+            Aw = aw
+            Az = az
+            Ba = ba
+            Bb = bb
+            Bd = bd
+            Be = be
+            Bf = bf
+            Bg = bg
+            Bh = bh
+            Bj = bj
+            Bs = bs
+            By = by
+            Ca = ca
+            Cd = cd
+            Ch = ch
+            Cl = cl
+            Cm = cm
+            Co = co
+            Cr = cr
+            Cv = cv
+            Cy = cy
+            Cz = cz
+            De = de
+            Dk = dk
+            Ec = ec
+            Ee = ee
+            Eg = eg
+            Es = es
+            Et = et
+            Fi = fi
+            Fr = fr
+            Gb = gb
+            Ge = ge
+            Gn = gn
+            Gr = gr
+            Hr = hr
+            Hu = hu
+            Id = id
+            Ie = ie
+            In = ``in``
+            Is = is
+            It = it
+            Jp = jp
+            Ke = ke
+            Kg = kg
+            Kh = kh
+            Kr = kr
+            Kz = kz
+            La = la
+            Lk = lk
+            Lt = lt
+            Lu = lu
+            Lv = lv
+            Ma = ma
+            Md = md
+            Me = me
+            Mk = mk
+            Mr = mr
+            Mt = mt
+            Mx = mx
+            My = my
+            Ng = ng
+            Nl = nl
+            No = no
+            Np = np
+            Nz = nz
+            Om = om
+            Pe = pe
+            Ph = ph
+            Pl = pl
+            Pt = pt
+            Ro = ro
+            Rs = rs
+            Ru = ru
+            Sa = sa
+            Se = se
+            Sg = sg
+            Si = si
+            Sk = sk
+            Sn = sn
+            Sr = sr
+            Th = th
+            Tj = tj
+            Tr = tr
+            Tw = tw
+            Tz = tz
+            Ua = ua
+            Ug = ug
+            Us = us
+            Uy = uy
+            Uz = uz
+            Vn = vn
+            Za = za
+            Zm = zm
+            Zw = zw
+        }
+
 [<Struct>]
 type TaxRegistrationStatus =
     | Active
@@ -731,6 +1089,19 @@ type TaxRegistration =
         /// The status of the registration. This field is present for convenience and can be deduced from `active_from` and `expires_at`.
         Status: TaxRegistrationStatus
     }
+
+type TaxRegistration with
+    static member New(activeFrom: DateTime, country: IsoTypes.IsoCountryCode, countryOptions: TaxProductRegistrationsResourceCountryOptions, created: DateTime, expiresAt: DateTime option, id: string, livemode: bool, status: TaxRegistrationStatus) =
+        {
+            ActiveFrom = activeFrom
+            Country = country
+            CountryOptions = countryOptions
+            Created = created
+            ExpiresAt = expiresAt
+            Id = id
+            Livemode = livemode
+            Status = status
+        }
 
 module TaxRegistration =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -767,6 +1138,22 @@ type TaxCalculationLineItem =
         TaxCode: string
     }
 
+type TaxCalculationLineItem with
+    static member New(amount: int, amountTax: int, id: string, livemode: bool, metadata: Map<string, string> option, product: string option, quantity: int, reference: string, taxBehavior: TaxCalculationLineItemTaxBehavior, taxCode: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list option) =
+        {
+            Amount = amount
+            AmountTax = amountTax
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Product = product
+            Quantity = quantity
+            Reference = reference
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            TaxBreakdown = taxBreakdown |> Option.flatten
+        }
+
 module TaxCalculationLineItem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.calculation_line_item"
@@ -781,6 +1168,14 @@ type TaxCalculationLineItems =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+type TaxCalculationLineItems with
+    static member New(data: TaxCalculationLineItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module TaxCalculationLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
@@ -840,6 +1235,17 @@ type TaxProductResourceTaxRateDetails =
         TaxType: TaxProductResourceTaxRateDetailsTaxType option
     }
 
+type TaxProductResourceTaxRateDetails with
+    static member New(country: IsoTypes.IsoCountryCode option, flatAmount: TaxRateFlatAmount option, percentageDecimal: string, rateType: TaxProductResourceTaxRateDetailsRateType option, state: string option, taxType: TaxProductResourceTaxRateDetailsTaxType option) =
+        {
+            Country = country
+            FlatAmount = flatAmount
+            PercentageDecimal = percentageDecimal
+            RateType = rateType
+            State = state
+            TaxType = taxType
+        }
+
 type TaxProductResourceTaxBreakdown =
     {
         /// The amount of tax, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
@@ -852,6 +1258,16 @@ type TaxProductResourceTaxBreakdown =
         /// The amount on which tax is calculated, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
         TaxableAmount: int
     }
+
+type TaxProductResourceTaxBreakdown with
+    static member New(amount: int, inclusive: bool, taxRateDetails: TaxProductResourceTaxRateDetails, taxabilityReason: TaxProductResourceTaxBreakdownTaxabilityReason, taxableAmount: int) =
+        {
+            Amount = amount
+            Inclusive = inclusive
+            TaxRateDetails = taxRateDetails
+            TaxabilityReason = taxabilityReason
+            TaxableAmount = taxableAmount
+        }
 
 [<Struct>]
 type TaxProductResourceTaxCalculationShippingCostTaxBehavior =
@@ -873,6 +1289,17 @@ type TaxProductResourceTaxCalculationShippingCost =
         /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for shipping.
         TaxCode: string
     }
+
+type TaxProductResourceTaxCalculationShippingCost with
+    static member New(amount: int, amountTax: int, taxBehavior: TaxProductResourceTaxCalculationShippingCostTaxBehavior, taxCode: string, ?shippingRate: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list) =
+        {
+            Amount = amount
+            AmountTax = amountTax
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            ShippingRate = shippingRate
+            TaxBreakdown = taxBreakdown
+        }
 
 /// A Tax Calculation allows you to calculate the tax to collect from your customer.
 /// Related guide: [Calculate tax in your custom payment flow](https://docs.stripe.com/tax/custom)
@@ -907,6 +1334,25 @@ type TaxCalculation =
         TaxDate: DateTime
     }
 
+type TaxCalculation with
+    static member New(amountTotal: int, currency: IsoTypes.IsoCurrencyCode, customer: string option, customerDetails: TaxProductResourceCustomerDetails, expiresAt: DateTime option, id: string option, livemode: bool, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxCalculationShippingCost option, taxAmountExclusive: int, taxAmountInclusive: int, taxBreakdown: TaxProductResourceTaxBreakdown list, taxDate: DateTime, ?lineItems: TaxCalculationLineItems option) =
+        {
+            AmountTotal = amountTotal
+            Currency = currency
+            Customer = customer
+            CustomerDetails = customerDetails
+            ExpiresAt = expiresAt
+            Id = id
+            Livemode = livemode
+            ShipFromDetails = shipFromDetails
+            ShippingCost = shippingCost
+            TaxAmountExclusive = taxAmountExclusive
+            TaxAmountInclusive = taxAmountInclusive
+            TaxBreakdown = taxBreakdown
+            TaxDate = taxDate
+            LineItems = lineItems |> Option.flatten
+        }
+
 module TaxCalculation =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax.calculation"
@@ -916,6 +1362,12 @@ type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted =
         /// The [Tax Transaction](https://docs.stripe.com/api/tax/transaction/object)
         Transaction: string
     }
+
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted with
+    static member New(transaction: string) =
+        {
+            Transaction = transaction
+        }
 
 [<Struct>]
 type TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason =
@@ -930,6 +1382,12 @@ type TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored =
         /// Details on why we couldn't commit the tax transaction.
         Reason: TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason
     }
+
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored with
+    static member New(reason: TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason) =
+        {
+            Reason = reason
+        }
 
 [<Struct>]
 type TaxProductResourceTaxAssociationTransactionAttemptsStatus =
@@ -946,6 +1404,15 @@ type TaxProductResourceTaxAssociationTransactionAttempts =
         Status: TaxProductResourceTaxAssociationTransactionAttemptsStatus
     }
 
+type TaxProductResourceTaxAssociationTransactionAttempts with
+    static member New(source: string, status: TaxProductResourceTaxAssociationTransactionAttemptsStatus, ?committed: TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted, ?errored: TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored) =
+        {
+            Source = source
+            Status = status
+            Committed = committed
+            Errored = errored
+        }
+
 /// A Tax Association exposes the Tax Transactions that Stripe attempted to create on your behalf based on the PaymentIntent input
 type TaxAssociation =
     {
@@ -958,6 +1425,15 @@ type TaxAssociation =
         /// Information about the tax transactions linked to this payment intent
         TaxTransactionAttempts: TaxProductResourceTaxAssociationTransactionAttempts list option
     }
+
+type TaxAssociation with
+    static member New(calculation: string, id: string, paymentIntent: string, taxTransactionAttempts: TaxProductResourceTaxAssociationTransactionAttempts list option) =
+        {
+            Calculation = calculation
+            Id = id
+            PaymentIntent = paymentIntent
+            TaxTransactionAttempts = taxTransactionAttempts
+        }
 
 module TaxAssociation =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -983,4 +1459,14 @@ type TaxIDsOwner =
         /// Type of owner referenced.
         Type: TaxIDsOwnerType
     }
+
+type TaxIDsOwner with
+    static member New(customerAccount: string option, ``type``: TaxIDsOwnerType, ?account: StripeId<Markers.Account>, ?application: StripeId<Markers.Application>, ?customer: StripeId<Markers.Customer>) =
+        {
+            CustomerAccount = customerAccount
+            Type = ``type``
+            Account = account
+            Application = application
+            Customer = customer
+        }
 

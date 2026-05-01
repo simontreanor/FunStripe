@@ -38,6 +38,14 @@ type QuoteLineItems =
         Url: string
     }
 
+type QuoteLineItems with
+    static member New(data: Item list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
 module QuoteLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
@@ -67,6 +75,15 @@ type QuotesResourceAutomaticTax =
         Status: QuotesResourceAutomaticTaxStatus option
     }
 
+type QuotesResourceAutomaticTax with
+    static member New(enabled: bool, liability: ConnectAccountReference option, provider: string option, status: QuotesResourceAutomaticTaxStatus option) =
+        {
+            Enabled = enabled
+            Liability = liability
+            Provider = provider
+            Status = status
+        }
+
 [<Struct>]
 type QuotesResourceRecurringInterval =
     | Day
@@ -82,6 +99,13 @@ type QuotesResourceTotalDetailsResourceBreakdown =
         Taxes: LineItemsTaxAmount list
     }
 
+type QuotesResourceTotalDetailsResourceBreakdown with
+    static member New(discounts: LineItemsDiscountAmount list, taxes: LineItemsTaxAmount list) =
+        {
+            Discounts = discounts
+            Taxes = taxes
+        }
+
 type QuotesResourceTotalDetails =
     {
         /// This is the sum of all the discounts.
@@ -92,6 +116,15 @@ type QuotesResourceTotalDetails =
         AmountTax: int
         Breakdown: QuotesResourceTotalDetailsResourceBreakdown option
     }
+
+type QuotesResourceTotalDetails with
+    static member New(amountDiscount: int, amountShipping: int option, amountTax: int, ?breakdown: QuotesResourceTotalDetailsResourceBreakdown) =
+        {
+            AmountDiscount = amountDiscount
+            AmountShipping = amountShipping
+            AmountTax = amountTax
+            Breakdown = breakdown
+        }
 
 type QuotesResourceRecurring =
     {
@@ -106,6 +139,16 @@ type QuotesResourceRecurring =
         TotalDetails: QuotesResourceTotalDetails
     }
 
+type QuotesResourceRecurring with
+    static member New(amountSubtotal: int, amountTotal: int, interval: QuotesResourceRecurringInterval, intervalCount: int, totalDetails: QuotesResourceTotalDetails) =
+        {
+            AmountSubtotal = amountSubtotal
+            AmountTotal = amountTotal
+            Interval = interval
+            IntervalCount = intervalCount
+            TotalDetails = totalDetails
+        }
+
 /// The line items that will appear on the next invoice after this quote is accepted. This does not include pending invoice items that exist on the customer but may still be included in the next invoice.
 type QuotesResourceUpfrontLineItems =
     {
@@ -116,6 +159,14 @@ type QuotesResourceUpfrontLineItems =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+type QuotesResourceUpfrontLineItems with
+    static member New(data: Item list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module QuotesResourceUpfrontLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
@@ -132,12 +183,28 @@ type QuotesResourceUpfront =
         TotalDetails: QuotesResourceTotalDetails
     }
 
+type QuotesResourceUpfront with
+    static member New(amountSubtotal: int, amountTotal: int, totalDetails: QuotesResourceTotalDetails, ?lineItems: QuotesResourceUpfrontLineItems) =
+        {
+            AmountSubtotal = amountSubtotal
+            AmountTotal = amountTotal
+            TotalDetails = totalDetails
+            LineItems = lineItems
+        }
+
 type QuotesResourceComputed =
     {
         /// The definitive totals and line items the customer will be charged on a recurring basis. Takes into account the line items with recurring prices and discounts with `duration=forever` coupons only. Defaults to `null` if no inputted line items with recurring prices.
         Recurring: QuotesResourceRecurring option
         Upfront: QuotesResourceUpfront
     }
+
+type QuotesResourceComputed with
+    static member New(recurring: QuotesResourceRecurring option, upfront: QuotesResourceUpfront) =
+        {
+            Recurring = recurring
+            Upfront = upfront
+        }
 
 type QuotesResourceFromQuote =
     {
@@ -146,6 +213,13 @@ type QuotesResourceFromQuote =
         /// The quote that was cloned.
         Quote: StripeId<Markers.Quote>
     }
+
+type QuotesResourceFromQuote with
+    static member New(isRevision: bool, quote: StripeId<Markers.Quote>) =
+        {
+            IsRevision = isRevision
+            Quote = quote
+        }
 
 type QuotesResourceStatusTransitions =
     {
@@ -156,6 +230,14 @@ type QuotesResourceStatusTransitions =
         /// The time that the quote was finalized. Measured in seconds since Unix epoch.
         FinalizedAt: DateTime option
     }
+
+type QuotesResourceStatusTransitions with
+    static member New(acceptedAt: DateTime option, canceledAt: DateTime option, finalizedAt: DateTime option) =
+        {
+            AcceptedAt = acceptedAt
+            CanceledAt = canceledAt
+            FinalizedAt = finalizedAt
+        }
 
 [<Struct>]
 type QuotesResourceSubscriptionDataBillingModeType =
@@ -170,6 +252,13 @@ type QuotesResourceSubscriptionDataBillingMode =
         Type: QuotesResourceSubscriptionDataBillingModeType
     }
 
+type QuotesResourceSubscriptionDataBillingMode with
+    static member New(``type``: QuotesResourceSubscriptionDataBillingModeType, ?flexible: SubscriptionsResourceBillingModeFlexible) =
+        {
+            Type = ``type``
+            Flexible = flexible
+        }
+
 type QuotesResourceSubscriptionDataSubscriptionData =
     {
         BillingMode: QuotesResourceSubscriptionDataBillingMode
@@ -183,6 +272,16 @@ type QuotesResourceSubscriptionDataSubscriptionData =
         TrialPeriodDays: int option
     }
 
+type QuotesResourceSubscriptionDataSubscriptionData with
+    static member New(billingMode: QuotesResourceSubscriptionDataBillingMode, description: string option, effectiveDate: DateTime option, metadata: Map<string, string> option, trialPeriodDays: int option) =
+        {
+            BillingMode = billingMode
+            Description = description
+            EffectiveDate = effectiveDate
+            Metadata = metadata
+            TrialPeriodDays = trialPeriodDays
+        }
+
 type QuotesResourceTransferData =
     {
         /// The amount in cents (or local equivalent) that will be transferred to the destination account when the invoice is paid. By default, the entire amount is transferred to the destination.
@@ -192,6 +291,14 @@ type QuotesResourceTransferData =
         /// The account where funds from the payment will be transferred to upon payment success.
         Destination: StripeId<Markers.Account>
     }
+
+type QuotesResourceTransferData with
+    static member New(amount: int option, amountPercent: decimal option, destination: StripeId<Markers.Account>) =
+        {
+            Amount = amount
+            AmountPercent = amountPercent
+            Destination = destination
+        }
 
 /// A Quote is a way to model prices that you'd like to provide to a customer.
 /// Once accepted, it will automatically create an invoice, subscription or subscription schedule.
@@ -263,6 +370,46 @@ type Quote =
         TransferData: QuotesResourceTransferData option
     }
 
+type Quote with
+    static member New(amountSubtotal: int, amountTotal: int, application: QuoteApplication'AnyOf option, applicationFeeAmount: int option, applicationFeePercent: decimal option, automaticTax: QuotesResourceAutomaticTax, collectionMethod: QuoteCollectionMethod, computed: QuotesResourceComputed, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, customer: QuoteCustomer'AnyOf option, customerAccount: string option, description: string option, discounts: StripeId<Markers.Discount> list, expiresAt: DateTime, footer: string option, fromQuote: QuotesResourceFromQuote option, header: string option, id: string, invoice: QuoteInvoice'AnyOf option, invoiceSettings: InvoiceSettingQuoteSetting, livemode: bool, metadata: Map<string, string>, number: string option, onBehalfOf: StripeId<Markers.Account> option, status: QuoteStatus, statusTransitions: QuotesResourceStatusTransitions, subscription: StripeId<Markers.Subscription> option, subscriptionData: QuotesResourceSubscriptionDataSubscriptionData, subscriptionSchedule: StripeId<Markers.SubscriptionSchedule> option, testClock: StripeId<Markers.TestHelpersTestClock> option, totalDetails: QuotesResourceTotalDetails, transferData: QuotesResourceTransferData option, ?defaultTaxRates: StripeId<Markers.TaxRate> list, ?lineItems: QuoteLineItems) =
+        {
+            AmountSubtotal = amountSubtotal
+            AmountTotal = amountTotal
+            Application = application
+            ApplicationFeeAmount = applicationFeeAmount
+            ApplicationFeePercent = applicationFeePercent
+            AutomaticTax = automaticTax
+            CollectionMethod = collectionMethod
+            Computed = computed
+            Created = created
+            Currency = currency
+            Customer = customer
+            CustomerAccount = customerAccount
+            Description = description
+            Discounts = discounts
+            ExpiresAt = expiresAt
+            Footer = footer
+            FromQuote = fromQuote
+            Header = header
+            Id = id
+            Invoice = invoice
+            InvoiceSettings = invoiceSettings
+            Livemode = livemode
+            Metadata = metadata
+            Number = number
+            OnBehalfOf = onBehalfOf
+            Status = status
+            StatusTransitions = statusTransitions
+            Subscription = subscription
+            SubscriptionData = subscriptionData
+            SubscriptionSchedule = subscriptionSchedule
+            TestClock = testClock
+            TotalDetails = totalDetails
+            TransferData = transferData
+            DefaultTaxRates = defaultTaxRates
+            LineItems = lineItems
+        }
+
 module Quote =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "quote"
@@ -270,12 +417,36 @@ module Quote =
 /// Occurs whenever a quote is finalized.
 type QuoteFinalized = { Object: Quote }
 
+type QuoteFinalized with
+    static member New(object: Quote) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a quote is created.
 type QuoteCreated = { Object: Quote }
+
+type QuoteCreated with
+    static member New(object: Quote) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever a quote is canceled.
 type QuoteCanceled = { Object: Quote }
 
+type QuoteCanceled with
+    static member New(object: Quote) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a quote is accepted.
 type QuoteAccepted = { Object: Quote }
+
+type QuoteAccepted with
+    static member New(object: Quote) =
+        {
+            Object = object
+        }
 

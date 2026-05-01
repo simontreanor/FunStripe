@@ -27,6 +27,16 @@ module ForwardingRequests =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?created: Map<string, string>, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -62,6 +72,13 @@ module ForwardingRequests =
             Value: string option
         }
 
+    type Create'RequestHeaders with
+        static member New(?name: string, ?value: string) =
+            {
+                Name = name
+                Value = value
+            }
+
     module Create'RequestHeaders =
         let create
             (
@@ -83,6 +100,13 @@ module ForwardingRequests =
             [<Config.Form>]
             Headers: Create'RequestHeaders list option
         }
+
+    type Create'Request with
+        static member New(?body: string, ?headers: Create'RequestHeaders list) =
+            {
+                Body = body
+                Headers = headers
+            }
 
     module Create'Request =
         let create
@@ -118,6 +142,17 @@ module ForwardingRequests =
             Url: string
         }
 
+    type CreateOptions with
+        static member New(paymentMethod: string, replacements: Create'Replacements list, url: string, ?expand: string list, ?metadata: Map<string, string>, ?request: Create'Request) =
+            {
+                PaymentMethod = paymentMethod
+                Replacements = replacements
+                Url = url
+                Expand = expand
+                Metadata = metadata
+                Request = request
+            }
+
     module CreateOptions =
         let create
             (
@@ -143,6 +178,13 @@ module ForwardingRequests =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

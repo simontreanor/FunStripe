@@ -37,6 +37,19 @@ module CreditNotes =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?customer: string, ?customerAccount: string, ?endingBefore: string, ?expand: string list, ?invoice: string, ?limit: int, ?startingAfter: string) =
+            {
+                Created = created
+                Customer = customer
+                CustomerAccount = customerAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Invoice = invoice
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -77,6 +90,14 @@ module CreditNotes =
             [<Config.Form>]
             TaxableAmount: int option
         }
+
+    type Create'LinesTaxAmounts with
+        static member New(?amount: int, ?taxRate: string, ?taxableAmount: int) =
+            {
+                Amount = amount
+                TaxRate = taxRate
+                TaxableAmount = taxableAmount
+            }
 
     module Create'LinesTaxAmounts =
         let create
@@ -130,6 +151,21 @@ module CreditNotes =
             UnitAmountDecimal: string option
         }
 
+    type Create'Lines with
+        static member New(?amount: int, ?description: string, ?invoiceLineItem: string, ?metadata: Map<string, string>, ?quantity: int, ?taxAmounts: Choice<Create'LinesTaxAmounts list,string>, ?taxRates: Choice<string list,string>, ?type': Create'LinesType, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Amount = amount
+                Description = description
+                InvoiceLineItem = invoiceLineItem
+                Metadata = metadata
+                Quantity = quantity
+                TaxAmounts = taxAmounts
+                TaxRates = taxRates
+                Type = type'
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
+
     module Create'Lines =
         let create
             (
@@ -140,7 +176,7 @@ module CreditNotes =
                 quantity: int option,
                 taxAmounts: Choice<Create'LinesTaxAmounts list,string> option,
                 taxRates: Choice<string list,string> option,
-                ``type``: Create'LinesType option,
+                type': Create'LinesType option,
                 unitAmount: int option,
                 unitAmountDecimal: string option
             ) : Create'Lines
@@ -153,7 +189,7 @@ module CreditNotes =
               Quantity = quantity
               TaxAmounts = taxAmounts
               TaxRates = taxRates
-              Type = ``type``
+              Type = type'
               UnitAmount = unitAmount
               UnitAmountDecimal = unitAmountDecimal
             }
@@ -173,6 +209,13 @@ module CreditNotes =
             [<Config.Form>]
             RefundGroup: string option
         }
+
+    type Create'RefundsPaymentRecordRefund with
+        static member New(?paymentRecord: string, ?refundGroup: string) =
+            {
+                PaymentRecord = paymentRecord
+                RefundGroup = refundGroup
+            }
 
     module Create'RefundsPaymentRecordRefund =
         let create
@@ -206,20 +249,29 @@ module CreditNotes =
             Type: Create'RefundsType option
         }
 
+    type Create'Refunds with
+        static member New(?amountRefunded: int, ?paymentRecordRefund: Create'RefundsPaymentRecordRefund, ?refund: string, ?type': Create'RefundsType) =
+            {
+                AmountRefunded = amountRefunded
+                PaymentRecordRefund = paymentRecordRefund
+                Refund = refund
+                Type = type'
+            }
+
     module Create'Refunds =
         let create
             (
                 amountRefunded: int option,
                 paymentRecordRefund: Create'RefundsPaymentRecordRefund option,
                 refund: string option,
-                ``type``: Create'RefundsType option
+                type': Create'RefundsType option
             ) : Create'Refunds
             =
             {
               AmountRefunded = amountRefunded
               PaymentRecordRefund = paymentRecordRefund
               Refund = refund
-              Type = ``type``
+              Type = type'
             }
 
     type Create'ShippingCost =
@@ -228,6 +280,12 @@ module CreditNotes =
             [<Config.Form>]
             ShippingRate: string option
         }
+
+    type Create'ShippingCost with
+        static member New(?shippingRate: string) =
+            {
+                ShippingRate = shippingRate
+            }
 
     module Create'ShippingCost =
         let create
@@ -285,6 +343,25 @@ module CreditNotes =
             ShippingCost: Create'ShippingCost option
         }
 
+    type CreateOptions with
+        static member New(invoice: string, ?amount: int, ?creditAmount: int, ?effectiveAt: DateTime, ?emailType: Create'EmailType, ?expand: string list, ?lines: Create'Lines list, ?memo: string, ?metadata: Map<string, string>, ?outOfBandAmount: int, ?reason: Create'Reason, ?refundAmount: int, ?refunds: Create'Refunds list, ?shippingCost: Create'ShippingCost) =
+            {
+                Invoice = invoice
+                Amount = amount
+                CreditAmount = creditAmount
+                EffectiveAt = effectiveAt
+                EmailType = emailType
+                Expand = expand
+                Lines = lines
+                Memo = memo
+                Metadata = metadata
+                OutOfBandAmount = outOfBandAmount
+                Reason = reason
+                RefundAmount = refundAmount
+                Refunds = refunds
+                ShippingCost = shippingCost
+            }
+
     module CreateOptions =
         let create
             (
@@ -317,6 +394,13 @@ module CreditNotes =
             Id: string
         }
 
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -342,6 +426,15 @@ module CreditNotes =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(id: string, ?expand: string list, ?memo: string, ?metadata: Map<string, string>) =
+            {
+                Id = id
+                Expand = expand
+                Memo = memo
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -435,6 +528,25 @@ module CreditNotesPreview =
             ShippingCost: Map<string, string> option
         }
 
+    type PreviewOptions with
+        static member New(invoice: string, ?amount: int, ?creditAmount: int, ?effectiveAt: int, ?emailType: string, ?expand: string list, ?lines: string list, ?memo: string, ?metadata: Map<string, string>, ?outOfBandAmount: int, ?reason: string, ?refundAmount: int, ?refunds: string list, ?shippingCost: Map<string, string>) =
+            {
+                Invoice = invoice
+                Amount = amount
+                CreditAmount = creditAmount
+                EffectiveAt = effectiveAt
+                EmailType = emailType
+                Expand = expand
+                Lines = lines
+                Memo = memo
+                Metadata = metadata
+                OutOfBandAmount = outOfBandAmount
+                Reason = reason
+                RefundAmount = refundAmount
+                Refunds = refunds
+                ShippingCost = shippingCost
+            }
+
     module PreviewOptions =
         let create
             (
@@ -521,6 +633,28 @@ module CreditNotesPreviewLines =
             StartingAfter: string option
         }
 
+    type PreviewLinesOptions with
+        static member New(invoice: string, ?amount: int, ?creditAmount: int, ?effectiveAt: int, ?emailType: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?lines: string list, ?memo: string, ?metadata: Map<string, string>, ?outOfBandAmount: int, ?reason: string, ?refundAmount: int, ?refunds: string list, ?shippingCost: Map<string, string>, ?startingAfter: string) =
+            {
+                Invoice = invoice
+                Amount = amount
+                CreditAmount = creditAmount
+                EffectiveAt = effectiveAt
+                EmailType = emailType
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                Lines = lines
+                Memo = memo
+                Metadata = metadata
+                OutOfBandAmount = outOfBandAmount
+                Reason = reason
+                RefundAmount = refundAmount
+                Refunds = refunds
+                ShippingCost = shippingCost
+                StartingAfter = startingAfter
+            }
+
     module PreviewLinesOptions =
         let create
             (
@@ -573,6 +707,16 @@ module CreditNotesLines =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(creditNote: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                CreditNote = creditNote
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -603,6 +747,13 @@ module CreditNotesVoid =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type VoidCreditNoteOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module VoidCreditNoteOptions =
         let create

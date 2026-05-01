@@ -39,6 +39,20 @@ module Invoiceitems =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?customer: string, ?customerAccount: string, ?endingBefore: string, ?expand: string list, ?invoice: string, ?limit: int, ?pending: bool, ?startingAfter: string) =
+            {
+                Created = created
+                Customer = customer
+                CustomerAccount = customerAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Invoice = invoice
+                Limit = limit
+                Pending = pending
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -78,6 +92,14 @@ module Invoiceitems =
             PromotionCode: string option
         }
 
+    type Create'Discounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
+
     module Create'Discounts =
         let create
             (
@@ -102,15 +124,22 @@ module Invoiceitems =
             Start: DateTime option
         }
 
+    type Create'Period with
+        static member New(?end': DateTime, ?start: DateTime) =
+            {
+                End = end'
+                Start = start
+            }
+
     module Create'Period =
         let create
             (
-                ``end``: DateTime option,
+                end': DateTime option,
                 start: DateTime option
             ) : Create'Period
             =
             {
-              End = ``end``
+              End = end'
               Start = start
             }
 
@@ -138,6 +167,16 @@ module Invoiceitems =
             UnitAmountDecimal: string option
         }
 
+    type Create'PriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?taxBehavior: Create'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
+
     module Create'PriceData =
         let create
             (
@@ -162,6 +201,12 @@ module Invoiceitems =
             [<Config.Form>]
             Price: string option
         }
+
+    type Create'Pricing with
+        static member New(?price: string) =
+            {
+                Price = price
+            }
 
     module Create'Pricing =
         let create
@@ -242,6 +287,31 @@ module Invoiceitems =
             UnitAmountDecimal: string option
         }
 
+    type CreateOptions with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?customer: string, ?customerAccount: string, ?description: string, ?discountable: bool, ?discounts: Choice<Create'Discounts list,string>, ?expand: string list, ?invoice: string, ?metadata: Map<string, string>, ?period: Create'Period, ?priceData: Create'PriceData, ?pricing: Create'Pricing, ?quantity: int, ?quantityDecimal: string, ?subscription: string, ?taxBehavior: Create'TaxBehavior, ?taxCode: Choice<string,string>, ?taxRates: string list, ?unitAmountDecimal: string) =
+            {
+                Amount = amount
+                Currency = currency
+                Customer = customer
+                CustomerAccount = customerAccount
+                Description = description
+                Discountable = discountable
+                Discounts = discounts
+                Expand = expand
+                Invoice = invoice
+                Metadata = metadata
+                Period = period
+                PriceData = priceData
+                Pricing = pricing
+                Quantity = quantity
+                QuantityDecimal = quantityDecimal
+                Subscription = subscription
+                TaxBehavior = taxBehavior
+                TaxCode = taxCode
+                TaxRates = taxRates
+                UnitAmountDecimal = unitAmountDecimal
+            }
+
     module CreateOptions =
         let create
             (
@@ -294,6 +364,12 @@ module Invoiceitems =
         { [<Config.Path>]
           Invoiceitem: string }
 
+    type DeleteOptions with
+        static member New(invoiceitem: string) =
+            {
+                Invoiceitem = invoiceitem
+            }
+
     module DeleteOptions =
         let create
             (
@@ -312,6 +388,13 @@ module Invoiceitems =
             [<Config.Path>]
             Invoiceitem: string
         }
+
+    type RetrieveOptions with
+        static member New(invoiceitem: string, ?expand: string list) =
+            {
+                Invoiceitem = invoiceitem
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -337,6 +420,14 @@ module Invoiceitems =
             PromotionCode: string option
         }
 
+    type Update'Discounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
+
     module Update'Discounts =
         let create
             (
@@ -361,15 +452,22 @@ module Invoiceitems =
             Start: DateTime option
         }
 
+    type Update'Period with
+        static member New(?end': DateTime, ?start: DateTime) =
+            {
+                End = end'
+                Start = start
+            }
+
     module Update'Period =
         let create
             (
-                ``end``: DateTime option,
+                end': DateTime option,
                 start: DateTime option
             ) : Update'Period
             =
             {
-              End = ``end``
+              End = end'
               Start = start
             }
 
@@ -397,6 +495,16 @@ module Invoiceitems =
             UnitAmountDecimal: string option
         }
 
+    type Update'PriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?taxBehavior: Update'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
+
     module Update'PriceData =
         let create
             (
@@ -421,6 +529,12 @@ module Invoiceitems =
             [<Config.Form>]
             Price: string option
         }
+
+    type Update'Pricing with
+        static member New(?price: string) =
+            {
+                Price = price
+            }
 
     module Update'Pricing =
         let create
@@ -487,6 +601,27 @@ module Invoiceitems =
             [<Config.Form>]
             UnitAmountDecimal: string option
         }
+
+    type UpdateOptions with
+        static member New(invoiceitem: string, ?amount: int, ?description: string, ?discountable: bool, ?discounts: Choice<Update'Discounts list,string>, ?expand: string list, ?metadata: Map<string, string>, ?period: Update'Period, ?priceData: Update'PriceData, ?pricing: Update'Pricing, ?quantity: int, ?quantityDecimal: string, ?taxBehavior: Update'TaxBehavior, ?taxCode: Choice<string,string>, ?taxRates: Choice<string list,string>, ?unitAmountDecimal: string) =
+            {
+                Invoiceitem = invoiceitem
+                Amount = amount
+                Description = description
+                Discountable = discountable
+                Discounts = discounts
+                Expand = expand
+                Metadata = metadata
+                Period = period
+                PriceData = priceData
+                Pricing = pricing
+                Quantity = quantity
+                QuantityDecimal = quantityDecimal
+                TaxBehavior = taxBehavior
+                TaxCode = taxCode
+                TaxRates = taxRates
+                UnitAmountDecimal = unitAmountDecimal
+            }
 
     module UpdateOptions =
         let create

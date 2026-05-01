@@ -15,6 +15,14 @@ type Rule =
         Predicate: string
     }
 
+type Rule with
+    static member New(action: string, id: string, predicate: string) =
+        {
+            Action = action
+            Id = id
+            Predicate = predicate
+        }
+
 type RadarReviewResourceSession =
     {
         /// The browser used in this browser session (e.g., `Chrome`).
@@ -26,6 +34,15 @@ type RadarReviewResourceSession =
         /// The version for the browser session (e.g., `61.0.3163.100`).
         Version: string option
     }
+
+type RadarReviewResourceSession with
+    static member New(browser: string option, device: string option, platform: string option, version: string option) =
+        {
+            Browser = browser
+            Device = device
+            Platform = platform
+            Version = version
+        }
 
 type RadarReviewResourceLocation =
     {
@@ -40,6 +57,16 @@ type RadarReviewResourceLocation =
         /// The state/county/province/region where the payment originated.
         Region: string option
     }
+
+type RadarReviewResourceLocation with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode option, latitude: decimal option, longitude: decimal option, region: string option) =
+        {
+            City = city
+            Country = country
+            Latitude = latitude
+            Longitude = longitude
+            Region = region
+        }
 
 type RadarValueListItemType =
     | Account
@@ -73,6 +100,17 @@ type RadarValueListItem =
         ValueList: string
     }
 
+type RadarValueListItem with
+    static member New(created: DateTime, createdBy: string, id: string, livemode: bool, value: string, valueList: string) =
+        {
+            Created = created
+            CreatedBy = createdBy
+            Id = id
+            Livemode = livemode
+            Value = value
+            ValueList = valueList
+        }
+
 module RadarValueListItem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "radar.value_list_item"
@@ -87,6 +125,14 @@ type RadarValueListListItems =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+type RadarValueListListItems with
+    static member New(data: RadarValueListItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module RadarValueListListItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
@@ -116,6 +162,20 @@ type RadarValueList =
         Name: string
     }
 
+type RadarValueList with
+    static member New(alias: string, created: DateTime, createdBy: string, id: string, itemType: RadarValueListItemType, listItems: RadarValueListListItems, livemode: bool, metadata: Map<string, string>, name: string) =
+        {
+            Alias = alias
+            Created = created
+            CreatedBy = createdBy
+            Id = id
+            ItemType = itemType
+            ListItems = listItems
+            Livemode = livemode
+            Metadata = metadata
+            Name = name
+        }
+
 module RadarValueList =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "radar.value_list"
@@ -126,6 +186,12 @@ type InsightsResourcesPaymentEvaluationClientDeviceMetadata =
         /// ID for the Radar Session associated with the payment evaluation. A [Radar Session](https://docs.stripe.com/radar/radar-session) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
         RadarSession: string
     }
+
+type InsightsResourcesPaymentEvaluationClientDeviceMetadata with
+    static member New(radarSession: string) =
+        {
+            RadarSession = radarSession
+        }
 
 /// Customer details attached to this payment evaluation.
 type InsightsResourcesPaymentEvaluationCustomerDetails =
@@ -141,6 +207,16 @@ type InsightsResourcesPaymentEvaluationCustomerDetails =
         /// The customer's phone number.
         Phone: string option
     }
+
+type InsightsResourcesPaymentEvaluationCustomerDetails with
+    static member New(customer: string option, customerAccount: string option, email: string option, name: string option, phone: string option) =
+        {
+            Customer = customer
+            CustomerAccount = customerAccount
+            Email = email
+            Name = name
+            Phone = phone
+        }
 
 type InsightsResourcesPaymentEvaluationDisputeOpenedReason =
     | AccountNotAvailable
@@ -166,6 +242,14 @@ type InsightsResourcesPaymentEvaluationDisputeOpened =
         Reason: InsightsResourcesPaymentEvaluationDisputeOpenedReason
     }
 
+type InsightsResourcesPaymentEvaluationDisputeOpened with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, reason: InsightsResourcesPaymentEvaluationDisputeOpenedReason) =
+        {
+            Amount = amount
+            Currency = currency
+            Reason = reason
+        }
+
 [<Struct>]
 type InsightsResourcesPaymentEvaluationEarlyFraudWarningReceivedFraudType =
     | MadeWithLostCard
@@ -179,6 +263,12 @@ type InsightsResourcesPaymentEvaluationEarlyFraudWarningReceived =
         /// The type of fraud labeled by the issuer.
         FraudType: InsightsResourcesPaymentEvaluationEarlyFraudWarningReceivedFraudType
     }
+
+type InsightsResourcesPaymentEvaluationEarlyFraudWarningReceived with
+    static member New(fraudType: InsightsResourcesPaymentEvaluationEarlyFraudWarningReceivedFraudType) =
+        {
+            FraudType = fraudType
+        }
 
 [<Struct>]
 type InsightsResourcesPaymentEvaluationEventType =
@@ -206,12 +296,26 @@ type InsightsResourcesPaymentEvaluationRefunded =
         Reason: InsightsResourcesPaymentEvaluationRefundedReason
     }
 
+type InsightsResourcesPaymentEvaluationRefunded with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, reason: InsightsResourcesPaymentEvaluationRefundedReason) =
+        {
+            Amount = amount
+            Currency = currency
+            Reason = reason
+        }
+
 /// User intervention raised custom event details attached to this payment evaluation
 type InsightsResourcesPaymentEvaluationUserInterventionRaisedCustom =
     {
         /// Custom type of user intervention raised. The string must use a snake case description for the type of intervention performed.
         Type: string
     }
+
+type InsightsResourcesPaymentEvaluationUserInterventionRaisedCustom with
+    static member New(``type``: string) =
+        {
+            Type = ``type``
+        }
 
 [<Struct>]
 type InsightsResourcesPaymentEvaluationUserInterventionRaisedType =
@@ -229,6 +333,14 @@ type InsightsResourcesPaymentEvaluationUserInterventionRaised =
         Type: InsightsResourcesPaymentEvaluationUserInterventionRaisedType
     }
 
+type InsightsResourcesPaymentEvaluationUserInterventionRaised with
+    static member New(key: string, ``type``: InsightsResourcesPaymentEvaluationUserInterventionRaisedType, ?custom: InsightsResourcesPaymentEvaluationUserInterventionRaisedCustom) =
+        {
+            Key = key
+            Type = ``type``
+            Custom = custom
+        }
+
 [<Struct>]
 type InsightsResourcesPaymentEvaluationUserInterventionResolvedOutcome =
     | Abandoned
@@ -244,6 +356,13 @@ type InsightsResourcesPaymentEvaluationUserInterventionResolved =
         Outcome: InsightsResourcesPaymentEvaluationUserInterventionResolvedOutcome option
     }
 
+type InsightsResourcesPaymentEvaluationUserInterventionResolved with
+    static member New(key: string, outcome: InsightsResourcesPaymentEvaluationUserInterventionResolvedOutcome option) =
+        {
+            Key = key
+            Outcome = outcome
+        }
+
 /// Event reported for this payment evaluation.
 type InsightsResourcesPaymentEvaluationEvent =
     {
@@ -258,6 +377,18 @@ type InsightsResourcesPaymentEvaluationEvent =
         UserInterventionResolved: InsightsResourcesPaymentEvaluationUserInterventionResolved option
     }
 
+type InsightsResourcesPaymentEvaluationEvent with
+    static member New(occurredAt: DateTime, ``type``: InsightsResourcesPaymentEvaluationEventType, ?disputeOpened: InsightsResourcesPaymentEvaluationDisputeOpened, ?earlyFraudWarningReceived: InsightsResourcesPaymentEvaluationEarlyFraudWarningReceived, ?refunded: InsightsResourcesPaymentEvaluationRefunded, ?userInterventionRaised: InsightsResourcesPaymentEvaluationUserInterventionRaised, ?userInterventionResolved: InsightsResourcesPaymentEvaluationUserInterventionResolved) =
+        {
+            OccurredAt = occurredAt
+            Type = ``type``
+            DisputeOpened = disputeOpened
+            EarlyFraudWarningReceived = earlyFraudWarningReceived
+            Refunded = refunded
+            UserInterventionRaised = userInterventionRaised
+            UserInterventionResolved = userInterventionResolved
+        }
+
 [<Struct>]
 type InsightsResourcesPaymentEvaluationMerchantBlockedReason =
     | AuthenticationRequired
@@ -271,6 +402,12 @@ type InsightsResourcesPaymentEvaluationMerchantBlocked =
         /// The reason the payment was blocked by the merchant.
         Reason: InsightsResourcesPaymentEvaluationMerchantBlockedReason
     }
+
+type InsightsResourcesPaymentEvaluationMerchantBlocked with
+    static member New(reason: InsightsResourcesPaymentEvaluationMerchantBlockedReason) =
+        {
+            Reason = reason
+        }
 
 [<Struct>]
 type InsightsResourcesPaymentEvaluationOutcomeType =
@@ -329,9 +466,24 @@ type InsightsResourcesPaymentEvaluationRejectedCard =
         Reason: InsightsResourcesPaymentEvaluationRejectedCardReason
     }
 
+type InsightsResourcesPaymentEvaluationRejectedCard with
+    static member New(addressLine1Check: InsightsResourcesPaymentEvaluationRejectedCardAddressLine1Check, addressPostalCodeCheck: InsightsResourcesPaymentEvaluationRejectedCardAddressPostalCodeCheck, cvcCheck: InsightsResourcesPaymentEvaluationRejectedCardCvcCheck, reason: InsightsResourcesPaymentEvaluationRejectedCardReason) =
+        {
+            AddressLine1Check = addressLine1Check
+            AddressPostalCodeCheck = addressPostalCodeCheck
+            CvcCheck = cvcCheck
+            Reason = reason
+        }
+
 /// Details of an rejected outcome attached to this payment evaluation.
 type InsightsResourcesPaymentEvaluationRejected =
     { Card: InsightsResourcesPaymentEvaluationRejectedCard option }
+
+type InsightsResourcesPaymentEvaluationRejected with
+    static member New(?card: InsightsResourcesPaymentEvaluationRejectedCard) =
+        {
+            Card = card
+        }
 
 [<Struct>]
 type InsightsResourcesPaymentEvaluationSucceededCardAddressLine1Check =
@@ -366,9 +518,23 @@ type InsightsResourcesPaymentEvaluationSucceededCard =
         CvcCheck: InsightsResourcesPaymentEvaluationSucceededCardCvcCheck
     }
 
+type InsightsResourcesPaymentEvaluationSucceededCard with
+    static member New(addressLine1Check: InsightsResourcesPaymentEvaluationSucceededCardAddressLine1Check, addressPostalCodeCheck: InsightsResourcesPaymentEvaluationSucceededCardAddressPostalCodeCheck, cvcCheck: InsightsResourcesPaymentEvaluationSucceededCardCvcCheck) =
+        {
+            AddressLine1Check = addressLine1Check
+            AddressPostalCodeCheck = addressPostalCodeCheck
+            CvcCheck = cvcCheck
+        }
+
 /// Details of a succeeded outcome attached to this payment evaluation.
 type InsightsResourcesPaymentEvaluationSucceeded =
     { Card: InsightsResourcesPaymentEvaluationSucceededCard option }
+
+type InsightsResourcesPaymentEvaluationSucceeded with
+    static member New(?card: InsightsResourcesPaymentEvaluationSucceededCard) =
+        {
+            Card = card
+        }
 
 /// Outcome details for this payment evaluation.
 type InsightsResourcesPaymentEvaluationOutcome =
@@ -381,6 +547,16 @@ type InsightsResourcesPaymentEvaluationOutcome =
         /// Indicates the outcome of the payment evaluation.
         Type: InsightsResourcesPaymentEvaluationOutcomeType
     }
+
+type InsightsResourcesPaymentEvaluationOutcome with
+    static member New(``type``: InsightsResourcesPaymentEvaluationOutcomeType, ?merchantBlocked: InsightsResourcesPaymentEvaluationMerchantBlocked, ?paymentIntentId: string, ?rejected: InsightsResourcesPaymentEvaluationRejected, ?succeeded: InsightsResourcesPaymentEvaluationSucceeded) =
+        {
+            Type = ``type``
+            MerchantBlocked = merchantBlocked
+            PaymentIntentId = paymentIntentId
+            Rejected = rejected
+            Succeeded = succeeded
+        }
 
 [<Struct>]
 type InsightsResourcesPaymentEvaluationMoneyMovementCardCustomerPresence =
@@ -403,12 +579,25 @@ type InsightsResourcesPaymentEvaluationMoneyMovementCard =
         PaymentType: InsightsResourcesPaymentEvaluationMoneyMovementCardPaymentType option
     }
 
+type InsightsResourcesPaymentEvaluationMoneyMovementCard with
+    static member New(customerPresence: InsightsResourcesPaymentEvaluationMoneyMovementCardCustomerPresence option, paymentType: InsightsResourcesPaymentEvaluationMoneyMovementCardPaymentType option) =
+        {
+            CustomerPresence = customerPresence
+            PaymentType = paymentType
+        }
+
 /// Money Movement details attached to this payment.
 type InsightsResourcesPaymentEvaluationMoneyMovementDetails =
     {
         /// Describes card money movement details for the payment evaluation.
         Card: InsightsResourcesPaymentEvaluationMoneyMovementCard option
     }
+
+type InsightsResourcesPaymentEvaluationMoneyMovementDetails with
+    static member New(card: InsightsResourcesPaymentEvaluationMoneyMovementCard option) =
+        {
+            Card = card
+        }
 
 module InsightsResourcesPaymentEvaluationMoneyMovementDetails =
     ///Describes the type of money movement. Currently only `card` is supported.
@@ -433,6 +622,17 @@ type InsightsResourcesPaymentEvaluationAddress =
         State: string option
     }
 
+type InsightsResourcesPaymentEvaluationAddress with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+        {
+            City = city
+            Country = country
+            Line1 = line1
+            Line2 = line2
+            PostalCode = postalCode
+            State = state
+        }
+
 /// Billing details attached to this payment evaluation.
 type InsightsResourcesPaymentEvaluationBillingDetails =
     {
@@ -445,6 +645,15 @@ type InsightsResourcesPaymentEvaluationBillingDetails =
         Phone: string option
     }
 
+type InsightsResourcesPaymentEvaluationBillingDetails with
+    static member New(address: InsightsResourcesPaymentEvaluationAddress, email: string option, name: string option, phone: string option) =
+        {
+            Address = address
+            Email = email
+            Name = name
+            Phone = phone
+        }
+
 /// Payment method details attached to this payment evaluation.
 type InsightsResourcesPaymentEvaluationPaymentMethodDetails =
     {
@@ -453,6 +662,13 @@ type InsightsResourcesPaymentEvaluationPaymentMethodDetails =
         /// The payment method used in this payment evaluation.
         PaymentMethod: StripeId<Markers.PaymentMethod>
     }
+
+type InsightsResourcesPaymentEvaluationPaymentMethodDetails with
+    static member New(billingDetails: InsightsResourcesPaymentEvaluationBillingDetails option, paymentMethod: StripeId<Markers.PaymentMethod>) =
+        {
+            BillingDetails = billingDetails
+            PaymentMethod = paymentMethod
+        }
 
 /// Shipping details attached to this payment.
 type InsightsResourcesPaymentEvaluationShipping =
@@ -463,6 +679,14 @@ type InsightsResourcesPaymentEvaluationShipping =
         /// Shipping phone number.
         Phone: string option
     }
+
+type InsightsResourcesPaymentEvaluationShipping with
+    static member New(address: InsightsResourcesPaymentEvaluationAddress, name: string option, phone: string option) =
+        {
+            Address = address
+            Name = name
+            Phone = phone
+        }
 
 /// Payment details attached to this payment evaluation.
 type InsightsResourcesPaymentEvaluationPaymentDetails =
@@ -483,6 +707,18 @@ type InsightsResourcesPaymentEvaluationPaymentDetails =
         StatementDescriptor: string option
     }
 
+type InsightsResourcesPaymentEvaluationPaymentDetails with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, description: string option, moneyMovementDetails: InsightsResourcesPaymentEvaluationMoneyMovementDetails option, paymentMethodDetails: InsightsResourcesPaymentEvaluationPaymentMethodDetails option, shippingDetails: InsightsResourcesPaymentEvaluationShipping option, statementDescriptor: string option) =
+        {
+            Amount = amount
+            Currency = currency
+            Description = description
+            MoneyMovementDetails = moneyMovementDetails
+            PaymentMethodDetails = paymentMethodDetails
+            ShippingDetails = shippingDetails
+            StatementDescriptor = statementDescriptor
+        }
+
 type InsightsResourcesPaymentEvaluationSignalV2RiskLevel =
     | Elevated
     | Highest
@@ -502,9 +738,23 @@ type InsightsResourcesPaymentEvaluationSignalV2 =
         Score: decimal
     }
 
+type InsightsResourcesPaymentEvaluationSignalV2 with
+    static member New(evaluatedAt: DateTime, riskLevel: InsightsResourcesPaymentEvaluationSignalV2RiskLevel, score: decimal) =
+        {
+            EvaluatedAt = evaluatedAt
+            RiskLevel = riskLevel
+            Score = score
+        }
+
 /// Collection of signals for this payment evaluation.
 type InsightsResourcesPaymentEvaluationSignals =
     { FraudulentPayment: InsightsResourcesPaymentEvaluationSignalV2 }
+
+type InsightsResourcesPaymentEvaluationSignals with
+    static member New(fraudulentPayment: InsightsResourcesPaymentEvaluationSignalV2) =
+        {
+            FraudulentPayment = fraudulentPayment
+        }
 
 [<Struct>]
 type RadarPaymentEvaluationRecommendedAction =
@@ -534,6 +784,22 @@ type RadarPaymentEvaluation =
         Signals: InsightsResourcesPaymentEvaluationSignals
     }
 
+type RadarPaymentEvaluation with
+    static member New(createdAt: DateTime, id: string, livemode: bool, metadata: Map<string, string> option, recommendedAction: RadarPaymentEvaluationRecommendedAction, signals: InsightsResourcesPaymentEvaluationSignals, ?clientDeviceMetadataDetails: InsightsResourcesPaymentEvaluationClientDeviceMetadata, ?customerDetails: InsightsResourcesPaymentEvaluationCustomerDetails, ?events: InsightsResourcesPaymentEvaluationEvent list, ?outcome: InsightsResourcesPaymentEvaluationOutcome option, ?paymentDetails: InsightsResourcesPaymentEvaluationPaymentDetails) =
+        {
+            CreatedAt = createdAt
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            RecommendedAction = recommendedAction
+            Signals = signals
+            ClientDeviceMetadataDetails = clientDeviceMetadataDetails
+            CustomerDetails = customerDetails
+            Events = events
+            Outcome = outcome |> Option.flatten
+            PaymentDetails = paymentDetails
+        }
+
 module RadarPaymentEvaluation =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "radar.payment_evaluation"
@@ -559,6 +825,18 @@ type RadarEarlyFraudWarning =
         PaymentIntent: StripeId<Markers.PaymentIntent> option
     }
 
+type RadarEarlyFraudWarning with
+    static member New(actionable: bool, charge: StripeId<Markers.Charge>, created: DateTime, fraudType: string, id: string, livemode: bool, ?paymentIntent: StripeId<Markers.PaymentIntent>) =
+        {
+            Actionable = actionable
+            Charge = charge
+            Created = created
+            FraudType = fraudType
+            Id = id
+            Livemode = livemode
+            PaymentIntent = paymentIntent
+        }
+
 module RadarEarlyFraudWarning =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "radar.early_fraud_warning"
@@ -566,8 +844,20 @@ module RadarEarlyFraudWarning =
 /// Occurs whenever an early fraud warning is updated.
 type RadarEarlyFraudWarningUpdated = { Object: RadarEarlyFraudWarning }
 
+type RadarEarlyFraudWarningUpdated with
+    static member New(object: RadarEarlyFraudWarning) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever an early fraud warning is created.
 type RadarEarlyFraudWarningCreated = { Object: RadarEarlyFraudWarning }
+
+type RadarEarlyFraudWarningCreated with
+    static member New(object: RadarEarlyFraudWarning) =
+        {
+            Object = object
+        }
 
 type DeletedRadarValueListItem =
     {
@@ -576,6 +866,13 @@ type DeletedRadarValueListItem =
         /// Unique identifier for the object.
         Id: string
     }
+
+type DeletedRadarValueListItem with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedRadarValueListItem =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -589,6 +886,13 @@ type DeletedRadarValueList =
         Id: string
     }
 
+type DeletedRadarValueList with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
 module DeletedRadarValueList =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "radar.value_list"
@@ -599,4 +903,10 @@ type RadarRadarOptions =
         /// A [Radar Session](https://docs.stripe.com/radar/radar-session) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
         Session: string option
     }
+
+type RadarRadarOptions with
+    static member New(?session: string) =
+        {
+            Session = session
+        }
 

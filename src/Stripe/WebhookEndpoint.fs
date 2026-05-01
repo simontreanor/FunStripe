@@ -40,6 +40,22 @@ type WebhookEndpoint =
         Url: string
     }
 
+type WebhookEndpoint with
+    static member New(apiVersion: string option, application: string option, created: DateTime, description: string option, enabledEvents: string list, id: string, livemode: bool, metadata: Map<string, string>, status: WebhookEndpointStatus, url: string, ?secret: string) =
+        {
+            ApiVersion = apiVersion
+            Application = application
+            Created = created
+            Description = description
+            EnabledEvents = enabledEvents
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Status = status
+            Url = url
+            Secret = secret
+        }
+
 module WebhookEndpoint =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "webhook_endpoint"
@@ -51,6 +67,13 @@ type DeletedWebhookEndpoint =
         /// Unique identifier for the object.
         Id: string
     }
+
+type DeletedWebhookEndpoint with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedWebhookEndpoint =
     ///String representing the object's type. Objects of the same type share the same value.

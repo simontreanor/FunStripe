@@ -24,6 +24,15 @@ module WebhookEndpoints =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -447,6 +456,18 @@ module WebhookEndpoints =
             Url: string
         }
 
+    type CreateOptions with
+        static member New(enabledEvents: Create'EnabledEvents list, url: string, ?apiVersion: Create'ApiVersion, ?connect: bool, ?description: Choice<string,string>, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                EnabledEvents = enabledEvents
+                Url = url
+                ApiVersion = apiVersion
+                Connect = connect
+                Description = description
+                Expand = expand
+                Metadata = metadata
+            }
+
     module CreateOptions =
         let create
             (
@@ -468,6 +489,12 @@ module WebhookEndpoints =
         { [<Config.Path>]
           WebhookEndpoint: string }
 
+    type DeleteOptions with
+        static member New(webhookEndpoint: string) =
+            {
+                WebhookEndpoint = webhookEndpoint
+            }
+
     module DeleteOptions =
         let create
             (
@@ -486,6 +513,13 @@ module WebhookEndpoints =
             [<Config.Path>]
             WebhookEndpoint: string
         }
+
+    type RetrieveOptions with
+        static member New(webhookEndpoint: string, ?expand: string list) =
+            {
+                WebhookEndpoint = webhookEndpoint
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -778,6 +812,18 @@ module WebhookEndpoints =
             [<Config.Form>]
             Url: string option
         }
+
+    type UpdateOptions with
+        static member New(webhookEndpoint: string, ?description: Choice<string,string>, ?disabled: bool, ?enabledEvents: Update'EnabledEvents list, ?expand: string list, ?metadata: Map<string, string>, ?url: string) =
+            {
+                WebhookEndpoint = webhookEndpoint
+                Description = description
+                Disabled = disabled
+                EnabledEvents = enabledEvents
+                Expand = expand
+                Metadata = metadata
+                Url = url
+            }
 
     module UpdateOptions =
         let create

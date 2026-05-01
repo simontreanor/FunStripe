@@ -23,6 +23,12 @@ module Account =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(?expand: string list) =
+            {
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -62,6 +68,13 @@ module AccountLinks =
             [<Config.Form>]
             FutureRequirements: Create'CollectionOptionsFutureRequirements option
         }
+
+    type Create'CollectionOptions with
+        static member New(?fields: Create'CollectionOptionsFields, ?futureRequirements: Create'CollectionOptionsFutureRequirements) =
+            {
+                Fields = fields
+                FutureRequirements = futureRequirements
+            }
 
     module Create'CollectionOptions =
         let create
@@ -105,16 +118,28 @@ module AccountLinks =
             Type: Create'Type
         }
 
+    type CreateOptions with
+        static member New(account: string, type': Create'Type, ?collect: Create'Collect, ?collectionOptions: Create'CollectionOptions, ?expand: string list, ?refreshUrl: string, ?returnUrl: string) =
+            {
+                Account = account
+                Type = type'
+                Collect = collect
+                CollectionOptions = collectionOptions
+                Expand = expand
+                RefreshUrl = refreshUrl
+                ReturnUrl = returnUrl
+            }
+
     module CreateOptions =
         let create
             (
                 account: string,
-                ``type``: Create'Type
+                type': Create'Type
             ) : CreateOptions
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
               Collect = None
               CollectionOptions = None
               Expand = None
@@ -139,6 +164,13 @@ module AccountSessions =
             ExternalAccountCollection: bool option
         }
 
+    type Create'ComponentsAccountManagementFeatures with
+        static member New(?disableStripeUserAuthentication: bool, ?externalAccountCollection: bool) =
+            {
+                DisableStripeUserAuthentication = disableStripeUserAuthentication
+                ExternalAccountCollection = externalAccountCollection
+            }
+
     module Create'ComponentsAccountManagementFeatures =
         let create
             (
@@ -160,6 +192,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: Create'ComponentsAccountManagementFeatures option
         }
+
+    type Create'ComponentsAccountManagement with
+        static member New(?enabled: bool, ?features: Create'ComponentsAccountManagementFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsAccountManagement =
         let create
@@ -183,6 +222,13 @@ module AccountSessions =
             ExternalAccountCollection: bool option
         }
 
+    type Create'ComponentsAccountOnboardingFeatures with
+        static member New(?disableStripeUserAuthentication: bool, ?externalAccountCollection: bool) =
+            {
+                DisableStripeUserAuthentication = disableStripeUserAuthentication
+                ExternalAccountCollection = externalAccountCollection
+            }
+
     module Create'ComponentsAccountOnboardingFeatures =
         let create
             (
@@ -205,6 +251,13 @@ module AccountSessions =
             Features: Create'ComponentsAccountOnboardingFeatures option
         }
 
+    type Create'ComponentsAccountOnboarding with
+        static member New(?enabled: bool, ?features: Create'ComponentsAccountOnboardingFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     module Create'ComponentsAccountOnboarding =
         let create
             (
@@ -226,6 +279,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: string option
         }
+
+    type Create'ComponentsBalanceReport with
+        static member New(?enabled: bool, ?features: string) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsBalanceReport =
         let create
@@ -258,6 +318,16 @@ module AccountSessions =
             StandardPayouts: bool option
         }
 
+    type Create'ComponentsBalancesFeatures with
+        static member New(?disableStripeUserAuthentication: bool, ?editPayoutSchedule: bool, ?externalAccountCollection: bool, ?instantPayouts: bool, ?standardPayouts: bool) =
+            {
+                DisableStripeUserAuthentication = disableStripeUserAuthentication
+                EditPayoutSchedule = editPayoutSchedule
+                ExternalAccountCollection = externalAccountCollection
+                InstantPayouts = instantPayouts
+                StandardPayouts = standardPayouts
+            }
+
     module Create'ComponentsBalancesFeatures =
         let create
             (
@@ -285,6 +355,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: Create'ComponentsBalancesFeatures option
         }
+
+    type Create'ComponentsBalances with
+        static member New(?enabled: bool, ?features: Create'ComponentsBalancesFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsBalances =
         let create
@@ -314,6 +391,15 @@ module AccountSessions =
             RefundManagement: bool option
         }
 
+    type Create'ComponentsDisputesListFeatures with
+        static member New(?capturePayments: bool, ?destinationOnBehalfOfChargeManagement: bool, ?disputeManagement: bool, ?refundManagement: bool) =
+            {
+                CapturePayments = capturePayments
+                DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
+                DisputeManagement = disputeManagement
+                RefundManagement = refundManagement
+            }
+
     module Create'ComponentsDisputesListFeatures =
         let create
             (
@@ -340,6 +426,13 @@ module AccountSessions =
             Features: Create'ComponentsDisputesListFeatures option
         }
 
+    type Create'ComponentsDisputesList with
+        static member New(?enabled: bool, ?features: Create'ComponentsDisputesListFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     module Create'ComponentsDisputesList =
         let create
             (
@@ -361,6 +454,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: string option
         }
+
+    type Create'ComponentsDocuments with
+        static member New(?enabled: bool, ?features: string) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsDocuments =
         let create
@@ -390,6 +490,15 @@ module AccountSessions =
             TransferBalance: bool option
         }
 
+    type Create'ComponentsFinancialAccountFeatures with
+        static member New(?disableStripeUserAuthentication: bool, ?externalAccountCollection: bool, ?sendMoney: bool, ?transferBalance: bool) =
+            {
+                DisableStripeUserAuthentication = disableStripeUserAuthentication
+                ExternalAccountCollection = externalAccountCollection
+                SendMoney = sendMoney
+                TransferBalance = transferBalance
+            }
+
     module Create'ComponentsFinancialAccountFeatures =
         let create
             (
@@ -416,6 +525,13 @@ module AccountSessions =
             Features: Create'ComponentsFinancialAccountFeatures option
         }
 
+    type Create'ComponentsFinancialAccount with
+        static member New(?enabled: bool, ?features: Create'ComponentsFinancialAccountFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     module Create'ComponentsFinancialAccount =
         let create
             (
@@ -434,6 +550,12 @@ module AccountSessions =
             [<Config.Form>]
             CardSpendDisputeManagement: bool option
         }
+
+    type Create'ComponentsFinancialAccountTransactionsFeatures with
+        static member New(?cardSpendDisputeManagement: bool) =
+            {
+                CardSpendDisputeManagement = cardSpendDisputeManagement
+            }
 
     module Create'ComponentsFinancialAccountTransactionsFeatures =
         let create
@@ -454,6 +576,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: Create'ComponentsFinancialAccountTransactionsFeatures option
         }
+
+    type Create'ComponentsFinancialAccountTransactions with
+        static member New(?enabled: bool, ?features: Create'ComponentsFinancialAccountTransactionsFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsFinancialAccountTransactions =
         let create
@@ -480,6 +609,14 @@ module AccountSessions =
             InstantPayouts: bool option
         }
 
+    type Create'ComponentsInstantPayoutsPromotionFeatures with
+        static member New(?disableStripeUserAuthentication: bool, ?externalAccountCollection: bool, ?instantPayouts: bool) =
+            {
+                DisableStripeUserAuthentication = disableStripeUserAuthentication
+                ExternalAccountCollection = externalAccountCollection
+                InstantPayouts = instantPayouts
+            }
+
     module Create'ComponentsInstantPayoutsPromotionFeatures =
         let create
             (
@@ -503,6 +640,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: Create'ComponentsInstantPayoutsPromotionFeatures option
         }
+
+    type Create'ComponentsInstantPayoutsPromotion with
+        static member New(?enabled: bool, ?features: Create'ComponentsInstantPayoutsPromotionFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsInstantPayoutsPromotion =
         let create
@@ -532,6 +676,15 @@ module AccountSessions =
             SpendControlManagement: bool option
         }
 
+    type Create'ComponentsIssuingCardFeatures with
+        static member New(?cardManagement: bool, ?cardSpendDisputeManagement: bool, ?cardholderManagement: bool, ?spendControlManagement: bool) =
+            {
+                CardManagement = cardManagement
+                CardSpendDisputeManagement = cardSpendDisputeManagement
+                CardholderManagement = cardholderManagement
+                SpendControlManagement = spendControlManagement
+            }
+
     module Create'ComponentsIssuingCardFeatures =
         let create
             (
@@ -557,6 +710,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: Create'ComponentsIssuingCardFeatures option
         }
+
+    type Create'ComponentsIssuingCard with
+        static member New(?enabled: bool, ?features: Create'ComponentsIssuingCardFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsIssuingCard =
         let create
@@ -589,6 +749,16 @@ module AccountSessions =
             SpendControlManagement: bool option
         }
 
+    type Create'ComponentsIssuingCardsListFeatures with
+        static member New(?cardManagement: bool, ?cardSpendDisputeManagement: bool, ?cardholderManagement: bool, ?disableStripeUserAuthentication: bool, ?spendControlManagement: bool) =
+            {
+                CardManagement = cardManagement
+                CardSpendDisputeManagement = cardSpendDisputeManagement
+                CardholderManagement = cardholderManagement
+                DisableStripeUserAuthentication = disableStripeUserAuthentication
+                SpendControlManagement = spendControlManagement
+            }
+
     module Create'ComponentsIssuingCardsListFeatures =
         let create
             (
@@ -617,6 +787,13 @@ module AccountSessions =
             Features: Create'ComponentsIssuingCardsListFeatures option
         }
 
+    type Create'ComponentsIssuingCardsList with
+        static member New(?enabled: bool, ?features: Create'ComponentsIssuingCardsListFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     module Create'ComponentsIssuingCardsList =
         let create
             (
@@ -639,6 +816,13 @@ module AccountSessions =
             ExternalAccountCollection: bool option
         }
 
+    type Create'ComponentsNotificationBannerFeatures with
+        static member New(?disableStripeUserAuthentication: bool, ?externalAccountCollection: bool) =
+            {
+                DisableStripeUserAuthentication = disableStripeUserAuthentication
+                ExternalAccountCollection = externalAccountCollection
+            }
+
     module Create'ComponentsNotificationBannerFeatures =
         let create
             (
@@ -660,6 +844,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: Create'ComponentsNotificationBannerFeatures option
         }
+
+    type Create'ComponentsNotificationBanner with
+        static member New(?enabled: bool, ?features: Create'ComponentsNotificationBannerFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsNotificationBanner =
         let create
@@ -689,6 +880,15 @@ module AccountSessions =
             RefundManagement: bool option
         }
 
+    type Create'ComponentsPaymentDetailsFeatures with
+        static member New(?capturePayments: bool, ?destinationOnBehalfOfChargeManagement: bool, ?disputeManagement: bool, ?refundManagement: bool) =
+            {
+                CapturePayments = capturePayments
+                DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
+                DisputeManagement = disputeManagement
+                RefundManagement = refundManagement
+            }
+
     module Create'ComponentsPaymentDetailsFeatures =
         let create
             (
@@ -715,6 +915,13 @@ module AccountSessions =
             Features: Create'ComponentsPaymentDetailsFeatures option
         }
 
+    type Create'ComponentsPaymentDetails with
+        static member New(?enabled: bool, ?features: Create'ComponentsPaymentDetailsFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     module Create'ComponentsPaymentDetails =
         let create
             (
@@ -740,6 +947,14 @@ module AccountSessions =
             RefundManagement: bool option
         }
 
+    type Create'ComponentsPaymentDisputesFeatures with
+        static member New(?destinationOnBehalfOfChargeManagement: bool, ?disputeManagement: bool, ?refundManagement: bool) =
+            {
+                DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
+                DisputeManagement = disputeManagement
+                RefundManagement = refundManagement
+            }
+
     module Create'ComponentsPaymentDisputesFeatures =
         let create
             (
@@ -763,6 +978,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: Create'ComponentsPaymentDisputesFeatures option
         }
+
+    type Create'ComponentsPaymentDisputes with
+        static member New(?enabled: bool, ?features: Create'ComponentsPaymentDisputesFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsPaymentDisputes =
         let create
@@ -792,6 +1014,15 @@ module AccountSessions =
             RefundManagement: bool option
         }
 
+    type Create'ComponentsPaymentsFeatures with
+        static member New(?capturePayments: bool, ?destinationOnBehalfOfChargeManagement: bool, ?disputeManagement: bool, ?refundManagement: bool) =
+            {
+                CapturePayments = capturePayments
+                DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
+                DisputeManagement = disputeManagement
+                RefundManagement = refundManagement
+            }
+
     module Create'ComponentsPaymentsFeatures =
         let create
             (
@@ -818,6 +1049,13 @@ module AccountSessions =
             Features: Create'ComponentsPaymentsFeatures option
         }
 
+    type Create'ComponentsPayments with
+        static member New(?enabled: bool, ?features: Create'ComponentsPaymentsFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     module Create'ComponentsPayments =
         let create
             (
@@ -840,6 +1078,13 @@ module AccountSessions =
             Features: string option
         }
 
+    type Create'ComponentsPayoutDetails with
+        static member New(?enabled: bool, ?features: string) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     module Create'ComponentsPayoutDetails =
         let create
             (
@@ -861,6 +1106,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: string option
         }
+
+    type Create'ComponentsPayoutReconciliationReport with
+        static member New(?enabled: bool, ?features: string) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsPayoutReconciliationReport =
         let create
@@ -893,6 +1145,16 @@ module AccountSessions =
             StandardPayouts: bool option
         }
 
+    type Create'ComponentsPayoutsFeatures with
+        static member New(?disableStripeUserAuthentication: bool, ?editPayoutSchedule: bool, ?externalAccountCollection: bool, ?instantPayouts: bool, ?standardPayouts: bool) =
+            {
+                DisableStripeUserAuthentication = disableStripeUserAuthentication
+                EditPayoutSchedule = editPayoutSchedule
+                ExternalAccountCollection = externalAccountCollection
+                InstantPayouts = instantPayouts
+                StandardPayouts = standardPayouts
+            }
+
     module Create'ComponentsPayoutsFeatures =
         let create
             (
@@ -921,6 +1183,13 @@ module AccountSessions =
             Features: Create'ComponentsPayoutsFeatures option
         }
 
+    type Create'ComponentsPayouts with
+        static member New(?enabled: bool, ?features: Create'ComponentsPayoutsFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     module Create'ComponentsPayouts =
         let create
             (
@@ -942,6 +1211,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: string option
         }
+
+    type Create'ComponentsPayoutsList with
+        static member New(?enabled: bool, ?features: string) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsPayoutsList =
         let create
@@ -965,6 +1241,13 @@ module AccountSessions =
             Features: string option
         }
 
+    type Create'ComponentsTaxRegistrations with
+        static member New(?enabled: bool, ?features: string) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     module Create'ComponentsTaxRegistrations =
         let create
             (
@@ -986,6 +1269,13 @@ module AccountSessions =
             [<Config.Form>]
             Features: string option
         }
+
+    type Create'ComponentsTaxSettings with
+        static member New(?enabled: bool, ?features: string) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsTaxSettings =
         let create
@@ -1066,6 +1356,32 @@ module AccountSessions =
             TaxSettings: Create'ComponentsTaxSettings option
         }
 
+    type Create'Components with
+        static member New(?accountManagement: Create'ComponentsAccountManagement, ?accountOnboarding: Create'ComponentsAccountOnboarding, ?balanceReport: Create'ComponentsBalanceReport, ?balances: Create'ComponentsBalances, ?disputesList: Create'ComponentsDisputesList, ?documents: Create'ComponentsDocuments, ?financialAccount: Create'ComponentsFinancialAccount, ?financialAccountTransactions: Create'ComponentsFinancialAccountTransactions, ?instantPayoutsPromotion: Create'ComponentsInstantPayoutsPromotion, ?issuingCard: Create'ComponentsIssuingCard, ?issuingCardsList: Create'ComponentsIssuingCardsList, ?notificationBanner: Create'ComponentsNotificationBanner, ?paymentDetails: Create'ComponentsPaymentDetails, ?paymentDisputes: Create'ComponentsPaymentDisputes, ?payments: Create'ComponentsPayments, ?payoutDetails: Create'ComponentsPayoutDetails, ?payoutReconciliationReport: Create'ComponentsPayoutReconciliationReport, ?payouts: Create'ComponentsPayouts, ?payoutsList: Create'ComponentsPayoutsList, ?taxRegistrations: Create'ComponentsTaxRegistrations, ?taxSettings: Create'ComponentsTaxSettings) =
+            {
+                AccountManagement = accountManagement
+                AccountOnboarding = accountOnboarding
+                BalanceReport = balanceReport
+                Balances = balances
+                DisputesList = disputesList
+                Documents = documents
+                FinancialAccount = financialAccount
+                FinancialAccountTransactions = financialAccountTransactions
+                InstantPayoutsPromotion = instantPayoutsPromotion
+                IssuingCard = issuingCard
+                IssuingCardsList = issuingCardsList
+                NotificationBanner = notificationBanner
+                PaymentDetails = paymentDetails
+                PaymentDisputes = paymentDisputes
+                Payments = payments
+                PayoutDetails = payoutDetails
+                PayoutReconciliationReport = payoutReconciliationReport
+                Payouts = payouts
+                PayoutsList = payoutsList
+                TaxRegistrations = taxRegistrations
+                TaxSettings = taxSettings
+            }
+
     module Create'Components =
         let create
             (
@@ -1129,6 +1445,14 @@ module AccountSessions =
             Expand: string list option
         }
 
+    type CreateOptions with
+        static member New(account: string, components: Create'Components, ?expand: string list) =
+            {
+                Account = account
+                Components = components
+                Expand = expand
+            }
+
     module CreateOptions =
         let create
             (
@@ -1171,6 +1495,17 @@ module BillingAlerts =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?alertType: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?meter: string, ?startingAfter: string) =
+            {
+                AlertType = alertType
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                Meter = meter
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -1205,16 +1540,23 @@ module BillingAlerts =
             Type: Create'UsageThresholdFiltersType option
         }
 
+    type Create'UsageThresholdFilters with
+        static member New(?customer: string, ?type': Create'UsageThresholdFiltersType) =
+            {
+                Customer = customer
+                Type = type'
+            }
+
     module Create'UsageThresholdFilters =
         let create
             (
                 customer: string option,
-                ``type``: Create'UsageThresholdFiltersType option
+                type': Create'UsageThresholdFiltersType option
             ) : Create'UsageThresholdFilters
             =
             {
               Customer = customer
-              Type = ``type``
+              Type = type'
             }
 
     type Create'UsageThresholdRecurrence = | OneTime
@@ -1234,6 +1576,15 @@ module BillingAlerts =
             [<Config.Form>]
             Recurrence: Create'UsageThresholdRecurrence option
         }
+
+    type Create'UsageThreshold with
+        static member New(?filters: Create'UsageThresholdFilters list, ?gte: int, ?meter: string, ?recurrence: Create'UsageThresholdRecurrence) =
+            {
+                Filters = filters
+                Gte = gte
+                Meter = meter
+                Recurrence = recurrence
+            }
 
     module Create'UsageThreshold =
         let create
@@ -1267,6 +1618,15 @@ module BillingAlerts =
             UsageThreshold: Create'UsageThreshold option
         }
 
+    type CreateOptions with
+        static member New(alertType: Create'AlertType, title: string, ?expand: string list, ?usageThreshold: Create'UsageThreshold) =
+            {
+                AlertType = alertType
+                Title = title
+                Expand = expand
+                UsageThreshold = usageThreshold
+            }
+
     module CreateOptions =
         let create
             (
@@ -1289,6 +1649,13 @@ module BillingAlerts =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -1329,6 +1696,13 @@ module BillingAlertsActivate =
             Expand: string list option
         }
 
+    type ActivateOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module ActivateOptions =
         let create
             (
@@ -1356,6 +1730,13 @@ module BillingAlertsArchive =
             Expand: string list option
         }
 
+    type ArchiveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module ArchiveOptions =
         let create
             (
@@ -1382,6 +1763,13 @@ module BillingAlertsDeactivate =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type DeactivateOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module DeactivateOptions =
         let create
@@ -1416,6 +1804,15 @@ module BillingCreditBalanceSummary =
             [<Config.Query>]
             Filter: Map<string, string>
         }
+
+    type RetrieveOptions with
+        static member New(filter: Map<string, string>, ?customer: string, ?customerAccount: string, ?expand: string list) =
+            {
+                Filter = filter
+                Customer = customer
+                CustomerAccount = customerAccount
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -1463,6 +1860,18 @@ module BillingCreditBalanceTransactions =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?creditGrant: string, ?customer: string, ?customerAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                CreditGrant = creditGrant
+                Customer = customer
+                CustomerAccount = customerAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -1494,6 +1903,13 @@ module BillingCreditBalanceTransactions =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -1542,6 +1958,17 @@ module BillingCreditGrants =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?customer: string, ?customerAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Customer = customer
+                CustomerAccount = customerAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -1572,6 +1999,13 @@ module BillingCreditGrants =
             Value: int option
         }
 
+    type Create'AmountMonetary with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?value: int) =
+            {
+                Currency = currency
+                Value = value
+            }
+
     module Create'AmountMonetary =
         let create
             (
@@ -1596,16 +2030,23 @@ module BillingCreditGrants =
             Type: Create'AmountType option
         }
 
+    type Create'Amount with
+        static member New(?monetary: Create'AmountMonetary, ?type': Create'AmountType) =
+            {
+                Monetary = monetary
+                Type = type'
+            }
+
     module Create'Amount =
         let create
             (
                 monetary: Create'AmountMonetary option,
-                ``type``: Create'AmountType option
+                type': Create'AmountType option
             ) : Create'Amount
             =
             {
               Monetary = monetary
-              Type = ``type``
+              Type = type'
             }
 
     type Create'ApplicabilityConfigScopePriceType = | Metered
@@ -1616,6 +2057,12 @@ module BillingCreditGrants =
             [<Config.Form>]
             Id: string option
         }
+
+    type Create'ApplicabilityConfigScopePrices with
+        static member New(?id: string) =
+            {
+                Id = id
+            }
 
     module Create'ApplicabilityConfigScopePrices =
         let create
@@ -1637,6 +2084,13 @@ module BillingCreditGrants =
             Prices: Create'ApplicabilityConfigScopePrices list option
         }
 
+    type Create'ApplicabilityConfigScope with
+        static member New(?priceType: Create'ApplicabilityConfigScopePriceType, ?prices: Create'ApplicabilityConfigScopePrices list) =
+            {
+                PriceType = priceType
+                Prices = prices
+            }
+
     module Create'ApplicabilityConfigScope =
         let create
             (
@@ -1655,6 +2109,12 @@ module BillingCreditGrants =
             [<Config.Form>]
             Scope: Create'ApplicabilityConfigScope option
         }
+
+    type Create'ApplicabilityConfig with
+        static member New(?scope: Create'ApplicabilityConfigScope) =
+            {
+                Scope = scope
+            }
 
     module Create'ApplicabilityConfig =
         let create
@@ -1707,6 +2167,22 @@ module BillingCreditGrants =
             Priority: int option
         }
 
+    type CreateOptions with
+        static member New(amount: Create'Amount, applicabilityConfig: Create'ApplicabilityConfig, ?category: Create'Category, ?customer: string, ?customerAccount: string, ?effectiveAt: DateTime, ?expand: string list, ?expiresAt: DateTime, ?metadata: Map<string, string>, ?name: string, ?priority: int) =
+            {
+                Amount = amount
+                ApplicabilityConfig = applicabilityConfig
+                Category = category
+                Customer = customer
+                CustomerAccount = customerAccount
+                EffectiveAt = effectiveAt
+                Expand = expand
+                ExpiresAt = expiresAt
+                Metadata = metadata
+                Name = name
+                Priority = priority
+            }
+
     module CreateOptions =
         let create
             (
@@ -1738,6 +2214,13 @@ module BillingCreditGrants =
             Id: string
         }
 
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -1764,6 +2247,15 @@ module BillingCreditGrants =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(id: string, ?expand: string list, ?expiresAt: Choice<DateTime,string>, ?metadata: Map<string, string>) =
+            {
+                Id = id
+                Expand = expand
+                ExpiresAt = expiresAt
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -1812,6 +2304,13 @@ module BillingCreditGrantsExpire =
             Expand: string list option
         }
 
+    type ExpireOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module ExpireOptions =
         let create
             (
@@ -1840,6 +2339,13 @@ module BillingCreditGrantsVoid =
             Expand: string list option
         }
 
+    type VoidGrantOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module VoidGrantOptions =
         let create
             (
@@ -1864,6 +2370,12 @@ module BillingMeterEventAdjustments =
             [<Config.Form>]
             Identifier: string option
         }
+
+    type Create'Cancel with
+        static member New(?identifier: string) =
+            {
+                Identifier = identifier
+            }
 
     module Create'Cancel =
         let create
@@ -1893,16 +2405,25 @@ module BillingMeterEventAdjustments =
             Type: Create'Type
         }
 
+    type CreateOptions with
+        static member New(eventName: string, type': Create'Type, ?cancel: Create'Cancel, ?expand: string list) =
+            {
+                EventName = eventName
+                Type = type'
+                Cancel = cancel
+                Expand = expand
+            }
+
     module CreateOptions =
         let create
             (
                 eventName: string,
-                ``type``: Create'Type
+                type': Create'Type
             ) : CreateOptions
             =
             {
               EventName = eventName
-              Type = ``type``
+              Type = type'
               Cancel = None
               Expand = None
             }
@@ -1932,6 +2453,16 @@ module BillingMeterEvents =
             [<Config.Form>]
             Timestamp: DateTime option
         }
+
+    type CreateOptions with
+        static member New(eventName: string, payload: Map<string, string>, ?expand: string list, ?identifier: string, ?timestamp: DateTime) =
+            {
+                EventName = eventName
+                Payload = payload
+                Expand = expand
+                Identifier = identifier
+                Timestamp = timestamp
+            }
 
     module CreateOptions =
         let create
@@ -1974,6 +2505,16 @@ module BillingMeters =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -2004,16 +2545,23 @@ module BillingMeters =
             Type: Create'CustomerMappingType option
         }
 
+    type Create'CustomerMapping with
+        static member New(?eventPayloadKey: string, ?type': Create'CustomerMappingType) =
+            {
+                EventPayloadKey = eventPayloadKey
+                Type = type'
+            }
+
     module Create'CustomerMapping =
         let create
             (
                 eventPayloadKey: string option,
-                ``type``: Create'CustomerMappingType option
+                type': Create'CustomerMappingType option
             ) : Create'CustomerMapping
             =
             {
               EventPayloadKey = eventPayloadKey
-              Type = ``type``
+              Type = type'
             }
 
     type Create'DefaultAggregationFormula =
@@ -2027,6 +2575,12 @@ module BillingMeters =
             [<Config.Form>]
             Formula: Create'DefaultAggregationFormula option
         }
+
+    type Create'DefaultAggregation with
+        static member New(?formula: Create'DefaultAggregationFormula) =
+            {
+                Formula = formula
+            }
 
     module Create'DefaultAggregation =
         let create
@@ -2048,6 +2602,12 @@ module BillingMeters =
             [<Config.Form>]
             EventPayloadKey: string option
         }
+
+    type Create'ValueSettings with
+        static member New(?eventPayloadKey: string) =
+            {
+                EventPayloadKey = eventPayloadKey
+            }
 
     module Create'ValueSettings =
         let create
@@ -2084,6 +2644,18 @@ module BillingMeters =
             ValueSettings: Create'ValueSettings option
         }
 
+    type CreateOptions with
+        static member New(defaultAggregation: Create'DefaultAggregation, displayName: string, eventName: string, ?customerMapping: Create'CustomerMapping, ?eventTimeWindow: Create'EventTimeWindow, ?expand: string list, ?valueSettings: Create'ValueSettings) =
+            {
+                DefaultAggregation = defaultAggregation
+                DisplayName = displayName
+                EventName = eventName
+                CustomerMapping = customerMapping
+                EventTimeWindow = eventTimeWindow
+                Expand = expand
+                ValueSettings = valueSettings
+            }
+
     module CreateOptions =
         let create
             (
@@ -2111,6 +2683,13 @@ module BillingMeters =
             Id: string
         }
 
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -2133,6 +2712,14 @@ module BillingMeters =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type UpdateOptions with
+        static member New(id: string, ?displayName: string, ?expand: string list) =
+            {
+                Id = id
+                DisplayName = displayName
+                Expand = expand
+            }
 
     module UpdateOptions =
         let create
@@ -2178,6 +2765,13 @@ module BillingMetersDeactivate =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type DeactivateOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module DeactivateOptions =
         let create
@@ -2228,6 +2822,20 @@ module BillingMetersEventSummaries =
             ValueGroupingWindow: string option
         }
 
+    type ListOptions with
+        static member New(customer: string, endTime: int, id: string, startTime: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?valueGroupingWindow: string) =
+            {
+                Customer = customer
+                EndTime = endTime
+                Id = id
+                StartTime = startTime
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                ValueGroupingWindow = valueGroupingWindow
+            }
+
     module ListOptions =
         let create
             (
@@ -2266,6 +2874,13 @@ module BillingMetersReactivate =
             Expand: string list option
         }
 
+    type ReactivateOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module ReactivateOptions =
         let create
             (
@@ -2290,6 +2905,12 @@ module CustomerSessions =
             [<Config.Form>]
             Enabled: bool option
         }
+
+    type Create'ComponentsBuyButton with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
 
     module Create'ComponentsBuyButton =
         let create
@@ -2323,6 +2944,13 @@ module CustomerSessions =
             PaymentMethodRemove: Create'ComponentsCustomerSheetFeaturesPaymentMethodRemove option
         }
 
+    type Create'ComponentsCustomerSheetFeatures with
+        static member New(?paymentMethodAllowRedisplayFilters: Create'ComponentsCustomerSheetFeaturesPaymentMethodAllowRedisplayFilters list, ?paymentMethodRemove: Create'ComponentsCustomerSheetFeaturesPaymentMethodRemove) =
+            {
+                PaymentMethodAllowRedisplayFilters = paymentMethodAllowRedisplayFilters
+                PaymentMethodRemove = paymentMethodRemove
+            }
+
     module Create'ComponentsCustomerSheetFeatures =
         let create
             (
@@ -2344,6 +2972,13 @@ module CustomerSessions =
             [<Config.Form>]
             Features: Create'ComponentsCustomerSheetFeatures option
         }
+
+    type Create'ComponentsCustomerSheet with
+        static member New(?enabled: bool, ?features: Create'ComponentsCustomerSheetFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsCustomerSheet =
         let create
@@ -2404,6 +3039,16 @@ module CustomerSessions =
                 Create'ComponentsMobilePaymentElementFeaturesPaymentMethodSaveAllowRedisplayOverride option
         }
 
+    type Create'ComponentsMobilePaymentElementFeatures with
+        static member New(?paymentMethodAllowRedisplayFilters: Create'ComponentsMobilePaymentElementFeaturesPaymentMethodAllowRedisplayFilters list, ?paymentMethodRedisplay: Create'ComponentsMobilePaymentElementFeaturesPaymentMethodRedisplay, ?paymentMethodRemove: Create'ComponentsMobilePaymentElementFeaturesPaymentMethodRemove, ?paymentMethodSave: Create'ComponentsMobilePaymentElementFeaturesPaymentMethodSave, ?paymentMethodSaveAllowRedisplayOverride: Create'ComponentsMobilePaymentElementFeaturesPaymentMethodSaveAllowRedisplayOverride) =
+            {
+                PaymentMethodAllowRedisplayFilters = paymentMethodAllowRedisplayFilters
+                PaymentMethodRedisplay = paymentMethodRedisplay
+                PaymentMethodRemove = paymentMethodRemove
+                PaymentMethodSave = paymentMethodSave
+                PaymentMethodSaveAllowRedisplayOverride = paymentMethodSaveAllowRedisplayOverride
+            }
+
     module Create'ComponentsMobilePaymentElementFeatures =
         let create
             (
@@ -2431,6 +3076,13 @@ module CustomerSessions =
             [<Config.Form>]
             Features: Create'ComponentsMobilePaymentElementFeatures option
         }
+
+    type Create'ComponentsMobilePaymentElement with
+        static member New(?enabled: bool, ?features: Create'ComponentsMobilePaymentElementFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
 
     module Create'ComponentsMobilePaymentElement =
         let create
@@ -2492,6 +3144,17 @@ module CustomerSessions =
             PaymentMethodSaveUsage: Create'ComponentsPaymentElementFeaturesPaymentMethodSaveUsage option
         }
 
+    type Create'ComponentsPaymentElementFeatures with
+        static member New(?paymentMethodAllowRedisplayFilters: Create'ComponentsPaymentElementFeaturesPaymentMethodAllowRedisplayFilters list, ?paymentMethodRedisplay: Create'ComponentsPaymentElementFeaturesPaymentMethodRedisplay, ?paymentMethodRedisplayLimit: int, ?paymentMethodRemove: Create'ComponentsPaymentElementFeaturesPaymentMethodRemove, ?paymentMethodSave: Create'ComponentsPaymentElementFeaturesPaymentMethodSave, ?paymentMethodSaveUsage: Create'ComponentsPaymentElementFeaturesPaymentMethodSaveUsage) =
+            {
+                PaymentMethodAllowRedisplayFilters = paymentMethodAllowRedisplayFilters
+                PaymentMethodRedisplay = paymentMethodRedisplay
+                PaymentMethodRedisplayLimit = paymentMethodRedisplayLimit
+                PaymentMethodRemove = paymentMethodRemove
+                PaymentMethodSave = paymentMethodSave
+                PaymentMethodSaveUsage = paymentMethodSaveUsage
+            }
+
     module Create'ComponentsPaymentElementFeatures =
         let create
             (
@@ -2522,6 +3185,13 @@ module CustomerSessions =
             Features: Create'ComponentsPaymentElementFeatures option
         }
 
+    type Create'ComponentsPaymentElement with
+        static member New(?enabled: bool, ?features: Create'ComponentsPaymentElementFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     module Create'ComponentsPaymentElement =
         let create
             (
@@ -2540,6 +3210,12 @@ module CustomerSessions =
             [<Config.Form>]
             Enabled: bool option
         }
+
+    type Create'ComponentsPricingTable with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
 
     module Create'ComponentsPricingTable =
         let create
@@ -2569,6 +3245,16 @@ module CustomerSessions =
             [<Config.Form>]
             PricingTable: Create'ComponentsPricingTable option
         }
+
+    type Create'Components with
+        static member New(?buyButton: Create'ComponentsBuyButton, ?customerSheet: Create'ComponentsCustomerSheet, ?mobilePaymentElement: Create'ComponentsMobilePaymentElement, ?paymentElement: Create'ComponentsPaymentElement, ?pricingTable: Create'ComponentsPricingTable) =
+            {
+                BuyButton = buyButton
+                CustomerSheet = customerSheet
+                MobilePaymentElement = mobilePaymentElement
+                PaymentElement = paymentElement
+                PricingTable = pricingTable
+            }
 
     module Create'Components =
         let create
@@ -2604,6 +3290,15 @@ module CustomerSessions =
             Expand: string list option
         }
 
+    type CreateOptions with
+        static member New(components: Create'Components, ?customer: string, ?customerAccount: string, ?expand: string list) =
+            {
+                Components = components
+                Customer = customer
+                CustomerAccount = customerAccount
+                Expand = expand
+            }
+
     module CreateOptions =
         let create
             (
@@ -2621,6 +3316,595 @@ module CustomerSessions =
     let Create settings (options: CreateOptions) =
         $"/v1/customer_sessions"
         |> RestApi.postAsync<_, CustomerSession> settings (Map.empty) options
+
+module FinancialConnectionsAccounts =
+
+    type ListOptions =
+        {
+            /// If present, only return accounts that belong to the specified account holder. `account_holder[customer]` and `account_holder[account]` are mutually exclusive.
+            [<Config.Query>]
+            AccountHolder: Map<string, string> option
+            /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+            [<Config.Query>]
+            EndingBefore: string option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+            [<Config.Query>]
+            Limit: int option
+            /// If present, only return accounts that were collected as part of the given session.
+            [<Config.Query>]
+            Session: string option
+            /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+            [<Config.Query>]
+            StartingAfter: string option
+        }
+
+    type ListOptions with
+        static member New(?accountHolder: Map<string, string>, ?endingBefore: string, ?expand: string list, ?limit: int, ?session: string, ?startingAfter: string) =
+            {
+                AccountHolder = accountHolder
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                Session = session
+                StartingAfter = startingAfter
+            }
+
+    module ListOptions =
+        let create
+            (
+                accountHolder: Map<string, string> option,
+                endingBefore: string option,
+                expand: string list option,
+                limit: int option,
+                session: string option,
+                startingAfter: string option
+            ) : ListOptions
+            =
+            {
+              AccountHolder = accountHolder
+              EndingBefore = endingBefore
+              Expand = expand
+              Limit = limit
+              Session = session
+              StartingAfter = startingAfter
+            }
+
+    type RetrieveOptions =
+        {
+            [<Config.Path>]
+            Account: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+        }
+
+    type RetrieveOptions with
+        static member New(account: string, ?expand: string list) =
+            {
+                Account = account
+                Expand = expand
+            }
+
+    module RetrieveOptions =
+        let create
+            (
+                account: string
+            ) : RetrieveOptions
+            =
+            {
+              Account = account
+              Expand = None
+            }
+
+    ///<p>Returns a list of Financial Connections <code>Account</code> objects.</p>
+    let List settings (options: ListOptions) =
+        let qs = [("account_holder", options.AccountHolder |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("session", options.Session |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+        $"/v1/financial_connections/accounts"
+        |> RestApi.getAsync<StripeList<FinancialConnectionsAccount>> settings qs
+
+    ///<p>Retrieves the details of an Financial Connections <code>Account</code>.</p>
+    let Retrieve settings (options: RetrieveOptions) =
+        let qs = [("expand", options.Expand |> box)] |> Map.ofList
+        $"/v1/financial_connections/accounts/{options.Account}"
+        |> RestApi.getAsync<FinancialConnectionsAccount> settings qs
+
+module FinancialConnectionsAccountsDisconnect =
+
+    type DisconnectOptions =
+        {
+            [<Config.Path>]
+            Account: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+        }
+
+    type DisconnectOptions with
+        static member New(account: string, ?expand: string list) =
+            {
+                Account = account
+                Expand = expand
+            }
+
+    module DisconnectOptions =
+        let create
+            (
+                account: string
+            ) : DisconnectOptions
+            =
+            {
+              Account = account
+              Expand = None
+            }
+
+    ///<p>Disables your access to a Financial Connections <code>Account</code>. You will no longer be able to access data associated with the account (e.g. balances, transactions).</p>
+    let Disconnect settings (options: DisconnectOptions) =
+        $"/v1/financial_connections/accounts/{options.Account}/disconnect"
+        |> RestApi.postAsync<_, FinancialConnectionsAccount> settings (Map.empty) options
+
+module FinancialConnectionsAccountsOwners =
+
+    type ListOwnersOptions =
+        {
+            [<Config.Path>]
+            Account: string
+            /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+            [<Config.Query>]
+            EndingBefore: string option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+            [<Config.Query>]
+            Limit: int option
+            /// The ID of the ownership object to fetch owners from.
+            [<Config.Query>]
+            Ownership: string
+            /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+            [<Config.Query>]
+            StartingAfter: string option
+        }
+
+    type ListOwnersOptions with
+        static member New(account: string, ownership: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Account = account
+                Ownership = ownership
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
+    module ListOwnersOptions =
+        let create
+            (
+                account: string,
+                ownership: string
+            ) : ListOwnersOptions
+            =
+            {
+              Account = account
+              Ownership = ownership
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+            }
+
+    ///<p>Lists all owners for a given <code>Account</code></p>
+    let ListOwners settings (options: ListOwnersOptions) =
+        let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("ownership", options.Ownership |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+        $"/v1/financial_connections/accounts/{options.Account}/owners"
+        |> RestApi.getAsync<StripeList<FinancialConnectionsAccountOwner>> settings qs
+
+module FinancialConnectionsAccountsRefresh =
+
+    type Refresh'Features =
+        | Balance
+        | Ownership
+        | Transactions
+
+    type RefreshOptions =
+        {
+            [<Config.Path>]
+            Account: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+            /// The list of account features that you would like to refresh.
+            [<Config.Form>]
+            Features: Refresh'Features list
+        }
+
+    type RefreshOptions with
+        static member New(account: string, features: Refresh'Features list, ?expand: string list) =
+            {
+                Account = account
+                Features = features
+                Expand = expand
+            }
+
+    module RefreshOptions =
+        let create
+            (
+                account: string,
+                features: Refresh'Features list
+            ) : RefreshOptions
+            =
+            {
+              Account = account
+              Features = features
+              Expand = None
+            }
+
+    ///<p>Refreshes the data associated with a Financial Connections <code>Account</code>.</p>
+    let Refresh settings (options: RefreshOptions) =
+        $"/v1/financial_connections/accounts/{options.Account}/refresh"
+        |> RestApi.postAsync<_, FinancialConnectionsAccount> settings (Map.empty) options
+
+module FinancialConnectionsAccountsSubscribe =
+
+    type Subscribe'Features = | Transactions
+
+    type SubscribeOptions =
+        {
+            [<Config.Path>]
+            Account: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+            /// The list of account features to which you would like to subscribe.
+            [<Config.Form>]
+            Features: Subscribe'Features list
+        }
+
+    type SubscribeOptions with
+        static member New(account: string, features: Subscribe'Features list, ?expand: string list) =
+            {
+                Account = account
+                Features = features
+                Expand = expand
+            }
+
+    module SubscribeOptions =
+        let create
+            (
+                account: string,
+                features: Subscribe'Features list
+            ) : SubscribeOptions
+            =
+            {
+              Account = account
+              Features = features
+              Expand = None
+            }
+
+    ///<p>Subscribes to periodic refreshes of data associated with a Financial Connections <code>Account</code>. When the account status is active, data is typically refreshed once a day.</p>
+    let Subscribe settings (options: SubscribeOptions) =
+        $"/v1/financial_connections/accounts/{options.Account}/subscribe"
+        |> RestApi.postAsync<_, FinancialConnectionsAccount> settings (Map.empty) options
+
+module FinancialConnectionsAccountsUnsubscribe =
+
+    type Unsubscribe'Features = | Transactions
+
+    type UnsubscribeOptions =
+        {
+            [<Config.Path>]
+            Account: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+            /// The list of account features from which you would like to unsubscribe.
+            [<Config.Form>]
+            Features: Unsubscribe'Features list
+        }
+
+    type UnsubscribeOptions with
+        static member New(account: string, features: Unsubscribe'Features list, ?expand: string list) =
+            {
+                Account = account
+                Features = features
+                Expand = expand
+            }
+
+    module UnsubscribeOptions =
+        let create
+            (
+                account: string,
+                features: Unsubscribe'Features list
+            ) : UnsubscribeOptions
+            =
+            {
+              Account = account
+              Features = features
+              Expand = None
+            }
+
+    ///<p>Unsubscribes from periodic refreshes of data associated with a Financial Connections <code>Account</code>.</p>
+    let Unsubscribe settings (options: UnsubscribeOptions) =
+        $"/v1/financial_connections/accounts/{options.Account}/unsubscribe"
+        |> RestApi.postAsync<_, FinancialConnectionsAccount> settings (Map.empty) options
+
+module FinancialConnectionsSessions =
+
+    type Create'AccountHolderType =
+        | Account
+        | Customer
+
+    type Create'AccountHolder =
+        {
+            /// The ID of the Stripe account whose accounts you will retrieve. Only available when `type` is `account`.
+            [<Config.Form>]
+            Account: string option
+            /// The ID of the Stripe customer whose accounts you will retrieve. Only available when `type` is `customer`.
+            [<Config.Form>]
+            Customer: string option
+            /// The ID of Account representing a customer whose accounts you will retrieve. Only available when `type` is `customer`.
+            [<Config.Form>]
+            CustomerAccount: string option
+            /// Type of account holder to collect accounts for.
+            [<Config.Form>]
+            Type: Create'AccountHolderType option
+        }
+
+    type Create'AccountHolder with
+        static member New(?account: string, ?customer: string, ?customerAccount: string, ?type': Create'AccountHolderType) =
+            {
+                Account = account
+                Customer = customer
+                CustomerAccount = customerAccount
+                Type = type'
+            }
+
+    module Create'AccountHolder =
+        let create
+            (
+                account: string option,
+                customer: string option,
+                customerAccount: string option,
+                type': Create'AccountHolderType option
+            ) : Create'AccountHolder
+            =
+            {
+              Account = account
+              Customer = customer
+              CustomerAccount = customerAccount
+              Type = type'
+            }
+
+    type Create'FiltersAccountSubcategories =
+        | Checking
+        | CreditCard
+        | LineOfCredit
+        | Mortgage
+        | Savings
+
+    type Create'Filters =
+        {
+            /// Restricts the Session to subcategories of accounts that can be linked. Valid subcategories are: `checking`, `savings`, `mortgage`, `line_of_credit`, `credit_card`.
+            [<Config.Form>]
+            AccountSubcategories: Create'FiltersAccountSubcategories list option
+            /// List of countries from which to collect accounts.
+            [<Config.Form>]
+            Countries: string list option
+        }
+
+    type Create'Filters with
+        static member New(?accountSubcategories: Create'FiltersAccountSubcategories list, ?countries: string list) =
+            {
+                AccountSubcategories = accountSubcategories
+                Countries = countries
+            }
+
+    module Create'Filters =
+        let create
+            (
+                accountSubcategories: Create'FiltersAccountSubcategories list option,
+                countries: string list option
+            ) : Create'Filters
+            =
+            {
+              AccountSubcategories = accountSubcategories
+              Countries = countries
+            }
+
+    type Create'Permissions =
+        | Balances
+        | Ownership
+        | PaymentMethod
+        | Transactions
+
+    type Create'Prefetch =
+        | Balances
+        | Ownership
+        | Transactions
+
+    type CreateOptions =
+        {
+            /// The account holder to link accounts for.
+            [<Config.Form>]
+            AccountHolder: Create'AccountHolder
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+            /// Filters to restrict the kinds of accounts to collect.
+            [<Config.Form>]
+            Filters: Create'Filters option
+            /// List of data features that you would like to request access to.
+            /// Possible values are `balances`, `transactions`, `ownership`, and `payment_method`.
+            [<Config.Form>]
+            Permissions: Create'Permissions list
+            /// List of data features that you would like to retrieve upon account creation.
+            [<Config.Form>]
+            Prefetch: Create'Prefetch list option
+            /// For webview integrations only. Upon completing OAuth login in the native browser, the user will be redirected to this URL to return to your app.
+            [<Config.Form>]
+            ReturnUrl: string option
+        }
+
+    type CreateOptions with
+        static member New(accountHolder: Create'AccountHolder, permissions: Create'Permissions list, ?expand: string list, ?filters: Create'Filters, ?prefetch: Create'Prefetch list, ?returnUrl: string) =
+            {
+                AccountHolder = accountHolder
+                Permissions = permissions
+                Expand = expand
+                Filters = filters
+                Prefetch = prefetch
+                ReturnUrl = returnUrl
+            }
+
+    module CreateOptions =
+        let create
+            (
+                accountHolder: Create'AccountHolder,
+                permissions: Create'Permissions list
+            ) : CreateOptions
+            =
+            {
+              AccountHolder = accountHolder
+              Permissions = permissions
+              Expand = None
+              Filters = None
+              Prefetch = None
+              ReturnUrl = None
+            }
+
+    type RetrieveOptions =
+        {
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            [<Config.Path>]
+            Session: string
+        }
+
+    type RetrieveOptions with
+        static member New(session: string, ?expand: string list) =
+            {
+                Session = session
+                Expand = expand
+            }
+
+    module RetrieveOptions =
+        let create
+            (
+                session: string
+            ) : RetrieveOptions
+            =
+            {
+              Session = session
+              Expand = None
+            }
+
+    ///<p>To launch the Financial Connections authorization flow, create a <code>Session</code>. The session’s <code>client_secret</code> can be used to launch the flow using Stripe.js.</p>
+    let Create settings (options: CreateOptions) =
+        $"/v1/financial_connections/sessions"
+        |> RestApi.postAsync<_, FinancialConnectionsSession> settings (Map.empty) options
+
+    ///<p>Retrieves the details of a Financial Connections <code>Session</code></p>
+    let Retrieve settings (options: RetrieveOptions) =
+        let qs = [("expand", options.Expand |> box)] |> Map.ofList
+        $"/v1/financial_connections/sessions/{options.Session}"
+        |> RestApi.getAsync<FinancialConnectionsSession> settings qs
+
+module FinancialConnectionsTransactions =
+
+    type ListOptions =
+        {
+            /// The ID of the Financial Connections Account whose transactions will be retrieved.
+            [<Config.Query>]
+            Account: string
+            /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+            [<Config.Query>]
+            EndingBefore: string option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+            [<Config.Query>]
+            Limit: int option
+            /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+            [<Config.Query>]
+            StartingAfter: string option
+            /// A filter on the list based on the object `transacted_at` field. The value can be a string with an integer Unix timestamp, or it can be a dictionary with the following options:
+            [<Config.Query>]
+            TransactedAt: int option
+            /// A filter on the list based on the object `transaction_refresh` field. The value can be a dictionary with the following options:
+            [<Config.Query>]
+            TransactionRefresh: Map<string, string> option
+        }
+
+    type ListOptions with
+        static member New(account: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?transactedAt: int, ?transactionRefresh: Map<string, string>) =
+            {
+                Account = account
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                TransactedAt = transactedAt
+                TransactionRefresh = transactionRefresh
+            }
+
+    module ListOptions =
+        let create
+            (
+                account: string
+            ) : ListOptions
+            =
+            {
+              Account = account
+              EndingBefore = None
+              Expand = None
+              Limit = None
+              StartingAfter = None
+              TransactedAt = None
+              TransactionRefresh = None
+            }
+
+    type RetrieveOptions =
+        {
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            [<Config.Path>]
+            Transaction: string
+        }
+
+    type RetrieveOptions with
+        static member New(transaction: string, ?expand: string list) =
+            {
+                Transaction = transaction
+                Expand = expand
+            }
+
+    module RetrieveOptions =
+        let create
+            (
+                transaction: string
+            ) : RetrieveOptions
+            =
+            {
+              Transaction = transaction
+              Expand = None
+            }
+
+    ///<p>Returns a list of Financial Connections <code>Transaction</code> objects.</p>
+    let List settings (options: ListOptions) =
+        let qs = [("account", options.Account |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("transacted_at", options.TransactedAt |> box); ("transaction_refresh", options.TransactionRefresh |> box)] |> Map.ofList
+        $"/v1/financial_connections/transactions"
+        |> RestApi.getAsync<StripeList<FinancialConnectionsTransaction>> settings qs
+
+    ///<p>Retrieves the details of a Financial Connections <code>Transaction</code></p>
+    let Retrieve settings (options: RetrieveOptions) =
+        let qs = [("expand", options.Expand |> box)] |> Map.ofList
+        $"/v1/financial_connections/transactions/{options.Transaction}"
+        |> RestApi.getAsync<FinancialConnectionsTransaction> settings qs
 
 module InvoicePayments =
 
@@ -2651,6 +3935,19 @@ module InvoicePayments =
             [<Config.Query>]
             Status: string option
         }
+
+    type ListOptions with
+        static member New(?created: int, ?endingBefore: string, ?expand: string list, ?invoice: string, ?limit: int, ?payment: Map<string, string>, ?startingAfter: string, ?status: string) =
+            {
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Invoice = invoice
+                Limit = limit
+                Payment = payment
+                StartingAfter = startingAfter
+                Status = status
+            }
 
     module ListOptions =
         let create
@@ -2684,6 +3981,13 @@ module InvoicePayments =
             [<Config.Path>]
             InvoicePayment: string
         }
+
+    type RetrieveOptions with
+        static member New(invoicePayment: string, ?expand: string list) =
+            {
+                InvoicePayment = invoicePayment
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -2728,6 +4032,16 @@ module InvoiceRenderingTemplates =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -2756,6 +4070,14 @@ module InvoiceRenderingTemplates =
             [<Config.Query>]
             Version: int option
         }
+
+    type RetrieveOptions with
+        static member New(template: string, ?expand: string list, ?version: int) =
+            {
+                Template = template
+                Expand = expand
+                Version = version
+            }
 
     module RetrieveOptions =
         let create
@@ -2792,6 +4114,13 @@ module InvoiceRenderingTemplatesArchive =
             Expand: string list option
         }
 
+    type ArchiveOptions with
+        static member New(template: string, ?expand: string list) =
+            {
+                Template = template
+                Expand = expand
+            }
+
     module ArchiveOptions =
         let create
             (
@@ -2818,6 +4147,13 @@ module InvoiceRenderingTemplatesUnarchive =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type UnarchiveOptions with
+        static member New(template: string, ?expand: string list) =
+            {
+                Template = template
+                Expand = expand
+            }
 
     module UnarchiveOptions =
         let create
@@ -2856,6 +4192,16 @@ module PaymentMethodConfigurations =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?application: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Application = application
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -2886,6 +4232,12 @@ module PaymentMethodConfigurations =
             Preference: Create'AcssDebitDisplayPreferencePreference option
         }
 
+    type Create'AcssDebitDisplayPreference with
+        static member New(?preference: Create'AcssDebitDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'AcssDebitDisplayPreference =
         let create
             (
@@ -2902,6 +4254,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'AcssDebitDisplayPreference option
         }
+
+    type Create'AcssDebit with
+        static member New(?displayPreference: Create'AcssDebitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'AcssDebit =
         let create
@@ -2925,6 +4283,12 @@ module PaymentMethodConfigurations =
             Preference: Create'AffirmDisplayPreferencePreference option
         }
 
+    type Create'AffirmDisplayPreference with
+        static member New(?preference: Create'AffirmDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'AffirmDisplayPreference =
         let create
             (
@@ -2941,6 +4305,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'AffirmDisplayPreference option
         }
+
+    type Create'Affirm with
+        static member New(?displayPreference: Create'AffirmDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Affirm =
         let create
@@ -2964,6 +4334,12 @@ module PaymentMethodConfigurations =
             Preference: Create'AfterpayClearpayDisplayPreferencePreference option
         }
 
+    type Create'AfterpayClearpayDisplayPreference with
+        static member New(?preference: Create'AfterpayClearpayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'AfterpayClearpayDisplayPreference =
         let create
             (
@@ -2980,6 +4356,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'AfterpayClearpayDisplayPreference option
         }
+
+    type Create'AfterpayClearpay with
+        static member New(?displayPreference: Create'AfterpayClearpayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'AfterpayClearpay =
         let create
@@ -3003,6 +4385,12 @@ module PaymentMethodConfigurations =
             Preference: Create'AlipayDisplayPreferencePreference option
         }
 
+    type Create'AlipayDisplayPreference with
+        static member New(?preference: Create'AlipayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'AlipayDisplayPreference =
         let create
             (
@@ -3019,6 +4407,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'AlipayDisplayPreference option
         }
+
+    type Create'Alipay with
+        static member New(?displayPreference: Create'AlipayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Alipay =
         let create
@@ -3042,6 +4436,12 @@ module PaymentMethodConfigurations =
             Preference: Create'AlmaDisplayPreferencePreference option
         }
 
+    type Create'AlmaDisplayPreference with
+        static member New(?preference: Create'AlmaDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'AlmaDisplayPreference =
         let create
             (
@@ -3058,6 +4458,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'AlmaDisplayPreference option
         }
+
+    type Create'Alma with
+        static member New(?displayPreference: Create'AlmaDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Alma =
         let create
@@ -3081,6 +4487,12 @@ module PaymentMethodConfigurations =
             Preference: Create'AmazonPayDisplayPreferencePreference option
         }
 
+    type Create'AmazonPayDisplayPreference with
+        static member New(?preference: Create'AmazonPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'AmazonPayDisplayPreference =
         let create
             (
@@ -3097,6 +4509,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'AmazonPayDisplayPreference option
         }
+
+    type Create'AmazonPay with
+        static member New(?displayPreference: Create'AmazonPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'AmazonPay =
         let create
@@ -3120,6 +4538,12 @@ module PaymentMethodConfigurations =
             Preference: Create'ApplePayDisplayPreferencePreference option
         }
 
+    type Create'ApplePayDisplayPreference with
+        static member New(?preference: Create'ApplePayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'ApplePayDisplayPreference =
         let create
             (
@@ -3136,6 +4560,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'ApplePayDisplayPreference option
         }
+
+    type Create'ApplePay with
+        static member New(?displayPreference: Create'ApplePayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'ApplePay =
         let create
@@ -3159,6 +4589,12 @@ module PaymentMethodConfigurations =
             Preference: Create'ApplePayLaterDisplayPreferencePreference option
         }
 
+    type Create'ApplePayLaterDisplayPreference with
+        static member New(?preference: Create'ApplePayLaterDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'ApplePayLaterDisplayPreference =
         let create
             (
@@ -3175,6 +4611,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'ApplePayLaterDisplayPreference option
         }
+
+    type Create'ApplePayLater with
+        static member New(?displayPreference: Create'ApplePayLaterDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'ApplePayLater =
         let create
@@ -3198,6 +4640,12 @@ module PaymentMethodConfigurations =
             Preference: Create'AuBecsDebitDisplayPreferencePreference option
         }
 
+    type Create'AuBecsDebitDisplayPreference with
+        static member New(?preference: Create'AuBecsDebitDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'AuBecsDebitDisplayPreference =
         let create
             (
@@ -3214,6 +4662,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'AuBecsDebitDisplayPreference option
         }
+
+    type Create'AuBecsDebit with
+        static member New(?displayPreference: Create'AuBecsDebitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'AuBecsDebit =
         let create
@@ -3237,6 +4691,12 @@ module PaymentMethodConfigurations =
             Preference: Create'BacsDebitDisplayPreferencePreference option
         }
 
+    type Create'BacsDebitDisplayPreference with
+        static member New(?preference: Create'BacsDebitDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'BacsDebitDisplayPreference =
         let create
             (
@@ -3253,6 +4713,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'BacsDebitDisplayPreference option
         }
+
+    type Create'BacsDebit with
+        static member New(?displayPreference: Create'BacsDebitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'BacsDebit =
         let create
@@ -3276,6 +4742,12 @@ module PaymentMethodConfigurations =
             Preference: Create'BancontactDisplayPreferencePreference option
         }
 
+    type Create'BancontactDisplayPreference with
+        static member New(?preference: Create'BancontactDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'BancontactDisplayPreference =
         let create
             (
@@ -3292,6 +4764,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'BancontactDisplayPreference option
         }
+
+    type Create'Bancontact with
+        static member New(?displayPreference: Create'BancontactDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Bancontact =
         let create
@@ -3315,6 +4793,12 @@ module PaymentMethodConfigurations =
             Preference: Create'BillieDisplayPreferencePreference option
         }
 
+    type Create'BillieDisplayPreference with
+        static member New(?preference: Create'BillieDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'BillieDisplayPreference =
         let create
             (
@@ -3331,6 +4815,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'BillieDisplayPreference option
         }
+
+    type Create'Billie with
+        static member New(?displayPreference: Create'BillieDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Billie =
         let create
@@ -3354,6 +4844,12 @@ module PaymentMethodConfigurations =
             Preference: Create'BlikDisplayPreferencePreference option
         }
 
+    type Create'BlikDisplayPreference with
+        static member New(?preference: Create'BlikDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'BlikDisplayPreference =
         let create
             (
@@ -3370,6 +4866,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'BlikDisplayPreference option
         }
+
+    type Create'Blik with
+        static member New(?displayPreference: Create'BlikDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Blik =
         let create
@@ -3393,6 +4895,12 @@ module PaymentMethodConfigurations =
             Preference: Create'BoletoDisplayPreferencePreference option
         }
 
+    type Create'BoletoDisplayPreference with
+        static member New(?preference: Create'BoletoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'BoletoDisplayPreference =
         let create
             (
@@ -3409,6 +4917,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'BoletoDisplayPreference option
         }
+
+    type Create'Boleto with
+        static member New(?displayPreference: Create'BoletoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Boleto =
         let create
@@ -3432,6 +4946,12 @@ module PaymentMethodConfigurations =
             Preference: Create'CardDisplayPreferencePreference option
         }
 
+    type Create'CardDisplayPreference with
+        static member New(?preference: Create'CardDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'CardDisplayPreference =
         let create
             (
@@ -3448,6 +4968,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'CardDisplayPreference option
         }
+
+    type Create'Card with
+        static member New(?displayPreference: Create'CardDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Card =
         let create
@@ -3471,6 +4997,12 @@ module PaymentMethodConfigurations =
             Preference: Create'CartesBancairesDisplayPreferencePreference option
         }
 
+    type Create'CartesBancairesDisplayPreference with
+        static member New(?preference: Create'CartesBancairesDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'CartesBancairesDisplayPreference =
         let create
             (
@@ -3487,6 +5019,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'CartesBancairesDisplayPreference option
         }
+
+    type Create'CartesBancaires with
+        static member New(?displayPreference: Create'CartesBancairesDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'CartesBancaires =
         let create
@@ -3510,6 +5048,12 @@ module PaymentMethodConfigurations =
             Preference: Create'CashappDisplayPreferencePreference option
         }
 
+    type Create'CashappDisplayPreference with
+        static member New(?preference: Create'CashappDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'CashappDisplayPreference =
         let create
             (
@@ -3526,6 +5070,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'CashappDisplayPreference option
         }
+
+    type Create'Cashapp with
+        static member New(?displayPreference: Create'CashappDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Cashapp =
         let create
@@ -3549,6 +5099,12 @@ module PaymentMethodConfigurations =
             Preference: Create'CryptoDisplayPreferencePreference option
         }
 
+    type Create'CryptoDisplayPreference with
+        static member New(?preference: Create'CryptoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'CryptoDisplayPreference =
         let create
             (
@@ -3565,6 +5121,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'CryptoDisplayPreference option
         }
+
+    type Create'Crypto with
+        static member New(?displayPreference: Create'CryptoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Crypto =
         let create
@@ -3588,6 +5150,12 @@ module PaymentMethodConfigurations =
             Preference: Create'CustomerBalanceDisplayPreferencePreference option
         }
 
+    type Create'CustomerBalanceDisplayPreference with
+        static member New(?preference: Create'CustomerBalanceDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'CustomerBalanceDisplayPreference =
         let create
             (
@@ -3604,6 +5172,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'CustomerBalanceDisplayPreference option
         }
+
+    type Create'CustomerBalance with
+        static member New(?displayPreference: Create'CustomerBalanceDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'CustomerBalance =
         let create
@@ -3627,6 +5201,12 @@ module PaymentMethodConfigurations =
             Preference: Create'EpsDisplayPreferencePreference option
         }
 
+    type Create'EpsDisplayPreference with
+        static member New(?preference: Create'EpsDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'EpsDisplayPreference =
         let create
             (
@@ -3643,6 +5223,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'EpsDisplayPreference option
         }
+
+    type Create'Eps with
+        static member New(?displayPreference: Create'EpsDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Eps =
         let create
@@ -3666,6 +5252,12 @@ module PaymentMethodConfigurations =
             Preference: Create'FpxDisplayPreferencePreference option
         }
 
+    type Create'FpxDisplayPreference with
+        static member New(?preference: Create'FpxDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'FpxDisplayPreference =
         let create
             (
@@ -3682,6 +5274,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'FpxDisplayPreference option
         }
+
+    type Create'Fpx with
+        static member New(?displayPreference: Create'FpxDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Fpx =
         let create
@@ -3705,6 +5303,12 @@ module PaymentMethodConfigurations =
             Preference: Create'FrMealVoucherConecsDisplayPreferencePreference option
         }
 
+    type Create'FrMealVoucherConecsDisplayPreference with
+        static member New(?preference: Create'FrMealVoucherConecsDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'FrMealVoucherConecsDisplayPreference =
         let create
             (
@@ -3721,6 +5325,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'FrMealVoucherConecsDisplayPreference option
         }
+
+    type Create'FrMealVoucherConecs with
+        static member New(?displayPreference: Create'FrMealVoucherConecsDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'FrMealVoucherConecs =
         let create
@@ -3744,6 +5354,12 @@ module PaymentMethodConfigurations =
             Preference: Create'GiropayDisplayPreferencePreference option
         }
 
+    type Create'GiropayDisplayPreference with
+        static member New(?preference: Create'GiropayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'GiropayDisplayPreference =
         let create
             (
@@ -3760,6 +5376,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'GiropayDisplayPreference option
         }
+
+    type Create'Giropay with
+        static member New(?displayPreference: Create'GiropayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Giropay =
         let create
@@ -3783,6 +5405,12 @@ module PaymentMethodConfigurations =
             Preference: Create'GooglePayDisplayPreferencePreference option
         }
 
+    type Create'GooglePayDisplayPreference with
+        static member New(?preference: Create'GooglePayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'GooglePayDisplayPreference =
         let create
             (
@@ -3799,6 +5427,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'GooglePayDisplayPreference option
         }
+
+    type Create'GooglePay with
+        static member New(?displayPreference: Create'GooglePayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'GooglePay =
         let create
@@ -3822,6 +5456,12 @@ module PaymentMethodConfigurations =
             Preference: Create'GrabpayDisplayPreferencePreference option
         }
 
+    type Create'GrabpayDisplayPreference with
+        static member New(?preference: Create'GrabpayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'GrabpayDisplayPreference =
         let create
             (
@@ -3838,6 +5478,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'GrabpayDisplayPreference option
         }
+
+    type Create'Grabpay with
+        static member New(?displayPreference: Create'GrabpayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Grabpay =
         let create
@@ -3861,6 +5507,12 @@ module PaymentMethodConfigurations =
             Preference: Create'IdealDisplayPreferencePreference option
         }
 
+    type Create'IdealDisplayPreference with
+        static member New(?preference: Create'IdealDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'IdealDisplayPreference =
         let create
             (
@@ -3877,6 +5529,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'IdealDisplayPreference option
         }
+
+    type Create'Ideal with
+        static member New(?displayPreference: Create'IdealDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Ideal =
         let create
@@ -3900,6 +5558,12 @@ module PaymentMethodConfigurations =
             Preference: Create'JcbDisplayPreferencePreference option
         }
 
+    type Create'JcbDisplayPreference with
+        static member New(?preference: Create'JcbDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'JcbDisplayPreference =
         let create
             (
@@ -3916,6 +5580,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'JcbDisplayPreference option
         }
+
+    type Create'Jcb with
+        static member New(?displayPreference: Create'JcbDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Jcb =
         let create
@@ -3939,6 +5609,12 @@ module PaymentMethodConfigurations =
             Preference: Create'KakaoPayDisplayPreferencePreference option
         }
 
+    type Create'KakaoPayDisplayPreference with
+        static member New(?preference: Create'KakaoPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'KakaoPayDisplayPreference =
         let create
             (
@@ -3955,6 +5631,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'KakaoPayDisplayPreference option
         }
+
+    type Create'KakaoPay with
+        static member New(?displayPreference: Create'KakaoPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'KakaoPay =
         let create
@@ -3978,6 +5660,12 @@ module PaymentMethodConfigurations =
             Preference: Create'KlarnaDisplayPreferencePreference option
         }
 
+    type Create'KlarnaDisplayPreference with
+        static member New(?preference: Create'KlarnaDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'KlarnaDisplayPreference =
         let create
             (
@@ -3994,6 +5682,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'KlarnaDisplayPreference option
         }
+
+    type Create'Klarna with
+        static member New(?displayPreference: Create'KlarnaDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Klarna =
         let create
@@ -4017,6 +5711,12 @@ module PaymentMethodConfigurations =
             Preference: Create'KonbiniDisplayPreferencePreference option
         }
 
+    type Create'KonbiniDisplayPreference with
+        static member New(?preference: Create'KonbiniDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'KonbiniDisplayPreference =
         let create
             (
@@ -4033,6 +5733,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'KonbiniDisplayPreference option
         }
+
+    type Create'Konbini with
+        static member New(?displayPreference: Create'KonbiniDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Konbini =
         let create
@@ -4056,6 +5762,12 @@ module PaymentMethodConfigurations =
             Preference: Create'KrCardDisplayPreferencePreference option
         }
 
+    type Create'KrCardDisplayPreference with
+        static member New(?preference: Create'KrCardDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'KrCardDisplayPreference =
         let create
             (
@@ -4072,6 +5784,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'KrCardDisplayPreference option
         }
+
+    type Create'KrCard with
+        static member New(?displayPreference: Create'KrCardDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'KrCard =
         let create
@@ -4095,6 +5813,12 @@ module PaymentMethodConfigurations =
             Preference: Create'LinkDisplayPreferencePreference option
         }
 
+    type Create'LinkDisplayPreference with
+        static member New(?preference: Create'LinkDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'LinkDisplayPreference =
         let create
             (
@@ -4111,6 +5835,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'LinkDisplayPreference option
         }
+
+    type Create'Link with
+        static member New(?displayPreference: Create'LinkDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Link =
         let create
@@ -4134,6 +5864,12 @@ module PaymentMethodConfigurations =
             Preference: Create'MbWayDisplayPreferencePreference option
         }
 
+    type Create'MbWayDisplayPreference with
+        static member New(?preference: Create'MbWayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'MbWayDisplayPreference =
         let create
             (
@@ -4150,6 +5886,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'MbWayDisplayPreference option
         }
+
+    type Create'MbWay with
+        static member New(?displayPreference: Create'MbWayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'MbWay =
         let create
@@ -4173,6 +5915,12 @@ module PaymentMethodConfigurations =
             Preference: Create'MobilepayDisplayPreferencePreference option
         }
 
+    type Create'MobilepayDisplayPreference with
+        static member New(?preference: Create'MobilepayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'MobilepayDisplayPreference =
         let create
             (
@@ -4189,6 +5937,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'MobilepayDisplayPreference option
         }
+
+    type Create'Mobilepay with
+        static member New(?displayPreference: Create'MobilepayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Mobilepay =
         let create
@@ -4212,6 +5966,12 @@ module PaymentMethodConfigurations =
             Preference: Create'MultibancoDisplayPreferencePreference option
         }
 
+    type Create'MultibancoDisplayPreference with
+        static member New(?preference: Create'MultibancoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'MultibancoDisplayPreference =
         let create
             (
@@ -4228,6 +5988,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'MultibancoDisplayPreference option
         }
+
+    type Create'Multibanco with
+        static member New(?displayPreference: Create'MultibancoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Multibanco =
         let create
@@ -4251,6 +6017,12 @@ module PaymentMethodConfigurations =
             Preference: Create'NaverPayDisplayPreferencePreference option
         }
 
+    type Create'NaverPayDisplayPreference with
+        static member New(?preference: Create'NaverPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'NaverPayDisplayPreference =
         let create
             (
@@ -4267,6 +6039,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'NaverPayDisplayPreference option
         }
+
+    type Create'NaverPay with
+        static member New(?displayPreference: Create'NaverPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'NaverPay =
         let create
@@ -4290,6 +6068,12 @@ module PaymentMethodConfigurations =
             Preference: Create'NzBankAccountDisplayPreferencePreference option
         }
 
+    type Create'NzBankAccountDisplayPreference with
+        static member New(?preference: Create'NzBankAccountDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'NzBankAccountDisplayPreference =
         let create
             (
@@ -4306,6 +6090,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'NzBankAccountDisplayPreference option
         }
+
+    type Create'NzBankAccount with
+        static member New(?displayPreference: Create'NzBankAccountDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'NzBankAccount =
         let create
@@ -4329,6 +6119,12 @@ module PaymentMethodConfigurations =
             Preference: Create'OxxoDisplayPreferencePreference option
         }
 
+    type Create'OxxoDisplayPreference with
+        static member New(?preference: Create'OxxoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'OxxoDisplayPreference =
         let create
             (
@@ -4345,6 +6141,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'OxxoDisplayPreference option
         }
+
+    type Create'Oxxo with
+        static member New(?displayPreference: Create'OxxoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Oxxo =
         let create
@@ -4368,6 +6170,12 @@ module PaymentMethodConfigurations =
             Preference: Create'P24DisplayPreferencePreference option
         }
 
+    type Create'P24DisplayPreference with
+        static member New(?preference: Create'P24DisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'P24DisplayPreference =
         let create
             (
@@ -4384,6 +6192,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'P24DisplayPreference option
         }
+
+    type Create'P24 with
+        static member New(?displayPreference: Create'P24DisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'P24 =
         let create
@@ -4407,6 +6221,12 @@ module PaymentMethodConfigurations =
             Preference: Create'PayByBankDisplayPreferencePreference option
         }
 
+    type Create'PayByBankDisplayPreference with
+        static member New(?preference: Create'PayByBankDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'PayByBankDisplayPreference =
         let create
             (
@@ -4423,6 +6243,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'PayByBankDisplayPreference option
         }
+
+    type Create'PayByBank with
+        static member New(?displayPreference: Create'PayByBankDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'PayByBank =
         let create
@@ -4446,6 +6272,12 @@ module PaymentMethodConfigurations =
             Preference: Create'PaycoDisplayPreferencePreference option
         }
 
+    type Create'PaycoDisplayPreference with
+        static member New(?preference: Create'PaycoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'PaycoDisplayPreference =
         let create
             (
@@ -4462,6 +6294,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'PaycoDisplayPreference option
         }
+
+    type Create'Payco with
+        static member New(?displayPreference: Create'PaycoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Payco =
         let create
@@ -4485,6 +6323,12 @@ module PaymentMethodConfigurations =
             Preference: Create'PaynowDisplayPreferencePreference option
         }
 
+    type Create'PaynowDisplayPreference with
+        static member New(?preference: Create'PaynowDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'PaynowDisplayPreference =
         let create
             (
@@ -4501,6 +6345,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'PaynowDisplayPreference option
         }
+
+    type Create'Paynow with
+        static member New(?displayPreference: Create'PaynowDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Paynow =
         let create
@@ -4524,6 +6374,12 @@ module PaymentMethodConfigurations =
             Preference: Create'PaypalDisplayPreferencePreference option
         }
 
+    type Create'PaypalDisplayPreference with
+        static member New(?preference: Create'PaypalDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'PaypalDisplayPreference =
         let create
             (
@@ -4540,6 +6396,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'PaypalDisplayPreference option
         }
+
+    type Create'Paypal with
+        static member New(?displayPreference: Create'PaypalDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Paypal =
         let create
@@ -4563,6 +6425,12 @@ module PaymentMethodConfigurations =
             Preference: Create'PaytoDisplayPreferencePreference option
         }
 
+    type Create'PaytoDisplayPreference with
+        static member New(?preference: Create'PaytoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'PaytoDisplayPreference =
         let create
             (
@@ -4579,6 +6447,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'PaytoDisplayPreference option
         }
+
+    type Create'Payto with
+        static member New(?displayPreference: Create'PaytoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Payto =
         let create
@@ -4602,6 +6476,12 @@ module PaymentMethodConfigurations =
             Preference: Create'PixDisplayPreferencePreference option
         }
 
+    type Create'PixDisplayPreference with
+        static member New(?preference: Create'PixDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'PixDisplayPreference =
         let create
             (
@@ -4618,6 +6498,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'PixDisplayPreference option
         }
+
+    type Create'Pix with
+        static member New(?displayPreference: Create'PixDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Pix =
         let create
@@ -4641,6 +6527,12 @@ module PaymentMethodConfigurations =
             Preference: Create'PromptpayDisplayPreferencePreference option
         }
 
+    type Create'PromptpayDisplayPreference with
+        static member New(?preference: Create'PromptpayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'PromptpayDisplayPreference =
         let create
             (
@@ -4657,6 +6549,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'PromptpayDisplayPreference option
         }
+
+    type Create'Promptpay with
+        static member New(?displayPreference: Create'PromptpayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Promptpay =
         let create
@@ -4680,6 +6578,12 @@ module PaymentMethodConfigurations =
             Preference: Create'RevolutPayDisplayPreferencePreference option
         }
 
+    type Create'RevolutPayDisplayPreference with
+        static member New(?preference: Create'RevolutPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'RevolutPayDisplayPreference =
         let create
             (
@@ -4696,6 +6600,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'RevolutPayDisplayPreference option
         }
+
+    type Create'RevolutPay with
+        static member New(?displayPreference: Create'RevolutPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'RevolutPay =
         let create
@@ -4719,6 +6629,12 @@ module PaymentMethodConfigurations =
             Preference: Create'SamsungPayDisplayPreferencePreference option
         }
 
+    type Create'SamsungPayDisplayPreference with
+        static member New(?preference: Create'SamsungPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'SamsungPayDisplayPreference =
         let create
             (
@@ -4735,6 +6651,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'SamsungPayDisplayPreference option
         }
+
+    type Create'SamsungPay with
+        static member New(?displayPreference: Create'SamsungPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'SamsungPay =
         let create
@@ -4758,6 +6680,12 @@ module PaymentMethodConfigurations =
             Preference: Create'SatispayDisplayPreferencePreference option
         }
 
+    type Create'SatispayDisplayPreference with
+        static member New(?preference: Create'SatispayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'SatispayDisplayPreference =
         let create
             (
@@ -4774,6 +6702,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'SatispayDisplayPreference option
         }
+
+    type Create'Satispay with
+        static member New(?displayPreference: Create'SatispayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Satispay =
         let create
@@ -4797,6 +6731,12 @@ module PaymentMethodConfigurations =
             Preference: Create'SepaDebitDisplayPreferencePreference option
         }
 
+    type Create'SepaDebitDisplayPreference with
+        static member New(?preference: Create'SepaDebitDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'SepaDebitDisplayPreference =
         let create
             (
@@ -4813,6 +6753,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'SepaDebitDisplayPreference option
         }
+
+    type Create'SepaDebit with
+        static member New(?displayPreference: Create'SepaDebitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'SepaDebit =
         let create
@@ -4836,6 +6782,12 @@ module PaymentMethodConfigurations =
             Preference: Create'SofortDisplayPreferencePreference option
         }
 
+    type Create'SofortDisplayPreference with
+        static member New(?preference: Create'SofortDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'SofortDisplayPreference =
         let create
             (
@@ -4852,6 +6804,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'SofortDisplayPreference option
         }
+
+    type Create'Sofort with
+        static member New(?displayPreference: Create'SofortDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Sofort =
         let create
@@ -4875,6 +6833,12 @@ module PaymentMethodConfigurations =
             Preference: Create'SunbitDisplayPreferencePreference option
         }
 
+    type Create'SunbitDisplayPreference with
+        static member New(?preference: Create'SunbitDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'SunbitDisplayPreference =
         let create
             (
@@ -4891,6 +6855,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'SunbitDisplayPreference option
         }
+
+    type Create'Sunbit with
+        static member New(?displayPreference: Create'SunbitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Sunbit =
         let create
@@ -4914,6 +6884,12 @@ module PaymentMethodConfigurations =
             Preference: Create'SwishDisplayPreferencePreference option
         }
 
+    type Create'SwishDisplayPreference with
+        static member New(?preference: Create'SwishDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'SwishDisplayPreference =
         let create
             (
@@ -4930,6 +6906,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'SwishDisplayPreference option
         }
+
+    type Create'Swish with
+        static member New(?displayPreference: Create'SwishDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Swish =
         let create
@@ -4953,6 +6935,12 @@ module PaymentMethodConfigurations =
             Preference: Create'TwintDisplayPreferencePreference option
         }
 
+    type Create'TwintDisplayPreference with
+        static member New(?preference: Create'TwintDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'TwintDisplayPreference =
         let create
             (
@@ -4969,6 +6957,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'TwintDisplayPreference option
         }
+
+    type Create'Twint with
+        static member New(?displayPreference: Create'TwintDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Twint =
         let create
@@ -4992,6 +6986,12 @@ module PaymentMethodConfigurations =
             Preference: Create'UpiDisplayPreferencePreference option
         }
 
+    type Create'UpiDisplayPreference with
+        static member New(?preference: Create'UpiDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'UpiDisplayPreference =
         let create
             (
@@ -5008,6 +7008,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'UpiDisplayPreference option
         }
+
+    type Create'Upi with
+        static member New(?displayPreference: Create'UpiDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Upi =
         let create
@@ -5031,6 +7037,12 @@ module PaymentMethodConfigurations =
             Preference: Create'UsBankAccountDisplayPreferencePreference option
         }
 
+    type Create'UsBankAccountDisplayPreference with
+        static member New(?preference: Create'UsBankAccountDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'UsBankAccountDisplayPreference =
         let create
             (
@@ -5047,6 +7059,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'UsBankAccountDisplayPreference option
         }
+
+    type Create'UsBankAccount with
+        static member New(?displayPreference: Create'UsBankAccountDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'UsBankAccount =
         let create
@@ -5070,6 +7088,12 @@ module PaymentMethodConfigurations =
             Preference: Create'WechatPayDisplayPreferencePreference option
         }
 
+    type Create'WechatPayDisplayPreference with
+        static member New(?preference: Create'WechatPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'WechatPayDisplayPreference =
         let create
             (
@@ -5086,6 +7110,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'WechatPayDisplayPreference option
         }
+
+    type Create'WechatPay with
+        static member New(?displayPreference: Create'WechatPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'WechatPay =
         let create
@@ -5109,6 +7139,12 @@ module PaymentMethodConfigurations =
             Preference: Create'ZipDisplayPreferencePreference option
         }
 
+    type Create'ZipDisplayPreference with
+        static member New(?preference: Create'ZipDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Create'ZipDisplayPreference =
         let create
             (
@@ -5125,6 +7161,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Create'ZipDisplayPreference option
         }
+
+    type Create'Zip with
+        static member New(?displayPreference: Create'ZipDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Create'Zip =
         let create
@@ -5323,6 +7365,72 @@ module PaymentMethodConfigurations =
             Zip: Create'Zip option
         }
 
+    type CreateOptions with
+        static member New(?acssDebit: Create'AcssDebit, ?affirm: Create'Affirm, ?afterpayClearpay: Create'AfterpayClearpay, ?alipay: Create'Alipay, ?alma: Create'Alma, ?amazonPay: Create'AmazonPay, ?applePay: Create'ApplePay, ?applePayLater: Create'ApplePayLater, ?auBecsDebit: Create'AuBecsDebit, ?bacsDebit: Create'BacsDebit, ?bancontact: Create'Bancontact, ?billie: Create'Billie, ?blik: Create'Blik, ?boleto: Create'Boleto, ?card: Create'Card, ?cartesBancaires: Create'CartesBancaires, ?cashapp: Create'Cashapp, ?crypto: Create'Crypto, ?customerBalance: Create'CustomerBalance, ?eps: Create'Eps, ?expand: string list, ?fpx: Create'Fpx, ?frMealVoucherConecs: Create'FrMealVoucherConecs, ?giropay: Create'Giropay, ?googlePay: Create'GooglePay, ?grabpay: Create'Grabpay, ?ideal: Create'Ideal, ?jcb: Create'Jcb, ?kakaoPay: Create'KakaoPay, ?klarna: Create'Klarna, ?konbini: Create'Konbini, ?krCard: Create'KrCard, ?link: Create'Link, ?mbWay: Create'MbWay, ?mobilepay: Create'Mobilepay, ?multibanco: Create'Multibanco, ?name: string, ?naverPay: Create'NaverPay, ?nzBankAccount: Create'NzBankAccount, ?oxxo: Create'Oxxo, ?p24: Create'P24, ?parent: string, ?payByBank: Create'PayByBank, ?payco: Create'Payco, ?paynow: Create'Paynow, ?paypal: Create'Paypal, ?payto: Create'Payto, ?pix: Create'Pix, ?promptpay: Create'Promptpay, ?revolutPay: Create'RevolutPay, ?samsungPay: Create'SamsungPay, ?satispay: Create'Satispay, ?sepaDebit: Create'SepaDebit, ?sofort: Create'Sofort, ?sunbit: Create'Sunbit, ?swish: Create'Swish, ?twint: Create'Twint, ?upi: Create'Upi, ?usBankAccount: Create'UsBankAccount, ?wechatPay: Create'WechatPay, ?zip: Create'Zip) =
+            {
+                AcssDebit = acssDebit
+                Affirm = affirm
+                AfterpayClearpay = afterpayClearpay
+                Alipay = alipay
+                Alma = alma
+                AmazonPay = amazonPay
+                ApplePay = applePay
+                ApplePayLater = applePayLater
+                AuBecsDebit = auBecsDebit
+                BacsDebit = bacsDebit
+                Bancontact = bancontact
+                Billie = billie
+                Blik = blik
+                Boleto = boleto
+                Card = card
+                CartesBancaires = cartesBancaires
+                Cashapp = cashapp
+                Crypto = crypto
+                CustomerBalance = customerBalance
+                Eps = eps
+                Expand = expand
+                Fpx = fpx
+                FrMealVoucherConecs = frMealVoucherConecs
+                Giropay = giropay
+                GooglePay = googlePay
+                Grabpay = grabpay
+                Ideal = ideal
+                Jcb = jcb
+                KakaoPay = kakaoPay
+                Klarna = klarna
+                Konbini = konbini
+                KrCard = krCard
+                Link = link
+                MbWay = mbWay
+                Mobilepay = mobilepay
+                Multibanco = multibanco
+                Name = name
+                NaverPay = naverPay
+                NzBankAccount = nzBankAccount
+                Oxxo = oxxo
+                P24 = p24
+                Parent = parent
+                PayByBank = payByBank
+                Payco = payco
+                Paynow = paynow
+                Paypal = paypal
+                Payto = payto
+                Pix = pix
+                Promptpay = promptpay
+                RevolutPay = revolutPay
+                SamsungPay = samsungPay
+                Satispay = satispay
+                SepaDebit = sepaDebit
+                Sofort = sofort
+                Sunbit = sunbit
+                Swish = swish
+                Twint = twint
+                Upi = upi
+                UsBankAccount = usBankAccount
+                WechatPay = wechatPay
+                Zip = zip
+            }
+
     module CreateOptions =
         let create
             (
@@ -5462,6 +7570,13 @@ module PaymentMethodConfigurations =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(configuration: string, ?expand: string list) =
+            {
+                Configuration = configuration
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -5485,6 +7600,12 @@ module PaymentMethodConfigurations =
             Preference: Update'AcssDebitDisplayPreferencePreference option
         }
 
+    type Update'AcssDebitDisplayPreference with
+        static member New(?preference: Update'AcssDebitDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'AcssDebitDisplayPreference =
         let create
             (
@@ -5501,6 +7622,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'AcssDebitDisplayPreference option
         }
+
+    type Update'AcssDebit with
+        static member New(?displayPreference: Update'AcssDebitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'AcssDebit =
         let create
@@ -5524,6 +7651,12 @@ module PaymentMethodConfigurations =
             Preference: Update'AffirmDisplayPreferencePreference option
         }
 
+    type Update'AffirmDisplayPreference with
+        static member New(?preference: Update'AffirmDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'AffirmDisplayPreference =
         let create
             (
@@ -5540,6 +7673,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'AffirmDisplayPreference option
         }
+
+    type Update'Affirm with
+        static member New(?displayPreference: Update'AffirmDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Affirm =
         let create
@@ -5563,6 +7702,12 @@ module PaymentMethodConfigurations =
             Preference: Update'AfterpayClearpayDisplayPreferencePreference option
         }
 
+    type Update'AfterpayClearpayDisplayPreference with
+        static member New(?preference: Update'AfterpayClearpayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'AfterpayClearpayDisplayPreference =
         let create
             (
@@ -5579,6 +7724,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'AfterpayClearpayDisplayPreference option
         }
+
+    type Update'AfterpayClearpay with
+        static member New(?displayPreference: Update'AfterpayClearpayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'AfterpayClearpay =
         let create
@@ -5602,6 +7753,12 @@ module PaymentMethodConfigurations =
             Preference: Update'AlipayDisplayPreferencePreference option
         }
 
+    type Update'AlipayDisplayPreference with
+        static member New(?preference: Update'AlipayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'AlipayDisplayPreference =
         let create
             (
@@ -5618,6 +7775,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'AlipayDisplayPreference option
         }
+
+    type Update'Alipay with
+        static member New(?displayPreference: Update'AlipayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Alipay =
         let create
@@ -5641,6 +7804,12 @@ module PaymentMethodConfigurations =
             Preference: Update'AlmaDisplayPreferencePreference option
         }
 
+    type Update'AlmaDisplayPreference with
+        static member New(?preference: Update'AlmaDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'AlmaDisplayPreference =
         let create
             (
@@ -5657,6 +7826,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'AlmaDisplayPreference option
         }
+
+    type Update'Alma with
+        static member New(?displayPreference: Update'AlmaDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Alma =
         let create
@@ -5680,6 +7855,12 @@ module PaymentMethodConfigurations =
             Preference: Update'AmazonPayDisplayPreferencePreference option
         }
 
+    type Update'AmazonPayDisplayPreference with
+        static member New(?preference: Update'AmazonPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'AmazonPayDisplayPreference =
         let create
             (
@@ -5696,6 +7877,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'AmazonPayDisplayPreference option
         }
+
+    type Update'AmazonPay with
+        static member New(?displayPreference: Update'AmazonPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'AmazonPay =
         let create
@@ -5719,6 +7906,12 @@ module PaymentMethodConfigurations =
             Preference: Update'ApplePayDisplayPreferencePreference option
         }
 
+    type Update'ApplePayDisplayPreference with
+        static member New(?preference: Update'ApplePayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'ApplePayDisplayPreference =
         let create
             (
@@ -5735,6 +7928,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'ApplePayDisplayPreference option
         }
+
+    type Update'ApplePay with
+        static member New(?displayPreference: Update'ApplePayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'ApplePay =
         let create
@@ -5758,6 +7957,12 @@ module PaymentMethodConfigurations =
             Preference: Update'ApplePayLaterDisplayPreferencePreference option
         }
 
+    type Update'ApplePayLaterDisplayPreference with
+        static member New(?preference: Update'ApplePayLaterDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'ApplePayLaterDisplayPreference =
         let create
             (
@@ -5774,6 +7979,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'ApplePayLaterDisplayPreference option
         }
+
+    type Update'ApplePayLater with
+        static member New(?displayPreference: Update'ApplePayLaterDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'ApplePayLater =
         let create
@@ -5797,6 +8008,12 @@ module PaymentMethodConfigurations =
             Preference: Update'AuBecsDebitDisplayPreferencePreference option
         }
 
+    type Update'AuBecsDebitDisplayPreference with
+        static member New(?preference: Update'AuBecsDebitDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'AuBecsDebitDisplayPreference =
         let create
             (
@@ -5813,6 +8030,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'AuBecsDebitDisplayPreference option
         }
+
+    type Update'AuBecsDebit with
+        static member New(?displayPreference: Update'AuBecsDebitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'AuBecsDebit =
         let create
@@ -5836,6 +8059,12 @@ module PaymentMethodConfigurations =
             Preference: Update'BacsDebitDisplayPreferencePreference option
         }
 
+    type Update'BacsDebitDisplayPreference with
+        static member New(?preference: Update'BacsDebitDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'BacsDebitDisplayPreference =
         let create
             (
@@ -5852,6 +8081,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'BacsDebitDisplayPreference option
         }
+
+    type Update'BacsDebit with
+        static member New(?displayPreference: Update'BacsDebitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'BacsDebit =
         let create
@@ -5875,6 +8110,12 @@ module PaymentMethodConfigurations =
             Preference: Update'BancontactDisplayPreferencePreference option
         }
 
+    type Update'BancontactDisplayPreference with
+        static member New(?preference: Update'BancontactDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'BancontactDisplayPreference =
         let create
             (
@@ -5891,6 +8132,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'BancontactDisplayPreference option
         }
+
+    type Update'Bancontact with
+        static member New(?displayPreference: Update'BancontactDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Bancontact =
         let create
@@ -5914,6 +8161,12 @@ module PaymentMethodConfigurations =
             Preference: Update'BillieDisplayPreferencePreference option
         }
 
+    type Update'BillieDisplayPreference with
+        static member New(?preference: Update'BillieDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'BillieDisplayPreference =
         let create
             (
@@ -5930,6 +8183,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'BillieDisplayPreference option
         }
+
+    type Update'Billie with
+        static member New(?displayPreference: Update'BillieDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Billie =
         let create
@@ -5953,6 +8212,12 @@ module PaymentMethodConfigurations =
             Preference: Update'BlikDisplayPreferencePreference option
         }
 
+    type Update'BlikDisplayPreference with
+        static member New(?preference: Update'BlikDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'BlikDisplayPreference =
         let create
             (
@@ -5969,6 +8234,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'BlikDisplayPreference option
         }
+
+    type Update'Blik with
+        static member New(?displayPreference: Update'BlikDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Blik =
         let create
@@ -5992,6 +8263,12 @@ module PaymentMethodConfigurations =
             Preference: Update'BoletoDisplayPreferencePreference option
         }
 
+    type Update'BoletoDisplayPreference with
+        static member New(?preference: Update'BoletoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'BoletoDisplayPreference =
         let create
             (
@@ -6008,6 +8285,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'BoletoDisplayPreference option
         }
+
+    type Update'Boleto with
+        static member New(?displayPreference: Update'BoletoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Boleto =
         let create
@@ -6031,6 +8314,12 @@ module PaymentMethodConfigurations =
             Preference: Update'CardDisplayPreferencePreference option
         }
 
+    type Update'CardDisplayPreference with
+        static member New(?preference: Update'CardDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'CardDisplayPreference =
         let create
             (
@@ -6047,6 +8336,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'CardDisplayPreference option
         }
+
+    type Update'Card with
+        static member New(?displayPreference: Update'CardDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Card =
         let create
@@ -6070,6 +8365,12 @@ module PaymentMethodConfigurations =
             Preference: Update'CartesBancairesDisplayPreferencePreference option
         }
 
+    type Update'CartesBancairesDisplayPreference with
+        static member New(?preference: Update'CartesBancairesDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'CartesBancairesDisplayPreference =
         let create
             (
@@ -6086,6 +8387,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'CartesBancairesDisplayPreference option
         }
+
+    type Update'CartesBancaires with
+        static member New(?displayPreference: Update'CartesBancairesDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'CartesBancaires =
         let create
@@ -6109,6 +8416,12 @@ module PaymentMethodConfigurations =
             Preference: Update'CashappDisplayPreferencePreference option
         }
 
+    type Update'CashappDisplayPreference with
+        static member New(?preference: Update'CashappDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'CashappDisplayPreference =
         let create
             (
@@ -6125,6 +8438,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'CashappDisplayPreference option
         }
+
+    type Update'Cashapp with
+        static member New(?displayPreference: Update'CashappDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Cashapp =
         let create
@@ -6148,6 +8467,12 @@ module PaymentMethodConfigurations =
             Preference: Update'CryptoDisplayPreferencePreference option
         }
 
+    type Update'CryptoDisplayPreference with
+        static member New(?preference: Update'CryptoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'CryptoDisplayPreference =
         let create
             (
@@ -6164,6 +8489,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'CryptoDisplayPreference option
         }
+
+    type Update'Crypto with
+        static member New(?displayPreference: Update'CryptoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Crypto =
         let create
@@ -6187,6 +8518,12 @@ module PaymentMethodConfigurations =
             Preference: Update'CustomerBalanceDisplayPreferencePreference option
         }
 
+    type Update'CustomerBalanceDisplayPreference with
+        static member New(?preference: Update'CustomerBalanceDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'CustomerBalanceDisplayPreference =
         let create
             (
@@ -6203,6 +8540,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'CustomerBalanceDisplayPreference option
         }
+
+    type Update'CustomerBalance with
+        static member New(?displayPreference: Update'CustomerBalanceDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'CustomerBalance =
         let create
@@ -6226,6 +8569,12 @@ module PaymentMethodConfigurations =
             Preference: Update'EpsDisplayPreferencePreference option
         }
 
+    type Update'EpsDisplayPreference with
+        static member New(?preference: Update'EpsDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'EpsDisplayPreference =
         let create
             (
@@ -6242,6 +8591,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'EpsDisplayPreference option
         }
+
+    type Update'Eps with
+        static member New(?displayPreference: Update'EpsDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Eps =
         let create
@@ -6265,6 +8620,12 @@ module PaymentMethodConfigurations =
             Preference: Update'FpxDisplayPreferencePreference option
         }
 
+    type Update'FpxDisplayPreference with
+        static member New(?preference: Update'FpxDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'FpxDisplayPreference =
         let create
             (
@@ -6281,6 +8642,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'FpxDisplayPreference option
         }
+
+    type Update'Fpx with
+        static member New(?displayPreference: Update'FpxDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Fpx =
         let create
@@ -6304,6 +8671,12 @@ module PaymentMethodConfigurations =
             Preference: Update'FrMealVoucherConecsDisplayPreferencePreference option
         }
 
+    type Update'FrMealVoucherConecsDisplayPreference with
+        static member New(?preference: Update'FrMealVoucherConecsDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'FrMealVoucherConecsDisplayPreference =
         let create
             (
@@ -6320,6 +8693,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'FrMealVoucherConecsDisplayPreference option
         }
+
+    type Update'FrMealVoucherConecs with
+        static member New(?displayPreference: Update'FrMealVoucherConecsDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'FrMealVoucherConecs =
         let create
@@ -6343,6 +8722,12 @@ module PaymentMethodConfigurations =
             Preference: Update'GiropayDisplayPreferencePreference option
         }
 
+    type Update'GiropayDisplayPreference with
+        static member New(?preference: Update'GiropayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'GiropayDisplayPreference =
         let create
             (
@@ -6359,6 +8744,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'GiropayDisplayPreference option
         }
+
+    type Update'Giropay with
+        static member New(?displayPreference: Update'GiropayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Giropay =
         let create
@@ -6382,6 +8773,12 @@ module PaymentMethodConfigurations =
             Preference: Update'GooglePayDisplayPreferencePreference option
         }
 
+    type Update'GooglePayDisplayPreference with
+        static member New(?preference: Update'GooglePayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'GooglePayDisplayPreference =
         let create
             (
@@ -6398,6 +8795,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'GooglePayDisplayPreference option
         }
+
+    type Update'GooglePay with
+        static member New(?displayPreference: Update'GooglePayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'GooglePay =
         let create
@@ -6421,6 +8824,12 @@ module PaymentMethodConfigurations =
             Preference: Update'GrabpayDisplayPreferencePreference option
         }
 
+    type Update'GrabpayDisplayPreference with
+        static member New(?preference: Update'GrabpayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'GrabpayDisplayPreference =
         let create
             (
@@ -6437,6 +8846,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'GrabpayDisplayPreference option
         }
+
+    type Update'Grabpay with
+        static member New(?displayPreference: Update'GrabpayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Grabpay =
         let create
@@ -6460,6 +8875,12 @@ module PaymentMethodConfigurations =
             Preference: Update'IdealDisplayPreferencePreference option
         }
 
+    type Update'IdealDisplayPreference with
+        static member New(?preference: Update'IdealDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'IdealDisplayPreference =
         let create
             (
@@ -6476,6 +8897,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'IdealDisplayPreference option
         }
+
+    type Update'Ideal with
+        static member New(?displayPreference: Update'IdealDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Ideal =
         let create
@@ -6499,6 +8926,12 @@ module PaymentMethodConfigurations =
             Preference: Update'JcbDisplayPreferencePreference option
         }
 
+    type Update'JcbDisplayPreference with
+        static member New(?preference: Update'JcbDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'JcbDisplayPreference =
         let create
             (
@@ -6515,6 +8948,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'JcbDisplayPreference option
         }
+
+    type Update'Jcb with
+        static member New(?displayPreference: Update'JcbDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Jcb =
         let create
@@ -6538,6 +8977,12 @@ module PaymentMethodConfigurations =
             Preference: Update'KakaoPayDisplayPreferencePreference option
         }
 
+    type Update'KakaoPayDisplayPreference with
+        static member New(?preference: Update'KakaoPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'KakaoPayDisplayPreference =
         let create
             (
@@ -6554,6 +8999,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'KakaoPayDisplayPreference option
         }
+
+    type Update'KakaoPay with
+        static member New(?displayPreference: Update'KakaoPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'KakaoPay =
         let create
@@ -6577,6 +9028,12 @@ module PaymentMethodConfigurations =
             Preference: Update'KlarnaDisplayPreferencePreference option
         }
 
+    type Update'KlarnaDisplayPreference with
+        static member New(?preference: Update'KlarnaDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'KlarnaDisplayPreference =
         let create
             (
@@ -6593,6 +9050,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'KlarnaDisplayPreference option
         }
+
+    type Update'Klarna with
+        static member New(?displayPreference: Update'KlarnaDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Klarna =
         let create
@@ -6616,6 +9079,12 @@ module PaymentMethodConfigurations =
             Preference: Update'KonbiniDisplayPreferencePreference option
         }
 
+    type Update'KonbiniDisplayPreference with
+        static member New(?preference: Update'KonbiniDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'KonbiniDisplayPreference =
         let create
             (
@@ -6632,6 +9101,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'KonbiniDisplayPreference option
         }
+
+    type Update'Konbini with
+        static member New(?displayPreference: Update'KonbiniDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Konbini =
         let create
@@ -6655,6 +9130,12 @@ module PaymentMethodConfigurations =
             Preference: Update'KrCardDisplayPreferencePreference option
         }
 
+    type Update'KrCardDisplayPreference with
+        static member New(?preference: Update'KrCardDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'KrCardDisplayPreference =
         let create
             (
@@ -6671,6 +9152,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'KrCardDisplayPreference option
         }
+
+    type Update'KrCard with
+        static member New(?displayPreference: Update'KrCardDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'KrCard =
         let create
@@ -6694,6 +9181,12 @@ module PaymentMethodConfigurations =
             Preference: Update'LinkDisplayPreferencePreference option
         }
 
+    type Update'LinkDisplayPreference with
+        static member New(?preference: Update'LinkDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'LinkDisplayPreference =
         let create
             (
@@ -6710,6 +9203,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'LinkDisplayPreference option
         }
+
+    type Update'Link with
+        static member New(?displayPreference: Update'LinkDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Link =
         let create
@@ -6733,6 +9232,12 @@ module PaymentMethodConfigurations =
             Preference: Update'MbWayDisplayPreferencePreference option
         }
 
+    type Update'MbWayDisplayPreference with
+        static member New(?preference: Update'MbWayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'MbWayDisplayPreference =
         let create
             (
@@ -6749,6 +9254,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'MbWayDisplayPreference option
         }
+
+    type Update'MbWay with
+        static member New(?displayPreference: Update'MbWayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'MbWay =
         let create
@@ -6772,6 +9283,12 @@ module PaymentMethodConfigurations =
             Preference: Update'MobilepayDisplayPreferencePreference option
         }
 
+    type Update'MobilepayDisplayPreference with
+        static member New(?preference: Update'MobilepayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'MobilepayDisplayPreference =
         let create
             (
@@ -6788,6 +9305,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'MobilepayDisplayPreference option
         }
+
+    type Update'Mobilepay with
+        static member New(?displayPreference: Update'MobilepayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Mobilepay =
         let create
@@ -6811,6 +9334,12 @@ module PaymentMethodConfigurations =
             Preference: Update'MultibancoDisplayPreferencePreference option
         }
 
+    type Update'MultibancoDisplayPreference with
+        static member New(?preference: Update'MultibancoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'MultibancoDisplayPreference =
         let create
             (
@@ -6827,6 +9356,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'MultibancoDisplayPreference option
         }
+
+    type Update'Multibanco with
+        static member New(?displayPreference: Update'MultibancoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Multibanco =
         let create
@@ -6850,6 +9385,12 @@ module PaymentMethodConfigurations =
             Preference: Update'NaverPayDisplayPreferencePreference option
         }
 
+    type Update'NaverPayDisplayPreference with
+        static member New(?preference: Update'NaverPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'NaverPayDisplayPreference =
         let create
             (
@@ -6866,6 +9407,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'NaverPayDisplayPreference option
         }
+
+    type Update'NaverPay with
+        static member New(?displayPreference: Update'NaverPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'NaverPay =
         let create
@@ -6889,6 +9436,12 @@ module PaymentMethodConfigurations =
             Preference: Update'NzBankAccountDisplayPreferencePreference option
         }
 
+    type Update'NzBankAccountDisplayPreference with
+        static member New(?preference: Update'NzBankAccountDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'NzBankAccountDisplayPreference =
         let create
             (
@@ -6905,6 +9458,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'NzBankAccountDisplayPreference option
         }
+
+    type Update'NzBankAccount with
+        static member New(?displayPreference: Update'NzBankAccountDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'NzBankAccount =
         let create
@@ -6928,6 +9487,12 @@ module PaymentMethodConfigurations =
             Preference: Update'OxxoDisplayPreferencePreference option
         }
 
+    type Update'OxxoDisplayPreference with
+        static member New(?preference: Update'OxxoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'OxxoDisplayPreference =
         let create
             (
@@ -6944,6 +9509,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'OxxoDisplayPreference option
         }
+
+    type Update'Oxxo with
+        static member New(?displayPreference: Update'OxxoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Oxxo =
         let create
@@ -6967,6 +9538,12 @@ module PaymentMethodConfigurations =
             Preference: Update'P24DisplayPreferencePreference option
         }
 
+    type Update'P24DisplayPreference with
+        static member New(?preference: Update'P24DisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'P24DisplayPreference =
         let create
             (
@@ -6983,6 +9560,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'P24DisplayPreference option
         }
+
+    type Update'P24 with
+        static member New(?displayPreference: Update'P24DisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'P24 =
         let create
@@ -7006,6 +9589,12 @@ module PaymentMethodConfigurations =
             Preference: Update'PayByBankDisplayPreferencePreference option
         }
 
+    type Update'PayByBankDisplayPreference with
+        static member New(?preference: Update'PayByBankDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'PayByBankDisplayPreference =
         let create
             (
@@ -7022,6 +9611,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'PayByBankDisplayPreference option
         }
+
+    type Update'PayByBank with
+        static member New(?displayPreference: Update'PayByBankDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'PayByBank =
         let create
@@ -7045,6 +9640,12 @@ module PaymentMethodConfigurations =
             Preference: Update'PaycoDisplayPreferencePreference option
         }
 
+    type Update'PaycoDisplayPreference with
+        static member New(?preference: Update'PaycoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'PaycoDisplayPreference =
         let create
             (
@@ -7061,6 +9662,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'PaycoDisplayPreference option
         }
+
+    type Update'Payco with
+        static member New(?displayPreference: Update'PaycoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Payco =
         let create
@@ -7084,6 +9691,12 @@ module PaymentMethodConfigurations =
             Preference: Update'PaynowDisplayPreferencePreference option
         }
 
+    type Update'PaynowDisplayPreference with
+        static member New(?preference: Update'PaynowDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'PaynowDisplayPreference =
         let create
             (
@@ -7100,6 +9713,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'PaynowDisplayPreference option
         }
+
+    type Update'Paynow with
+        static member New(?displayPreference: Update'PaynowDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Paynow =
         let create
@@ -7123,6 +9742,12 @@ module PaymentMethodConfigurations =
             Preference: Update'PaypalDisplayPreferencePreference option
         }
 
+    type Update'PaypalDisplayPreference with
+        static member New(?preference: Update'PaypalDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'PaypalDisplayPreference =
         let create
             (
@@ -7139,6 +9764,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'PaypalDisplayPreference option
         }
+
+    type Update'Paypal with
+        static member New(?displayPreference: Update'PaypalDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Paypal =
         let create
@@ -7162,6 +9793,12 @@ module PaymentMethodConfigurations =
             Preference: Update'PaytoDisplayPreferencePreference option
         }
 
+    type Update'PaytoDisplayPreference with
+        static member New(?preference: Update'PaytoDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'PaytoDisplayPreference =
         let create
             (
@@ -7178,6 +9815,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'PaytoDisplayPreference option
         }
+
+    type Update'Payto with
+        static member New(?displayPreference: Update'PaytoDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Payto =
         let create
@@ -7201,6 +9844,12 @@ module PaymentMethodConfigurations =
             Preference: Update'PixDisplayPreferencePreference option
         }
 
+    type Update'PixDisplayPreference with
+        static member New(?preference: Update'PixDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'PixDisplayPreference =
         let create
             (
@@ -7217,6 +9866,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'PixDisplayPreference option
         }
+
+    type Update'Pix with
+        static member New(?displayPreference: Update'PixDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Pix =
         let create
@@ -7240,6 +9895,12 @@ module PaymentMethodConfigurations =
             Preference: Update'PromptpayDisplayPreferencePreference option
         }
 
+    type Update'PromptpayDisplayPreference with
+        static member New(?preference: Update'PromptpayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'PromptpayDisplayPreference =
         let create
             (
@@ -7256,6 +9917,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'PromptpayDisplayPreference option
         }
+
+    type Update'Promptpay with
+        static member New(?displayPreference: Update'PromptpayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Promptpay =
         let create
@@ -7279,6 +9946,12 @@ module PaymentMethodConfigurations =
             Preference: Update'RevolutPayDisplayPreferencePreference option
         }
 
+    type Update'RevolutPayDisplayPreference with
+        static member New(?preference: Update'RevolutPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'RevolutPayDisplayPreference =
         let create
             (
@@ -7295,6 +9968,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'RevolutPayDisplayPreference option
         }
+
+    type Update'RevolutPay with
+        static member New(?displayPreference: Update'RevolutPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'RevolutPay =
         let create
@@ -7318,6 +9997,12 @@ module PaymentMethodConfigurations =
             Preference: Update'SamsungPayDisplayPreferencePreference option
         }
 
+    type Update'SamsungPayDisplayPreference with
+        static member New(?preference: Update'SamsungPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'SamsungPayDisplayPreference =
         let create
             (
@@ -7334,6 +10019,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'SamsungPayDisplayPreference option
         }
+
+    type Update'SamsungPay with
+        static member New(?displayPreference: Update'SamsungPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'SamsungPay =
         let create
@@ -7357,6 +10048,12 @@ module PaymentMethodConfigurations =
             Preference: Update'SatispayDisplayPreferencePreference option
         }
 
+    type Update'SatispayDisplayPreference with
+        static member New(?preference: Update'SatispayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'SatispayDisplayPreference =
         let create
             (
@@ -7373,6 +10070,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'SatispayDisplayPreference option
         }
+
+    type Update'Satispay with
+        static member New(?displayPreference: Update'SatispayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Satispay =
         let create
@@ -7396,6 +10099,12 @@ module PaymentMethodConfigurations =
             Preference: Update'SepaDebitDisplayPreferencePreference option
         }
 
+    type Update'SepaDebitDisplayPreference with
+        static member New(?preference: Update'SepaDebitDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'SepaDebitDisplayPreference =
         let create
             (
@@ -7412,6 +10121,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'SepaDebitDisplayPreference option
         }
+
+    type Update'SepaDebit with
+        static member New(?displayPreference: Update'SepaDebitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'SepaDebit =
         let create
@@ -7435,6 +10150,12 @@ module PaymentMethodConfigurations =
             Preference: Update'SofortDisplayPreferencePreference option
         }
 
+    type Update'SofortDisplayPreference with
+        static member New(?preference: Update'SofortDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'SofortDisplayPreference =
         let create
             (
@@ -7451,6 +10172,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'SofortDisplayPreference option
         }
+
+    type Update'Sofort with
+        static member New(?displayPreference: Update'SofortDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Sofort =
         let create
@@ -7474,6 +10201,12 @@ module PaymentMethodConfigurations =
             Preference: Update'SunbitDisplayPreferencePreference option
         }
 
+    type Update'SunbitDisplayPreference with
+        static member New(?preference: Update'SunbitDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'SunbitDisplayPreference =
         let create
             (
@@ -7490,6 +10223,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'SunbitDisplayPreference option
         }
+
+    type Update'Sunbit with
+        static member New(?displayPreference: Update'SunbitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Sunbit =
         let create
@@ -7513,6 +10252,12 @@ module PaymentMethodConfigurations =
             Preference: Update'SwishDisplayPreferencePreference option
         }
 
+    type Update'SwishDisplayPreference with
+        static member New(?preference: Update'SwishDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'SwishDisplayPreference =
         let create
             (
@@ -7529,6 +10274,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'SwishDisplayPreference option
         }
+
+    type Update'Swish with
+        static member New(?displayPreference: Update'SwishDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Swish =
         let create
@@ -7552,6 +10303,12 @@ module PaymentMethodConfigurations =
             Preference: Update'TwintDisplayPreferencePreference option
         }
 
+    type Update'TwintDisplayPreference with
+        static member New(?preference: Update'TwintDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'TwintDisplayPreference =
         let create
             (
@@ -7568,6 +10325,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'TwintDisplayPreference option
         }
+
+    type Update'Twint with
+        static member New(?displayPreference: Update'TwintDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Twint =
         let create
@@ -7591,6 +10354,12 @@ module PaymentMethodConfigurations =
             Preference: Update'UpiDisplayPreferencePreference option
         }
 
+    type Update'UpiDisplayPreference with
+        static member New(?preference: Update'UpiDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'UpiDisplayPreference =
         let create
             (
@@ -7607,6 +10376,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'UpiDisplayPreference option
         }
+
+    type Update'Upi with
+        static member New(?displayPreference: Update'UpiDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Upi =
         let create
@@ -7630,6 +10405,12 @@ module PaymentMethodConfigurations =
             Preference: Update'UsBankAccountDisplayPreferencePreference option
         }
 
+    type Update'UsBankAccountDisplayPreference with
+        static member New(?preference: Update'UsBankAccountDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'UsBankAccountDisplayPreference =
         let create
             (
@@ -7646,6 +10427,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'UsBankAccountDisplayPreference option
         }
+
+    type Update'UsBankAccount with
+        static member New(?displayPreference: Update'UsBankAccountDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'UsBankAccount =
         let create
@@ -7669,6 +10456,12 @@ module PaymentMethodConfigurations =
             Preference: Update'WechatPayDisplayPreferencePreference option
         }
 
+    type Update'WechatPayDisplayPreference with
+        static member New(?preference: Update'WechatPayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'WechatPayDisplayPreference =
         let create
             (
@@ -7685,6 +10478,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'WechatPayDisplayPreference option
         }
+
+    type Update'WechatPay with
+        static member New(?displayPreference: Update'WechatPayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'WechatPay =
         let create
@@ -7708,6 +10507,12 @@ module PaymentMethodConfigurations =
             Preference: Update'ZipDisplayPreferencePreference option
         }
 
+    type Update'ZipDisplayPreference with
+        static member New(?preference: Update'ZipDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
     module Update'ZipDisplayPreference =
         let create
             (
@@ -7724,6 +10529,12 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             DisplayPreference: Update'ZipDisplayPreference option
         }
+
+    type Update'Zip with
+        static member New(?displayPreference: Update'ZipDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
 
     module Update'Zip =
         let create
@@ -7924,6 +10735,73 @@ module PaymentMethodConfigurations =
             Zip: Update'Zip option
         }
 
+    type UpdateOptions with
+        static member New(configuration: string, ?acssDebit: Update'AcssDebit, ?active: bool, ?affirm: Update'Affirm, ?afterpayClearpay: Update'AfterpayClearpay, ?alipay: Update'Alipay, ?alma: Update'Alma, ?amazonPay: Update'AmazonPay, ?applePay: Update'ApplePay, ?applePayLater: Update'ApplePayLater, ?auBecsDebit: Update'AuBecsDebit, ?bacsDebit: Update'BacsDebit, ?bancontact: Update'Bancontact, ?billie: Update'Billie, ?blik: Update'Blik, ?boleto: Update'Boleto, ?card: Update'Card, ?cartesBancaires: Update'CartesBancaires, ?cashapp: Update'Cashapp, ?crypto: Update'Crypto, ?customerBalance: Update'CustomerBalance, ?eps: Update'Eps, ?expand: string list, ?fpx: Update'Fpx, ?frMealVoucherConecs: Update'FrMealVoucherConecs, ?giropay: Update'Giropay, ?googlePay: Update'GooglePay, ?grabpay: Update'Grabpay, ?ideal: Update'Ideal, ?jcb: Update'Jcb, ?kakaoPay: Update'KakaoPay, ?klarna: Update'Klarna, ?konbini: Update'Konbini, ?krCard: Update'KrCard, ?link: Update'Link, ?mbWay: Update'MbWay, ?mobilepay: Update'Mobilepay, ?multibanco: Update'Multibanco, ?name: string, ?naverPay: Update'NaverPay, ?nzBankAccount: Update'NzBankAccount, ?oxxo: Update'Oxxo, ?p24: Update'P24, ?payByBank: Update'PayByBank, ?payco: Update'Payco, ?paynow: Update'Paynow, ?paypal: Update'Paypal, ?payto: Update'Payto, ?pix: Update'Pix, ?promptpay: Update'Promptpay, ?revolutPay: Update'RevolutPay, ?samsungPay: Update'SamsungPay, ?satispay: Update'Satispay, ?sepaDebit: Update'SepaDebit, ?sofort: Update'Sofort, ?sunbit: Update'Sunbit, ?swish: Update'Swish, ?twint: Update'Twint, ?upi: Update'Upi, ?usBankAccount: Update'UsBankAccount, ?wechatPay: Update'WechatPay, ?zip: Update'Zip) =
+            {
+                Configuration = configuration
+                AcssDebit = acssDebit
+                Active = active
+                Affirm = affirm
+                AfterpayClearpay = afterpayClearpay
+                Alipay = alipay
+                Alma = alma
+                AmazonPay = amazonPay
+                ApplePay = applePay
+                ApplePayLater = applePayLater
+                AuBecsDebit = auBecsDebit
+                BacsDebit = bacsDebit
+                Bancontact = bancontact
+                Billie = billie
+                Blik = blik
+                Boleto = boleto
+                Card = card
+                CartesBancaires = cartesBancaires
+                Cashapp = cashapp
+                Crypto = crypto
+                CustomerBalance = customerBalance
+                Eps = eps
+                Expand = expand
+                Fpx = fpx
+                FrMealVoucherConecs = frMealVoucherConecs
+                Giropay = giropay
+                GooglePay = googlePay
+                Grabpay = grabpay
+                Ideal = ideal
+                Jcb = jcb
+                KakaoPay = kakaoPay
+                Klarna = klarna
+                Konbini = konbini
+                KrCard = krCard
+                Link = link
+                MbWay = mbWay
+                Mobilepay = mobilepay
+                Multibanco = multibanco
+                Name = name
+                NaverPay = naverPay
+                NzBankAccount = nzBankAccount
+                Oxxo = oxxo
+                P24 = p24
+                PayByBank = payByBank
+                Payco = payco
+                Paynow = paynow
+                Paypal = paypal
+                Payto = payto
+                Pix = pix
+                Promptpay = promptpay
+                RevolutPay = revolutPay
+                SamsungPay = samsungPay
+                Satispay = satispay
+                SepaDebit = sepaDebit
+                Sofort = sofort
+                Sunbit = sunbit
+                Swish = swish
+                Twint = twint
+                Upi = upi
+                UsBankAccount = usBankAccount
+                WechatPay = wechatPay
+                Zip = zip
+            }
+
     module UpdateOptions =
         let create
             (
@@ -8041,6 +10919,17 @@ module PaymentMethodDomains =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?domainName: string, ?enabled: bool, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                DomainName = domainName
+                Enabled = enabled
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -8074,6 +10963,14 @@ module PaymentMethodDomains =
             Expand: string list option
         }
 
+    type CreateOptions with
+        static member New(domainName: string, ?enabled: bool, ?expand: string list) =
+            {
+                DomainName = domainName
+                Enabled = enabled
+                Expand = expand
+            }
+
     module CreateOptions =
         let create
             (
@@ -8094,6 +10991,13 @@ module PaymentMethodDomains =
             [<Config.Path>]
             PaymentMethodDomain: string
         }
+
+    type RetrieveOptions with
+        static member New(paymentMethodDomain: string, ?expand: string list) =
+            {
+                PaymentMethodDomain = paymentMethodDomain
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -8117,6 +11021,14 @@ module PaymentMethodDomains =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type UpdateOptions with
+        static member New(paymentMethodDomain: string, ?enabled: bool, ?expand: string list) =
+            {
+                PaymentMethodDomain = paymentMethodDomain
+                Enabled = enabled
+                Expand = expand
+            }
 
     module UpdateOptions =
         let create
@@ -8163,6 +11075,13 @@ module PaymentMethodDomainsValidate =
             Expand: string list option
         }
 
+    type ValidateOptions with
+        static member New(paymentMethodDomain: string, ?expand: string list) =
+            {
+                PaymentMethodDomain = paymentMethodDomain
+                Expand = expand
+            }
+
     module ValidateOptions =
         let create
             (
@@ -8203,6 +11122,16 @@ module SubscriptionItems =
             Subscription: string
         }
 
+    type ListOptions with
+        static member New(subscription: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Subscription = subscription
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -8223,6 +11152,12 @@ module SubscriptionItems =
             [<Config.Form>]
             UsageGte: int option
         }
+
+    type Create'BillingThresholdsItemBillingThresholds with
+        static member New(?usageGte: int) =
+            {
+                UsageGte = usageGte
+            }
 
     module Create'BillingThresholdsItemBillingThresholds =
         let create
@@ -8246,6 +11181,14 @@ module SubscriptionItems =
             [<Config.Form>]
             PromotionCode: string option
         }
+
+    type Create'Discounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
 
     module Create'Discounts =
         let create
@@ -8282,6 +11225,13 @@ module SubscriptionItems =
             [<Config.Form>]
             IntervalCount: int option
         }
+
+    type Create'PriceDataRecurring with
+        static member New(?interval: Create'PriceDataRecurringInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
 
     module Create'PriceDataRecurring =
         let create
@@ -8321,6 +11271,17 @@ module SubscriptionItems =
             [<Config.Form>]
             UnitAmountDecimal: string option
         }
+
+    type Create'PriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Create'PriceDataRecurring, ?taxBehavior: Create'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                Recurring = recurring
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
 
     module Create'PriceData =
         let create
@@ -8393,6 +11354,24 @@ module SubscriptionItems =
             TaxRates: Choice<string list,string> option
         }
 
+    type CreateOptions with
+        static member New(subscription: string, ?billingThresholds: Choice<Create'BillingThresholdsItemBillingThresholds,string>, ?discounts: Choice<Create'Discounts list,string>, ?expand: string list, ?metadata: Map<string, string>, ?paymentBehavior: Create'PaymentBehavior, ?plan: string, ?price: string, ?priceData: Create'PriceData, ?prorationBehavior: Create'ProrationBehavior, ?prorationDate: DateTime, ?quantity: int, ?taxRates: Choice<string list,string>) =
+            {
+                Subscription = subscription
+                BillingThresholds = billingThresholds
+                Discounts = discounts
+                Expand = expand
+                Metadata = metadata
+                PaymentBehavior = paymentBehavior
+                Plan = plan
+                Price = price
+                PriceData = priceData
+                ProrationBehavior = prorationBehavior
+                ProrationDate = prorationDate
+                Quantity = quantity
+                TaxRates = taxRates
+            }
+
     module CreateOptions =
         let create
             (
@@ -8447,6 +11426,16 @@ module SubscriptionItems =
             ProrationDate: DateTime option
         }
 
+    type DeleteOptions with
+        static member New(item: string, ?clearUsage: bool, ?paymentBehavior: Delete'PaymentBehavior, ?prorationBehavior: Delete'ProrationBehavior, ?prorationDate: DateTime) =
+            {
+                Item = item
+                ClearUsage = clearUsage
+                PaymentBehavior = paymentBehavior
+                ProrationBehavior = prorationBehavior
+                ProrationDate = prorationDate
+            }
+
     module DeleteOptions =
         let create
             (
@@ -8470,6 +11459,13 @@ module SubscriptionItems =
             Item: string
         }
 
+    type RetrieveOptions with
+        static member New(item: string, ?expand: string list) =
+            {
+                Item = item
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -8487,6 +11483,12 @@ module SubscriptionItems =
             [<Config.Form>]
             UsageGte: int option
         }
+
+    type Update'BillingThresholdsItemBillingThresholds with
+        static member New(?usageGte: int) =
+            {
+                UsageGte = usageGte
+            }
 
     module Update'BillingThresholdsItemBillingThresholds =
         let create
@@ -8510,6 +11512,14 @@ module SubscriptionItems =
             [<Config.Form>]
             PromotionCode: string option
         }
+
+    type Update'Discounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
 
     module Update'Discounts =
         let create
@@ -8546,6 +11556,13 @@ module SubscriptionItems =
             [<Config.Form>]
             IntervalCount: int option
         }
+
+    type Update'PriceDataRecurring with
+        static member New(?interval: Update'PriceDataRecurringInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
 
     module Update'PriceDataRecurring =
         let create
@@ -8585,6 +11602,17 @@ module SubscriptionItems =
             [<Config.Form>]
             UnitAmountDecimal: string option
         }
+
+    type Update'PriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Update'PriceDataRecurring, ?taxBehavior: Update'PriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                Recurring = recurring
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
 
     module Update'PriceData =
         let create
@@ -8658,6 +11686,25 @@ module SubscriptionItems =
             [<Config.Form>]
             TaxRates: Choice<string list,string> option
         }
+
+    type UpdateOptions with
+        static member New(item: string, ?billingThresholds: Choice<Update'BillingThresholdsItemBillingThresholds,string>, ?discounts: Choice<Update'Discounts list,string>, ?expand: string list, ?metadata: Map<string, string>, ?offSession: bool, ?paymentBehavior: Update'PaymentBehavior, ?plan: string, ?price: string, ?priceData: Update'PriceData, ?prorationBehavior: Update'ProrationBehavior, ?prorationDate: DateTime, ?quantity: int, ?taxRates: Choice<string list,string>) =
+            {
+                Item = item
+                BillingThresholds = billingThresholds
+                Discounts = discounts
+                Expand = expand
+                Metadata = metadata
+                OffSession = offSession
+                PaymentBehavior = paymentBehavior
+                Plan = plan
+                Price = price
+                PriceData = priceData
+                ProrationBehavior = prorationBehavior
+                ProrationDate = prorationDate
+                Quantity = quantity
+                TaxRates = taxRates
+            }
 
     module UpdateOptions =
         let create
@@ -8748,6 +11795,22 @@ module SubscriptionSchedules =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?canceledAt: int, ?completedAt: int, ?created: int, ?customer: string, ?customerAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?releasedAt: int, ?scheduled: bool, ?startingAfter: string) =
+            {
+                CanceledAt = canceledAt
+                CompletedAt = completedAt
+                Created = created
+                Customer = customer
+                CustomerAccount = customerAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                ReleasedAt = releasedAt
+                Scheduled = scheduled
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -8789,6 +11852,12 @@ module SubscriptionSchedules =
             ProrationDiscounts: Create'BillingModeFlexibleProrationDiscounts option
         }
 
+    type Create'BillingModeFlexible with
+        static member New(?prorationDiscounts: Create'BillingModeFlexibleProrationDiscounts) =
+            {
+                ProrationDiscounts = prorationDiscounts
+            }
+
     module Create'BillingModeFlexible =
         let create
             (
@@ -8813,16 +11882,23 @@ module SubscriptionSchedules =
             Type: Create'BillingModeType option
         }
 
+    type Create'BillingMode with
+        static member New(?flexible: Create'BillingModeFlexible, ?type': Create'BillingModeType) =
+            {
+                Flexible = flexible
+                Type = type'
+            }
+
     module Create'BillingMode =
         let create
             (
                 flexible: Create'BillingModeFlexible option,
-                ``type``: Create'BillingModeType option
+                type': Create'BillingModeType option
             ) : Create'BillingMode
             =
             {
               Flexible = flexible
-              Type = ``type``
+              Type = type'
             }
 
     type Create'DefaultSettingsAutomaticTaxLiabilityType =
@@ -8839,16 +11915,23 @@ module SubscriptionSchedules =
             Type: Create'DefaultSettingsAutomaticTaxLiabilityType option
         }
 
+    type Create'DefaultSettingsAutomaticTaxLiability with
+        static member New(?account: string, ?type': Create'DefaultSettingsAutomaticTaxLiabilityType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Create'DefaultSettingsAutomaticTaxLiability =
         let create
             (
                 account: string option,
-                ``type``: Create'DefaultSettingsAutomaticTaxLiabilityType option
+                type': Create'DefaultSettingsAutomaticTaxLiabilityType option
             ) : Create'DefaultSettingsAutomaticTaxLiability
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Create'DefaultSettingsAutomaticTax =
@@ -8860,6 +11943,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Liability: Create'DefaultSettingsAutomaticTaxLiability option
         }
+
+    type Create'DefaultSettingsAutomaticTax with
+        static member New(?enabled: bool, ?liability: Create'DefaultSettingsAutomaticTaxLiability) =
+            {
+                Enabled = enabled
+                Liability = liability
+            }
 
     module Create'DefaultSettingsAutomaticTax =
         let create
@@ -8886,6 +11976,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             ResetBillingCycleAnchor: bool option
         }
+
+    type Create'DefaultSettingsBillingThresholdsBillingThresholds with
+        static member New(?amountGte: int, ?resetBillingCycleAnchor: bool) =
+            {
+                AmountGte = amountGte
+                ResetBillingCycleAnchor = resetBillingCycleAnchor
+            }
 
     module Create'DefaultSettingsBillingThresholdsBillingThresholds =
         let create
@@ -8917,16 +12014,23 @@ module SubscriptionSchedules =
             Type: Create'DefaultSettingsInvoiceSettingsIssuerType option
         }
 
+    type Create'DefaultSettingsInvoiceSettingsIssuer with
+        static member New(?account: string, ?type': Create'DefaultSettingsInvoiceSettingsIssuerType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Create'DefaultSettingsInvoiceSettingsIssuer =
         let create
             (
                 account: string option,
-                ``type``: Create'DefaultSettingsInvoiceSettingsIssuerType option
+                type': Create'DefaultSettingsInvoiceSettingsIssuerType option
             ) : Create'DefaultSettingsInvoiceSettingsIssuer
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Create'DefaultSettingsInvoiceSettings =
@@ -8941,6 +12045,14 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Issuer: Create'DefaultSettingsInvoiceSettingsIssuer option
         }
+
+    type Create'DefaultSettingsInvoiceSettings with
+        static member New(?accountTaxIds: Choice<string list,string>, ?daysUntilDue: int, ?issuer: Create'DefaultSettingsInvoiceSettingsIssuer) =
+            {
+                AccountTaxIds = accountTaxIds
+                DaysUntilDue = daysUntilDue
+                Issuer = issuer
+            }
 
     module Create'DefaultSettingsInvoiceSettings =
         let create
@@ -8965,6 +12077,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Destination: string option
         }
+
+    type Create'DefaultSettingsTransferDataTransferDataSpecs with
+        static member New(?amountPercent: decimal, ?destination: string) =
+            {
+                AmountPercent = amountPercent
+                Destination = destination
+            }
 
     module Create'DefaultSettingsTransferDataTransferDataSpecs =
         let create
@@ -9011,6 +12130,21 @@ module SubscriptionSchedules =
             [<Config.Form>]
             TransferData: Choice<Create'DefaultSettingsTransferDataTransferDataSpecs,string> option
         }
+
+    type Create'DefaultSettings with
+        static member New(?applicationFeePercent: decimal, ?automaticTax: Create'DefaultSettingsAutomaticTax, ?billingCycleAnchor: Create'DefaultSettingsBillingCycleAnchor, ?billingThresholds: Choice<Create'DefaultSettingsBillingThresholdsBillingThresholds,string>, ?collectionMethod: Create'DefaultSettingsCollectionMethod, ?defaultPaymentMethod: string, ?description: Choice<string,string>, ?invoiceSettings: Create'DefaultSettingsInvoiceSettings, ?onBehalfOf: Choice<string,string>, ?transferData: Choice<Create'DefaultSettingsTransferDataTransferDataSpecs,string>) =
+            {
+                ApplicationFeePercent = applicationFeePercent
+                AutomaticTax = automaticTax
+                BillingCycleAnchor = billingCycleAnchor
+                BillingThresholds = billingThresholds
+                CollectionMethod = collectionMethod
+                DefaultPaymentMethod = defaultPaymentMethod
+                Description = description
+                InvoiceSettings = invoiceSettings
+                OnBehalfOf = onBehalfOf
+                TransferData = transferData
+            }
 
     module Create'DefaultSettings =
         let create
@@ -9059,6 +12193,14 @@ module SubscriptionSchedules =
             PromotionCode: string option
         }
 
+    type Create'PhasesAddInvoiceItemsDiscounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
+
     module Create'PhasesAddInvoiceItemsDiscounts =
         let create
             (
@@ -9088,16 +12230,23 @@ module SubscriptionSchedules =
             Type: Create'PhasesAddInvoiceItemsPeriodEndType option
         }
 
+    type Create'PhasesAddInvoiceItemsPeriodEnd with
+        static member New(?timestamp: DateTime, ?type': Create'PhasesAddInvoiceItemsPeriodEndType) =
+            {
+                Timestamp = timestamp
+                Type = type'
+            }
+
     module Create'PhasesAddInvoiceItemsPeriodEnd =
         let create
             (
                 timestamp: DateTime option,
-                ``type``: Create'PhasesAddInvoiceItemsPeriodEndType option
+                type': Create'PhasesAddInvoiceItemsPeriodEndType option
             ) : Create'PhasesAddInvoiceItemsPeriodEnd
             =
             {
               Timestamp = timestamp
-              Type = ``type``
+              Type = type'
             }
 
     type Create'PhasesAddInvoiceItemsPeriodStartType =
@@ -9115,16 +12264,23 @@ module SubscriptionSchedules =
             Type: Create'PhasesAddInvoiceItemsPeriodStartType option
         }
 
+    type Create'PhasesAddInvoiceItemsPeriodStart with
+        static member New(?timestamp: DateTime, ?type': Create'PhasesAddInvoiceItemsPeriodStartType) =
+            {
+                Timestamp = timestamp
+                Type = type'
+            }
+
     module Create'PhasesAddInvoiceItemsPeriodStart =
         let create
             (
                 timestamp: DateTime option,
-                ``type``: Create'PhasesAddInvoiceItemsPeriodStartType option
+                type': Create'PhasesAddInvoiceItemsPeriodStartType option
             ) : Create'PhasesAddInvoiceItemsPeriodStart
             =
             {
               Timestamp = timestamp
-              Type = ``type``
+              Type = type'
             }
 
     type Create'PhasesAddInvoiceItemsPeriod =
@@ -9137,15 +12293,22 @@ module SubscriptionSchedules =
             Start: Create'PhasesAddInvoiceItemsPeriodStart option
         }
 
+    type Create'PhasesAddInvoiceItemsPeriod with
+        static member New(?end': Create'PhasesAddInvoiceItemsPeriodEnd, ?start: Create'PhasesAddInvoiceItemsPeriodStart) =
+            {
+                End = end'
+                Start = start
+            }
+
     module Create'PhasesAddInvoiceItemsPeriod =
         let create
             (
-                ``end``: Create'PhasesAddInvoiceItemsPeriodEnd option,
+                end': Create'PhasesAddInvoiceItemsPeriodEnd option,
                 start: Create'PhasesAddInvoiceItemsPeriodStart option
             ) : Create'PhasesAddInvoiceItemsPeriod
             =
             {
-              End = ``end``
+              End = end'
               Start = start
             }
 
@@ -9172,6 +12335,16 @@ module SubscriptionSchedules =
             [<Config.Form>]
             UnitAmountDecimal: string option
         }
+
+    type Create'PhasesAddInvoiceItemsPriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?taxBehavior: Create'PhasesAddInvoiceItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
 
     module Create'PhasesAddInvoiceItemsPriceData =
         let create
@@ -9216,6 +12389,18 @@ module SubscriptionSchedules =
             TaxRates: Choice<string list,string> option
         }
 
+    type Create'PhasesAddInvoiceItems with
+        static member New(?discounts: Create'PhasesAddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: Create'PhasesAddInvoiceItemsPeriod, ?price: string, ?priceData: Create'PhasesAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+            {
+                Discounts = discounts
+                Metadata = metadata
+                Period = period
+                Price = price
+                PriceData = priceData
+                Quantity = quantity
+                TaxRates = taxRates
+            }
+
     module Create'PhasesAddInvoiceItems =
         let create
             (
@@ -9252,16 +12437,23 @@ module SubscriptionSchedules =
             Type: Create'PhasesAutomaticTaxLiabilityType option
         }
 
+    type Create'PhasesAutomaticTaxLiability with
+        static member New(?account: string, ?type': Create'PhasesAutomaticTaxLiabilityType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Create'PhasesAutomaticTaxLiability =
         let create
             (
                 account: string option,
-                ``type``: Create'PhasesAutomaticTaxLiabilityType option
+                type': Create'PhasesAutomaticTaxLiabilityType option
             ) : Create'PhasesAutomaticTaxLiability
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Create'PhasesAutomaticTax =
@@ -9273,6 +12465,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Liability: Create'PhasesAutomaticTaxLiability option
         }
+
+    type Create'PhasesAutomaticTax with
+        static member New(?enabled: bool, ?liability: Create'PhasesAutomaticTaxLiability) =
+            {
+                Enabled = enabled
+                Liability = liability
+            }
 
     module Create'PhasesAutomaticTax =
         let create
@@ -9299,6 +12498,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             ResetBillingCycleAnchor: bool option
         }
+
+    type Create'PhasesBillingThresholdsBillingThresholds with
+        static member New(?amountGte: int, ?resetBillingCycleAnchor: bool) =
+            {
+                AmountGte = amountGte
+                ResetBillingCycleAnchor = resetBillingCycleAnchor
+            }
 
     module Create'PhasesBillingThresholdsBillingThresholds =
         let create
@@ -9328,6 +12534,14 @@ module SubscriptionSchedules =
             [<Config.Form>]
             PromotionCode: string option
         }
+
+    type Create'PhasesDiscounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
 
     module Create'PhasesDiscounts =
         let create
@@ -9359,6 +12573,13 @@ module SubscriptionSchedules =
             IntervalCount: int option
         }
 
+    type Create'PhasesDuration with
+        static member New(?interval: Create'PhasesDurationInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
     module Create'PhasesDuration =
         let create
             (
@@ -9385,16 +12606,23 @@ module SubscriptionSchedules =
             Type: Create'PhasesInvoiceSettingsIssuerType option
         }
 
+    type Create'PhasesInvoiceSettingsIssuer with
+        static member New(?account: string, ?type': Create'PhasesInvoiceSettingsIssuerType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Create'PhasesInvoiceSettingsIssuer =
         let create
             (
                 account: string option,
-                ``type``: Create'PhasesInvoiceSettingsIssuerType option
+                type': Create'PhasesInvoiceSettingsIssuerType option
             ) : Create'PhasesInvoiceSettingsIssuer
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Create'PhasesInvoiceSettings =
@@ -9409,6 +12637,14 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Issuer: Create'PhasesInvoiceSettingsIssuer option
         }
+
+    type Create'PhasesInvoiceSettings with
+        static member New(?accountTaxIds: Choice<string list,string>, ?daysUntilDue: int, ?issuer: Create'PhasesInvoiceSettingsIssuer) =
+            {
+                AccountTaxIds = accountTaxIds
+                DaysUntilDue = daysUntilDue
+                Issuer = issuer
+            }
 
     module Create'PhasesInvoiceSettings =
         let create
@@ -9430,6 +12666,12 @@ module SubscriptionSchedules =
             [<Config.Form>]
             UsageGte: int option
         }
+
+    type Create'PhasesItemsBillingThresholdsItemBillingThresholds with
+        static member New(?usageGte: int) =
+            {
+                UsageGte = usageGte
+            }
 
     module Create'PhasesItemsBillingThresholdsItemBillingThresholds =
         let create
@@ -9453,6 +12695,14 @@ module SubscriptionSchedules =
             [<Config.Form>]
             PromotionCode: string option
         }
+
+    type Create'PhasesItemsDiscounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
 
     module Create'PhasesItemsDiscounts =
         let create
@@ -9483,6 +12733,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             IntervalCount: int option
         }
+
+    type Create'PhasesItemsPriceDataRecurring with
+        static member New(?interval: Create'PhasesItemsPriceDataRecurringInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
 
     module Create'PhasesItemsPriceDataRecurring =
         let create
@@ -9522,6 +12779,17 @@ module SubscriptionSchedules =
             [<Config.Form>]
             UnitAmountDecimal: string option
         }
+
+    type Create'PhasesItemsPriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Create'PhasesItemsPriceDataRecurring, ?taxBehavior: Create'PhasesItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                Recurring = recurring
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
 
     module Create'PhasesItemsPriceData =
         let create
@@ -9571,6 +12839,19 @@ module SubscriptionSchedules =
             TaxRates: Choice<string list,string> option
         }
 
+    type Create'PhasesItems with
+        static member New(?billingThresholds: Choice<Create'PhasesItemsBillingThresholdsItemBillingThresholds,string>, ?discounts: Choice<Create'PhasesItemsDiscounts list,string>, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: Create'PhasesItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+            {
+                BillingThresholds = billingThresholds
+                Discounts = discounts
+                Metadata = metadata
+                Plan = plan
+                Price = price
+                PriceData = priceData
+                Quantity = quantity
+                TaxRates = taxRates
+            }
+
     module Create'PhasesItems =
         let create
             (
@@ -9609,6 +12890,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Destination: string option
         }
+
+    type Create'PhasesTransferData with
+        static member New(?amountPercent: decimal, ?destination: string) =
+            {
+                AmountPercent = amountPercent
+                Destination = destination
+            }
 
     module Create'PhasesTransferData =
         let create
@@ -9688,6 +12976,32 @@ module SubscriptionSchedules =
             [<Config.Form>]
             TrialEnd: DateTime option
         }
+
+    type Create'Phases with
+        static member New(?addInvoiceItems: Create'PhasesAddInvoiceItems list, ?applicationFeePercent: decimal, ?automaticTax: Create'PhasesAutomaticTax, ?billingCycleAnchor: Create'PhasesBillingCycleAnchor, ?billingThresholds: Choice<Create'PhasesBillingThresholdsBillingThresholds,string>, ?collectionMethod: Create'PhasesCollectionMethod, ?currency: IsoTypes.IsoCurrencyCode, ?defaultPaymentMethod: string, ?defaultTaxRates: Choice<string list,string>, ?description: Choice<string,string>, ?discounts: Choice<Create'PhasesDiscounts list,string>, ?duration: Create'PhasesDuration, ?endDate: DateTime, ?invoiceSettings: Create'PhasesInvoiceSettings, ?items: Create'PhasesItems list, ?metadata: Map<string, string>, ?onBehalfOf: string, ?prorationBehavior: Create'PhasesProrationBehavior, ?transferData: Create'PhasesTransferData, ?trial: bool, ?trialEnd: DateTime) =
+            {
+                AddInvoiceItems = addInvoiceItems
+                ApplicationFeePercent = applicationFeePercent
+                AutomaticTax = automaticTax
+                BillingCycleAnchor = billingCycleAnchor
+                BillingThresholds = billingThresholds
+                CollectionMethod = collectionMethod
+                Currency = currency
+                DefaultPaymentMethod = defaultPaymentMethod
+                DefaultTaxRates = defaultTaxRates
+                Description = description
+                Discounts = discounts
+                Duration = duration
+                EndDate = endDate
+                InvoiceSettings = invoiceSettings
+                Items = items
+                Metadata = metadata
+                OnBehalfOf = onBehalfOf
+                ProrationBehavior = prorationBehavior
+                TransferData = transferData
+                Trial = trial
+                TrialEnd = trialEnd
+            }
 
     module Create'Phases =
         let create
@@ -9775,6 +13089,21 @@ module SubscriptionSchedules =
             StartDate: Choice<DateTime,Create'StartDate> option
         }
 
+    type CreateOptions with
+        static member New(?billingMode: Create'BillingMode, ?customer: string, ?customerAccount: string, ?defaultSettings: Create'DefaultSettings, ?endBehavior: Create'EndBehavior, ?expand: string list, ?fromSubscription: string, ?metadata: Map<string, string>, ?phases: Create'Phases list, ?startDate: Choice<DateTime,Create'StartDate>) =
+            {
+                BillingMode = billingMode
+                Customer = customer
+                CustomerAccount = customerAccount
+                DefaultSettings = defaultSettings
+                EndBehavior = endBehavior
+                Expand = expand
+                FromSubscription = fromSubscription
+                Metadata = metadata
+                Phases = phases
+                StartDate = startDate
+            }
+
     module CreateOptions =
         let create
             (
@@ -9812,6 +13141,13 @@ module SubscriptionSchedules =
             Schedule: string
         }
 
+    type RetrieveOptions with
+        static member New(schedule: string, ?expand: string list) =
+            {
+                Schedule = schedule
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -9837,16 +13173,23 @@ module SubscriptionSchedules =
             Type: Update'DefaultSettingsAutomaticTaxLiabilityType option
         }
 
+    type Update'DefaultSettingsAutomaticTaxLiability with
+        static member New(?account: string, ?type': Update'DefaultSettingsAutomaticTaxLiabilityType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Update'DefaultSettingsAutomaticTaxLiability =
         let create
             (
                 account: string option,
-                ``type``: Update'DefaultSettingsAutomaticTaxLiabilityType option
+                type': Update'DefaultSettingsAutomaticTaxLiabilityType option
             ) : Update'DefaultSettingsAutomaticTaxLiability
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Update'DefaultSettingsAutomaticTax =
@@ -9858,6 +13201,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Liability: Update'DefaultSettingsAutomaticTaxLiability option
         }
+
+    type Update'DefaultSettingsAutomaticTax with
+        static member New(?enabled: bool, ?liability: Update'DefaultSettingsAutomaticTaxLiability) =
+            {
+                Enabled = enabled
+                Liability = liability
+            }
 
     module Update'DefaultSettingsAutomaticTax =
         let create
@@ -9884,6 +13234,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             ResetBillingCycleAnchor: bool option
         }
+
+    type Update'DefaultSettingsBillingThresholdsBillingThresholds with
+        static member New(?amountGte: int, ?resetBillingCycleAnchor: bool) =
+            {
+                AmountGte = amountGte
+                ResetBillingCycleAnchor = resetBillingCycleAnchor
+            }
 
     module Update'DefaultSettingsBillingThresholdsBillingThresholds =
         let create
@@ -9915,16 +13272,23 @@ module SubscriptionSchedules =
             Type: Update'DefaultSettingsInvoiceSettingsIssuerType option
         }
 
+    type Update'DefaultSettingsInvoiceSettingsIssuer with
+        static member New(?account: string, ?type': Update'DefaultSettingsInvoiceSettingsIssuerType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Update'DefaultSettingsInvoiceSettingsIssuer =
         let create
             (
                 account: string option,
-                ``type``: Update'DefaultSettingsInvoiceSettingsIssuerType option
+                type': Update'DefaultSettingsInvoiceSettingsIssuerType option
             ) : Update'DefaultSettingsInvoiceSettingsIssuer
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Update'DefaultSettingsInvoiceSettings =
@@ -9939,6 +13303,14 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Issuer: Update'DefaultSettingsInvoiceSettingsIssuer option
         }
+
+    type Update'DefaultSettingsInvoiceSettings with
+        static member New(?accountTaxIds: Choice<string list,string>, ?daysUntilDue: int, ?issuer: Update'DefaultSettingsInvoiceSettingsIssuer) =
+            {
+                AccountTaxIds = accountTaxIds
+                DaysUntilDue = daysUntilDue
+                Issuer = issuer
+            }
 
     module Update'DefaultSettingsInvoiceSettings =
         let create
@@ -9963,6 +13335,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Destination: string option
         }
+
+    type Update'DefaultSettingsTransferDataTransferDataSpecs with
+        static member New(?amountPercent: decimal, ?destination: string) =
+            {
+                AmountPercent = amountPercent
+                Destination = destination
+            }
 
     module Update'DefaultSettingsTransferDataTransferDataSpecs =
         let create
@@ -10009,6 +13388,21 @@ module SubscriptionSchedules =
             [<Config.Form>]
             TransferData: Choice<Update'DefaultSettingsTransferDataTransferDataSpecs,string> option
         }
+
+    type Update'DefaultSettings with
+        static member New(?applicationFeePercent: decimal, ?automaticTax: Update'DefaultSettingsAutomaticTax, ?billingCycleAnchor: Update'DefaultSettingsBillingCycleAnchor, ?billingThresholds: Choice<Update'DefaultSettingsBillingThresholdsBillingThresholds,string>, ?collectionMethod: Update'DefaultSettingsCollectionMethod, ?defaultPaymentMethod: string, ?description: Choice<string,string>, ?invoiceSettings: Update'DefaultSettingsInvoiceSettings, ?onBehalfOf: Choice<string,string>, ?transferData: Choice<Update'DefaultSettingsTransferDataTransferDataSpecs,string>) =
+            {
+                ApplicationFeePercent = applicationFeePercent
+                AutomaticTax = automaticTax
+                BillingCycleAnchor = billingCycleAnchor
+                BillingThresholds = billingThresholds
+                CollectionMethod = collectionMethod
+                DefaultPaymentMethod = defaultPaymentMethod
+                Description = description
+                InvoiceSettings = invoiceSettings
+                OnBehalfOf = onBehalfOf
+                TransferData = transferData
+            }
 
     module Update'DefaultSettings =
         let create
@@ -10057,6 +13451,14 @@ module SubscriptionSchedules =
             PromotionCode: string option
         }
 
+    type Update'PhasesAddInvoiceItemsDiscounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
+
     module Update'PhasesAddInvoiceItemsDiscounts =
         let create
             (
@@ -10086,16 +13488,23 @@ module SubscriptionSchedules =
             Type: Update'PhasesAddInvoiceItemsPeriodEndType option
         }
 
+    type Update'PhasesAddInvoiceItemsPeriodEnd with
+        static member New(?timestamp: DateTime, ?type': Update'PhasesAddInvoiceItemsPeriodEndType) =
+            {
+                Timestamp = timestamp
+                Type = type'
+            }
+
     module Update'PhasesAddInvoiceItemsPeriodEnd =
         let create
             (
                 timestamp: DateTime option,
-                ``type``: Update'PhasesAddInvoiceItemsPeriodEndType option
+                type': Update'PhasesAddInvoiceItemsPeriodEndType option
             ) : Update'PhasesAddInvoiceItemsPeriodEnd
             =
             {
               Timestamp = timestamp
-              Type = ``type``
+              Type = type'
             }
 
     type Update'PhasesAddInvoiceItemsPeriodStartType =
@@ -10113,16 +13522,23 @@ module SubscriptionSchedules =
             Type: Update'PhasesAddInvoiceItemsPeriodStartType option
         }
 
+    type Update'PhasesAddInvoiceItemsPeriodStart with
+        static member New(?timestamp: DateTime, ?type': Update'PhasesAddInvoiceItemsPeriodStartType) =
+            {
+                Timestamp = timestamp
+                Type = type'
+            }
+
     module Update'PhasesAddInvoiceItemsPeriodStart =
         let create
             (
                 timestamp: DateTime option,
-                ``type``: Update'PhasesAddInvoiceItemsPeriodStartType option
+                type': Update'PhasesAddInvoiceItemsPeriodStartType option
             ) : Update'PhasesAddInvoiceItemsPeriodStart
             =
             {
               Timestamp = timestamp
-              Type = ``type``
+              Type = type'
             }
 
     type Update'PhasesAddInvoiceItemsPeriod =
@@ -10135,15 +13551,22 @@ module SubscriptionSchedules =
             Start: Update'PhasesAddInvoiceItemsPeriodStart option
         }
 
+    type Update'PhasesAddInvoiceItemsPeriod with
+        static member New(?end': Update'PhasesAddInvoiceItemsPeriodEnd, ?start: Update'PhasesAddInvoiceItemsPeriodStart) =
+            {
+                End = end'
+                Start = start
+            }
+
     module Update'PhasesAddInvoiceItemsPeriod =
         let create
             (
-                ``end``: Update'PhasesAddInvoiceItemsPeriodEnd option,
+                end': Update'PhasesAddInvoiceItemsPeriodEnd option,
                 start: Update'PhasesAddInvoiceItemsPeriodStart option
             ) : Update'PhasesAddInvoiceItemsPeriod
             =
             {
-              End = ``end``
+              End = end'
               Start = start
             }
 
@@ -10170,6 +13593,16 @@ module SubscriptionSchedules =
             [<Config.Form>]
             UnitAmountDecimal: string option
         }
+
+    type Update'PhasesAddInvoiceItemsPriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?taxBehavior: Update'PhasesAddInvoiceItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
 
     module Update'PhasesAddInvoiceItemsPriceData =
         let create
@@ -10214,6 +13647,18 @@ module SubscriptionSchedules =
             TaxRates: Choice<string list,string> option
         }
 
+    type Update'PhasesAddInvoiceItems with
+        static member New(?discounts: Update'PhasesAddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: Update'PhasesAddInvoiceItemsPeriod, ?price: string, ?priceData: Update'PhasesAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+            {
+                Discounts = discounts
+                Metadata = metadata
+                Period = period
+                Price = price
+                PriceData = priceData
+                Quantity = quantity
+                TaxRates = taxRates
+            }
+
     module Update'PhasesAddInvoiceItems =
         let create
             (
@@ -10250,16 +13695,23 @@ module SubscriptionSchedules =
             Type: Update'PhasesAutomaticTaxLiabilityType option
         }
 
+    type Update'PhasesAutomaticTaxLiability with
+        static member New(?account: string, ?type': Update'PhasesAutomaticTaxLiabilityType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Update'PhasesAutomaticTaxLiability =
         let create
             (
                 account: string option,
-                ``type``: Update'PhasesAutomaticTaxLiabilityType option
+                type': Update'PhasesAutomaticTaxLiabilityType option
             ) : Update'PhasesAutomaticTaxLiability
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Update'PhasesAutomaticTax =
@@ -10271,6 +13723,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Liability: Update'PhasesAutomaticTaxLiability option
         }
+
+    type Update'PhasesAutomaticTax with
+        static member New(?enabled: bool, ?liability: Update'PhasesAutomaticTaxLiability) =
+            {
+                Enabled = enabled
+                Liability = liability
+            }
 
     module Update'PhasesAutomaticTax =
         let create
@@ -10297,6 +13756,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             ResetBillingCycleAnchor: bool option
         }
+
+    type Update'PhasesBillingThresholdsBillingThresholds with
+        static member New(?amountGte: int, ?resetBillingCycleAnchor: bool) =
+            {
+                AmountGte = amountGte
+                ResetBillingCycleAnchor = resetBillingCycleAnchor
+            }
 
     module Update'PhasesBillingThresholdsBillingThresholds =
         let create
@@ -10326,6 +13792,14 @@ module SubscriptionSchedules =
             [<Config.Form>]
             PromotionCode: string option
         }
+
+    type Update'PhasesDiscounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
 
     module Update'PhasesDiscounts =
         let create
@@ -10357,6 +13831,13 @@ module SubscriptionSchedules =
             IntervalCount: int option
         }
 
+    type Update'PhasesDuration with
+        static member New(?interval: Update'PhasesDurationInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
     module Update'PhasesDuration =
         let create
             (
@@ -10385,16 +13866,23 @@ module SubscriptionSchedules =
             Type: Update'PhasesInvoiceSettingsIssuerType option
         }
 
+    type Update'PhasesInvoiceSettingsIssuer with
+        static member New(?account: string, ?type': Update'PhasesInvoiceSettingsIssuerType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Update'PhasesInvoiceSettingsIssuer =
         let create
             (
                 account: string option,
-                ``type``: Update'PhasesInvoiceSettingsIssuerType option
+                type': Update'PhasesInvoiceSettingsIssuerType option
             ) : Update'PhasesInvoiceSettingsIssuer
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Update'PhasesInvoiceSettings =
@@ -10409,6 +13897,14 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Issuer: Update'PhasesInvoiceSettingsIssuer option
         }
+
+    type Update'PhasesInvoiceSettings with
+        static member New(?accountTaxIds: Choice<string list,string>, ?daysUntilDue: int, ?issuer: Update'PhasesInvoiceSettingsIssuer) =
+            {
+                AccountTaxIds = accountTaxIds
+                DaysUntilDue = daysUntilDue
+                Issuer = issuer
+            }
 
     module Update'PhasesInvoiceSettings =
         let create
@@ -10430,6 +13926,12 @@ module SubscriptionSchedules =
             [<Config.Form>]
             UsageGte: int option
         }
+
+    type Update'PhasesItemsBillingThresholdsItemBillingThresholds with
+        static member New(?usageGte: int) =
+            {
+                UsageGte = usageGte
+            }
 
     module Update'PhasesItemsBillingThresholdsItemBillingThresholds =
         let create
@@ -10453,6 +13955,14 @@ module SubscriptionSchedules =
             [<Config.Form>]
             PromotionCode: string option
         }
+
+    type Update'PhasesItemsDiscounts with
+        static member New(?coupon: string, ?discount: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                Discount = discount
+                PromotionCode = promotionCode
+            }
 
     module Update'PhasesItemsDiscounts =
         let create
@@ -10483,6 +13993,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             IntervalCount: int option
         }
+
+    type Update'PhasesItemsPriceDataRecurring with
+        static member New(?interval: Update'PhasesItemsPriceDataRecurringInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
 
     module Update'PhasesItemsPriceDataRecurring =
         let create
@@ -10522,6 +14039,17 @@ module SubscriptionSchedules =
             [<Config.Form>]
             UnitAmountDecimal: string option
         }
+
+    type Update'PhasesItemsPriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?recurring: Update'PhasesItemsPriceDataRecurring, ?taxBehavior: Update'PhasesItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                Recurring = recurring
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
 
     module Update'PhasesItemsPriceData =
         let create
@@ -10571,6 +14099,19 @@ module SubscriptionSchedules =
             TaxRates: Choice<string list,string> option
         }
 
+    type Update'PhasesItems with
+        static member New(?billingThresholds: Choice<Update'PhasesItemsBillingThresholdsItemBillingThresholds,string>, ?discounts: Choice<Update'PhasesItemsDiscounts list,string>, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: Update'PhasesItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+            {
+                BillingThresholds = billingThresholds
+                Discounts = discounts
+                Metadata = metadata
+                Plan = plan
+                Price = price
+                PriceData = priceData
+                Quantity = quantity
+                TaxRates = taxRates
+            }
+
     module Update'PhasesItems =
         let create
             (
@@ -10611,6 +14152,13 @@ module SubscriptionSchedules =
             [<Config.Form>]
             Destination: string option
         }
+
+    type Update'PhasesTransferData with
+        static member New(?amountPercent: decimal, ?destination: string) =
+            {
+                AmountPercent = amountPercent
+                Destination = destination
+            }
 
     module Update'PhasesTransferData =
         let create
@@ -10696,6 +14244,33 @@ module SubscriptionSchedules =
             TrialEnd: Choice<DateTime,Update'PhasesTrialEnd> option
         }
 
+    type Update'Phases with
+        static member New(?addInvoiceItems: Update'PhasesAddInvoiceItems list, ?applicationFeePercent: decimal, ?automaticTax: Update'PhasesAutomaticTax, ?billingCycleAnchor: Update'PhasesBillingCycleAnchor, ?billingThresholds: Choice<Update'PhasesBillingThresholdsBillingThresholds,string>, ?collectionMethod: Update'PhasesCollectionMethod, ?currency: IsoTypes.IsoCurrencyCode, ?defaultPaymentMethod: string, ?defaultTaxRates: Choice<string list,string>, ?description: Choice<string,string>, ?discounts: Choice<Update'PhasesDiscounts list,string>, ?duration: Update'PhasesDuration, ?endDate: Choice<DateTime,Update'PhasesEndDate>, ?invoiceSettings: Update'PhasesInvoiceSettings, ?items: Update'PhasesItems list, ?metadata: Map<string, string>, ?onBehalfOf: string, ?prorationBehavior: Update'PhasesProrationBehavior, ?startDate: Choice<DateTime,Update'PhasesStartDate>, ?transferData: Update'PhasesTransferData, ?trial: bool, ?trialEnd: Choice<DateTime,Update'PhasesTrialEnd>) =
+            {
+                AddInvoiceItems = addInvoiceItems
+                ApplicationFeePercent = applicationFeePercent
+                AutomaticTax = automaticTax
+                BillingCycleAnchor = billingCycleAnchor
+                BillingThresholds = billingThresholds
+                CollectionMethod = collectionMethod
+                Currency = currency
+                DefaultPaymentMethod = defaultPaymentMethod
+                DefaultTaxRates = defaultTaxRates
+                Description = description
+                Discounts = discounts
+                Duration = duration
+                EndDate = endDate
+                InvoiceSettings = invoiceSettings
+                Items = items
+                Metadata = metadata
+                OnBehalfOf = onBehalfOf
+                ProrationBehavior = prorationBehavior
+                StartDate = startDate
+                TransferData = transferData
+                Trial = trial
+                TrialEnd = trialEnd
+            }
+
     module Update'Phases =
         let create
             (
@@ -10777,6 +14352,18 @@ module SubscriptionSchedules =
             ProrationBehavior: Update'ProrationBehavior option
         }
 
+    type UpdateOptions with
+        static member New(schedule: string, ?defaultSettings: Update'DefaultSettings, ?endBehavior: Update'EndBehavior, ?expand: string list, ?metadata: Map<string, string>, ?phases: Update'Phases list, ?prorationBehavior: Update'ProrationBehavior) =
+            {
+                Schedule = schedule
+                DefaultSettings = defaultSettings
+                EndBehavior = endBehavior
+                Expand = expand
+                Metadata = metadata
+                Phases = phases
+                ProrationBehavior = prorationBehavior
+            }
+
     module UpdateOptions =
         let create
             (
@@ -10832,6 +14419,15 @@ module SubscriptionSchedulesCancel =
             Prorate: bool option
         }
 
+    type CancelOptions with
+        static member New(schedule: string, ?expand: string list, ?invoiceNow: bool, ?prorate: bool) =
+            {
+                Schedule = schedule
+                Expand = expand
+                InvoiceNow = invoiceNow
+                Prorate = prorate
+            }
+
     module CancelOptions =
         let create
             (
@@ -10863,6 +14459,14 @@ module SubscriptionSchedulesRelease =
             [<Config.Form>]
             PreserveCancelDate: bool option
         }
+
+    type ReleaseOptions with
+        static member New(schedule: string, ?expand: string list, ?preserveCancelDate: bool) =
+            {
+                Schedule = schedule
+                Expand = expand
+                PreserveCancelDate = preserveCancelDate
+            }
 
     module ReleaseOptions =
         let create

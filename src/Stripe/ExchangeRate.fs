@@ -33,6 +33,13 @@ type ExchangeRate =
         Rates: Map<string, string list>
     }
 
+type ExchangeRate with
+    static member New(id: string, rates: Map<string, string list>) =
+        {
+            Id = id
+            Rates = rates
+        }
+
 module ExchangeRate =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "exchange_rate"

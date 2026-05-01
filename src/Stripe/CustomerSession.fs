@@ -12,6 +12,12 @@ type CustomerSessionResourceComponentsResourceBuyButton =
         Enabled: bool
     }
 
+type CustomerSessionResourceComponentsResourceBuyButton with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
+
 [<Struct>]
 type CustomerSessionResourceComponentsResourceCustomerSheetResourceFeaturesPaymentMethodAllowRedisplayFilters =
     | Always
@@ -36,6 +42,13 @@ type CustomerSessionResourceComponentsResourceCustomerSheetResourceFeatures =
             CustomerSessionResourceComponentsResourceCustomerSheetResourceFeaturesPaymentMethodRemove option
     }
 
+type CustomerSessionResourceComponentsResourceCustomerSheetResourceFeatures with
+    static member New(paymentMethodAllowRedisplayFilters: CustomerSessionResourceComponentsResourceCustomerSheetResourceFeaturesPaymentMethodAllowRedisplayFilters list option, paymentMethodRemove: CustomerSessionResourceComponentsResourceCustomerSheetResourceFeaturesPaymentMethodRemove option) =
+        {
+            PaymentMethodAllowRedisplayFilters = paymentMethodAllowRedisplayFilters
+            PaymentMethodRemove = paymentMethodRemove
+        }
+
 /// This hash contains whether the customer sheet is enabled and the features it supports.
 type CustomerSessionResourceComponentsResourceCustomerSheet =
     {
@@ -44,6 +57,13 @@ type CustomerSessionResourceComponentsResourceCustomerSheet =
         /// This hash defines whether the customer sheet supports certain features.
         Features: CustomerSessionResourceComponentsResourceCustomerSheetResourceFeatures option
     }
+
+type CustomerSessionResourceComponentsResourceCustomerSheet with
+    static member New(enabled: bool, features: CustomerSessionResourceComponentsResourceCustomerSheetResourceFeatures option) =
+        {
+            Enabled = enabled
+            Features = features
+        }
 
 [<Struct>]
 type CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeaturesPaymentMethodAllowRedisplayFilters =
@@ -97,6 +117,16 @@ type CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeatur
             CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeaturesPaymentMethodSaveAllowRedisplayOverride option
     }
 
+type CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeatures with
+    static member New(paymentMethodAllowRedisplayFilters: CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeaturesPaymentMethodAllowRedisplayFilters list option, paymentMethodRedisplay: CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeaturesPaymentMethodRedisplay option, paymentMethodRemove: CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeaturesPaymentMethodRemove option, paymentMethodSave: CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeaturesPaymentMethodSave option, paymentMethodSaveAllowRedisplayOverride: CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeaturesPaymentMethodSaveAllowRedisplayOverride option) =
+        {
+            PaymentMethodAllowRedisplayFilters = paymentMethodAllowRedisplayFilters
+            PaymentMethodRedisplay = paymentMethodRedisplay
+            PaymentMethodRemove = paymentMethodRemove
+            PaymentMethodSave = paymentMethodSave
+            PaymentMethodSaveAllowRedisplayOverride = paymentMethodSaveAllowRedisplayOverride
+        }
+
 /// This hash contains whether the mobile payment element is enabled and the features it supports.
 type CustomerSessionResourceComponentsResourceMobilePaymentElement =
     {
@@ -105,6 +135,13 @@ type CustomerSessionResourceComponentsResourceMobilePaymentElement =
         /// This hash defines whether the mobile payment element supports certain features.
         Features: CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeatures option
     }
+
+type CustomerSessionResourceComponentsResourceMobilePaymentElement with
+    static member New(enabled: bool, features: CustomerSessionResourceComponentsResourceMobilePaymentElementResourceFeatures option) =
+        {
+            Enabled = enabled
+            Features = features
+        }
 
 [<Struct>]
 type CustomerSessionResourceComponentsResourcePaymentElementResourceFeaturesPaymentMethodAllowRedisplayFilters =
@@ -156,6 +193,17 @@ type CustomerSessionResourceComponentsResourcePaymentElementResourceFeatures =
             CustomerSessionResourceComponentsResourcePaymentElementResourceFeaturesPaymentMethodSaveUsage option
     }
 
+type CustomerSessionResourceComponentsResourcePaymentElementResourceFeatures with
+    static member New(paymentMethodAllowRedisplayFilters: CustomerSessionResourceComponentsResourcePaymentElementResourceFeaturesPaymentMethodAllowRedisplayFilters list, paymentMethodRedisplay: CustomerSessionResourceComponentsResourcePaymentElementResourceFeaturesPaymentMethodRedisplay, paymentMethodRedisplayLimit: int option, paymentMethodRemove: CustomerSessionResourceComponentsResourcePaymentElementResourceFeaturesPaymentMethodRemove, paymentMethodSave: CustomerSessionResourceComponentsResourcePaymentElementResourceFeaturesPaymentMethodSave, paymentMethodSaveUsage: CustomerSessionResourceComponentsResourcePaymentElementResourceFeaturesPaymentMethodSaveUsage option) =
+        {
+            PaymentMethodAllowRedisplayFilters = paymentMethodAllowRedisplayFilters
+            PaymentMethodRedisplay = paymentMethodRedisplay
+            PaymentMethodRedisplayLimit = paymentMethodRedisplayLimit
+            PaymentMethodRemove = paymentMethodRemove
+            PaymentMethodSave = paymentMethodSave
+            PaymentMethodSaveUsage = paymentMethodSaveUsage
+        }
+
 /// This hash contains whether the Payment Element is enabled and the features it supports.
 type CustomerSessionResourceComponentsResourcePaymentElement =
     {
@@ -165,12 +213,25 @@ type CustomerSessionResourceComponentsResourcePaymentElement =
         Features: CustomerSessionResourceComponentsResourcePaymentElementResourceFeatures option
     }
 
+type CustomerSessionResourceComponentsResourcePaymentElement with
+    static member New(enabled: bool, features: CustomerSessionResourceComponentsResourcePaymentElementResourceFeatures option) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
 /// This hash contains whether the pricing table is enabled.
 type CustomerSessionResourceComponentsResourcePricingTable =
     {
         /// Whether the pricing table is enabled.
         Enabled: bool
     }
+
+type CustomerSessionResourceComponentsResourcePricingTable with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
 
 /// Configuration for the components supported by this Customer Session.
 type CustomerSessionResourceComponents =
@@ -179,6 +240,16 @@ type CustomerSessionResourceComponents =
       MobilePaymentElement: CustomerSessionResourceComponentsResourceMobilePaymentElement
       PaymentElement: CustomerSessionResourceComponentsResourcePaymentElement
       PricingTable: CustomerSessionResourceComponentsResourcePricingTable }
+
+type CustomerSessionResourceComponents with
+    static member New(buyButton: CustomerSessionResourceComponentsResourceBuyButton, customerSheet: CustomerSessionResourceComponentsResourceCustomerSheet, mobilePaymentElement: CustomerSessionResourceComponentsResourceMobilePaymentElement, paymentElement: CustomerSessionResourceComponentsResourcePaymentElement, pricingTable: CustomerSessionResourceComponentsResourcePricingTable) =
+        {
+            BuyButton = buyButton
+            CustomerSheet = customerSheet
+            MobilePaymentElement = mobilePaymentElement
+            PaymentElement = paymentElement
+            PricingTable = pricingTable
+        }
 
 /// A Customer Session allows you to grant Stripe's frontend SDKs (like Stripe.js) client-side access
 /// control over a Customer.
@@ -202,6 +273,18 @@ type CustomerSession =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
     }
+
+type CustomerSession with
+    static member New(clientSecret: string, created: DateTime, customer: StripeId<Markers.Customer>, customerAccount: string option, expiresAt: DateTime, livemode: bool, ?components: CustomerSessionResourceComponents) =
+        {
+            ClientSecret = clientSecret
+            Created = created
+            Customer = customer
+            CustomerAccount = customerAccount
+            ExpiresAt = expiresAt
+            Livemode = livemode
+            Components = components
+        }
 
 module CustomerSession =
     ///String representing the object's type. Objects of the same type share the same value.

@@ -15,6 +15,14 @@ type DeletedApplication =
         Name: string option
     }
 
+type DeletedApplication with
+    static member New(deleted: bool, id: string, name: string option) =
+        {
+            Deleted = deleted
+            Id = id
+            Name = name
+        }
+
 module DeletedApplication =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "application"
@@ -26,6 +34,13 @@ type Application =
         /// The name of the application.
         Name: string option
     }
+
+type Application with
+    static member New(id: string, name: string option) =
+        {
+            Id = id
+            Name = name
+        }
 
 module Application =
     ///String representing the object's type. Objects of the same type share the same value.

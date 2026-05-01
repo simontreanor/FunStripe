@@ -16,6 +16,14 @@ type CustomUnitAmount =
         Preset: int option
     }
 
+type CustomUnitAmount with
+    static member New(maximum: int option, minimum: int option, preset: int option) =
+        {
+            Maximum = maximum
+            Minimum = minimum
+            Preset = preset
+        }
+
 [<Struct>]
 type PriceBillingScheme =
     | PerUnit
@@ -45,6 +53,16 @@ type PriceTier =
         /// Up to and including to this quantity will be contained in the tier.
         UpTo: int option
     }
+
+type PriceTier with
+    static member New(flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
+        {
+            FlatAmount = flatAmount
+            FlatAmountDecimal = flatAmountDecimal
+            UnitAmount = unitAmount
+            UnitAmountDecimal = unitAmountDecimal
+            UpTo = upTo
+        }
 
 [<Struct>]
 type PriceTiersMode =
@@ -82,6 +100,16 @@ type Recurring =
         UsageType: RecurringUsageType
     }
 
+type Recurring with
+    static member New(interval: RecurringInterval, intervalCount: int, meter: string option, trialPeriodDays: int option, usageType: RecurringUsageType) =
+        {
+            Interval = interval
+            IntervalCount = intervalCount
+            Meter = meter
+            TrialPeriodDays = trialPeriodDays
+            UsageType = usageType
+        }
+
 [<Struct>]
 type TransformQuantityRound =
     | Down
@@ -94,6 +122,13 @@ type TransformQuantity =
         /// After division, either round the result `up` or `down`.
         Round: TransformQuantityRound
     }
+
+type TransformQuantity with
+    static member New(divideBy: int, round: TransformQuantityRound) =
+        {
+            DivideBy = divideBy
+            Round = round
+        }
 
 /// Prices define the unit cost, currency, and (optional) billing cycle for both recurring and one-time purchases of products.
 /// [Products](https://api.stripe.com#products) help you track inventory or provisioning, and prices help you track payment terms. Different physical goods or levels of service should be represented by products, and pricing options should be represented by prices. This approach lets you change prices without having to change your provisioning scheme.
@@ -143,6 +178,31 @@ type Price =
         UnitAmountDecimal: string option
     }
 
+type Price with
+    static member New(active: bool, billingScheme: PriceBillingScheme, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customUnitAmount: CustomUnitAmount option, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, product: PriceProduct'AnyOf, recurring: Recurring option, taxBehavior: PriceTaxBehavior option, tiersMode: PriceTiersMode option, transformQuantity: TransformQuantity option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?currencyOptions: Map<string, string list>, ?tiers: PriceTier list) =
+        {
+            Active = active
+            BillingScheme = billingScheme
+            Created = created
+            Currency = currency
+            CustomUnitAmount = customUnitAmount
+            Id = id
+            Livemode = livemode
+            LookupKey = lookupKey
+            Metadata = metadata
+            Nickname = nickname
+            Product = product
+            Recurring = recurring
+            TaxBehavior = taxBehavior
+            TiersMode = tiersMode
+            TransformQuantity = transformQuantity
+            Type = ``type``
+            UnitAmount = unitAmount
+            UnitAmountDecimal = unitAmountDecimal
+            CurrencyOptions = currencyOptions
+            Tiers = tiers
+        }
+
 module Price =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "price"
@@ -150,11 +210,29 @@ module Price =
 /// Occurs whenever a price is updated.
 type PriceUpdated = { Object: Price }
 
+type PriceUpdated with
+    static member New(object: Price) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a price is deleted.
 type PriceDeleted = { Object: Price }
 
+type PriceDeleted with
+    static member New(object: Price) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a price is created.
 type PriceCreated = { Object: Price }
+
+type PriceCreated with
+    static member New(object: Price) =
+        {
+            Object = object
+        }
 
 type DeletedPrice =
     {
@@ -163,6 +241,13 @@ type DeletedPrice =
         /// Unique identifier for the object.
         Id: string
     }
+
+type DeletedPrice with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedPrice =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -187,4 +272,14 @@ type CurrencyOption =
         /// The unit amount in cents (or local equivalent) to be charged, represented as a decimal string with at most 12 decimal places. Only set if `billing_scheme=per_unit`.
         UnitAmountDecimal: string option
     }
+
+type CurrencyOption with
+    static member New(customUnitAmount: CustomUnitAmount option, taxBehavior: CurrencyOptionTaxBehavior option, unitAmount: int option, unitAmountDecimal: string option, ?tiers: PriceTier list) =
+        {
+            CustomUnitAmount = customUnitAmount
+            TaxBehavior = taxBehavior
+            UnitAmount = unitAmount
+            UnitAmountDecimal = unitAmountDecimal
+            Tiers = tiers
+        }
 

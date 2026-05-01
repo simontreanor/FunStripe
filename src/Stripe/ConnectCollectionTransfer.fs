@@ -19,6 +19,16 @@ type ConnectCollectionTransfer =
         Livemode: bool
     }
 
+type ConnectCollectionTransfer with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, destination: StripeId<Markers.Account>, id: string, livemode: bool) =
+        {
+            Amount = amount
+            Currency = currency
+            Destination = destination
+            Id = id
+            Livemode = livemode
+        }
+
 module ConnectCollectionTransfer =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "connect_collection_transfer"

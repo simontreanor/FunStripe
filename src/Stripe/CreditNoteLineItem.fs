@@ -3,7 +3,6 @@ namespace Stripe.CreditNoteLineItem
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Discount
 open Stripe.PaymentMethod
 open Stripe.TaxRate
 
@@ -46,6 +45,26 @@ type CreditNoteLineItem =
         /// Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
         UnitAmountDecimal: string option
     }
+
+type CreditNoteLineItem with
+    static member New(amount: int, description: string option, discountAmount: int, discountAmounts: DiscountsResourceDiscountAmount list, id: string, livemode: bool, metadata: Map<string, string> option, pretaxCreditAmounts: CreditNotesPretaxCreditAmount list, quantity: int option, taxRates: TaxRate list, taxes: BillingBillResourceInvoicingTaxesTax list option, ``type``: CreditNoteLineItemType, unitAmount: int option, unitAmountDecimal: string option, ?invoiceLineItem: string) =
+        {
+            Amount = amount
+            Description = description
+            DiscountAmount = discountAmount
+            DiscountAmounts = discountAmounts
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            PretaxCreditAmounts = pretaxCreditAmounts
+            Quantity = quantity
+            TaxRates = taxRates
+            Taxes = taxes
+            Type = ``type``
+            UnitAmount = unitAmount
+            UnitAmountDecimal = unitAmountDecimal
+            InvoiceLineItem = invoiceLineItem
+        }
 
 module CreditNoteLineItem =
     ///String representing the object's type. Objects of the same type share the same value.

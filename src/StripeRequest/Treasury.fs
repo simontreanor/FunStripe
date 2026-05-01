@@ -33,6 +33,18 @@ module TreasuryCreditReversals =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(financialAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?receivedCredit: string, ?startingAfter: string, ?status: string) =
+            {
+                FinancialAccount = financialAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                ReceivedCredit = receivedCredit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -62,6 +74,14 @@ module TreasuryCreditReversals =
             ReceivedCredit: string
         }
 
+    type CreateOptions with
+        static member New(receivedCredit: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                ReceivedCredit = receivedCredit
+                Expand = expand
+                Metadata = metadata
+            }
+
     module CreateOptions =
         let create
             (
@@ -82,6 +102,13 @@ module TreasuryCreditReversals =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(creditReversal: string, ?expand: string list) =
+            {
+                CreditReversal = creditReversal
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -141,6 +168,19 @@ module TreasuryDebitReversals =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(financialAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?receivedDebit: string, ?resolution: string, ?startingAfter: string, ?status: string) =
+            {
+                FinancialAccount = financialAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                ReceivedDebit = receivedDebit
+                Resolution = resolution
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -171,6 +211,14 @@ module TreasuryDebitReversals =
             ReceivedDebit: string
         }
 
+    type CreateOptions with
+        static member New(receivedDebit: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                ReceivedDebit = receivedDebit
+                Expand = expand
+                Metadata = metadata
+            }
+
     module CreateOptions =
         let create
             (
@@ -191,6 +239,13 @@ module TreasuryDebitReversals =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(debitReversal: string, ?expand: string list) =
+            {
+                DebitReversal = debitReversal
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -244,6 +299,17 @@ module TreasuryFinancialAccounts =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -271,6 +337,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Create'FeaturesCardIssuing with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'FeaturesCardIssuing =
         let create
             (
@@ -287,6 +359,12 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'FeaturesDepositInsurance with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'FeaturesDepositInsurance =
         let create
@@ -305,6 +383,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Create'FeaturesFinancialAddressesAba with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'FeaturesFinancialAddressesAba =
         let create
             (
@@ -321,6 +405,12 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             Aba: Create'FeaturesFinancialAddressesAba option
         }
+
+    type Create'FeaturesFinancialAddresses with
+        static member New(?aba: Create'FeaturesFinancialAddressesAba) =
+            {
+                Aba = aba
+            }
 
     module Create'FeaturesFinancialAddresses =
         let create
@@ -339,6 +429,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Create'FeaturesInboundTransfersAch with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'FeaturesInboundTransfersAch =
         let create
             (
@@ -355,6 +451,12 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             Ach: Create'FeaturesInboundTransfersAch option
         }
+
+    type Create'FeaturesInboundTransfers with
+        static member New(?ach: Create'FeaturesInboundTransfersAch) =
+            {
+                Ach = ach
+            }
 
     module Create'FeaturesInboundTransfers =
         let create
@@ -373,6 +475,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Create'FeaturesIntraStripeFlows with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'FeaturesIntraStripeFlows =
         let create
             (
@@ -390,6 +498,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Create'FeaturesOutboundPaymentsAch with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'FeaturesOutboundPaymentsAch =
         let create
             (
@@ -406,6 +520,12 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'FeaturesOutboundPaymentsUsDomesticWire with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'FeaturesOutboundPaymentsUsDomesticWire =
         let create
@@ -427,6 +547,13 @@ module TreasuryFinancialAccounts =
             UsDomesticWire: Create'FeaturesOutboundPaymentsUsDomesticWire option
         }
 
+    type Create'FeaturesOutboundPayments with
+        static member New(?ach: Create'FeaturesOutboundPaymentsAch, ?usDomesticWire: Create'FeaturesOutboundPaymentsUsDomesticWire) =
+            {
+                Ach = ach
+                UsDomesticWire = usDomesticWire
+            }
+
     module Create'FeaturesOutboundPayments =
         let create
             (
@@ -446,6 +573,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Create'FeaturesOutboundTransfersAch with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Create'FeaturesOutboundTransfersAch =
         let create
             (
@@ -462,6 +595,12 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Create'FeaturesOutboundTransfersUsDomesticWire with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Create'FeaturesOutboundTransfersUsDomesticWire =
         let create
@@ -482,6 +621,13 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             UsDomesticWire: Create'FeaturesOutboundTransfersUsDomesticWire option
         }
+
+    type Create'FeaturesOutboundTransfers with
+        static member New(?ach: Create'FeaturesOutboundTransfersAch, ?usDomesticWire: Create'FeaturesOutboundTransfersUsDomesticWire) =
+            {
+                Ach = ach
+                UsDomesticWire = usDomesticWire
+            }
 
     module Create'FeaturesOutboundTransfers =
         let create
@@ -519,6 +665,18 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             OutboundTransfers: Create'FeaturesOutboundTransfers option
         }
+
+    type Create'Features with
+        static member New(?cardIssuing: Create'FeaturesCardIssuing, ?depositInsurance: Create'FeaturesDepositInsurance, ?financialAddresses: Create'FeaturesFinancialAddresses, ?inboundTransfers: Create'FeaturesInboundTransfers, ?intraStripeFlows: Create'FeaturesIntraStripeFlows, ?outboundPayments: Create'FeaturesOutboundPayments, ?outboundTransfers: Create'FeaturesOutboundTransfers) =
+            {
+                CardIssuing = cardIssuing
+                DepositInsurance = depositInsurance
+                FinancialAddresses = financialAddresses
+                InboundTransfers = inboundTransfers
+                IntraStripeFlows = intraStripeFlows
+                OutboundPayments = outboundPayments
+                OutboundTransfers = outboundTransfers
+            }
 
     module Create'Features =
         let create
@@ -560,6 +718,13 @@ module TreasuryFinancialAccounts =
             OutboundFlows: Create'PlatformRestrictionsOutboundFlows option
         }
 
+    type Create'PlatformRestrictions with
+        static member New(?inboundFlows: Create'PlatformRestrictionsInboundFlows, ?outboundFlows: Create'PlatformRestrictionsOutboundFlows) =
+            {
+                InboundFlows = inboundFlows
+                OutboundFlows = outboundFlows
+            }
+
     module Create'PlatformRestrictions =
         let create
             (
@@ -594,6 +759,17 @@ module TreasuryFinancialAccounts =
             SupportedCurrencies: string list
         }
 
+    type CreateOptions with
+        static member New(supportedCurrencies: string list, ?expand: string list, ?features: Create'Features, ?metadata: Map<string, string>, ?nickname: Choice<string,string>, ?platformRestrictions: Create'PlatformRestrictions) =
+            {
+                SupportedCurrencies = supportedCurrencies
+                Expand = expand
+                Features = features
+                Metadata = metadata
+                Nickname = nickname
+                PlatformRestrictions = platformRestrictions
+            }
+
     module CreateOptions =
         let create
             (
@@ -618,6 +794,13 @@ module TreasuryFinancialAccounts =
             FinancialAccount: string
         }
 
+    type RetrieveOptions with
+        static member New(financialAccount: string, ?expand: string list) =
+            {
+                FinancialAccount = financialAccount
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -636,6 +819,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Update'FeaturesCardIssuing with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'FeaturesCardIssuing =
         let create
             (
@@ -652,6 +841,12 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'FeaturesDepositInsurance with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'FeaturesDepositInsurance =
         let create
@@ -670,6 +865,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Update'FeaturesFinancialAddressesAba with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'FeaturesFinancialAddressesAba =
         let create
             (
@@ -686,6 +887,12 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             Aba: Update'FeaturesFinancialAddressesAba option
         }
+
+    type Update'FeaturesFinancialAddresses with
+        static member New(?aba: Update'FeaturesFinancialAddressesAba) =
+            {
+                Aba = aba
+            }
 
     module Update'FeaturesFinancialAddresses =
         let create
@@ -704,6 +911,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Update'FeaturesInboundTransfersAch with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'FeaturesInboundTransfersAch =
         let create
             (
@@ -720,6 +933,12 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             Ach: Update'FeaturesInboundTransfersAch option
         }
+
+    type Update'FeaturesInboundTransfers with
+        static member New(?ach: Update'FeaturesInboundTransfersAch) =
+            {
+                Ach = ach
+            }
 
     module Update'FeaturesInboundTransfers =
         let create
@@ -738,6 +957,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Update'FeaturesIntraStripeFlows with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'FeaturesIntraStripeFlows =
         let create
             (
@@ -755,6 +980,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Update'FeaturesOutboundPaymentsAch with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'FeaturesOutboundPaymentsAch =
         let create
             (
@@ -771,6 +1002,12 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'FeaturesOutboundPaymentsUsDomesticWire with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'FeaturesOutboundPaymentsUsDomesticWire =
         let create
@@ -792,6 +1029,13 @@ module TreasuryFinancialAccounts =
             UsDomesticWire: Update'FeaturesOutboundPaymentsUsDomesticWire option
         }
 
+    type Update'FeaturesOutboundPayments with
+        static member New(?ach: Update'FeaturesOutboundPaymentsAch, ?usDomesticWire: Update'FeaturesOutboundPaymentsUsDomesticWire) =
+            {
+                Ach = ach
+                UsDomesticWire = usDomesticWire
+            }
+
     module Update'FeaturesOutboundPayments =
         let create
             (
@@ -811,6 +1055,12 @@ module TreasuryFinancialAccounts =
             Requested: bool option
         }
 
+    type Update'FeaturesOutboundTransfersAch with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module Update'FeaturesOutboundTransfersAch =
         let create
             (
@@ -827,6 +1077,12 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type Update'FeaturesOutboundTransfersUsDomesticWire with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module Update'FeaturesOutboundTransfersUsDomesticWire =
         let create
@@ -847,6 +1103,13 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             UsDomesticWire: Update'FeaturesOutboundTransfersUsDomesticWire option
         }
+
+    type Update'FeaturesOutboundTransfers with
+        static member New(?ach: Update'FeaturesOutboundTransfersAch, ?usDomesticWire: Update'FeaturesOutboundTransfersUsDomesticWire) =
+            {
+                Ach = ach
+                UsDomesticWire = usDomesticWire
+            }
 
     module Update'FeaturesOutboundTransfers =
         let create
@@ -884,6 +1147,18 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             OutboundTransfers: Update'FeaturesOutboundTransfers option
         }
+
+    type Update'Features with
+        static member New(?cardIssuing: Update'FeaturesCardIssuing, ?depositInsurance: Update'FeaturesDepositInsurance, ?financialAddresses: Update'FeaturesFinancialAddresses, ?inboundTransfers: Update'FeaturesInboundTransfers, ?intraStripeFlows: Update'FeaturesIntraStripeFlows, ?outboundPayments: Update'FeaturesOutboundPayments, ?outboundTransfers: Update'FeaturesOutboundTransfers) =
+            {
+                CardIssuing = cardIssuing
+                DepositInsurance = depositInsurance
+                FinancialAddresses = financialAddresses
+                InboundTransfers = inboundTransfers
+                IntraStripeFlows = intraStripeFlows
+                OutboundPayments = outboundPayments
+                OutboundTransfers = outboundTransfers
+            }
 
     module Update'Features =
         let create
@@ -924,18 +1199,26 @@ module TreasuryFinancialAccounts =
             Type: Update'ForwardingSettingsType option
         }
 
+    type Update'ForwardingSettings with
+        static member New(?financialAccount: string, ?paymentMethod: string, ?type': Update'ForwardingSettingsType) =
+            {
+                FinancialAccount = financialAccount
+                PaymentMethod = paymentMethod
+                Type = type'
+            }
+
     module Update'ForwardingSettings =
         let create
             (
                 financialAccount: string option,
                 paymentMethod: string option,
-                ``type``: Update'ForwardingSettingsType option
+                type': Update'ForwardingSettingsType option
             ) : Update'ForwardingSettings
             =
             {
               FinancialAccount = financialAccount
               PaymentMethod = paymentMethod
-              Type = ``type``
+              Type = type'
             }
 
     type Update'PlatformRestrictionsInboundFlows =
@@ -955,6 +1238,13 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             OutboundFlows: Update'PlatformRestrictionsOutboundFlows option
         }
+
+    type Update'PlatformRestrictions with
+        static member New(?inboundFlows: Update'PlatformRestrictionsInboundFlows, ?outboundFlows: Update'PlatformRestrictionsOutboundFlows) =
+            {
+                InboundFlows = inboundFlows
+                OutboundFlows = outboundFlows
+            }
 
     module Update'PlatformRestrictions =
         let create
@@ -991,6 +1281,18 @@ module TreasuryFinancialAccounts =
             [<Config.Form>]
             PlatformRestrictions: Update'PlatformRestrictions option
         }
+
+    type UpdateOptions with
+        static member New(financialAccount: string, ?expand: string list, ?features: Update'Features, ?forwardingSettings: Update'ForwardingSettings, ?metadata: Map<string, string>, ?nickname: Choice<string,string>, ?platformRestrictions: Update'PlatformRestrictions) =
+            {
+                FinancialAccount = financialAccount
+                Expand = expand
+                Features = features
+                ForwardingSettings = forwardingSettings
+                Metadata = metadata
+                Nickname = nickname
+                PlatformRestrictions = platformRestrictions
+            }
 
     module UpdateOptions =
         let create
@@ -1049,18 +1351,26 @@ module TreasuryFinancialAccountsClose =
             Type: Close'ForwardingSettingsType option
         }
 
+    type Close'ForwardingSettings with
+        static member New(?financialAccount: string, ?paymentMethod: string, ?type': Close'ForwardingSettingsType) =
+            {
+                FinancialAccount = financialAccount
+                PaymentMethod = paymentMethod
+                Type = type'
+            }
+
     module Close'ForwardingSettings =
         let create
             (
                 financialAccount: string option,
                 paymentMethod: string option,
-                ``type``: Close'ForwardingSettingsType option
+                type': Close'ForwardingSettingsType option
             ) : Close'ForwardingSettings
             =
             {
               FinancialAccount = financialAccount
               PaymentMethod = paymentMethod
-              Type = ``type``
+              Type = type'
             }
 
     type CloseOptions =
@@ -1074,6 +1384,14 @@ module TreasuryFinancialAccountsClose =
             [<Config.Form>]
             ForwardingSettings: Close'ForwardingSettings option
         }
+
+    type CloseOptions with
+        static member New(financialAccount: string, ?expand: string list, ?forwardingSettings: Close'ForwardingSettings) =
+            {
+                FinancialAccount = financialAccount
+                Expand = expand
+                ForwardingSettings = forwardingSettings
+            }
 
     module CloseOptions =
         let create
@@ -1103,6 +1421,13 @@ module TreasuryFinancialAccountsFeatures =
             FinancialAccount: string
         }
 
+    type RetrieveFeaturesOptions with
+        static member New(financialAccount: string, ?expand: string list) =
+            {
+                FinancialAccount = financialAccount
+                Expand = expand
+            }
+
     module RetrieveFeaturesOptions =
         let create
             (
@@ -1121,6 +1446,12 @@ module TreasuryFinancialAccountsFeatures =
             Requested: bool option
         }
 
+    type UpdateFeatures'CardIssuing with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module UpdateFeatures'CardIssuing =
         let create
             (
@@ -1137,6 +1468,12 @@ module TreasuryFinancialAccountsFeatures =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type UpdateFeatures'DepositInsurance with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module UpdateFeatures'DepositInsurance =
         let create
@@ -1155,6 +1492,12 @@ module TreasuryFinancialAccountsFeatures =
             Requested: bool option
         }
 
+    type UpdateFeatures'FinancialAddressesAba with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module UpdateFeatures'FinancialAddressesAba =
         let create
             (
@@ -1171,6 +1514,12 @@ module TreasuryFinancialAccountsFeatures =
             [<Config.Form>]
             Aba: UpdateFeatures'FinancialAddressesAba option
         }
+
+    type UpdateFeatures'FinancialAddresses with
+        static member New(?aba: UpdateFeatures'FinancialAddressesAba) =
+            {
+                Aba = aba
+            }
 
     module UpdateFeatures'FinancialAddresses =
         let create
@@ -1189,6 +1538,12 @@ module TreasuryFinancialAccountsFeatures =
             Requested: bool option
         }
 
+    type UpdateFeatures'InboundTransfersAch with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module UpdateFeatures'InboundTransfersAch =
         let create
             (
@@ -1205,6 +1560,12 @@ module TreasuryFinancialAccountsFeatures =
             [<Config.Form>]
             Ach: UpdateFeatures'InboundTransfersAch option
         }
+
+    type UpdateFeatures'InboundTransfers with
+        static member New(?ach: UpdateFeatures'InboundTransfersAch) =
+            {
+                Ach = ach
+            }
 
     module UpdateFeatures'InboundTransfers =
         let create
@@ -1223,6 +1584,12 @@ module TreasuryFinancialAccountsFeatures =
             Requested: bool option
         }
 
+    type UpdateFeatures'IntraStripeFlows with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module UpdateFeatures'IntraStripeFlows =
         let create
             (
@@ -1240,6 +1607,12 @@ module TreasuryFinancialAccountsFeatures =
             Requested: bool option
         }
 
+    type UpdateFeatures'OutboundPaymentsAch with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module UpdateFeatures'OutboundPaymentsAch =
         let create
             (
@@ -1256,6 +1629,12 @@ module TreasuryFinancialAccountsFeatures =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type UpdateFeatures'OutboundPaymentsUsDomesticWire with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module UpdateFeatures'OutboundPaymentsUsDomesticWire =
         let create
@@ -1277,6 +1656,13 @@ module TreasuryFinancialAccountsFeatures =
             UsDomesticWire: UpdateFeatures'OutboundPaymentsUsDomesticWire option
         }
 
+    type UpdateFeatures'OutboundPayments with
+        static member New(?ach: UpdateFeatures'OutboundPaymentsAch, ?usDomesticWire: UpdateFeatures'OutboundPaymentsUsDomesticWire) =
+            {
+                Ach = ach
+                UsDomesticWire = usDomesticWire
+            }
+
     module UpdateFeatures'OutboundPayments =
         let create
             (
@@ -1296,6 +1682,12 @@ module TreasuryFinancialAccountsFeatures =
             Requested: bool option
         }
 
+    type UpdateFeatures'OutboundTransfersAch with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     module UpdateFeatures'OutboundTransfersAch =
         let create
             (
@@ -1312,6 +1704,12 @@ module TreasuryFinancialAccountsFeatures =
             [<Config.Form>]
             Requested: bool option
         }
+
+    type UpdateFeatures'OutboundTransfersUsDomesticWire with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
 
     module UpdateFeatures'OutboundTransfersUsDomesticWire =
         let create
@@ -1332,6 +1730,13 @@ module TreasuryFinancialAccountsFeatures =
             [<Config.Form>]
             UsDomesticWire: UpdateFeatures'OutboundTransfersUsDomesticWire option
         }
+
+    type UpdateFeatures'OutboundTransfers with
+        static member New(?ach: UpdateFeatures'OutboundTransfersAch, ?usDomesticWire: UpdateFeatures'OutboundTransfersUsDomesticWire) =
+            {
+                Ach = ach
+                UsDomesticWire = usDomesticWire
+            }
 
     module UpdateFeatures'OutboundTransfers =
         let create
@@ -1374,6 +1779,20 @@ module TreasuryFinancialAccountsFeatures =
             [<Config.Form>]
             OutboundTransfers: UpdateFeatures'OutboundTransfers option
         }
+
+    type UpdateFeaturesOptions with
+        static member New(financialAccount: string, ?cardIssuing: UpdateFeatures'CardIssuing, ?depositInsurance: UpdateFeatures'DepositInsurance, ?expand: string list, ?financialAddresses: UpdateFeatures'FinancialAddresses, ?inboundTransfers: UpdateFeatures'InboundTransfers, ?intraStripeFlows: UpdateFeatures'IntraStripeFlows, ?outboundPayments: UpdateFeatures'OutboundPayments, ?outboundTransfers: UpdateFeatures'OutboundTransfers) =
+            {
+                FinancialAccount = financialAccount
+                CardIssuing = cardIssuing
+                DepositInsurance = depositInsurance
+                Expand = expand
+                FinancialAddresses = financialAddresses
+                InboundTransfers = inboundTransfers
+                IntraStripeFlows = intraStripeFlows
+                OutboundPayments = outboundPayments
+                OutboundTransfers = outboundTransfers
+            }
 
     module UpdateFeaturesOptions =
         let create
@@ -1428,6 +1847,17 @@ module TreasuryInboundTransfers =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(financialAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                FinancialAccount = financialAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -1471,6 +1901,19 @@ module TreasuryInboundTransfers =
             StatementDescriptor: string option
         }
 
+    type CreateOptions with
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, originPaymentMethod: string, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?statementDescriptor: string) =
+            {
+                Amount = amount
+                Currency = currency
+                FinancialAccount = financialAccount
+                OriginPaymentMethod = originPaymentMethod
+                Description = description
+                Expand = expand
+                Metadata = metadata
+                StatementDescriptor = statementDescriptor
+            }
+
     module CreateOptions =
         let create
             (
@@ -1499,6 +1942,13 @@ module TreasuryInboundTransfers =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -1538,6 +1988,13 @@ module TreasuryInboundTransfersCancel =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type CancelOptions with
+        static member New(inboundTransfer: string, ?expand: string list) =
+            {
+                InboundTransfer = inboundTransfer
+                Expand = expand
+            }
 
     module CancelOptions =
         let create
@@ -1585,6 +2042,19 @@ module TreasuryOutboundPayments =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(financialAccount: string, ?created: int, ?customer: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                FinancialAccount = financialAccount
+                Created = created
+                Customer = customer
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -1624,6 +2094,17 @@ module TreasuryOutboundPayments =
             State: string option
         }
 
+    type Create'DestinationPaymentMethodDataBillingDetailsAddressBillingDetailsAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'DestinationPaymentMethodDataBillingDetailsAddressBillingDetailsAddress =
         let create
             (
@@ -1659,6 +2140,15 @@ module TreasuryOutboundPayments =
             [<Config.Form>]
             Phone: Choice<string,string> option
         }
+
+    type Create'DestinationPaymentMethodDataBillingDetails with
+        static member New(?address: Choice<Create'DestinationPaymentMethodDataBillingDetailsAddressBillingDetailsAddress,string>, ?email: Choice<string,string>, ?name: Choice<string,string>, ?phone: Choice<string,string>) =
+            {
+                Address = address
+                Email = email
+                Name = name
+                Phone = phone
+            }
 
     module Create'DestinationPaymentMethodDataBillingDetails =
         let create
@@ -1707,6 +2197,16 @@ module TreasuryOutboundPayments =
             RoutingNumber: string option
         }
 
+    type Create'DestinationPaymentMethodDataUsBankAccount with
+        static member New(?accountHolderType: Create'DestinationPaymentMethodDataUsBankAccountAccountHolderType, ?accountNumber: string, ?accountType: Create'DestinationPaymentMethodDataUsBankAccountAccountType, ?financialConnectionsAccount: string, ?routingNumber: string) =
+            {
+                AccountHolderType = accountHolderType
+                AccountNumber = accountNumber
+                AccountType = accountType
+                FinancialConnectionsAccount = financialConnectionsAccount
+                RoutingNumber = routingNumber
+            }
+
     module Create'DestinationPaymentMethodDataUsBankAccount =
         let create
             (
@@ -1744,13 +2244,23 @@ module TreasuryOutboundPayments =
             UsBankAccount: Create'DestinationPaymentMethodDataUsBankAccount option
         }
 
+    type Create'DestinationPaymentMethodData with
+        static member New(?billingDetails: Create'DestinationPaymentMethodDataBillingDetails, ?financialAccount: string, ?metadata: Map<string, string>, ?type': Create'DestinationPaymentMethodDataType, ?usBankAccount: Create'DestinationPaymentMethodDataUsBankAccount) =
+            {
+                BillingDetails = billingDetails
+                FinancialAccount = financialAccount
+                Metadata = metadata
+                Type = type'
+                UsBankAccount = usBankAccount
+            }
+
     module Create'DestinationPaymentMethodData =
         let create
             (
                 billingDetails: Create'DestinationPaymentMethodDataBillingDetails option,
                 financialAccount: string option,
                 metadata: Map<string, string> option,
-                ``type``: Create'DestinationPaymentMethodDataType option,
+                type': Create'DestinationPaymentMethodDataType option,
                 usBankAccount: Create'DestinationPaymentMethodDataUsBankAccount option
             ) : Create'DestinationPaymentMethodData
             =
@@ -1758,7 +2268,7 @@ module TreasuryOutboundPayments =
               BillingDetails = billingDetails
               FinancialAccount = financialAccount
               Metadata = metadata
-              Type = ``type``
+              Type = type'
               UsBankAccount = usBankAccount
             }
 
@@ -1772,6 +2282,12 @@ module TreasuryOutboundPayments =
             [<Config.Form>]
             Network: Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork option
         }
+
+    type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions with
+        static member New(?network: Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork) =
+            {
+                Network = network
+            }
 
     module Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions =
         let create
@@ -1789,6 +2305,12 @@ module TreasuryOutboundPayments =
             [<Config.Form>]
             UsBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions,string> option
         }
+
+    type Create'DestinationPaymentMethodOptions with
+        static member New(?usBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions,string>) =
+            {
+                UsBankAccount = usBankAccount
+            }
 
     module Create'DestinationPaymentMethodOptions =
         let create
@@ -1809,6 +2331,13 @@ module TreasuryOutboundPayments =
             [<Config.Form>]
             Present: bool option
         }
+
+    type Create'EndUserDetails with
+        static member New(?ipAddress: string, ?present: bool) =
+            {
+                IpAddress = ipAddress
+                Present = present
+            }
 
     module Create'EndUserDetails =
         let create
@@ -1862,6 +2391,23 @@ module TreasuryOutboundPayments =
             StatementDescriptor: string option
         }
 
+    type CreateOptions with
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, ?customer: string, ?description: string, ?destinationPaymentMethod: string, ?destinationPaymentMethodData: Create'DestinationPaymentMethodData, ?destinationPaymentMethodOptions: Create'DestinationPaymentMethodOptions, ?endUserDetails: Create'EndUserDetails, ?expand: string list, ?metadata: Map<string, string>, ?statementDescriptor: string) =
+            {
+                Amount = amount
+                Currency = currency
+                FinancialAccount = financialAccount
+                Customer = customer
+                Description = description
+                DestinationPaymentMethod = destinationPaymentMethod
+                DestinationPaymentMethodData = destinationPaymentMethodData
+                DestinationPaymentMethodOptions = destinationPaymentMethodOptions
+                EndUserDetails = endUserDetails
+                Expand = expand
+                Metadata = metadata
+                StatementDescriptor = statementDescriptor
+            }
+
     module CreateOptions =
         let create
             (
@@ -1893,6 +2439,13 @@ module TreasuryOutboundPayments =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -1932,6 +2485,13 @@ module TreasuryOutboundPaymentsCancel =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type CancelOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module CancelOptions =
         let create
@@ -1973,6 +2533,17 @@ module TreasuryOutboundTransfers =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(financialAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                FinancialAccount = financialAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -2000,16 +2571,23 @@ module TreasuryOutboundTransfers =
             Type: Create'DestinationPaymentMethodDataType option
         }
 
+    type Create'DestinationPaymentMethodData with
+        static member New(?financialAccount: string, ?type': Create'DestinationPaymentMethodDataType) =
+            {
+                FinancialAccount = financialAccount
+                Type = type'
+            }
+
     module Create'DestinationPaymentMethodData =
         let create
             (
                 financialAccount: string option,
-                ``type``: Create'DestinationPaymentMethodDataType option
+                type': Create'DestinationPaymentMethodDataType option
             ) : Create'DestinationPaymentMethodData
             =
             {
               FinancialAccount = financialAccount
-              Type = ``type``
+              Type = type'
             }
 
     type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork =
@@ -2022,6 +2600,12 @@ module TreasuryOutboundTransfers =
             [<Config.Form>]
             Network: Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork option
         }
+
+    type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions with
+        static member New(?network: Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork) =
+            {
+                Network = network
+            }
 
     module Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions =
         let create
@@ -2039,6 +2623,12 @@ module TreasuryOutboundTransfers =
             [<Config.Form>]
             UsBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions,string> option
         }
+
+    type Create'DestinationPaymentMethodOptions with
+        static member New(?usBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions,string>) =
+            {
+                UsBankAccount = usBankAccount
+            }
 
     module Create'DestinationPaymentMethodOptions =
         let create
@@ -2084,6 +2674,21 @@ module TreasuryOutboundTransfers =
             StatementDescriptor: string option
         }
 
+    type CreateOptions with
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, financialAccount: string, ?description: string, ?destinationPaymentMethod: string, ?destinationPaymentMethodData: Create'DestinationPaymentMethodData, ?destinationPaymentMethodOptions: Create'DestinationPaymentMethodOptions, ?expand: string list, ?metadata: Map<string, string>, ?statementDescriptor: string) =
+            {
+                Amount = amount
+                Currency = currency
+                FinancialAccount = financialAccount
+                Description = description
+                DestinationPaymentMethod = destinationPaymentMethod
+                DestinationPaymentMethodData = destinationPaymentMethodData
+                DestinationPaymentMethodOptions = destinationPaymentMethodOptions
+                Expand = expand
+                Metadata = metadata
+                StatementDescriptor = statementDescriptor
+            }
+
     module CreateOptions =
         let create
             (
@@ -2113,6 +2718,13 @@ module TreasuryOutboundTransfers =
             [<Config.Path>]
             OutboundTransfer: string
         }
+
+    type RetrieveOptions with
+        static member New(outboundTransfer: string, ?expand: string list) =
+            {
+                OutboundTransfer = outboundTransfer
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -2152,6 +2764,13 @@ module TreasuryOutboundTransfersCancel =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type CancelOptions with
+        static member New(outboundTransfer: string, ?expand: string list) =
+            {
+                OutboundTransfer = outboundTransfer
+                Expand = expand
+            }
 
     module CancelOptions =
         let create
@@ -2196,6 +2815,18 @@ module TreasuryReceivedCredits =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(financialAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?linkedFlows: Map<string, string>, ?startingAfter: string, ?status: string) =
+            {
+                FinancialAccount = financialAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                LinkedFlows = linkedFlows
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -2220,6 +2851,13 @@ module TreasuryReceivedCredits =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -2268,6 +2906,17 @@ module TreasuryReceivedDebits =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(financialAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                FinancialAccount = financialAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -2291,6 +2940,13 @@ module TreasuryReceivedDebits =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -2347,6 +3003,20 @@ module TreasuryTransactionEntries =
             Transaction: string option
         }
 
+    type ListOptions with
+        static member New(financialAccount: string, ?created: int, ?effectiveAt: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?orderBy: string, ?startingAfter: string, ?transaction: string) =
+            {
+                FinancialAccount = financialAccount
+                Created = created
+                EffectiveAt = effectiveAt
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                OrderBy = orderBy
+                StartingAfter = startingAfter
+                Transaction = transaction
+            }
+
     module ListOptions =
         let create
             (
@@ -2373,6 +3043,13 @@ module TreasuryTransactionEntries =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -2430,6 +3107,20 @@ module TreasuryTransactions =
             StatusTransitions: Map<string, string> option
         }
 
+    type ListOptions with
+        static member New(financialAccount: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?orderBy: string, ?startingAfter: string, ?status: string, ?statusTransitions: Map<string, string>) =
+            {
+                FinancialAccount = financialAccount
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                OrderBy = orderBy
+                StartingAfter = startingAfter
+                Status = status
+                StatusTransitions = statusTransitions
+            }
+
     module ListOptions =
         let create
             (
@@ -2456,6 +3147,13 @@ module TreasuryTransactions =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

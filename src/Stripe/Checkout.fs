@@ -32,6 +32,14 @@ type CheckoutSessionLineItems =
         Url: string
     }
 
+type CheckoutSessionLineItems with
+    static member New(data: Item list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
 module CheckoutSessionLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
@@ -125,6 +133,16 @@ type CheckoutAcssDebitMandateOptions =
         TransactionType: CheckoutAcssDebitMandateOptionsTransactionType option
     }
 
+type CheckoutAcssDebitMandateOptions with
+    static member New(intervalDescription: string option, paymentSchedule: CheckoutAcssDebitMandateOptionsPaymentSchedule option, transactionType: CheckoutAcssDebitMandateOptionsTransactionType option, ?customMandateUrl: string, ?defaultFor: CheckoutAcssDebitMandateOptionsDefaultFor list) =
+        {
+            IntervalDescription = intervalDescription
+            PaymentSchedule = paymentSchedule
+            TransactionType = transactionType
+            CustomMandateUrl = customMandateUrl
+            DefaultFor = defaultFor
+        }
+
 [<Struct>]
 type CheckoutAcssDebitPaymentMethodOptionsCurrency =
     | Cad
@@ -157,6 +175,16 @@ type CheckoutAcssDebitPaymentMethodOptions =
         /// Bank account verification method. The default value is `automatic`.
         VerificationMethod: CheckoutAcssDebitPaymentMethodOptionsVerificationMethod option
     }
+
+type CheckoutAcssDebitPaymentMethodOptions with
+    static member New(?currency: CheckoutAcssDebitPaymentMethodOptionsCurrency, ?mandateOptions: CheckoutAcssDebitMandateOptions, ?setupFutureUsage: CheckoutAcssDebitPaymentMethodOptionsSetupFutureUsage, ?targetDate: string, ?verificationMethod: CheckoutAcssDebitPaymentMethodOptionsVerificationMethod) =
+        {
+            Currency = currency
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+            TargetDate = targetDate
+            VerificationMethod = verificationMethod
+        }
 
 type CheckoutAffirmPaymentMethodOptions () = 
     ///Controls when the funds will be captured from the customer's account.
@@ -236,6 +264,12 @@ type CheckoutAmazonPayPaymentMethodOptions =
         SetupFutureUsage: CheckoutAmazonPayPaymentMethodOptionsSetupFutureUsage option
     }
 
+type CheckoutAmazonPayPaymentMethodOptions with
+    static member New(?setupFutureUsage: CheckoutAmazonPayPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module CheckoutAmazonPayPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
@@ -245,6 +279,12 @@ type CheckoutAuBecsDebitPaymentMethodOptions =
         /// Controls when Stripe will attempt to debit the funds from the customer's account. The date must be a string in YYYY-MM-DD format. The date must be in the future and between 3 and 15 calendar days from now.
         TargetDate: string option
     }
+
+type CheckoutAuBecsDebitPaymentMethodOptions with
+    static member New(?targetDate: string) =
+        {
+            TargetDate = targetDate
+        }
 
 module CheckoutAuBecsDebitPaymentMethodOptions =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -265,6 +305,12 @@ type CheckoutPaymentMethodOptionsMandateOptionsBacsDebit =
         ReferencePrefix: string option
     }
 
+type CheckoutPaymentMethodOptionsMandateOptionsBacsDebit with
+    static member New(?referencePrefix: string) =
+        {
+            ReferencePrefix = referencePrefix
+        }
+
 type CheckoutBacsDebitPaymentMethodOptions =
     {
         MandateOptions: CheckoutPaymentMethodOptionsMandateOptionsBacsDebit option
@@ -276,6 +322,14 @@ type CheckoutBacsDebitPaymentMethodOptions =
         /// Controls when Stripe will attempt to debit the funds from the customer's account. The date must be a string in YYYY-MM-DD format. The date must be in the future and between 3 and 15 calendar days from now.
         TargetDate: string option
     }
+
+type CheckoutBacsDebitPaymentMethodOptions with
+    static member New(?mandateOptions: CheckoutPaymentMethodOptionsMandateOptionsBacsDebit, ?setupFutureUsage: CheckoutBacsDebitPaymentMethodOptionsSetupFutureUsage, ?targetDate: string) =
+        {
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+            TargetDate = targetDate
+        }
 
 type CheckoutBancontactPaymentMethodOptions () = 
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -318,11 +372,24 @@ type CheckoutBoletoPaymentMethodOptions =
         SetupFutureUsage: CheckoutBoletoPaymentMethodOptionsSetupFutureUsage option
     }
 
+type CheckoutBoletoPaymentMethodOptions with
+    static member New(expiresAfterDays: int, ?setupFutureUsage: CheckoutBoletoPaymentMethodOptionsSetupFutureUsage) =
+        {
+            ExpiresAfterDays = expiresAfterDays
+            SetupFutureUsage = setupFutureUsage
+        }
+
 type CheckoutCardInstallmentsOptions =
     {
         /// Indicates if installments are enabled
         Enabled: bool option
     }
+
+type CheckoutCardInstallmentsOptions with
+    static member New(?enabled: bool) =
+        {
+            Enabled = enabled
+        }
 
 [<Struct>]
 type CheckoutCardPaymentMethodOptionsRequestExtendedAuthorization =
@@ -381,6 +448,21 @@ type CheckoutCardPaymentMethodOptions =
         StatementDescriptorSuffixKanji: string option
     }
 
+type CheckoutCardPaymentMethodOptions with
+    static member New(requestThreeDSecure: CheckoutCardPaymentMethodOptionsRequestThreeDSecure, ?installments: CheckoutCardInstallmentsOptions, ?requestExtendedAuthorization: CheckoutCardPaymentMethodOptionsRequestExtendedAuthorization, ?requestIncrementalAuthorization: CheckoutCardPaymentMethodOptionsRequestIncrementalAuthorization, ?requestMulticapture: CheckoutCardPaymentMethodOptionsRequestMulticapture, ?requestOvercapture: CheckoutCardPaymentMethodOptionsRequestOvercapture, ?restrictions: PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictions, ?setupFutureUsage: CheckoutCardPaymentMethodOptionsSetupFutureUsage, ?statementDescriptorSuffixKana: string, ?statementDescriptorSuffixKanji: string) =
+        {
+            RequestThreeDSecure = requestThreeDSecure
+            Installments = installments
+            RequestExtendedAuthorization = requestExtendedAuthorization
+            RequestIncrementalAuthorization = requestIncrementalAuthorization
+            RequestMulticapture = requestMulticapture
+            RequestOvercapture = requestOvercapture
+            Restrictions = restrictions
+            SetupFutureUsage = setupFutureUsage
+            StatementDescriptorSuffixKana = statementDescriptorSuffixKana
+            StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
+        }
+
 module CheckoutCardPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
@@ -432,8 +514,22 @@ type CheckoutCustomerBalanceBankTransferPaymentMethodOptions =
         Type: CheckoutCustomerBalanceBankTransferPaymentMethodOptionsType option
     }
 
+type CheckoutCustomerBalanceBankTransferPaymentMethodOptions with
+    static member New(``type``: CheckoutCustomerBalanceBankTransferPaymentMethodOptionsType option, ?euBankTransfer: PaymentMethodOptionsCustomerBalanceEuBankAccount, ?requestedAddressTypes: CheckoutCustomerBalanceBankTransferPaymentMethodOptionsRequestedAddressTypes list) =
+        {
+            Type = ``type``
+            EuBankTransfer = euBankTransfer
+            RequestedAddressTypes = requestedAddressTypes
+        }
+
 type CheckoutCustomerBalancePaymentMethodOptions =
     { BankTransfer: CheckoutCustomerBalanceBankTransferPaymentMethodOptions option }
+
+type CheckoutCustomerBalancePaymentMethodOptions with
+    static member New(?bankTransfer: CheckoutCustomerBalanceBankTransferPaymentMethodOptions) =
+        {
+            BankTransfer = bankTransfer
+        }
 
 module CheckoutCustomerBalancePaymentMethodOptions =
     ///The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
@@ -534,6 +630,12 @@ type CheckoutKakaoPayPaymentMethodOptions =
         SetupFutureUsage: CheckoutKakaoPayPaymentMethodOptionsSetupFutureUsage option
     }
 
+type CheckoutKakaoPayPaymentMethodOptions with
+    static member New(?setupFutureUsage: CheckoutKakaoPayPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module CheckoutKakaoPayPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
@@ -553,6 +655,12 @@ type CheckoutKlarnaPaymentMethodOptions =
         SetupFutureUsage: CheckoutKlarnaPaymentMethodOptionsSetupFutureUsage option
     }
 
+type CheckoutKlarnaPaymentMethodOptions with
+    static member New(?setupFutureUsage: CheckoutKlarnaPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module CheckoutKlarnaPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
@@ -562,6 +670,12 @@ type CheckoutKonbiniPaymentMethodOptions =
         /// The number of calendar days (between 1 and 60) after which Konbini payment instructions will expire. For example, if a PaymentIntent is confirmed with Konbini and `expires_after_days` set to 2 on Monday JST, the instructions will expire on Wednesday 23:59:59 JST.
         ExpiresAfterDays: int option
     }
+
+type CheckoutKonbiniPaymentMethodOptions with
+    static member New(expiresAfterDays: int option) =
+        {
+            ExpiresAfterDays = expiresAfterDays
+        }
 
 module CheckoutKonbiniPaymentMethodOptions =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -584,6 +698,12 @@ type CheckoutKrCardPaymentMethodOptions =
         SetupFutureUsage: CheckoutKrCardPaymentMethodOptionsSetupFutureUsage option
     }
 
+type CheckoutKrCardPaymentMethodOptions with
+    static member New(?setupFutureUsage: CheckoutKrCardPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module CheckoutKrCardPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
@@ -601,6 +721,12 @@ type CheckoutLinkPaymentMethodOptions =
         /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
         SetupFutureUsage: CheckoutLinkPaymentMethodOptionsSetupFutureUsage option
     }
+
+type CheckoutLinkPaymentMethodOptions with
+    static member New(?setupFutureUsage: CheckoutLinkPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 module CheckoutLinkPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
@@ -655,6 +781,12 @@ type CheckoutNaverPayPaymentMethodOptions =
         SetupFutureUsage: CheckoutNaverPayPaymentMethodOptionsSetupFutureUsage option
     }
 
+type CheckoutNaverPayPaymentMethodOptions with
+    static member New(?setupFutureUsage: CheckoutNaverPayPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module CheckoutNaverPayPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
@@ -664,6 +796,12 @@ type CheckoutOxxoPaymentMethodOptions =
         /// The number of calendar days before an OXXO invoice expires. For example, if you create an OXXO invoice on Monday and you set expires_after_days to 2, the OXXO invoice will expire on Wednesday at 23:59 America/Mexico_City time.
         ExpiresAfterDays: int
     }
+
+type CheckoutOxxoPaymentMethodOptions with
+    static member New(expiresAfterDays: int) =
+        {
+            ExpiresAfterDays = expiresAfterDays
+        }
 
 module CheckoutOxxoPaymentMethodOptions =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -729,6 +867,14 @@ type CheckoutPaypalPaymentMethodOptions =
         SetupFutureUsage: CheckoutPaypalPaymentMethodOptionsSetupFutureUsage option
     }
 
+type CheckoutPaypalPaymentMethodOptions with
+    static member New(preferredLocale: string option, reference: string option, ?setupFutureUsage: CheckoutPaypalPaymentMethodOptionsSetupFutureUsage) =
+        {
+            PreferredLocale = preferredLocale
+            Reference = reference
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module CheckoutPaypalPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
@@ -747,6 +893,13 @@ type CheckoutPaytoPaymentMethodOptions =
         /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
         SetupFutureUsage: CheckoutPaytoPaymentMethodOptionsSetupFutureUsage option
     }
+
+type CheckoutPaytoPaymentMethodOptions with
+    static member New(?mandateOptions: MandateOptionsPayto, ?setupFutureUsage: CheckoutPaytoPaymentMethodOptionsSetupFutureUsage) =
+        {
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+        }
 
 [<Struct>]
 type CheckoutPixPaymentMethodOptionsAmountIncludesIof =
@@ -772,6 +925,15 @@ type CheckoutPixPaymentMethodOptions =
         SetupFutureUsage: CheckoutPixPaymentMethodOptionsSetupFutureUsage option
     }
 
+type CheckoutPixPaymentMethodOptions with
+    static member New(expiresAfterSeconds: int option, ?amountIncludesIof: CheckoutPixPaymentMethodOptionsAmountIncludesIof, ?mandateOptions: PaymentMethodOptionsMandateOptionsPix, ?setupFutureUsage: CheckoutPixPaymentMethodOptionsSetupFutureUsage) =
+        {
+            ExpiresAfterSeconds = expiresAfterSeconds
+            AmountIncludesIof = amountIncludesIof
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+        }
+
 [<Struct>]
 type CheckoutRevolutPayPaymentMethodOptionsSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
@@ -785,6 +947,12 @@ type CheckoutRevolutPayPaymentMethodOptions =
         /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
         SetupFutureUsage: CheckoutRevolutPayPaymentMethodOptionsSetupFutureUsage option
     }
+
+type CheckoutRevolutPayPaymentMethodOptions with
+    static member New(?setupFutureUsage: CheckoutRevolutPayPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 module CheckoutRevolutPayPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
@@ -814,6 +982,12 @@ type CheckoutPaymentMethodOptionsMandateOptionsSepaDebit =
         ReferencePrefix: string option
     }
 
+type CheckoutPaymentMethodOptionsMandateOptionsSepaDebit with
+    static member New(?referencePrefix: string) =
+        {
+            ReferencePrefix = referencePrefix
+        }
+
 [<Struct>]
 type CheckoutSepaDebitPaymentMethodOptionsSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
@@ -831,6 +1005,14 @@ type CheckoutSepaDebitPaymentMethodOptions =
         /// Controls when Stripe will attempt to debit the funds from the customer's account. The date must be a string in YYYY-MM-DD format. The date must be in the future and between 3 and 15 calendar days from now.
         TargetDate: string option
     }
+
+type CheckoutSepaDebitPaymentMethodOptions with
+    static member New(?mandateOptions: CheckoutPaymentMethodOptionsMandateOptionsSepaDebit, ?setupFutureUsage: CheckoutSepaDebitPaymentMethodOptionsSetupFutureUsage, ?targetDate: string) =
+        {
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+            TargetDate = targetDate
+        }
 
 type CheckoutSofortPaymentMethodOptions () = 
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -852,6 +1034,12 @@ type CheckoutSwishPaymentMethodOptions =
         /// The order reference that will be displayed to customers in the Swish application. Defaults to the `id` of the Payment Intent.
         Reference: string option
     }
+
+type CheckoutSwishPaymentMethodOptions with
+    static member New(reference: string option) =
+        {
+            Reference = reference
+        }
 
 type CheckoutTwintPaymentMethodOptions () = 
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -884,6 +1072,13 @@ type CheckoutUpiPaymentMethodOptions =
         SetupFutureUsage: CheckoutUpiPaymentMethodOptionsSetupFutureUsage option
     }
 
+type CheckoutUpiPaymentMethodOptions with
+    static member New(?mandateOptions: MandateOptionsUpi, ?setupFutureUsage: CheckoutUpiPaymentMethodOptionsSetupFutureUsage) =
+        {
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+        }
+
 [<Struct>]
 type CheckoutUsBankAccountPaymentMethodOptionsSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
@@ -908,6 +1103,15 @@ type CheckoutUsBankAccountPaymentMethodOptions =
         /// Bank account verification method. The default value is `automatic`.
         VerificationMethod: CheckoutUsBankAccountPaymentMethodOptionsVerificationMethod option
     }
+
+type CheckoutUsBankAccountPaymentMethodOptions with
+    static member New(?financialConnections: LinkedAccountOptionsCommon, ?setupFutureUsage: CheckoutUsBankAccountPaymentMethodOptionsSetupFutureUsage, ?targetDate: string, ?verificationMethod: CheckoutUsBankAccountPaymentMethodOptionsVerificationMethod) =
+        {
+            FinancialConnections = financialConnections
+            SetupFutureUsage = setupFutureUsage
+            TargetDate = targetDate
+            VerificationMethod = verificationMethod
+        }
 
 type CheckoutSessionPaymentMethodOptions =
     { AcssDebit: CheckoutAcssDebitPaymentMethodOptions option
@@ -955,6 +1159,54 @@ type CheckoutSessionPaymentMethodOptions =
       Upi: CheckoutUpiPaymentMethodOptions option
       UsBankAccount: CheckoutUsBankAccountPaymentMethodOptions option }
 
+type CheckoutSessionPaymentMethodOptions with
+    static member New(?acssDebit: CheckoutAcssDebitPaymentMethodOptions, ?affirm: CheckoutAffirmPaymentMethodOptions, ?afterpayClearpay: CheckoutAfterpayClearpayPaymentMethodOptions, ?alipay: CheckoutAlipayPaymentMethodOptions, ?alma: CheckoutAlmaPaymentMethodOptions, ?amazonPay: CheckoutAmazonPayPaymentMethodOptions, ?auBecsDebit: CheckoutAuBecsDebitPaymentMethodOptions, ?bacsDebit: CheckoutBacsDebitPaymentMethodOptions, ?bancontact: CheckoutBancontactPaymentMethodOptions, ?billie: CheckoutBilliePaymentMethodOptions, ?boleto: CheckoutBoletoPaymentMethodOptions, ?card: CheckoutCardPaymentMethodOptions, ?cashapp: CheckoutCashappPaymentMethodOptions, ?customerBalance: CheckoutCustomerBalancePaymentMethodOptions, ?eps: CheckoutEpsPaymentMethodOptions, ?fpx: CheckoutFpxPaymentMethodOptions, ?giropay: CheckoutGiropayPaymentMethodOptions, ?grabpay: CheckoutGrabPayPaymentMethodOptions, ?ideal: CheckoutIdealPaymentMethodOptions, ?kakaoPay: CheckoutKakaoPayPaymentMethodOptions, ?klarna: CheckoutKlarnaPaymentMethodOptions, ?konbini: CheckoutKonbiniPaymentMethodOptions, ?krCard: CheckoutKrCardPaymentMethodOptions, ?link: CheckoutLinkPaymentMethodOptions, ?mobilepay: CheckoutMobilepayPaymentMethodOptions, ?multibanco: CheckoutMultibancoPaymentMethodOptions, ?naverPay: CheckoutNaverPayPaymentMethodOptions, ?oxxo: CheckoutOxxoPaymentMethodOptions, ?p24: CheckoutP24PaymentMethodOptions, ?payco: CheckoutPaycoPaymentMethodOptions, ?paynow: CheckoutPaynowPaymentMethodOptions, ?paypal: CheckoutPaypalPaymentMethodOptions, ?payto: CheckoutPaytoPaymentMethodOptions, ?pix: CheckoutPixPaymentMethodOptions, ?revolutPay: CheckoutRevolutPayPaymentMethodOptions, ?samsungPay: CheckoutSamsungPayPaymentMethodOptions, ?satispay: CheckoutSatispayPaymentMethodOptions, ?sepaDebit: CheckoutSepaDebitPaymentMethodOptions, ?sofort: CheckoutSofortPaymentMethodOptions, ?swish: CheckoutSwishPaymentMethodOptions, ?twint: CheckoutTwintPaymentMethodOptions, ?upi: CheckoutUpiPaymentMethodOptions, ?usBankAccount: CheckoutUsBankAccountPaymentMethodOptions) =
+        {
+            AcssDebit = acssDebit
+            Affirm = affirm
+            AfterpayClearpay = afterpayClearpay
+            Alipay = alipay
+            Alma = alma
+            AmazonPay = amazonPay
+            AuBecsDebit = auBecsDebit
+            BacsDebit = bacsDebit
+            Bancontact = bancontact
+            Billie = billie
+            Boleto = boleto
+            Card = card
+            Cashapp = cashapp
+            CustomerBalance = customerBalance
+            Eps = eps
+            Fpx = fpx
+            Giropay = giropay
+            Grabpay = grabpay
+            Ideal = ideal
+            KakaoPay = kakaoPay
+            Klarna = klarna
+            Konbini = konbini
+            KrCard = krCard
+            Link = link
+            Mobilepay = mobilepay
+            Multibanco = multibanco
+            NaverPay = naverPay
+            Oxxo = oxxo
+            P24 = p24
+            Payco = payco
+            Paynow = paynow
+            Paypal = paypal
+            Payto = payto
+            Pix = pix
+            RevolutPay = revolutPay
+            SamsungPay = samsungPay
+            Satispay = satispay
+            SepaDebit = sepaDebit
+            Sofort = sofort
+            Swish = swish
+            Twint = twint
+            Upi = upi
+            UsBankAccount = usBankAccount
+        }
+
 [<Struct>]
 type CheckoutSessionPaymentStatus =
     | NoPaymentRequired
@@ -999,8 +1251,20 @@ type CheckoutLinkWalletOptions =
         Display: CheckoutLinkWalletOptionsDisplay option
     }
 
+type CheckoutLinkWalletOptions with
+    static member New(?display: CheckoutLinkWalletOptionsDisplay) =
+        {
+            Display = display
+        }
+
 type CheckoutSessionWalletOptions =
     { Link: CheckoutLinkWalletOptions option }
+
+type CheckoutSessionWalletOptions with
+    static member New(?link: CheckoutLinkWalletOptions) =
+        {
+            Link = link
+        }
 
 /// A Checkout Session represents your customer's session as they pay for
 /// one-time purchases or subscriptions through [Checkout](https://docs.stripe.com/payments/checkout)
@@ -1162,6 +1426,78 @@ type CheckoutSession =
         WalletOptions: CheckoutSessionWalletOptions option
     }
 
+type CheckoutSession with
+    static member New(adaptivePricing: PaymentPagesCheckoutSessionAdaptivePricing option, afterExpiration: PaymentPagesCheckoutSessionAfterExpiration option, allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, automaticTax: PaymentPagesCheckoutSessionAutomaticTax, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string option, clientReferenceId: string option, clientSecret: string option, collectedInformation: PaymentPagesCheckoutSessionCollectedInformation option, consent: PaymentPagesCheckoutSessionConsent option, consentCollection: PaymentPagesCheckoutSessionConsentCollection option, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, currencyConversion: PaymentPagesCheckoutSessionCurrencyConversion option, customFields: PaymentPagesCheckoutSessionCustomFields list, customText: PaymentPagesCheckoutSessionCustomText, customer: CheckoutSessionCustomer'AnyOf option, customerAccount: string option, customerCreation: CheckoutSessionCustomerCreation option, customerDetails: PaymentPagesCheckoutSessionCustomerDetails option, customerEmail: string option, discounts: PaymentPagesCheckoutSessionDiscount list option, expiresAt: DateTime, id: string, integrationIdentifier: string option, invoice: StripeId<Markers.Invoice> option, invoiceCreation: PaymentPagesCheckoutSessionInvoiceCreation option, livemode: bool, locale: CheckoutSessionLocale option, managedPayments: PaymentPagesCheckoutSessionManagedPayments option, metadata: Map<string, string> option, mode: CheckoutSessionMode, originContext: CheckoutSessionOriginContext option, paymentIntent: StripeId<Markers.PaymentIntent> option, paymentLink: StripeId<Markers.PaymentLink> option, paymentMethodCollection: CheckoutSessionPaymentMethodCollection option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: CheckoutSessionPaymentMethodOptions option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, permissions: PaymentPagesCheckoutSessionPermissions option, recoveredFrom: string option, savedPaymentMethodOptions: PaymentPagesCheckoutSessionSavedPaymentMethodOptions option, setupIntent: StripeId<Markers.SetupIntent> option, shippingAddressCollection: PaymentPagesCheckoutSessionShippingAddressCollection option, shippingCost: PaymentPagesCheckoutSessionShippingCost option, shippingOptions: PaymentPagesCheckoutSessionShippingOption list, status: CheckoutSessionStatus option, submitType: CheckoutSessionSubmitType option, subscription: StripeId<Markers.Subscription> option, successUrl: string option, totalDetails: PaymentPagesCheckoutSessionTotalDetails option, uiMode: CheckoutSessionUiMode option, url: string option, walletOptions: CheckoutSessionWalletOptions option, ?brandingSettings: PaymentPagesCheckoutSessionBrandingSettings, ?excludedPaymentMethodTypes: string list, ?lineItems: CheckoutSessionLineItems, ?nameCollection: PaymentPagesCheckoutSessionNameCollection, ?optionalItems: PaymentPagesCheckoutSessionOptionalItem list option, ?phoneNumberCollection: PaymentPagesCheckoutSessionPhoneNumberCollection, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?redirectOnCompletion: CheckoutSessionRedirectOnCompletion, ?returnUrl: string, ?taxIdCollection: PaymentPagesCheckoutSessionTaxIdCollection) =
+        {
+            AdaptivePricing = adaptivePricing
+            AfterExpiration = afterExpiration
+            AllowPromotionCodes = allowPromotionCodes
+            AmountSubtotal = amountSubtotal
+            AmountTotal = amountTotal
+            AutomaticTax = automaticTax
+            BillingAddressCollection = billingAddressCollection
+            CancelUrl = cancelUrl
+            ClientReferenceId = clientReferenceId
+            ClientSecret = clientSecret
+            CollectedInformation = collectedInformation
+            Consent = consent
+            ConsentCollection = consentCollection
+            Created = created
+            Currency = currency
+            CurrencyConversion = currencyConversion
+            CustomFields = customFields
+            CustomText = customText
+            Customer = customer
+            CustomerAccount = customerAccount
+            CustomerCreation = customerCreation
+            CustomerDetails = customerDetails
+            CustomerEmail = customerEmail
+            Discounts = discounts
+            ExpiresAt = expiresAt
+            Id = id
+            IntegrationIdentifier = integrationIdentifier
+            Invoice = invoice
+            InvoiceCreation = invoiceCreation
+            Livemode = livemode
+            Locale = locale
+            ManagedPayments = managedPayments
+            Metadata = metadata
+            Mode = mode
+            OriginContext = originContext
+            PaymentIntent = paymentIntent
+            PaymentLink = paymentLink
+            PaymentMethodCollection = paymentMethodCollection
+            PaymentMethodConfigurationDetails = paymentMethodConfigurationDetails
+            PaymentMethodOptions = paymentMethodOptions
+            PaymentMethodTypes = paymentMethodTypes
+            PaymentStatus = paymentStatus
+            Permissions = permissions
+            RecoveredFrom = recoveredFrom
+            SavedPaymentMethodOptions = savedPaymentMethodOptions
+            SetupIntent = setupIntent
+            ShippingAddressCollection = shippingAddressCollection
+            ShippingCost = shippingCost
+            ShippingOptions = shippingOptions
+            Status = status
+            SubmitType = submitType
+            Subscription = subscription
+            SuccessUrl = successUrl
+            TotalDetails = totalDetails
+            UiMode = uiMode
+            Url = url
+            WalletOptions = walletOptions
+            BrandingSettings = brandingSettings
+            ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
+            LineItems = lineItems
+            NameCollection = nameCollection
+            OptionalItems = optionalItems |> Option.flatten
+            PhoneNumberCollection = phoneNumberCollection
+            PresentmentDetails = presentmentDetails
+            RedirectOnCompletion = redirectOnCompletion
+            ReturnUrl = returnUrl
+            TaxIdCollection = taxIdCollection
+        }
+
 module CheckoutSession =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "checkout.session"
@@ -1169,12 +1505,36 @@ module CheckoutSession =
 /// Occurs when a Checkout Session is expired.
 type CheckoutSessionExpired = { Object: CheckoutSession }
 
+type CheckoutSessionExpired with
+    static member New(object: CheckoutSession) =
+        {
+            Object = object
+        }
+
 /// Occurs when a Checkout Session has been successfully completed.
 type CheckoutSessionCompleted = { Object: CheckoutSession }
+
+type CheckoutSessionCompleted with
+    static member New(object: CheckoutSession) =
+        {
+            Object = object
+        }
 
 /// Occurs when a payment intent using a delayed payment method finally succeeds.
 type CheckoutSessionAsyncPaymentSucceeded = { Object: CheckoutSession }
 
+type CheckoutSessionAsyncPaymentSucceeded with
+    static member New(object: CheckoutSession) =
+        {
+            Object = object
+        }
+
 /// Occurs when a payment intent using a delayed payment method fails.
 type CheckoutSessionAsyncPaymentFailed = { Object: CheckoutSession }
+
+type CheckoutSessionAsyncPaymentFailed with
+    static member New(object: CheckoutSession) =
+        {
+            Object = object
+        }
 

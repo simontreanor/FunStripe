@@ -27,6 +27,16 @@ module AppsSecrets =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(scope: Map<string, string>, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Scope = scope
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -55,15 +65,22 @@ module AppsSecrets =
             User: string option
         }
 
+    type Create'Scope with
+        static member New(?type': Create'ScopeType, ?user: string) =
+            {
+                Type = type'
+                User = user
+            }
+
     module Create'Scope =
         let create
             (
-                ``type``: Create'ScopeType option,
+                type': Create'ScopeType option,
                 user: string option
             ) : Create'Scope
             =
             {
-              Type = ``type``
+              Type = type'
               User = user
             }
 
@@ -85,6 +102,16 @@ module AppsSecrets =
             [<Config.Form>]
             Scope: Create'Scope
         }
+
+    type CreateOptions with
+        static member New(name: string, payload: string, scope: Create'Scope, ?expand: string list, ?expiresAt: DateTime) =
+            {
+                Name = name
+                Payload = payload
+                Scope = scope
+                Expand = expand
+                ExpiresAt = expiresAt
+            }
 
     module CreateOptions =
         let create
@@ -129,15 +156,22 @@ module AppsSecretsDelete =
             User: string option
         }
 
+    type DeleteWhere'Scope with
+        static member New(?type': DeleteWhere'ScopeType, ?user: string) =
+            {
+                Type = type'
+                User = user
+            }
+
     module DeleteWhere'Scope =
         let create
             (
-                ``type``: DeleteWhere'ScopeType option,
+                type': DeleteWhere'ScopeType option,
                 user: string option
             ) : DeleteWhere'Scope
             =
             {
-              Type = ``type``
+              Type = type'
               User = user
             }
 
@@ -153,6 +187,14 @@ module AppsSecretsDelete =
             [<Config.Form>]
             Scope: DeleteWhere'Scope
         }
+
+    type DeleteWhereOptions with
+        static member New(name: string, scope: DeleteWhere'Scope, ?expand: string list) =
+            {
+                Name = name
+                Scope = scope
+                Expand = expand
+            }
 
     module DeleteWhereOptions =
         let create
@@ -186,6 +228,14 @@ module AppsSecretsFind =
             [<Config.Query>]
             Scope: Map<string, string>
         }
+
+    type FindOptions with
+        static member New(name: string, scope: Map<string, string>, ?expand: string list) =
+            {
+                Name = name
+                Scope = scope
+                Expand = expand
+            }
 
     module FindOptions =
         let create

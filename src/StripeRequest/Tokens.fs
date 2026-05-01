@@ -36,6 +36,17 @@ module Tokens =
             State: string option
         }
 
+    type Create'AccountCompanyAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'AccountCompanyAddress =
         let create
             (
@@ -80,6 +91,18 @@ module Tokens =
             [<Config.Form>]
             Town: string option
         }
+
+    type Create'AccountCompanyAddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Create'AccountCompanyAddressKana =
         let create
@@ -128,6 +151,18 @@ module Tokens =
             Town: string option
         }
 
+    type Create'AccountCompanyAddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
+
     module Create'AccountCompanyAddressKanji =
         let create
             (
@@ -163,6 +198,14 @@ module Tokens =
             UserAgent: string option
         }
 
+    type Create'AccountCompanyDirectorshipDeclaration with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Create'AccountCompanyDirectorshipDeclaration =
         let create
             (
@@ -189,6 +232,14 @@ module Tokens =
             [<Config.Form>]
             UserAgent: string option
         }
+
+    type Create'AccountCompanyOwnershipDeclaration with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
 
     module Create'AccountCompanyOwnershipDeclaration =
         let create
@@ -221,6 +272,14 @@ module Tokens =
             Year: int option
         }
 
+    type Create'AccountCompanyRegistrationDateRegistrationDateSpecs with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
     module Create'AccountCompanyRegistrationDateRegistrationDateSpecs =
         let create
             (
@@ -247,6 +306,14 @@ module Tokens =
             [<Config.Form>]
             UserAgent: string option
         }
+
+    type Create'AccountCompanyRepresentativeDeclaration with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: string) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
 
     module Create'AccountCompanyRepresentativeDeclaration =
         let create
@@ -297,6 +364,13 @@ module Tokens =
             Front: string option
         }
 
+    type Create'AccountCompanyVerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'AccountCompanyVerificationDocument =
         let create
             (
@@ -315,6 +389,12 @@ module Tokens =
             [<Config.Form>]
             Document: Create'AccountCompanyVerificationDocument option
         }
+
+    type Create'AccountCompanyVerification with
+        static member New(?document: Create'AccountCompanyVerificationDocument) =
+            {
+                Document = document
+            }
 
     module Create'AccountCompanyVerification =
         let create
@@ -402,6 +482,35 @@ module Tokens =
             Verification: Create'AccountCompanyVerification option
         }
 
+    type Create'AccountCompany with
+        static member New(?address: Create'AccountCompanyAddress, ?addressKana: Create'AccountCompanyAddressKana, ?addressKanji: Create'AccountCompanyAddressKanji, ?directorsProvided: bool, ?directorshipDeclaration: Create'AccountCompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Create'AccountCompanyOwnershipDeclaration, ?ownershipDeclarationShownAndSigned: bool, ?ownershipExemptionReason: Create'AccountCompanyOwnershipExemptionReason, ?phone: string, ?registrationDate: Choice<Create'AccountCompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Create'AccountCompanyRepresentativeDeclaration, ?structure: Create'AccountCompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Create'AccountCompanyVerification) =
+            {
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                DirectorsProvided = directorsProvided
+                DirectorshipDeclaration = directorshipDeclaration
+                ExecutivesProvided = executivesProvided
+                ExportLicenseId = exportLicenseId
+                ExportPurposeCode = exportPurposeCode
+                Name = name
+                NameKana = nameKana
+                NameKanji = nameKanji
+                OwnersProvided = ownersProvided
+                OwnershipDeclaration = ownershipDeclaration
+                OwnershipDeclarationShownAndSigned = ownershipDeclarationShownAndSigned
+                OwnershipExemptionReason = ownershipExemptionReason
+                Phone = phone
+                RegistrationDate = registrationDate
+                RegistrationNumber = registrationNumber
+                RepresentativeDeclaration = representativeDeclaration
+                Structure = structure
+                TaxId = taxId
+                TaxIdRegistrar = taxIdRegistrar
+                VatId = vatId
+                Verification = verification
+            }
+
     module Create'AccountCompany =
         let create
             (
@@ -480,6 +589,17 @@ module Tokens =
             State: string option
         }
 
+    type Create'AccountIndividualAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'AccountIndividualAddress =
         let create
             (
@@ -524,6 +644,18 @@ module Tokens =
             [<Config.Form>]
             Town: string option
         }
+
+    type Create'AccountIndividualAddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Create'AccountIndividualAddressKana =
         let create
@@ -572,6 +704,18 @@ module Tokens =
             Town: string option
         }
 
+    type Create'AccountIndividualAddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
+
     module Create'AccountIndividualAddressKanji =
         let create
             (
@@ -606,6 +750,14 @@ module Tokens =
             [<Config.Form>]
             Year: int option
         }
+
+    type Create'AccountIndividualDobDateOfBirthSpecs with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
 
     module Create'AccountIndividualDobDateOfBirthSpecs =
         let create
@@ -647,6 +799,17 @@ module Tokens =
             State: string option
         }
 
+    type Create'AccountIndividualRegisteredAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'AccountIndividualRegisteredAddress =
         let create
             (
@@ -686,6 +849,16 @@ module Tokens =
             Title: string option
         }
 
+    type Create'AccountIndividualRelationship with
+        static member New(?director: bool, ?executive: bool, ?owner: bool, ?percentOwnership: Choice<decimal,string>, ?title: string) =
+            {
+                Director = director
+                Executive = executive
+                Owner = owner
+                PercentOwnership = percentOwnership
+                Title = title
+            }
+
     module Create'AccountIndividualRelationship =
         let create
             (
@@ -714,6 +887,13 @@ module Tokens =
             Front: string option
         }
 
+    type Create'AccountIndividualVerificationAdditionalDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'AccountIndividualVerificationAdditionalDocument =
         let create
             (
@@ -736,6 +916,13 @@ module Tokens =
             Front: string option
         }
 
+    type Create'AccountIndividualVerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'AccountIndividualVerificationDocument =
         let create
             (
@@ -757,6 +944,13 @@ module Tokens =
             [<Config.Form>]
             Document: Create'AccountIndividualVerificationDocument option
         }
+
+    type Create'AccountIndividualVerification with
+        static member New(?additionalDocument: Create'AccountIndividualVerificationAdditionalDocument, ?document: Create'AccountIndividualVerificationDocument) =
+            {
+                AdditionalDocument = additionalDocument
+                Document = document
+            }
 
     module Create'AccountIndividualVerification =
         let create
@@ -843,6 +1037,34 @@ module Tokens =
             Verification: Create'AccountIndividualVerification option
         }
 
+    type Create'AccountIndividual with
+        static member New(?address: Create'AccountIndividualAddress, ?addressKana: Create'AccountIndividualAddressKana, ?addressKanji: Create'AccountIndividualAddressKanji, ?dob: Choice<Create'AccountIndividualDobDateOfBirthSpecs,string>, ?email: string, ?firstName: string, ?firstNameKana: string, ?firstNameKanji: string, ?fullNameAliases: Choice<string list,string>, ?gender: string, ?idNumber: string, ?idNumberSecondary: string, ?lastName: string, ?lastNameKana: string, ?lastNameKanji: string, ?maidenName: string, ?metadata: Map<string, string>, ?phone: string, ?politicalExposure: Create'AccountIndividualPoliticalExposure, ?registeredAddress: Create'AccountIndividualRegisteredAddress, ?relationship: Create'AccountIndividualRelationship, ?ssnLast4: string, ?verification: Create'AccountIndividualVerification) =
+            {
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                Dob = dob
+                Email = email
+                FirstName = firstName
+                FirstNameKana = firstNameKana
+                FirstNameKanji = firstNameKanji
+                FullNameAliases = fullNameAliases
+                Gender = gender
+                IdNumber = idNumber
+                IdNumberSecondary = idNumberSecondary
+                LastName = lastName
+                LastNameKana = lastNameKana
+                LastNameKanji = lastNameKanji
+                MaidenName = maidenName
+                Metadata = metadata
+                Phone = phone
+                PoliticalExposure = politicalExposure
+                RegisteredAddress = registeredAddress
+                Relationship = relationship
+                SsnLast4 = ssnLast4
+                Verification = verification
+            }
+
     module Create'AccountIndividual =
         let create
             (
@@ -913,6 +1135,15 @@ module Tokens =
             TosShownAndAccepted: bool option
         }
 
+    type Create'Account with
+        static member New(?businessType: Create'AccountBusinessType, ?company: Create'AccountCompany, ?individual: Create'AccountIndividual, ?tosShownAndAccepted: bool) =
+            {
+                BusinessType = businessType
+                Company = company
+                Individual = individual
+                TosShownAndAccepted = tosShownAndAccepted
+            }
+
     module Create'Account =
         let create
             (
@@ -967,6 +1198,19 @@ module Tokens =
             RoutingNumber: string option
         }
 
+    type Create'BankAccount with
+        static member New(?accountHolderName: string, ?accountHolderType: Create'BankAccountAccountHolderType, ?accountNumber: string, ?accountType: Create'BankAccountAccountType, ?country: IsoTypes.IsoCountryCode, ?currency: IsoTypes.IsoCurrencyCode, ?paymentMethod: string, ?routingNumber: string) =
+            {
+                AccountHolderName = accountHolderName
+                AccountHolderType = accountHolderType
+                AccountNumber = accountNumber
+                AccountType = accountType
+                Country = country
+                Currency = currency
+                PaymentMethod = paymentMethod
+                RoutingNumber = routingNumber
+            }
+
     module Create'BankAccount =
         let create
             (
@@ -1002,6 +1246,12 @@ module Tokens =
             [<Config.Form>]
             Preferred: Create'CardCreditCardSpecsNetworksPreferred option
         }
+
+    type Create'CardCreditCardSpecsNetworks with
+        static member New(?preferred: Create'CardCreditCardSpecsNetworksPreferred) =
+            {
+                Preferred = preferred
+            }
 
     module Create'CardCreditCardSpecsNetworks =
         let create
@@ -1056,6 +1306,24 @@ module Tokens =
             Number: string option
         }
 
+    type Create'CardCreditCardSpecs with
+        static member New(?addressCity: string, ?addressCountry: IsoTypes.IsoCountryCode, ?addressLine1: string, ?addressLine2: string, ?addressState: string, ?addressZip: string, ?currency: IsoTypes.IsoCurrencyCode, ?cvc: string, ?expMonth: string, ?expYear: string, ?name: string, ?networks: Create'CardCreditCardSpecsNetworks, ?number: string) =
+            {
+                AddressCity = addressCity
+                AddressCountry = addressCountry
+                AddressLine1 = addressLine1
+                AddressLine2 = addressLine2
+                AddressState = addressState
+                AddressZip = addressZip
+                Currency = currency
+                Cvc = cvc
+                ExpMonth = expMonth
+                ExpYear = expYear
+                Name = name
+                Networks = networks
+                Number = number
+            }
+
     module Create'CardCreditCardSpecs =
         let create
             (
@@ -1097,6 +1365,12 @@ module Tokens =
             Cvc: string option
         }
 
+    type Create'CvcUpdate with
+        static member New(?cvc: string) =
+            {
+                Cvc = cvc
+            }
+
     module Create'CvcUpdate =
         let create
             (
@@ -1120,6 +1394,14 @@ module Tokens =
             UserAgent: Choice<string,string> option
         }
 
+    type Create'PersonAdditionalTosAcceptancesAccount with
+        static member New(?date: DateTime, ?ip: string, ?userAgent: Choice<string,string>) =
+            {
+                Date = date
+                Ip = ip
+                UserAgent = userAgent
+            }
+
     module Create'PersonAdditionalTosAcceptancesAccount =
         let create
             (
@@ -1140,6 +1422,12 @@ module Tokens =
             [<Config.Form>]
             Account: Create'PersonAdditionalTosAcceptancesAccount option
         }
+
+    type Create'PersonAdditionalTosAcceptances with
+        static member New(?account: Create'PersonAdditionalTosAcceptancesAccount) =
+            {
+                Account = account
+            }
 
     module Create'PersonAdditionalTosAcceptances =
         let create
@@ -1172,6 +1460,17 @@ module Tokens =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'PersonAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'PersonAddress =
         let create
@@ -1217,6 +1516,18 @@ module Tokens =
             [<Config.Form>]
             Town: string option
         }
+
+    type Create'PersonAddressKana with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
 
     module Create'PersonAddressKana =
         let create
@@ -1265,6 +1576,18 @@ module Tokens =
             Town: string option
         }
 
+    type Create'PersonAddressKanji with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string, ?town: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+                Town = town
+            }
+
     module Create'PersonAddressKanji =
         let create
             (
@@ -1300,6 +1623,14 @@ module Tokens =
             Year: int option
         }
 
+    type Create'PersonDobDateOfBirthSpecs with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
     module Create'PersonDobDateOfBirthSpecs =
         let create
             (
@@ -1321,6 +1652,12 @@ module Tokens =
             Files: Choice<string,string> list option
         }
 
+    type Create'PersonDocumentsCompanyAuthorization with
+        static member New(?files: Choice<string,string> list) =
+            {
+                Files = files
+            }
+
     module Create'PersonDocumentsCompanyAuthorization =
         let create
             (
@@ -1338,6 +1675,12 @@ module Tokens =
             Files: Choice<string,string> list option
         }
 
+    type Create'PersonDocumentsPassport with
+        static member New(?files: Choice<string,string> list) =
+            {
+                Files = files
+            }
+
     module Create'PersonDocumentsPassport =
         let create
             (
@@ -1354,6 +1697,12 @@ module Tokens =
             [<Config.Form>]
             Files: Choice<string,string> list option
         }
+
+    type Create'PersonDocumentsVisa with
+        static member New(?files: Choice<string,string> list) =
+            {
+                Files = files
+            }
 
     module Create'PersonDocumentsVisa =
         let create
@@ -1377,6 +1726,14 @@ module Tokens =
             [<Config.Form>]
             Visa: Create'PersonDocumentsVisa option
         }
+
+    type Create'PersonDocuments with
+        static member New(?companyAuthorization: Create'PersonDocumentsCompanyAuthorization, ?passport: Create'PersonDocumentsPassport, ?visa: Create'PersonDocumentsVisa) =
+            {
+                CompanyAuthorization = companyAuthorization
+                Passport = passport
+                Visa = visa
+            }
 
     module Create'PersonDocuments =
         let create
@@ -1417,6 +1774,17 @@ module Tokens =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'PersonRegisteredAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'PersonRegisteredAddress =
         let create
@@ -1466,6 +1834,19 @@ module Tokens =
             Title: string option
         }
 
+    type Create'PersonRelationship with
+        static member New(?authorizer: bool, ?director: bool, ?executive: bool, ?legalGuardian: bool, ?owner: bool, ?percentOwnership: Choice<decimal,string>, ?representative: bool, ?title: string) =
+            {
+                Authorizer = authorizer
+                Director = director
+                Executive = executive
+                LegalGuardian = legalGuardian
+                Owner = owner
+                PercentOwnership = percentOwnership
+                Representative = representative
+                Title = title
+            }
+
     module Create'PersonRelationship =
         let create
             (
@@ -1508,6 +1889,13 @@ module Tokens =
             [<Config.Form>]
             EthnicityOther: string option
         }
+
+    type Create'PersonUsCfpbDataEthnicityDetails with
+        static member New(?ethnicity: Create'PersonUsCfpbDataEthnicityDetailsEthnicity list, ?ethnicityOther: string) =
+            {
+                Ethnicity = ethnicity
+                EthnicityOther = ethnicityOther
+            }
 
     module Create'PersonUsCfpbDataEthnicityDetails =
         let create
@@ -1557,6 +1945,13 @@ module Tokens =
             RaceOther: string option
         }
 
+    type Create'PersonUsCfpbDataRaceDetails with
+        static member New(?race: Create'PersonUsCfpbDataRaceDetailsRace list, ?raceOther: string) =
+            {
+                Race = race
+                RaceOther = raceOther
+            }
+
     module Create'PersonUsCfpbDataRaceDetails =
         let create
             (
@@ -1582,6 +1977,14 @@ module Tokens =
             SelfIdentifiedGender: string option
         }
 
+    type Create'PersonUsCfpbData with
+        static member New(?ethnicityDetails: Create'PersonUsCfpbDataEthnicityDetails, ?raceDetails: Create'PersonUsCfpbDataRaceDetails, ?selfIdentifiedGender: string) =
+            {
+                EthnicityDetails = ethnicityDetails
+                RaceDetails = raceDetails
+                SelfIdentifiedGender = selfIdentifiedGender
+            }
+
     module Create'PersonUsCfpbData =
         let create
             (
@@ -1606,6 +2009,13 @@ module Tokens =
             Front: string option
         }
 
+    type Create'PersonVerificationAdditionalDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'PersonVerificationAdditionalDocument =
         let create
             (
@@ -1628,6 +2038,13 @@ module Tokens =
             Front: string option
         }
 
+    type Create'PersonVerificationDocument with
+        static member New(?back: string, ?front: string) =
+            {
+                Back = back
+                Front = front
+            }
+
     module Create'PersonVerificationDocument =
         let create
             (
@@ -1649,6 +2066,13 @@ module Tokens =
             [<Config.Form>]
             Document: Create'PersonVerificationDocument option
         }
+
+    type Create'PersonVerification with
+        static member New(?additionalDocument: Create'PersonVerificationAdditionalDocument, ?document: Create'PersonVerificationDocument) =
+            {
+                AdditionalDocument = additionalDocument
+                Document = document
+            }
 
     module Create'PersonVerification =
         let create
@@ -1747,6 +2171,38 @@ module Tokens =
             Verification: Create'PersonVerification option
         }
 
+    type Create'Person with
+        static member New(?additionalTosAcceptances: Create'PersonAdditionalTosAcceptances, ?address: Create'PersonAddress, ?addressKana: Create'PersonAddressKana, ?addressKanji: Create'PersonAddressKanji, ?dob: Choice<Create'PersonDobDateOfBirthSpecs,string>, ?documents: Create'PersonDocuments, ?email: string, ?firstName: string, ?firstNameKana: string, ?firstNameKanji: string, ?fullNameAliases: Choice<string list,string>, ?gender: string, ?idNumber: string, ?idNumberSecondary: string, ?lastName: string, ?lastNameKana: string, ?lastNameKanji: string, ?maidenName: string, ?metadata: Map<string, string>, ?nationality: string, ?phone: string, ?politicalExposure: Create'PersonPoliticalExposure, ?registeredAddress: Create'PersonRegisteredAddress, ?relationship: Create'PersonRelationship, ?ssnLast4: string, ?usCfpbData: Create'PersonUsCfpbData, ?verification: Create'PersonVerification) =
+            {
+                AdditionalTosAcceptances = additionalTosAcceptances
+                Address = address
+                AddressKana = addressKana
+                AddressKanji = addressKanji
+                Dob = dob
+                Documents = documents
+                Email = email
+                FirstName = firstName
+                FirstNameKana = firstNameKana
+                FirstNameKanji = firstNameKanji
+                FullNameAliases = fullNameAliases
+                Gender = gender
+                IdNumber = idNumber
+                IdNumberSecondary = idNumberSecondary
+                LastName = lastName
+                LastNameKana = lastNameKana
+                LastNameKanji = lastNameKanji
+                MaidenName = maidenName
+                Metadata = metadata
+                Nationality = nationality
+                Phone = phone
+                PoliticalExposure = politicalExposure
+                RegisteredAddress = registeredAddress
+                Relationship = relationship
+                SsnLast4 = ssnLast4
+                UsCfpbData = usCfpbData
+                Verification = verification
+            }
+
     module Create'Person =
         let create
             (
@@ -1816,6 +2272,12 @@ module Tokens =
             IdNumber: string option
         }
 
+    type Create'Pii with
+        static member New(?idNumber: string) =
+            {
+                IdNumber = idNumber
+            }
+
     module Create'Pii =
         let create
             (
@@ -1854,6 +2316,19 @@ module Tokens =
             Pii: Create'Pii option
         }
 
+    type CreateOptions with
+        static member New(?account: Create'Account, ?bankAccount: Create'BankAccount, ?card: Choice<Create'CardCreditCardSpecs,string>, ?customer: string, ?cvcUpdate: Create'CvcUpdate, ?expand: string list, ?person: Create'Person, ?pii: Create'Pii) =
+            {
+                Account = account
+                BankAccount = bankAccount
+                Card = card
+                Customer = customer
+                CvcUpdate = cvcUpdate
+                Expand = expand
+                Person = person
+                Pii = pii
+            }
+
     module CreateOptions =
         let create
             (
@@ -1886,6 +2361,13 @@ module Tokens =
             [<Config.Path>]
             Token: string
         }
+
+    type RetrieveOptions with
+        static member New(token: string, ?expand: string list) =
+            {
+                Token = token
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

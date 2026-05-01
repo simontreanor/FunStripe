@@ -27,6 +27,16 @@ module Reviews =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -53,6 +63,13 @@ module Reviews =
             [<Config.Path>]
             Review: string
         }
+
+    type RetrieveOptions with
+        static member New(review: string, ?expand: string list) =
+            {
+                Review = review
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -87,6 +104,13 @@ module ReviewsApprove =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type ApproveOptions with
+        static member New(review: string, ?expand: string list) =
+            {
+                Review = review
+                Expand = expand
+            }
 
     module ApproveOptions =
         let create

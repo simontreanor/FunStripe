@@ -5,12 +5,11 @@ open FunStripe
 open System
 open Stripe.Application
 open Stripe.ApplicationFee
+open Stripe.BankAccount
 open Stripe.ConnectCollectionTransfer
-open Stripe.Discount
 open Stripe.FeeRefund
 open Stripe.FundingInstructions
 open Stripe.IssuingCard
-open Stripe.Payout
 open Stripe.Price
 open Stripe.Radar
 open Stripe.ReserveTransaction
@@ -2683,6 +2682,12 @@ type CustomerTaxIds =
         Url: string
     }
 
+type DiscountSource =
+    {
+        /// The coupon that was redeemed to create this discount.
+        Coupon: StripeId<Markers.Coupon> option
+    }
+
 type InvoiceSettingCustomField =
     {
         /// The name of the custom field.
@@ -3017,6 +3022,41 @@ and CustomerSubscriptions =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+/// A discount represents the actual application of a [coupon](https://api.stripe.com#coupons) or [promotion code](https://api.stripe.com#promotion_codes).
+/// It contains information about when the discount began, when it will end, and what it is applied to.
+/// Related guide: [Applying discounts to subscriptions](https://docs.stripe.com/billing/subscriptions/discounts)
+and Discount =
+    {
+        /// The Checkout session that this coupon is applied to, if it is applied to a particular session in payment mode. Will not be present for subscription mode.
+        CheckoutSession: string option
+        /// The ID of the customer associated with this discount.
+        Customer: DiscountCustomer'AnyOf option
+        /// The ID of the account representing the customer associated with this discount.
+        CustomerAccount: string option
+        /// If the coupon has a duration of `repeating`, the date that this discount will end. If the coupon has a duration of `once` or `forever`, this attribute will be null.
+        End: DateTime option
+        /// The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array.
+        Id: string
+        /// The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice.
+        Invoice: string option
+        /// The invoice item `id` (or invoice line item `id` for invoice line items of type='subscription') that the discount's coupon was applied to, if it was applied directly to a particular invoice item or invoice line item.
+        InvoiceItem: string option
+        /// The promotion code applied to create this discount.
+        PromotionCode: StripeId<Markers.PromotionCode> option
+        Source: DiscountSource
+        /// Date that the coupon was applied.
+        Start: DateTime
+        /// The subscription that this coupon is applied to, if it is applied to a particular subscription.
+        Subscription: string option
+        /// The subscription item that this coupon is applied to, if it is applied to a particular subscription item.
+        SubscriptionItem: string option
+    }
+
+and DiscountCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
 
 and ExternalAccount =
     | BankAccount of BankAccount
@@ -5159,16 +5199,6 @@ type PaymentIntentProcessing =
 type PaymentIntentSetupFutureUsage =
     | OffSession
     | OnSession
-
-type DeletedBankAccount =
-    {
-        /// Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
-        Currency: IsoTypes.IsoCurrencyCode option
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
 
 type DeletedCard =
     {
@@ -7345,6 +7375,140 @@ type PersonDeleted = { Object: Person }
 
 /// Occurs whenever a person associated with an account is created.
 type PersonCreated = { Object: Person }
+
+type DeletedExternalAccount =
+    | DeletedBankAccount of DeletedBankAccount
+    | DeletedCard of DeletedCard
+
+type PayoutDestination'AnyOf =
+    | String of string
+    | ExternalAccount of ExternalAccount
+    | DeletedExternalAccount of DeletedExternalAccount
+
+[<Struct>]
+type PayoutMethod =
+    | Standard
+    | Instant
+
+[<Struct>]
+type PayoutReconciliationStatus =
+    | Completed
+    | InProgress
+    | NotApplicable
+
+[<Struct>]
+type PayoutSourceType =
+    | Card
+    | Fpx
+    | BankAccount
+
+[<Struct>]
+type PayoutStatus =
+    | Paid
+    | Pending
+    | InTransit
+    | Canceled
+    | Failed
+
+[<Struct>]
+type PayoutType =
+    | BankAccount
+    | Card
+
+[<Struct>]
+type PayoutsTraceIdStatus =
+    | Pending
+    | Supported
+    | Unsupported
+
+type PayoutsTraceId =
+    {
+        /// Possible values are `pending`, `supported`, and `unsupported`. When `payout.status` is `pending` or `in_transit`, this will be `pending`. When the payout transitions to `paid`, `failed`, or `canceled`, this status will become `supported` or `unsupported` shortly after in most cases. In some cases, this may appear as `pending` for up to 10 days after `arrival_date` until transitioning to `supported` or `unsupported`.
+        Status: PayoutsTraceIdStatus
+        /// The trace ID value if `trace_id.status` is `supported`, otherwise `nil`.
+        Value: string option
+    }
+
+/// A `Payout` object is created when you receive funds from Stripe, or when you
+/// initiate a payout to either a bank account or debit card of a [connected
+/// Stripe account](/docs/connect/bank-debit-card-payouts). You can retrieve individual payouts,
+/// and list all payouts. Payouts are made on [varying
+/// schedules](/docs/connect/manage-payout-schedule), depending on your country and
+/// industry.
+/// Related guide: [Receiving payouts](https://docs.stripe.com/payouts)
+type Payout =
+    {
+        /// The amount (in cents (or local equivalent)) that transfers to your bank account or debit card.
+        Amount: int
+        /// The application fee (if any) for the payout. [See the Connect documentation](https://docs.stripe.com/connect/instant-payouts#monetization-and-fees) for details.
+        ApplicationFee: StripeId<Markers.ApplicationFee> option
+        /// The amount of the application fee (if any) requested for the payout. [See the Connect documentation](https://docs.stripe.com/connect/instant-payouts#monetization-and-fees) for details.
+        ApplicationFeeAmount: int option
+        /// Date that you can expect the payout to arrive in the bank. This factors in delays to account for weekends or bank holidays.
+        ArrivalDate: DateTime
+        /// Returns `true` if the payout is created by an [automated payout schedule](https://docs.stripe.com/payouts#payout-schedule) and `false` if it's [requested manually](https://stripe.com/docs/payouts#manual-payouts).
+        Automatic: bool
+        /// ID of the balance transaction that describes the impact of this payout on your account balance.
+        BalanceTransaction: StripeId<Markers.BalanceTransaction> option
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string option
+        /// ID of the bank account or card the payout is sent to.
+        Destination: PayoutDestination'AnyOf option
+        /// If the payout fails or cancels, this is the ID of the balance transaction that reverses the initial balance transaction and returns the funds from the failed payout back in your balance.
+        FailureBalanceTransaction: StripeId<Markers.BalanceTransaction> option
+        /// Error code that provides a reason for a payout failure, if available. View our [list of failure codes](https://docs.stripe.com/api#payout_failures).
+        FailureCode: string option
+        /// Message that provides the reason for a payout failure, if available.
+        FailureMessage: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// The method used to send this payout, which can be `standard` or `instant`. `instant` is supported for payouts to debit cards and bank accounts in certain countries. Learn more about [bank support for Instant Payouts](https://stripe.com/docs/payouts/instant-payouts-banks).
+        Method: PayoutMethod
+        /// If the payout reverses another, this is the ID of the original payout.
+        OriginalPayout: StripeId<Markers.Payout> option
+        /// ID of the v2 FinancialAccount the funds are sent to.
+        PayoutMethod: string option
+        /// If `completed`, you can use the [Balance Transactions API](https://docs.stripe.com/api/balance_transactions/list#balance_transaction_list-payout) to list all balance transactions that are paid out in this payout.
+        ReconciliationStatus: PayoutReconciliationStatus
+        /// If the payout reverses, this is the ID of the payout that reverses this payout.
+        ReversedBy: StripeId<Markers.Payout> option
+        /// The source balance this payout came from, which can be one of the following: `card`, `fpx`, or `bank_account`.
+        SourceType: PayoutSourceType
+        /// Extra information about a payout that displays on the user's bank statement.
+        StatementDescriptor: string option
+        /// Current status of the payout: `paid`, `pending`, `in_transit`, `canceled` or `failed`. A payout is `pending` until it's submitted to the bank, when it becomes `in_transit`. The status changes to `paid` if the transaction succeeds, or to `failed` or `canceled` (within 5 business days). Some payouts that fail might initially show as `paid`, then change to `failed`.
+        Status: PayoutStatus
+        /// A value that generates from the beneficiary's bank that allows users to track payouts with their bank. Banks might call this a "reference number" or something similar.
+        TraceId: PayoutsTraceId option
+        /// Can be `bank_account` or `card`.
+        Type: PayoutType
+    }
+
+/// Occurs whenever a payout is updated.
+type PayoutUpdated = { Object: Payout }
+
+/// Occurs whenever balance transactions paid out in an automatic payout can be queried.
+type PayoutReconciliationCompleted = { Object: Payout }
+
+/// Occurs whenever a payout is *expected* to be available in the destination account. If the payout fails, a `payout.failed` notification is also sent, at a later time.
+type PayoutPaid = { Object: Payout }
+
+/// Occurs whenever a payout attempt fails.
+type PayoutFailed = { Object: Payout }
+
+/// Occurs whenever a payout is created.
+type PayoutCreated = { Object: Payout }
+
+/// Occurs whenever a payout is canceled.
+type PayoutCanceled = { Object: Payout }
 
 [<Struct>]
 type PaymentMethodConfigResourceDisplayPreferencePreference =
@@ -10638,6 +10802,51 @@ type BillingBillResourceInvoicingTaxesTax =
         TaxableAmount: int option
     }
 
+type DeletedDiscountCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
+
+type DeletedDiscount =
+    {
+        /// The Checkout session that this coupon is applied to, if it is applied to a particular session in payment mode. Will not be present for subscription mode.
+        CheckoutSession: string option
+        /// The ID of the customer associated with this discount.
+        Customer: DeletedDiscountCustomer'AnyOf option
+        /// The ID of the account representing the customer associated with this discount.
+        CustomerAccount: string option
+        /// Always true for a deleted object
+        Deleted: bool
+        /// The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array.
+        Id: string
+        /// The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice.
+        Invoice: string option
+        /// The invoice item `id` (or invoice line item `id` for invoice line items of type='subscription') that the discount's coupon was applied to, if it was applied directly to a particular invoice item or invoice line item.
+        InvoiceItem: string option
+        /// The promotion code applied to create this discount.
+        PromotionCode: StripeId<Markers.PromotionCode> option
+        Source: DiscountSource
+        /// Date that the coupon was applied.
+        Start: DateTime
+        /// The subscription that this coupon is applied to, if it is applied to a particular subscription.
+        Subscription: string option
+        /// The subscription item that this coupon is applied to, if it is applied to a particular subscription item.
+        SubscriptionItem: string option
+    }
+
+type DiscountsResourceDiscountAmountDiscount'AnyOf =
+    | String of string
+    | Discount of Discount
+    | DeletedDiscount of DeletedDiscount
+
+type DiscountsResourceDiscountAmount =
+    {
+        /// The amount, in cents (or local equivalent), of the discount.
+        Amount: int
+        /// The discount that was applied to get this discount amount.
+        Discount: DiscountsResourceDiscountAmountDiscount'AnyOf
+    }
+
 type InvoiceAccountTaxIds'AnyOf =
     | String of string
     | TaxId of TaxId
@@ -11507,6 +11716,395 @@ type InvoiceDeleted = { Object: Invoice }
 
 /// Occurs whenever a new invoice is created. To learn how webhooks can be used with this event, and how they can affect it, see [Using Webhooks with Subscriptions](https://docs.stripe.com/subscriptions/webhooks).
 type InvoiceCreated = { Object: Invoice }
+
+type BankConnectionsResourceTransactionResourceStatusTransitions =
+    {
+        /// Time at which this transaction posted. Measured in seconds since the Unix epoch.
+        PostedAt: DateTime option
+        /// Time at which this transaction was voided. Measured in seconds since the Unix epoch.
+        VoidAt: DateTime option
+    }
+
+[<Struct>]
+type FinancialConnectionsTransactionStatus =
+    | Pending
+    | Posted
+    | Void
+
+/// A Transaction represents a real transaction that affects a Financial Connections Account balance.
+type FinancialConnectionsTransaction =
+    {
+        /// The ID of the Financial Connections Account this transaction belongs to.
+        Account: string
+        /// The amount of this transaction, in cents (or local equivalent).
+        Amount: int
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// The description of this transaction.
+        Description: string
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The status of the transaction.
+        Status: FinancialConnectionsTransactionStatus
+        StatusTransitions: BankConnectionsResourceTransactionResourceStatusTransitions
+        /// Time at which the transaction was transacted. Measured in seconds since the Unix epoch.
+        TransactedAt: DateTime
+        /// The token of the transaction refresh that last updated or created this transaction.
+        TransactionRefresh: string
+        /// Time at which the object was last updated. Measured in seconds since the Unix epoch.
+        Updated: DateTime
+    }
+
+[<Struct>]
+type BankConnectionsResourceAccountholderType =
+    | Account
+    | Customer
+
+type BankConnectionsResourceAccountholder =
+    {
+        /// The ID of the Stripe account that this account belongs to. Only available when `account_holder.type` is `account`.
+        Account: StripeId<Markers.Account> option
+        /// The ID for an Account representing a customer that this account belongs to. Only available when `account_holder.type` is `customer`.
+        Customer: StripeId<Markers.Customer> option
+        CustomerAccount: string option
+        /// Type of account holder that this account belongs to.
+        Type: BankConnectionsResourceAccountholderType
+    }
+
+[<Struct>]
+type BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories =
+    | Checking
+    | CreditCard
+    | LineOfCredit
+    | Mortgage
+    | Savings
+
+type BankConnectionsResourceLinkAccountSessionFilters =
+    {
+        /// Restricts the Session to subcategories of accounts that can be linked. Valid subcategories are: `checking`, `savings`, `mortgage`, `line_of_credit`, `credit_card`.
+        AccountSubcategories: BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories list option
+        /// List of countries from which to filter accounts.
+        Countries: string list option
+    }
+
+[<Struct>]
+type BankConnectionsResourceAccountNumberDetailsIdentifierType =
+    | AccountNumber
+    | TokenizedAccountNumber
+
+[<Struct>]
+type BankConnectionsResourceAccountNumberDetailsStatus =
+    | Deactivated
+    | Transactable
+
+type BankConnectionsResourceAccountNumberDetails =
+    {
+        /// When the account number is expected to expire, if applicable.
+        ExpectedExpiryDate: DateTime option
+        /// The type of account number associated with the account.
+        IdentifierType: BankConnectionsResourceAccountNumberDetailsIdentifierType
+        /// Whether the account number is currently active and usable for transactions.
+        Status: BankConnectionsResourceAccountNumberDetailsStatus
+        /// The payment networks that the account number can be used for.
+        SupportedNetworks: string list
+    }
+
+type BankConnectionsResourceBalanceApiResourceCashBalance =
+    {
+        /// The funds available to the account holder. Typically this is the current balance after subtracting any outbound pending transactions and adding any inbound pending transactions.
+        /// Each key is a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
+        /// Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
+        Available: Map<string, string list> option
+    }
+
+type BankConnectionsResourceBalanceApiResourceCreditBalance =
+    {
+        /// The credit that has been used by the account holder.
+        /// Each key is a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
+        /// Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
+        Used: Map<string, string list> option
+    }
+
+[<Struct>]
+type BankConnectionsResourceBalanceType =
+    | Cash
+    | Credit
+
+type BankConnectionsResourceBalance =
+    {
+        /// The time that the external institution calculated this balance. Measured in seconds since the Unix epoch.
+        AsOf: DateTime
+        Cash: BankConnectionsResourceBalanceApiResourceCashBalance option
+        Credit: BankConnectionsResourceBalanceApiResourceCreditBalance option
+        /// The balances owed to (or by) the account holder, before subtracting any outbound pending transactions or adding any inbound pending transactions.
+        /// Each key is a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
+        /// Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
+        Current: Map<string, string list>
+        /// The `type` of the balance. An additional hash is included on the balance with a name matching this value.
+        Type: BankConnectionsResourceBalanceType
+    }
+
+[<Struct>]
+type BankConnectionsResourceBalanceRefreshStatus =
+    | Failed
+    | Pending
+    | Succeeded
+
+type BankConnectionsResourceBalanceRefresh =
+    {
+        /// The time at which the last refresh attempt was initiated. Measured in seconds since the Unix epoch.
+        LastAttemptedAt: DateTime
+        /// Time at which the next balance refresh can be initiated. This value will be `null` when `status` is `pending`. Measured in seconds since the Unix epoch.
+        NextRefreshAvailableAt: DateTime option
+        /// The status of the last refresh attempt.
+        Status: BankConnectionsResourceBalanceRefreshStatus
+    }
+
+[<Struct>]
+type BankConnectionsResourceOwnershipRefreshStatus =
+    | Failed
+    | Pending
+    | Succeeded
+
+type BankConnectionsResourceOwnershipRefresh =
+    {
+        /// The time at which the last refresh attempt was initiated. Measured in seconds since the Unix epoch.
+        LastAttemptedAt: DateTime
+        /// Time at which the next ownership refresh can be initiated. This value will be `null` when `status` is `pending`. Measured in seconds since the Unix epoch.
+        NextRefreshAvailableAt: DateTime option
+        /// The status of the last refresh attempt.
+        Status: BankConnectionsResourceOwnershipRefreshStatus
+    }
+
+[<Struct>]
+type BankConnectionsResourceTransactionRefreshStatus =
+    | Failed
+    | Pending
+    | Succeeded
+
+type BankConnectionsResourceTransactionRefresh =
+    {
+        /// Unique identifier for the object.
+        Id: string
+        /// The time at which the last refresh attempt was initiated. Measured in seconds since the Unix epoch.
+        LastAttemptedAt: DateTime
+        /// Time at which the next transaction refresh can be initiated. This value will be `null` when `status` is `pending`. Measured in seconds since the Unix epoch.
+        NextRefreshAvailableAt: DateTime option
+        /// The status of the last refresh attempt.
+        Status: BankConnectionsResourceTransactionRefreshStatus
+    }
+
+[<Struct>]
+type FinancialConnectionsAccountCategory =
+    | Cash
+    | Credit
+    | Investment
+    | Other
+
+[<Struct>]
+type FinancialConnectionsAccountPermissions =
+    | Balances
+    | Ownership
+    | PaymentMethod
+    | Transactions
+
+[<Struct>]
+type FinancialConnectionsAccountStatus =
+    | Active
+    | Disconnected
+    | Inactive
+
+type FinancialConnectionsAccountSubcategory =
+    | Checking
+    | CreditCard
+    | LineOfCredit
+    | Mortgage
+    | Other
+    | Savings
+
+[<Struct>]
+type FinancialConnectionsAccountSupportedPaymentMethodTypes =
+    | Link
+    | UsBankAccount
+
+/// A Financial Connections Account represents an account that exists outside of Stripe, to which you have been granted some degree of access.
+type FinancialConnectionsAccount =
+    {
+        /// The account holder that this account belongs to.
+        AccountHolder: BankConnectionsResourceAccountholder option
+        /// Details about the account numbers.
+        AccountNumbers: BankConnectionsResourceAccountNumberDetails list option
+        /// The most recent information about the account's balance.
+        Balance: BankConnectionsResourceBalance option
+        /// The state of the most recent attempt to refresh the account balance.
+        BalanceRefresh: BankConnectionsResourceBalanceRefresh option
+        /// The type of the account. Account category is further divided in `subcategory`.
+        Category: FinancialConnectionsAccountCategory
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// A human-readable name that has been assigned to this account, either by the account holder or by the institution.
+        DisplayName: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// The name of the institution that holds this account.
+        InstitutionName: string
+        /// The last 4 digits of the account number. If present, this will be 4 numeric characters.
+        [<JsonPropertyName("last4")>]
+        Last4: string option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The most recent information about the account's owners.
+        Ownership: StripeId<Markers.FinancialConnectionsAccountOwnership> option
+        /// The state of the most recent attempt to refresh the account owners.
+        OwnershipRefresh: BankConnectionsResourceOwnershipRefresh option
+        /// The list of permissions granted by this account.
+        Permissions: FinancialConnectionsAccountPermissions list option
+        /// The status of the link to the account.
+        Status: FinancialConnectionsAccountStatus
+        /// If `category` is `cash`, one of:
+        ///  - `checking`
+        ///  - `savings`
+        ///  - `other`
+        /// If `category` is `credit`, one of:
+        ///  - `mortgage`
+        ///  - `line_of_credit`
+        ///  - `credit_card`
+        ///  - `other`
+        /// If `category` is `investment` or `other`, this will be `other`.
+        Subcategory: FinancialConnectionsAccountSubcategory
+        /// The list of data refresh subscriptions requested on this account.
+        Subscriptions: string list option
+        /// The [PaymentMethod type](https://docs.stripe.com/api/payment_methods/object#payment_method_object-type)(s) that can be created from this account.
+        SupportedPaymentMethodTypes: FinancialConnectionsAccountSupportedPaymentMethodTypes list
+        /// The state of the most recent attempt to refresh the account transactions.
+        TransactionRefresh: BankConnectionsResourceTransactionRefresh option
+    }
+
+/// The accounts that were collected as part of this Session.
+type FinancialConnectionsSessionAccounts =
+    {
+        /// Details about each object.
+        Data: FinancialConnectionsAccount list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+[<Struct>]
+type FinancialConnectionsSessionPermissions =
+    | Balances
+    | Ownership
+    | PaymentMethod
+    | Transactions
+
+[<Struct>]
+type FinancialConnectionsSessionPrefetch =
+    | Balances
+    | Ownership
+    | Transactions
+
+/// A Financial Connections Session is the secure way to programmatically launch the client-side Stripe.js modal that lets your users link their accounts.
+type FinancialConnectionsSession =
+    {
+        /// The account holder for whom accounts are collected in this session.
+        AccountHolder: BankConnectionsResourceAccountholder option
+        /// The accounts that were collected as part of this Session.
+        Accounts: FinancialConnectionsSessionAccounts
+        /// A value that will be passed to the client to launch the authentication flow.
+        ClientSecret: string option
+        Filters: BankConnectionsResourceLinkAccountSessionFilters option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Permissions requested for accounts collected during this session.
+        Permissions: FinancialConnectionsSessionPermissions list
+        /// Data features requested to be retrieved upon account creation.
+        Prefetch: FinancialConnectionsSessionPrefetch list option
+        /// For webview integrations only. Upon completing OAuth login in the native browser, the user will be redirected to this URL to return to your app.
+        ReturnUrl: string option
+    }
+
+/// Describes an owner of an account.
+type FinancialConnectionsAccountOwner =
+    {
+        /// The email address of the owner.
+        Email: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// The full name of the owner.
+        Name: string
+        /// The ownership object that this owner belongs to.
+        Ownership: string
+        /// The raw phone number of the owner.
+        Phone: string option
+        /// The raw physical address of the owner.
+        RawAddress: string option
+        /// The timestamp of the refresh that updated this owner.
+        RefreshedAt: DateTime option
+    }
+
+/// A paginated list of owners for this account.
+type FinancialConnectionsAccountOwnershipOwners =
+    {
+        /// Details about each object.
+        Data: FinancialConnectionsAccountOwner list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+/// Describes a snapshot of the owners of an account at a particular point in time.
+type FinancialConnectionsAccountOwnership =
+    {
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Unique identifier for the object.
+        Id: string
+        /// A paginated list of owners for this account.
+        Owners: FinancialConnectionsAccountOwnershipOwners
+    }
+
+/// Occurs when an Account’s tokenized account number is about to expire.
+type FinancialConnectionsAccountUpcomingAccountNumberExpiry = { Object: FinancialConnectionsAccount }
+
+/// Occurs when an Account’s `transaction_refresh` status transitions from `pending` to either `succeeded` or `failed`.
+type FinancialConnectionsAccountRefreshedTransactions = { Object: FinancialConnectionsAccount }
+
+/// Occurs when an Account’s `ownership_refresh` status transitions from `pending` to either `succeeded` or `failed`.
+type FinancialConnectionsAccountRefreshedOwnership = { Object: FinancialConnectionsAccount }
+
+/// Occurs when an Account’s `balance_refresh` status transitions from `pending` to either `succeeded` or `failed`.
+type FinancialConnectionsAccountRefreshedBalance = { Object: FinancialConnectionsAccount }
+
+/// Occurs when a Financial Connections account's status is updated from `inactive` to `active`.
+type FinancialConnectionsAccountReactivated = { Object: FinancialConnectionsAccount }
+
+/// Occurs when a Financial Connections account is disconnected.
+type FinancialConnectionsAccountDisconnected = { Object: FinancialConnectionsAccount }
+
+/// Occurs when a Financial Connections account's status is updated from `active` to `inactive`.
+type FinancialConnectionsAccountDeactivated = { Object: FinancialConnectionsAccount }
+
+/// Occurs when a new Financial Connections account is created.
+type FinancialConnectionsAccountCreated = { Object: FinancialConnectionsAccount }
+
+/// Occurs when a Financial Connections account's account numbers are updated.
+type FinancialConnectionsAccountAccountNumbersUpdated = { Object: FinancialConnectionsAccount }
+
+type DiscountsResourceStackableDiscountWithDiscountEnd =
+    {
+        /// ID of the coupon to create a new discount for.
+        Coupon: StripeId<Markers.Coupon> option
+        /// ID of an existing discount on the object (or one of its ancestors) to reuse.
+        Discount: StripeId<Markers.Discount> option
+        /// ID of the promotion code to create a new discount for.
+        PromotionCode: StripeId<Markers.PromotionCode> option
+    }
 
 type DeletedPerson =
     {
@@ -14576,10 +15174,6 @@ type BalanceTransactionSource =
     | Transfer of Transfer
     | TransferReversal of TransferReversal
 
-type DeletedExternalAccount =
-    | DeletedBankAccount of DeletedBankAccount
-    | DeletedCard of DeletedCard
-
 type ConnectEmbeddedAccountFeaturesClaim =
     {
         /// Whether Stripe user authentication is disabled. This value can only be `true` for accounts where `controller.requirement_collection` is `application` for the account. The default value is the opposite of the `external_account_collection` value. For example, if you don't set `external_account_collection`, it defaults to `true` and `disable_stripe_user_authentication` defaults to `false`.
@@ -14893,89 +15487,2133 @@ type AccountApplicationDeauthorized = { Object: Application }
 /// Occurs whenever a user authorizes an application. Sent to the related application only.
 type AccountApplicationAuthorized = { Object: Application }
 
+type SourceCodeVerificationFlow with
+    static member New(attemptsRemaining: int, status: string) =
+        {
+            AttemptsRemaining = attemptsRemaining
+            Status = status
+        }
+
+type Shipping with
+    static member New(?address: Address, ?carrier: string option, ?name: string, ?phone: string option, ?trackingNumber: string option) =
+        {
+            Address = address
+            Carrier = carrier |> Option.flatten
+            Name = name
+            Phone = phone |> Option.flatten
+            TrackingNumber = trackingNumber |> Option.flatten
+        }
+
+type SourceOrderItem with
+    static member New(amount: int option, currency: IsoTypes.IsoCurrencyCode option, description: string option, parent: string option, ``type``: SourceOrderItemType option, ?quantity: int) =
+        {
+            Amount = amount
+            Currency = currency
+            Description = description
+            Parent = parent
+            Type = ``type``
+            Quantity = quantity
+        }
+
+type SourceOrder with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, items: SourceOrderItem list option, ?email: string, ?shipping: Shipping) =
+        {
+            Amount = amount
+            Currency = currency
+            Items = items
+            Email = email
+            Shipping = shipping
+        }
+
+type SourceOwner with
+    static member New(address: Address option, email: string option, name: string option, phone: string option, verifiedAddress: Address option, verifiedEmail: string option, verifiedName: string option, verifiedPhone: string option) =
+        {
+            Address = address
+            Email = email
+            Name = name
+            Phone = phone
+            VerifiedAddress = verifiedAddress
+            VerifiedEmail = verifiedEmail
+            VerifiedName = verifiedName
+            VerifiedPhone = verifiedPhone
+        }
+
+type SourceReceiverFlow with
+    static member New(address: string option, amountCharged: int, amountReceived: int, amountReturned: int, refundAttributesMethod: SourceReceiverFlowRefundAttributesMethod, refundAttributesStatus: SourceReceiverFlowRefundAttributesStatus) =
+        {
+            Address = address
+            AmountCharged = amountCharged
+            AmountReceived = amountReceived
+            AmountReturned = amountReturned
+            RefundAttributesMethod = refundAttributesMethod
+            RefundAttributesStatus = refundAttributesStatus
+        }
+
+type SourceRedirectFlow with
+    static member New(failureReason: string option, returnUrl: string, status: string, url: string) =
+        {
+            FailureReason = failureReason
+            ReturnUrl = returnUrl
+            Status = status
+            Url = url
+        }
+
+type SourceTypeAchCreditTransfer with
+    static member New(?accountNumber: string option, ?bankName: string option, ?fingerprint: string option, ?refundAccountHolderName: string option, ?refundAccountHolderType: string option, ?refundRoutingNumber: string option, ?routingNumber: string option, ?swiftCode: string option) =
+        {
+            AccountNumber = accountNumber |> Option.flatten
+            BankName = bankName |> Option.flatten
+            Fingerprint = fingerprint |> Option.flatten
+            RefundAccountHolderName = refundAccountHolderName |> Option.flatten
+            RefundAccountHolderType = refundAccountHolderType |> Option.flatten
+            RefundRoutingNumber = refundRoutingNumber |> Option.flatten
+            RoutingNumber = routingNumber |> Option.flatten
+            SwiftCode = swiftCode |> Option.flatten
+        }
+
+type SourceTypeAchDebit with
+    static member New(?bankName: string option, ?country: IsoTypes.IsoCountryCode option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option, ?``type``: string option) =
+        {
+            BankName = bankName |> Option.flatten
+            Country = country |> Option.flatten
+            Fingerprint = fingerprint |> Option.flatten
+            Last4 = last4 |> Option.flatten
+            RoutingNumber = routingNumber |> Option.flatten
+            Type = ``type`` |> Option.flatten
+        }
+
+type SourceTypeAcssDebit with
+    static member New(?bankAddressCity: string option, ?bankAddressLine1: string option, ?bankAddressLine2: string option, ?bankAddressPostalCode: string option, ?bankName: string option, ?category: string option, ?country: IsoTypes.IsoCountryCode option, ?fingerprint: string option, ?last4: string option, ?routingNumber: string option) =
+        {
+            BankAddressCity = bankAddressCity |> Option.flatten
+            BankAddressLine1 = bankAddressLine1 |> Option.flatten
+            BankAddressLine2 = bankAddressLine2 |> Option.flatten
+            BankAddressPostalCode = bankAddressPostalCode |> Option.flatten
+            BankName = bankName |> Option.flatten
+            Category = category |> Option.flatten
+            Country = country |> Option.flatten
+            Fingerprint = fingerprint |> Option.flatten
+            Last4 = last4 |> Option.flatten
+            RoutingNumber = routingNumber |> Option.flatten
+        }
+
+type SourceTypeAlipay with
+    static member New(?dataString: string option, ?nativeUrl: string option, ?statementDescriptor: string option) =
+        {
+            DataString = dataString |> Option.flatten
+            NativeUrl = nativeUrl |> Option.flatten
+            StatementDescriptor = statementDescriptor |> Option.flatten
+        }
+
+type SourceTypeAuBecsDebit with
+    static member New(?bsbNumber: string option, ?fingerprint: string option, ?last4: string option) =
+        {
+            BsbNumber = bsbNumber |> Option.flatten
+            Fingerprint = fingerprint |> Option.flatten
+            Last4 = last4 |> Option.flatten
+        }
+
+type SourceTypeBancontact with
+    static member New(?bankCode: string option, ?bankName: string option, ?bic: string option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
+        {
+            BankCode = bankCode |> Option.flatten
+            BankName = bankName |> Option.flatten
+            Bic = bic |> Option.flatten
+            IbanLast4 = ibanLast4 |> Option.flatten
+            PreferredLanguage = preferredLanguage |> Option.flatten
+            StatementDescriptor = statementDescriptor |> Option.flatten
+        }
+
+type SourceTypeCard with
+    static member New(?addressLine1Check: string option, ?addressZipCheck: string option, ?brand: string option, ?country: IsoTypes.IsoCountryCode option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
+        {
+            AddressLine1Check = addressLine1Check |> Option.flatten
+            AddressZipCheck = addressZipCheck |> Option.flatten
+            Brand = brand |> Option.flatten
+            Country = country |> Option.flatten
+            CvcCheck = cvcCheck |> Option.flatten
+            Description = description
+            DynamicLast4 = dynamicLast4 |> Option.flatten
+            ExpMonth = expMonth |> Option.flatten
+            ExpYear = expYear |> Option.flatten
+            Fingerprint = fingerprint
+            Funding = funding |> Option.flatten
+            Iin = iin
+            Issuer = issuer
+            Last4 = last4 |> Option.flatten
+            Name = name |> Option.flatten
+            ThreeDSecure = threeDSecure
+            TokenizationMethod = tokenizationMethod |> Option.flatten
+        }
+
+type SourceTypeCardPresent with
+    static member New(?applicationCryptogram: string, ?applicationPreferredName: string, ?authorizationCode: string option, ?authorizationResponseCode: string, ?brand: string option, ?country: IsoTypes.IsoCountryCode option, ?cvmType: string, ?dataType: string option, ?dedicatedFileName: string, ?description: string, ?emvAuthData: string, ?evidenceCustomerSignature: string option, ?evidenceTransactionCertificate: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?posDeviceId: string option, ?posEntryMode: string, ?readMethod: string option, ?reader: string option, ?terminalVerificationResults: string, ?transactionStatusInformation: string) =
+        {
+            ApplicationCryptogram = applicationCryptogram
+            ApplicationPreferredName = applicationPreferredName
+            AuthorizationCode = authorizationCode |> Option.flatten
+            AuthorizationResponseCode = authorizationResponseCode
+            Brand = brand |> Option.flatten
+            Country = country |> Option.flatten
+            CvmType = cvmType
+            DataType = dataType |> Option.flatten
+            DedicatedFileName = dedicatedFileName
+            Description = description
+            EmvAuthData = emvAuthData
+            EvidenceCustomerSignature = evidenceCustomerSignature |> Option.flatten
+            EvidenceTransactionCertificate = evidenceTransactionCertificate |> Option.flatten
+            ExpMonth = expMonth |> Option.flatten
+            ExpYear = expYear |> Option.flatten
+            Fingerprint = fingerprint
+            Funding = funding |> Option.flatten
+            Iin = iin
+            Issuer = issuer
+            Last4 = last4 |> Option.flatten
+            PosDeviceId = posDeviceId |> Option.flatten
+            PosEntryMode = posEntryMode
+            ReadMethod = readMethod |> Option.flatten
+            Reader = reader |> Option.flatten
+            TerminalVerificationResults = terminalVerificationResults
+            TransactionStatusInformation = transactionStatusInformation
+        }
+
+type SourceTypeEps with
+    static member New(?reference: string option, ?statementDescriptor: string option) =
+        {
+            Reference = reference |> Option.flatten
+            StatementDescriptor = statementDescriptor |> Option.flatten
+        }
+
+type SourceTypeGiropay with
+    static member New(?bankCode: string option, ?bankName: string option, ?bic: string option, ?statementDescriptor: string option) =
+        {
+            BankCode = bankCode |> Option.flatten
+            BankName = bankName |> Option.flatten
+            Bic = bic |> Option.flatten
+            StatementDescriptor = statementDescriptor |> Option.flatten
+        }
+
+type SourceTypeIdeal with
+    static member New(?bank: string option, ?bic: string option, ?ibanLast4: string option, ?statementDescriptor: string option) =
+        {
+            Bank = bank |> Option.flatten
+            Bic = bic |> Option.flatten
+            IbanLast4 = ibanLast4 |> Option.flatten
+            StatementDescriptor = statementDescriptor |> Option.flatten
+        }
+
+type SourceTypeKlarna with
+    static member New(?backgroundImageUrl: string, ?clientToken: string option, ?firstName: string, ?lastName: string, ?locale: string, ?logoUrl: string, ?pageTitle: string, ?payLaterAssetUrlsDescriptive: string, ?payLaterAssetUrlsStandard: string, ?payLaterName: string, ?payLaterRedirectUrl: string, ?payNowAssetUrlsDescriptive: string, ?payNowAssetUrlsStandard: string, ?payNowName: string, ?payNowRedirectUrl: string, ?payOverTimeAssetUrlsDescriptive: string, ?payOverTimeAssetUrlsStandard: string, ?payOverTimeName: string, ?payOverTimeRedirectUrl: string, ?paymentMethodCategories: string, ?purchaseCountry: IsoTypes.IsoCountryCode, ?purchaseType: string, ?redirectUrl: string, ?shippingDelay: int, ?shippingFirstName: string, ?shippingLastName: string) =
+        {
+            BackgroundImageUrl = backgroundImageUrl
+            ClientToken = clientToken |> Option.flatten
+            FirstName = firstName
+            LastName = lastName
+            Locale = locale
+            LogoUrl = logoUrl
+            PageTitle = pageTitle
+            PayLaterAssetUrlsDescriptive = payLaterAssetUrlsDescriptive
+            PayLaterAssetUrlsStandard = payLaterAssetUrlsStandard
+            PayLaterName = payLaterName
+            PayLaterRedirectUrl = payLaterRedirectUrl
+            PayNowAssetUrlsDescriptive = payNowAssetUrlsDescriptive
+            PayNowAssetUrlsStandard = payNowAssetUrlsStandard
+            PayNowName = payNowName
+            PayNowRedirectUrl = payNowRedirectUrl
+            PayOverTimeAssetUrlsDescriptive = payOverTimeAssetUrlsDescriptive
+            PayOverTimeAssetUrlsStandard = payOverTimeAssetUrlsStandard
+            PayOverTimeName = payOverTimeName
+            PayOverTimeRedirectUrl = payOverTimeRedirectUrl
+            PaymentMethodCategories = paymentMethodCategories
+            PurchaseCountry = purchaseCountry
+            PurchaseType = purchaseType
+            RedirectUrl = redirectUrl
+            ShippingDelay = shippingDelay
+            ShippingFirstName = shippingFirstName
+            ShippingLastName = shippingLastName
+        }
+
+type SourceTypeMultibanco with
+    static member New(?entity: string option, ?reference: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: IsoTypes.IsoCountryCode option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
+        {
+            Entity = entity |> Option.flatten
+            Reference = reference |> Option.flatten
+            RefundAccountHolderAddressCity = refundAccountHolderAddressCity |> Option.flatten
+            RefundAccountHolderAddressCountry = refundAccountHolderAddressCountry |> Option.flatten
+            RefundAccountHolderAddressLine1 = refundAccountHolderAddressLine1 |> Option.flatten
+            RefundAccountHolderAddressLine2 = refundAccountHolderAddressLine2 |> Option.flatten
+            RefundAccountHolderAddressPostalCode = refundAccountHolderAddressPostalCode |> Option.flatten
+            RefundAccountHolderAddressState = refundAccountHolderAddressState |> Option.flatten
+            RefundAccountHolderName = refundAccountHolderName |> Option.flatten
+            RefundIban = refundIban |> Option.flatten
+        }
+
+type SourceTypeP24 with
+    static member New(?reference: string option) =
+        {
+            Reference = reference |> Option.flatten
+        }
+
+type SourceTypeSepaCreditTransfer with
+    static member New(?bankName: string option, ?bic: string option, ?iban: string option, ?refundAccountHolderAddressCity: string option, ?refundAccountHolderAddressCountry: IsoTypes.IsoCountryCode option, ?refundAccountHolderAddressLine1: string option, ?refundAccountHolderAddressLine2: string option, ?refundAccountHolderAddressPostalCode: string option, ?refundAccountHolderAddressState: string option, ?refundAccountHolderName: string option, ?refundIban: string option) =
+        {
+            BankName = bankName |> Option.flatten
+            Bic = bic |> Option.flatten
+            Iban = iban |> Option.flatten
+            RefundAccountHolderAddressCity = refundAccountHolderAddressCity |> Option.flatten
+            RefundAccountHolderAddressCountry = refundAccountHolderAddressCountry |> Option.flatten
+            RefundAccountHolderAddressLine1 = refundAccountHolderAddressLine1 |> Option.flatten
+            RefundAccountHolderAddressLine2 = refundAccountHolderAddressLine2 |> Option.flatten
+            RefundAccountHolderAddressPostalCode = refundAccountHolderAddressPostalCode |> Option.flatten
+            RefundAccountHolderAddressState = refundAccountHolderAddressState |> Option.flatten
+            RefundAccountHolderName = refundAccountHolderName |> Option.flatten
+            RefundIban = refundIban |> Option.flatten
+        }
+
+type SourceTypeSepaDebit with
+    static member New(?bankCode: string option, ?branchCode: string option, ?country: IsoTypes.IsoCountryCode option, ?fingerprint: string option, ?last4: string option, ?mandateReference: string option, ?mandateUrl: string option) =
+        {
+            BankCode = bankCode |> Option.flatten
+            BranchCode = branchCode |> Option.flatten
+            Country = country |> Option.flatten
+            Fingerprint = fingerprint |> Option.flatten
+            Last4 = last4 |> Option.flatten
+            MandateReference = mandateReference |> Option.flatten
+            MandateUrl = mandateUrl |> Option.flatten
+        }
+
+type SourceTypeSofort with
+    static member New(?bankCode: string option, ?bankName: string option, ?bic: string option, ?country: IsoTypes.IsoCountryCode option, ?ibanLast4: string option, ?preferredLanguage: string option, ?statementDescriptor: string option) =
+        {
+            BankCode = bankCode |> Option.flatten
+            BankName = bankName |> Option.flatten
+            Bic = bic |> Option.flatten
+            Country = country |> Option.flatten
+            IbanLast4 = ibanLast4 |> Option.flatten
+            PreferredLanguage = preferredLanguage |> Option.flatten
+            StatementDescriptor = statementDescriptor |> Option.flatten
+        }
+
+type SourceTypeThreeDSecure with
+    static member New(?addressLine1Check: string option, ?addressZipCheck: string option, ?authenticated: bool option, ?brand: string option, ?card: string option, ?country: IsoTypes.IsoCountryCode option, ?customer: string option, ?cvcCheck: string option, ?description: string, ?dynamicLast4: string option, ?expMonth: int option, ?expYear: int option, ?fingerprint: string, ?funding: string option, ?iin: string, ?issuer: string, ?last4: string option, ?name: string option, ?threeDSecure: string, ?tokenizationMethod: string option) =
+        {
+            AddressLine1Check = addressLine1Check |> Option.flatten
+            AddressZipCheck = addressZipCheck |> Option.flatten
+            Authenticated = authenticated |> Option.flatten
+            Brand = brand |> Option.flatten
+            Card = card |> Option.flatten
+            Country = country |> Option.flatten
+            Customer = customer |> Option.flatten
+            CvcCheck = cvcCheck |> Option.flatten
+            Description = description
+            DynamicLast4 = dynamicLast4 |> Option.flatten
+            ExpMonth = expMonth |> Option.flatten
+            ExpYear = expYear |> Option.flatten
+            Fingerprint = fingerprint
+            Funding = funding |> Option.flatten
+            Iin = iin
+            Issuer = issuer
+            Last4 = last4 |> Option.flatten
+            Name = name |> Option.flatten
+            ThreeDSecure = threeDSecure
+            TokenizationMethod = tokenizationMethod |> Option.flatten
+        }
+
+type SourceTypeWechat with
+    static member New(?prepayId: string, ?qrCodeUrl: string option, ?statementDescriptor: string) =
+        {
+            PrepayId = prepayId
+            QrCodeUrl = qrCodeUrl |> Option.flatten
+            StatementDescriptor = statementDescriptor
+        }
+
+type Source with
+    static member New(allowRedisplay: SourceAllowRedisplay option, amount: int option, clientSecret: string, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, flow: string, id: string, livemode: bool, metadata: Map<string, string> option, owner: SourceOwner option, statementDescriptor: string option, status: SourceStatus, ``type``: SourceType, usage: SourceUsage option, ?achCreditTransfer: SourceTypeAchCreditTransfer, ?achDebit: SourceTypeAchDebit, ?acssDebit: SourceTypeAcssDebit, ?alipay: SourceTypeAlipay, ?auBecsDebit: SourceTypeAuBecsDebit, ?bancontact: SourceTypeBancontact, ?card: SourceTypeCard, ?cardPresent: SourceTypeCardPresent, ?codeVerification: SourceCodeVerificationFlow, ?customer: string, ?eps: SourceTypeEps, ?giropay: SourceTypeGiropay, ?ideal: SourceTypeIdeal, ?klarna: SourceTypeKlarna, ?multibanco: SourceTypeMultibanco, ?p24: SourceTypeP24, ?receiver: SourceReceiverFlow, ?redirect: SourceRedirectFlow, ?sepaCreditTransfer: SourceTypeSepaCreditTransfer, ?sepaDebit: SourceTypeSepaDebit, ?sofort: SourceTypeSofort, ?sourceOrder: SourceOrder, ?threeDSecure: SourceTypeThreeDSecure, ?wechat: SourceTypeWechat) =
+        {
+            AllowRedisplay = allowRedisplay
+            Amount = amount
+            ClientSecret = clientSecret
+            Created = created
+            Currency = currency
+            Flow = flow
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Owner = owner
+            StatementDescriptor = statementDescriptor
+            Status = status
+            Type = ``type``
+            Usage = usage
+            AchCreditTransfer = achCreditTransfer
+            AchDebit = achDebit
+            AcssDebit = acssDebit
+            Alipay = alipay
+            AuBecsDebit = auBecsDebit
+            Bancontact = bancontact
+            Card = card
+            CardPresent = cardPresent
+            CodeVerification = codeVerification
+            Customer = customer
+            Eps = eps
+            Giropay = giropay
+            Ideal = ideal
+            Klarna = klarna
+            Multibanco = multibanco
+            P24 = p24
+            Receiver = receiver
+            Redirect = redirect
+            SepaCreditTransfer = sepaCreditTransfer
+            SepaDebit = sepaDebit
+            Sofort = sofort
+            SourceOrder = sourceOrder
+            ThreeDSecure = threeDSecure
+            Wechat = wechat
+        }
+
 module Source =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "source"
+
+type Topup with
+    static member New(amount: int, balanceTransaction: StripeId<Markers.BalanceTransaction> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, expectedAvailabilityDate: int option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string>, source: Source option, statementDescriptor: string option, status: TopupStatus, transferGroup: string option) =
+        {
+            Amount = amount
+            BalanceTransaction = balanceTransaction
+            Created = created
+            Currency = currency
+            Description = description
+            ExpectedAvailabilityDate = expectedAvailabilityDate
+            FailureCode = failureCode
+            FailureMessage = failureMessage
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Source = source
+            StatementDescriptor = statementDescriptor
+            Status = status
+            TransferGroup = transferGroup
+        }
 
 module Topup =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "topup"
 
+type TopupSucceeded with
+    static member New(object: Topup) =
+        {
+            Object = object
+        }
+
+type TopupReversed with
+    static member New(object: Topup) =
+        {
+            Object = object
+        }
+
+type TopupFailed with
+    static member New(object: Topup) =
+        {
+            Object = object
+        }
+
+type TopupCreated with
+    static member New(object: Topup) =
+        {
+            Object = object
+        }
+
+type TopupCanceled with
+    static member New(object: Topup) =
+        {
+            Object = object
+        }
+
+type CustomerBalanceCustomerBalanceSettings with
+    static member New(reconciliationMode: CustomerBalanceCustomerBalanceSettingsReconciliationMode, usingMerchantDefault: bool) =
+        {
+            ReconciliationMode = reconciliationMode
+            UsingMerchantDefault = usingMerchantDefault
+        }
+
+type CashBalance with
+    static member New(available: Map<string, string list> option, customer: string, customerAccount: string option, livemode: bool, settings: CustomerBalanceCustomerBalanceSettings) =
+        {
+            Available = available
+            Customer = customer
+            CustomerAccount = customerAccount
+            Livemode = livemode
+            Settings = settings
+        }
+
 module CashBalance =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "cash_balance"
+
+type AccountAnnualRevenue with
+    static member New(amount: int option, currency: IsoTypes.IsoCurrencyCode option, fiscalYearEnd: string option) =
+        {
+            Amount = amount
+            Currency = currency
+            FiscalYearEnd = fiscalYearEnd
+        }
+
+type AccountMonthlyEstimatedRevenue with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode) =
+        {
+            Amount = amount
+            Currency = currency
+        }
+
+type AccountBusinessProfile with
+    static member New(mcc: string option, minorityOwnedBusinessDesignation: AccountBusinessProfileMinorityOwnedBusinessDesignation list option, name: string option, supportAddress: Address option, supportEmail: string option, supportPhone: string option, supportUrl: string option, url: string option, ?annualRevenue: AccountAnnualRevenue option, ?estimatedWorkerCount: int option, ?monthlyEstimatedRevenue: AccountMonthlyEstimatedRevenue, ?productDescription: string option) =
+        {
+            Mcc = mcc
+            MinorityOwnedBusinessDesignation = minorityOwnedBusinessDesignation
+            Name = name
+            SupportAddress = supportAddress
+            SupportEmail = supportEmail
+            SupportPhone = supportPhone
+            SupportUrl = supportUrl
+            Url = url
+            AnnualRevenue = annualRevenue |> Option.flatten
+            EstimatedWorkerCount = estimatedWorkerCount |> Option.flatten
+            MonthlyEstimatedRevenue = monthlyEstimatedRevenue
+            ProductDescription = productDescription |> Option.flatten
+        }
+
+type AccountCapabilities with
+    static member New(?acssDebitPayments: AccountCapabilitiesAcssDebitPayments, ?affirmPayments: AccountCapabilitiesAffirmPayments, ?afterpayClearpayPayments: AccountCapabilitiesAfterpayClearpayPayments, ?almaPayments: AccountCapabilitiesAlmaPayments, ?amazonPayPayments: AccountCapabilitiesAmazonPayPayments, ?appDistribution: AccountCapabilitiesAppDistribution, ?auBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: AccountCapabilitiesBacsDebitPayments, ?bancontactPayments: AccountCapabilitiesBancontactPayments, ?bankTransferPayments: AccountCapabilitiesBankTransferPayments, ?billiePayments: AccountCapabilitiesBilliePayments, ?blikPayments: AccountCapabilitiesBlikPayments, ?boletoPayments: AccountCapabilitiesBoletoPayments, ?cardIssuing: AccountCapabilitiesCardIssuing, ?cardPayments: AccountCapabilitiesCardPayments, ?cartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments, ?cashappPayments: AccountCapabilitiesCashappPayments, ?cryptoPayments: AccountCapabilitiesCryptoPayments, ?epsPayments: AccountCapabilitiesEpsPayments, ?fpxPayments: AccountCapabilitiesFpxPayments, ?gbBankTransferPayments: AccountCapabilitiesGbBankTransferPayments, ?giropayPayments: AccountCapabilitiesGiropayPayments, ?grabpayPayments: AccountCapabilitiesGrabpayPayments, ?idealPayments: AccountCapabilitiesIdealPayments, ?indiaInternationalPayments: AccountCapabilitiesIndiaInternationalPayments, ?jcbPayments: AccountCapabilitiesJcbPayments, ?jpBankTransferPayments: AccountCapabilitiesJpBankTransferPayments, ?kakaoPayPayments: AccountCapabilitiesKakaoPayPayments, ?klarnaPayments: AccountCapabilitiesKlarnaPayments, ?konbiniPayments: AccountCapabilitiesKonbiniPayments, ?krCardPayments: AccountCapabilitiesKrCardPayments, ?legacyPayments: AccountCapabilitiesLegacyPayments, ?linkPayments: AccountCapabilitiesLinkPayments, ?mbWayPayments: AccountCapabilitiesMbWayPayments, ?mobilepayPayments: AccountCapabilitiesMobilepayPayments, ?multibancoPayments: AccountCapabilitiesMultibancoPayments, ?mxBankTransferPayments: AccountCapabilitiesMxBankTransferPayments, ?naverPayPayments: AccountCapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: AccountCapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: AccountCapabilitiesOxxoPayments, ?p24Payments: AccountCapabilitiesP24Payments, ?payByBankPayments: AccountCapabilitiesPayByBankPayments, ?paycoPayments: AccountCapabilitiesPaycoPayments, ?paynowPayments: AccountCapabilitiesPaynowPayments, ?paytoPayments: AccountCapabilitiesPaytoPayments, ?pixPayments: AccountCapabilitiesPixPayments, ?promptpayPayments: AccountCapabilitiesPromptpayPayments, ?revolutPayPayments: AccountCapabilitiesRevolutPayPayments, ?samsungPayPayments: AccountCapabilitiesSamsungPayPayments, ?satispayPayments: AccountCapabilitiesSatispayPayments, ?sepaBankTransferPayments: AccountCapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: AccountCapabilitiesSepaDebitPayments, ?sofortPayments: AccountCapabilitiesSofortPayments, ?sunbitPayments: AccountCapabilitiesSunbitPayments, ?swishPayments: AccountCapabilitiesSwishPayments, ?taxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc, ?transfers: AccountCapabilitiesTransfers, ?treasury: AccountCapabilitiesTreasury, ?twintPayments: AccountCapabilitiesTwintPayments, ?upiPayments: AccountCapabilitiesUpiPayments, ?usBankAccountAchPayments: AccountCapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: AccountCapabilitiesUsBankTransferPayments, ?zipPayments: AccountCapabilitiesZipPayments) =
+        {
+            AcssDebitPayments = acssDebitPayments
+            AffirmPayments = affirmPayments
+            AfterpayClearpayPayments = afterpayClearpayPayments
+            AlmaPayments = almaPayments
+            AmazonPayPayments = amazonPayPayments
+            AppDistribution = appDistribution
+            AuBecsDebitPayments = auBecsDebitPayments
+            BacsDebitPayments = bacsDebitPayments
+            BancontactPayments = bancontactPayments
+            BankTransferPayments = bankTransferPayments
+            BilliePayments = billiePayments
+            BlikPayments = blikPayments
+            BoletoPayments = boletoPayments
+            CardIssuing = cardIssuing
+            CardPayments = cardPayments
+            CartesBancairesPayments = cartesBancairesPayments
+            CashappPayments = cashappPayments
+            CryptoPayments = cryptoPayments
+            EpsPayments = epsPayments
+            FpxPayments = fpxPayments
+            GbBankTransferPayments = gbBankTransferPayments
+            GiropayPayments = giropayPayments
+            GrabpayPayments = grabpayPayments
+            IdealPayments = idealPayments
+            IndiaInternationalPayments = indiaInternationalPayments
+            JcbPayments = jcbPayments
+            JpBankTransferPayments = jpBankTransferPayments
+            KakaoPayPayments = kakaoPayPayments
+            KlarnaPayments = klarnaPayments
+            KonbiniPayments = konbiniPayments
+            KrCardPayments = krCardPayments
+            LegacyPayments = legacyPayments
+            LinkPayments = linkPayments
+            MbWayPayments = mbWayPayments
+            MobilepayPayments = mobilepayPayments
+            MultibancoPayments = multibancoPayments
+            MxBankTransferPayments = mxBankTransferPayments
+            NaverPayPayments = naverPayPayments
+            NzBankAccountBecsDebitPayments = nzBankAccountBecsDebitPayments
+            OxxoPayments = oxxoPayments
+            P24Payments = p24Payments
+            PayByBankPayments = payByBankPayments
+            PaycoPayments = paycoPayments
+            PaynowPayments = paynowPayments
+            PaytoPayments = paytoPayments
+            PixPayments = pixPayments
+            PromptpayPayments = promptpayPayments
+            RevolutPayPayments = revolutPayPayments
+            SamsungPayPayments = samsungPayPayments
+            SatispayPayments = satispayPayments
+            SepaBankTransferPayments = sepaBankTransferPayments
+            SepaDebitPayments = sepaDebitPayments
+            SofortPayments = sofortPayments
+            SunbitPayments = sunbitPayments
+            SwishPayments = swishPayments
+            TaxReportingUs1099K = taxReportingUs1099K
+            TaxReportingUs1099Misc = taxReportingUs1099Misc
+            Transfers = transfers
+            Treasury = treasury
+            TwintPayments = twintPayments
+            UpiPayments = upiPayments
+            UsBankAccountAchPayments = usBankAccountAchPayments
+            UsBankTransferPayments = usBankTransferPayments
+            ZipPayments = zipPayments
+        }
+
+type DeletedCustomer with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedCustomer =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "customer"
 
+type TokenCardNetworks with
+    static member New(preferred: string option) =
+        {
+            Preferred = preferred
+        }
+
+type AccountRequirementsAlternative with
+    static member New(alternativeFieldsDue: string list, originalFieldsDue: string list) =
+        {
+            AlternativeFieldsDue = alternativeFieldsDue
+            OriginalFieldsDue = originalFieldsDue
+        }
+
+type AccountRequirementsError with
+    static member New(code: AccountRequirementsErrorCode, reason: string, requirement: string) =
+        {
+            Code = code
+            Reason = reason
+            Requirement = requirement
+        }
+
+type AccountFutureRequirements with
+    static member New(alternatives: AccountRequirementsAlternative list option, currentDeadline: DateTime option, currentlyDue: string list option, disabledReason: AccountFutureRequirementsDisabledReason option, errors: AccountRequirementsError list option, eventuallyDue: string list option, pastDue: string list option, pendingVerification: string list option) =
+        {
+            Alternatives = alternatives
+            CurrentDeadline = currentDeadline
+            CurrentlyDue = currentlyDue
+            DisabledReason = disabledReason
+            Errors = errors
+            EventuallyDue = eventuallyDue
+            PastDue = pastDue
+            PendingVerification = pendingVerification
+        }
+
+type AccountGroupMembership with
+    static member New(paymentsPricing: string option) =
+        {
+            PaymentsPricing = paymentsPricing
+        }
+
+type AccountRequirements with
+    static member New(alternatives: AccountRequirementsAlternative list option, currentDeadline: DateTime option, currentlyDue: string list option, disabledReason: AccountRequirementsDisabledReason option, errors: AccountRequirementsError list option, eventuallyDue: string list option, pastDue: string list option, pendingVerification: string list option) =
+        {
+            Alternatives = alternatives
+            CurrentDeadline = currentDeadline
+            CurrentlyDue = currentlyDue
+            DisabledReason = disabledReason
+            Errors = errors
+            EventuallyDue = eventuallyDue
+            PastDue = pastDue
+            PendingVerification = pendingVerification
+        }
+
+type AccountBacsDebitPaymentsSettings with
+    static member New(displayName: string option, serviceUserNumber: string option) =
+        {
+            DisplayName = displayName
+            ServiceUserNumber = serviceUserNumber
+        }
+
+type AccountBrandingSettings with
+    static member New(icon: StripeId<Markers.File> option, logo: StripeId<Markers.File> option, primaryColor: string option, secondaryColor: string option) =
+        {
+            Icon = icon
+            Logo = logo
+            PrimaryColor = primaryColor
+            SecondaryColor = secondaryColor
+        }
+
+type CardIssuingAccountTermsOfService with
+    static member New(date: int option, ip: string option, ?userAgent: string) =
+        {
+            Date = date
+            Ip = ip
+            UserAgent = userAgent
+        }
+
+type AccountCardIssuingSettings with
+    static member New(?tosAcceptance: CardIssuingAccountTermsOfService) =
+        {
+            TosAcceptance = tosAcceptance
+        }
+
+type AccountDeclineChargeOn with
+    static member New(avsFailure: bool, cvcFailure: bool) =
+        {
+            AvsFailure = avsFailure
+            CvcFailure = cvcFailure
+        }
+
+type AccountCardPaymentsSettings with
+    static member New(statementDescriptorPrefix: string option, statementDescriptorPrefixKana: string option, statementDescriptorPrefixKanji: string option, ?declineOn: AccountDeclineChargeOn) =
+        {
+            StatementDescriptorPrefix = statementDescriptorPrefix
+            StatementDescriptorPrefixKana = statementDescriptorPrefixKana
+            StatementDescriptorPrefixKanji = statementDescriptorPrefixKanji
+            DeclineOn = declineOn
+        }
+
+type AccountDashboardSettings with
+    static member New(displayName: string option, timezone: string option) =
+        {
+            DisplayName = displayName
+            Timezone = timezone
+        }
+
+type AccountInvoicesSettings with
+    static member New(defaultAccountTaxIds: StripeId<Markers.TaxId> list option, hostedPaymentMethodSave: AccountInvoicesSettingsHostedPaymentMethodSave option) =
+        {
+            DefaultAccountTaxIds = defaultAccountTaxIds
+            HostedPaymentMethodSave = hostedPaymentMethodSave
+        }
+
+type AccountPaymentsSettings with
+    static member New(statementDescriptor: string option, statementDescriptorKana: string option, statementDescriptorKanji: string option, statementDescriptorPrefixKana: string option, statementDescriptorPrefixKanji: string option) =
+        {
+            StatementDescriptor = statementDescriptor
+            StatementDescriptorKana = statementDescriptorKana
+            StatementDescriptorKanji = statementDescriptorKanji
+            StatementDescriptorPrefixKana = statementDescriptorPrefixKana
+            StatementDescriptorPrefixKanji = statementDescriptorPrefixKanji
+        }
+
+type AccountPayoutSettings with
+    static member New(debitNegativeBalances: bool, schedule: TransferSchedule, statementDescriptor: string option) =
+        {
+            DebitNegativeBalances = debitNegativeBalances
+            Schedule = schedule
+            StatementDescriptor = statementDescriptor
+        }
+
+type AccountSepaDebitPaymentsSettings with
+    static member New(?creditorId: string) =
+        {
+            CreditorId = creditorId
+        }
+
+type AccountTermsOfService with
+    static member New(date: int option, ip: string option, ?userAgent: string) =
+        {
+            Date = date
+            Ip = ip
+            UserAgent = userAgent
+        }
+
+type AccountTreasurySettings with
+    static member New(?tosAcceptance: AccountTermsOfService) =
+        {
+            TosAcceptance = tosAcceptance
+        }
+
+type AccountSettings with
+    static member New(branding: AccountBrandingSettings, cardPayments: AccountCardPaymentsSettings, dashboard: AccountDashboardSettings, payments: AccountPaymentsSettings, ?bacsDebitPayments: AccountBacsDebitPaymentsSettings, ?cardIssuing: AccountCardIssuingSettings, ?invoices: AccountInvoicesSettings, ?payouts: AccountPayoutSettings, ?sepaDebitPayments: AccountSepaDebitPaymentsSettings, ?treasury: AccountTreasurySettings) =
+        {
+            Branding = branding
+            CardPayments = cardPayments
+            Dashboard = dashboard
+            Payments = payments
+            BacsDebitPayments = bacsDebitPayments
+            CardIssuing = cardIssuing
+            Invoices = invoices
+            Payouts = payouts
+            SepaDebitPayments = sepaDebitPayments
+            Treasury = treasury
+        }
+
+type AccountTosAcceptance with
+    static member New(?date: DateTime option, ?ip: string option, ?serviceAgreement: string, ?userAgent: string option) =
+        {
+            Date = date |> Option.flatten
+            Ip = ip |> Option.flatten
+            ServiceAgreement = serviceAgreement
+            UserAgent = userAgent |> Option.flatten
+        }
+
+type AccountUnificationAccountControllerFees with
+    static member New(payer: AccountUnificationAccountControllerFeesPayer) =
+        {
+            Payer = payer
+        }
+
+type AccountUnificationAccountControllerLosses with
+    static member New(payments: AccountUnificationAccountControllerLossesPayments) =
+        {
+            Payments = payments
+        }
+
+type AccountUnificationAccountControllerStripeDashboard with
+    static member New(``type``: AccountUnificationAccountControllerStripeDashboardType) =
+        {
+            Type = ``type``
+        }
+
+type AccountUnificationAccountController with
+    static member New(``type``: AccountUnificationAccountControllerType, ?fees: AccountUnificationAccountControllerFees, ?isController: bool, ?losses: AccountUnificationAccountControllerLosses, ?requirementCollection: AccountUnificationAccountControllerRequirementCollection, ?stripeDashboard: AccountUnificationAccountControllerStripeDashboard) =
+        {
+            Type = ``type``
+            Fees = fees
+            IsController = isController
+            Losses = losses
+            RequirementCollection = requirementCollection
+            StripeDashboard = stripeDashboard
+        }
+
+type LegalEntityCompanyVerificationDocument with
+    static member New(back: StripeId<Markers.File> option, details: string option, detailsCode: LegalEntityCompanyVerificationDocumentDetailsCode option, front: StripeId<Markers.File> option) =
+        {
+            Back = back
+            Details = details
+            DetailsCode = detailsCode
+            Front = front
+        }
+
+type LegalEntityCompanyVerification with
+    static member New(document: LegalEntityCompanyVerificationDocument) =
+        {
+            Document = document
+        }
+
+type LegalEntityDirectorshipDeclaration with
+    static member New(date: DateTime option, ip: string option, userAgent: string option) =
+        {
+            Date = date
+            Ip = ip
+            UserAgent = userAgent
+        }
+
+type LegalEntityJapanAddress with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option, town: string option) =
+        {
+            City = city
+            Country = country
+            Line1 = line1
+            Line2 = line2
+            PostalCode = postalCode
+            State = state
+            Town = town
+        }
+
+type LegalEntityRegistrationDate with
+    static member New(day: int option, month: int option, year: int option) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
+
+type LegalEntityRepresentativeDeclaration with
+    static member New(date: DateTime option, ip: string option, userAgent: string option) =
+        {
+            Date = date
+            Ip = ip
+            UserAgent = userAgent
+        }
+
+type LegalEntityUboDeclaration with
+    static member New(date: DateTime option, ip: string option, userAgent: string option) =
+        {
+            Date = date
+            Ip = ip
+            UserAgent = userAgent
+        }
+
+type LegalEntityCompany with
+    static member New(?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?directorsProvided: bool, ?directorshipDeclaration: LegalEntityDirectorshipDeclaration option, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string option, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?ownershipDeclaration: LegalEntityUboDeclaration option, ?ownershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason, ?phone: string option, ?registrationDate: LegalEntityRegistrationDate, ?representativeDeclaration: LegalEntityRepresentativeDeclaration option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerification option) =
+        {
+            Address = address
+            AddressKana = addressKana |> Option.flatten
+            AddressKanji = addressKanji |> Option.flatten
+            DirectorsProvided = directorsProvided
+            DirectorshipDeclaration = directorshipDeclaration |> Option.flatten
+            ExecutivesProvided = executivesProvided
+            ExportLicenseId = exportLicenseId
+            ExportPurposeCode = exportPurposeCode
+            Name = name |> Option.flatten
+            NameKana = nameKana |> Option.flatten
+            NameKanji = nameKanji |> Option.flatten
+            OwnersProvided = ownersProvided
+            OwnershipDeclaration = ownershipDeclaration |> Option.flatten
+            OwnershipExemptionReason = ownershipExemptionReason
+            Phone = phone |> Option.flatten
+            RegistrationDate = registrationDate
+            RepresentativeDeclaration = representativeDeclaration |> Option.flatten
+            Structure = structure
+            TaxIdProvided = taxIdProvided
+            TaxIdRegistrar = taxIdRegistrar
+            VatIdProvided = vatIdProvided
+            Verification = verification |> Option.flatten
+        }
+
+type LegalEntityDob with
+    static member New(day: int option, month: int option, year: int option) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
+
+type LegalEntityPersonVerificationDocument with
+    static member New(back: StripeId<Markers.File> option, details: string option, detailsCode: LegalEntityPersonVerificationDocumentDetailsCode option, front: StripeId<Markers.File> option) =
+        {
+            Back = back
+            Details = details
+            DetailsCode = detailsCode
+            Front = front
+        }
+
+type LegalEntityPersonVerification with
+    static member New(status: LegalEntityPersonVerificationStatus, ?additionalDocument: LegalEntityPersonVerificationDocument option, ?details: string option, ?detailsCode: LegalEntityPersonVerificationDetailsCode option, ?document: LegalEntityPersonVerificationDocument) =
+        {
+            Status = status
+            AdditionalDocument = additionalDocument |> Option.flatten
+            Details = details |> Option.flatten
+            DetailsCode = detailsCode |> Option.flatten
+            Document = document
+        }
+
+type PersonAdditionalTosAcceptance with
+    static member New(date: DateTime option, ip: string option, userAgent: string option) =
+        {
+            Date = date
+            Ip = ip
+            UserAgent = userAgent
+        }
+
+type PersonAdditionalTosAcceptances with
+    static member New(account: PersonAdditionalTosAcceptance option) =
+        {
+            Account = account
+        }
+
+type PersonFutureRequirements with
+    static member New(alternatives: AccountRequirementsAlternative list option, currentlyDue: string list, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
+        {
+            Alternatives = alternatives
+            CurrentlyDue = currentlyDue
+            Errors = errors
+            EventuallyDue = eventuallyDue
+            PastDue = pastDue
+            PendingVerification = pendingVerification
+        }
+
+type PersonRelationship with
+    static member New(authorizer: bool option, director: bool option, executive: bool option, legalGuardian: bool option, owner: bool option, percentOwnership: decimal option, representative: bool option, title: string option) =
+        {
+            Authorizer = authorizer
+            Director = director
+            Executive = executive
+            LegalGuardian = legalGuardian
+            Owner = owner
+            PercentOwnership = percentOwnership
+            Representative = representative
+            Title = title
+        }
+
+type PersonRequirements with
+    static member New(alternatives: AccountRequirementsAlternative list option, currentlyDue: string list, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
+        {
+            Alternatives = alternatives
+            CurrentlyDue = currentlyDue
+            Errors = errors
+            EventuallyDue = eventuallyDue
+            PastDue = pastDue
+            PendingVerification = pendingVerification
+        }
+
+type PersonEthnicityDetails with
+    static member New(ethnicity: PersonEthnicityDetailsEthnicity list option, ethnicityOther: string option) =
+        {
+            Ethnicity = ethnicity
+            EthnicityOther = ethnicityOther
+        }
+
+type PersonRaceDetails with
+    static member New(race: PersonRaceDetailsRace list option, raceOther: string option) =
+        {
+            Race = race
+            RaceOther = raceOther
+        }
+
+type PersonUsCfpbData with
+    static member New(ethnicityDetails: PersonEthnicityDetails option, raceDetails: PersonRaceDetails option, selfIdentifiedGender: string option) =
+        {
+            EthnicityDetails = ethnicityDetails
+            RaceDetails = raceDetails
+            SelfIdentifiedGender = selfIdentifiedGender
+        }
+
+type Person with
+    static member New(created: DateTime, id: string, ?account: string, ?additionalTosAcceptances: PersonAdditionalTosAcceptances, ?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?dob: LegalEntityDob, ?email: string option, ?firstName: string option, ?firstNameKana: string option, ?firstNameKanji: string option, ?fullNameAliases: string list, ?futureRequirements: PersonFutureRequirements option, ?gender: string option, ?idNumberProvided: bool, ?idNumberSecondaryProvided: bool, ?lastName: string option, ?lastNameKana: string option, ?lastNameKanji: string option, ?maidenName: string option, ?metadata: Map<string, string>, ?nationality: string option, ?phone: string option, ?politicalExposure: PersonPoliticalExposure, ?registeredAddress: Address, ?relationship: PersonRelationship, ?requirements: PersonRequirements option, ?ssnLast4Provided: bool, ?usCfpbData: PersonUsCfpbData option, ?verification: LegalEntityPersonVerification) =
+        {
+            Created = created
+            Id = id
+            Account = account
+            AdditionalTosAcceptances = additionalTosAcceptances
+            Address = address
+            AddressKana = addressKana |> Option.flatten
+            AddressKanji = addressKanji |> Option.flatten
+            Dob = dob
+            Email = email |> Option.flatten
+            FirstName = firstName |> Option.flatten
+            FirstNameKana = firstNameKana |> Option.flatten
+            FirstNameKanji = firstNameKanji |> Option.flatten
+            FullNameAliases = fullNameAliases
+            FutureRequirements = futureRequirements |> Option.flatten
+            Gender = gender |> Option.flatten
+            IdNumberProvided = idNumberProvided
+            IdNumberSecondaryProvided = idNumberSecondaryProvided
+            LastName = lastName |> Option.flatten
+            LastNameKana = lastNameKana |> Option.flatten
+            LastNameKanji = lastNameKanji |> Option.flatten
+            MaidenName = maidenName |> Option.flatten
+            Metadata = metadata
+            Nationality = nationality |> Option.flatten
+            Phone = phone |> Option.flatten
+            PoliticalExposure = politicalExposure
+            RegisteredAddress = registeredAddress
+            Relationship = relationship
+            Requirements = requirements |> Option.flatten
+            SsnLast4Provided = ssnLast4Provided
+            UsCfpbData = usCfpbData |> Option.flatten
+            Verification = verification
+        }
+
 module Person =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "person"
+
+type CancellationDetails with
+    static member New(comment: string option, feedback: CancellationDetailsFeedback option, reason: CancellationDetailsReason option) =
+        {
+            Comment = comment
+            Feedback = feedback
+            Reason = reason
+        }
+
+type SmorResourceManagedPayments with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
+
+type ConnectAccountReference with
+    static member New(``type``: ConnectAccountReferenceType, ?account: StripeId<Markers.Account>) =
+        {
+            Type = ``type``
+            Account = account
+        }
+
+type SubscriptionAutomaticTax with
+    static member New(enabled: bool, liability: ConnectAccountReference option) =
+        {
+            Enabled = enabled
+            Liability = liability
+        }
 
 module SubscriptionAutomaticTax =
     ///If Stripe disabled automatic tax, this enum describes why.
     let disabledReason = "requires_location_inputs"
 
+type SubscriptionBillingThresholds with
+    static member New(amountGte: int option, resetBillingCycleAnchor: bool option) =
+        {
+            AmountGte = amountGte
+            ResetBillingCycleAnchor = resetBillingCycleAnchor
+        }
+
+type SubscriptionPendingInvoiceItemInterval with
+    static member New(interval: SubscriptionPendingInvoiceItemIntervalInterval, intervalCount: int) =
+        {
+            Interval = interval
+            IntervalCount = intervalCount
+        }
+
+type SubscriptionTransferData with
+    static member New(amountPercent: decimal option, destination: StripeId<Markers.Account>) =
+        {
+            AmountPercent = amountPercent
+            Destination = destination
+        }
+
+type SubscriptionsResourceBillingCycleAnchorConfig with
+    static member New(dayOfMonth: int, hour: int option, minute: int option, month: int option, second: int option) =
+        {
+            DayOfMonth = dayOfMonth
+            Hour = hour
+            Minute = minute
+            Month = month
+            Second = second
+        }
+
+type SubscriptionsResourceBillingModeFlexible with
+    static member New(?prorationDiscounts: SubscriptionsResourceBillingModeFlexibleProrationDiscounts) =
+        {
+            ProrationDiscounts = prorationDiscounts
+        }
+
+type SubscriptionsResourceBillingMode with
+    static member New(flexible: SubscriptionsResourceBillingModeFlexible option, ``type``: SubscriptionsResourceBillingModeType, ?updatedAt: DateTime) =
+        {
+            Flexible = flexible
+            Type = ``type``
+            UpdatedAt = updatedAt
+        }
+
+type SubscriptionsResourcePauseCollection with
+    static member New(behavior: SubscriptionsResourcePauseCollectionBehavior, resumesAt: DateTime option) =
+        {
+            Behavior = behavior
+            ResumesAt = resumesAt
+        }
+
+type InvoicePaymentMethodOptionsAcssDebitMandateOptions with
+    static member New(transactionType: InvoicePaymentMethodOptionsAcssDebitMandateOptionsTransactionType option) =
+        {
+            TransactionType = transactionType
+        }
+
+type InvoicePaymentMethodOptionsAcssDebit with
+    static member New(?mandateOptions: InvoicePaymentMethodOptionsAcssDebitMandateOptions, ?verificationMethod: InvoicePaymentMethodOptionsAcssDebitVerificationMethod) =
+        {
+            MandateOptions = mandateOptions
+            VerificationMethod = verificationMethod
+        }
+
+type InvoicePaymentMethodOptionsBancontact with
+    static member New(preferredLanguage: InvoicePaymentMethodOptionsBancontactPreferredLanguage) =
+        {
+            PreferredLanguage = preferredLanguage
+        }
+
+type InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer with
+    static member New(country: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransferCountry) =
+        {
+            Country = country
+        }
+
+type InvoicePaymentMethodOptionsCustomerBalanceBankTransfer with
+    static member New(``type``: InvoicePaymentMethodOptionsCustomerBalanceBankTransferType option, ?euBankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer) =
+        {
+            Type = ``type``
+            EuBankTransfer = euBankTransfer
+        }
+
+type InvoicePaymentMethodOptionsCustomerBalance with
+    static member New(?bankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransfer) =
+        {
+            BankTransfer = bankTransfer
+        }
+
 module InvoicePaymentMethodOptionsCustomerBalance =
     ///The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
     let fundingType = "bank_transfer"
+
+type InvoicePaymentMethodOptionsKonbini with
+    static member New(?invoicePaymentMethodOptionsKonbini: string option) =
+        {
+            InvoicePaymentMethodOptionsKonbini = invoicePaymentMethodOptionsKonbini |> Option.flatten
+        }
+
+type InvoiceMandateOptionsPayto with
+    static member New(amount: int option, amountType: InvoiceMandateOptionsPaytoAmountType option, purpose: InvoiceMandateOptionsPaytoPurpose option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            Purpose = purpose
+        }
+
+type InvoicePaymentMethodOptionsPayto with
+    static member New(?mandateOptions: InvoiceMandateOptionsPayto) =
+        {
+            MandateOptions = mandateOptions
+        }
+
+type InvoicePaymentMethodOptionsSepaDebit with
+    static member New(?invoicePaymentMethodOptionsSepaDebit: string option) =
+        {
+            InvoicePaymentMethodOptionsSepaDebit = invoicePaymentMethodOptionsSepaDebit |> Option.flatten
+        }
+
+type InvoicePaymentMethodOptionsMandateOptionsUpi with
+    static member New(amount: int option, amountType: InvoicePaymentMethodOptionsMandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            Description = description
+            EndDate = endDate
+        }
+
+type InvoicePaymentMethodOptionsUpi with
+    static member New(?mandateOptions: InvoicePaymentMethodOptionsMandateOptionsUpi) =
+        {
+            MandateOptions = mandateOptions
+        }
+
+type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFilters with
+    static member New(?accountSubcategories: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFiltersAccountSubcategories list) =
+        {
+            AccountSubcategories = accountSubcategories
+        }
+
+type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions with
+    static member New(prefetch: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPrefetch list option, ?filters: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFilters, ?permissions: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsPermissions list) =
+        {
+            Prefetch = prefetch
+            Filters = filters
+            Permissions = permissions
+        }
+
+type InvoicePaymentMethodOptionsUsBankAccount with
+    static member New(?financialConnections: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptions, ?verificationMethod: InvoicePaymentMethodOptionsUsBankAccountVerificationMethod) =
+        {
+            FinancialConnections = financialConnections
+            VerificationMethod = verificationMethod
+        }
+
+type InvoiceMandateOptionsCard with
+    static member New(amount: int option, amountType: InvoiceMandateOptionsCardAmountType option, description: string option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            Description = description
+        }
+
+type SubscriptionPaymentMethodOptionsCard with
+    static member New(network: SubscriptionPaymentMethodOptionsCardNetwork option, requestThreeDSecure: SubscriptionPaymentMethodOptionsCardRequestThreeDSecure option, ?mandateOptions: InvoiceMandateOptionsCard) =
+        {
+            Network = network
+            RequestThreeDSecure = requestThreeDSecure
+            MandateOptions = mandateOptions
+        }
+
+type SubscriptionPaymentMethodOptionsMandateOptionsPix with
+    static member New(amount: int option, amountIncludesIof: SubscriptionPaymentMethodOptionsMandateOptionsPixAmountIncludesIof option, endDate: string option, paymentSchedule: SubscriptionPaymentMethodOptionsMandateOptionsPixPaymentSchedule option) =
+        {
+            Amount = amount
+            AmountIncludesIof = amountIncludesIof
+            EndDate = endDate
+            PaymentSchedule = paymentSchedule
+        }
+
+type SubscriptionPaymentMethodOptionsPix with
+    static member New(?expiresAfterSeconds: int, ?mandateOptions: SubscriptionPaymentMethodOptionsMandateOptionsPix) =
+        {
+            ExpiresAfterSeconds = expiresAfterSeconds
+            MandateOptions = mandateOptions
+        }
+
+type SubscriptionsResourcePaymentMethodOptions with
+    static member New(acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: SubscriptionPaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, payto: InvoicePaymentMethodOptionsPayto option, pix: SubscriptionPaymentMethodOptionsPix option, sepaDebit: InvoicePaymentMethodOptionsSepaDebit option, upi: InvoicePaymentMethodOptionsUpi option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option) =
+        {
+            AcssDebit = acssDebit
+            Bancontact = bancontact
+            Card = card
+            CustomerBalance = customerBalance
+            Konbini = konbini
+            Payto = payto
+            Pix = pix
+            SepaDebit = sepaDebit
+            Upi = upi
+            UsBankAccount = usBankAccount
+        }
+
+type SubscriptionsResourcePaymentSettings with
+    static member New(paymentMethodOptions: SubscriptionsResourcePaymentMethodOptions option, paymentMethodTypes: SubscriptionsResourcePaymentSettingsPaymentMethodTypes list option, saveDefaultPaymentMethod: SubscriptionsResourcePaymentSettingsSaveDefaultPaymentMethod option) =
+        {
+            PaymentMethodOptions = paymentMethodOptions
+            PaymentMethodTypes = paymentMethodTypes
+            SaveDefaultPaymentMethod = saveDefaultPaymentMethod
+        }
+
+type SubscriptionsResourcePendingUpdate with
+    static member New(billingCycleAnchor: DateTime option, expiresAt: DateTime, subscriptionItems: SubscriptionItem list option, trialEnd: DateTime option, trialFromPlan: bool option) =
+        {
+            BillingCycleAnchor = billingCycleAnchor
+            ExpiresAt = expiresAt
+            SubscriptionItems = subscriptionItems
+            TrialEnd = trialEnd
+            TrialFromPlan = trialFromPlan
+        }
+
+type SubscriptionsResourceSubscriptionInvoiceSettings with
+    static member New(accountTaxIds: SubscriptionsResourceSubscriptionInvoiceSettingsAccountTaxIds'AnyOf list option, issuer: ConnectAccountReference) =
+        {
+            AccountTaxIds = accountTaxIds
+            Issuer = issuer
+        }
+
+type SubscriptionsResourceSubscriptionPresentmentDetails with
+    static member New(presentmentCurrency: IsoTypes.IsoCurrencyCode) =
+        {
+            PresentmentCurrency = presentmentCurrency
+        }
+
+type SubscriptionsResourceTrialSettingsEndBehavior with
+    static member New(missingPaymentMethod: SubscriptionsResourceTrialSettingsEndBehaviorMissingPaymentMethod) =
+        {
+            MissingPaymentMethod = missingPaymentMethod
+        }
+
+type SubscriptionsResourceTrialSettingsTrialSettings with
+    static member New(endBehavior: SubscriptionsResourceTrialSettingsEndBehavior) =
+        {
+            EndBehavior = endBehavior
+        }
+
+type CustomerTaxLocation with
+    static member New(country: IsoTypes.IsoCountryCode, source: CustomerTaxLocationSource, state: string option) =
+        {
+            Country = country
+            Source = source
+            State = state
+        }
+
+type CustomerTax with
+    static member New(automaticTax: CustomerTaxAutomaticTax, ipAddress: string option, location: CustomerTaxLocation option, provider: CustomerTaxProvider) =
+        {
+            AutomaticTax = automaticTax
+            IpAddress = ipAddress
+            Location = location
+            Provider = provider
+        }
+
+type CustomerTaxIds with
+    static member New(data: TaxId list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module CustomerTaxIds =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
+type DiscountSource with
+    static member New(coupon: StripeId<Markers.Coupon> option) =
+        {
+            Coupon = coupon
+        }
+
+module DiscountSource =
+    ///The source type of the discount.
+    let ``type`` = "coupon"
+
+type InvoiceSettingCustomField with
+    static member New(name: string, value: string) =
+        {
+            Name = name
+            Value = value
+        }
+
+type InvoiceSettingCustomerRenderingOptions with
+    static member New(amountTaxDisplay: string option, template: string option) =
+        {
+            AmountTaxDisplay = amountTaxDisplay
+            Template = template
+        }
+
+type InvoiceSettingCustomerSetting with
+    static member New(customFields: InvoiceSettingCustomField list option, defaultPaymentMethod: StripeId<Markers.PaymentMethod> option, footer: string option, renderingOptions: InvoiceSettingCustomerRenderingOptions option) =
+        {
+            CustomFields = customFields
+            DefaultPaymentMethod = defaultPaymentMethod
+            Footer = footer
+            RenderingOptions = renderingOptions
+        }
+
+type ExternalAccountRequirements with
+    static member New(currentlyDue: string list option, errors: AccountRequirementsError list option, pastDue: string list option, pendingVerification: string list option) =
+        {
+            CurrentlyDue = currentlyDue
+            Errors = errors
+            PastDue = pastDue
+            PendingVerification = pendingVerification
+        }
+
+type Account with
+    static member New(id: string, ?businessProfile: AccountBusinessProfile option, ?businessType: AccountBusinessType option, ?capabilities: AccountCapabilities, ?chargesEnabled: bool, ?company: LegalEntityCompany, ?controller: AccountUnificationAccountController, ?country: IsoTypes.IsoCountryCode, ?created: DateTime, ?defaultCurrency: IsoTypes.IsoCurrencyCode, ?detailsSubmitted: bool, ?email: string option, ?externalAccounts: AccountExternalAccounts, ?futureRequirements: AccountFutureRequirements, ?groups: AccountGroupMembership option, ?individual: Person, ?metadata: Map<string, string>, ?payoutsEnabled: bool, ?requirements: AccountRequirements, ?settings: AccountSettings option, ?tosAcceptance: AccountTosAcceptance, ?``type``: AccountType) =
+        {
+            Id = id
+            BusinessProfile = businessProfile |> Option.flatten
+            BusinessType = businessType |> Option.flatten
+            Capabilities = capabilities
+            ChargesEnabled = chargesEnabled
+            Company = company
+            Controller = controller
+            Country = country
+            Created = created
+            DefaultCurrency = defaultCurrency
+            DetailsSubmitted = detailsSubmitted
+            Email = email |> Option.flatten
+            ExternalAccounts = externalAccounts
+            FutureRequirements = futureRequirements
+            Groups = groups |> Option.flatten
+            Individual = individual
+            Metadata = metadata
+            PayoutsEnabled = payoutsEnabled
+            Requirements = requirements
+            Settings = settings |> Option.flatten
+            TosAcceptance = tosAcceptance
+            Type = ``type``
+        }
+
 module Account =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "account"
+
+type AccountExternalAccounts with
+    static member New(data: ExternalAccount list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module AccountExternalAccounts =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
+type BankAccount with
+    static member New(accountHolderName: string option, accountHolderType: BankAccountAccountHolderType option, accountType: BankAccountAccountType option, bankName: string option, country: IsoTypes.IsoCountryCode, currency: IsoTypes.IsoCurrencyCode, fingerprint: string option, id: string, last4: string, routingNumber: string option, status: BankAccountStatus, ?account: StripeId<Markers.Account> option, ?availablePayoutMethods: BankAccountAvailablePayoutMethods list option, ?customer: BankAccountCustomer'AnyOf option, ?defaultForCurrency: bool option, ?futureRequirements: ExternalAccountRequirements option, ?metadata: Map<string, string> option, ?requirements: ExternalAccountRequirements option) =
+        {
+            AccountHolderName = accountHolderName
+            AccountHolderType = accountHolderType
+            AccountType = accountType
+            BankName = bankName
+            Country = country
+            Currency = currency
+            Fingerprint = fingerprint
+            Id = id
+            Last4 = last4
+            RoutingNumber = routingNumber
+            Status = status
+            Account = account |> Option.flatten
+            AvailablePayoutMethods = availablePayoutMethods |> Option.flatten
+            Customer = customer |> Option.flatten
+            DefaultForCurrency = defaultForCurrency |> Option.flatten
+            FutureRequirements = futureRequirements |> Option.flatten
+            Metadata = metadata |> Option.flatten
+            Requirements = requirements |> Option.flatten
+        }
+
 module BankAccount =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "bank_account"
+
+type Card with
+    static member New(addressCity: string option, addressCountry: IsoTypes.IsoCountryCode option, addressLine1: string option, addressLine1Check: CardAddressLine1Check option, addressLine2: string option, addressState: string option, addressZip: string option, addressZipCheck: CardAddressZipCheck option, brand: CardBrand, country: IsoTypes.IsoCountryCode option, cvcCheck: CardCvcCheck option, dynamicLast4: string option, expMonth: int, expYear: int, funding: CardFunding, id: string, last4: string, metadata: Map<string, string> option, name: string option, regulatedStatus: CardRegulatedStatus option, tokenizationMethod: CardTokenizationMethod option, ?account: StripeId<Markers.Account> option, ?allowRedisplay: CardAllowRedisplay option, ?availablePayoutMethods: CardAvailablePayoutMethods list option, ?currency: IsoTypes.IsoCurrencyCode option, ?customer: CardCustomer'AnyOf option, ?defaultForCurrency: bool option, ?description: string, ?fingerprint: string option, ?iin: string, ?issuer: string, ?networks: TokenCardNetworks, ?status: CardStatus option) =
+        {
+            AddressCity = addressCity
+            AddressCountry = addressCountry
+            AddressLine1 = addressLine1
+            AddressLine1Check = addressLine1Check
+            AddressLine2 = addressLine2
+            AddressState = addressState
+            AddressZip = addressZip
+            AddressZipCheck = addressZipCheck
+            Brand = brand
+            Country = country
+            CvcCheck = cvcCheck
+            DynamicLast4 = dynamicLast4
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Funding = funding
+            Id = id
+            Last4 = last4
+            Metadata = metadata
+            Name = name
+            RegulatedStatus = regulatedStatus
+            TokenizationMethod = tokenizationMethod
+            Account = account |> Option.flatten
+            AllowRedisplay = allowRedisplay |> Option.flatten
+            AvailablePayoutMethods = availablePayoutMethods |> Option.flatten
+            Currency = currency |> Option.flatten
+            Customer = customer |> Option.flatten
+            DefaultForCurrency = defaultForCurrency |> Option.flatten
+            Description = description
+            Fingerprint = fingerprint |> Option.flatten
+            Iin = iin
+            Issuer = issuer
+            Networks = networks
+            Status = status |> Option.flatten
+        }
 
 module Card =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "card"
 
+type Customer with
+    static member New(created: DateTime, defaultSource: StripeId<Markers.PaymentSource> option, description: string option, email: string option, id: string, livemode: bool, shipping: Shipping option, ?address: Address option, ?balance: int, ?businessName: string, ?cashBalance: CashBalance option, ?currency: IsoTypes.IsoCurrencyCode option, ?customerAccount: string option, ?delinquent: bool option, ?discount: Discount option, ?individualName: string, ?invoiceCreditBalance: Map<string, string list>, ?invoicePrefix: string option, ?invoiceSettings: InvoiceSettingCustomerSetting, ?metadata: Map<string, string>, ?name: string option, ?nextInvoiceSequence: int, ?phone: string option, ?preferredLocales: string list option, ?sources: CustomerSources, ?subscriptions: CustomerSubscriptions, ?tax: CustomerTax, ?taxExempt: CustomerTaxExempt option, ?taxIds: CustomerTaxIds, ?testClock: StripeId<Markers.TestHelpersTestClock> option) =
+        {
+            Created = created
+            DefaultSource = defaultSource
+            Description = description
+            Email = email
+            Id = id
+            Livemode = livemode
+            Shipping = shipping
+            Address = address |> Option.flatten
+            Balance = balance
+            BusinessName = businessName
+            CashBalance = cashBalance |> Option.flatten
+            Currency = currency |> Option.flatten
+            CustomerAccount = customerAccount |> Option.flatten
+            Delinquent = delinquent |> Option.flatten
+            Discount = discount |> Option.flatten
+            IndividualName = individualName
+            InvoiceCreditBalance = invoiceCreditBalance
+            InvoicePrefix = invoicePrefix |> Option.flatten
+            InvoiceSettings = invoiceSettings
+            Metadata = metadata
+            Name = name |> Option.flatten
+            NextInvoiceSequence = nextInvoiceSequence
+            Phone = phone |> Option.flatten
+            PreferredLocales = preferredLocales |> Option.flatten
+            Sources = sources
+            Subscriptions = subscriptions
+            Tax = tax
+            TaxExempt = taxExempt |> Option.flatten
+            TaxIds = taxIds
+            TestClock = testClock |> Option.flatten
+        }
+
 module Customer =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "customer"
+
+type CustomerSources with
+    static member New(data: PaymentSource list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module CustomerSources =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
+type CustomerSubscriptions with
+    static member New(data: Subscription list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
 module CustomerSubscriptions =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
+
+type Discount with
+    static member New(checkoutSession: string option, customer: DiscountCustomer'AnyOf option, customerAccount: string option, ``end``: DateTime option, id: string, invoice: string option, invoiceItem: string option, promotionCode: StripeId<Markers.PromotionCode> option, source: DiscountSource, start: DateTime, subscription: string option, subscriptionItem: string option) =
+        {
+            CheckoutSession = checkoutSession
+            Customer = customer
+            CustomerAccount = customerAccount
+            End = ``end``
+            Id = id
+            Invoice = invoice
+            InvoiceItem = invoiceItem
+            PromotionCode = promotionCode
+            Source = source
+            Start = start
+            Subscription = subscription
+            SubscriptionItem = subscriptionItem
+        }
+
+module Discount =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "discount"
+
+type Subscription with
+    static member New(application: SubscriptionApplication'AnyOf option, applicationFeePercent: decimal option, automaticTax: SubscriptionAutomaticTax, billingCycleAnchor: DateTime, billingCycleAnchorConfig: SubscriptionsResourceBillingCycleAnchorConfig option, billingMode: SubscriptionsResourceBillingMode, billingThresholds: SubscriptionBillingThresholds option, cancelAt: DateTime option, cancelAtPeriodEnd: bool, canceledAt: DateTime option, cancellationDetails: CancellationDetails option, collectionMethod: SubscriptionCollectionMethod, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: SubscriptionCustomer'AnyOf, customerAccount: string option, daysUntilDue: int option, defaultPaymentMethod: StripeId<Markers.PaymentMethod> option, defaultSource: StripeId<Markers.PaymentSource> option, description: string option, discounts: StripeId<Markers.Discount> list, endedAt: DateTime option, id: string, invoiceSettings: SubscriptionsResourceSubscriptionInvoiceSettings, items: SubscriptionItems, latestInvoice: StripeId<Markers.Invoice> option, livemode: bool, managedPayments: SmorResourceManagedPayments option, metadata: Map<string, string>, nextPendingInvoiceItemInvoice: DateTime option, onBehalfOf: StripeId<Markers.Account> option, pauseCollection: SubscriptionsResourcePauseCollection option, paymentSettings: SubscriptionsResourcePaymentSettings option, pendingInvoiceItemInterval: SubscriptionPendingInvoiceItemInterval option, pendingSetupIntent: StripeId<Markers.SetupIntent> option, pendingUpdate: SubscriptionsResourcePendingUpdate option, schedule: StripeId<Markers.SubscriptionSchedule> option, startDate: DateTime, status: SubscriptionStatus, testClock: StripeId<Markers.TestHelpersTestClock> option, transferData: SubscriptionTransferData option, trialEnd: DateTime option, trialSettings: SubscriptionsResourceTrialSettingsTrialSettings option, trialStart: DateTime option, ?defaultTaxRates: TaxRate list option, ?presentmentDetails: SubscriptionsResourceSubscriptionPresentmentDetails) =
+        {
+            Application = application
+            ApplicationFeePercent = applicationFeePercent
+            AutomaticTax = automaticTax
+            BillingCycleAnchor = billingCycleAnchor
+            BillingCycleAnchorConfig = billingCycleAnchorConfig
+            BillingMode = billingMode
+            BillingThresholds = billingThresholds
+            CancelAt = cancelAt
+            CancelAtPeriodEnd = cancelAtPeriodEnd
+            CanceledAt = canceledAt
+            CancellationDetails = cancellationDetails
+            CollectionMethod = collectionMethod
+            Created = created
+            Currency = currency
+            Customer = customer
+            CustomerAccount = customerAccount
+            DaysUntilDue = daysUntilDue
+            DefaultPaymentMethod = defaultPaymentMethod
+            DefaultSource = defaultSource
+            Description = description
+            Discounts = discounts
+            EndedAt = endedAt
+            Id = id
+            InvoiceSettings = invoiceSettings
+            Items = items
+            LatestInvoice = latestInvoice
+            Livemode = livemode
+            ManagedPayments = managedPayments
+            Metadata = metadata
+            NextPendingInvoiceItemInvoice = nextPendingInvoiceItemInvoice
+            OnBehalfOf = onBehalfOf
+            PauseCollection = pauseCollection
+            PaymentSettings = paymentSettings
+            PendingInvoiceItemInterval = pendingInvoiceItemInterval
+            PendingSetupIntent = pendingSetupIntent
+            PendingUpdate = pendingUpdate
+            Schedule = schedule
+            StartDate = startDate
+            Status = status
+            TestClock = testClock
+            TransferData = transferData
+            TrialEnd = trialEnd
+            TrialSettings = trialSettings
+            TrialStart = trialStart
+            DefaultTaxRates = defaultTaxRates |> Option.flatten
+            PresentmentDetails = presentmentDetails
+        }
 
 module Subscription =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "subscription"
 
+type Token with
+    static member New(clientIp: string option, created: DateTime, id: string, livemode: bool, ``type``: TokenType, used: bool, ?bankAccount: BankAccount, ?card: Card) =
+        {
+            ClientIp = clientIp
+            Created = created
+            Id = id
+            Livemode = livemode
+            Type = ``type``
+            Used = used
+            BankAccount = bankAccount
+            Card = card
+        }
+
 module Token =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "token"
+
+type InvoiceSettingSubscriptionScheduleSetting with
+    static member New(accountTaxIds: InvoiceSettingSubscriptionScheduleSettingAccountTaxIds'AnyOf list option, daysUntilDue: int option, issuer: ConnectAccountReference) =
+        {
+            AccountTaxIds = accountTaxIds
+            DaysUntilDue = daysUntilDue
+            Issuer = issuer
+        }
+
+type SubscriptionSchedulesResourceDefaultSettingsAutomaticTax with
+    static member New(enabled: bool, liability: ConnectAccountReference option) =
+        {
+            Enabled = enabled
+            Liability = liability
+        }
 
 module SubscriptionSchedulesResourceDefaultSettingsAutomaticTax =
     ///If Stripe disabled automatic tax, this enum describes why.
     let disabledReason = "requires_location_inputs"
 
+type SubscriptionSchedulesResourceDefaultSettings with
+    static member New(applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option, defaultPaymentMethod: StripeId<Markers.PaymentMethod> option, description: string option, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting, onBehalfOf: StripeId<Markers.Account> option, transferData: SubscriptionTransferData option, ?automaticTax: SubscriptionSchedulesResourceDefaultSettingsAutomaticTax) =
+        {
+            ApplicationFeePercent = applicationFeePercent
+            BillingCycleAnchor = billingCycleAnchor
+            BillingThresholds = billingThresholds
+            CollectionMethod = collectionMethod
+            DefaultPaymentMethod = defaultPaymentMethod
+            Description = description
+            InvoiceSettings = invoiceSettings
+            OnBehalfOf = onBehalfOf
+            TransferData = transferData
+            AutomaticTax = automaticTax
+        }
+
+type SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStart with
+    static member New(``type``: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStartType, ?timestamp: DateTime) =
+        {
+            Type = ``type``
+            Timestamp = timestamp
+        }
+
+type SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEnd with
+    static member New(``type``: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEndType, ?timestamp: DateTime) =
+        {
+            Type = ``type``
+            Timestamp = timestamp
+        }
+
+type SourceRefundAttributesRequired with
+    static member New(object: Source) =
+        {
+            Object = object
+        }
+
+type SourceFailed with
+    static member New(object: Source) =
+        {
+            Object = object
+        }
+
+type SourceChargeable with
+    static member New(object: Source) =
+        {
+            Object = object
+        }
+
+type SourceCanceled with
+    static member New(object: Source) =
+        {
+            Object = object
+        }
+
+type SetupIntentPaymentMethodOptionsMandateOptionsPayto with
+    static member New(amount: int option, amountType: SetupIntentPaymentMethodOptionsMandateOptionsPaytoAmountType option, endDate: string option, paymentSchedule: SetupIntentPaymentMethodOptionsMandateOptionsPaytoPaymentSchedule option, paymentsPerPeriod: int option, purpose: SetupIntentPaymentMethodOptionsMandateOptionsPaytoPurpose option, startDate: string option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            EndDate = endDate
+            PaymentSchedule = paymentSchedule
+            PaymentsPerPeriod = paymentsPerPeriod
+            Purpose = purpose
+            StartDate = startDate
+        }
+
+type SetupIntentTypeSpecificPaymentMethodOptionsClient with
+    static member New(?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsPayto, ?verificationMethod: SetupIntentTypeSpecificPaymentMethodOptionsClientVerificationMethod) =
+        {
+            MandateOptions = mandateOptions
+            VerificationMethod = verificationMethod
+        }
+
+type PaymentFlowsAmountDetailsClientResourceTip with
+    static member New(?amount: int) =
+        {
+            Amount = amount
+        }
+
+type PaymentFlowsPrivatePaymentMethodsCardPaymentIntentAmountDetailsLineItemPaymentMethodOptions with
+    static member New(commodityCode: string option) =
+        {
+            CommodityCode = commodityCode
+        }
+
+type PaymentFlowsPrivatePaymentMethodsCardPresentAmountDetailsLineItemPaymentMethodOptions with
+    static member New(commodityCode: string option) =
+        {
+            CommodityCode = commodityCode
+        }
+
+type PaymentFlowsPrivatePaymentMethodsKlarnaPaymentIntentAmountDetailsLineItemPaymentMethodOptions with
+    static member New(imageUrl: string option, productUrl: string option, reference: string option, subscriptionReference: string option) =
+        {
+            ImageUrl = imageUrl
+            ProductUrl = productUrl
+            Reference = reference
+            SubscriptionReference = subscriptionReference
+        }
+
+type PaymentFlowsPrivatePaymentMethodsPaypalAmountDetailsLineItemPaymentMethodOptions with
+    static member New(?category: PaymentFlowsPrivatePaymentMethodsPaypalAmountDetailsLineItemPaymentMethodOptionsCategory, ?description: string, ?soldBy: string) =
+        {
+            Category = category
+            Description = description
+            SoldBy = soldBy
+        }
+
+type PaymentFlowsAmountDetailsResourceLineItemsListResourceLineItemResourcePaymentMethodOptions with
+    static member New(?card: PaymentFlowsPrivatePaymentMethodsCardPaymentIntentAmountDetailsLineItemPaymentMethodOptions, ?cardPresent: PaymentFlowsPrivatePaymentMethodsCardPresentAmountDetailsLineItemPaymentMethodOptions, ?klarna: PaymentFlowsPrivatePaymentMethodsKlarnaPaymentIntentAmountDetailsLineItemPaymentMethodOptions, ?paypal: PaymentFlowsPrivatePaymentMethodsPaypalAmountDetailsLineItemPaymentMethodOptions) =
+        {
+            Card = card
+            CardPresent = cardPresent
+            Klarna = klarna
+            Paypal = paypal
+        }
+
+type PaymentFlowsAmountDetailsResourceLineItemsListResourceLineItemResourceTax with
+    static member New(totalTaxAmount: int) =
+        {
+            TotalTaxAmount = totalTaxAmount
+        }
+
+type PaymentIntentAmountDetailsLineItem with
+    static member New(discountAmount: int option, id: string, paymentMethodOptions: PaymentFlowsAmountDetailsResourceLineItemsListResourceLineItemResourcePaymentMethodOptions option, productCode: string option, productName: string, quantity: int, tax: PaymentFlowsAmountDetailsResourceLineItemsListResourceLineItemResourceTax option, unitCost: int, unitOfMeasure: string option) =
+        {
+            DiscountAmount = discountAmount
+            Id = id
+            PaymentMethodOptions = paymentMethodOptions
+            ProductCode = productCode
+            ProductName = productName
+            Quantity = quantity
+            Tax = tax
+            UnitCost = unitCost
+            UnitOfMeasure = unitOfMeasure
+        }
+
 module PaymentIntentAmountDetailsLineItem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "payment_intent_amount_details_line_item"
+
+type PaymentFlowsAmountDetailsLineItems with
+    static member New(data: PaymentIntentAmountDetailsLineItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module PaymentFlowsAmountDetailsLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
+type PaymentFlowsAmountDetailsResourceError with
+    static member New(code: PaymentFlowsAmountDetailsResourceErrorCode option, message: string option) =
+        {
+            Code = code
+            Message = message
+        }
+
+type PaymentFlowsAmountDetailsResourceShipping with
+    static member New(amount: int option, fromPostalCode: string option, toPostalCode: string option) =
+        {
+            Amount = amount
+            FromPostalCode = fromPostalCode
+            ToPostalCode = toPostalCode
+        }
+
+type PaymentFlowsAmountDetailsResourceTax with
+    static member New(totalTaxAmount: int option) =
+        {
+            TotalTaxAmount = totalTaxAmount
+        }
+
+type PaymentFlowsAmountDetails with
+    static member New(?discountAmount: int, ?error: PaymentFlowsAmountDetailsResourceError, ?lineItems: PaymentFlowsAmountDetailsLineItems, ?shipping: PaymentFlowsAmountDetailsResourceShipping, ?tax: PaymentFlowsAmountDetailsResourceTax, ?tip: PaymentFlowsAmountDetailsClientResourceTip) =
+        {
+            DiscountAmount = discountAmount
+            Error = error
+            LineItems = lineItems
+            Shipping = shipping
+            Tax = tax
+            Tip = tip
+        }
+
+type PaymentFlowsAutomaticPaymentMethodsPaymentIntent with
+    static member New(enabled: bool, ?allowRedirects: PaymentFlowsAutomaticPaymentMethodsPaymentIntentAllowRedirects) =
+        {
+            Enabled = enabled
+            AllowRedirects = allowRedirects
+        }
+
+type PaymentFlowsPaymentDetails with
+    static member New(customerReference: string option, orderReference: string option) =
+        {
+            CustomerReference = customerReference
+            OrderReference = orderReference
+        }
+
+type PaymentFlowsPaymentIntentAsyncWorkflowsResourceInputsResourceTax with
+    static member New(calculation: string) =
+        {
+            Calculation = calculation
+        }
+
+type PaymentFlowsPaymentIntentAsyncWorkflowsResourceInputs with
+    static member New(?tax: PaymentFlowsPaymentIntentAsyncWorkflowsResourceInputsResourceTax) =
+        {
+            Tax = tax
+        }
+
+type PaymentFlowsPaymentIntentAsyncWorkflows with
+    static member New(?inputs: PaymentFlowsPaymentIntentAsyncWorkflowsResourceInputs) =
+        {
+            Inputs = inputs
+        }
+
+type PaymentFlowsPaymentIntentPresentmentDetails with
+    static member New(presentmentAmount: int, presentmentCurrency: IsoTypes.IsoCurrencyCode) =
+        {
+            PresentmentAmount = presentmentAmount
+            PresentmentCurrency = presentmentCurrency
+        }
+
+type PaymentIntentNextActionAlipayHandleRedirect with
+    static member New(nativeData: string option, nativeUrl: string option, returnUrl: string option, url: string option) =
+        {
+            NativeData = nativeData
+            NativeUrl = nativeUrl
+            ReturnUrl = returnUrl
+            Url = url
+        }
+
+type PaymentIntentNextActionBoleto with
+    static member New(expiresAt: DateTime option, hostedVoucherUrl: string option, number: string option, pdf: string option) =
+        {
+            ExpiresAt = expiresAt
+            HostedVoucherUrl = hostedVoucherUrl
+            Number = number
+            Pdf = pdf
+        }
+
+type PaymentIntentNextActionCardAwaitNotification with
+    static member New(chargeAttemptAt: DateTime option, customerApprovalRequired: bool option) =
+        {
+            ChargeAttemptAt = chargeAttemptAt
+            CustomerApprovalRequired = customerApprovalRequired
+        }
+
+type PaymentIntentNextActionCashappQrCode with
+    static member New(expiresAt: DateTime, imageUrlPng: string, imageUrlSvg: string) =
+        {
+            ExpiresAt = expiresAt
+            ImageUrlPng = imageUrlPng
+            ImageUrlSvg = imageUrlSvg
+        }
+
+type PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode with
+    static member New(hostedInstructionsUrl: string, mobileAuthUrl: string, qrCode: PaymentIntentNextActionCashappQrCode) =
+        {
+            HostedInstructionsUrl = hostedInstructionsUrl
+            MobileAuthUrl = mobileAuthUrl
+            QrCode = qrCode
+        }
+
+type PaymentIntentNextActionDisplayBankTransferInstructions with
+    static member New(amountRemaining: int option, currency: IsoTypes.IsoCurrencyCode option, hostedInstructionsUrl: string option, reference: string option, ``type``: PaymentIntentNextActionDisplayBankTransferInstructionsType, ?financialAddresses: FundingInstructionsBankTransferFinancialAddress list) =
+        {
+            AmountRemaining = amountRemaining
+            Currency = currency
+            HostedInstructionsUrl = hostedInstructionsUrl
+            Reference = reference
+            Type = ``type``
+            FinancialAddresses = financialAddresses
+        }
+
+type PaymentIntentNextActionDisplayMultibancoDetails with
+    static member New(entity: string option, expiresAt: DateTime option, hostedVoucherUrl: string option, reference: string option) =
+        {
+            Entity = entity
+            ExpiresAt = expiresAt
+            HostedVoucherUrl = hostedVoucherUrl
+            Reference = reference
+        }
+
+type PaymentIntentNextActionDisplayOxxoDetails with
+    static member New(expiresAfter: DateTime option, hostedVoucherUrl: string option, number: string option) =
+        {
+            ExpiresAfter = expiresAfter
+            HostedVoucherUrl = hostedVoucherUrl
+            Number = number
+        }
+
+type PaymentIntentNextActionKlarnaDisplayQrCode with
+    static member New(data: string, expiresAt: DateTime option, imageUrlPng: string, imageUrlSvg: string) =
+        {
+            Data = data
+            ExpiresAt = expiresAt
+            ImageUrlPng = imageUrlPng
+            ImageUrlSvg = imageUrlSvg
+        }
+
+type PaymentIntentNextActionKonbiniFamilymart with
+    static member New(paymentCode: string, ?confirmationNumber: string) =
+        {
+            PaymentCode = paymentCode
+            ConfirmationNumber = confirmationNumber
+        }
+
+type PaymentIntentNextActionKonbiniLawson with
+    static member New(paymentCode: string, ?confirmationNumber: string) =
+        {
+            PaymentCode = paymentCode
+            ConfirmationNumber = confirmationNumber
+        }
+
+type PaymentIntentNextActionKonbiniMinistop with
+    static member New(paymentCode: string, ?confirmationNumber: string) =
+        {
+            PaymentCode = paymentCode
+            ConfirmationNumber = confirmationNumber
+        }
+
+type PaymentIntentNextActionKonbiniSeicomart with
+    static member New(paymentCode: string, ?confirmationNumber: string) =
+        {
+            PaymentCode = paymentCode
+            ConfirmationNumber = confirmationNumber
+        }
+
+type PaymentIntentNextActionKonbiniStores with
+    static member New(familymart: PaymentIntentNextActionKonbiniFamilymart option, lawson: PaymentIntentNextActionKonbiniLawson option, ministop: PaymentIntentNextActionKonbiniMinistop option, seicomart: PaymentIntentNextActionKonbiniSeicomart option) =
+        {
+            Familymart = familymart
+            Lawson = lawson
+            Ministop = ministop
+            Seicomart = seicomart
+        }
+
+type PaymentIntentNextActionKonbini with
+    static member New(expiresAt: DateTime, hostedVoucherUrl: string option, stores: PaymentIntentNextActionKonbiniStores) =
+        {
+            ExpiresAt = expiresAt
+            HostedVoucherUrl = hostedVoucherUrl
+            Stores = stores
+        }
+
+type PaymentIntentNextActionPaynowDisplayQrCode with
+    static member New(data: string, hostedInstructionsUrl: string option, imageUrlPng: string, imageUrlSvg: string) =
+        {
+            Data = data
+            HostedInstructionsUrl = hostedInstructionsUrl
+            ImageUrlPng = imageUrlPng
+            ImageUrlSvg = imageUrlSvg
+        }
+
+type PaymentIntentNextActionPixDisplayQrCode with
+    static member New(?data: string, ?expiresAt: int, ?hostedInstructionsUrl: string, ?imageUrlPng: string, ?imageUrlSvg: string) =
+        {
+            Data = data
+            ExpiresAt = expiresAt
+            HostedInstructionsUrl = hostedInstructionsUrl
+            ImageUrlPng = imageUrlPng
+            ImageUrlSvg = imageUrlSvg
+        }
+
+type PaymentIntentNextActionPromptpayDisplayQrCode with
+    static member New(data: string, hostedInstructionsUrl: string, imageUrlPng: string, imageUrlSvg: string) =
+        {
+            Data = data
+            HostedInstructionsUrl = hostedInstructionsUrl
+            ImageUrlPng = imageUrlPng
+            ImageUrlSvg = imageUrlSvg
+        }
+
+type PaymentIntentNextActionRedirectToUrl with
+    static member New(returnUrl: string option, url: string option) =
+        {
+            ReturnUrl = returnUrl
+            Url = url
+        }
+
+type PaymentIntentNextActionSwishQrCode with
+    static member New(data: string, imageUrlPng: string, imageUrlSvg: string) =
+        {
+            Data = data
+            ImageUrlPng = imageUrlPng
+            ImageUrlSvg = imageUrlSvg
+        }
+
+type PaymentIntentNextActionSwishHandleRedirectOrDisplayQrCode with
+    static member New(hostedInstructionsUrl: string, mobileAuthUrl: string, qrCode: PaymentIntentNextActionSwishQrCode) =
+        {
+            HostedInstructionsUrl = hostedInstructionsUrl
+            MobileAuthUrl = mobileAuthUrl
+            QrCode = qrCode
+        }
+
+type PaymentIntentNextActionUpiqrCode with
+    static member New(expiresAt: DateTime, imageUrlPng: string, imageUrlSvg: string) =
+        {
+            ExpiresAt = expiresAt
+            ImageUrlPng = imageUrlPng
+            ImageUrlSvg = imageUrlSvg
+        }
+
+type PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode with
+    static member New(hostedInstructionsUrl: string, qrCode: PaymentIntentNextActionUpiqrCode) =
+        {
+            HostedInstructionsUrl = hostedInstructionsUrl
+            QrCode = qrCode
+        }
+
+type PaymentIntentNextActionVerifyWithMicrodeposits with
+    static member New(arrivalDate: DateTime, hostedVerificationUrl: string, microdepositType: PaymentIntentNextActionVerifyWithMicrodepositsMicrodepositType option) =
+        {
+            ArrivalDate = arrivalDate
+            HostedVerificationUrl = hostedVerificationUrl
+            MicrodepositType = microdepositType
+        }
+
+type PaymentIntentNextActionWechatPayDisplayQrCode with
+    static member New(data: string, hostedInstructionsUrl: string, imageDataUrl: string, imageUrlPng: string, imageUrlSvg: string) =
+        {
+            Data = data
+            HostedInstructionsUrl = hostedInstructionsUrl
+            ImageDataUrl = imageDataUrl
+            ImageUrlPng = imageUrlPng
+            ImageUrlSvg = imageUrlSvg
+        }
+
+type PaymentIntentNextActionWechatPayRedirectToAndroidApp with
+    static member New(appId: string, nonceStr: string, package: string, partnerId: string, prepayId: string, sign: string, timestamp: string) =
+        {
+            AppId = appId
+            NonceStr = nonceStr
+            Package = package
+            PartnerId = partnerId
+            PrepayId = prepayId
+            Sign = sign
+            Timestamp = timestamp
+        }
+
+type PaymentIntentNextActionWechatPayRedirectToIosApp with
+    static member New(nativeUrl: string) =
+        {
+            NativeUrl = nativeUrl
+        }
+
+type PaymentIntentNextAction with
+    static member New(``type``: PaymentIntentNextActionType, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?boletoDisplayDetails: PaymentIntentNextActionBoleto, ?cardAwaitNotification: PaymentIntentNextActionCardAwaitNotification, ?cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode, ?displayBankTransferInstructions: PaymentIntentNextActionDisplayBankTransferInstructions, ?klarnaDisplayQrCode: PaymentIntentNextActionKlarnaDisplayQrCode, ?konbiniDisplayDetails: PaymentIntentNextActionKonbini, ?multibancoDisplayDetails: PaymentIntentNextActionDisplayMultibancoDetails, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?paynowDisplayQrCode: PaymentIntentNextActionPaynowDisplayQrCode, ?pixDisplayQrCode: PaymentIntentNextActionPixDisplayQrCode, ?promptpayDisplayQrCode: PaymentIntentNextActionPromptpayDisplayQrCode, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?swishHandleRedirectOrDisplayQrCode: PaymentIntentNextActionSwishHandleRedirectOrDisplayQrCode, ?upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode, ?useStripeSdk: string, ?verifyWithMicrodeposits: PaymentIntentNextActionVerifyWithMicrodeposits, ?wechatPayDisplayQrCode: PaymentIntentNextActionWechatPayDisplayQrCode, ?wechatPayRedirectToAndroidApp: PaymentIntentNextActionWechatPayRedirectToAndroidApp, ?wechatPayRedirectToIosApp: PaymentIntentNextActionWechatPayRedirectToIosApp) =
+        {
+            Type = ``type``
+            AlipayHandleRedirect = alipayHandleRedirect
+            BoletoDisplayDetails = boletoDisplayDetails
+            CardAwaitNotification = cardAwaitNotification
+            CashappHandleRedirectOrDisplayQrCode = cashappHandleRedirectOrDisplayQrCode
+            DisplayBankTransferInstructions = displayBankTransferInstructions
+            KlarnaDisplayQrCode = klarnaDisplayQrCode
+            KonbiniDisplayDetails = konbiniDisplayDetails
+            MultibancoDisplayDetails = multibancoDisplayDetails
+            OxxoDisplayDetails = oxxoDisplayDetails
+            PaynowDisplayQrCode = paynowDisplayQrCode
+            PixDisplayQrCode = pixDisplayQrCode
+            PromptpayDisplayQrCode = promptpayDisplayQrCode
+            RedirectToUrl = redirectToUrl
+            SwishHandleRedirectOrDisplayQrCode = swishHandleRedirectOrDisplayQrCode
+            UpiHandleRedirectOrDisplayQrCode = upiHandleRedirectOrDisplayQrCode
+            UseStripeSdk = useStripeSdk
+            VerifyWithMicrodeposits = verifyWithMicrodeposits
+            WechatPayDisplayQrCode = wechatPayDisplayQrCode
+            WechatPayRedirectToAndroidApp = wechatPayRedirectToAndroidApp
+            WechatPayRedirectToIosApp = wechatPayRedirectToIosApp
+        }
+
+type PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptions with
+    static member New(?setupFutureUsage: PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
+
+type PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptions with
+    static member New(?setupFutureUsage: PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 module PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
@@ -14989,6 +17627,45 @@ module PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
 
+type PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit with
+    static member New(intervalDescription: string option, paymentSchedule: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule option, transactionType: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option, ?customMandateUrl: string) =
+        {
+            IntervalDescription = intervalDescription
+            PaymentSchedule = paymentSchedule
+            TransactionType = transactionType
+            CustomMandateUrl = customMandateUrl
+        }
+
+type PaymentIntentPaymentMethodOptionsAcssDebit with
+    static member New(?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsAcssDebitSetupFutureUsage, ?targetDate: string, ?verificationMethod: PaymentIntentPaymentMethodOptionsAcssDebitVerificationMethod) =
+        {
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+            TargetDate = targetDate
+            VerificationMethod = verificationMethod
+        }
+
+type PaymentIntentPaymentMethodOptionsAuBecsDebit with
+    static member New(?setupFutureUsage: PaymentIntentPaymentMethodOptionsAuBecsDebitSetupFutureUsage, ?targetDate: string) =
+        {
+            SetupFutureUsage = setupFutureUsage
+            TargetDate = targetDate
+        }
+
+type PaymentIntentPaymentMethodOptionsMandateOptionsBacsDebit with
+    static member New(?referencePrefix: string) =
+        {
+            ReferencePrefix = referencePrefix
+        }
+
+type PaymentIntentPaymentMethodOptionsBacsDebit with
+    static member New(?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsBacsDebit, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsBacsDebitSetupFutureUsage, ?targetDate: string) =
+        {
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+            TargetDate = targetDate
+        }
+
 module PaymentIntentPaymentMethodOptionsBlik =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
     ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
@@ -14996,10 +17673,56 @@ module PaymentIntentPaymentMethodOptionsBlik =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type PaymentMethodDetailsCardInstallmentsPlan with
+    static member New(count: int option, ``type``: PaymentMethodDetailsCardInstallmentsPlanType) =
+        {
+            Count = count
+            Type = ``type``
+        }
+
 module PaymentMethodDetailsCardInstallmentsPlan =
     ///For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card.
     ///One of `month`.
     let interval = "month"
+
+type PaymentMethodOptionsCardInstallments with
+    static member New(availablePlans: PaymentMethodDetailsCardInstallmentsPlan list option, enabled: bool, plan: PaymentMethodDetailsCardInstallmentsPlan option) =
+        {
+            AvailablePlans = availablePlans
+            Enabled = enabled
+            Plan = plan
+        }
+
+type PaymentMethodOptionsCardMandateOptions with
+    static member New(amount: int, amountType: PaymentMethodOptionsCardMandateOptionsAmountType, description: string option, endDate: DateTime option, interval: PaymentMethodOptionsCardMandateOptionsInterval, intervalCount: int option, reference: string, startDate: DateTime, supportedTypes: string list option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            Description = description
+            EndDate = endDate
+            Interval = interval
+            IntervalCount = intervalCount
+            Reference = reference
+            StartDate = startDate
+            SupportedTypes = supportedTypes
+        }
+
+type PaymentIntentPaymentMethodOptionsCard with
+    static member New(installments: PaymentMethodOptionsCardInstallments option, mandateOptions: PaymentMethodOptionsCardMandateOptions option, network: PaymentIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option, ?requestExtendedAuthorization: PaymentIntentPaymentMethodOptionsCardRequestExtendedAuthorization, ?requestIncrementalAuthorization: PaymentIntentPaymentMethodOptionsCardRequestIncrementalAuthorization, ?requestMulticapture: PaymentIntentPaymentMethodOptionsCardRequestMulticapture, ?requestOvercapture: PaymentIntentPaymentMethodOptionsCardRequestOvercapture, ?requireCvcRecollection: bool, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsCardSetupFutureUsage, ?statementDescriptorSuffixKana: string, ?statementDescriptorSuffixKanji: string) =
+        {
+            Installments = installments
+            MandateOptions = mandateOptions
+            Network = network
+            RequestThreeDSecure = requestThreeDSecure
+            RequestExtendedAuthorization = requestExtendedAuthorization
+            RequestIncrementalAuthorization = requestIncrementalAuthorization
+            RequestMulticapture = requestMulticapture
+            RequestOvercapture = requestOvercapture
+            RequireCvcRecollection = requireCvcRecollection
+            SetupFutureUsage = setupFutureUsage
+            StatementDescriptorSuffixKana = statementDescriptorSuffixKana
+            StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
+        }
 
 module PaymentIntentPaymentMethodOptionsCard =
     ///Controls when the funds will be captured from the customer's account.
@@ -15011,6 +17734,13 @@ module PaymentIntentPaymentMethodOptionsEps =
     ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
+
+type PaymentIntentPaymentMethodOptionsLink with
+    static member New(persistentToken: string option, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsLinkSetupFutureUsage) =
+        {
+            PersistentToken = persistentToken
+            SetupFutureUsage = setupFutureUsage
+        }
 
 module PaymentIntentPaymentMethodOptionsLink =
     ///Controls when the funds will be captured from the customer's account.
@@ -15026,6 +17756,51 @@ module PaymentIntentPaymentMethodOptionsMobilepay =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type PaymentIntentPaymentMethodOptionsNzBankAccount with
+    static member New(?setupFutureUsage: PaymentIntentPaymentMethodOptionsNzBankAccountSetupFutureUsage, ?targetDate: string) =
+        {
+            SetupFutureUsage = setupFutureUsage
+            TargetDate = targetDate
+        }
+
+type PaymentIntentPaymentMethodOptionsMandateOptionsPayto with
+    static member New(amount: int option, amountType: PaymentIntentPaymentMethodOptionsMandateOptionsPaytoAmountType option, endDate: string option, paymentSchedule: PaymentIntentPaymentMethodOptionsMandateOptionsPaytoPaymentSchedule option, paymentsPerPeriod: int option, purpose: PaymentIntentPaymentMethodOptionsMandateOptionsPaytoPurpose option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            EndDate = endDate
+            PaymentSchedule = paymentSchedule
+            PaymentsPerPeriod = paymentsPerPeriod
+            Purpose = purpose
+        }
+
+type PaymentIntentPaymentMethodOptionsPayto with
+    static member New(?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsPayto, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsPaytoSetupFutureUsage) =
+        {
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+        }
+
+type PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit with
+    static member New(?referencePrefix: string) =
+        {
+            ReferencePrefix = referencePrefix
+        }
+
+type PaymentIntentPaymentMethodOptionsSepaDebit with
+    static member New(?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsSepaDebit, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsSepaDebitSetupFutureUsage, ?targetDate: string) =
+        {
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+            TargetDate = targetDate
+        }
+
+type PaymentIntentPaymentMethodOptionsSwish with
+    static member New(reference: string option) =
+        {
+            Reference = reference
+        }
+
 module PaymentIntentPaymentMethodOptionsSwish =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
     ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
@@ -15033,9 +17808,41 @@ module PaymentIntentPaymentMethodOptionsSwish =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type PaymentFlowsPrivatePaymentMethodsFinancialConnectionsCommonLinkedAccountOptionsFilters with
+    static member New(?accountSubcategories: PaymentFlowsPrivatePaymentMethodsFinancialConnectionsCommonLinkedAccountOptionsFiltersAccountSubcategories list) =
+        {
+            AccountSubcategories = accountSubcategories
+        }
+
+type LinkedAccountOptionsCommon with
+    static member New(prefetch: LinkedAccountOptionsCommonPrefetch list option, ?filters: PaymentFlowsPrivatePaymentMethodsFinancialConnectionsCommonLinkedAccountOptionsFilters, ?permissions: LinkedAccountOptionsCommonPermissions list, ?returnUrl: string) =
+        {
+            Prefetch = prefetch
+            Filters = filters
+            Permissions = permissions
+            ReturnUrl = returnUrl
+        }
+
 module PaymentMethodOptionsUsBankAccountMandateOptions =
     ///Mandate collection method
     let collectionMethod = "paper"
+
+type PaymentIntentPaymentMethodOptionsUsBankAccount with
+    static member New(?financialConnections: LinkedAccountOptionsCommon, ?mandateOptions: PaymentMethodOptionsUsBankAccountMandateOptions, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsUsBankAccountSetupFutureUsage, ?targetDate: string, ?transactionPurpose: PaymentIntentPaymentMethodOptionsUsBankAccountTransactionPurpose, ?verificationMethod: PaymentIntentPaymentMethodOptionsUsBankAccountVerificationMethod) =
+        {
+            FinancialConnections = financialConnections
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+            TargetDate = targetDate
+            TransactionPurpose = transactionPurpose
+            VerificationMethod = verificationMethod
+        }
+
+type PaymentMethodOptionsAffirm with
+    static member New(?preferredLocale: string) =
+        {
+            PreferredLocale = preferredLocale
+        }
 
 module PaymentMethodOptionsAffirm =
     ///Controls when the funds will be captured from the customer's account.
@@ -15047,6 +17854,12 @@ module PaymentMethodOptionsAffirm =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type PaymentMethodOptionsAfterpayClearpay with
+    static member New(reference: string option) =
+        {
+            Reference = reference
+        }
+
 module PaymentMethodOptionsAfterpayClearpay =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
@@ -15057,17 +17870,64 @@ module PaymentMethodOptionsAfterpayClearpay =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type PaymentMethodOptionsAlipay with
+    static member New(?setupFutureUsage: PaymentMethodOptionsAlipaySetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module PaymentMethodOptionsAlma =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
+
+type PaymentMethodOptionsAmazonPay with
+    static member New(?setupFutureUsage: PaymentMethodOptionsAmazonPaySetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 module PaymentMethodOptionsAmazonPay =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
 
+type PaymentMethodOptionsBancontact with
+    static member New(preferredLanguage: PaymentMethodOptionsBancontactPreferredLanguage, ?setupFutureUsage: PaymentMethodOptionsBancontactSetupFutureUsage) =
+        {
+            PreferredLanguage = preferredLanguage
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module PaymentMethodOptionsBillie =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
+
+type PaymentMethodOptionsBoleto with
+    static member New(expiresAfterDays: int, ?setupFutureUsage: PaymentMethodOptionsBoletoSetupFutureUsage) =
+        {
+            ExpiresAfterDays = expiresAfterDays
+            SetupFutureUsage = setupFutureUsage
+        }
+
+type PaymentMethodOptionsCardPresentRouting with
+    static member New(requestedPriority: PaymentMethodOptionsCardPresentRoutingRequestedPriority option) =
+        {
+            RequestedPriority = requestedPriority
+        }
+
+type PaymentMethodOptionsCardPresent with
+    static member New(requestExtendedAuthorization: bool option, requestIncrementalAuthorizationSupport: bool option, ?captureMethod: PaymentMethodOptionsCardPresentCaptureMethod, ?routing: PaymentMethodOptionsCardPresentRouting) =
+        {
+            RequestExtendedAuthorization = requestExtendedAuthorization
+            RequestIncrementalAuthorizationSupport = requestIncrementalAuthorizationSupport
+            CaptureMethod = captureMethod
+            Routing = routing
+        }
+
+type PaymentMethodOptionsCashapp with
+    static member New(?setupFutureUsage: PaymentMethodOptionsCashappSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 module PaymentMethodOptionsCashapp =
     ///Controls when the funds will be captured from the customer's account.
@@ -15079,6 +17939,26 @@ module PaymentMethodOptionsCrypto =
     ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
+
+type PaymentMethodOptionsCustomerBalanceEuBankAccount with
+    static member New(country: PaymentMethodOptionsCustomerBalanceEuBankAccountCountry) =
+        {
+            Country = country
+        }
+
+type PaymentMethodOptionsCustomerBalanceBankTransfer with
+    static member New(``type``: PaymentMethodOptionsCustomerBalanceBankTransferType option, ?euBankTransfer: PaymentMethodOptionsCustomerBalanceEuBankAccount, ?requestedAddressTypes: PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes list) =
+        {
+            Type = ``type``
+            EuBankTransfer = euBankTransfer
+            RequestedAddressTypes = requestedAddressTypes
+        }
+
+type PaymentMethodOptionsCustomerBalance with
+    static member New(?bankTransfer: PaymentMethodOptionsCustomerBalanceBankTransfer) =
+        {
+            BankTransfer = bankTransfer
+        }
 
 module PaymentMethodOptionsCustomerBalance =
     ///The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
@@ -15111,9 +17991,37 @@ module PaymentMethodOptionsGrabpay =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type PaymentMethodOptionsIdeal with
+    static member New(?setupFutureUsage: PaymentMethodOptionsIdealSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
+
+type PaymentMethodOptionsInteracPresent with
+    static member New(?paymentMethodOptionsInteracPresent: string option) =
+        {
+            PaymentMethodOptionsInteracPresent = paymentMethodOptionsInteracPresent |> Option.flatten
+        }
+
+type PaymentMethodOptionsKlarna with
+    static member New(preferredLocale: string option, ?setupFutureUsage: PaymentMethodOptionsKlarnaSetupFutureUsage) =
+        {
+            PreferredLocale = preferredLocale
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module PaymentMethodOptionsKlarna =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
+
+type PaymentMethodOptionsKonbini with
+    static member New(confirmationNumber: string option, expiresAfterDays: int option, expiresAt: DateTime option, productDescription: string option) =
+        {
+            ConfirmationNumber = confirmationNumber
+            ExpiresAfterDays = expiresAfterDays
+            ExpiresAt = expiresAt
+            ProductDescription = productDescription
+        }
 
 module PaymentMethodOptionsKonbini =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -15121,6 +18029,12 @@ module PaymentMethodOptionsKonbini =
     ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
+
+type PaymentMethodOptionsKrCard with
+    static member New(?setupFutureUsage: PaymentMethodOptionsKrCardSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 module PaymentMethodOptionsKrCard =
     ///Controls when the funds will be captured from the customer's account.
@@ -15140,6 +18054,12 @@ module PaymentMethodOptionsMultibanco =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type PaymentMethodOptionsOxxo with
+    static member New(expiresAfterDays: int) =
+        {
+            ExpiresAfterDays = expiresAfterDays
+        }
+
 module PaymentMethodOptionsOxxo =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
     ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
@@ -15154,6 +18074,12 @@ module PaymentMethodOptionsP24 =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type PaymentMethodOptionsPayByBank with
+    static member New(?paymentMethodOptionsPayByBank: string option) =
+        {
+            PaymentMethodOptionsPayByBank = paymentMethodOptionsPayByBank |> Option.flatten
+        }
+
 module PaymentMethodOptionsPaynow =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
     ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
@@ -15161,9 +18087,40 @@ module PaymentMethodOptionsPaynow =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type PaymentMethodOptionsPaypal with
+    static member New(preferredLocale: string option, reference: string option, ?setupFutureUsage: PaymentMethodOptionsPaypalSetupFutureUsage) =
+        {
+            PreferredLocale = preferredLocale
+            Reference = reference
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module PaymentMethodOptionsPaypal =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
+
+type PaymentMethodOptionsMandateOptionsPix with
+    static member New(?amount: int, ?amountIncludesIof: PaymentMethodOptionsMandateOptionsPixAmountIncludesIof, ?amountType: PaymentMethodOptionsMandateOptionsPixAmountType, ?currency: IsoTypes.IsoCurrencyCode, ?endDate: string, ?paymentSchedule: PaymentMethodOptionsMandateOptionsPixPaymentSchedule, ?reference: string, ?startDate: string) =
+        {
+            Amount = amount
+            AmountIncludesIof = amountIncludesIof
+            AmountType = amountType
+            Currency = currency
+            EndDate = endDate
+            PaymentSchedule = paymentSchedule
+            Reference = reference
+            StartDate = startDate
+        }
+
+type PaymentMethodOptionsPix with
+    static member New(expiresAfterSeconds: int option, expiresAt: int option, ?amountIncludesIof: PaymentMethodOptionsPixAmountIncludesIof, ?mandateOptions: PaymentMethodOptionsMandateOptionsPix, ?setupFutureUsage: PaymentMethodOptionsPixSetupFutureUsage) =
+        {
+            ExpiresAfterSeconds = expiresAfterSeconds
+            ExpiresAt = expiresAt
+            AmountIncludesIof = amountIncludesIof
+            MandateOptions = mandateOptions
+            SetupFutureUsage = setupFutureUsage
+        }
 
 module PaymentMethodOptionsPromptpay =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -15171,6 +18128,12 @@ module PaymentMethodOptionsPromptpay =
     ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
+
+type PaymentMethodOptionsRevolutPay with
+    static member New(?setupFutureUsage: PaymentMethodOptionsRevolutPaySetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 module PaymentMethodOptionsRevolutPay =
     ///Controls when the funds will be captured from the customer's account.
@@ -15180,12 +18143,32 @@ module PaymentMethodOptionsSatispay =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
 
+type PaymentMethodOptionsSofort with
+    static member New(preferredLanguage: PaymentMethodOptionsSofortPreferredLanguage option, ?setupFutureUsage: PaymentMethodOptionsSofortSetupFutureUsage) =
+        {
+            PreferredLanguage = preferredLanguage
+            SetupFutureUsage = setupFutureUsage
+        }
+
 module PaymentMethodOptionsTwint =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
     ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
     ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
+
+type PaymentMethodOptionsUpi with
+    static member New(?setupFutureUsage: PaymentMethodOptionsUpiSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
+
+type PaymentMethodOptionsWechatPay with
+    static member New(appId: string option, client: PaymentMethodOptionsWechatPayClient option) =
+        {
+            AppId = appId
+            Client = client
+        }
 
 module PaymentMethodOptionsWechatPay =
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -15201,157 +18184,5685 @@ module PaymentMethodOptionsZip =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type PaymentIntentPaymentMethodOptions with
+    static member New(?acssDebit: PaymentIntentPaymentMethodOptionsAcssDebit, ?affirm: PaymentMethodOptionsAffirm, ?afterpayClearpay: PaymentMethodOptionsAfterpayClearpay, ?alipay: PaymentMethodOptionsAlipay, ?alma: PaymentMethodOptionsAlma, ?amazonPay: PaymentMethodOptionsAmazonPay, ?auBecsDebit: PaymentIntentPaymentMethodOptionsAuBecsDebit, ?bacsDebit: PaymentIntentPaymentMethodOptionsBacsDebit, ?bancontact: PaymentMethodOptionsBancontact, ?billie: PaymentMethodOptionsBillie, ?blik: PaymentIntentPaymentMethodOptionsBlik, ?boleto: PaymentMethodOptionsBoleto, ?card: PaymentIntentPaymentMethodOptionsCard, ?cardPresent: PaymentMethodOptionsCardPresent, ?cashapp: PaymentMethodOptionsCashapp, ?crypto: PaymentMethodOptionsCrypto, ?customerBalance: PaymentMethodOptionsCustomerBalance, ?eps: PaymentIntentPaymentMethodOptionsEps, ?fpx: PaymentMethodOptionsFpx, ?giropay: PaymentMethodOptionsGiropay, ?grabpay: PaymentMethodOptionsGrabpay, ?ideal: PaymentMethodOptionsIdeal, ?interacPresent: PaymentMethodOptionsInteracPresent, ?kakaoPay: PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptions, ?klarna: PaymentMethodOptionsKlarna, ?konbini: PaymentMethodOptionsKonbini, ?krCard: PaymentMethodOptionsKrCard, ?link: PaymentIntentPaymentMethodOptionsLink, ?mbWay: PaymentMethodOptionsMbWay, ?mobilepay: PaymentIntentPaymentMethodOptionsMobilepay, ?multibanco: PaymentMethodOptionsMultibanco, ?naverPay: PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptions, ?nzBankAccount: PaymentIntentPaymentMethodOptionsNzBankAccount, ?oxxo: PaymentMethodOptionsOxxo, ?p24: PaymentMethodOptionsP24, ?payByBank: PaymentMethodOptionsPayByBank, ?payco: PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptions, ?paynow: PaymentMethodOptionsPaynow, ?paypal: PaymentMethodOptionsPaypal, ?payto: PaymentIntentPaymentMethodOptionsPayto, ?pix: PaymentMethodOptionsPix, ?promptpay: PaymentMethodOptionsPromptpay, ?revolutPay: PaymentMethodOptionsRevolutPay, ?samsungPay: PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptions, ?satispay: PaymentMethodOptionsSatispay, ?sepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit, ?sofort: PaymentMethodOptionsSofort, ?swish: PaymentIntentPaymentMethodOptionsSwish, ?twint: PaymentMethodOptionsTwint, ?upi: PaymentMethodOptionsUpi, ?usBankAccount: PaymentIntentPaymentMethodOptionsUsBankAccount, ?wechatPay: PaymentMethodOptionsWechatPay, ?zip: PaymentMethodOptionsZip) =
+        {
+            AcssDebit = acssDebit
+            Affirm = affirm
+            AfterpayClearpay = afterpayClearpay
+            Alipay = alipay
+            Alma = alma
+            AmazonPay = amazonPay
+            AuBecsDebit = auBecsDebit
+            BacsDebit = bacsDebit
+            Bancontact = bancontact
+            Billie = billie
+            Blik = blik
+            Boleto = boleto
+            Card = card
+            CardPresent = cardPresent
+            Cashapp = cashapp
+            Crypto = crypto
+            CustomerBalance = customerBalance
+            Eps = eps
+            Fpx = fpx
+            Giropay = giropay
+            Grabpay = grabpay
+            Ideal = ideal
+            InteracPresent = interacPresent
+            KakaoPay = kakaoPay
+            Klarna = klarna
+            Konbini = konbini
+            KrCard = krCard
+            Link = link
+            MbWay = mbWay
+            Mobilepay = mobilepay
+            Multibanco = multibanco
+            NaverPay = naverPay
+            NzBankAccount = nzBankAccount
+            Oxxo = oxxo
+            P24 = p24
+            PayByBank = payByBank
+            Payco = payco
+            Paynow = paynow
+            Paypal = paypal
+            Payto = payto
+            Pix = pix
+            Promptpay = promptpay
+            RevolutPay = revolutPay
+            SamsungPay = samsungPay
+            Satispay = satispay
+            SepaDebit = sepaDebit
+            Sofort = sofort
+            Swish = swish
+            Twint = twint
+            Upi = upi
+            UsBankAccount = usBankAccount
+            WechatPay = wechatPay
+            Zip = zip
+        }
+
+type PaymentIntentProcessingCustomerNotification with
+    static member New(approvalRequested: bool option, completesAt: DateTime option) =
+        {
+            ApprovalRequested = approvalRequested
+            CompletesAt = completesAt
+        }
+
+type PaymentIntentCardProcessing with
+    static member New(?customerNotification: PaymentIntentProcessingCustomerNotification) =
+        {
+            CustomerNotification = customerNotification
+        }
+
+type PaymentIntentProcessing with
+    static member New(?card: PaymentIntentCardProcessing) =
+        {
+            Card = card
+        }
+
 module PaymentIntentProcessing =
     ///Type of the payment method for which payment is in `processing` state, one of `card`.
     let ``type`` = "card"
 
-module DeletedBankAccount =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "bank_account"
+type DeletedCard with
+    static member New(deleted: bool, id: string, ?currency: IsoTypes.IsoCurrencyCode option) =
+        {
+            Deleted = deleted
+            Id = id
+            Currency = currency |> Option.flatten
+        }
 
 module DeletedCard =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "card"
 
+type PaymentMethodConfigBizPaymentMethodConfigurationDetails with
+    static member New(id: string, parent: string option) =
+        {
+            Id = id
+            Parent = parent
+        }
+
+type BillingDetails with
+    static member New(address: Address option, email: string option, name: string option, phone: string option, taxId: string option) =
+        {
+            Address = address
+            Email = email
+            Name = name
+            Phone = phone
+            TaxId = taxId
+        }
+
+type PaymentFlowsPrivatePaymentMethodsAlipay with
+    static member New(?paymentFlowsPrivatePaymentMethodsAlipay: string option) =
+        {
+            PaymentFlowsPrivatePaymentMethodsAlipay = paymentFlowsPrivatePaymentMethodsAlipay |> Option.flatten
+        }
+
+type PaymentMethodAcssDebit with
+    static member New(bankName: string option, fingerprint: string option, institutionNumber: string option, last4: string option, transitNumber: string option) =
+        {
+            BankName = bankName
+            Fingerprint = fingerprint
+            InstitutionNumber = institutionNumber
+            Last4 = last4
+            TransitNumber = transitNumber
+        }
+
+type PaymentMethodAffirm with
+    static member New(?paymentMethodAffirm: string option) =
+        {
+            PaymentMethodAffirm = paymentMethodAffirm |> Option.flatten
+        }
+
+type PaymentMethodAfterpayClearpay with
+    static member New(?paymentMethodAfterpayClearpay: string option) =
+        {
+            PaymentMethodAfterpayClearpay = paymentMethodAfterpayClearpay |> Option.flatten
+        }
+
+type PaymentMethodAlma with
+    static member New(?paymentMethodAlma: string option) =
+        {
+            PaymentMethodAlma = paymentMethodAlma |> Option.flatten
+        }
+
+type PaymentMethodAmazonPay with
+    static member New(?paymentMethodAmazonPay: string option) =
+        {
+            PaymentMethodAmazonPay = paymentMethodAmazonPay |> Option.flatten
+        }
+
+type PaymentMethodAuBecsDebit with
+    static member New(bsbNumber: string option, fingerprint: string option, last4: string option) =
+        {
+            BsbNumber = bsbNumber
+            Fingerprint = fingerprint
+            Last4 = last4
+        }
+
+type PaymentMethodBacsDebit with
+    static member New(fingerprint: string option, last4: string option, sortCode: string option) =
+        {
+            Fingerprint = fingerprint
+            Last4 = last4
+            SortCode = sortCode
+        }
+
+type PaymentMethodBancontact with
+    static member New(?paymentMethodBancontact: string option) =
+        {
+            PaymentMethodBancontact = paymentMethodBancontact |> Option.flatten
+        }
+
+type PaymentMethodBillie with
+    static member New(?paymentMethodBillie: string option) =
+        {
+            PaymentMethodBillie = paymentMethodBillie |> Option.flatten
+        }
+
+type PaymentMethodBlik with
+    static member New(?paymentMethodBlik: string option) =
+        {
+            PaymentMethodBlik = paymentMethodBlik |> Option.flatten
+        }
+
+type PaymentMethodBoleto with
+    static member New(taxId: string) =
+        {
+            TaxId = taxId
+        }
+
+type Networks with
+    static member New(available: string list, preferred: string option) =
+        {
+            Available = available
+            Preferred = preferred
+        }
+
+type PaymentMethodCardChecks with
+    static member New(addressLine1Check: PaymentMethodCardChecksAddressLine1Check option, addressPostalCodeCheck: PaymentMethodCardChecksAddressPostalCodeCheck option, cvcCheck: PaymentMethodCardChecksCvcCheck option) =
+        {
+            AddressLine1Check = addressLine1Check
+            AddressPostalCodeCheck = addressPostalCodeCheck
+            CvcCheck = cvcCheck
+        }
+
+type PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet with
+    static member New(``type``: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWalletType) =
+        {
+            Type = ``type``
+        }
+
+type PaymentMethodDetailsCardPresentOffline with
+    static member New(storedAt: DateTime option) =
+        {
+            StoredAt = storedAt
+        }
+
 module PaymentMethodDetailsCardPresentOffline =
     ///The method used to process this payment method offline. Only deferred is allowed.
     let ``type`` = "deferred"
+
+type PaymentMethodDetailsCardPresentReceipt with
+    static member New(applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: PaymentMethodDetailsCardPresentReceiptCardholderVerificationMethod option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsCardPresentReceiptAccountType) =
+        {
+            ApplicationCryptogram = applicationCryptogram
+            ApplicationPreferredName = applicationPreferredName
+            AuthorizationCode = authorizationCode
+            AuthorizationResponseCode = authorizationResponseCode
+            CardholderVerificationMethod = cardholderVerificationMethod
+            DedicatedFileName = dedicatedFileName
+            TerminalVerificationResults = terminalVerificationResults
+            TransactionStatusInformation = transactionStatusInformation
+            AccountType = accountType
+        }
+
+type PaymentMethodDetailsCardPresent with
+    static member New(amountAuthorized: int option, brand: PaymentMethodDetailsCardPresentBrand option, brandProduct: string option, cardholderName: string option, country: IsoTypes.IsoCountryCode option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsCardPresentFunding option, generatedCard: string option, incrementalAuthorizationSupported: bool, last4: string option, network: PaymentMethodDetailsCardPresentNetwork option, networkTransactionId: string option, offline: PaymentMethodDetailsCardPresentOffline option, overcaptureSupported: bool, preferredLocales: string list option, readMethod: PaymentMethodDetailsCardPresentReadMethod option, receipt: PaymentMethodDetailsCardPresentReceipt option, ?captureBefore: DateTime, ?description: string option, ?iin: string option, ?issuer: string option, ?location: string, ?reader: string, ?wallet: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet) =
+        {
+            AmountAuthorized = amountAuthorized
+            Brand = brand
+            BrandProduct = brandProduct
+            CardholderName = cardholderName
+            Country = country
+            EmvAuthData = emvAuthData
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Fingerprint = fingerprint
+            Funding = funding
+            GeneratedCard = generatedCard
+            IncrementalAuthorizationSupported = incrementalAuthorizationSupported
+            Last4 = last4
+            Network = network
+            NetworkTransactionId = networkTransactionId
+            Offline = offline
+            OvercaptureSupported = overcaptureSupported
+            PreferredLocales = preferredLocales
+            ReadMethod = readMethod
+            Receipt = receipt
+            CaptureBefore = captureBefore
+            Description = description |> Option.flatten
+            Iin = iin |> Option.flatten
+            Issuer = issuer |> Option.flatten
+            Location = location
+            Reader = reader
+            Wallet = wallet
+        }
+
+type CardGeneratedFromPaymentMethodDetails with
+    static member New(``type``: string, ?cardPresent: PaymentMethodDetailsCardPresent) =
+        {
+            Type = ``type``
+            CardPresent = cardPresent
+        }
+
+type PaymentMethodCardGeneratedCard with
+    static member New(charge: string option, paymentMethodDetails: CardGeneratedFromPaymentMethodDetails option, setupAttempt: StripeId<Markers.SetupAttempt> option) =
+        {
+            Charge = charge
+            PaymentMethodDetails = paymentMethodDetails
+            SetupAttempt = setupAttempt
+        }
+
+type PaymentMethodCardWalletAmexExpressCheckout with
+    static member New(?paymentMethodCardWalletAmexExpressCheckout: string option) =
+        {
+            PaymentMethodCardWalletAmexExpressCheckout = paymentMethodCardWalletAmexExpressCheckout |> Option.flatten
+        }
+
+type PaymentMethodCardWalletApplePay with
+    static member New(?paymentMethodCardWalletApplePay: string option) =
+        {
+            PaymentMethodCardWalletApplePay = paymentMethodCardWalletApplePay |> Option.flatten
+        }
+
+type PaymentMethodCardWalletGooglePay with
+    static member New(?paymentMethodCardWalletGooglePay: string option) =
+        {
+            PaymentMethodCardWalletGooglePay = paymentMethodCardWalletGooglePay |> Option.flatten
+        }
+
+type PaymentMethodCardWalletLink with
+    static member New(?paymentMethodCardWalletLink: string option) =
+        {
+            PaymentMethodCardWalletLink = paymentMethodCardWalletLink |> Option.flatten
+        }
+
+type PaymentMethodCardWalletMasterpass with
+    static member New(billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
+        {
+            BillingAddress = billingAddress
+            Email = email
+            Name = name
+            ShippingAddress = shippingAddress
+        }
+
+type PaymentMethodCardWalletSamsungPay with
+    static member New(?paymentMethodCardWalletSamsungPay: string option) =
+        {
+            PaymentMethodCardWalletSamsungPay = paymentMethodCardWalletSamsungPay |> Option.flatten
+        }
+
+type PaymentMethodCardWalletVisaCheckout with
+    static member New(billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
+        {
+            BillingAddress = billingAddress
+            Email = email
+            Name = name
+            ShippingAddress = shippingAddress
+        }
+
+type PaymentMethodCardWallet with
+    static member New(dynamicLast4: string option, ``type``: PaymentMethodCardWalletType, ?amexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout, ?applePay: PaymentMethodCardWalletApplePay, ?googlePay: PaymentMethodCardWalletGooglePay, ?link: PaymentMethodCardWalletLink, ?masterpass: PaymentMethodCardWalletMasterpass, ?samsungPay: PaymentMethodCardWalletSamsungPay, ?visaCheckout: PaymentMethodCardWalletVisaCheckout) =
+        {
+            DynamicLast4 = dynamicLast4
+            Type = ``type``
+            AmexExpressCheckout = amexExpressCheckout
+            ApplePay = applePay
+            GooglePay = googlePay
+            Link = link
+            Masterpass = masterpass
+            SamsungPay = samsungPay
+            VisaCheckout = visaCheckout
+        }
+
+type ThreeDSecureUsage with
+    static member New(supported: bool) =
+        {
+            Supported = supported
+        }
+
+type PaymentMethodCard with
+    static member New(brand: PaymentMethodCardBrand, checks: PaymentMethodCardChecks option, country: IsoTypes.IsoCountryCode option, displayBrand: string option, expMonth: int, expYear: int, funding: PaymentMethodCardFunding, generatedFrom: PaymentMethodCardGeneratedCard option, last4: string, networks: Networks option, regulatedStatus: PaymentMethodCardRegulatedStatus option, threeDSecureUsage: ThreeDSecureUsage option, wallet: PaymentMethodCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option) =
+        {
+            Brand = brand
+            Checks = checks
+            Country = country
+            DisplayBrand = displayBrand
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Funding = funding
+            GeneratedFrom = generatedFrom
+            Last4 = last4
+            Networks = networks
+            RegulatedStatus = regulatedStatus
+            ThreeDSecureUsage = threeDSecureUsage
+            Wallet = wallet
+            Description = description |> Option.flatten
+            Fingerprint = fingerprint |> Option.flatten
+            Iin = iin |> Option.flatten
+            Issuer = issuer |> Option.flatten
+        }
+
+type PaymentMethodCardPresentNetworks with
+    static member New(available: string list, preferred: string option) =
+        {
+            Available = available
+            Preferred = preferred
+        }
+
+type PaymentMethodCardPresent with
+    static member New(brand: PaymentMethodCardPresentBrand option, brandProduct: string option, cardholderName: string option, country: IsoTypes.IsoCountryCode option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodCardPresentFunding option, last4: string option, networks: PaymentMethodCardPresentNetworks option, offline: PaymentMethodDetailsCardPresentOffline option, preferredLocales: string list option, readMethod: PaymentMethodCardPresentReadMethod option, ?description: string option, ?iin: string option, ?issuer: string option, ?wallet: PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet) =
+        {
+            Brand = brand
+            BrandProduct = brandProduct
+            CardholderName = cardholderName
+            Country = country
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Fingerprint = fingerprint
+            Funding = funding
+            Last4 = last4
+            Networks = networks
+            Offline = offline
+            PreferredLocales = preferredLocales
+            ReadMethod = readMethod
+            Description = description |> Option.flatten
+            Iin = iin |> Option.flatten
+            Issuer = issuer |> Option.flatten
+            Wallet = wallet
+        }
+
+type PaymentMethodCashapp with
+    static member New(buyerId: string option, cashtag: string option) =
+        {
+            BuyerId = buyerId
+            Cashtag = cashtag
+        }
+
+type PaymentMethodCrypto with
+    static member New(?paymentMethodCrypto: string option) =
+        {
+            PaymentMethodCrypto = paymentMethodCrypto |> Option.flatten
+        }
+
+type CustomLogo with
+    static member New(contentType: string option, url: string) =
+        {
+            ContentType = contentType
+            Url = url
+        }
+
+type PaymentMethodCustom with
+    static member New(displayName: string option, logo: CustomLogo option, ``type``: string) =
+        {
+            DisplayName = displayName
+            Logo = logo
+            Type = ``type``
+        }
+
+type PaymentMethodCustomerBalance with
+    static member New(?paymentMethodCustomerBalance: string option) =
+        {
+            PaymentMethodCustomerBalance = paymentMethodCustomerBalance |> Option.flatten
+        }
+
+type PaymentMethodEps with
+    static member New(bank: PaymentMethodEpsBank option) =
+        {
+            Bank = bank
+        }
+
+type PaymentMethodFpx with
+    static member New(accountHolderType: PaymentMethodFpxAccountHolderType option, bank: PaymentMethodFpxBank) =
+        {
+            AccountHolderType = accountHolderType
+            Bank = bank
+        }
+
+type PaymentMethodGiropay with
+    static member New(?paymentMethodGiropay: string option) =
+        {
+            PaymentMethodGiropay = paymentMethodGiropay |> Option.flatten
+        }
+
+type PaymentMethodGrabpay with
+    static member New(?paymentMethodGrabpay: string option) =
+        {
+            PaymentMethodGrabpay = paymentMethodGrabpay |> Option.flatten
+        }
+
+type PaymentMethodIdeal with
+    static member New(bank: PaymentMethodIdealBank option, bic: PaymentMethodIdealBic option) =
+        {
+            Bank = bank
+            Bic = bic
+        }
+
+type PaymentMethodInteracPresent with
+    static member New(brand: PaymentMethodInteracPresentBrand option, cardholderName: string option, country: IsoTypes.IsoCountryCode option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodInteracPresentFunding option, last4: string option, networks: PaymentMethodCardPresentNetworks option, preferredLocales: string list option, readMethod: PaymentMethodInteracPresentReadMethod option, ?description: string option, ?iin: string option, ?issuer: string option) =
+        {
+            Brand = brand
+            CardholderName = cardholderName
+            Country = country
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Fingerprint = fingerprint
+            Funding = funding
+            Last4 = last4
+            Networks = networks
+            PreferredLocales = preferredLocales
+            ReadMethod = readMethod
+            Description = description |> Option.flatten
+            Iin = iin |> Option.flatten
+            Issuer = issuer |> Option.flatten
+        }
+
+type PaymentMethodKakaoPay with
+    static member New(?paymentMethodKakaoPay: string option) =
+        {
+            PaymentMethodKakaoPay = paymentMethodKakaoPay |> Option.flatten
+        }
+
+type PaymentFlowsPrivatePaymentMethodsKlarnaDob with
+    static member New(day: int option, month: int option, year: int option) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
+
+type PaymentMethodKlarna with
+    static member New(?dob: PaymentFlowsPrivatePaymentMethodsKlarnaDob option) =
+        {
+            Dob = dob |> Option.flatten
+        }
+
+type PaymentMethodKonbini with
+    static member New(?paymentMethodKonbini: string option) =
+        {
+            PaymentMethodKonbini = paymentMethodKonbini |> Option.flatten
+        }
+
+type PaymentMethodKrCard with
+    static member New(brand: PaymentMethodKrCardBrand option, last4: string option) =
+        {
+            Brand = brand
+            Last4 = last4
+        }
+
+type PaymentMethodLink with
+    static member New(email: string option, ?persistentToken: string) =
+        {
+            Email = email
+            PersistentToken = persistentToken
+        }
+
+type PaymentMethodMbWay with
+    static member New(?paymentMethodMbWay: string option) =
+        {
+            PaymentMethodMbWay = paymentMethodMbWay |> Option.flatten
+        }
+
+type PaymentMethodMobilepay with
+    static member New(?paymentMethodMobilepay: string option) =
+        {
+            PaymentMethodMobilepay = paymentMethodMobilepay |> Option.flatten
+        }
+
+type PaymentMethodMultibanco with
+    static member New(?paymentMethodMultibanco: string option) =
+        {
+            PaymentMethodMultibanco = paymentMethodMultibanco |> Option.flatten
+        }
+
+type PaymentMethodNaverPay with
+    static member New(buyerId: string option, funding: PaymentMethodNaverPayFunding) =
+        {
+            BuyerId = buyerId
+            Funding = funding
+        }
+
+type PaymentMethodNzBankAccount with
+    static member New(accountHolderName: string option, bankCode: string, bankName: string, branchCode: string, last4: string, suffix: string option) =
+        {
+            AccountHolderName = accountHolderName
+            BankCode = bankCode
+            BankName = bankName
+            BranchCode = branchCode
+            Last4 = last4
+            Suffix = suffix
+        }
+
+type PaymentMethodOxxo with
+    static member New(?paymentMethodOxxo: string option) =
+        {
+            PaymentMethodOxxo = paymentMethodOxxo |> Option.flatten
+        }
+
+type PaymentMethodP24 with
+    static member New(bank: PaymentMethodP24Bank option) =
+        {
+            Bank = bank
+        }
+
+type PaymentMethodPayByBank with
+    static member New(?paymentMethodPayByBank: string option) =
+        {
+            PaymentMethodPayByBank = paymentMethodPayByBank |> Option.flatten
+        }
+
+type PaymentMethodPayco with
+    static member New(?paymentMethodPayco: string option) =
+        {
+            PaymentMethodPayco = paymentMethodPayco |> Option.flatten
+        }
+
+type PaymentMethodPaynow with
+    static member New(?paymentMethodPaynow: string option) =
+        {
+            PaymentMethodPaynow = paymentMethodPaynow |> Option.flatten
+        }
+
+type PaymentMethodPaypal with
+    static member New(country: IsoTypes.IsoCountryCode option, payerEmail: string option, payerId: string option) =
+        {
+            Country = country
+            PayerEmail = payerEmail
+            PayerId = payerId
+        }
+
+type PaymentMethodPayto with
+    static member New(bsbNumber: string option, last4: string option, payId: string option) =
+        {
+            BsbNumber = bsbNumber
+            Last4 = last4
+            PayId = payId
+        }
+
+type PaymentMethodPix with
+    static member New(?paymentMethodPix: string option) =
+        {
+            PaymentMethodPix = paymentMethodPix |> Option.flatten
+        }
+
+type PaymentMethodPromptpay with
+    static member New(?paymentMethodPromptpay: string option) =
+        {
+            PaymentMethodPromptpay = paymentMethodPromptpay |> Option.flatten
+        }
+
+type PaymentMethodRevolutPay with
+    static member New(?paymentMethodRevolutPay: string option) =
+        {
+            PaymentMethodRevolutPay = paymentMethodRevolutPay |> Option.flatten
+        }
+
+type PaymentMethodSamsungPay with
+    static member New(?paymentMethodSamsungPay: string option) =
+        {
+            PaymentMethodSamsungPay = paymentMethodSamsungPay |> Option.flatten
+        }
+
+type PaymentMethodSatispay with
+    static member New(?paymentMethodSatispay: string option) =
+        {
+            PaymentMethodSatispay = paymentMethodSatispay |> Option.flatten
+        }
+
+type SepaDebitGeneratedFrom with
+    static member New(charge: StripeId<Markers.Charge> option, setupAttempt: StripeId<Markers.SetupAttempt> option) =
+        {
+            Charge = charge
+            SetupAttempt = setupAttempt
+        }
+
+type PaymentMethodSepaDebit with
+    static member New(bankCode: string option, branchCode: string option, country: IsoTypes.IsoCountryCode option, fingerprint: string option, generatedFrom: SepaDebitGeneratedFrom option, last4: string option) =
+        {
+            BankCode = bankCode
+            BranchCode = branchCode
+            Country = country
+            Fingerprint = fingerprint
+            GeneratedFrom = generatedFrom
+            Last4 = last4
+        }
+
+type PaymentMethodSofort with
+    static member New(country: IsoTypes.IsoCountryCode option) =
+        {
+            Country = country
+        }
+
+type PaymentMethodSunbit with
+    static member New(?paymentMethodSunbit: string option) =
+        {
+            PaymentMethodSunbit = paymentMethodSunbit |> Option.flatten
+        }
+
+type PaymentMethodSwish with
+    static member New(?paymentMethodSwish: string option) =
+        {
+            PaymentMethodSwish = paymentMethodSwish |> Option.flatten
+        }
+
+type PaymentMethodTwint with
+    static member New(?paymentMethodTwint: string option) =
+        {
+            PaymentMethodTwint = paymentMethodTwint |> Option.flatten
+        }
+
+type PaymentMethodUpi with
+    static member New(vpa: string option) =
+        {
+            Vpa = vpa
+        }
+
+type PaymentMethodUsBankAccountBlocked with
+    static member New(networkCode: PaymentMethodUsBankAccountBlockedNetworkCode option, reason: PaymentMethodUsBankAccountBlockedReason option) =
+        {
+            NetworkCode = networkCode
+            Reason = reason
+        }
+
+type PaymentMethodUsBankAccountStatusDetails with
+    static member New(?blocked: PaymentMethodUsBankAccountBlocked) =
+        {
+            Blocked = blocked
+        }
+
+type UsBankAccountNetworks with
+    static member New(preferred: string option, supported: UsBankAccountNetworksSupported list) =
+        {
+            Preferred = preferred
+            Supported = supported
+        }
+
+type PaymentMethodUsBankAccount with
+    static member New(accountHolderType: PaymentMethodUsBankAccountAccountHolderType option, accountType: PaymentMethodUsBankAccountAccountType option, bankName: string option, financialConnectionsAccount: string option, fingerprint: string option, last4: string option, networks: UsBankAccountNetworks option, routingNumber: string option, statusDetails: PaymentMethodUsBankAccountStatusDetails option) =
+        {
+            AccountHolderType = accountHolderType
+            AccountType = accountType
+            BankName = bankName
+            FinancialConnectionsAccount = financialConnectionsAccount
+            Fingerprint = fingerprint
+            Last4 = last4
+            Networks = networks
+            RoutingNumber = routingNumber
+            StatusDetails = statusDetails
+        }
+
+type PaymentMethodWechatPay with
+    static member New(?paymentMethodWechatPay: string option) =
+        {
+            PaymentMethodWechatPay = paymentMethodWechatPay |> Option.flatten
+        }
+
+type PaymentMethodZip with
+    static member New(?paymentMethodZip: string option) =
+        {
+            PaymentMethodZip = paymentMethodZip |> Option.flatten
+        }
+
+type PaymentMethod with
+    static member New(billingDetails: BillingDetails, created: DateTime, customer: StripeId<Markers.Customer> option, customerAccount: string option, id: string, livemode: bool, metadata: Map<string, string> option, ``type``: PaymentMethodType, ?acssDebit: PaymentMethodAcssDebit, ?affirm: PaymentMethodAffirm, ?afterpayClearpay: PaymentMethodAfterpayClearpay, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipay, ?allowRedisplay: PaymentMethodAllowRedisplay, ?alma: PaymentMethodAlma, ?amazonPay: PaymentMethodAmazonPay, ?auBecsDebit: PaymentMethodAuBecsDebit, ?bacsDebit: PaymentMethodBacsDebit, ?bancontact: PaymentMethodBancontact, ?billie: PaymentMethodBillie, ?blik: PaymentMethodBlik, ?boleto: PaymentMethodBoleto, ?card: PaymentMethodCard, ?cardPresent: PaymentMethodCardPresent, ?cashapp: PaymentMethodCashapp, ?crypto: PaymentMethodCrypto, ?custom: PaymentMethodCustom, ?customerBalance: PaymentMethodCustomerBalance, ?eps: PaymentMethodEps, ?fpx: PaymentMethodFpx, ?giropay: PaymentMethodGiropay, ?grabpay: PaymentMethodGrabpay, ?ideal: PaymentMethodIdeal, ?interacPresent: PaymentMethodInteracPresent, ?kakaoPay: PaymentMethodKakaoPay, ?klarna: PaymentMethodKlarna, ?konbini: PaymentMethodKonbini, ?krCard: PaymentMethodKrCard, ?link: PaymentMethodLink, ?mbWay: PaymentMethodMbWay, ?mobilepay: PaymentMethodMobilepay, ?multibanco: PaymentMethodMultibanco, ?naverPay: PaymentMethodNaverPay, ?nzBankAccount: PaymentMethodNzBankAccount, ?oxxo: PaymentMethodOxxo, ?p24: PaymentMethodP24, ?payByBank: PaymentMethodPayByBank, ?payco: PaymentMethodPayco, ?paynow: PaymentMethodPaynow, ?paypal: PaymentMethodPaypal, ?payto: PaymentMethodPayto, ?pix: PaymentMethodPix, ?promptpay: PaymentMethodPromptpay, ?radarOptions: RadarRadarOptions, ?revolutPay: PaymentMethodRevolutPay, ?samsungPay: PaymentMethodSamsungPay, ?satispay: PaymentMethodSatispay, ?sepaDebit: PaymentMethodSepaDebit, ?sofort: PaymentMethodSofort, ?sunbit: PaymentMethodSunbit, ?swish: PaymentMethodSwish, ?twint: PaymentMethodTwint, ?upi: PaymentMethodUpi, ?usBankAccount: PaymentMethodUsBankAccount, ?wechatPay: PaymentMethodWechatPay, ?zip: PaymentMethodZip) =
+        {
+            BillingDetails = billingDetails
+            Created = created
+            Customer = customer
+            CustomerAccount = customerAccount
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Type = ``type``
+            AcssDebit = acssDebit
+            Affirm = affirm
+            AfterpayClearpay = afterpayClearpay
+            Alipay = alipay
+            AllowRedisplay = allowRedisplay
+            Alma = alma
+            AmazonPay = amazonPay
+            AuBecsDebit = auBecsDebit
+            BacsDebit = bacsDebit
+            Bancontact = bancontact
+            Billie = billie
+            Blik = blik
+            Boleto = boleto
+            Card = card
+            CardPresent = cardPresent
+            Cashapp = cashapp
+            Crypto = crypto
+            Custom = custom
+            CustomerBalance = customerBalance
+            Eps = eps
+            Fpx = fpx
+            Giropay = giropay
+            Grabpay = grabpay
+            Ideal = ideal
+            InteracPresent = interacPresent
+            KakaoPay = kakaoPay
+            Klarna = klarna
+            Konbini = konbini
+            KrCard = krCard
+            Link = link
+            MbWay = mbWay
+            Mobilepay = mobilepay
+            Multibanco = multibanco
+            NaverPay = naverPay
+            NzBankAccount = nzBankAccount
+            Oxxo = oxxo
+            P24 = p24
+            PayByBank = payByBank
+            Payco = payco
+            Paynow = paynow
+            Paypal = paypal
+            Payto = payto
+            Pix = pix
+            Promptpay = promptpay
+            RadarOptions = radarOptions
+            RevolutPay = revolutPay
+            SamsungPay = samsungPay
+            Satispay = satispay
+            SepaDebit = sepaDebit
+            Sofort = sofort
+            Sunbit = sunbit
+            Swish = swish
+            Twint = twint
+            Upi = upi
+            UsBankAccount = usBankAccount
+            WechatPay = wechatPay
+            Zip = zip
+        }
 
 module PaymentMethod =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "payment_method"
 
+type PaymentFlowsAutomaticPaymentMethodsSetupIntent with
+    static member New(enabled: bool option, ?allowRedirects: PaymentFlowsAutomaticPaymentMethodsSetupIntentAllowRedirects) =
+        {
+            Enabled = enabled
+            AllowRedirects = allowRedirects
+        }
+
+type SetupIntentNextActionPixDisplayQrCode with
+    static member New(data: string, expiresAt: DateTime, hostedInstructionsUrl: string, imageUrlPng: string, imageUrlSvg: string) =
+        {
+            Data = data
+            ExpiresAt = expiresAt
+            HostedInstructionsUrl = hostedInstructionsUrl
+            ImageUrlPng = imageUrlPng
+            ImageUrlSvg = imageUrlSvg
+        }
+
+type SetupIntentNextActionRedirectToUrl with
+    static member New(returnUrl: string option, url: string option) =
+        {
+            ReturnUrl = returnUrl
+            Url = url
+        }
+
+type SetupIntentNextActionVerifyWithMicrodeposits with
+    static member New(arrivalDate: DateTime, hostedVerificationUrl: string, microdepositType: SetupIntentNextActionVerifyWithMicrodepositsMicrodepositType option) =
+        {
+            ArrivalDate = arrivalDate
+            HostedVerificationUrl = hostedVerificationUrl
+            MicrodepositType = microdepositType
+        }
+
+type SetupIntentNextAction with
+    static member New(``type``: SetupIntentNextActionType, ?cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode, ?pixDisplayQrCode: SetupIntentNextActionPixDisplayQrCode, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode, ?useStripeSdk: string, ?verifyWithMicrodeposits: SetupIntentNextActionVerifyWithMicrodeposits) =
+        {
+            Type = ``type``
+            CashappHandleRedirectOrDisplayQrCode = cashappHandleRedirectOrDisplayQrCode
+            PixDisplayQrCode = pixDisplayQrCode
+            RedirectToUrl = redirectToUrl
+            UpiHandleRedirectOrDisplayQrCode = upiHandleRedirectOrDisplayQrCode
+            UseStripeSdk = useStripeSdk
+            VerifyWithMicrodeposits = verifyWithMicrodeposits
+        }
+
+type SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit with
+    static member New(intervalDescription: string option, paymentSchedule: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule option, transactionType: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option, ?customMandateUrl: string, ?defaultFor: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebitDefaultFor list) =
+        {
+            IntervalDescription = intervalDescription
+            PaymentSchedule = paymentSchedule
+            TransactionType = transactionType
+            CustomMandateUrl = customMandateUrl
+            DefaultFor = defaultFor
+        }
+
+type SetupIntentPaymentMethodOptionsAcssDebit with
+    static member New(currency: SetupIntentPaymentMethodOptionsAcssDebitCurrency option, ?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit, ?verificationMethod: SetupIntentPaymentMethodOptionsAcssDebitVerificationMethod) =
+        {
+            Currency = currency
+            MandateOptions = mandateOptions
+            VerificationMethod = verificationMethod
+        }
+
+type SetupIntentPaymentMethodOptionsAmazonPay with
+    static member New(?setupIntentPaymentMethodOptionsAmazonPay: string option) =
+        {
+            SetupIntentPaymentMethodOptionsAmazonPay = setupIntentPaymentMethodOptionsAmazonPay |> Option.flatten
+        }
+
+type SetupIntentPaymentMethodOptionsMandateOptionsBacsDebit with
+    static member New(?referencePrefix: string) =
+        {
+            ReferencePrefix = referencePrefix
+        }
+
+type SetupIntentPaymentMethodOptionsBacsDebit with
+    static member New(?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsBacsDebit) =
+        {
+            MandateOptions = mandateOptions
+        }
+
+type SetupIntentPaymentMethodOptionsCardMandateOptions with
+    static member New(amount: int, amountType: SetupIntentPaymentMethodOptionsCardMandateOptionsAmountType, currency: IsoTypes.IsoCurrencyCode, description: string option, endDate: DateTime option, interval: SetupIntentPaymentMethodOptionsCardMandateOptionsInterval, intervalCount: int option, reference: string, startDate: DateTime, supportedTypes: string list option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            Currency = currency
+            Description = description
+            EndDate = endDate
+            Interval = interval
+            IntervalCount = intervalCount
+            Reference = reference
+            StartDate = startDate
+            SupportedTypes = supportedTypes
+        }
+
+type SetupIntentPaymentMethodOptionsCard with
+    static member New(mandateOptions: SetupIntentPaymentMethodOptionsCardMandateOptions option, network: SetupIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
+        {
+            MandateOptions = mandateOptions
+            Network = network
+            RequestThreeDSecure = requestThreeDSecure
+        }
+
+type SetupIntentPaymentMethodOptionsCardPresent with
+    static member New(?setupIntentPaymentMethodOptionsCardPresent: string option) =
+        {
+            SetupIntentPaymentMethodOptionsCardPresent = setupIntentPaymentMethodOptionsCardPresent |> Option.flatten
+        }
+
+type SetupIntentPaymentMethodOptionsKlarna with
+    static member New(currency: IsoTypes.IsoCurrencyCode option, preferredLocale: string option) =
+        {
+            Currency = currency
+            PreferredLocale = preferredLocale
+        }
+
+type SetupIntentPaymentMethodOptionsLink with
+    static member New(persistentToken: string option) =
+        {
+            PersistentToken = persistentToken
+        }
+
+type SetupIntentPaymentMethodOptionsPaypal with
+    static member New(billingAgreementId: string option) =
+        {
+            BillingAgreementId = billingAgreementId
+        }
+
+type SetupIntentPaymentMethodOptionsPayto with
+    static member New(?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsPayto) =
+        {
+            MandateOptions = mandateOptions
+        }
+
+type SetupIntentPaymentMethodOptionsPix with
+    static member New(?mandateOptions: PaymentMethodOptionsMandateOptionsPix) =
+        {
+            MandateOptions = mandateOptions
+        }
+
+type SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit with
+    static member New(?referencePrefix: string) =
+        {
+            ReferencePrefix = referencePrefix
+        }
+
+type SetupIntentPaymentMethodOptionsSepaDebit with
+    static member New(?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsSepaDebit) =
+        {
+            MandateOptions = mandateOptions
+        }
+
+type PaymentMethodOptionsMandateOptionsUpi with
+    static member New(amount: int option, amountType: PaymentMethodOptionsMandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            Description = description
+            EndDate = endDate
+        }
+
+type SetupIntentPaymentMethodOptionsUpi with
+    static member New(?mandateOptions: PaymentMethodOptionsMandateOptionsUpi) =
+        {
+            MandateOptions = mandateOptions
+        }
+
+type SetupIntentPaymentMethodOptionsUsBankAccount with
+    static member New(?financialConnections: LinkedAccountOptionsCommon, ?mandateOptions: PaymentMethodOptionsUsBankAccountMandateOptions, ?verificationMethod: SetupIntentPaymentMethodOptionsUsBankAccountVerificationMethod) =
+        {
+            FinancialConnections = financialConnections
+            MandateOptions = mandateOptions
+            VerificationMethod = verificationMethod
+        }
+
+type SetupIntentPaymentMethodOptions with
+    static member New(?acssDebit: SetupIntentPaymentMethodOptionsAcssDebit, ?amazonPay: SetupIntentPaymentMethodOptionsAmazonPay, ?bacsDebit: SetupIntentPaymentMethodOptionsBacsDebit, ?card: SetupIntentPaymentMethodOptionsCard, ?cardPresent: SetupIntentPaymentMethodOptionsCardPresent, ?klarna: SetupIntentPaymentMethodOptionsKlarna, ?link: SetupIntentPaymentMethodOptionsLink, ?paypal: SetupIntentPaymentMethodOptionsPaypal, ?payto: SetupIntentPaymentMethodOptionsPayto, ?pix: SetupIntentPaymentMethodOptionsPix, ?sepaDebit: SetupIntentPaymentMethodOptionsSepaDebit, ?upi: SetupIntentPaymentMethodOptionsUpi, ?usBankAccount: SetupIntentPaymentMethodOptionsUsBankAccount) =
+        {
+            AcssDebit = acssDebit
+            AmazonPay = amazonPay
+            BacsDebit = bacsDebit
+            Card = card
+            CardPresent = cardPresent
+            Klarna = klarna
+            Link = link
+            Paypal = paypal
+            Payto = payto
+            Pix = pix
+            SepaDebit = sepaDebit
+            Upi = upi
+            UsBankAccount = usBankAccount
+        }
+
+type ApiErrors with
+    static member New(``type``: ApiErrorsType, ?adviceCode: string, ?charge: string, ?code: ApiErrorsCode, ?declineCode: string, ?docUrl: string, ?message: string, ?networkAdviceCode: string, ?networkDeclineCode: string, ?param: string, ?paymentIntent: PaymentIntent, ?paymentMethod: PaymentMethod, ?paymentMethodType: string, ?requestLogUrl: string, ?setupIntent: SetupIntent, ?source: PaymentSource) =
+        {
+            Type = ``type``
+            AdviceCode = adviceCode
+            Charge = charge
+            Code = code
+            DeclineCode = declineCode
+            DocUrl = docUrl
+            Message = message
+            NetworkAdviceCode = networkAdviceCode
+            NetworkDeclineCode = networkDeclineCode
+            Param = param
+            PaymentIntent = paymentIntent
+            PaymentMethod = paymentMethod
+            PaymentMethodType = paymentMethodType
+            RequestLogUrl = requestLogUrl
+            SetupIntent = setupIntent
+            Source = source
+        }
+
+type PaymentIntent with
+    static member New(amount: int, amountCapturable: int, amountReceived: int, application: StripeId<Markers.Application> option, applicationFeeAmount: int option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsPaymentIntent option, canceledAt: DateTime option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: PaymentIntentCustomer'AnyOf option, customerAccount: string option, description: string option, excludedPaymentMethodTypes: PaymentIntentExcludedPaymentMethodTypes list option, id: string, lastPaymentError: ApiErrors option, latestCharge: StripeId<Markers.Charge> option, livemode: bool, managedPayments: SmorResourceManagedPayments option, metadata: Map<string, string>, nextAction: PaymentIntentNextAction option, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod> option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: PaymentIntentPaymentMethodOptions option, paymentMethodTypes: string list, processing: PaymentIntentProcessing option, receiptEmail: string option, review: StripeId<Markers.Review> option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: Shipping option, source: PaymentIntentSource'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferGroup: string option, ?amountDetails: PaymentFlowsAmountDetails, ?hooks: PaymentFlowsPaymentIntentAsyncWorkflows, ?paymentDetails: PaymentFlowsPaymentDetails, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?transferData: TransferData option) =
+        {
+            Amount = amount
+            AmountCapturable = amountCapturable
+            AmountReceived = amountReceived
+            Application = application
+            ApplicationFeeAmount = applicationFeeAmount
+            AutomaticPaymentMethods = automaticPaymentMethods
+            CanceledAt = canceledAt
+            CancellationReason = cancellationReason
+            CaptureMethod = captureMethod
+            ClientSecret = clientSecret
+            ConfirmationMethod = confirmationMethod
+            Created = created
+            Currency = currency
+            Customer = customer
+            CustomerAccount = customerAccount
+            Description = description
+            ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
+            Id = id
+            LastPaymentError = lastPaymentError
+            LatestCharge = latestCharge
+            Livemode = livemode
+            ManagedPayments = managedPayments
+            Metadata = metadata
+            NextAction = nextAction
+            OnBehalfOf = onBehalfOf
+            PaymentMethod = paymentMethod
+            PaymentMethodConfigurationDetails = paymentMethodConfigurationDetails
+            PaymentMethodOptions = paymentMethodOptions
+            PaymentMethodTypes = paymentMethodTypes
+            Processing = processing
+            ReceiptEmail = receiptEmail
+            Review = review
+            SetupFutureUsage = setupFutureUsage
+            Shipping = shipping
+            Source = source
+            StatementDescriptor = statementDescriptor
+            StatementDescriptorSuffix = statementDescriptorSuffix
+            Status = status
+            TransferGroup = transferGroup
+            AmountDetails = amountDetails
+            Hooks = hooks
+            PaymentDetails = paymentDetails
+            PresentmentDetails = presentmentDetails
+            TransferData = transferData |> Option.flatten
+        }
+
 module PaymentIntent =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "payment_intent"
+
+type SetupIntent with
+    static member New(application: StripeId<Markers.Application> option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsSetupIntent option, cancellationReason: SetupIntentCancellationReason option, clientSecret: string option, created: DateTime, customer: SetupIntentCustomer'AnyOf option, description: string option, excludedPaymentMethodTypes: SetupIntentExcludedPaymentMethodTypes list option, id: string, lastSetupError: ApiErrors option, latestAttempt: StripeId<Markers.SetupAttempt> option, livemode: bool, mandate: StripeId<Markers.Mandate> option, metadata: Map<string, string> option, nextAction: SetupIntentNextAction option, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod> option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: SetupIntentPaymentMethodOptions option, paymentMethodTypes: string list, singleUseMandate: StripeId<Markers.Mandate> option, status: SetupIntentStatus, usage: string, ?attachToSelf: bool, ?customerAccount: string option, ?flowDirections: SetupIntentFlowDirections list option, ?managedPayments: SmorResourceManagedPayments option) =
+        {
+            Application = application
+            AutomaticPaymentMethods = automaticPaymentMethods
+            CancellationReason = cancellationReason
+            ClientSecret = clientSecret
+            Created = created
+            Customer = customer
+            Description = description
+            ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
+            Id = id
+            LastSetupError = lastSetupError
+            LatestAttempt = latestAttempt
+            Livemode = livemode
+            Mandate = mandate
+            Metadata = metadata
+            NextAction = nextAction
+            OnBehalfOf = onBehalfOf
+            PaymentMethod = paymentMethod
+            PaymentMethodConfigurationDetails = paymentMethodConfigurationDetails
+            PaymentMethodOptions = paymentMethodOptions
+            PaymentMethodTypes = paymentMethodTypes
+            SingleUseMandate = singleUseMandate
+            Status = status
+            Usage = usage
+            AttachToSelf = attachToSelf
+            CustomerAccount = customerAccount |> Option.flatten
+            FlowDirections = flowDirections |> Option.flatten
+            ManagedPayments = managedPayments |> Option.flatten
+        }
 
 module SetupIntent =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "setup_intent"
 
+type SetupIntentSucceeded with
+    static member New(object: SetupIntent) =
+        {
+            Object = object
+        }
+
+type SetupIntentSetupFailed with
+    static member New(object: SetupIntent) =
+        {
+            Object = object
+        }
+
+type SetupIntentRequiresAction with
+    static member New(object: SetupIntent) =
+        {
+            Object = object
+        }
+
+type SetupIntentCreated with
+    static member New(object: SetupIntent) =
+        {
+            Object = object
+        }
+
+type SetupIntentCanceled with
+    static member New(object: SetupIntent) =
+        {
+            Object = object
+        }
+
+type DestinationDetailsUnimplemented with
+    static member New(?destinationDetailsUnimplemented: string option) =
+        {
+            DestinationDetailsUnimplemented = destinationDetailsUnimplemented |> Option.flatten
+        }
+
+type RefundDestinationDetailsBlik with
+    static member New(networkDeclineCode: string option, reference: string option, referenceStatus: RefundDestinationDetailsBlikReferenceStatus option) =
+        {
+            NetworkDeclineCode = networkDeclineCode
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsBrBankTransfer with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsBrBankTransferReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsCard with
+    static member New(``type``: RefundDestinationDetailsCardType, ?reference: string, ?referenceStatus: RefundDestinationDetailsCardReferenceStatus, ?referenceType: string) =
+        {
+            Type = ``type``
+            Reference = reference
+            ReferenceStatus = referenceStatus
+            ReferenceType = referenceType
+        }
+
+type RefundDestinationDetailsCrypto with
+    static member New(reference: string option) =
+        {
+            Reference = reference
+        }
+
+type RefundDestinationDetailsEuBankTransfer with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsEuBankTransferReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsGbBankTransfer with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsGbBankTransferReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsJpBankTransfer with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsJpBankTransferReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsMbWay with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsMbWayReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsMultibanco with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsMultibancoReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsMxBankTransfer with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsMxBankTransferReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsP24 with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsP24ReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsPaypal with
+    static member New(networkDeclineCode: string option) =
+        {
+            NetworkDeclineCode = networkDeclineCode
+        }
+
+type RefundDestinationDetailsSwish with
+    static member New(networkDeclineCode: string option, reference: string option, referenceStatus: RefundDestinationDetailsSwishReferenceStatus option) =
+        {
+            NetworkDeclineCode = networkDeclineCode
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsThBankTransfer with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsThBankTransferReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetailsUsBankTransfer with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsUsBankTransferReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
+type RefundDestinationDetails with
+    static member New(``type``: string, ?affirm: DestinationDetailsUnimplemented, ?afterpayClearpay: DestinationDetailsUnimplemented, ?alipay: DestinationDetailsUnimplemented, ?alma: DestinationDetailsUnimplemented, ?amazonPay: DestinationDetailsUnimplemented, ?auBankTransfer: DestinationDetailsUnimplemented, ?blik: RefundDestinationDetailsBlik, ?brBankTransfer: RefundDestinationDetailsBrBankTransfer, ?card: RefundDestinationDetailsCard, ?cashapp: DestinationDetailsUnimplemented, ?crypto: RefundDestinationDetailsCrypto, ?customerCashBalance: DestinationDetailsUnimplemented, ?eps: DestinationDetailsUnimplemented, ?euBankTransfer: RefundDestinationDetailsEuBankTransfer, ?gbBankTransfer: RefundDestinationDetailsGbBankTransfer, ?giropay: DestinationDetailsUnimplemented, ?grabpay: DestinationDetailsUnimplemented, ?jpBankTransfer: RefundDestinationDetailsJpBankTransfer, ?klarna: DestinationDetailsUnimplemented, ?mbWay: RefundDestinationDetailsMbWay, ?multibanco: RefundDestinationDetailsMultibanco, ?mxBankTransfer: RefundDestinationDetailsMxBankTransfer, ?nzBankTransfer: DestinationDetailsUnimplemented, ?p24: RefundDestinationDetailsP24, ?paynow: DestinationDetailsUnimplemented, ?paypal: RefundDestinationDetailsPaypal, ?pix: DestinationDetailsUnimplemented, ?revolut: DestinationDetailsUnimplemented, ?sofort: DestinationDetailsUnimplemented, ?swish: RefundDestinationDetailsSwish, ?thBankTransfer: RefundDestinationDetailsThBankTransfer, ?twint: DestinationDetailsUnimplemented, ?usBankTransfer: RefundDestinationDetailsUsBankTransfer, ?wechatPay: DestinationDetailsUnimplemented, ?zip: DestinationDetailsUnimplemented) =
+        {
+            Type = ``type``
+            Affirm = affirm
+            AfterpayClearpay = afterpayClearpay
+            Alipay = alipay
+            Alma = alma
+            AmazonPay = amazonPay
+            AuBankTransfer = auBankTransfer
+            Blik = blik
+            BrBankTransfer = brBankTransfer
+            Card = card
+            Cashapp = cashapp
+            Crypto = crypto
+            CustomerCashBalance = customerCashBalance
+            Eps = eps
+            EuBankTransfer = euBankTransfer
+            GbBankTransfer = gbBankTransfer
+            Giropay = giropay
+            Grabpay = grabpay
+            JpBankTransfer = jpBankTransfer
+            Klarna = klarna
+            MbWay = mbWay
+            Multibanco = multibanco
+            MxBankTransfer = mxBankTransfer
+            NzBankTransfer = nzBankTransfer
+            P24 = p24
+            Paynow = paynow
+            Paypal = paypal
+            Pix = pix
+            Revolut = revolut
+            Sofort = sofort
+            Swish = swish
+            ThBankTransfer = thBankTransfer
+            Twint = twint
+            UsBankTransfer = usBankTransfer
+            WechatPay = wechatPay
+            Zip = zip
+        }
+
+type EmailSent with
+    static member New(emailSentAt: DateTime, emailSentTo: string) =
+        {
+            EmailSentAt = emailSentAt
+            EmailSentTo = emailSentTo
+        }
+
+type RefundNextActionDisplayDetails with
+    static member New(emailSent: EmailSent, expiresAt: DateTime) =
+        {
+            EmailSent = emailSent
+            ExpiresAt = expiresAt
+        }
+
+type RefundNextAction with
+    static member New(``type``: string, ?displayDetails: RefundNextActionDisplayDetails) =
+        {
+            Type = ``type``
+            DisplayDetails = displayDetails
+        }
+
+type Refund with
+    static member New(amount: int, balanceTransaction: StripeId<Markers.BalanceTransaction> option, charge: StripeId<Markers.Charge> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, id: string, metadata: Map<string, string> option, paymentIntent: StripeId<Markers.PaymentIntent> option, reason: RefundReason option, receiptNumber: string option, sourceTransferReversal: StripeId<Markers.TransferReversal> option, status: RefundStatus option, transferReversal: StripeId<Markers.TransferReversal> option, ?description: string, ?destinationDetails: RefundDestinationDetails, ?failureBalanceTransaction: StripeId<Markers.BalanceTransaction>, ?failureReason: RefundFailureReason, ?instructionsEmail: string, ?nextAction: RefundNextAction, ?pendingReason: RefundPendingReason, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails) =
+        {
+            Amount = amount
+            BalanceTransaction = balanceTransaction
+            Charge = charge
+            Created = created
+            Currency = currency
+            Id = id
+            Metadata = metadata
+            PaymentIntent = paymentIntent
+            Reason = reason
+            ReceiptNumber = receiptNumber
+            SourceTransferReversal = sourceTransferReversal
+            Status = status
+            TransferReversal = transferReversal
+            Description = description
+            DestinationDetails = destinationDetails
+            FailureBalanceTransaction = failureBalanceTransaction
+            FailureReason = failureReason
+            InstructionsEmail = instructionsEmail
+            NextAction = nextAction
+            PendingReason = pendingReason
+            PresentmentDetails = presentmentDetails
+        }
+
 module Refund =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "refund"
+
+type RefundUpdated with
+    static member New(object: Refund) =
+        {
+            Object = object
+        }
+
+type RefundFailed with
+    static member New(object: Refund) =
+        {
+            Object = object
+        }
+
+type RefundCreated with
+    static member New(object: Refund) =
+        {
+            Object = object
+        }
+
+type PersonUpdated with
+    static member New(object: Person) =
+        {
+            Object = object
+        }
+
+type PersonDeleted with
+    static member New(object: Person) =
+        {
+            Object = object
+        }
+
+type PersonCreated with
+    static member New(object: Person) =
+        {
+            Object = object
+        }
+
+type PayoutsTraceId with
+    static member New(status: PayoutsTraceIdStatus, value: string option) =
+        {
+            Status = status
+            Value = value
+        }
+
+type Payout with
+    static member New(amount: int, applicationFee: StripeId<Markers.ApplicationFee> option, applicationFeeAmount: int option, arrivalDate: DateTime, automatic: bool, balanceTransaction: StripeId<Markers.BalanceTransaction> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, destination: PayoutDestination'AnyOf option, failureBalanceTransaction: StripeId<Markers.BalanceTransaction> option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string> option, method: PayoutMethod, originalPayout: StripeId<Markers.Payout> option, payoutMethod: string option, reconciliationStatus: PayoutReconciliationStatus, reversedBy: StripeId<Markers.Payout> option, sourceType: PayoutSourceType, statementDescriptor: string option, status: PayoutStatus, traceId: PayoutsTraceId option, ``type``: PayoutType) =
+        {
+            Amount = amount
+            ApplicationFee = applicationFee
+            ApplicationFeeAmount = applicationFeeAmount
+            ArrivalDate = arrivalDate
+            Automatic = automatic
+            BalanceTransaction = balanceTransaction
+            Created = created
+            Currency = currency
+            Description = description
+            Destination = destination
+            FailureBalanceTransaction = failureBalanceTransaction
+            FailureCode = failureCode
+            FailureMessage = failureMessage
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Method = method
+            OriginalPayout = originalPayout
+            PayoutMethod = payoutMethod
+            ReconciliationStatus = reconciliationStatus
+            ReversedBy = reversedBy
+            SourceType = sourceType
+            StatementDescriptor = statementDescriptor
+            Status = status
+            TraceId = traceId
+            Type = ``type``
+        }
+
+module Payout =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "payout"
+
+type PayoutUpdated with
+    static member New(object: Payout) =
+        {
+            Object = object
+        }
+
+type PayoutReconciliationCompleted with
+    static member New(object: Payout) =
+        {
+            Object = object
+        }
+
+type PayoutPaid with
+    static member New(object: Payout) =
+        {
+            Object = object
+        }
+
+type PayoutFailed with
+    static member New(object: Payout) =
+        {
+            Object = object
+        }
+
+type PayoutCreated with
+    static member New(object: Payout) =
+        {
+            Object = object
+        }
+
+type PayoutCanceled with
+    static member New(object: Payout) =
+        {
+            Object = object
+        }
+
+type PaymentMethodConfigResourceDisplayPreference with
+    static member New(overridable: bool option, preference: PaymentMethodConfigResourceDisplayPreferencePreference, value: PaymentMethodConfigResourceDisplayPreferenceValue) =
+        {
+            Overridable = overridable
+            Preference = preference
+            Value = value
+        }
+
+type PaymentMethodConfigResourcePaymentMethodProperties with
+    static member New(available: bool, displayPreference: PaymentMethodConfigResourceDisplayPreference) =
+        {
+            Available = available
+            DisplayPreference = displayPreference
+        }
+
+type PaymentMethodUpdated with
+    static member New(object: PaymentMethod) =
+        {
+            Object = object
+        }
+
+type PaymentMethodDetached with
+    static member New(object: PaymentMethod) =
+        {
+            Object = object
+        }
+
+type PaymentMethodAutomaticallyUpdated with
+    static member New(object: PaymentMethod) =
+        {
+            Object = object
+        }
+
+type PaymentMethodAttached with
+    static member New(object: PaymentMethod) =
+        {
+            Object = object
+        }
+
+type PaymentLinksResourceTransferData with
+    static member New(amount: int option, destination: StripeId<Markers.Account>) =
+        {
+            Amount = amount
+            Destination = destination
+        }
+
+type PaymentLinksResourceTaxIdCollection with
+    static member New(enabled: bool, required: PaymentLinksResourceTaxIdCollectionRequired) =
+        {
+            Enabled = enabled
+            Required = required
+        }
+
+type PaymentLinksResourceSubscriptionDataInvoiceSettings with
+    static member New(issuer: ConnectAccountReference) =
+        {
+            Issuer = issuer
+        }
+
+type SubscriptionsTrialsResourceEndBehavior with
+    static member New(missingPaymentMethod: SubscriptionsTrialsResourceEndBehaviorMissingPaymentMethod) =
+        {
+            MissingPaymentMethod = missingPaymentMethod
+        }
+
+type SubscriptionsTrialsResourceTrialSettings with
+    static member New(endBehavior: SubscriptionsTrialsResourceEndBehavior) =
+        {
+            EndBehavior = endBehavior
+        }
+
+type PaymentLinksResourceSubscriptionData with
+    static member New(description: string option, invoiceSettings: PaymentLinksResourceSubscriptionDataInvoiceSettings, metadata: Map<string, string>, trialPeriodDays: int option, trialSettings: SubscriptionsTrialsResourceTrialSettings option) =
+        {
+            Description = description
+            InvoiceSettings = invoiceSettings
+            Metadata = metadata
+            TrialPeriodDays = trialPeriodDays
+            TrialSettings = trialSettings
+        }
+
+type PaymentLinksResourceShippingOption with
+    static member New(shippingAmount: int, shippingRate: StripeId<Markers.ShippingRate>) =
+        {
+            ShippingAmount = shippingAmount
+            ShippingRate = shippingRate
+        }
+
+type PaymentLinksResourceShippingAddressCollection with
+    static member New(allowedCountries: PaymentLinksResourceShippingAddressCollectionAllowedCountries list) =
+        {
+            AllowedCountries = allowedCountries
+        }
+
+type PaymentLinksResourceCompletedSessions with
+    static member New(count: int, limit: int) =
+        {
+            Count = count
+            Limit = limit
+        }
+
+type PaymentLinksResourceRestrictions with
+    static member New(completedSessions: PaymentLinksResourceCompletedSessions) =
+        {
+            CompletedSessions = completedSessions
+        }
+
+type PaymentLinksResourcePhoneNumberCollection with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
+
+type PaymentLinksResourcePaymentIntentData with
+    static member New(captureMethod: PaymentLinksResourcePaymentIntentDataCaptureMethod option, description: string option, metadata: Map<string, string>, setupFutureUsage: PaymentLinksResourcePaymentIntentDataSetupFutureUsage option, statementDescriptor: string option, statementDescriptorSuffix: string option, transferGroup: string option) =
+        {
+            CaptureMethod = captureMethod
+            Description = description
+            Metadata = metadata
+            SetupFutureUsage = setupFutureUsage
+            StatementDescriptor = statementDescriptor
+            StatementDescriptorSuffix = statementDescriptorSuffix
+            TransferGroup = transferGroup
+        }
+
+type PaymentLinksResourceOptionalItemAdjustableQuantity with
+    static member New(enabled: bool, maximum: int option, minimum: int option) =
+        {
+            Enabled = enabled
+            Maximum = maximum
+            Minimum = minimum
+        }
+
+type PaymentLinksResourceOptionalItem with
+    static member New(adjustableQuantity: PaymentLinksResourceOptionalItemAdjustableQuantity option, price: string, quantity: int) =
+        {
+            AdjustableQuantity = adjustableQuantity
+            Price = price
+            Quantity = quantity
+        }
+
+type PaymentLinksResourceBusinessName with
+    static member New(enabled: bool, optional: bool) =
+        {
+            Enabled = enabled
+            Optional = optional
+        }
+
+type PaymentLinksResourceIndividualName with
+    static member New(enabled: bool, optional: bool) =
+        {
+            Enabled = enabled
+            Optional = optional
+        }
+
+type PaymentLinksResourceNameCollection with
+    static member New(?business: PaymentLinksResourceBusinessName, ?individual: PaymentLinksResourceIndividualName) =
+        {
+            Business = business
+            Individual = individual
+        }
+
+type InvoiceSettingCheckoutRenderingOptions with
+    static member New(amountTaxDisplay: string option, template: string option) =
+        {
+            AmountTaxDisplay = amountTaxDisplay
+            Template = template
+        }
+
+type PaymentLinksResourceInvoiceSettings with
+    static member New(accountTaxIds: PaymentLinksResourceInvoiceSettingsAccountTaxIds'AnyOf list option, customFields: InvoiceSettingCustomField list option, description: string option, footer: string option, issuer: ConnectAccountReference option, metadata: Map<string, string> option, renderingOptions: InvoiceSettingCheckoutRenderingOptions option) =
+        {
+            AccountTaxIds = accountTaxIds
+            CustomFields = customFields
+            Description = description
+            Footer = footer
+            Issuer = issuer
+            Metadata = metadata
+            RenderingOptions = renderingOptions
+        }
+
+type PaymentLinksResourceInvoiceCreation with
+    static member New(enabled: bool, invoiceData: PaymentLinksResourceInvoiceSettings option) =
+        {
+            Enabled = enabled
+            InvoiceData = invoiceData
+        }
+
+type PaymentLinksResourceCustomTextPosition with
+    static member New(message: string) =
+        {
+            Message = message
+        }
+
+type PaymentLinksResourceCustomText with
+    static member New(afterSubmit: PaymentLinksResourceCustomTextPosition option, shippingAddress: PaymentLinksResourceCustomTextPosition option, submit: PaymentLinksResourceCustomTextPosition option, termsOfServiceAcceptance: PaymentLinksResourceCustomTextPosition option) =
+        {
+            AfterSubmit = afterSubmit
+            ShippingAddress = shippingAddress
+            Submit = submit
+            TermsOfServiceAcceptance = termsOfServiceAcceptance
+        }
+
+type PaymentLinksResourceCustomFieldsDropdownOption with
+    static member New(label: string, value: string) =
+        {
+            Label = label
+            Value = value
+        }
+
+type PaymentLinksResourceCustomFieldsDropdown with
+    static member New(defaultValue: string option, options: PaymentLinksResourceCustomFieldsDropdownOption list) =
+        {
+            DefaultValue = defaultValue
+            Options = options
+        }
+
+type PaymentLinksResourceCustomFieldsLabel with
+    static member New(custom: string option) =
+        {
+            Custom = custom
+        }
 
 module PaymentLinksResourceCustomFieldsLabel =
     ///The type of the label.
     let ``type`` = "custom"
 
+type PaymentLinksResourceCustomFieldsNumeric with
+    static member New(defaultValue: string option, maximumLength: int option, minimumLength: int option) =
+        {
+            DefaultValue = defaultValue
+            MaximumLength = maximumLength
+            MinimumLength = minimumLength
+        }
+
+type PaymentLinksResourceCustomFieldsText with
+    static member New(defaultValue: string option, maximumLength: int option, minimumLength: int option) =
+        {
+            DefaultValue = defaultValue
+            MaximumLength = maximumLength
+            MinimumLength = minimumLength
+        }
+
+type PaymentLinksResourceCustomFields with
+    static member New(key: string, label: PaymentLinksResourceCustomFieldsLabel, optional: bool, ``type``: PaymentLinksResourceCustomFieldsType, ?dropdown: PaymentLinksResourceCustomFieldsDropdown, ?numeric: PaymentLinksResourceCustomFieldsNumeric, ?text: PaymentLinksResourceCustomFieldsText) =
+        {
+            Key = key
+            Label = label
+            Optional = optional
+            Type = ``type``
+            Dropdown = dropdown
+            Numeric = numeric
+            Text = text
+        }
+
+type PaymentLinksResourcePaymentMethodReuseAgreement with
+    static member New(position: PaymentLinksResourcePaymentMethodReuseAgreementPosition) =
+        {
+            Position = position
+        }
+
+type PaymentLinksResourceConsentCollection with
+    static member New(paymentMethodReuseAgreement: PaymentLinksResourcePaymentMethodReuseAgreement option, promotions: PaymentLinksResourceConsentCollectionPromotions option, termsOfService: PaymentLinksResourceConsentCollectionTermsOfService option) =
+        {
+            PaymentMethodReuseAgreement = paymentMethodReuseAgreement
+            Promotions = promotions
+            TermsOfService = termsOfService
+        }
+
+type PaymentLinksResourceAutomaticTax with
+    static member New(enabled: bool, liability: ConnectAccountReference option) =
+        {
+            Enabled = enabled
+            Liability = liability
+        }
+
+type PaymentLinksResourceCompletionBehaviorConfirmationPage with
+    static member New(customMessage: string option) =
+        {
+            CustomMessage = customMessage
+        }
+
+type PaymentLinksResourceCompletionBehaviorRedirect with
+    static member New(url: string) =
+        {
+            Url = url
+        }
+
+type PaymentLinksResourceAfterCompletion with
+    static member New(``type``: PaymentLinksResourceAfterCompletionType, ?hostedConfirmation: PaymentLinksResourceCompletionBehaviorConfirmationPage, ?redirect: PaymentLinksResourceCompletionBehaviorRedirect) =
+        {
+            Type = ``type``
+            HostedConfirmation = hostedConfirmation
+            Redirect = redirect
+        }
+
+type PaymentFlowsInstallmentOptions with
+    static member New(enabled: bool, ?plan: PaymentMethodDetailsCardInstallmentsPlan) =
+        {
+            Enabled = enabled
+            Plan = plan
+        }
+
+type PaymentIntentTypeSpecificPaymentMethodOptionsClient with
+    static member New(?captureMethod: PaymentIntentTypeSpecificPaymentMethodOptionsClientCaptureMethod, ?installments: PaymentFlowsInstallmentOptions, ?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsPayto, ?requestIncrementalAuthorizationSupport: bool, ?requireCvcRecollection: bool, ?routing: PaymentMethodOptionsCardPresentRouting, ?setupFutureUsage: PaymentIntentTypeSpecificPaymentMethodOptionsClientSetupFutureUsage, ?verificationMethod: PaymentIntentTypeSpecificPaymentMethodOptionsClientVerificationMethod) =
+        {
+            CaptureMethod = captureMethod
+            Installments = installments
+            MandateOptions = mandateOptions
+            RequestIncrementalAuthorizationSupport = requestIncrementalAuthorizationSupport
+            RequireCvcRecollection = requireCvcRecollection
+            Routing = routing
+            SetupFutureUsage = setupFutureUsage
+            VerificationMethod = verificationMethod
+        }
+
+type PaymentIntentSucceeded with
+    static member New(object: PaymentIntent) =
+        {
+            Object = object
+        }
+
+type PaymentIntentRequiresAction with
+    static member New(object: PaymentIntent) =
+        {
+            Object = object
+        }
+
+type PaymentIntentPaymentFailed with
+    static member New(object: PaymentIntent) =
+        {
+            Object = object
+        }
+
+type PaymentIntentPartiallyFunded with
+    static member New(object: PaymentIntent) =
+        {
+            Object = object
+        }
+
+type PaymentIntentCreated with
+    static member New(object: PaymentIntent) =
+        {
+            Object = object
+        }
+
+type PaymentIntentCanceled with
+    static member New(object: PaymentIntent) =
+        {
+            Object = object
+        }
+
+type PaymentIntentAmountCapturableUpdated with
+    static member New(object: PaymentIntent) =
+        {
+            Object = object
+        }
+
+type PaymentFlowsAmountDetailsClient with
+    static member New(?tip: PaymentFlowsAmountDetailsClientResourceTip) =
+        {
+            Tip = tip
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourceAddress with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+        {
+            City = city
+            Country = country
+            Line1 = line1
+            Line2 = line2
+            PostalCode = postalCode
+            State = state
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourceShippingDetails with
+    static member New(address: PaymentsPrimitivesPaymentRecordsResourceAddress, name: string option, phone: string option) =
+        {
+            Address = address
+            Name = name
+            Phone = phone
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourceProcessorDetailsResourceCustomDetails with
+    static member New(paymentReference: string option) =
+        {
+            PaymentReference = paymentReference
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourceProcessorDetails with
+    static member New(?custom: PaymentsPrimitivesPaymentRecordsResourceProcessorDetailsResourceCustomDetails) =
+        {
+            Custom = custom
+        }
+
 module PaymentsPrimitivesPaymentRecordsResourceProcessorDetails =
     ///The processor used for this payment attempt.
     let ``type`` = "custom"
+
+type PaymentFlowsPrivatePaymentMethodsAlipayDetails with
+    static member New(fingerprint: string option, transactionId: string option, ?buyerId: string) =
+        {
+            Fingerprint = fingerprint
+            TransactionId = transactionId
+            BuyerId = buyerId
+        }
+
+type PaymentMethodDetailsAchCreditTransfer with
+    static member New(accountNumber: string option, bankName: string option, routingNumber: string option, swiftCode: string option) =
+        {
+            AccountNumber = accountNumber
+            BankName = bankName
+            RoutingNumber = routingNumber
+            SwiftCode = swiftCode
+        }
+
+type PaymentMethodDetailsAchDebit with
+    static member New(accountHolderType: PaymentMethodDetailsAchDebitAccountHolderType option, bankName: string option, country: IsoTypes.IsoCountryCode option, fingerprint: string option, last4: string option, routingNumber: string option) =
+        {
+            AccountHolderType = accountHolderType
+            BankName = bankName
+            Country = country
+            Fingerprint = fingerprint
+            Last4 = last4
+            RoutingNumber = routingNumber
+        }
+
+type PaymentMethodDetailsAuBecsDebit with
+    static member New(bsbNumber: string option, fingerprint: string option, last4: string option, ?expectedDebitDate: string, ?mandate: string) =
+        {
+            BsbNumber = bsbNumber
+            Fingerprint = fingerprint
+            Last4 = last4
+            ExpectedDebitDate = expectedDebitDate
+            Mandate = mandate
+        }
+
+type PaymentMethodDetailsBacsDebit with
+    static member New(fingerprint: string option, last4: string option, mandate: string option, sortCode: string option, ?expectedDebitDate: string) =
+        {
+            Fingerprint = fingerprint
+            Last4 = last4
+            Mandate = mandate
+            SortCode = sortCode
+            ExpectedDebitDate = expectedDebitDate
+        }
+
+type PaymentMethodDetailsCrypto with
+    static member New(?buyerAddress: string, ?network: PaymentMethodDetailsCryptoNetwork, ?tokenCurrency: PaymentMethodDetailsCryptoTokenCurrency, ?transactionHash: string) =
+        {
+            BuyerAddress = buyerAddress
+            Network = network
+            TokenCurrency = tokenCurrency
+            TransactionHash = transactionHash
+        }
+
+type PaymentMethodDetailsCustomerBalance with
+    static member New(?paymentMethodDetailsCustomerBalance: string option) =
+        {
+            PaymentMethodDetailsCustomerBalance = paymentMethodDetailsCustomerBalance |> Option.flatten
+        }
+
+type PaymentMethodDetailsFpx with
+    static member New(accountHolderType: PaymentMethodDetailsFpxAccountHolderType option, bank: PaymentMethodDetailsFpxBank, transactionId: string option) =
+        {
+            AccountHolderType = accountHolderType
+            Bank = bank
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsGrabpay with
+    static member New(transactionId: string option) =
+        {
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsInteracPresentReceipt with
+    static member New(applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: PaymentMethodDetailsInteracPresentReceiptCardholderVerificationMethod option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsInteracPresentReceiptAccountType) =
+        {
+            ApplicationCryptogram = applicationCryptogram
+            ApplicationPreferredName = applicationPreferredName
+            AuthorizationCode = authorizationCode
+            AuthorizationResponseCode = authorizationResponseCode
+            CardholderVerificationMethod = cardholderVerificationMethod
+            DedicatedFileName = dedicatedFileName
+            TerminalVerificationResults = terminalVerificationResults
+            TransactionStatusInformation = transactionStatusInformation
+            AccountType = accountType
+        }
+
+type PaymentMethodDetailsInteracPresent with
+    static member New(brand: PaymentMethodDetailsInteracPresentBrand option, cardholderName: string option, country: IsoTypes.IsoCountryCode option, emvAuthData: string option, expMonth: int, expYear: int, fingerprint: string option, funding: PaymentMethodDetailsInteracPresentFunding option, generatedCard: string option, last4: string option, network: PaymentMethodDetailsInteracPresentNetwork option, networkTransactionId: string option, preferredLocales: string list option, readMethod: PaymentMethodDetailsInteracPresentReadMethod option, receipt: PaymentMethodDetailsInteracPresentReceipt option, ?description: string option, ?iin: string option, ?issuer: string option, ?location: string, ?reader: string) =
+        {
+            Brand = brand
+            CardholderName = cardholderName
+            Country = country
+            EmvAuthData = emvAuthData
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Fingerprint = fingerprint
+            Funding = funding
+            GeneratedCard = generatedCard
+            Last4 = last4
+            Network = network
+            NetworkTransactionId = networkTransactionId
+            PreferredLocales = preferredLocales
+            ReadMethod = readMethod
+            Receipt = receipt
+            Description = description |> Option.flatten
+            Iin = iin |> Option.flatten
+            Issuer = issuer |> Option.flatten
+            Location = location
+            Reader = reader
+        }
+
+type KlarnaAddress with
+    static member New(country: IsoTypes.IsoCountryCode option) =
+        {
+            Country = country
+        }
+
+type KlarnaPayerDetails with
+    static member New(address: KlarnaAddress option) =
+        {
+            Address = address
+        }
+
+type PaymentMethodDetailsKlarna with
+    static member New(payerDetails: KlarnaPayerDetails option, paymentMethodCategory: string option, preferredLocale: string option, ?location: string, ?reader: string) =
+        {
+            PayerDetails = payerDetails
+            PaymentMethodCategory = paymentMethodCategory
+            PreferredLocale = preferredLocale
+            Location = location
+            Reader = reader
+        }
+
+type PaymentMethodDetailsKrCard with
+    static member New(brand: PaymentMethodDetailsKrCardBrand option, buyerId: string option, last4: string option, transactionId: string option) =
+        {
+            Brand = brand
+            BuyerId = buyerId
+            Last4 = last4
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsLink with
+    static member New(country: IsoTypes.IsoCountryCode option) =
+        {
+            Country = country
+        }
+
+type PaymentMethodDetailsNzBankAccount with
+    static member New(accountHolderName: string option, bankCode: string, bankName: string, branchCode: string, last4: string, suffix: string option, ?expectedDebitDate: string) =
+        {
+            AccountHolderName = accountHolderName
+            BankCode = bankCode
+            BankName = bankName
+            BranchCode = branchCode
+            Last4 = last4
+            Suffix = suffix
+            ExpectedDebitDate = expectedDebitDate
+        }
+
+type PaymentMethodDetailsP24 with
+    static member New(bank: PaymentMethodDetailsP24Bank option, reference: string option, verifiedName: string option) =
+        {
+            Bank = bank
+            Reference = reference
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsPaymentRecordAcssDebit with
+    static member New(bankName: string option, fingerprint: string option, institutionNumber: string option, last4: string option, transitNumber: string option, ?expectedDebitDate: string, ?mandate: string) =
+        {
+            BankName = bankName
+            Fingerprint = fingerprint
+            InstitutionNumber = institutionNumber
+            Last4 = last4
+            TransitNumber = transitNumber
+            ExpectedDebitDate = expectedDebitDate
+            Mandate = mandate
+        }
+
+type PaymentMethodDetailsPaymentRecordAffirm with
+    static member New(transactionId: string option, ?location: string, ?reader: string) =
+        {
+            TransactionId = transactionId
+            Location = location
+            Reader = reader
+        }
+
+type PaymentMethodDetailsPaymentRecordAfterpayClearpay with
+    static member New(orderId: string option, reference: string option) =
+        {
+            OrderId = orderId
+            Reference = reference
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAlmaDetailsResourceInstallments with
+    static member New(count: int option) =
+        {
+            Count = count
+        }
+
+type PaymentMethodDetailsPaymentRecordAlma with
+    static member New(transactionId: string option, ?installments: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAlmaDetailsResourceInstallments) =
+        {
+            TransactionId = transactionId
+            Installments = installments
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard with
+    static member New(brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardBrand option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardFunding option, last4: string option) =
+        {
+            Brand = brand
+            Country = country
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Funding = funding
+            Last4 = last4
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding with
+    static member New(?card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard) =
+        {
+            Card = card
+        }
 
 module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding =
     ///funding type of the underlying payment method.
     let ``type`` = "card"
 
+type PaymentMethodDetailsPaymentRecordAmazonPay with
+    static member New(transactionId: string option, ?funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding) =
+        {
+            TransactionId = transactionId
+            Funding = funding
+        }
+
+type PaymentMethodDetailsPaymentRecordBancontact with
+    static member New(bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: StripeId<Markers.PaymentMethod> option, generatedSepaDebitMandate: StripeId<Markers.Mandate> option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsPaymentRecordBancontactPreferredLanguage option, verifiedName: string option) =
+        {
+            BankCode = bankCode
+            BankName = bankName
+            Bic = bic
+            GeneratedSepaDebit = generatedSepaDebit
+            GeneratedSepaDebitMandate = generatedSepaDebitMandate
+            IbanLast4 = ibanLast4
+            PreferredLanguage = preferredLanguage
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsPaymentRecordBillie with
+    static member New(transactionId: string option) =
+        {
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsPaymentRecordBlik with
+    static member New(buyerId: string option) =
+        {
+            BuyerId = buyerId
+        }
+
+type PaymentMethodDetailsPaymentRecordBoleto with
+    static member New(taxId: string option) =
+        {
+            TaxId = taxId
+        }
+
+type PaymentMethodDetailsPaymentRecordCashapp with
+    static member New(buyerId: string option, cashtag: string option, transactionId: string option) =
+        {
+            BuyerId = buyerId
+            Cashtag = cashtag
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsPaymentRecordEps with
+    static member New(bank: PaymentMethodDetailsPaymentRecordEpsBank option, verifiedName: string option) =
+        {
+            Bank = bank
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsPaymentRecordGiropay with
+    static member New(bankCode: string option, bankName: string option, bic: string option, verifiedName: string option) =
+        {
+            BankCode = bankCode
+            BankName = bankName
+            Bic = bic
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsPaymentRecordIdeal with
+    static member New(bank: PaymentMethodDetailsPaymentRecordIdealBank option, bic: PaymentMethodDetailsPaymentRecordIdealBic option, generatedSepaDebit: StripeId<Markers.PaymentMethod> option, generatedSepaDebitMandate: StripeId<Markers.Mandate> option, ibanLast4: string option, transactionId: string option, verifiedName: string option) =
+        {
+            Bank = bank
+            Bic = bic
+            GeneratedSepaDebit = generatedSepaDebit
+            GeneratedSepaDebitMandate = generatedSepaDebitMandate
+            IbanLast4 = ibanLast4
+            TransactionId = transactionId
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsPaymentRecordKakaoPay with
+    static member New(buyerId: string option, transactionId: string option) =
+        {
+            BuyerId = buyerId
+            TransactionId = transactionId
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResourceStore with
+    static member New(chain: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResourceStoreChain option) =
+        {
+            Chain = chain
+        }
+
+type PaymentMethodDetailsPaymentRecordKonbini with
+    static member New(store: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodKonbiniDetailsResourceStore option) =
+        {
+            Store = store
+        }
+
+type PaymentMethodDetailsPaymentRecordMbWay with
+    static member New(?paymentMethodDetailsPaymentRecordMbWay: string option) =
+        {
+            PaymentMethodDetailsPaymentRecordMbWay = paymentMethodDetailsPaymentRecordMbWay |> Option.flatten
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard with
+    static member New(brand: string option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, last4: string option) =
+        {
+            Brand = brand
+            Country = country
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Last4 = last4
+        }
+
+type PaymentMethodDetailsPaymentRecordMobilepay with
+    static member New(card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodMobilepayDetailsResourceCard option) =
+        {
+            Card = card
+        }
+
+type PaymentMethodDetailsPaymentRecordMultibanco with
+    static member New(entity: string option, reference: string option) =
+        {
+            Entity = entity
+            Reference = reference
+        }
+
+type PaymentMethodDetailsPaymentRecordNaverPay with
+    static member New(buyerId: string option, transactionId: string option) =
+        {
+            BuyerId = buyerId
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsPaymentRecordOxxo with
+    static member New(number: string option) =
+        {
+            Number = number
+        }
+
+type PaymentMethodDetailsPaymentRecordPayByBank with
+    static member New(?paymentMethodDetailsPaymentRecordPayByBank: string option) =
+        {
+            PaymentMethodDetailsPaymentRecordPayByBank = paymentMethodDetailsPaymentRecordPayByBank |> Option.flatten
+        }
+
+type PaymentMethodDetailsPaymentRecordPayco with
+    static member New(buyerId: string option, transactionId: string option) =
+        {
+            BuyerId = buyerId
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsPaymentRecordPaynow with
+    static member New(reference: string option, ?location: string, ?reader: string) =
+        {
+            Reference = reference
+            Location = location
+            Reader = reader
+        }
+
+type PaymentMethodDetailsPaymentRecordPix with
+    static member New(?bankTransactionId: string option, ?mandate: string) =
+        {
+            BankTransactionId = bankTransactionId |> Option.flatten
+            Mandate = mandate
+        }
+
+type PaymentMethodDetailsPaymentRecordPromptpay with
+    static member New(reference: string option) =
+        {
+            Reference = reference
+        }
+
+type PaymentMethodDetailsPaymentRecordSamsungPay with
+    static member New(buyerId: string option, transactionId: string option) =
+        {
+            BuyerId = buyerId
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsPaymentRecordSepaDebit with
+    static member New(bankCode: string option, branchCode: string option, country: IsoTypes.IsoCountryCode option, fingerprint: string option, last4: string option, mandate: string option, ?expectedDebitDate: string) =
+        {
+            BankCode = bankCode
+            BranchCode = branchCode
+            Country = country
+            Fingerprint = fingerprint
+            Last4 = last4
+            Mandate = mandate
+            ExpectedDebitDate = expectedDebitDate
+        }
+
+type PaymentMethodDetailsPaymentRecordSofort with
+    static member New(bankCode: string option, bankName: string option, bic: string option, country: IsoTypes.IsoCountryCode option, generatedSepaDebit: StripeId<Markers.PaymentMethod> option, generatedSepaDebitMandate: StripeId<Markers.Mandate> option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsPaymentRecordSofortPreferredLanguage option, verifiedName: string option) =
+        {
+            BankCode = bankCode
+            BankName = bankName
+            Bic = bic
+            Country = country
+            GeneratedSepaDebit = generatedSepaDebit
+            GeneratedSepaDebitMandate = generatedSepaDebitMandate
+            IbanLast4 = ibanLast4
+            PreferredLanguage = preferredLanguage
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsPaymentRecordSwish with
+    static member New(fingerprint: string option, paymentReference: string option, verifiedPhoneLast4: string option) =
+        {
+            Fingerprint = fingerprint
+            PaymentReference = paymentReference
+            VerifiedPhoneLast4 = verifiedPhoneLast4
+        }
+
+type PaymentMethodDetailsPaymentRecordTwint with
+    static member New(?paymentMethodDetailsPaymentRecordTwint: string option) =
+        {
+            PaymentMethodDetailsPaymentRecordTwint = paymentMethodDetailsPaymentRecordTwint |> Option.flatten
+        }
+
+type PaymentMethodDetailsPaymentRecordUpi with
+    static member New(vpa: string option) =
+        {
+            Vpa = vpa
+        }
+
+type PaymentMethodDetailsPaymentRecordUsBankAccount with
+    static member New(accountHolderType: PaymentMethodDetailsPaymentRecordUsBankAccountAccountHolderType option, accountType: PaymentMethodDetailsPaymentRecordUsBankAccountAccountType option, bankName: string option, fingerprint: string option, last4: string option, paymentReference: string option, routingNumber: string option, ?expectedDebitDate: string, ?mandate: StripeId<Markers.Mandate>) =
+        {
+            AccountHolderType = accountHolderType
+            AccountType = accountType
+            BankName = bankName
+            Fingerprint = fingerprint
+            Last4 = last4
+            PaymentReference = paymentReference
+            RoutingNumber = routingNumber
+            ExpectedDebitDate = expectedDebitDate
+            Mandate = mandate
+        }
+
+type PaymentMethodDetailsPaymentRecordWechatPay with
+    static member New(fingerprint: string option, transactionId: string option, ?location: string, ?reader: string) =
+        {
+            Fingerprint = fingerprint
+            TransactionId = transactionId
+            Location = location
+            Reader = reader
+        }
+
+type PaymentMethodDetailsPaymentRecordZip with
+    static member New(?paymentMethodDetailsPaymentRecordZip: string option) =
+        {
+            PaymentMethodDetailsPaymentRecordZip = paymentMethodDetailsPaymentRecordZip |> Option.flatten
+        }
+
+type PaypalSellerProtection with
+    static member New(disputeCategories: PaypalSellerProtectionDisputeCategories list option, status: PaypalSellerProtectionStatus) =
+        {
+            DisputeCategories = disputeCategories
+            Status = status
+        }
+
+type PaymentMethodDetailsPaypal with
+    static member New(country: IsoTypes.IsoCountryCode option, payerEmail: string option, payerId: string option, payerName: string option, sellerProtection: PaypalSellerProtection option, transactionId: string option) =
+        {
+            Country = country
+            PayerEmail = payerEmail
+            PayerId = payerId
+            PayerName = payerName
+            SellerProtection = sellerProtection
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsPayto with
+    static member New(bsbNumber: string option, last4: string option, payId: string option, ?mandate: string) =
+        {
+            BsbNumber = bsbNumber
+            Last4 = last4
+            PayId = payId
+            Mandate = mandate
+        }
+
+type PaymentMethodDetailsPassthroughCard with
+    static member New(brand: PaymentMethodDetailsPassthroughCardBrand option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: PaymentMethodDetailsPassthroughCardFunding option, last4: string option) =
+        {
+            Brand = brand
+            Country = country
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Funding = funding
+            Last4 = last4
+        }
+
+type RevolutPayUnderlyingPaymentMethodFundingDetails with
+    static member New(?card: PaymentMethodDetailsPassthroughCard) =
+        {
+            Card = card
+        }
+
 module RevolutPayUnderlyingPaymentMethodFundingDetails =
     ///funding type of the underlying payment method.
     let ``type`` = "card"
+
+type PaymentMethodDetailsRevolutPay with
+    static member New(transactionId: string option, ?funding: RevolutPayUnderlyingPaymentMethodFundingDetails) =
+        {
+            TransactionId = transactionId
+            Funding = funding
+        }
+
+type PaymentMethodDetailsSatispay with
+    static member New(transactionId: string option) =
+        {
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsSepaCreditTransfer with
+    static member New(bankName: string option, bic: string option, iban: string option) =
+        {
+            BankName = bankName
+            Bic = bic
+            Iban = iban
+        }
+
+type PaymentMethodDetailsStripeAccount with
+    static member New(?paymentMethodDetailsStripeAccount: string option) =
+        {
+            PaymentMethodDetailsStripeAccount = paymentMethodDetailsStripeAccount |> Option.flatten
+        }
+
+type PaymentMethodDetailsSunbit with
+    static member New(transactionId: string option) =
+        {
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsWechat with
+    static member New(?paymentMethodDetailsWechat: string option) =
+        {
+            PaymentMethodDetailsWechat = paymentMethodDetailsWechat |> Option.flatten
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourceBillingDetails with
+    static member New(address: PaymentsPrimitivesPaymentRecordsResourceAddress, email: string option, name: string option, phone: string option) =
+        {
+            Address = address
+            Email = email
+            Name = name
+            Phone = phone
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks with
+    static member New(addressLine1Check: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksAddressLine1Check option, addressPostalCodeCheck: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksAddressPostalCodeCheck option, cvcCheck: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksCvcCheck option) =
+        {
+            AddressLine1Check = addressLine1Check
+            AddressPostalCodeCheck = addressPostalCodeCheck
+            CvcCheck = cvcCheck
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlan with
+    static member New(count: int option, ``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlanType) =
+        {
+            Count = count
+            Type = ``type``
+        }
 
 module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlan =
     ///For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card. One of `month`.
     let interval = "month"
 
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments with
+    static member New(plan: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlan option) =
+        {
+            Plan = plan
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken with
+    static member New(used: bool) =
+        {
+            Used = used
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure with
+    static member New(authenticationFlow: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureAuthenticationFlow option, cryptogram: string option, electronicCommerceIndicator: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureElectronicCommerceIndicator option, exemptionIndicator: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureExemptionIndicator option, exemptionIndicatorApplied: bool option, result: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureResult option, resultReason: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureResultReason option, version: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureVersion option) =
+        {
+            AuthenticationFlow = authenticationFlow
+            Cryptogram = cryptogram
+            ElectronicCommerceIndicator = electronicCommerceIndicator
+            ExemptionIndicator = exemptionIndicator
+            ExemptionIndicatorApplied = exemptionIndicatorApplied
+            Result = result
+            ResultReason = resultReason
+            Version = version
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceApplePay with
+    static member New(``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceApplePayType) =
+        {
+            Type = ``type``
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay with
+    static member New(?paymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay: string option) =
+        {
+            PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay = paymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay |> Option.flatten
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet with
+    static member New(``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletType, ?applePay: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceApplePay, ?dynamicLast4: string, ?googlePay: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletResourceGooglePay) =
+        {
+            Type = ``type``
+            ApplePay = applePay
+            DynamicLast4 = dynamicLast4
+            GooglePay = googlePay
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails with
+    static member New(authorizationCode: string option, brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsBrand option, checks: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks option, country: IsoTypes.IsoCountryCode option, description: string option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsFunding option, iin: string option, installments: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments option, issuer: string option, last4: string option, network: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsNetwork option, networkAdviceCode: string option, networkDeclineCode: string option, networkTransactionId: string option, storedCredentialUsage: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage option, threeDSecure: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure option, wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option, ?captureBefore: DateTime, ?fingerprint: string option, ?moto: bool option, ?networkToken: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken option) =
+        {
+            AuthorizationCode = authorizationCode
+            Brand = brand
+            Checks = checks
+            Country = country
+            Description = description
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Funding = funding
+            Iin = iin
+            Installments = installments
+            Issuer = issuer
+            Last4 = last4
+            Network = network
+            NetworkAdviceCode = networkAdviceCode
+            NetworkDeclineCode = networkDeclineCode
+            NetworkTransactionId = networkTransactionId
+            StoredCredentialUsage = storedCredentialUsage
+            ThreeDSecure = threeDSecure
+            Wallet = wallet
+            CaptureBefore = captureBefore
+            Fingerprint = fingerprint |> Option.flatten
+            Moto = moto |> Option.flatten
+            NetworkToken = networkToken |> Option.flatten
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails with
+    static member New(displayName: string, ``type``: string option) =
+        {
+            DisplayName = displayName
+            Type = ``type``
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodDetails with
+    static member New(billingDetails: PaymentsPrimitivesPaymentRecordsResourceBillingDetails option, paymentMethod: string option, ``type``: string, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsPaymentRecordAcssDebit, ?affirm: PaymentMethodDetailsPaymentRecordAffirm, ?afterpayClearpay: PaymentMethodDetailsPaymentRecordAfterpayClearpay, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails, ?alma: PaymentMethodDetailsPaymentRecordAlma, ?amazonPay: PaymentMethodDetailsPaymentRecordAmazonPay, ?auBecsDebit: PaymentMethodDetailsAuBecsDebit, ?bacsDebit: PaymentMethodDetailsBacsDebit, ?bancontact: PaymentMethodDetailsPaymentRecordBancontact, ?billie: PaymentMethodDetailsPaymentRecordBillie, ?blik: PaymentMethodDetailsPaymentRecordBlik, ?boleto: PaymentMethodDetailsPaymentRecordBoleto, ?card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails, ?cardPresent: PaymentMethodDetailsCardPresent, ?cashapp: PaymentMethodDetailsPaymentRecordCashapp, ?crypto: PaymentMethodDetailsCrypto, ?custom: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails, ?customerBalance: PaymentMethodDetailsCustomerBalance, ?eps: PaymentMethodDetailsPaymentRecordEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsPaymentRecordGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsPaymentRecordIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?kakaoPay: PaymentMethodDetailsPaymentRecordKakaoPay, ?klarna: PaymentMethodDetailsKlarna, ?konbini: PaymentMethodDetailsPaymentRecordKonbini, ?krCard: PaymentMethodDetailsKrCard, ?link: PaymentMethodDetailsLink, ?mbWay: PaymentMethodDetailsPaymentRecordMbWay, ?mobilepay: PaymentMethodDetailsPaymentRecordMobilepay, ?multibanco: PaymentMethodDetailsPaymentRecordMultibanco, ?naverPay: PaymentMethodDetailsPaymentRecordNaverPay, ?nzBankAccount: PaymentMethodDetailsNzBankAccount, ?oxxo: PaymentMethodDetailsPaymentRecordOxxo, ?p24: PaymentMethodDetailsP24, ?payByBank: PaymentMethodDetailsPaymentRecordPayByBank, ?payco: PaymentMethodDetailsPaymentRecordPayco, ?paynow: PaymentMethodDetailsPaymentRecordPaynow, ?paypal: PaymentMethodDetailsPaypal, ?payto: PaymentMethodDetailsPayto, ?pix: PaymentMethodDetailsPaymentRecordPix, ?promptpay: PaymentMethodDetailsPaymentRecordPromptpay, ?revolutPay: PaymentMethodDetailsRevolutPay, ?samsungPay: PaymentMethodDetailsPaymentRecordSamsungPay, ?satispay: PaymentMethodDetailsSatispay, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsPaymentRecordSepaDebit, ?sofort: PaymentMethodDetailsPaymentRecordSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?sunbit: PaymentMethodDetailsSunbit, ?swish: PaymentMethodDetailsPaymentRecordSwish, ?twint: PaymentMethodDetailsPaymentRecordTwint, ?upi: PaymentMethodDetailsPaymentRecordUpi, ?usBankAccount: PaymentMethodDetailsPaymentRecordUsBankAccount, ?wechat: PaymentMethodDetailsWechat, ?wechatPay: PaymentMethodDetailsPaymentRecordWechatPay, ?zip: PaymentMethodDetailsPaymentRecordZip) =
+        {
+            BillingDetails = billingDetails
+            PaymentMethod = paymentMethod
+            Type = ``type``
+            AchCreditTransfer = achCreditTransfer
+            AchDebit = achDebit
+            AcssDebit = acssDebit
+            Affirm = affirm
+            AfterpayClearpay = afterpayClearpay
+            Alipay = alipay
+            Alma = alma
+            AmazonPay = amazonPay
+            AuBecsDebit = auBecsDebit
+            BacsDebit = bacsDebit
+            Bancontact = bancontact
+            Billie = billie
+            Blik = blik
+            Boleto = boleto
+            Card = card
+            CardPresent = cardPresent
+            Cashapp = cashapp
+            Crypto = crypto
+            Custom = custom
+            CustomerBalance = customerBalance
+            Eps = eps
+            Fpx = fpx
+            Giropay = giropay
+            Grabpay = grabpay
+            Ideal = ideal
+            InteracPresent = interacPresent
+            KakaoPay = kakaoPay
+            Klarna = klarna
+            Konbini = konbini
+            KrCard = krCard
+            Link = link
+            MbWay = mbWay
+            Mobilepay = mobilepay
+            Multibanco = multibanco
+            NaverPay = naverPay
+            NzBankAccount = nzBankAccount
+            Oxxo = oxxo
+            P24 = p24
+            PayByBank = payByBank
+            Payco = payco
+            Paynow = paynow
+            Paypal = paypal
+            Payto = payto
+            Pix = pix
+            Promptpay = promptpay
+            RevolutPay = revolutPay
+            SamsungPay = samsungPay
+            Satispay = satispay
+            SepaCreditTransfer = sepaCreditTransfer
+            SepaDebit = sepaDebit
+            Sofort = sofort
+            StripeAccount = stripeAccount
+            Sunbit = sunbit
+            Swish = swish
+            Twint = twint
+            Upi = upi
+            UsBankAccount = usBankAccount
+            Wechat = wechat
+            WechatPay = wechatPay
+            Zip = zip
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourceCustomerDetails with
+    static member New(customer: string option, email: string option, name: string option, phone: string option) =
+        {
+            Customer = customer
+            Email = email
+            Name = name
+            Phone = phone
+        }
+
+type PaymentsPrimitivesPaymentRecordsResourceAmount with
+    static member New(currency: IsoTypes.IsoCurrencyCode, value: int) =
+        {
+            Currency = currency
+            Value = value
+        }
+
+type IssuingAuthorizationMerchantData with
+    static member New(category: string, categoryCode: string, city: string option, country: IsoTypes.IsoCountryCode option, name: string option, networkId: string, postalCode: string option, state: string option, taxId: string option, terminalId: string option, url: string option) =
+        {
+            Category = category
+            CategoryCode = categoryCode
+            City = city
+            Country = country
+            Name = name
+            NetworkId = networkId
+            PostalCode = postalCode
+            State = state
+            TaxId = taxId
+            TerminalId = terminalId
+            Url = url
+        }
+
+type IssuingTransactionAmountDetails with
+    static member New(atmFee: int option, cashbackAmount: int option) =
+        {
+            AtmFee = atmFee
+            CashbackAmount = cashbackAmount
+        }
+
+type IssuingTransactionNetworkData with
+    static member New(authorizationCode: string option, processingDate: string option, transactionId: string option) =
+        {
+            AuthorizationCode = authorizationCode
+            ProcessingDate = processingDate
+            TransactionId = transactionId
+        }
+
+type IssuingTransactionFleetCardholderPromptData with
+    static member New(driverId: string option, odometer: int option, unspecifiedId: string option, userId: string option, vehicleNumber: string option) =
+        {
+            DriverId = driverId
+            Odometer = odometer
+            UnspecifiedId = unspecifiedId
+            UserId = userId
+            VehicleNumber = vehicleNumber
+        }
+
+type IssuingTransactionFleetFuelPriceData with
+    static member New(grossAmountDecimal: string option) =
+        {
+            GrossAmountDecimal = grossAmountDecimal
+        }
+
+type IssuingTransactionFleetNonFuelPriceData with
+    static member New(grossAmountDecimal: string option) =
+        {
+            GrossAmountDecimal = grossAmountDecimal
+        }
+
+type IssuingTransactionFleetTaxData with
+    static member New(localAmountDecimal: string option, nationalAmountDecimal: string option) =
+        {
+            LocalAmountDecimal = localAmountDecimal
+            NationalAmountDecimal = nationalAmountDecimal
+        }
+
+type IssuingTransactionFleetReportedBreakdown with
+    static member New(fuel: IssuingTransactionFleetFuelPriceData option, nonFuel: IssuingTransactionFleetNonFuelPriceData option, tax: IssuingTransactionFleetTaxData option) =
+        {
+            Fuel = fuel
+            NonFuel = nonFuel
+            Tax = tax
+        }
+
+type IssuingTransactionFleetData with
+    static member New(cardholderPromptData: IssuingTransactionFleetCardholderPromptData option, purchaseType: IssuingTransactionFleetDataPurchaseType option, reportedBreakdown: IssuingTransactionFleetReportedBreakdown option, serviceType: IssuingTransactionFleetDataServiceType option) =
+        {
+            CardholderPromptData = cardholderPromptData
+            PurchaseType = purchaseType
+            ReportedBreakdown = reportedBreakdown
+            ServiceType = serviceType
+        }
+
+type IssuingTransactionFlightDataLeg with
+    static member New(arrivalAirportCode: string option, carrier: string option, departureAirportCode: string option, flightNumber: string option, serviceClass: string option, stopoverAllowed: bool option) =
+        {
+            ArrivalAirportCode = arrivalAirportCode
+            Carrier = carrier
+            DepartureAirportCode = departureAirportCode
+            FlightNumber = flightNumber
+            ServiceClass = serviceClass
+            StopoverAllowed = stopoverAllowed
+        }
+
+type IssuingTransactionFlightData with
+    static member New(departureAt: int option, passengerName: string option, refundable: bool option, segments: IssuingTransactionFlightDataLeg list option, travelAgency: string option) =
+        {
+            DepartureAt = departureAt
+            PassengerName = passengerName
+            Refundable = refundable
+            Segments = segments
+            TravelAgency = travelAgency
+        }
+
+type IssuingTransactionFuelData with
+    static member New(industryProductCode: string option, quantityDecimal: string option, ``type``: IssuingTransactionFuelDataType, unit: IssuingTransactionFuelDataUnit, unitCostDecimal: string) =
+        {
+            IndustryProductCode = industryProductCode
+            QuantityDecimal = quantityDecimal
+            Type = ``type``
+            Unit = unit
+            UnitCostDecimal = unitCostDecimal
+        }
+
+type IssuingTransactionLodgingData with
+    static member New(checkInAt: int option, nights: int option) =
+        {
+            CheckInAt = checkInAt
+            Nights = nights
+        }
+
+type IssuingTransactionReceiptData with
+    static member New(description: string option, quantity: decimal option, total: int option, unitCost: int option) =
+        {
+            Description = description
+            Quantity = quantity
+            Total = total
+            UnitCost = unitCost
+        }
+
+type IssuingTransactionPurchaseDetails with
+    static member New(fleet: IssuingTransactionFleetData option, flight: IssuingTransactionFlightData option, fuel: IssuingTransactionFuelData option, lodging: IssuingTransactionLodgingData option, receipt: IssuingTransactionReceiptData list option, reference: string option) =
+        {
+            Fleet = fleet
+            Flight = flight
+            Fuel = fuel
+            Lodging = lodging
+            Receipt = receipt
+            Reference = reference
+        }
+
+type IssuingTransactionTreasury with
+    static member New(receivedCredit: string option, receivedDebit: string option) =
+        {
+            ReceivedCredit = receivedCredit
+            ReceivedDebit = receivedDebit
+        }
+
+type IssuingTransaction with
+    static member New(amount: int, amountDetails: IssuingTransactionAmountDetails option, authorization: StripeId<Markers.IssuingAuthorization> option, balanceTransaction: StripeId<Markers.BalanceTransaction> option, card: StripeId<Markers.IssuingCard>, cardholder: StripeId<Markers.IssuingCardholder> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, dispute: StripeId<Markers.IssuingDispute> option, id: string, livemode: bool, merchantAmount: int, merchantCurrency: IsoTypes.IsoCurrencyCode, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, networkData: IssuingTransactionNetworkData option, ``type``: IssuingTransactionType, wallet: IssuingTransactionWallet option, ?purchaseDetails: IssuingTransactionPurchaseDetails option, ?token: StripeId<Markers.IssuingToken> option, ?treasury: IssuingTransactionTreasury option) =
+        {
+            Amount = amount
+            AmountDetails = amountDetails
+            Authorization = authorization
+            BalanceTransaction = balanceTransaction
+            Card = card
+            Cardholder = cardholder
+            Created = created
+            Currency = currency
+            Dispute = dispute
+            Id = id
+            Livemode = livemode
+            MerchantAmount = merchantAmount
+            MerchantCurrency = merchantCurrency
+            MerchantData = merchantData
+            Metadata = metadata
+            NetworkData = networkData
+            Type = ``type``
+            Wallet = wallet
+            PurchaseDetails = purchaseDetails |> Option.flatten
+            Token = token |> Option.flatten
+            Treasury = treasury |> Option.flatten
+        }
+
 module IssuingTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "issuing.transaction"
+
+type IssuingTransactionUpdated with
+    static member New(object: IssuingTransaction) =
+        {
+            Object = object
+        }
+
+type IssuingTransactionPurchaseDetailsReceiptUpdated with
+    static member New(object: IssuingTransaction) =
+        {
+            Object = object
+        }
+
+type IssuingTransactionCreated with
+    static member New(object: IssuingTransaction) =
+        {
+            Object = object
+        }
+
+type Fee with
+    static member New(amount: int, application: string option, currency: IsoTypes.IsoCurrencyCode, description: string option, ``type``: FeeType) =
+        {
+            Amount = amount
+            Application = application
+            Currency = currency
+            Description = description
+            Type = ``type``
+        }
+
+type BalanceTransaction with
+    static member New(amount: int, availableOn: DateTime, balanceType: BalanceTransactionBalanceType, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, exchangeRate: decimal option, fee: int, feeDetails: Fee list, id: string, net: int, reportingCategory: string, source: StripeId<Markers.BalanceTransactionSource> option, status: BalanceTransactionStatus, ``type``: BalanceTransactionType) =
+        {
+            Amount = amount
+            AvailableOn = availableOn
+            BalanceType = balanceType
+            Created = created
+            Currency = currency
+            Description = description
+            ExchangeRate = exchangeRate
+            Fee = fee
+            FeeDetails = feeDetails
+            Id = id
+            Net = net
+            ReportingCategory = reportingCategory
+            Source = source
+            Status = status
+            Type = ``type``
+        }
 
 module BalanceTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "balance_transaction"
 
+type IssuingDisputeCanceledEvidence with
+    static member New(additionalDocumentation: StripeId<Markers.File> option, canceledAt: DateTime option, cancellationPolicyProvided: bool option, cancellationReason: string option, expectedAt: DateTime option, explanation: string option, productDescription: string option, productType: IssuingDisputeCanceledEvidenceProductType option, returnStatus: IssuingDisputeCanceledEvidenceReturnStatus option, returnedAt: DateTime option) =
+        {
+            AdditionalDocumentation = additionalDocumentation
+            CanceledAt = canceledAt
+            CancellationPolicyProvided = cancellationPolicyProvided
+            CancellationReason = cancellationReason
+            ExpectedAt = expectedAt
+            Explanation = explanation
+            ProductDescription = productDescription
+            ProductType = productType
+            ReturnStatus = returnStatus
+            ReturnedAt = returnedAt
+        }
+
+type IssuingDisputeDuplicateEvidence with
+    static member New(additionalDocumentation: StripeId<Markers.File> option, cardStatement: StripeId<Markers.File> option, cashReceipt: StripeId<Markers.File> option, checkImage: StripeId<Markers.File> option, explanation: string option, originalTransaction: string option) =
+        {
+            AdditionalDocumentation = additionalDocumentation
+            CardStatement = cardStatement
+            CashReceipt = cashReceipt
+            CheckImage = checkImage
+            Explanation = explanation
+            OriginalTransaction = originalTransaction
+        }
+
+type IssuingDisputeFraudulentEvidence with
+    static member New(additionalDocumentation: StripeId<Markers.File> option, explanation: string option) =
+        {
+            AdditionalDocumentation = additionalDocumentation
+            Explanation = explanation
+        }
+
+type IssuingDisputeMerchandiseNotAsDescribedEvidence with
+    static member New(additionalDocumentation: StripeId<Markers.File> option, explanation: string option, receivedAt: DateTime option, returnDescription: string option, returnStatus: IssuingDisputeMerchandiseNotAsDescribedEvidenceReturnStatus option, returnedAt: DateTime option) =
+        {
+            AdditionalDocumentation = additionalDocumentation
+            Explanation = explanation
+            ReceivedAt = receivedAt
+            ReturnDescription = returnDescription
+            ReturnStatus = returnStatus
+            ReturnedAt = returnedAt
+        }
+
+type IssuingDisputeNoValidAuthorizationEvidence with
+    static member New(additionalDocumentation: StripeId<Markers.File> option, explanation: string option) =
+        {
+            AdditionalDocumentation = additionalDocumentation
+            Explanation = explanation
+        }
+
+type IssuingDisputeNotReceivedEvidence with
+    static member New(additionalDocumentation: StripeId<Markers.File> option, expectedAt: DateTime option, explanation: string option, productDescription: string option, productType: IssuingDisputeNotReceivedEvidenceProductType option) =
+        {
+            AdditionalDocumentation = additionalDocumentation
+            ExpectedAt = expectedAt
+            Explanation = explanation
+            ProductDescription = productDescription
+            ProductType = productType
+        }
+
+type IssuingDisputeOtherEvidence with
+    static member New(additionalDocumentation: StripeId<Markers.File> option, explanation: string option, productDescription: string option, productType: IssuingDisputeOtherEvidenceProductType option) =
+        {
+            AdditionalDocumentation = additionalDocumentation
+            Explanation = explanation
+            ProductDescription = productDescription
+            ProductType = productType
+        }
+
+type IssuingDisputeServiceNotAsDescribedEvidence with
+    static member New(additionalDocumentation: StripeId<Markers.File> option, canceledAt: DateTime option, cancellationReason: string option, explanation: string option, receivedAt: DateTime option) =
+        {
+            AdditionalDocumentation = additionalDocumentation
+            CanceledAt = canceledAt
+            CancellationReason = cancellationReason
+            Explanation = explanation
+            ReceivedAt = receivedAt
+        }
+
+type IssuingDisputeEvidence with
+    static member New(reason: IssuingDisputeEvidenceReason, ?canceled: IssuingDisputeCanceledEvidence, ?duplicate: IssuingDisputeDuplicateEvidence, ?fraudulent: IssuingDisputeFraudulentEvidence, ?merchandiseNotAsDescribed: IssuingDisputeMerchandiseNotAsDescribedEvidence, ?noValidAuthorization: IssuingDisputeNoValidAuthorizationEvidence, ?notReceived: IssuingDisputeNotReceivedEvidence, ?other: IssuingDisputeOtherEvidence, ?serviceNotAsDescribed: IssuingDisputeServiceNotAsDescribedEvidence) =
+        {
+            Reason = reason
+            Canceled = canceled
+            Duplicate = duplicate
+            Fraudulent = fraudulent
+            MerchandiseNotAsDescribed = merchandiseNotAsDescribed
+            NoValidAuthorization = noValidAuthorization
+            NotReceived = notReceived
+            Other = other
+            ServiceNotAsDescribed = serviceNotAsDescribed
+        }
+
+type IssuingDisputeTreasury with
+    static member New(debitReversal: string option, receivedDebit: string) =
+        {
+            DebitReversal = debitReversal
+            ReceivedDebit = receivedDebit
+        }
+
+type IssuingDispute with
+    static member New(amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, evidence: IssuingDisputeEvidence, id: string, livemode: bool, metadata: Map<string, string>, status: IssuingDisputeStatus, transaction: StripeId<Markers.IssuingTransaction>, ?balanceTransactions: BalanceTransaction list option, ?lossReason: IssuingDisputeLossReason, ?treasury: IssuingDisputeTreasury option) =
+        {
+            Amount = amount
+            Created = created
+            Currency = currency
+            Evidence = evidence
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Status = status
+            Transaction = transaction
+            BalanceTransactions = balanceTransactions |> Option.flatten
+            LossReason = lossReason
+            Treasury = treasury |> Option.flatten
+        }
+
 module IssuingDispute =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "issuing.dispute"
+
+type IssuingDisputeUpdated with
+    static member New(object: IssuingDispute) =
+        {
+            Object = object
+        }
+
+type IssuingDisputeSubmitted with
+    static member New(object: IssuingDispute) =
+        {
+            Object = object
+        }
+
+type IssuingDisputeFundsRescinded with
+    static member New(object: IssuingDispute) =
+        {
+            Object = object
+        }
+
+type IssuingDisputeFundsReinstated with
+    static member New(object: IssuingDispute) =
+        {
+            Object = object
+        }
+
+type IssuingDisputeCreated with
+    static member New(object: IssuingDispute) =
+        {
+            Object = object
+        }
+
+type IssuingDisputeClosed with
+    static member New(object: IssuingDispute) =
+        {
+            Object = object
+        }
+
+type IssuingAuthorizationAmountDetails with
+    static member New(atmFee: int option, cashbackAmount: int option) =
+        {
+            AtmFee = atmFee
+            CashbackAmount = cashbackAmount
+        }
+
+type IssuingAuthorizationFleetCardholderPromptData with
+    static member New(alphanumericId: string option, driverId: string option, odometer: int option, unspecifiedId: string option, userId: string option, vehicleNumber: string option) =
+        {
+            AlphanumericId = alphanumericId
+            DriverId = driverId
+            Odometer = odometer
+            UnspecifiedId = unspecifiedId
+            UserId = userId
+            VehicleNumber = vehicleNumber
+        }
+
+type IssuingAuthorizationFleetFuelPriceData with
+    static member New(grossAmountDecimal: string option) =
+        {
+            GrossAmountDecimal = grossAmountDecimal
+        }
+
+type IssuingAuthorizationFleetNonFuelPriceData with
+    static member New(grossAmountDecimal: string option) =
+        {
+            GrossAmountDecimal = grossAmountDecimal
+        }
+
+type IssuingAuthorizationFleetTaxData with
+    static member New(localAmountDecimal: string option, nationalAmountDecimal: string option) =
+        {
+            LocalAmountDecimal = localAmountDecimal
+            NationalAmountDecimal = nationalAmountDecimal
+        }
+
+type IssuingAuthorizationFleetReportedBreakdown with
+    static member New(fuel: IssuingAuthorizationFleetFuelPriceData option, nonFuel: IssuingAuthorizationFleetNonFuelPriceData option, tax: IssuingAuthorizationFleetTaxData option) =
+        {
+            Fuel = fuel
+            NonFuel = nonFuel
+            Tax = tax
+        }
+
+type IssuingAuthorizationFleetData with
+    static member New(cardholderPromptData: IssuingAuthorizationFleetCardholderPromptData option, purchaseType: IssuingAuthorizationFleetDataPurchaseType option, reportedBreakdown: IssuingAuthorizationFleetReportedBreakdown option, serviceType: IssuingAuthorizationFleetDataServiceType option) =
+        {
+            CardholderPromptData = cardholderPromptData
+            PurchaseType = purchaseType
+            ReportedBreakdown = reportedBreakdown
+            ServiceType = serviceType
+        }
+
+type IssuingAuthorizationFraudChallenge with
+    static member New(status: IssuingAuthorizationFraudChallengeStatus, undeliverableReason: IssuingAuthorizationFraudChallengeUndeliverableReason option) =
+        {
+            Status = status
+            UndeliverableReason = undeliverableReason
+        }
 
 module IssuingAuthorizationFraudChallenge =
     ///The method by which the fraud challenge was delivered to the cardholder.
     let channel = "sms"
 
+type IssuingAuthorizationFuelData with
+    static member New(industryProductCode: string option, quantityDecimal: string option, ``type``: IssuingAuthorizationFuelDataType option, unit: IssuingAuthorizationFuelDataUnit option, unitCostDecimal: string option) =
+        {
+            IndustryProductCode = industryProductCode
+            QuantityDecimal = quantityDecimal
+            Type = ``type``
+            Unit = unit
+            UnitCostDecimal = unitCostDecimal
+        }
+
+type IssuingAuthorizationNetworkData with
+    static member New(acquiringInstitutionId: string option, systemTraceAuditNumber: string option, transactionId: string option) =
+        {
+            AcquiringInstitutionId = acquiringInstitutionId
+            SystemTraceAuditNumber = systemTraceAuditNumber
+            TransactionId = transactionId
+        }
+
+type IssuingAuthorizationPendingRequest with
+    static member New(amount: int, amountDetails: IssuingAuthorizationAmountDetails option, currency: IsoTypes.IsoCurrencyCode, isAmountControllable: bool, merchantAmount: int, merchantCurrency: IsoTypes.IsoCurrencyCode, networkRiskScore: int option) =
+        {
+            Amount = amount
+            AmountDetails = amountDetails
+            Currency = currency
+            IsAmountControllable = isAmountControllable
+            MerchantAmount = merchantAmount
+            MerchantCurrency = merchantCurrency
+            NetworkRiskScore = networkRiskScore
+        }
+
+type IssuingAuthorizationRequest with
+    static member New(amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, authorizationCode: string option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, merchantAmount: int, merchantCurrency: IsoTypes.IsoCurrencyCode, networkRiskScore: int option, reason: IssuingAuthorizationRequestReason, reasonMessage: string option, requestedAt: DateTime option) =
+        {
+            Amount = amount
+            AmountDetails = amountDetails
+            Approved = approved
+            AuthorizationCode = authorizationCode
+            Created = created
+            Currency = currency
+            MerchantAmount = merchantAmount
+            MerchantCurrency = merchantCurrency
+            NetworkRiskScore = networkRiskScore
+            Reason = reason
+            ReasonMessage = reasonMessage
+            RequestedAt = requestedAt
+        }
+
+type IssuingAuthorizationTreasury with
+    static member New(receivedCredits: string list, receivedDebits: string list, transaction: string option) =
+        {
+            ReceivedCredits = receivedCredits
+            ReceivedDebits = receivedDebits
+            Transaction = transaction
+        }
+
+type IssuingAuthorizationAuthenticationExemption with
+    static member New(claimedBy: IssuingAuthorizationAuthenticationExemptionClaimedBy, ``type``: IssuingAuthorizationAuthenticationExemptionType) =
+        {
+            ClaimedBy = claimedBy
+            Type = ``type``
+        }
+
+type IssuingAuthorizationThreeDSecure with
+    static member New(result: IssuingAuthorizationThreeDSecureResult) =
+        {
+            Result = result
+        }
+
+type IssuingAuthorizationVerificationData with
+    static member New(addressLine1Check: IssuingAuthorizationVerificationDataAddressLine1Check, addressPostalCodeCheck: IssuingAuthorizationVerificationDataAddressPostalCodeCheck, authenticationExemption: IssuingAuthorizationAuthenticationExemption option, cvcCheck: IssuingAuthorizationVerificationDataCvcCheck, expiryCheck: IssuingAuthorizationVerificationDataExpiryCheck, postalCode: string option, threeDSecure: IssuingAuthorizationThreeDSecure option) =
+        {
+            AddressLine1Check = addressLine1Check
+            AddressPostalCodeCheck = addressPostalCodeCheck
+            AuthenticationExemption = authenticationExemption
+            CvcCheck = cvcCheck
+            ExpiryCheck = expiryCheck
+            PostalCode = postalCode
+            ThreeDSecure = threeDSecure
+        }
+
+type IssuingAuthorization with
+    static member New(amount: int, amountDetails: IssuingAuthorizationAmountDetails option, approved: bool, authorizationMethod: IssuingAuthorizationAuthorizationMethod, balanceTransactions: BalanceTransaction list, card: IssuingCard, cardPresence: IssuingAuthorizationCardPresence option, cardholder: StripeId<Markers.IssuingCardholder> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, fleet: IssuingAuthorizationFleetData option, fuel: IssuingAuthorizationFuelData option, id: string, livemode: bool, merchantAmount: int, merchantCurrency: IsoTypes.IsoCurrencyCode, merchantData: IssuingAuthorizationMerchantData, metadata: Map<string, string>, networkData: IssuingAuthorizationNetworkData option, pendingRequest: IssuingAuthorizationPendingRequest option, requestHistory: IssuingAuthorizationRequest list, status: IssuingAuthorizationStatus, transactions: IssuingTransaction list, verificationData: IssuingAuthorizationVerificationData, verifiedByFraudChallenge: bool option, wallet: IssuingAuthorizationWallet option, ?fraudChallenges: IssuingAuthorizationFraudChallenge list option, ?token: StripeId<Markers.IssuingToken> option, ?treasury: IssuingAuthorizationTreasury option) =
+        {
+            Amount = amount
+            AmountDetails = amountDetails
+            Approved = approved
+            AuthorizationMethod = authorizationMethod
+            BalanceTransactions = balanceTransactions
+            Card = card
+            CardPresence = cardPresence
+            Cardholder = cardholder
+            Created = created
+            Currency = currency
+            Fleet = fleet
+            Fuel = fuel
+            Id = id
+            Livemode = livemode
+            MerchantAmount = merchantAmount
+            MerchantCurrency = merchantCurrency
+            MerchantData = merchantData
+            Metadata = metadata
+            NetworkData = networkData
+            PendingRequest = pendingRequest
+            RequestHistory = requestHistory
+            Status = status
+            Transactions = transactions
+            VerificationData = verificationData
+            VerifiedByFraudChallenge = verifiedByFraudChallenge
+            Wallet = wallet
+            FraudChallenges = fraudChallenges |> Option.flatten
+            Token = token |> Option.flatten
+            Treasury = treasury |> Option.flatten
+        }
+
 module IssuingAuthorization =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "issuing.authorization"
+
+type IssuingAuthorizationUpdated with
+    static member New(object: IssuingAuthorization) =
+        {
+            Object = object
+        }
+
+type IssuingAuthorizationCreated with
+    static member New(object: IssuingAuthorization) =
+        {
+            Object = object
+        }
+
+type InvoiceSettingSubscriptionSchedulePhaseSetting with
+    static member New(accountTaxIds: InvoiceSettingSubscriptionSchedulePhaseSettingAccountTaxIds'AnyOf list option, daysUntilDue: int option, issuer: ConnectAccountReference option) =
+        {
+            AccountTaxIds = accountTaxIds
+            DaysUntilDue = daysUntilDue
+            Issuer = issuer
+        }
+
+type InvoiceSettingQuoteSetting with
+    static member New(daysUntilDue: int option, issuer: ConnectAccountReference) =
+        {
+            DaysUntilDue = daysUntilDue
+            Issuer = issuer
+        }
+
+type DeletedInvoice with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedInvoice =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "invoice"
 
+type AutomaticTax with
+    static member New(disabledReason: AutomaticTaxDisabledReason option, enabled: bool, liability: ConnectAccountReference option, provider: string option, status: AutomaticTaxStatus option) =
+        {
+            DisabledReason = disabledReason
+            Enabled = enabled
+            Liability = liability
+            Provider = provider
+            Status = status
+        }
+
+type BillingBillResourceInvoicingParentsInvoiceQuoteParent with
+    static member New(quote: string) =
+        {
+            Quote = quote
+        }
+
+type BillingBillResourceInvoicingParentsInvoiceSubscriptionParent with
+    static member New(metadata: Map<string, string> option, subscription: StripeId<Markers.Subscription>, ?subscriptionProrationDate: DateTime) =
+        {
+            Metadata = metadata
+            Subscription = subscription
+            SubscriptionProrationDate = subscriptionProrationDate
+        }
+
+type BillingBillResourceInvoicingParentsInvoiceParent with
+    static member New(quoteDetails: BillingBillResourceInvoicingParentsInvoiceQuoteParent option, subscriptionDetails: BillingBillResourceInvoicingParentsInvoiceSubscriptionParent option, ``type``: BillingBillResourceInvoicingParentsInvoiceParentType) =
+        {
+            QuoteDetails = quoteDetails
+            SubscriptionDetails = subscriptionDetails
+            Type = ``type``
+        }
+
+type BillingBillResourceInvoicingTaxesTaxRateDetails with
+    static member New(taxRate: StripeId<Markers.TaxRate>) =
+        {
+            TaxRate = taxRate
+        }
+
+type BillingBillResourceInvoicingTaxesTax with
+    static member New(amount: int, taxBehavior: BillingBillResourceInvoicingTaxesTaxTaxBehavior, taxRateDetails: BillingBillResourceInvoicingTaxesTaxRateDetails option, taxabilityReason: BillingBillResourceInvoicingTaxesTaxTaxabilityReason, taxableAmount: int option) =
+        {
+            Amount = amount
+            TaxBehavior = taxBehavior
+            TaxRateDetails = taxRateDetails
+            TaxabilityReason = taxabilityReason
+            TaxableAmount = taxableAmount
+        }
+
 module BillingBillResourceInvoicingTaxesTax =
     ///The type of tax information.
     let ``type`` = "tax_rate_details"
+
+type DeletedDiscount with
+    static member New(checkoutSession: string option, customer: DeletedDiscountCustomer'AnyOf option, customerAccount: string option, deleted: bool, id: string, invoice: string option, invoiceItem: string option, promotionCode: StripeId<Markers.PromotionCode> option, source: DiscountSource, start: DateTime, subscription: string option, subscriptionItem: string option) =
+        {
+            CheckoutSession = checkoutSession
+            Customer = customer
+            CustomerAccount = customerAccount
+            Deleted = deleted
+            Id = id
+            Invoice = invoice
+            InvoiceItem = invoiceItem
+            PromotionCode = promotionCode
+            Source = source
+            Start = start
+            Subscription = subscription
+            SubscriptionItem = subscriptionItem
+        }
+
+module DeletedDiscount =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "discount"
+
+type DiscountsResourceDiscountAmount with
+    static member New(amount: int, discount: DiscountsResourceDiscountAmountDiscount'AnyOf) =
+        {
+            Amount = amount
+            Discount = discount
+        }
+
+type BillingBillResourceInvoicingLinesCommonCreditedItems with
+    static member New(invoice: string, invoiceLineItems: string list) =
+        {
+            Invoice = invoice
+            InvoiceLineItems = invoiceLineItems
+        }
+
+type BillingBillResourceInvoicingLinesCommonProrationDetails with
+    static member New(creditedItems: BillingBillResourceInvoicingLinesCommonCreditedItems option) =
+        {
+            CreditedItems = creditedItems
+        }
+
+type BillingBillResourceInvoicingLinesParentsInvoiceLineItemInvoiceItemParent with
+    static member New(invoiceItem: string, proration: bool, prorationDetails: BillingBillResourceInvoicingLinesCommonProrationDetails option, subscription: string option) =
+        {
+            InvoiceItem = invoiceItem
+            Proration = proration
+            ProrationDetails = prorationDetails
+            Subscription = subscription
+        }
+
+type BillingBillResourceInvoicingLinesParentsInvoiceLineItemSubscriptionItemParent with
+    static member New(invoiceItem: string option, proration: bool, prorationDetails: BillingBillResourceInvoicingLinesCommonProrationDetails option, subscription: string option, subscriptionItem: string) =
+        {
+            InvoiceItem = invoiceItem
+            Proration = proration
+            ProrationDetails = prorationDetails
+            Subscription = subscription
+            SubscriptionItem = subscriptionItem
+        }
+
+type BillingBillResourceInvoicingLinesParentsInvoiceLineItemParent with
+    static member New(invoiceItemDetails: BillingBillResourceInvoicingLinesParentsInvoiceLineItemInvoiceItemParent option, subscriptionItemDetails: BillingBillResourceInvoicingLinesParentsInvoiceLineItemSubscriptionItemParent option, ``type``: BillingBillResourceInvoicingLinesParentsInvoiceLineItemParentType) =
+        {
+            InvoiceItemDetails = invoiceItemDetails
+            SubscriptionItemDetails = subscriptionItemDetails
+            Type = ``type``
+        }
+
+type BillingBillResourceInvoicingPricingPricingPriceDetails with
+    static member New(price: StripeId<Markers.Price>, product: string) =
+        {
+            Price = price
+            Product = product
+        }
+
+type BillingBillResourceInvoicingPricingPricing with
+    static member New(unitAmountDecimal: string option, ?priceDetails: BillingBillResourceInvoicingPricingPricingPriceDetails) =
+        {
+            UnitAmountDecimal = unitAmountDecimal
+            PriceDetails = priceDetails
+        }
 
 module BillingBillResourceInvoicingPricingPricing =
     ///The type of the pricing details.
     let ``type`` = "price_details"
 
+type InvoiceLineItemPeriod with
+    static member New(``end``: DateTime, start: DateTime) =
+        {
+            End = ``end``
+            Start = start
+        }
+
+type InvoicesResourcePretaxCreditAmount with
+    static member New(amount: int, ``type``: InvoicesResourcePretaxCreditAmountType, ?creditBalanceTransaction: StripeId<Markers.BillingCreditBalanceTransaction> option, ?discount: InvoicesResourcePretaxCreditAmountDiscount'AnyOf) =
+        {
+            Amount = amount
+            Type = ``type``
+            CreditBalanceTransaction = creditBalanceTransaction |> Option.flatten
+            Discount = discount
+        }
+
+type LineItem with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, description: string option, discountAmounts: DiscountsResourceDiscountAmount list option, discountable: bool, discounts: StripeId<Markers.Discount> list, id: string, invoice: string option, livemode: bool, metadata: Map<string, string>, parent: BillingBillResourceInvoicingLinesParentsInvoiceLineItemParent option, period: InvoiceLineItemPeriod, pretaxCreditAmounts: InvoicesResourcePretaxCreditAmount list option, pricing: BillingBillResourceInvoicingPricingPricing option, quantity: int option, quantityDecimal: string option, subscription: StripeId<Markers.Subscription> option, subtotal: int, taxes: BillingBillResourceInvoicingTaxesTax list option) =
+        {
+            Amount = amount
+            Currency = currency
+            Description = description
+            DiscountAmounts = discountAmounts
+            Discountable = discountable
+            Discounts = discounts
+            Id = id
+            Invoice = invoice
+            Livemode = livemode
+            Metadata = metadata
+            Parent = parent
+            Period = period
+            PretaxCreditAmounts = pretaxCreditAmounts
+            Pricing = pricing
+            Quantity = quantity
+            QuantityDecimal = quantityDecimal
+            Subscription = subscription
+            Subtotal = subtotal
+            Taxes = taxes
+        }
+
 module LineItem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "line_item"
+
+type InvoiceLines with
+    static member New(data: LineItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module InvoiceLines =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
+type InvoiceItemThresholdReason with
+    static member New(lineItemIds: string list, usageGte: int) =
+        {
+            LineItemIds = lineItemIds
+            UsageGte = usageGte
+        }
+
+type InvoiceThresholdReason with
+    static member New(amountGte: int option, itemReasons: InvoiceItemThresholdReason list) =
+        {
+            AmountGte = amountGte
+            ItemReasons = itemReasons
+        }
+
+type InvoiceInstallmentsCard with
+    static member New(enabled: bool option) =
+        {
+            Enabled = enabled
+        }
+
+type InvoicePaymentMethodOptionsCard with
+    static member New(requestThreeDSecure: InvoicePaymentMethodOptionsCardRequestThreeDSecure option, ?installments: InvoiceInstallmentsCard) =
+        {
+            RequestThreeDSecure = requestThreeDSecure
+            Installments = installments
+        }
+
+type InvoicePaymentMethodOptionsPix with
+    static member New(amountIncludesIof: InvoicePaymentMethodOptionsPixAmountIncludesIof option, ?expiresAfterSeconds: int) =
+        {
+            AmountIncludesIof = amountIncludesIof
+            ExpiresAfterSeconds = expiresAfterSeconds
+        }
+
+type InvoicesPaymentMethodOptions with
+    static member New(acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: InvoicePaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, payto: InvoicePaymentMethodOptionsPayto option, pix: InvoicePaymentMethodOptionsPix option, sepaDebit: InvoicePaymentMethodOptionsSepaDebit option, upi: InvoicePaymentMethodOptionsUpi option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option) =
+        {
+            AcssDebit = acssDebit
+            Bancontact = bancontact
+            Card = card
+            CustomerBalance = customerBalance
+            Konbini = konbini
+            Payto = payto
+            Pix = pix
+            SepaDebit = sepaDebit
+            Upi = upi
+            UsBankAccount = usBankAccount
+        }
+
+type InvoicesPaymentSettings with
+    static member New(defaultMandate: string option, paymentMethodOptions: InvoicesPaymentMethodOptions option, paymentMethodTypes: InvoicesPaymentSettingsPaymentMethodTypes list option) =
+        {
+            DefaultMandate = defaultMandate
+            PaymentMethodOptions = paymentMethodOptions
+            PaymentMethodTypes = paymentMethodTypes
+        }
+
+type InvoicesResourceConfirmationSecret with
+    static member New(clientSecret: string, ``type``: string) =
+        {
+            ClientSecret = clientSecret
+            Type = ``type``
+        }
+
+type InvoicesResourceFromInvoice with
+    static member New(action: string, invoice: StripeId<Markers.Invoice>) =
+        {
+            Action = action
+            Invoice = invoice
+        }
+
+type InvoiceRenderingPdf with
+    static member New(pageSize: InvoiceRenderingPdfPageSize option) =
+        {
+            PageSize = pageSize
+        }
+
+type InvoicesResourceInvoiceRendering with
+    static member New(amountTaxDisplay: string option, pdf: InvoiceRenderingPdf option, template: string option, templateVersion: int option) =
+        {
+            AmountTaxDisplay = amountTaxDisplay
+            Pdf = pdf
+            Template = template
+            TemplateVersion = templateVersion
+        }
+
+type InvoicesResourceInvoiceTaxId with
+    static member New(``type``: InvoicesResourceInvoiceTaxIdType, value: string option) =
+        {
+            Type = ``type``
+            Value = value
+        }
+
+type LineItemsTaxAmount with
+    static member New(amount: int, rate: TaxRate, taxabilityReason: LineItemsTaxAmountTaxabilityReason option, taxableAmount: int option) =
+        {
+            Amount = amount
+            Rate = rate
+            TaxabilityReason = taxabilityReason
+            TaxableAmount = taxableAmount
+        }
+
+type InvoicesResourceShippingCost with
+    static member New(amountSubtotal: int, amountTax: int, amountTotal: int, shippingRate: StripeId<Markers.ShippingRate> option, ?taxes: LineItemsTaxAmount list) =
+        {
+            AmountSubtotal = amountSubtotal
+            AmountTax = amountTax
+            AmountTotal = amountTotal
+            ShippingRate = shippingRate
+            Taxes = taxes
+        }
+
+type InvoicesResourceStatusTransitions with
+    static member New(finalizedAt: DateTime option, markedUncollectibleAt: DateTime option, paidAt: DateTime option, voidedAt: DateTime option) =
+        {
+            FinalizedAt = finalizedAt
+            MarkedUncollectibleAt = markedUncollectibleAt
+            PaidAt = paidAt
+            VoidedAt = voidedAt
+        }
+
+type InvoicesPaymentsInvoicePaymentAssociatedPayment with
+    static member New(``type``: InvoicesPaymentsInvoicePaymentAssociatedPaymentType, ?charge: StripeId<Markers.Charge>, ?paymentIntent: StripeId<Markers.PaymentIntent>, ?paymentRecord: StripeId<Markers.PaymentRecord>) =
+        {
+            Type = ``type``
+            Charge = charge
+            PaymentIntent = paymentIntent
+            PaymentRecord = paymentRecord
+        }
+
+type InvoicesPaymentsInvoicePaymentStatusTransitions with
+    static member New(canceledAt: DateTime option, paidAt: DateTime option) =
+        {
+            CanceledAt = canceledAt
+            PaidAt = paidAt
+        }
+
+type Invoice with
+    static member New(accountCountry: IsoTypes.IsoCountryCode option, accountName: string option, accountTaxIds: InvoiceAccountTaxIds'AnyOf list option, amountDue: int, amountOverpaid: int, amountPaid: int, amountRemaining: int, amountShipping: int, application: InvoiceApplication'AnyOf option, attemptCount: int, attempted: bool, automaticTax: AutomaticTax, automaticallyFinalizesAt: DateTime option, billingReason: InvoiceBillingReason option, collectionMethod: InvoiceCollectionMethod, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customFields: InvoiceSettingCustomField list option, customer: InvoiceCustomer'AnyOf option, customerAccount: string option, customerAddress: Address option, customerEmail: string option, customerName: string option, customerPhone: string option, customerShipping: Shipping option, customerTaxExempt: InvoiceCustomerTaxExempt option, defaultPaymentMethod: StripeId<Markers.PaymentMethod> option, defaultSource: StripeId<Markers.PaymentSource> option, defaultTaxRates: TaxRate list, description: string option, discounts: InvoiceDiscounts'AnyOf list, dueDate: DateTime option, effectiveAt: DateTime option, endingBalance: int option, footer: string option, fromInvoice: InvoicesResourceFromInvoice option, issuer: ConnectAccountReference, lastFinalizationError: ApiErrors option, latestRevision: StripeId<Markers.Invoice> option, lines: InvoiceLines, livemode: bool, metadata: Map<string, string> option, nextPaymentAttempt: DateTime option, number: string option, onBehalfOf: StripeId<Markers.Account> option, parent: BillingBillResourceInvoicingParentsInvoiceParent option, paymentSettings: InvoicesPaymentSettings, periodEnd: DateTime, periodStart: DateTime, postPaymentCreditNotesAmount: int, prePaymentCreditNotesAmount: int, receiptNumber: string option, rendering: InvoicesResourceInvoiceRendering option, shippingCost: InvoicesResourceShippingCost option, shippingDetails: Shipping option, startingBalance: int, statementDescriptor: string option, status: InvoiceStatus option, statusTransitions: InvoicesResourceStatusTransitions, subtotal: int, subtotalExcludingTax: int option, testClock: StripeId<Markers.TestHelpersTestClock> option, total: int, totalDiscountAmounts: DiscountsResourceDiscountAmount list option, totalExcludingTax: int option, totalPretaxCreditAmounts: InvoicesResourcePretaxCreditAmount list option, totalTaxes: BillingBillResourceInvoicingTaxesTax list option, webhooksDeliveredAt: DateTime option, ?autoAdvance: bool, ?confirmationSecret: InvoicesResourceConfirmationSecret option, ?customerTaxIds: InvoicesResourceInvoiceTaxId list option, ?hostedInvoiceUrl: string option, ?id: string, ?invoicePdf: string option, ?payments: InvoicePayments, ?subscription: StripeId<Markers.Subscription> option, ?thresholdReason: InvoiceThresholdReason) =
+        {
+            AccountCountry = accountCountry
+            AccountName = accountName
+            AccountTaxIds = accountTaxIds
+            AmountDue = amountDue
+            AmountOverpaid = amountOverpaid
+            AmountPaid = amountPaid
+            AmountRemaining = amountRemaining
+            AmountShipping = amountShipping
+            Application = application
+            AttemptCount = attemptCount
+            Attempted = attempted
+            AutomaticTax = automaticTax
+            AutomaticallyFinalizesAt = automaticallyFinalizesAt
+            BillingReason = billingReason
+            CollectionMethod = collectionMethod
+            Created = created
+            Currency = currency
+            CustomFields = customFields
+            Customer = customer
+            CustomerAccount = customerAccount
+            CustomerAddress = customerAddress
+            CustomerEmail = customerEmail
+            CustomerName = customerName
+            CustomerPhone = customerPhone
+            CustomerShipping = customerShipping
+            CustomerTaxExempt = customerTaxExempt
+            DefaultPaymentMethod = defaultPaymentMethod
+            DefaultSource = defaultSource
+            DefaultTaxRates = defaultTaxRates
+            Description = description
+            Discounts = discounts
+            DueDate = dueDate
+            EffectiveAt = effectiveAt
+            EndingBalance = endingBalance
+            Footer = footer
+            FromInvoice = fromInvoice
+            Issuer = issuer
+            LastFinalizationError = lastFinalizationError
+            LatestRevision = latestRevision
+            Lines = lines
+            Livemode = livemode
+            Metadata = metadata
+            NextPaymentAttempt = nextPaymentAttempt
+            Number = number
+            OnBehalfOf = onBehalfOf
+            Parent = parent
+            PaymentSettings = paymentSettings
+            PeriodEnd = periodEnd
+            PeriodStart = periodStart
+            PostPaymentCreditNotesAmount = postPaymentCreditNotesAmount
+            PrePaymentCreditNotesAmount = prePaymentCreditNotesAmount
+            ReceiptNumber = receiptNumber
+            Rendering = rendering
+            ShippingCost = shippingCost
+            ShippingDetails = shippingDetails
+            StartingBalance = startingBalance
+            StatementDescriptor = statementDescriptor
+            Status = status
+            StatusTransitions = statusTransitions
+            Subtotal = subtotal
+            SubtotalExcludingTax = subtotalExcludingTax
+            TestClock = testClock
+            Total = total
+            TotalDiscountAmounts = totalDiscountAmounts
+            TotalExcludingTax = totalExcludingTax
+            TotalPretaxCreditAmounts = totalPretaxCreditAmounts
+            TotalTaxes = totalTaxes
+            WebhooksDeliveredAt = webhooksDeliveredAt
+            AutoAdvance = autoAdvance
+            ConfirmationSecret = confirmationSecret |> Option.flatten
+            CustomerTaxIds = customerTaxIds |> Option.flatten
+            HostedInvoiceUrl = hostedInvoiceUrl |> Option.flatten
+            Id = id
+            InvoicePdf = invoicePdf |> Option.flatten
+            Payments = payments
+            Subscription = subscription |> Option.flatten
+            ThresholdReason = thresholdReason
+        }
+
 module Invoice =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "invoice"
+
+type InvoicePayments with
+    static member New(data: InvoicePayment list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module InvoicePayments =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
+type InvoicePayment with
+    static member New(amountPaid: int option, amountRequested: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, id: string, invoice: InvoicePaymentInvoice'AnyOf, isDefault: bool, livemode: bool, payment: InvoicesPaymentsInvoicePaymentAssociatedPayment, status: InvoicePaymentStatus, statusTransitions: InvoicesPaymentsInvoicePaymentStatusTransitions) =
+        {
+            AmountPaid = amountPaid
+            AmountRequested = amountRequested
+            Created = created
+            Currency = currency
+            Id = id
+            Invoice = invoice
+            IsDefault = isDefault
+            Livemode = livemode
+            Payment = payment
+            Status = status
+            StatusTransitions = statusTransitions
+        }
+
 module InvoicePayment =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "invoice_payment"
+
+type InvoicePaymentPaid with
+    static member New(object: InvoicePayment) =
+        {
+            Object = object
+        }
+
+type InvoiceWillBeDue with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceVoided with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceUpdated with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceUpcoming with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceSent with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoicePaymentSucceeded with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoicePaymentFailed with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoicePaymentAttemptRequired with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoicePaymentActionRequired with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoicePaid with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceOverpaid with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceOverdue with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceMarkedUncollectible with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceFinalized with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceFinalizationFailed with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceDeleted with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type InvoiceCreated with
+    static member New(object: Invoice) =
+        {
+            Object = object
+        }
+
+type BankConnectionsResourceTransactionResourceStatusTransitions with
+    static member New(postedAt: DateTime option, voidAt: DateTime option) =
+        {
+            PostedAt = postedAt
+            VoidAt = voidAt
+        }
+
+type FinancialConnectionsTransaction with
+    static member New(account: string, amount: int, currency: IsoTypes.IsoCurrencyCode, description: string, id: string, livemode: bool, status: FinancialConnectionsTransactionStatus, statusTransitions: BankConnectionsResourceTransactionResourceStatusTransitions, transactedAt: DateTime, transactionRefresh: string, updated: DateTime) =
+        {
+            Account = account
+            Amount = amount
+            Currency = currency
+            Description = description
+            Id = id
+            Livemode = livemode
+            Status = status
+            StatusTransitions = statusTransitions
+            TransactedAt = transactedAt
+            TransactionRefresh = transactionRefresh
+            Updated = updated
+        }
+
+module FinancialConnectionsTransaction =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "financial_connections.transaction"
+
+type BankConnectionsResourceAccountholder with
+    static member New(``type``: BankConnectionsResourceAccountholderType, ?account: StripeId<Markers.Account>, ?customer: StripeId<Markers.Customer>, ?customerAccount: string) =
+        {
+            Type = ``type``
+            Account = account
+            Customer = customer
+            CustomerAccount = customerAccount
+        }
+
+type BankConnectionsResourceLinkAccountSessionFilters with
+    static member New(accountSubcategories: BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories list option, countries: string list option) =
+        {
+            AccountSubcategories = accountSubcategories
+            Countries = countries
+        }
+
+type BankConnectionsResourceAccountNumberDetails with
+    static member New(expectedExpiryDate: DateTime option, identifierType: BankConnectionsResourceAccountNumberDetailsIdentifierType, status: BankConnectionsResourceAccountNumberDetailsStatus, supportedNetworks: string list) =
+        {
+            ExpectedExpiryDate = expectedExpiryDate
+            IdentifierType = identifierType
+            Status = status
+            SupportedNetworks = supportedNetworks
+        }
+
+type BankConnectionsResourceBalanceApiResourceCashBalance with
+    static member New(available: Map<string, string list> option) =
+        {
+            Available = available
+        }
+
+type BankConnectionsResourceBalanceApiResourceCreditBalance with
+    static member New(used: Map<string, string list> option) =
+        {
+            Used = used
+        }
+
+type BankConnectionsResourceBalance with
+    static member New(asOf: DateTime, current: Map<string, string list>, ``type``: BankConnectionsResourceBalanceType, ?cash: BankConnectionsResourceBalanceApiResourceCashBalance, ?credit: BankConnectionsResourceBalanceApiResourceCreditBalance) =
+        {
+            AsOf = asOf
+            Current = current
+            Type = ``type``
+            Cash = cash
+            Credit = credit
+        }
+
+type BankConnectionsResourceBalanceRefresh with
+    static member New(lastAttemptedAt: DateTime, nextRefreshAvailableAt: DateTime option, status: BankConnectionsResourceBalanceRefreshStatus) =
+        {
+            LastAttemptedAt = lastAttemptedAt
+            NextRefreshAvailableAt = nextRefreshAvailableAt
+            Status = status
+        }
+
+type BankConnectionsResourceOwnershipRefresh with
+    static member New(lastAttemptedAt: DateTime, nextRefreshAvailableAt: DateTime option, status: BankConnectionsResourceOwnershipRefreshStatus) =
+        {
+            LastAttemptedAt = lastAttemptedAt
+            NextRefreshAvailableAt = nextRefreshAvailableAt
+            Status = status
+        }
+
+type BankConnectionsResourceTransactionRefresh with
+    static member New(id: string, lastAttemptedAt: DateTime, nextRefreshAvailableAt: DateTime option, status: BankConnectionsResourceTransactionRefreshStatus) =
+        {
+            Id = id
+            LastAttemptedAt = lastAttemptedAt
+            NextRefreshAvailableAt = nextRefreshAvailableAt
+            Status = status
+        }
+
+type FinancialConnectionsAccount with
+    static member New(accountHolder: BankConnectionsResourceAccountholder option, accountNumbers: BankConnectionsResourceAccountNumberDetails list option, balance: BankConnectionsResourceBalance option, balanceRefresh: BankConnectionsResourceBalanceRefresh option, category: FinancialConnectionsAccountCategory, created: DateTime, displayName: string option, id: string, institutionName: string, last4: string option, livemode: bool, ownership: StripeId<Markers.FinancialConnectionsAccountOwnership> option, ownershipRefresh: BankConnectionsResourceOwnershipRefresh option, permissions: FinancialConnectionsAccountPermissions list option, status: FinancialConnectionsAccountStatus, subcategory: FinancialConnectionsAccountSubcategory, subscriptions: string list option, supportedPaymentMethodTypes: FinancialConnectionsAccountSupportedPaymentMethodTypes list, transactionRefresh: BankConnectionsResourceTransactionRefresh option) =
+        {
+            AccountHolder = accountHolder
+            AccountNumbers = accountNumbers
+            Balance = balance
+            BalanceRefresh = balanceRefresh
+            Category = category
+            Created = created
+            DisplayName = displayName
+            Id = id
+            InstitutionName = institutionName
+            Last4 = last4
+            Livemode = livemode
+            Ownership = ownership
+            OwnershipRefresh = ownershipRefresh
+            Permissions = permissions
+            Status = status
+            Subcategory = subcategory
+            Subscriptions = subscriptions
+            SupportedPaymentMethodTypes = supportedPaymentMethodTypes
+            TransactionRefresh = transactionRefresh
+        }
+
+module FinancialConnectionsAccount =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "financial_connections.account"
+
+type FinancialConnectionsSessionAccounts with
+    static member New(data: FinancialConnectionsAccount list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
+module FinancialConnectionsSessionAccounts =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+type FinancialConnectionsSession with
+    static member New(accountHolder: BankConnectionsResourceAccountholder option, accounts: FinancialConnectionsSessionAccounts, clientSecret: string option, id: string, livemode: bool, permissions: FinancialConnectionsSessionPermissions list, prefetch: FinancialConnectionsSessionPrefetch list option, ?filters: BankConnectionsResourceLinkAccountSessionFilters, ?returnUrl: string) =
+        {
+            AccountHolder = accountHolder
+            Accounts = accounts
+            ClientSecret = clientSecret
+            Id = id
+            Livemode = livemode
+            Permissions = permissions
+            Prefetch = prefetch
+            Filters = filters
+            ReturnUrl = returnUrl
+        }
+
+module FinancialConnectionsSession =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "financial_connections.session"
+
+type FinancialConnectionsAccountOwner with
+    static member New(email: string option, id: string, name: string, ownership: string, phone: string option, rawAddress: string option, refreshedAt: DateTime option) =
+        {
+            Email = email
+            Id = id
+            Name = name
+            Ownership = ownership
+            Phone = phone
+            RawAddress = rawAddress
+            RefreshedAt = refreshedAt
+        }
+
+module FinancialConnectionsAccountOwner =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "financial_connections.account_owner"
+
+type FinancialConnectionsAccountOwnershipOwners with
+    static member New(data: FinancialConnectionsAccountOwner list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
+module FinancialConnectionsAccountOwnershipOwners =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+type FinancialConnectionsAccountOwnership with
+    static member New(created: DateTime, id: string, owners: FinancialConnectionsAccountOwnershipOwners) =
+        {
+            Created = created
+            Id = id
+            Owners = owners
+        }
+
+module FinancialConnectionsAccountOwnership =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "financial_connections.account_ownership"
+
+type FinancialConnectionsAccountUpcomingAccountNumberExpiry with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAccountRefreshedTransactions with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAccountRefreshedOwnership with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAccountRefreshedBalance with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAccountReactivated with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAccountDisconnected with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAccountDeactivated with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAccountCreated with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAccountAccountNumbersUpdated with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type DiscountsResourceStackableDiscountWithDiscountEnd with
+    static member New(coupon: StripeId<Markers.Coupon> option, discount: StripeId<Markers.Discount> option, promotionCode: StripeId<Markers.PromotionCode> option) =
+        {
+            Coupon = coupon
+            Discount = discount
+            PromotionCode = promotionCode
+        }
+
+type DeletedPerson with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedPerson =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "person"
 
+type DeletedAccount with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
 module DeletedAccount =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "account"
+
+type CustomerBalanceResourceCashBalanceTransactionResourceAdjustedForOverdraft with
+    static member New(balanceTransaction: StripeId<Markers.BalanceTransaction>, linkedTransaction: StripeId<Markers.CustomerCashBalanceTransaction>) =
+        {
+            BalanceTransaction = balanceTransaction
+            LinkedTransaction = linkedTransaction
+        }
+
+type CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction with
+    static member New(paymentIntent: StripeId<Markers.PaymentIntent>) =
+        {
+            PaymentIntent = paymentIntent
+        }
+
+type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer with
+    static member New(bic: string option, ibanLast4: string option, senderName: string option) =
+        {
+            Bic = bic
+            IbanLast4 = ibanLast4
+            SenderName = senderName
+        }
+
+type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceGbBankTransfer with
+    static member New(accountNumberLast4: string option, senderName: string option, sortCode: string option) =
+        {
+            AccountNumberLast4 = accountNumberLast4
+            SenderName = senderName
+            SortCode = sortCode
+        }
+
+type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceJpBankTransfer with
+    static member New(senderBank: string option, senderBranch: string option, senderName: string option) =
+        {
+            SenderBank = senderBank
+            SenderBranch = senderBranch
+            SenderName = senderName
+        }
+
+type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransfer with
+    static member New(senderName: string option, ?network: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransferNetwork) =
+        {
+            SenderName = senderName
+            Network = network
+        }
+
+type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer with
+    static member New(reference: string option, ``type``: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferType, ?euBankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceEuBankTransfer, ?gbBankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceGbBankTransfer, ?jpBankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceJpBankTransfer, ?usBankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransfer) =
+        {
+            Reference = reference
+            Type = ``type``
+            EuBankTransfer = euBankTransfer
+            GbBankTransfer = gbBankTransfer
+            JpBankTransfer = jpBankTransfer
+            UsBankTransfer = usBankTransfer
+        }
+
+type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction with
+    static member New(bankTransfer: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransfer) =
+        {
+            BankTransfer = bankTransfer
+        }
+
+type CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction with
+    static member New(refund: StripeId<Markers.Refund>) =
+        {
+            Refund = refund
+        }
+
+type CustomerBalanceResourceCashBalanceTransactionResourceTransferredToBalance with
+    static member New(balanceTransaction: StripeId<Markers.BalanceTransaction>) =
+        {
+            BalanceTransaction = balanceTransaction
+        }
+
+type CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransaction with
+    static member New(paymentIntent: StripeId<Markers.PaymentIntent>) =
+        {
+            PaymentIntent = paymentIntent
+        }
+
+type CustomerCashBalanceTransaction with
+    static member New(created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: StripeId<Markers.Customer>, customerAccount: string option, endingBalance: int, id: string, livemode: bool, netAmount: int, ``type``: CustomerCashBalanceTransactionType, ?adjustedForOverdraft: CustomerBalanceResourceCashBalanceTransactionResourceAdjustedForOverdraft, ?appliedToPayment: CustomerBalanceResourceCashBalanceTransactionResourceAppliedToPaymentTransaction, ?funded: CustomerBalanceResourceCashBalanceTransactionResourceFundedTransaction, ?refundedFromPayment: CustomerBalanceResourceCashBalanceTransactionResourceRefundedFromPaymentTransaction, ?transferredToBalance: CustomerBalanceResourceCashBalanceTransactionResourceTransferredToBalance, ?unappliedFromPayment: CustomerBalanceResourceCashBalanceTransactionResourceUnappliedFromPaymentTransaction) =
+        {
+            Created = created
+            Currency = currency
+            Customer = customer
+            CustomerAccount = customerAccount
+            EndingBalance = endingBalance
+            Id = id
+            Livemode = livemode
+            NetAmount = netAmount
+            Type = ``type``
+            AdjustedForOverdraft = adjustedForOverdraft
+            AppliedToPayment = appliedToPayment
+            Funded = funded
+            RefundedFromPayment = refundedFromPayment
+            TransferredToBalance = transferredToBalance
+            UnappliedFromPayment = unappliedFromPayment
+        }
 
 module CustomerCashBalanceTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "customer_cash_balance_transaction"
 
+type CustomerCashBalanceTransactionCreated with
+    static member New(object: CustomerCashBalanceTransaction) =
+        {
+            Object = object
+        }
+
+type OfflineAcceptance with
+    static member New(?offlineAcceptance: string option) =
+        {
+            OfflineAcceptance = offlineAcceptance |> Option.flatten
+        }
+
+type OnlineAcceptance with
+    static member New(ipAddress: string option, userAgent: string option) =
+        {
+            IpAddress = ipAddress
+            UserAgent = userAgent
+        }
+
+type CustomerAcceptance with
+    static member New(acceptedAt: DateTime option, ``type``: CustomerAcceptanceType, ?offline: OfflineAcceptance, ?online: OnlineAcceptance) =
+        {
+            AcceptedAt = acceptedAt
+            Type = ``type``
+            Offline = offline
+            Online = online
+        }
+
+type CustomerUpdated with
+    static member New(object: Customer) =
+        {
+            Object = object
+        }
+
+type CustomerTaxIdUpdated with
+    static member New(object: TaxId) =
+        {
+            Object = object
+        }
+
+type CustomerTaxIdDeleted with
+    static member New(object: TaxId) =
+        {
+            Object = object
+        }
+
+type CustomerTaxIdCreated with
+    static member New(object: TaxId) =
+        {
+            Object = object
+        }
+
+type CustomerSubscriptionUpdated with
+    static member New(object: Subscription) =
+        {
+            Object = object
+        }
+
+type CustomerSubscriptionTrialWillEnd with
+    static member New(object: Subscription) =
+        {
+            Object = object
+        }
+
+type CustomerSubscriptionResumed with
+    static member New(object: Subscription) =
+        {
+            Object = object
+        }
+
+type CustomerSubscriptionPendingUpdateExpired with
+    static member New(object: Subscription) =
+        {
+            Object = object
+        }
+
+type CustomerSubscriptionPendingUpdateApplied with
+    static member New(object: Subscription) =
+        {
+            Object = object
+        }
+
+type CustomerSubscriptionPaused with
+    static member New(object: Subscription) =
+        {
+            Object = object
+        }
+
+type CustomerSubscriptionDeleted with
+    static member New(object: Subscription) =
+        {
+            Object = object
+        }
+
+type CustomerSubscriptionCreated with
+    static member New(object: Subscription) =
+        {
+            Object = object
+        }
+
+type CustomerSourceUpdated with
+    static member New(object: CustomerSourceUpdatedObject'AnyOf) =
+        {
+            Object = object
+        }
+
+type CustomerSourceExpiring with
+    static member New(object: CustomerSourceExpiringObject'AnyOf) =
+        {
+            Object = object
+        }
+
+type CustomerSourceDeleted with
+    static member New(object: CustomerSourceDeletedObject'AnyOf) =
+        {
+            Object = object
+        }
+
+type CustomerSourceCreated with
+    static member New(object: CustomerSourceCreatedObject'AnyOf) =
+        {
+            Object = object
+        }
+
+type CustomerDiscountUpdated with
+    static member New(object: Discount) =
+        {
+            Object = object
+        }
+
+type CustomerDiscountDeleted with
+    static member New(object: Discount) =
+        {
+            Object = object
+        }
+
+type CustomerDiscountCreated with
+    static member New(object: Discount) =
+        {
+            Object = object
+        }
+
+type CustomerDeleted with
+    static member New(object: Customer) =
+        {
+            Object = object
+        }
+
+type CustomerCreated with
+    static member New(object: Customer) =
+        {
+            Object = object
+        }
+
+type CreditNotesPaymentRecordRefund with
+    static member New(paymentRecord: string, refundGroup: string) =
+        {
+            PaymentRecord = paymentRecord
+            RefundGroup = refundGroup
+        }
+
+type CreditNotesPretaxCreditAmount with
+    static member New(amount: int, ``type``: CreditNotesPretaxCreditAmountType, ?creditBalanceTransaction: StripeId<Markers.BillingCreditBalanceTransaction>, ?discount: CreditNotesPretaxCreditAmountDiscount'AnyOf) =
+        {
+            Amount = amount
+            Type = ``type``
+            CreditBalanceTransaction = creditBalanceTransaction
+            Discount = discount
+        }
+
+type LineItemsDiscountAmount with
+    static member New(amount: int, discount: Discount) =
+        {
+            Amount = amount
+            Discount = discount
+        }
+
+type PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown with
+    static member New(discounts: LineItemsDiscountAmount list, taxes: LineItemsTaxAmount list) =
+        {
+            Discounts = discounts
+            Taxes = taxes
+        }
+
+type PaymentPagesCheckoutSessionTotalDetails with
+    static member New(amountDiscount: int, amountShipping: int option, amountTax: int, ?breakdown: PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown) =
+        {
+            AmountDiscount = amountDiscount
+            AmountShipping = amountShipping
+            AmountTax = amountTax
+            Breakdown = breakdown
+        }
+
+type PaymentPagesCheckoutSessionTaxIdCollection with
+    static member New(enabled: bool, required: PaymentPagesCheckoutSessionTaxIdCollectionRequired) =
+        {
+            Enabled = enabled
+            Required = required
+        }
+
+type PaymentPagesCheckoutSessionShippingOption with
+    static member New(shippingAmount: int, shippingRate: StripeId<Markers.ShippingRate>) =
+        {
+            ShippingAmount = shippingAmount
+            ShippingRate = shippingRate
+        }
+
+type PaymentPagesCheckoutSessionShippingCost with
+    static member New(amountSubtotal: int, amountTax: int, amountTotal: int, shippingRate: StripeId<Markers.ShippingRate> option, ?taxes: LineItemsTaxAmount list) =
+        {
+            AmountSubtotal = amountSubtotal
+            AmountTax = amountTax
+            AmountTotal = amountTotal
+            ShippingRate = shippingRate
+            Taxes = taxes
+        }
+
+type PaymentPagesCheckoutSessionShippingAddressCollection with
+    static member New(allowedCountries: PaymentPagesCheckoutSessionShippingAddressCollectionAllowedCountries list) =
+        {
+            AllowedCountries = allowedCountries
+        }
+
+type PaymentPagesCheckoutSessionSavedPaymentMethodOptions with
+    static member New(allowRedisplayFilters: PaymentPagesCheckoutSessionSavedPaymentMethodOptionsAllowRedisplayFilters list option, paymentMethodRemove: PaymentPagesCheckoutSessionSavedPaymentMethodOptionsPaymentMethodRemove option, paymentMethodSave: PaymentPagesCheckoutSessionSavedPaymentMethodOptionsPaymentMethodSave option) =
+        {
+            AllowRedisplayFilters = allowRedisplayFilters
+            PaymentMethodRemove = paymentMethodRemove
+            PaymentMethodSave = paymentMethodSave
+        }
+
+type PaymentPagesCheckoutSessionPhoneNumberCollection with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
+
+type PaymentPagesCheckoutSessionPermissions with
+    static member New(updateShippingDetails: PaymentPagesCheckoutSessionPermissionsUpdateShippingDetails option) =
+        {
+            UpdateShippingDetails = updateShippingDetails
+        }
+
+type PaymentPagesCheckoutSessionOptionalItemAdjustableQuantity with
+    static member New(enabled: bool, maximum: int option, minimum: int option) =
+        {
+            Enabled = enabled
+            Maximum = maximum
+            Minimum = minimum
+        }
+
+type PaymentPagesCheckoutSessionOptionalItem with
+    static member New(adjustableQuantity: PaymentPagesCheckoutSessionOptionalItemAdjustableQuantity option, price: string, quantity: int) =
+        {
+            AdjustableQuantity = adjustableQuantity
+            Price = price
+            Quantity = quantity
+        }
+
+type PaymentPagesCheckoutSessionBusinessName with
+    static member New(enabled: bool, optional: bool) =
+        {
+            Enabled = enabled
+            Optional = optional
+        }
+
+type PaymentPagesCheckoutSessionIndividualName with
+    static member New(enabled: bool, optional: bool) =
+        {
+            Enabled = enabled
+            Optional = optional
+        }
+
+type PaymentPagesCheckoutSessionNameCollection with
+    static member New(?business: PaymentPagesCheckoutSessionBusinessName, ?individual: PaymentPagesCheckoutSessionIndividualName) =
+        {
+            Business = business
+            Individual = individual
+        }
+
+type PaymentPagesCheckoutSessionManagedPayments with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
+
+type PaymentPagesCheckoutSessionInvoiceSettings with
+    static member New(accountTaxIds: PaymentPagesCheckoutSessionInvoiceSettingsAccountTaxIds'AnyOf list option, customFields: InvoiceSettingCustomField list option, description: string option, footer: string option, issuer: ConnectAccountReference option, metadata: Map<string, string> option, renderingOptions: InvoiceSettingCheckoutRenderingOptions option) =
+        {
+            AccountTaxIds = accountTaxIds
+            CustomFields = customFields
+            Description = description
+            Footer = footer
+            Issuer = issuer
+            Metadata = metadata
+            RenderingOptions = renderingOptions
+        }
+
+type PaymentPagesCheckoutSessionInvoiceCreation with
+    static member New(enabled: bool, invoiceData: PaymentPagesCheckoutSessionInvoiceSettings) =
+        {
+            Enabled = enabled
+            InvoiceData = invoiceData
+        }
+
+type PaymentPagesCheckoutSessionDiscount with
+    static member New(coupon: StripeId<Markers.Coupon> option, promotionCode: StripeId<Markers.PromotionCode> option) =
+        {
+            Coupon = coupon
+            PromotionCode = promotionCode
+        }
+
+type PaymentPagesCheckoutSessionTaxId with
+    static member New(``type``: PaymentPagesCheckoutSessionTaxIdType, value: string option) =
+        {
+            Type = ``type``
+            Value = value
+        }
+
+type PaymentPagesCheckoutSessionCustomerDetails with
+    static member New(address: Address option, businessName: string option, email: string option, individualName: string option, name: string option, phone: string option, taxExempt: PaymentPagesCheckoutSessionCustomerDetailsTaxExempt option, taxIds: PaymentPagesCheckoutSessionTaxId list option) =
+        {
+            Address = address
+            BusinessName = businessName
+            Email = email
+            IndividualName = individualName
+            Name = name
+            Phone = phone
+            TaxExempt = taxExempt
+            TaxIds = taxIds
+        }
+
+type PaymentPagesCheckoutSessionCustomTextPosition with
+    static member New(message: string) =
+        {
+            Message = message
+        }
+
+type PaymentPagesCheckoutSessionCustomText with
+    static member New(afterSubmit: PaymentPagesCheckoutSessionCustomTextPosition option, shippingAddress: PaymentPagesCheckoutSessionCustomTextPosition option, submit: PaymentPagesCheckoutSessionCustomTextPosition option, termsOfServiceAcceptance: PaymentPagesCheckoutSessionCustomTextPosition option) =
+        {
+            AfterSubmit = afterSubmit
+            ShippingAddress = shippingAddress
+            Submit = submit
+            TermsOfServiceAcceptance = termsOfServiceAcceptance
+        }
+
+type PaymentPagesCheckoutSessionCustomFieldsOption with
+    static member New(label: string, value: string) =
+        {
+            Label = label
+            Value = value
+        }
+
+type PaymentPagesCheckoutSessionCustomFieldsDropdown with
+    static member New(defaultValue: string option, options: PaymentPagesCheckoutSessionCustomFieldsOption list, value: string option) =
+        {
+            DefaultValue = defaultValue
+            Options = options
+            Value = value
+        }
+
+type PaymentPagesCheckoutSessionCustomFieldsLabel with
+    static member New(custom: string option) =
+        {
+            Custom = custom
+        }
+
 module PaymentPagesCheckoutSessionCustomFieldsLabel =
     ///The type of the label.
     let ``type`` = "custom"
+
+type PaymentPagesCheckoutSessionCustomFieldsNumeric with
+    static member New(defaultValue: string option, maximumLength: int option, minimumLength: int option, value: string option) =
+        {
+            DefaultValue = defaultValue
+            MaximumLength = maximumLength
+            MinimumLength = minimumLength
+            Value = value
+        }
+
+type PaymentPagesCheckoutSessionCustomFieldsText with
+    static member New(defaultValue: string option, maximumLength: int option, minimumLength: int option, value: string option) =
+        {
+            DefaultValue = defaultValue
+            MaximumLength = maximumLength
+            MinimumLength = minimumLength
+            Value = value
+        }
+
+type PaymentPagesCheckoutSessionCustomFields with
+    static member New(key: string, label: PaymentPagesCheckoutSessionCustomFieldsLabel, optional: bool, ``type``: PaymentPagesCheckoutSessionCustomFieldsType, ?dropdown: PaymentPagesCheckoutSessionCustomFieldsDropdown, ?numeric: PaymentPagesCheckoutSessionCustomFieldsNumeric, ?text: PaymentPagesCheckoutSessionCustomFieldsText) =
+        {
+            Key = key
+            Label = label
+            Optional = optional
+            Type = ``type``
+            Dropdown = dropdown
+            Numeric = numeric
+            Text = text
+        }
+
+type PaymentPagesCheckoutSessionCurrencyConversion with
+    static member New(amountSubtotal: int, amountTotal: int, fxRate: string, sourceCurrency: IsoTypes.IsoCurrencyCode) =
+        {
+            AmountSubtotal = amountSubtotal
+            AmountTotal = amountTotal
+            FxRate = fxRate
+            SourceCurrency = sourceCurrency
+        }
+
+type PaymentPagesCheckoutSessionPaymentMethodReuseAgreement with
+    static member New(position: PaymentPagesCheckoutSessionPaymentMethodReuseAgreementPosition) =
+        {
+            Position = position
+        }
+
+type PaymentPagesCheckoutSessionConsentCollection with
+    static member New(paymentMethodReuseAgreement: PaymentPagesCheckoutSessionPaymentMethodReuseAgreement option, promotions: PaymentPagesCheckoutSessionConsentCollectionPromotions option, termsOfService: PaymentPagesCheckoutSessionConsentCollectionTermsOfService option) =
+        {
+            PaymentMethodReuseAgreement = paymentMethodReuseAgreement
+            Promotions = promotions
+            TermsOfService = termsOfService
+        }
+
+type PaymentPagesCheckoutSessionConsent with
+    static member New(promotions: PaymentPagesCheckoutSessionConsentPromotions option) =
+        {
+            Promotions = promotions
+        }
 
 module PaymentPagesCheckoutSessionConsent =
     ///If `accepted`, the customer in this Checkout Session has agreed to the merchant's terms of service.
     let termsOfService = "accepted"
 
+type PaymentPagesCheckoutSessionCheckoutAddressDetails with
+    static member New(address: Address, name: string) =
+        {
+            Address = address
+            Name = name
+        }
+
+type PaymentPagesCheckoutSessionCollectedInformation with
+    static member New(businessName: string option, individualName: string option, shippingDetails: PaymentPagesCheckoutSessionCheckoutAddressDetails option) =
+        {
+            BusinessName = businessName
+            IndividualName = individualName
+            ShippingDetails = shippingDetails
+        }
+
+type PaymentPagesCheckoutSessionBrandingSettingsIcon with
+    static member New(``type``: PaymentPagesCheckoutSessionBrandingSettingsIconType, ?file: string, ?url: string) =
+        {
+            Type = ``type``
+            File = file
+            Url = url
+        }
+
+type PaymentPagesCheckoutSessionBrandingSettingsLogo with
+    static member New(``type``: PaymentPagesCheckoutSessionBrandingSettingsLogoType, ?file: string, ?url: string) =
+        {
+            Type = ``type``
+            File = file
+            Url = url
+        }
+
+type PaymentPagesCheckoutSessionBrandingSettings with
+    static member New(backgroundColor: string, borderStyle: PaymentPagesCheckoutSessionBrandingSettingsBorderStyle, buttonColor: string, displayName: string, fontFamily: string, icon: PaymentPagesCheckoutSessionBrandingSettingsIcon option, logo: PaymentPagesCheckoutSessionBrandingSettingsLogo option) =
+        {
+            BackgroundColor = backgroundColor
+            BorderStyle = borderStyle
+            ButtonColor = buttonColor
+            DisplayName = displayName
+            FontFamily = fontFamily
+            Icon = icon
+            Logo = logo
+        }
+
+type PaymentPagesCheckoutSessionAutomaticTax with
+    static member New(enabled: bool, liability: ConnectAccountReference option, provider: string option, status: PaymentPagesCheckoutSessionAutomaticTaxStatus option) =
+        {
+            Enabled = enabled
+            Liability = liability
+            Provider = provider
+            Status = status
+        }
+
+type PaymentPagesCheckoutSessionAfterExpirationRecovery with
+    static member New(allowPromotionCodes: bool, enabled: bool, expiresAt: DateTime option, url: string option) =
+        {
+            AllowPromotionCodes = allowPromotionCodes
+            Enabled = enabled
+            ExpiresAt = expiresAt
+            Url = url
+        }
+
+type PaymentPagesCheckoutSessionAfterExpiration with
+    static member New(recovery: PaymentPagesCheckoutSessionAfterExpirationRecovery option) =
+        {
+            Recovery = recovery
+        }
+
+type PaymentPagesCheckoutSessionAdaptivePricing with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
+
+type PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictions with
+    static member New(?brandsBlocked: PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictionsBrandsBlocked list) =
+        {
+            BrandsBlocked = brandsBlocked
+        }
+
+type LineItemsAdjustableQuantity with
+    static member New(enabled: bool, maximum: int option, minimum: int option) =
+        {
+            Enabled = enabled
+            Maximum = maximum
+            Minimum = minimum
+        }
+
+type Item with
+    static member New(adjustableQuantity: LineItemsAdjustableQuantity option, amountDiscount: int, amountSubtotal: int, amountTax: int, amountTotal: int, currency: IsoTypes.IsoCurrencyCode, description: string option, id: string, metadata: Map<string, string> option, price: Price option, quantity: int option, ?discounts: LineItemsDiscountAmount list, ?taxes: LineItemsTaxAmount list) =
+        {
+            AdjustableQuantity = adjustableQuantity
+            AmountDiscount = amountDiscount
+            AmountSubtotal = amountSubtotal
+            AmountTax = amountTax
+            AmountTotal = amountTotal
+            Currency = currency
+            Description = description
+            Id = id
+            Metadata = metadata
+            Price = price
+            Quantity = quantity
+            Discounts = discounts
+            Taxes = taxes
+        }
+
 module Item =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "item"
+
+type ChargeFraudDetails with
+    static member New(?stripeReport: string, ?userReport: ChargeFraudDetailsUserReport) =
+        {
+            StripeReport = stripeReport
+            UserReport = userReport
+        }
+
+type ChargeOutcome with
+    static member New(adviceCode: ChargeOutcomeAdviceCode option, networkAdviceCode: string option, networkDeclineCode: string option, networkStatus: ChargeOutcomeNetworkStatus option, reason: string option, sellerMessage: string option, ``type``: ChargeOutcomeType, ?riskLevel: string, ?riskScore: int, ?rule: StripeId<Markers.Rule>) =
+        {
+            AdviceCode = adviceCode
+            NetworkAdviceCode = networkAdviceCode
+            NetworkDeclineCode = networkDeclineCode
+            NetworkStatus = networkStatus
+            Reason = reason
+            SellerMessage = sellerMessage
+            Type = ``type``
+            RiskLevel = riskLevel
+            RiskScore = riskScore
+            Rule = rule
+        }
+
+type ChargeRefunds with
+    static member New(data: Refund list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module ChargeRefunds =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
+type ChargeTransferData with
+    static member New(amount: int option, destination: StripeId<Markers.Account>) =
+        {
+            Amount = amount
+            Destination = destination
+        }
+
+type Level3LineItems with
+    static member New(discountAmount: int option, productCode: string, productDescription: string, quantity: int option, taxAmount: int option, unitCost: int option) =
+        {
+            DiscountAmount = discountAmount
+            ProductCode = productCode
+            ProductDescription = productDescription
+            Quantity = quantity
+            TaxAmount = taxAmount
+            UnitCost = unitCost
+        }
+
+type Level3 with
+    static member New(lineItems: Level3LineItems list, merchantReference: string, ?customerReference: string, ?shippingAddressZip: string, ?shippingAmount: int, ?shippingFromZip: string) =
+        {
+            LineItems = lineItems
+            MerchantReference = merchantReference
+            CustomerReference = customerReference
+            ShippingAddressZip = shippingAddressZip
+            ShippingAmount = shippingAmount
+            ShippingFromZip = shippingFromZip
+        }
+
+type PaymentMethodDetailsAcssDebit with
+    static member New(bankName: string option, fingerprint: string option, institutionNumber: string option, last4: string option, transitNumber: string option, ?expectedDebitDate: string, ?mandate: string) =
+        {
+            BankName = bankName
+            Fingerprint = fingerprint
+            InstitutionNumber = institutionNumber
+            Last4 = last4
+            TransitNumber = transitNumber
+            ExpectedDebitDate = expectedDebitDate
+            Mandate = mandate
+        }
+
+type PaymentMethodDetailsAffirm with
+    static member New(transactionId: string option, ?location: string, ?reader: string) =
+        {
+            TransactionId = transactionId
+            Location = location
+            Reader = reader
+        }
+
+type PaymentMethodDetailsAfterpayClearpay with
+    static member New(orderId: string option, reference: string option) =
+        {
+            OrderId = orderId
+            Reference = reference
+        }
+
+type AlmaInstallments with
+    static member New(count: int) =
+        {
+            Count = count
+        }
+
+type PaymentMethodDetailsAlma with
+    static member New(transactionId: string option, ?installments: AlmaInstallments) =
+        {
+            TransactionId = transactionId
+            Installments = installments
+        }
+
+type AmazonPayUnderlyingPaymentMethodFundingDetails with
+    static member New(?card: PaymentMethodDetailsPassthroughCard) =
+        {
+            Card = card
+        }
+
 module AmazonPayUnderlyingPaymentMethodFundingDetails =
     ///funding type of the underlying payment method.
     let ``type`` = "card"
+
+type PaymentMethodDetailsAmazonPay with
+    static member New(transactionId: string option, ?funding: AmazonPayUnderlyingPaymentMethodFundingDetails) =
+        {
+            TransactionId = transactionId
+            Funding = funding
+        }
+
+type PaymentMethodDetailsBancontact with
+    static member New(bankCode: string option, bankName: string option, bic: string option, generatedSepaDebit: StripeId<Markers.PaymentMethod> option, generatedSepaDebitMandate: StripeId<Markers.Mandate> option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsBancontactPreferredLanguage option, verifiedName: string option) =
+        {
+            BankCode = bankCode
+            BankName = bankName
+            Bic = bic
+            GeneratedSepaDebit = generatedSepaDebit
+            GeneratedSepaDebitMandate = generatedSepaDebitMandate
+            IbanLast4 = ibanLast4
+            PreferredLanguage = preferredLanguage
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsBillie with
+    static member New(transactionId: string option) =
+        {
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsBlik with
+    static member New(buyerId: string option) =
+        {
+            BuyerId = buyerId
+        }
+
+type PaymentMethodDetailsBoleto with
+    static member New(taxId: string) =
+        {
+            TaxId = taxId
+        }
+
+type PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorization with
+    static member New(status: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorizationStatus) =
+        {
+            Status = status
+        }
+
+type PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesIncrementalAuthorizationIncrementalAuthorization with
+    static member New(status: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesIncrementalAuthorizationIncrementalAuthorizationStatus) =
+        {
+            Status = status
+        }
+
+type PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesOvercaptureOvercapture with
+    static member New(maximumAmountCapturable: int, status: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesOvercaptureOvercaptureStatus) =
+        {
+            MaximumAmountCapturable = maximumAmountCapturable
+            Status = status
+        }
+
+type PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceMulticapture with
+    static member New(status: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceMulticaptureStatus) =
+        {
+            Status = status
+        }
+
+type PaymentMethodDetailsCardChecks with
+    static member New(addressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option, addressPostalCodeCheck: PaymentMethodDetailsCardChecksAddressPostalCodeCheck option, cvcCheck: PaymentMethodDetailsCardChecksCvcCheck option) =
+        {
+            AddressLine1Check = addressLine1Check
+            AddressPostalCodeCheck = addressPostalCodeCheck
+            CvcCheck = cvcCheck
+        }
+
+type PaymentMethodDetailsCardInstallments with
+    static member New(plan: PaymentMethodDetailsCardInstallmentsPlan option) =
+        {
+            Plan = plan
+        }
+
+type PaymentMethodDetailsCardNetworkToken with
+    static member New(used: bool) =
+        {
+            Used = used
+        }
+
+type PaymentMethodDetailsCardWalletAmexExpressCheckout with
+    static member New(?paymentMethodDetailsCardWalletAmexExpressCheckout: string option) =
+        {
+            PaymentMethodDetailsCardWalletAmexExpressCheckout = paymentMethodDetailsCardWalletAmexExpressCheckout |> Option.flatten
+        }
+
+type PaymentMethodDetailsCardWalletApplePay with
+    static member New(?paymentMethodDetailsCardWalletApplePay: string option) =
+        {
+            PaymentMethodDetailsCardWalletApplePay = paymentMethodDetailsCardWalletApplePay |> Option.flatten
+        }
+
+type PaymentMethodDetailsCardWalletGooglePay with
+    static member New(?paymentMethodDetailsCardWalletGooglePay: string option) =
+        {
+            PaymentMethodDetailsCardWalletGooglePay = paymentMethodDetailsCardWalletGooglePay |> Option.flatten
+        }
+
+type PaymentMethodDetailsCardWalletLink with
+    static member New(?paymentMethodDetailsCardWalletLink: string option) =
+        {
+            PaymentMethodDetailsCardWalletLink = paymentMethodDetailsCardWalletLink |> Option.flatten
+        }
+
+type PaymentMethodDetailsCardWalletMasterpass with
+    static member New(billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
+        {
+            BillingAddress = billingAddress
+            Email = email
+            Name = name
+            ShippingAddress = shippingAddress
+        }
+
+type PaymentMethodDetailsCardWalletSamsungPay with
+    static member New(?paymentMethodDetailsCardWalletSamsungPay: string option) =
+        {
+            PaymentMethodDetailsCardWalletSamsungPay = paymentMethodDetailsCardWalletSamsungPay |> Option.flatten
+        }
+
+type PaymentMethodDetailsCardWalletVisaCheckout with
+    static member New(billingAddress: Address option, email: string option, name: string option, shippingAddress: Address option) =
+        {
+            BillingAddress = billingAddress
+            Email = email
+            Name = name
+            ShippingAddress = shippingAddress
+        }
+
+type PaymentMethodDetailsCardWallet with
+    static member New(dynamicLast4: string option, ``type``: PaymentMethodDetailsCardWalletType, ?amexExpressCheckout: PaymentMethodDetailsCardWalletAmexExpressCheckout, ?applePay: PaymentMethodDetailsCardWalletApplePay, ?googlePay: PaymentMethodDetailsCardWalletGooglePay, ?link: PaymentMethodDetailsCardWalletLink, ?masterpass: PaymentMethodDetailsCardWalletMasterpass, ?samsungPay: PaymentMethodDetailsCardWalletSamsungPay, ?visaCheckout: PaymentMethodDetailsCardWalletVisaCheckout) =
+        {
+            DynamicLast4 = dynamicLast4
+            Type = ``type``
+            AmexExpressCheckout = amexExpressCheckout
+            ApplePay = applePay
+            GooglePay = googlePay
+            Link = link
+            Masterpass = masterpass
+            SamsungPay = samsungPay
+            VisaCheckout = visaCheckout
+        }
+
+type ThreeDSecureDetailsCharge with
+    static member New(authenticationFlow: ThreeDSecureDetailsChargeAuthenticationFlow option, electronicCommerceIndicator: ThreeDSecureDetailsChargeElectronicCommerceIndicator option, exemptionIndicator: ThreeDSecureDetailsChargeExemptionIndicator option, result: ThreeDSecureDetailsChargeResult option, resultReason: ThreeDSecureDetailsChargeResultReason option, transactionId: string option, version: ThreeDSecureDetailsChargeVersion option, ?exemptionIndicatorApplied: bool) =
+        {
+            AuthenticationFlow = authenticationFlow
+            ElectronicCommerceIndicator = electronicCommerceIndicator
+            ExemptionIndicator = exemptionIndicator
+            Result = result
+            ResultReason = resultReason
+            TransactionId = transactionId
+            Version = version
+            ExemptionIndicatorApplied = exemptionIndicatorApplied
+        }
+
+type PaymentMethodDetailsCard with
+    static member New(amountAuthorized: int option, authorizationCode: string option, brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecks option, country: IsoTypes.IsoCountryCode option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallments option, last4: string option, mandate: string option, network: PaymentMethodDetailsCardNetwork option, networkTransactionId: string option, regulatedStatus: PaymentMethodDetailsCardRegulatedStatus option, threeDSecure: ThreeDSecureDetailsCharge option, wallet: PaymentMethodDetailsCardWallet option, ?captureBefore: DateTime, ?description: string option, ?extendedAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorization, ?fingerprint: string option, ?iin: string option, ?incrementalAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesIncrementalAuthorizationIncrementalAuthorization, ?issuer: string option, ?moto: bool option, ?multicapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceMulticapture, ?networkToken: PaymentMethodDetailsCardNetworkToken option, ?overcapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesOvercaptureOvercapture) =
+        {
+            AmountAuthorized = amountAuthorized
+            AuthorizationCode = authorizationCode
+            Brand = brand
+            Checks = checks
+            Country = country
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Funding = funding
+            Installments = installments
+            Last4 = last4
+            Mandate = mandate
+            Network = network
+            NetworkTransactionId = networkTransactionId
+            RegulatedStatus = regulatedStatus
+            ThreeDSecure = threeDSecure
+            Wallet = wallet
+            CaptureBefore = captureBefore
+            Description = description |> Option.flatten
+            ExtendedAuthorization = extendedAuthorization
+            Fingerprint = fingerprint |> Option.flatten
+            Iin = iin |> Option.flatten
+            IncrementalAuthorization = incrementalAuthorization
+            Issuer = issuer |> Option.flatten
+            Moto = moto |> Option.flatten
+            Multicapture = multicapture
+            NetworkToken = networkToken |> Option.flatten
+            Overcapture = overcapture
+        }
+
+type PaymentMethodDetailsCashapp with
+    static member New(buyerId: string option, cashtag: string option, transactionId: string option) =
+        {
+            BuyerId = buyerId
+            Cashtag = cashtag
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsEps with
+    static member New(bank: PaymentMethodDetailsEpsBank option, verifiedName: string option) =
+        {
+            Bank = bank
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsGiropay with
+    static member New(bankCode: string option, bankName: string option, bic: string option, verifiedName: string option) =
+        {
+            BankCode = bankCode
+            BankName = bankName
+            Bic = bic
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsIdeal with
+    static member New(bank: PaymentMethodDetailsIdealBank option, bic: PaymentMethodDetailsIdealBic option, generatedSepaDebit: StripeId<Markers.PaymentMethod> option, generatedSepaDebitMandate: StripeId<Markers.Mandate> option, ibanLast4: string option, transactionId: string option, verifiedName: string option) =
+        {
+            Bank = bank
+            Bic = bic
+            GeneratedSepaDebit = generatedSepaDebit
+            GeneratedSepaDebitMandate = generatedSepaDebitMandate
+            IbanLast4 = ibanLast4
+            TransactionId = transactionId
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsKakaoPay with
+    static member New(buyerId: string option, transactionId: string option) =
+        {
+            BuyerId = buyerId
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsKonbiniStore with
+    static member New(chain: PaymentMethodDetailsKonbiniStoreChain option) =
+        {
+            Chain = chain
+        }
+
+type PaymentMethodDetailsKonbini with
+    static member New(store: PaymentMethodDetailsKonbiniStore option) =
+        {
+            Store = store
+        }
+
+type PaymentMethodDetailsMbWay with
+    static member New(?paymentMethodDetailsMbWay: string option) =
+        {
+            PaymentMethodDetailsMbWay = paymentMethodDetailsMbWay |> Option.flatten
+        }
+
+type InternalCard with
+    static member New(brand: string option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, last4: string option) =
+        {
+            Brand = brand
+            Country = country
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Last4 = last4
+        }
+
+type PaymentMethodDetailsMobilepay with
+    static member New(card: InternalCard option) =
+        {
+            Card = card
+        }
+
+type PaymentMethodDetailsMultibanco with
+    static member New(entity: string option, reference: string option) =
+        {
+            Entity = entity
+            Reference = reference
+        }
+
+type PaymentMethodDetailsNaverPay with
+    static member New(buyerId: string option, transactionId: string option) =
+        {
+            BuyerId = buyerId
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsOxxo with
+    static member New(number: string option) =
+        {
+            Number = number
+        }
+
+type PaymentMethodDetailsPayByBank with
+    static member New(?paymentMethodDetailsPayByBank: string option) =
+        {
+            PaymentMethodDetailsPayByBank = paymentMethodDetailsPayByBank |> Option.flatten
+        }
+
+type PaymentMethodDetailsPayco with
+    static member New(buyerId: string option, transactionId: string option) =
+        {
+            BuyerId = buyerId
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsPaynow with
+    static member New(reference: string option, ?location: string, ?reader: string) =
+        {
+            Reference = reference
+            Location = location
+            Reader = reader
+        }
+
+type PaymentMethodDetailsPix with
+    static member New(?bankTransactionId: string option, ?mandate: string) =
+        {
+            BankTransactionId = bankTransactionId |> Option.flatten
+            Mandate = mandate
+        }
+
+type PaymentMethodDetailsPromptpay with
+    static member New(reference: string option) =
+        {
+            Reference = reference
+        }
+
+type PaymentMethodDetailsSamsungPay with
+    static member New(buyerId: string option, transactionId: string option) =
+        {
+            BuyerId = buyerId
+            TransactionId = transactionId
+        }
+
+type PaymentMethodDetailsSepaDebit with
+    static member New(bankCode: string option, branchCode: string option, country: IsoTypes.IsoCountryCode option, fingerprint: string option, last4: string option, mandate: string option, ?expectedDebitDate: string) =
+        {
+            BankCode = bankCode
+            BranchCode = branchCode
+            Country = country
+            Fingerprint = fingerprint
+            Last4 = last4
+            Mandate = mandate
+            ExpectedDebitDate = expectedDebitDate
+        }
+
+type PaymentMethodDetailsSofort with
+    static member New(bankCode: string option, bankName: string option, bic: string option, country: IsoTypes.IsoCountryCode option, generatedSepaDebit: StripeId<Markers.PaymentMethod> option, generatedSepaDebitMandate: StripeId<Markers.Mandate> option, ibanLast4: string option, preferredLanguage: PaymentMethodDetailsSofortPreferredLanguage option, verifiedName: string option) =
+        {
+            BankCode = bankCode
+            BankName = bankName
+            Bic = bic
+            Country = country
+            GeneratedSepaDebit = generatedSepaDebit
+            GeneratedSepaDebitMandate = generatedSepaDebitMandate
+            IbanLast4 = ibanLast4
+            PreferredLanguage = preferredLanguage
+            VerifiedName = verifiedName
+        }
+
+type PaymentMethodDetailsSwish with
+    static member New(fingerprint: string option, paymentReference: string option, verifiedPhoneLast4: string option) =
+        {
+            Fingerprint = fingerprint
+            PaymentReference = paymentReference
+            VerifiedPhoneLast4 = verifiedPhoneLast4
+        }
+
+type PaymentMethodDetailsTwint with
+    static member New(?paymentMethodDetailsTwint: string option) =
+        {
+            PaymentMethodDetailsTwint = paymentMethodDetailsTwint |> Option.flatten
+        }
+
+type PaymentMethodDetailsUpi with
+    static member New(vpa: string option) =
+        {
+            Vpa = vpa
+        }
+
+type PaymentMethodDetailsUsBankAccount with
+    static member New(accountHolderType: PaymentMethodDetailsUsBankAccountAccountHolderType option, accountType: PaymentMethodDetailsUsBankAccountAccountType option, bankName: string option, fingerprint: string option, last4: string option, paymentReference: string option, routingNumber: string option, ?expectedDebitDate: string, ?mandate: StripeId<Markers.Mandate>) =
+        {
+            AccountHolderType = accountHolderType
+            AccountType = accountType
+            BankName = bankName
+            Fingerprint = fingerprint
+            Last4 = last4
+            PaymentReference = paymentReference
+            RoutingNumber = routingNumber
+            ExpectedDebitDate = expectedDebitDate
+            Mandate = mandate
+        }
+
+type PaymentMethodDetailsWechatPay with
+    static member New(fingerprint: string option, transactionId: string option, ?location: string, ?reader: string) =
+        {
+            Fingerprint = fingerprint
+            TransactionId = transactionId
+            Location = location
+            Reader = reader
+        }
+
+type PaymentMethodDetailsZip with
+    static member New(?paymentMethodDetailsZip: string option) =
+        {
+            PaymentMethodDetailsZip = paymentMethodDetailsZip |> Option.flatten
+        }
+
+type PaymentMethodDetails with
+    static member New(``type``: string, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsAcssDebit, ?affirm: PaymentMethodDetailsAffirm, ?afterpayClearpay: PaymentMethodDetailsAfterpayClearpay, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails, ?alma: PaymentMethodDetailsAlma, ?amazonPay: PaymentMethodDetailsAmazonPay, ?auBecsDebit: PaymentMethodDetailsAuBecsDebit, ?bacsDebit: PaymentMethodDetailsBacsDebit, ?bancontact: PaymentMethodDetailsBancontact, ?billie: PaymentMethodDetailsBillie, ?blik: PaymentMethodDetailsBlik, ?boleto: PaymentMethodDetailsBoleto, ?card: PaymentMethodDetailsCard, ?cardPresent: PaymentMethodDetailsCardPresent, ?cashapp: PaymentMethodDetailsCashapp, ?crypto: PaymentMethodDetailsCrypto, ?customerBalance: PaymentMethodDetailsCustomerBalance, ?eps: PaymentMethodDetailsEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?kakaoPay: PaymentMethodDetailsKakaoPay, ?klarna: PaymentMethodDetailsKlarna, ?konbini: PaymentMethodDetailsKonbini, ?krCard: PaymentMethodDetailsKrCard, ?link: PaymentMethodDetailsLink, ?mbWay: PaymentMethodDetailsMbWay, ?mobilepay: PaymentMethodDetailsMobilepay, ?multibanco: PaymentMethodDetailsMultibanco, ?naverPay: PaymentMethodDetailsNaverPay, ?nzBankAccount: PaymentMethodDetailsNzBankAccount, ?oxxo: PaymentMethodDetailsOxxo, ?p24: PaymentMethodDetailsP24, ?payByBank: PaymentMethodDetailsPayByBank, ?payco: PaymentMethodDetailsPayco, ?paynow: PaymentMethodDetailsPaynow, ?paypal: PaymentMethodDetailsPaypal, ?payto: PaymentMethodDetailsPayto, ?pix: PaymentMethodDetailsPix, ?promptpay: PaymentMethodDetailsPromptpay, ?revolutPay: PaymentMethodDetailsRevolutPay, ?samsungPay: PaymentMethodDetailsSamsungPay, ?satispay: PaymentMethodDetailsSatispay, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsSepaDebit, ?sofort: PaymentMethodDetailsSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?sunbit: PaymentMethodDetailsSunbit, ?swish: PaymentMethodDetailsSwish, ?twint: PaymentMethodDetailsTwint, ?upi: PaymentMethodDetailsUpi, ?usBankAccount: PaymentMethodDetailsUsBankAccount, ?wechat: PaymentMethodDetailsWechat, ?wechatPay: PaymentMethodDetailsWechatPay, ?zip: PaymentMethodDetailsZip) =
+        {
+            Type = ``type``
+            AchCreditTransfer = achCreditTransfer
+            AchDebit = achDebit
+            AcssDebit = acssDebit
+            Affirm = affirm
+            AfterpayClearpay = afterpayClearpay
+            Alipay = alipay
+            Alma = alma
+            AmazonPay = amazonPay
+            AuBecsDebit = auBecsDebit
+            BacsDebit = bacsDebit
+            Bancontact = bancontact
+            Billie = billie
+            Blik = blik
+            Boleto = boleto
+            Card = card
+            CardPresent = cardPresent
+            Cashapp = cashapp
+            Crypto = crypto
+            CustomerBalance = customerBalance
+            Eps = eps
+            Fpx = fpx
+            Giropay = giropay
+            Grabpay = grabpay
+            Ideal = ideal
+            InteracPresent = interacPresent
+            KakaoPay = kakaoPay
+            Klarna = klarna
+            Konbini = konbini
+            KrCard = krCard
+            Link = link
+            MbWay = mbWay
+            Mobilepay = mobilepay
+            Multibanco = multibanco
+            NaverPay = naverPay
+            NzBankAccount = nzBankAccount
+            Oxxo = oxxo
+            P24 = p24
+            PayByBank = payByBank
+            Payco = payco
+            Paynow = paynow
+            Paypal = paypal
+            Payto = payto
+            Pix = pix
+            Promptpay = promptpay
+            RevolutPay = revolutPay
+            SamsungPay = samsungPay
+            Satispay = satispay
+            SepaCreditTransfer = sepaCreditTransfer
+            SepaDebit = sepaDebit
+            Sofort = sofort
+            StripeAccount = stripeAccount
+            Sunbit = sunbit
+            Swish = swish
+            Twint = twint
+            Upi = upi
+            UsBankAccount = usBankAccount
+            Wechat = wechat
+            WechatPay = wechatPay
+            Zip = zip
+        }
+
+type Charge with
+    static member New(amount: int, amountCaptured: int, amountRefunded: int, application: StripeId<Markers.Application> option, applicationFee: StripeId<Markers.ApplicationFee> option, applicationFeeAmount: int option, balanceTransaction: StripeId<Markers.BalanceTransaction> option, billingDetails: BillingDetails, calculatedStatementDescriptor: string option, captured: bool, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: ChargeCustomer'AnyOf option, description: string option, disputed: bool, failureBalanceTransaction: StripeId<Markers.BalanceTransaction> option, failureCode: string option, failureMessage: string option, fraudDetails: ChargeFraudDetails option, id: string, livemode: bool, metadata: Map<string, string>, onBehalfOf: StripeId<Markers.Account> option, outcome: ChargeOutcome option, paid: bool, paymentIntent: StripeId<Markers.PaymentIntent> option, paymentMethod: string option, paymentMethodDetails: PaymentMethodDetails option, receiptEmail: string option, receiptNumber: string option, receiptUrl: string option, refunded: bool, review: StripeId<Markers.Review> option, shipping: Shipping option, source: PaymentSource option, sourceTransfer: StripeId<Markers.Transfer> option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: ChargeStatus, transferData: ChargeTransferData option, transferGroup: string option, ?authorizationCode: string, ?level3: Level3, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?radarOptions: RadarRadarOptions, ?refunds: ChargeRefunds option, ?transfer: StripeId<Markers.Transfer>) =
+        {
+            Amount = amount
+            AmountCaptured = amountCaptured
+            AmountRefunded = amountRefunded
+            Application = application
+            ApplicationFee = applicationFee
+            ApplicationFeeAmount = applicationFeeAmount
+            BalanceTransaction = balanceTransaction
+            BillingDetails = billingDetails
+            CalculatedStatementDescriptor = calculatedStatementDescriptor
+            Captured = captured
+            Created = created
+            Currency = currency
+            Customer = customer
+            Description = description
+            Disputed = disputed
+            FailureBalanceTransaction = failureBalanceTransaction
+            FailureCode = failureCode
+            FailureMessage = failureMessage
+            FraudDetails = fraudDetails
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            OnBehalfOf = onBehalfOf
+            Outcome = outcome
+            Paid = paid
+            PaymentIntent = paymentIntent
+            PaymentMethod = paymentMethod
+            PaymentMethodDetails = paymentMethodDetails
+            ReceiptEmail = receiptEmail
+            ReceiptNumber = receiptNumber
+            ReceiptUrl = receiptUrl
+            Refunded = refunded
+            Review = review
+            Shipping = shipping
+            Source = source
+            SourceTransfer = sourceTransfer
+            StatementDescriptor = statementDescriptor
+            StatementDescriptorSuffix = statementDescriptorSuffix
+            Status = status
+            TransferData = transferData
+            TransferGroup = transferGroup
+            AuthorizationCode = authorizationCode
+            Level3 = level3
+            PresentmentDetails = presentmentDetails
+            RadarOptions = radarOptions
+            Refunds = refunds |> Option.flatten
+            Transfer = transfer
+        }
 
 module Charge =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "charge"
 
+type ChargeUpdated with
+    static member New(object: Charge) =
+        {
+            Object = object
+        }
+
+type ChargeSucceeded with
+    static member New(object: Charge) =
+        {
+            Object = object
+        }
+
+type ChargeRefunded with
+    static member New(object: Charge) =
+        {
+            Object = object
+        }
+
+type ChargeRefundUpdated with
+    static member New(object: Refund) =
+        {
+            Object = object
+        }
+
+type ChargePending with
+    static member New(object: Charge) =
+        {
+            Object = object
+        }
+
+type ChargeFailed with
+    static member New(object: Charge) =
+        {
+            Object = object
+        }
+
+type ChargeExpired with
+    static member New(object: Charge) =
+        {
+            Object = object
+        }
+
+type DisputeTransactionShippingAddress with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+        {
+            City = city
+            Country = country
+            Line1 = line1
+            Line2 = line2
+            PostalCode = postalCode
+            State = state
+        }
+
+type DisputeVisaCompellingEvidence3DisputedTransaction with
+    static member New(customerAccountId: string option, customerDeviceFingerprint: string option, customerDeviceId: string option, customerEmailAddress: string option, customerPurchaseIp: string option, merchandiseOrServices: DisputeVisaCompellingEvidence3DisputedTransactionMerchandiseOrServices option, productDescription: string option, shippingAddress: DisputeTransactionShippingAddress option) =
+        {
+            CustomerAccountId = customerAccountId
+            CustomerDeviceFingerprint = customerDeviceFingerprint
+            CustomerDeviceId = customerDeviceId
+            CustomerEmailAddress = customerEmailAddress
+            CustomerPurchaseIp = customerPurchaseIp
+            MerchandiseOrServices = merchandiseOrServices
+            ProductDescription = productDescription
+            ShippingAddress = shippingAddress
+        }
+
+type DisputeVisaCompellingEvidence3PriorUndisputedTransaction with
+    static member New(charge: string, customerAccountId: string option, customerDeviceFingerprint: string option, customerDeviceId: string option, customerEmailAddress: string option, customerPurchaseIp: string option, productDescription: string option, shippingAddress: DisputeTransactionShippingAddress option) =
+        {
+            Charge = charge
+            CustomerAccountId = customerAccountId
+            CustomerDeviceFingerprint = customerDeviceFingerprint
+            CustomerDeviceId = customerDeviceId
+            CustomerEmailAddress = customerEmailAddress
+            CustomerPurchaseIp = customerPurchaseIp
+            ProductDescription = productDescription
+            ShippingAddress = shippingAddress
+        }
+
+type DisputeEnhancedEvidenceVisaCompellingEvidence3 with
+    static member New(disputedTransaction: DisputeVisaCompellingEvidence3DisputedTransaction option, priorUndisputedTransactions: DisputeVisaCompellingEvidence3PriorUndisputedTransaction list) =
+        {
+            DisputedTransaction = disputedTransaction
+            PriorUndisputedTransactions = priorUndisputedTransactions
+        }
+
+type DisputeEnhancedEvidenceVisaCompliance with
+    static member New(feeAcknowledged: bool) =
+        {
+            FeeAcknowledged = feeAcknowledged
+        }
+
+type DisputeEnhancedEvidence with
+    static member New(?visaCompellingEvidence3: DisputeEnhancedEvidenceVisaCompellingEvidence3, ?visaCompliance: DisputeEnhancedEvidenceVisaCompliance) =
+        {
+            VisaCompellingEvidence3 = visaCompellingEvidence3
+            VisaCompliance = visaCompliance
+        }
+
+type DisputeEvidence with
+    static member New(accessActivityLog: string option, billingAddress: string option, cancellationPolicy: StripeId<Markers.File> option, cancellationPolicyDisclosure: string option, cancellationRebuttal: string option, customerCommunication: StripeId<Markers.File> option, customerEmailAddress: string option, customerName: string option, customerPurchaseIp: string option, customerSignature: StripeId<Markers.File> option, duplicateChargeDocumentation: StripeId<Markers.File> option, duplicateChargeExplanation: string option, duplicateChargeId: string option, enhancedEvidence: DisputeEnhancedEvidence, productDescription: string option, receipt: StripeId<Markers.File> option, refundPolicy: StripeId<Markers.File> option, refundPolicyDisclosure: string option, refundRefusalExplanation: string option, serviceDate: string option, serviceDocumentation: StripeId<Markers.File> option, shippingAddress: string option, shippingCarrier: string option, shippingDate: string option, shippingDocumentation: StripeId<Markers.File> option, shippingTrackingNumber: string option, uncategorizedFile: StripeId<Markers.File> option, uncategorizedText: string option) =
+        {
+            AccessActivityLog = accessActivityLog
+            BillingAddress = billingAddress
+            CancellationPolicy = cancellationPolicy
+            CancellationPolicyDisclosure = cancellationPolicyDisclosure
+            CancellationRebuttal = cancellationRebuttal
+            CustomerCommunication = customerCommunication
+            CustomerEmailAddress = customerEmailAddress
+            CustomerName = customerName
+            CustomerPurchaseIp = customerPurchaseIp
+            CustomerSignature = customerSignature
+            DuplicateChargeDocumentation = duplicateChargeDocumentation
+            DuplicateChargeExplanation = duplicateChargeExplanation
+            DuplicateChargeId = duplicateChargeId
+            EnhancedEvidence = enhancedEvidence
+            ProductDescription = productDescription
+            Receipt = receipt
+            RefundPolicy = refundPolicy
+            RefundPolicyDisclosure = refundPolicyDisclosure
+            RefundRefusalExplanation = refundRefusalExplanation
+            ServiceDate = serviceDate
+            ServiceDocumentation = serviceDocumentation
+            ShippingAddress = shippingAddress
+            ShippingCarrier = shippingCarrier
+            ShippingDate = shippingDate
+            ShippingDocumentation = shippingDocumentation
+            ShippingTrackingNumber = shippingTrackingNumber
+            UncategorizedFile = uncategorizedFile
+            UncategorizedText = uncategorizedText
+        }
+
+type DisputeEnhancedEligibilityVisaCompellingEvidence3 with
+    static member New(requiredActions: DisputeEnhancedEligibilityVisaCompellingEvidence3RequiredActions list, status: DisputeEnhancedEligibilityVisaCompellingEvidence3Status) =
+        {
+            RequiredActions = requiredActions
+            Status = status
+        }
+
+type DisputeEnhancedEligibilityVisaCompliance with
+    static member New(status: DisputeEnhancedEligibilityVisaComplianceStatus) =
+        {
+            Status = status
+        }
+
+type DisputeEnhancedEligibility with
+    static member New(?visaCompellingEvidence3: DisputeEnhancedEligibilityVisaCompellingEvidence3, ?visaCompliance: DisputeEnhancedEligibilityVisaCompliance) =
+        {
+            VisaCompellingEvidence3 = visaCompellingEvidence3
+            VisaCompliance = visaCompliance
+        }
+
+type DisputeEvidenceDetails with
+    static member New(dueBy: DateTime option, enhancedEligibility: DisputeEnhancedEligibility, hasEvidence: bool, pastDue: bool, submissionCount: int) =
+        {
+            DueBy = dueBy
+            EnhancedEligibility = enhancedEligibility
+            HasEvidence = hasEvidence
+            PastDue = pastDue
+            SubmissionCount = submissionCount
+        }
+
+type DisputePaymentMethodDetailsAmazonPay with
+    static member New(disputeType: DisputePaymentMethodDetailsAmazonPayDisputeType option) =
+        {
+            DisputeType = disputeType
+        }
+
+type DisputePaymentMethodDetailsCard with
+    static member New(brand: DisputePaymentMethodDetailsCardBrand, caseType: DisputePaymentMethodDetailsCardCaseType, networkReasonCode: string option) =
+        {
+            Brand = brand
+            CaseType = caseType
+            NetworkReasonCode = networkReasonCode
+        }
+
+type DisputePaymentMethodDetailsKlarna with
+    static member New(reasonCode: string option, ?chargebackLossReasonCode: string) =
+        {
+            ReasonCode = reasonCode
+            ChargebackLossReasonCode = chargebackLossReasonCode
+        }
+
+type DisputePaymentMethodDetailsPaypal with
+    static member New(caseId: string option, reasonCode: string option) =
+        {
+            CaseId = caseId
+            ReasonCode = reasonCode
+        }
+
+type DisputePaymentMethodDetails with
+    static member New(``type``: DisputePaymentMethodDetailsType, ?amazonPay: DisputePaymentMethodDetailsAmazonPay, ?card: DisputePaymentMethodDetailsCard, ?klarna: DisputePaymentMethodDetailsKlarna, ?paypal: DisputePaymentMethodDetailsPaypal) =
+        {
+            Type = ``type``
+            AmazonPay = amazonPay
+            Card = card
+            Klarna = klarna
+            Paypal = paypal
+        }
+
+type Dispute with
+    static member New(amount: int, balanceTransactions: BalanceTransaction list, charge: StripeId<Markers.Charge>, created: DateTime, currency: IsoTypes.IsoCurrencyCode, enhancedEligibilityTypes: DisputeEnhancedEligibilityTypes list, evidence: DisputeEvidence, evidenceDetails: DisputeEvidenceDetails, id: string, isChargeRefundable: bool, livemode: bool, metadata: Map<string, string>, paymentIntent: StripeId<Markers.PaymentIntent> option, reason: DisputeReason, status: DisputeStatus, ?networkReasonCode: string option, ?paymentMethodDetails: DisputePaymentMethodDetails) =
+        {
+            Amount = amount
+            BalanceTransactions = balanceTransactions
+            Charge = charge
+            Created = created
+            Currency = currency
+            EnhancedEligibilityTypes = enhancedEligibilityTypes
+            Evidence = evidence
+            EvidenceDetails = evidenceDetails
+            Id = id
+            IsChargeRefundable = isChargeRefundable
+            Livemode = livemode
+            Metadata = metadata
+            PaymentIntent = paymentIntent
+            Reason = reason
+            Status = status
+            NetworkReasonCode = networkReasonCode |> Option.flatten
+            PaymentMethodDetails = paymentMethodDetails
+        }
+
 module Dispute =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "dispute"
+
+type ChargeDisputeUpdated with
+    static member New(object: Dispute) =
+        {
+            Object = object
+        }
+
+type ChargeDisputeFundsWithdrawn with
+    static member New(object: Dispute) =
+        {
+            Object = object
+        }
+
+type ChargeDisputeFundsReinstated with
+    static member New(object: Dispute) =
+        {
+            Object = object
+        }
+
+type ChargeDisputeCreated with
+    static member New(object: Dispute) =
+        {
+            Object = object
+        }
+
+type ChargeDisputeClosed with
+    static member New(object: Dispute) =
+        {
+            Object = object
+        }
+
+type ChargeCaptured with
+    static member New(object: Charge) =
+        {
+            Object = object
+        }
+
+type CashBalanceFundsAvailable with
+    static member New(object: CashBalance) =
+        {
+            Object = object
+        }
+
+type CardMandatePaymentMethodDetails with
+    static member New(?cardMandatePaymentMethodDetails: string option) =
+        {
+            CardMandatePaymentMethodDetails = cardMandatePaymentMethodDetails |> Option.flatten
+        }
+
+type BillingClocksResourceStatusDetailsAdvancingStatusDetails with
+    static member New(targetFrozenTime: DateTime) =
+        {
+            TargetFrozenTime = targetFrozenTime
+        }
+
+type BillingClocksResourceStatusDetailsStatusDetails with
+    static member New(?advancing: BillingClocksResourceStatusDetailsAdvancingStatusDetails) =
+        {
+            Advancing = advancing
+        }
+
+type BillingBillResourceInvoiceItemParentsInvoiceItemSubscriptionParent with
+    static member New(subscription: string, ?subscriptionItem: string) =
+        {
+            Subscription = subscription
+            SubscriptionItem = subscriptionItem
+        }
+
+type BillingBillResourceInvoiceItemParentsInvoiceItemParent with
+    static member New(subscriptionDetails: BillingBillResourceInvoiceItemParentsInvoiceItemSubscriptionParent option) =
+        {
+            SubscriptionDetails = subscriptionDetails
+        }
 
 module BillingBillResourceInvoiceItemParentsInvoiceItemParent =
     ///The type of parent that generated this invoice item
     let ``type`` = "subscription_details"
 
+type BillingMeterEventSummary with
+    static member New(aggregatedValue: decimal, endTime: DateTime, id: string, livemode: bool, meter: string, startTime: DateTime) =
+        {
+            AggregatedValue = aggregatedValue
+            EndTime = endTime
+            Id = id
+            Livemode = livemode
+            Meter = meter
+            StartTime = startTime
+        }
+
 module BillingMeterEventSummary =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing.meter_event_summary"
+
+type BillingMeterResourceBillingMeterEventAdjustmentCancel with
+    static member New(identifier: string option) =
+        {
+            Identifier = identifier
+        }
+
+type BillingMeterEventAdjustment with
+    static member New(cancel: BillingMeterResourceBillingMeterEventAdjustmentCancel option, eventName: string, livemode: bool, status: BillingMeterEventAdjustmentStatus) =
+        {
+            Cancel = cancel
+            EventName = eventName
+            Livemode = livemode
+            Status = status
+        }
 
 module BillingMeterEventAdjustment =
     ///String representing the object's type. Objects of the same type share the same value.
@@ -15360,44 +23871,274 @@ module BillingMeterEventAdjustment =
     ///Specifies whether to cancel a single event or a range of events for a time period. Time period cancellation is not supported yet.
     let ``type`` = "cancel"
 
+type BillingMeterEvent with
+    static member New(created: DateTime, eventName: string, identifier: string, livemode: bool, payload: Map<string, string list>, timestamp: DateTime) =
+        {
+            Created = created
+            EventName = eventName
+            Identifier = identifier
+            Livemode = livemode
+            Payload = payload
+            Timestamp = timestamp
+        }
+
 module BillingMeterEvent =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing.meter_event"
+
+type BillingMeterResourceAggregationSettings with
+    static member New(formula: BillingMeterResourceAggregationSettingsFormula) =
+        {
+            Formula = formula
+        }
+
+type BillingMeterResourceBillingMeterStatusTransitions with
+    static member New(deactivatedAt: DateTime option) =
+        {
+            DeactivatedAt = deactivatedAt
+        }
+
+type BillingMeterResourceBillingMeterValue with
+    static member New(eventPayloadKey: string) =
+        {
+            EventPayloadKey = eventPayloadKey
+        }
+
+type BillingMeterResourceCustomerMappingSettings with
+    static member New(eventPayloadKey: string) =
+        {
+            EventPayloadKey = eventPayloadKey
+        }
 
 module BillingMeterResourceCustomerMappingSettings =
     ///The method for mapping a meter event to a customer.
     let ``type`` = "by_id"
 
+type BillingMeter with
+    static member New(created: DateTime, customerMapping: BillingMeterResourceCustomerMappingSettings, defaultAggregation: BillingMeterResourceAggregationSettings, displayName: string, eventName: string, eventTimeWindow: BillingMeterEventTimeWindow option, id: string, livemode: bool, status: BillingMeterStatus, statusTransitions: BillingMeterResourceBillingMeterStatusTransitions, updated: DateTime, valueSettings: BillingMeterResourceBillingMeterValue) =
+        {
+            Created = created
+            CustomerMapping = customerMapping
+            DefaultAggregation = defaultAggregation
+            DisplayName = displayName
+            EventName = eventName
+            EventTimeWindow = eventTimeWindow
+            Id = id
+            Livemode = livemode
+            Status = status
+            StatusTransitions = statusTransitions
+            Updated = updated
+            ValueSettings = valueSettings
+        }
+
 module BillingMeter =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing.meter"
+
+type BillingMeterUpdated with
+    static member New(object: BillingMeter) =
+        {
+            Object = object
+        }
+
+type BillingMeterReactivated with
+    static member New(object: BillingMeter) =
+        {
+            Object = object
+        }
+
+type BillingMeterDeactivated with
+    static member New(object: BillingMeter) =
+        {
+            Object = object
+        }
+
+type BillingMeterCreated with
+    static member New(object: BillingMeter) =
+        {
+            Object = object
+        }
+
+type BillingCreditGrantsResourceMonetaryAmount with
+    static member New(currency: IsoTypes.IsoCurrencyCode, value: int) =
+        {
+            Currency = currency
+            Value = value
+        }
+
+type BillingCreditGrantsResourceAmount with
+    static member New(monetary: BillingCreditGrantsResourceMonetaryAmount option) =
+        {
+            Monetary = monetary
+        }
 
 module BillingCreditGrantsResourceAmount =
     ///The type of this amount. We currently only support `monetary` billing credits.
     let ``type`` = "monetary"
 
+type BillingCreditGrantsResourceApplicablePrice with
+    static member New(id: string option) =
+        {
+            Id = id
+        }
+
+type BillingCreditGrantsResourceScope with
+    static member New(?prices: BillingCreditGrantsResourceApplicablePrice list) =
+        {
+            Prices = prices
+        }
+
 module BillingCreditGrantsResourceScope =
     ///The price type that credit grants can apply to. We currently only support the `metered` price type. This refers to prices that have a [Billing Meter](https://docs.stripe.com/api/billing/meter) attached to them. Cannot be used in combination with `prices`.
     let priceType = "metered"
+
+type BillingCreditGrantsResourceApplicabilityConfig with
+    static member New(scope: BillingCreditGrantsResourceScope) =
+        {
+            Scope = scope
+        }
+
+type BillingCreditGrant with
+    static member New(amount: BillingCreditGrantsResourceAmount, applicabilityConfig: BillingCreditGrantsResourceApplicabilityConfig, category: BillingCreditGrantCategory, created: DateTime, customer: BillingCreditGrantCustomer'AnyOf, customerAccount: string option, effectiveAt: DateTime option, expiresAt: DateTime option, id: string, livemode: bool, metadata: Map<string, string>, name: string option, testClock: StripeId<Markers.TestHelpersTestClock> option, updated: DateTime, voidedAt: DateTime option, ?priority: int option) =
+        {
+            Amount = amount
+            ApplicabilityConfig = applicabilityConfig
+            Category = category
+            Created = created
+            Customer = customer
+            CustomerAccount = customerAccount
+            EffectiveAt = effectiveAt
+            ExpiresAt = expiresAt
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Name = name
+            TestClock = testClock
+            Updated = updated
+            VoidedAt = voidedAt
+            Priority = priority |> Option.flatten
+        }
 
 module BillingCreditGrant =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing.credit_grant"
 
+type BillingCreditGrantUpdated with
+    static member New(object: BillingCreditGrant) =
+        {
+            Object = object
+        }
+
+type BillingCreditGrantCreated with
+    static member New(object: BillingCreditGrant) =
+        {
+            Object = object
+        }
+
+type BillingCreditGrantsResourceBalanceCreditsApplicationInvoiceVoided with
+    static member New(invoice: StripeId<Markers.Invoice>, invoiceLineItem: string) =
+        {
+            Invoice = invoice
+            InvoiceLineItem = invoiceLineItem
+        }
+
+type BillingCreditGrantsResourceBalanceCredit with
+    static member New(amount: BillingCreditGrantsResourceAmount, creditsApplicationInvoiceVoided: BillingCreditGrantsResourceBalanceCreditsApplicationInvoiceVoided option, ``type``: BillingCreditGrantsResourceBalanceCreditType) =
+        {
+            Amount = amount
+            CreditsApplicationInvoiceVoided = creditsApplicationInvoiceVoided
+            Type = ``type``
+        }
+
+type BillingCreditGrantsResourceBalanceCreditsApplied with
+    static member New(invoice: StripeId<Markers.Invoice>, invoiceLineItem: string) =
+        {
+            Invoice = invoice
+            InvoiceLineItem = invoiceLineItem
+        }
+
+type BillingCreditGrantsResourceBalanceDebit with
+    static member New(amount: BillingCreditGrantsResourceAmount, creditsApplied: BillingCreditGrantsResourceBalanceCreditsApplied option, ``type``: BillingCreditGrantsResourceBalanceDebitType) =
+        {
+            Amount = amount
+            CreditsApplied = creditsApplied
+            Type = ``type``
+        }
+
+type BillingCreditBalanceTransaction with
+    static member New(created: DateTime, credit: BillingCreditGrantsResourceBalanceCredit option, creditGrant: StripeId<Markers.BillingCreditGrant>, debit: BillingCreditGrantsResourceBalanceDebit option, effectiveAt: DateTime, id: string, livemode: bool, testClock: StripeId<Markers.TestHelpersTestClock> option, ``type``: BillingCreditBalanceTransactionType option) =
+        {
+            Created = created
+            Credit = credit
+            CreditGrant = creditGrant
+            Debit = debit
+            EffectiveAt = effectiveAt
+            Id = id
+            Livemode = livemode
+            TestClock = testClock
+            Type = ``type``
+        }
+
 module BillingCreditBalanceTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing.credit_balance_transaction"
+
+type BillingCreditBalanceTransactionCreated with
+    static member New(object: BillingCreditBalanceTransaction) =
+        {
+            Object = object
+        }
+
+type CreditBalance with
+    static member New(availableBalance: BillingCreditGrantsResourceAmount, ledgerBalance: BillingCreditGrantsResourceAmount) =
+        {
+            AvailableBalance = availableBalance
+            LedgerBalance = ledgerBalance
+        }
+
+type BillingCreditBalanceSummary with
+    static member New(balances: CreditBalance list, customer: BillingCreditBalanceSummaryCustomer'AnyOf, customerAccount: string option, livemode: bool) =
+        {
+            Balances = balances
+            Customer = customer
+            CustomerAccount = customerAccount
+            Livemode = livemode
+        }
 
 module BillingCreditBalanceSummary =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing.credit_balance_summary"
 
+type ThresholdsResourceUsageAlertFilter with
+    static member New(customer: StripeId<Markers.Customer> option) =
+        {
+            Customer = customer
+        }
+
 module ThresholdsResourceUsageAlertFilter =
     let ``type`` = "customer"
+
+type ThresholdsResourceUsageThresholdConfig with
+    static member New(filters: ThresholdsResourceUsageAlertFilter list option, gte: int, meter: StripeId<Markers.BillingMeter>) =
+        {
+            Filters = filters
+            Gte = gte
+            Meter = meter
+        }
 
 module ThresholdsResourceUsageThresholdConfig =
     ///Defines how the alert will behave.
     let recurrence = "one_time"
+
+type BillingAlert with
+    static member New(id: string, livemode: bool, status: BillingAlertStatus option, title: string, usageThreshold: ThresholdsResourceUsageThresholdConfig option) =
+        {
+            Id = id
+            Livemode = livemode
+            Status = status
+            Title = title
+            UsageThreshold = usageThreshold
+        }
 
 module BillingAlert =
     ///Defines the type of the alert.
@@ -15406,7 +24147,273 @@ module BillingAlert =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing.alert"
 
+type BillingAlertTriggered with
+    static member New(alert: BillingAlert, created: DateTime, customer: string, livemode: bool, value: int) =
+        {
+            Alert = alert
+            Created = created
+            Customer = customer
+            Livemode = livemode
+            Value = value
+        }
+
 module BillingAlertTriggered =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing.alert_triggered"
+
+type ConnectEmbeddedAccountFeaturesClaim with
+    static member New(disableStripeUserAuthentication: bool, externalAccountCollection: bool) =
+        {
+            DisableStripeUserAuthentication = disableStripeUserAuthentication
+            ExternalAccountCollection = externalAccountCollection
+        }
+
+type ConnectEmbeddedAccountConfigClaim with
+    static member New(enabled: bool, features: ConnectEmbeddedAccountFeaturesClaim) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedBaseFeatures with
+    static member New(?connectEmbeddedBaseFeatures: string option) =
+        {
+            ConnectEmbeddedBaseFeatures = connectEmbeddedBaseFeatures |> Option.flatten
+        }
+
+type ConnectEmbeddedBaseConfigClaim with
+    static member New(enabled: bool, features: ConnectEmbeddedBaseFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedDisputesListFeatures with
+    static member New(capturePayments: bool, destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool) =
+        {
+            CapturePayments = capturePayments
+            DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
+            DisputeManagement = disputeManagement
+            RefundManagement = refundManagement
+        }
+
+type ConnectEmbeddedDisputesListConfig with
+    static member New(enabled: bool, features: ConnectEmbeddedDisputesListFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedFinancialAccountFeatures with
+    static member New(disableStripeUserAuthentication: bool, externalAccountCollection: bool, sendMoney: bool, transferBalance: bool) =
+        {
+            DisableStripeUserAuthentication = disableStripeUserAuthentication
+            ExternalAccountCollection = externalAccountCollection
+            SendMoney = sendMoney
+            TransferBalance = transferBalance
+        }
+
+type ConnectEmbeddedFinancialAccountConfigClaim with
+    static member New(enabled: bool, features: ConnectEmbeddedFinancialAccountFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedFinancialAccountTransactionsFeatures with
+    static member New(cardSpendDisputeManagement: bool) =
+        {
+            CardSpendDisputeManagement = cardSpendDisputeManagement
+        }
+
+type ConnectEmbeddedFinancialAccountTransactionsConfigClaim with
+    static member New(enabled: bool, features: ConnectEmbeddedFinancialAccountTransactionsFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedInstantPayoutsPromotionFeatures with
+    static member New(disableStripeUserAuthentication: bool, externalAccountCollection: bool, instantPayouts: bool) =
+        {
+            DisableStripeUserAuthentication = disableStripeUserAuthentication
+            ExternalAccountCollection = externalAccountCollection
+            InstantPayouts = instantPayouts
+        }
+
+type ConnectEmbeddedInstantPayoutsPromotionConfig with
+    static member New(enabled: bool, features: ConnectEmbeddedInstantPayoutsPromotionFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedIssuingCardFeatures with
+    static member New(cardManagement: bool, cardSpendDisputeManagement: bool, cardholderManagement: bool, spendControlManagement: bool) =
+        {
+            CardManagement = cardManagement
+            CardSpendDisputeManagement = cardSpendDisputeManagement
+            CardholderManagement = cardholderManagement
+            SpendControlManagement = spendControlManagement
+        }
+
+type ConnectEmbeddedIssuingCardConfigClaim with
+    static member New(enabled: bool, features: ConnectEmbeddedIssuingCardFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedIssuingCardsListFeatures with
+    static member New(cardManagement: bool, cardSpendDisputeManagement: bool, cardholderManagement: bool, disableStripeUserAuthentication: bool, spendControlManagement: bool) =
+        {
+            CardManagement = cardManagement
+            CardSpendDisputeManagement = cardSpendDisputeManagement
+            CardholderManagement = cardholderManagement
+            DisableStripeUserAuthentication = disableStripeUserAuthentication
+            SpendControlManagement = spendControlManagement
+        }
+
+type ConnectEmbeddedIssuingCardsListConfigClaim with
+    static member New(enabled: bool, features: ConnectEmbeddedIssuingCardsListFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedPaymentDisputesFeatures with
+    static member New(destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool) =
+        {
+            DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
+            DisputeManagement = disputeManagement
+            RefundManagement = refundManagement
+        }
+
+type ConnectEmbeddedPaymentDisputesConfig with
+    static member New(enabled: bool, features: ConnectEmbeddedPaymentDisputesFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedPaymentsFeatures with
+    static member New(capturePayments: bool, destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool) =
+        {
+            CapturePayments = capturePayments
+            DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
+            DisputeManagement = disputeManagement
+            RefundManagement = refundManagement
+        }
+
+type ConnectEmbeddedPaymentsConfigClaim with
+    static member New(enabled: bool, features: ConnectEmbeddedPaymentsFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedPayoutsFeatures with
+    static member New(disableStripeUserAuthentication: bool, editPayoutSchedule: bool, externalAccountCollection: bool, instantPayouts: bool, standardPayouts: bool) =
+        {
+            DisableStripeUserAuthentication = disableStripeUserAuthentication
+            EditPayoutSchedule = editPayoutSchedule
+            ExternalAccountCollection = externalAccountCollection
+            InstantPayouts = instantPayouts
+            StandardPayouts = standardPayouts
+        }
+
+type ConnectEmbeddedPayoutsConfig with
+    static member New(enabled: bool, features: ConnectEmbeddedPayoutsFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
+type ConnectEmbeddedAccountSessionCreateComponents with
+    static member New(accountManagement: ConnectEmbeddedAccountConfigClaim, accountOnboarding: ConnectEmbeddedAccountConfigClaim, balanceReport: ConnectEmbeddedBaseConfigClaim, balances: ConnectEmbeddedPayoutsConfig, disputesList: ConnectEmbeddedDisputesListConfig, documents: ConnectEmbeddedBaseConfigClaim, financialAccount: ConnectEmbeddedFinancialAccountConfigClaim, financialAccountTransactions: ConnectEmbeddedFinancialAccountTransactionsConfigClaim, instantPayoutsPromotion: ConnectEmbeddedInstantPayoutsPromotionConfig, issuingCard: ConnectEmbeddedIssuingCardConfigClaim, issuingCardsList: ConnectEmbeddedIssuingCardsListConfigClaim, notificationBanner: ConnectEmbeddedAccountConfigClaim, paymentDetails: ConnectEmbeddedPaymentsConfigClaim, paymentDisputes: ConnectEmbeddedPaymentDisputesConfig, payments: ConnectEmbeddedPaymentsConfigClaim, payoutDetails: ConnectEmbeddedBaseConfigClaim, payoutReconciliationReport: ConnectEmbeddedBaseConfigClaim, payouts: ConnectEmbeddedPayoutsConfig, payoutsList: ConnectEmbeddedBaseConfigClaim, taxRegistrations: ConnectEmbeddedBaseConfigClaim, taxSettings: ConnectEmbeddedBaseConfigClaim) =
+        {
+            AccountManagement = accountManagement
+            AccountOnboarding = accountOnboarding
+            BalanceReport = balanceReport
+            Balances = balances
+            DisputesList = disputesList
+            Documents = documents
+            FinancialAccount = financialAccount
+            FinancialAccountTransactions = financialAccountTransactions
+            InstantPayoutsPromotion = instantPayoutsPromotion
+            IssuingCard = issuingCard
+            IssuingCardsList = issuingCardsList
+            NotificationBanner = notificationBanner
+            PaymentDetails = paymentDetails
+            PaymentDisputes = paymentDisputes
+            Payments = payments
+            PayoutDetails = payoutDetails
+            PayoutReconciliationReport = payoutReconciliationReport
+            Payouts = payouts
+            PayoutsList = payoutsList
+            TaxRegistrations = taxRegistrations
+            TaxSettings = taxSettings
+        }
+
+type AccountCapabilityRequirements with
+    static member New(alternatives: AccountRequirementsAlternative list option, currentDeadline: DateTime option, currentlyDue: string list, disabledReason: AccountCapabilityRequirementsDisabledReason option, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
+        {
+            Alternatives = alternatives
+            CurrentDeadline = currentDeadline
+            CurrentlyDue = currentlyDue
+            DisabledReason = disabledReason
+            Errors = errors
+            EventuallyDue = eventuallyDue
+            PastDue = pastDue
+            PendingVerification = pendingVerification
+        }
+
+type AccountCapabilityFutureRequirements with
+    static member New(alternatives: AccountRequirementsAlternative list option, currentDeadline: DateTime option, currentlyDue: string list, disabledReason: AccountCapabilityFutureRequirementsDisabledReason option, errors: AccountRequirementsError list, eventuallyDue: string list, pastDue: string list, pendingVerification: string list) =
+        {
+            Alternatives = alternatives
+            CurrentDeadline = currentDeadline
+            CurrentlyDue = currentlyDue
+            DisabledReason = disabledReason
+            Errors = errors
+            EventuallyDue = eventuallyDue
+            PastDue = pastDue
+            PendingVerification = pendingVerification
+        }
+
+type AccountUpdated with
+    static member New(object: Account) =
+        {
+            Object = object
+        }
+
+type AccountExternalAccountUpdated with
+    static member New(object: AccountExternalAccountUpdatedObject'AnyOf) =
+        {
+            Object = object
+        }
+
+type AccountExternalAccountDeleted with
+    static member New(object: AccountExternalAccountDeletedObject'AnyOf) =
+        {
+            Object = object
+        }
+
+type AccountExternalAccountCreated with
+    static member New(object: AccountExternalAccountCreatedObject'AnyOf) =
+        {
+            Object = object
+        }
+
+type AccountApplicationDeauthorized with
+    static member New(object: Application) =
+        {
+            Object = object
+        }
+
+type AccountApplicationAuthorized with
+    static member New(object: Application) =
+        {
+            Object = object
+        }
 

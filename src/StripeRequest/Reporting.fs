@@ -27,6 +27,16 @@ module ReportingReportRuns =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -713,6 +723,19 @@ module ReportingReportRuns =
             Timezone: Create'ParametersTimezone option
         }
 
+    type Create'Parameters with
+        static member New(?columns: string list, ?connectedAccount: string, ?currency: IsoTypes.IsoCurrencyCode, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: Create'ParametersReportingCategory, ?timezone: Create'ParametersTimezone) =
+            {
+                Columns = columns
+                ConnectedAccount = connectedAccount
+                Currency = currency
+                IntervalEnd = intervalEnd
+                IntervalStart = intervalStart
+                Payout = payout
+                ReportingCategory = reportingCategory
+                Timezone = timezone
+            }
+
     module Create'Parameters =
         let create
             (
@@ -750,6 +773,14 @@ module ReportingReportRuns =
             ReportType: string
         }
 
+    type CreateOptions with
+        static member New(reportType: string, ?expand: string list, ?parameters: Create'Parameters) =
+            {
+                ReportType = reportType
+                Expand = expand
+                Parameters = parameters
+            }
+
     module CreateOptions =
         let create
             (
@@ -770,6 +801,13 @@ module ReportingReportRuns =
             [<Config.Path>]
             ReportRun: string
         }
+
+    type RetrieveOptions with
+        static member New(reportRun: string, ?expand: string list) =
+            {
+                ReportRun = reportRun
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -808,6 +846,12 @@ module ReportingReportTypes =
             Expand: string list option
         }
 
+    type ListOptions with
+        static member New(?expand: string list) =
+            {
+                Expand = expand
+            }
+
     module ListOptions =
         let create
             (
@@ -826,6 +870,13 @@ module ReportingReportTypes =
             [<Config.Path>]
             ReportType: string
         }
+
+    type RetrieveOptions with
+        static member New(reportType: string, ?expand: string list) =
+            {
+                ReportType = reportType
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

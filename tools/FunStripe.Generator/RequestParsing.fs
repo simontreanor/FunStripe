@@ -111,7 +111,7 @@ module RequestParsing =
         | "in"
         | "open"
         | "type" ->
-            $"``{name}``"
+            $"{name}'"
         | _ ->
             name
 

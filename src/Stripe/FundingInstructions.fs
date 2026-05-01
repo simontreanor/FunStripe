@@ -23,6 +23,17 @@ type Address =
         State: string option
     }
 
+type Address with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+        {
+            City = city
+            Country = country
+            Line1 = line1
+            Line2 = line2
+            PostalCode = postalCode
+            State = state
+        }
+
 /// ABA Records contain U.S. bank account details per the ABA format.
 type FundingInstructionsBankTransferAbaRecord =
     {
@@ -39,6 +50,18 @@ type FundingInstructionsBankTransferAbaRecord =
         /// The ABA routing number
         RoutingNumber: string
     }
+
+type FundingInstructionsBankTransferAbaRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string, accountNumber: string, accountType: string, bankAddress: Address, bankName: string, routingNumber: string) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            AccountNumber = accountNumber
+            AccountType = accountType
+            BankAddress = bankAddress
+            BankName = bankName
+            RoutingNumber = routingNumber
+        }
 
 type FundingInstructionsBankTransferFinancialAddressSupportedNetworks =
     | Ach
@@ -73,6 +96,17 @@ type FundingInstructionsBankTransferIbanRecord =
         Iban: string
     }
 
+type FundingInstructionsBankTransferIbanRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string, bankAddress: Address, bic: string, country: IsoTypes.IsoCountryCode, iban: string) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            BankAddress = bankAddress
+            Bic = bic
+            Country = country
+            Iban = iban
+        }
+
 /// Sort Code Records contain U.K. bank account details per the sort code format.
 type FundingInstructionsBankTransferSortCodeRecord =
     {
@@ -85,6 +119,16 @@ type FundingInstructionsBankTransferSortCodeRecord =
         /// The six-digit sort code
         SortCode: string
     }
+
+type FundingInstructionsBankTransferSortCodeRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string, accountNumber: string, bankAddress: Address, sortCode: string) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            AccountNumber = accountNumber
+            BankAddress = bankAddress
+            SortCode = sortCode
+        }
 
 /// SPEI Records contain Mexico bank account details per the SPEI format.
 type FundingInstructionsBankTransferSpeiRecord =
@@ -100,6 +144,17 @@ type FundingInstructionsBankTransferSpeiRecord =
         /// The CLABE number
         Clabe: string
     }
+
+type FundingInstructionsBankTransferSpeiRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string, bankAddress: Address, bankCode: string, bankName: string, clabe: string) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            BankAddress = bankAddress
+            BankCode = bankCode
+            BankName = bankName
+            Clabe = clabe
+        }
 
 /// SWIFT Records contain U.S. bank account details per the SWIFT format.
 type FundingInstructionsBankTransferSwiftRecord =
@@ -117,6 +172,18 @@ type FundingInstructionsBankTransferSwiftRecord =
         /// The SWIFT code
         SwiftCode: string
     }
+
+type FundingInstructionsBankTransferSwiftRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string, accountNumber: string, accountType: string, bankAddress: Address, bankName: string, swiftCode: string) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            AccountNumber = accountNumber
+            AccountType = accountType
+            BankAddress = bankAddress
+            BankName = bankName
+            SwiftCode = swiftCode
+        }
 
 [<Struct>]
 type FundingInstructionsBankTransferZenginRecordAccountType =
@@ -144,6 +211,20 @@ type FundingInstructionsBankTransferZenginRecord =
         BranchName: string option
     }
 
+type FundingInstructionsBankTransferZenginRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string option, accountNumber: string option, accountType: FundingInstructionsBankTransferZenginRecordAccountType option, bankAddress: Address, bankCode: string option, bankName: string option, branchCode: string option, branchName: string option) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            AccountNumber = accountNumber
+            AccountType = accountType
+            BankAddress = bankAddress
+            BankCode = bankCode
+            BankName = bankName
+            BranchCode = branchCode
+            BranchName = branchName
+        }
+
 /// FinancialAddresses contain identifying information that resolves to a FinancialAccount.
 type FundingInstructionsBankTransferFinancialAddress =
     {
@@ -158,6 +239,19 @@ type FundingInstructionsBankTransferFinancialAddress =
         Type: FundingInstructionsBankTransferFinancialAddressType
         Zengin: FundingInstructionsBankTransferZenginRecord option
     }
+
+type FundingInstructionsBankTransferFinancialAddress with
+    static member New(``type``: FundingInstructionsBankTransferFinancialAddressType, ?aba: FundingInstructionsBankTransferAbaRecord, ?iban: FundingInstructionsBankTransferIbanRecord, ?sortCode: FundingInstructionsBankTransferSortCodeRecord, ?spei: FundingInstructionsBankTransferSpeiRecord, ?supportedNetworks: FundingInstructionsBankTransferFinancialAddressSupportedNetworks list, ?swift: FundingInstructionsBankTransferSwiftRecord, ?zengin: FundingInstructionsBankTransferZenginRecord) =
+        {
+            Type = ``type``
+            Aba = aba
+            Iban = iban
+            SortCode = sortCode
+            Spei = spei
+            SupportedNetworks = supportedNetworks
+            Swift = swift
+            Zengin = zengin
+        }
 
 [<Struct>]
 type FundingInstructionsBankTransferType =
@@ -174,6 +268,14 @@ type FundingInstructionsBankTransfer =
         Type: FundingInstructionsBankTransferType
     }
 
+type FundingInstructionsBankTransfer with
+    static member New(country: IsoTypes.IsoCountryCode, financialAddresses: FundingInstructionsBankTransferFinancialAddress list, ``type``: FundingInstructionsBankTransferType) =
+        {
+            Country = country
+            FinancialAddresses = financialAddresses
+            Type = ``type``
+        }
+
 /// Each customer has a [`balance`](https://docs.stripe.com/api/customers/object#customer_object-balance) that is
 /// automatically applied to future invoices and payments using the `customer_balance` payment method.
 /// Customers can fund this balance by initiating a bank transfer to any account in the
@@ -187,6 +289,14 @@ type FundingInstructions =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
     }
+
+type FundingInstructions with
+    static member New(bankTransfer: FundingInstructionsBankTransfer, currency: IsoTypes.IsoCurrencyCode, livemode: bool) =
+        {
+            BankTransfer = bankTransfer
+            Currency = currency
+            Livemode = livemode
+        }
 
 module FundingInstructions =
     ///The `funding_type` of the returned instructions

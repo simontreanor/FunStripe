@@ -4,7 +4,6 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 open Stripe.Application
-open Stripe.Discount
 open Stripe.PaymentMethod
 open Stripe.Plan
 open Stripe.Price
@@ -24,6 +23,13 @@ type SubscriptionScheduleCurrentPhase =
         /// The start of this phase of the subscription schedule.
         StartDate: DateTime
     }
+
+type SubscriptionScheduleCurrentPhase with
+    static member New(endDate: DateTime, startDate: DateTime) =
+        {
+            EndDate = endDate
+            StartDate = startDate
+        }
 
 type SubscriptionScheduleCustomer'AnyOf =
     | String of string
@@ -45,6 +51,13 @@ type SchedulesPhaseAutomaticTax =
         Liability: ConnectAccountReference option
     }
 
+type SchedulesPhaseAutomaticTax with
+    static member New(enabled: bool, liability: ConnectAccountReference option) =
+        {
+            Enabled = enabled
+            Liability = liability
+        }
+
 module SchedulesPhaseAutomaticTax =
     ///If Stripe disabled automatic tax, this enum describes why.
     let disabledReason = "requires_location_inputs"
@@ -59,9 +72,24 @@ type StackableDiscountWithDiscountSettingsAndDiscountEnd =
         PromotionCode: StripeId<Markers.PromotionCode> option
     }
 
+type StackableDiscountWithDiscountSettingsAndDiscountEnd with
+    static member New(coupon: StripeId<Markers.Coupon> option, discount: StripeId<Markers.Discount> option, promotionCode: StripeId<Markers.PromotionCode> option) =
+        {
+            Coupon = coupon
+            Discount = discount
+            PromotionCode = promotionCode
+        }
+
 type SubscriptionScheduleAddInvoiceItemPeriod =
     { End: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEnd
       Start: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStart }
+
+type SubscriptionScheduleAddInvoiceItemPeriod with
+    static member New(``end``: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEnd, start: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStart) =
+        {
+            End = ``end``
+            Start = start
+        }
 
 type SubscriptionScheduleAddInvoiceItemPrice'AnyOf =
     | String of string
@@ -84,6 +112,17 @@ type SubscriptionScheduleAddInvoiceItem =
         TaxRates: TaxRate list option
     }
 
+type SubscriptionScheduleAddInvoiceItem with
+    static member New(discounts: DiscountsResourceStackableDiscountWithDiscountEnd list, metadata: Map<string, string> option, period: SubscriptionScheduleAddInvoiceItemPeriod, price: SubscriptionScheduleAddInvoiceItemPrice'AnyOf, quantity: int option, ?taxRates: TaxRate list option) =
+        {
+            Discounts = discounts
+            Metadata = metadata
+            Period = period
+            Price = price
+            Quantity = quantity
+            TaxRates = taxRates |> Option.flatten
+        }
+
 type StackableDiscountWithDiscountSettings =
     {
         /// ID of the coupon to create a new discount for.
@@ -93,6 +132,14 @@ type StackableDiscountWithDiscountSettings =
         /// ID of the promotion code to create a new discount for.
         PromotionCode: StripeId<Markers.PromotionCode> option
     }
+
+type StackableDiscountWithDiscountSettings with
+    static member New(coupon: StripeId<Markers.Coupon> option, discount: StripeId<Markers.Discount> option, promotionCode: StripeId<Markers.PromotionCode> option) =
+        {
+            Coupon = coupon
+            Discount = discount
+            PromotionCode = promotionCode
+        }
 
 type SubscriptionScheduleConfigurationItemPlan'AnyOf =
     | String of string
@@ -122,6 +169,18 @@ type SubscriptionScheduleConfigurationItem =
         /// The tax rates which apply to this `phase_item`. When set, the `default_tax_rates` on the phase do not apply to this `phase_item`.
         TaxRates: TaxRate list option
     }
+
+type SubscriptionScheduleConfigurationItem with
+    static member New(billingThresholds: SubscriptionItemBillingThresholds option, discounts: StackableDiscountWithDiscountSettings list, metadata: Map<string, string> option, plan: SubscriptionScheduleConfigurationItemPlan'AnyOf, price: SubscriptionScheduleConfigurationItemPrice'AnyOf, ?quantity: int, ?taxRates: TaxRate list option) =
+        {
+            BillingThresholds = billingThresholds
+            Discounts = discounts
+            Metadata = metadata
+            Plan = plan
+            Price = price
+            Quantity = quantity
+            TaxRates = taxRates |> Option.flatten
+        }
 
 [<Struct>]
 type SubscriptionSchedulePhaseConfigurationBillingCycleAnchor =
@@ -183,6 +242,31 @@ type SubscriptionSchedulePhaseConfiguration =
         TrialEnd: DateTime option
     }
 
+type SubscriptionSchedulePhaseConfiguration with
+    static member New(addInvoiceItems: SubscriptionScheduleAddInvoiceItem list, applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulePhaseConfigurationBillingCycleAnchor option, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulePhaseConfigurationCollectionMethod option, currency: IsoTypes.IsoCurrencyCode, defaultPaymentMethod: StripeId<Markers.PaymentMethod> option, description: string option, discounts: StackableDiscountWithDiscountSettingsAndDiscountEnd list, endDate: DateTime, invoiceSettings: InvoiceSettingSubscriptionSchedulePhaseSetting option, items: SubscriptionScheduleConfigurationItem list, metadata: Map<string, string> option, onBehalfOf: StripeId<Markers.Account> option, prorationBehavior: SubscriptionSchedulePhaseConfigurationProrationBehavior, startDate: DateTime, transferData: SubscriptionTransferData option, trialEnd: DateTime option, ?automaticTax: SchedulesPhaseAutomaticTax, ?defaultTaxRates: TaxRate list option) =
+        {
+            AddInvoiceItems = addInvoiceItems
+            ApplicationFeePercent = applicationFeePercent
+            BillingCycleAnchor = billingCycleAnchor
+            BillingThresholds = billingThresholds
+            CollectionMethod = collectionMethod
+            Currency = currency
+            DefaultPaymentMethod = defaultPaymentMethod
+            Description = description
+            Discounts = discounts
+            EndDate = endDate
+            InvoiceSettings = invoiceSettings
+            Items = items
+            Metadata = metadata
+            OnBehalfOf = onBehalfOf
+            ProrationBehavior = prorationBehavior
+            StartDate = startDate
+            TransferData = transferData
+            TrialEnd = trialEnd
+            AutomaticTax = automaticTax
+            DefaultTaxRates = defaultTaxRates |> Option.flatten
+        }
+
 [<Struct>]
 type SubscriptionScheduleStatus =
     | Active
@@ -233,6 +317,30 @@ type SubscriptionSchedule =
         TestClock: StripeId<Markers.TestHelpersTestClock> option
     }
 
+type SubscriptionSchedule with
+    static member New(application: SubscriptionScheduleApplication'AnyOf option, billingMode: SubscriptionsResourceBillingMode, canceledAt: DateTime option, completedAt: DateTime option, created: DateTime, currentPhase: SubscriptionScheduleCurrentPhase option, customer: SubscriptionScheduleCustomer'AnyOf, customerAccount: string option, defaultSettings: SubscriptionSchedulesResourceDefaultSettings, endBehavior: SubscriptionScheduleEndBehavior, id: string, livemode: bool, metadata: Map<string, string> option, phases: SubscriptionSchedulePhaseConfiguration list, releasedAt: DateTime option, releasedSubscription: string option, status: SubscriptionScheduleStatus, subscription: StripeId<Markers.Subscription> option, testClock: StripeId<Markers.TestHelpersTestClock> option) =
+        {
+            Application = application
+            BillingMode = billingMode
+            CanceledAt = canceledAt
+            CompletedAt = completedAt
+            Created = created
+            CurrentPhase = currentPhase
+            Customer = customer
+            CustomerAccount = customerAccount
+            DefaultSettings = defaultSettings
+            EndBehavior = endBehavior
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Phases = phases
+            ReleasedAt = releasedAt
+            ReleasedSubscription = releasedSubscription
+            Status = status
+            Subscription = subscription
+            TestClock = testClock
+        }
+
 module SubscriptionSchedule =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "subscription_schedule"
@@ -240,21 +348,63 @@ module SubscriptionSchedule =
 /// Occurs whenever a subscription schedule is updated.
 type SubscriptionScheduleUpdated = { Object: SubscriptionSchedule }
 
+type SubscriptionScheduleUpdated with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a new subscription schedule is released.
 type SubscriptionScheduleReleased = { Object: SubscriptionSchedule }
+
+type SubscriptionScheduleReleased with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
 
 /// Occurs 7 days before a subscription schedule will expire.
 type SubscriptionScheduleExpiring = { Object: SubscriptionSchedule }
 
+type SubscriptionScheduleExpiring with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a new subscription schedule is created.
 type SubscriptionScheduleCreated = { Object: SubscriptionSchedule }
+
+type SubscriptionScheduleCreated with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever a new subscription schedule is completed.
 type SubscriptionScheduleCompleted = { Object: SubscriptionSchedule }
 
+type SubscriptionScheduleCompleted with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a subscription schedule is canceled.
 type SubscriptionScheduleCanceled = { Object: SubscriptionSchedule }
 
+type SubscriptionScheduleCanceled with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a subscription schedule is canceled due to the underlying subscription being canceled because of delinquency.
 type SubscriptionScheduleAborted = { Object: SubscriptionSchedule }
+
+type SubscriptionScheduleAborted with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
 

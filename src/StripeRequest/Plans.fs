@@ -33,6 +33,18 @@ module Plans =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?active: bool, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?product: string, ?startingAfter: string) =
+            {
+                Active = active
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                Product = product
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -91,6 +103,18 @@ module Plans =
             UnitLabel: string option
         }
 
+    type Create'ProductInlineProductParams with
+        static member New(?active: bool, ?id: string, ?metadata: Map<string, string>, ?name: string, ?statementDescriptor: string, ?taxCode: string, ?unitLabel: string) =
+            {
+                Active = active
+                Id = id
+                Metadata = metadata
+                Name = name
+                StatementDescriptor = statementDescriptor
+                TaxCode = taxCode
+                UnitLabel = unitLabel
+            }
+
     module Create'ProductInlineProductParams =
         let create
             (
@@ -134,6 +158,16 @@ module Plans =
             UpTo: Choice<Create'TiersUpTo,int> option
         }
 
+    type Create'Tiers with
+        static member New(?flatAmount: int, ?flatAmountDecimal: string, ?unitAmount: int, ?unitAmountDecimal: string, ?upTo: Choice<Create'TiersUpTo,int>) =
+            {
+                FlatAmount = flatAmount
+                FlatAmountDecimal = flatAmountDecimal
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+                UpTo = upTo
+            }
+
     module Create'Tiers =
         let create
             (
@@ -169,6 +203,13 @@ module Plans =
             [<Config.Form>]
             Round: Create'TransformUsageRound option
         }
+
+    type Create'TransformUsage with
+        static member New(?divideBy: int, ?round: Create'TransformUsageRound) =
+            {
+                DivideBy = divideBy
+                Round = round
+            }
 
     module Create'TransformUsage =
         let create
@@ -243,6 +284,29 @@ module Plans =
             UsageType: Create'UsageType option
         }
 
+    type CreateOptions with
+        static member New(currency: IsoTypes.IsoCurrencyCode, interval: Create'Interval, ?active: bool, ?amount: int, ?amountDecimal: string, ?billingScheme: Create'BillingScheme, ?expand: string list, ?id: string, ?intervalCount: int, ?metadata: Map<string, string>, ?meter: string, ?nickname: string, ?product: Choice<Create'ProductInlineProductParams,string>, ?tiers: Create'Tiers list, ?tiersMode: Create'TiersMode, ?transformUsage: Create'TransformUsage, ?trialPeriodDays: int, ?usageType: Create'UsageType) =
+            {
+                Currency = currency
+                Interval = interval
+                Active = active
+                Amount = amount
+                AmountDecimal = amountDecimal
+                BillingScheme = billingScheme
+                Expand = expand
+                Id = id
+                IntervalCount = intervalCount
+                Metadata = metadata
+                Meter = meter
+                Nickname = nickname
+                Product = product
+                Tiers = tiers
+                TiersMode = tiersMode
+                TransformUsage = transformUsage
+                TrialPeriodDays = trialPeriodDays
+                UsageType = usageType
+            }
+
     module CreateOptions =
         let create
             (
@@ -275,6 +339,12 @@ module Plans =
         { [<Config.Path>]
           Plan: string }
 
+    type DeleteOptions with
+        static member New(plan: string) =
+            {
+                Plan = plan
+            }
+
     module DeleteOptions =
         let create
             (
@@ -293,6 +363,13 @@ module Plans =
             [<Config.Path>]
             Plan: string
         }
+
+    type RetrieveOptions with
+        static member New(plan: string, ?expand: string list) =
+            {
+                Plan = plan
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -328,6 +405,18 @@ module Plans =
             [<Config.Form>]
             TrialPeriodDays: int option
         }
+
+    type UpdateOptions with
+        static member New(plan: string, ?active: bool, ?expand: string list, ?metadata: Map<string, string>, ?nickname: string, ?product: string, ?trialPeriodDays: int) =
+            {
+                Plan = plan
+                Active = active
+                Expand = expand
+                Metadata = metadata
+                Nickname = nickname
+                Product = product
+                TrialPeriodDays = trialPeriodDays
+            }
 
     module UpdateOptions =
         let create

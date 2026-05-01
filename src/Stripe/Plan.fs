@@ -36,6 +36,16 @@ type PlanTier =
         UpTo: int option
     }
 
+type PlanTier with
+    static member New(flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
+        {
+            FlatAmount = flatAmount
+            FlatAmountDecimal = flatAmountDecimal
+            UnitAmount = unitAmount
+            UnitAmountDecimal = unitAmountDecimal
+            UpTo = upTo
+        }
+
 [<Struct>]
 type PlanTiersMode =
     | Graduated
@@ -58,6 +68,13 @@ type TransformUsage =
         /// After division, either round the result `up` or `down`.
         Round: TransformUsageRound
     }
+
+type TransformUsage with
+    static member New(divideBy: int, round: TransformUsageRound) =
+        {
+            DivideBy = divideBy
+            Round = round
+        }
 
 /// You can now model subscriptions more flexibly using the [Prices API](https://api.stripe.com#prices). It replaces the Plans API and is backwards compatible to simplify your migration.
 /// Plans define the base price, currency, and billing cycle for recurring purchases of products.
@@ -106,6 +123,30 @@ type Plan =
         UsageType: PlanUsageType
     }
 
+type Plan with
+    static member New(active: bool, amount: int option, amountDecimal: string option, billingScheme: PlanBillingScheme, created: DateTime, currency: IsoTypes.IsoCurrencyCode, id: string, interval: PlanInterval, intervalCount: int, livemode: bool, metadata: Map<string, string> option, meter: string option, nickname: string option, product: PlanProduct'AnyOf option, tiersMode: PlanTiersMode option, transformUsage: TransformUsage option, trialPeriodDays: int option, usageType: PlanUsageType, ?tiers: PlanTier list) =
+        {
+            Active = active
+            Amount = amount
+            AmountDecimal = amountDecimal
+            BillingScheme = billingScheme
+            Created = created
+            Currency = currency
+            Id = id
+            Interval = interval
+            IntervalCount = intervalCount
+            Livemode = livemode
+            Metadata = metadata
+            Meter = meter
+            Nickname = nickname
+            Product = product
+            TiersMode = tiersMode
+            TransformUsage = transformUsage
+            TrialPeriodDays = trialPeriodDays
+            UsageType = usageType
+            Tiers = tiers
+        }
+
 module Plan =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "plan"
@@ -113,11 +154,29 @@ module Plan =
 /// Occurs whenever a plan is updated.
 type PlanUpdated = { Object: Plan }
 
+type PlanUpdated with
+    static member New(object: Plan) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a plan is deleted.
 type PlanDeleted = { Object: Plan }
 
+type PlanDeleted with
+    static member New(object: Plan) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a plan is created.
 type PlanCreated = { Object: Plan }
+
+type PlanCreated with
+    static member New(object: Plan) =
+        {
+            Object = object
+        }
 
 type DeletedPlan =
     {
@@ -126,6 +185,13 @@ type DeletedPlan =
         /// Unique identifier for the object.
         Id: string
     }
+
+type DeletedPlan with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedPlan =
     ///String representing the object's type. Objects of the same type share the same value.

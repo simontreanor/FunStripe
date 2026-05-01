@@ -21,6 +21,13 @@ module TaxAssociationsFind =
             PaymentIntent: string
         }
 
+    type FindOptions with
+        static member New(paymentIntent: string, ?expand: string list) =
+            {
+                PaymentIntent = paymentIntent
+                Expand = expand
+            }
+
     module FindOptions =
         let create
             (
@@ -61,6 +68,17 @@ module TaxCalculations =
             [<Config.Form>]
             State: Choice<string,string> option
         }
+
+    type Create'CustomerDetailsAddress with
+        static member New(?city: Choice<string,string>, ?country: IsoTypes.IsoCountryCode, ?line1: Choice<string,string>, ?line2: Choice<string,string>, ?postalCode: Choice<string,string>, ?state: Choice<string,string>) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'CustomerDetailsAddress =
         let create
@@ -214,15 +232,22 @@ module TaxCalculations =
             Value: string option
         }
 
+    type Create'CustomerDetailsTaxIds with
+        static member New(?type': Create'CustomerDetailsTaxIdsType, ?value: string) =
+            {
+                Type = type'
+                Value = value
+            }
+
     module Create'CustomerDetailsTaxIds =
         let create
             (
-                ``type``: Create'CustomerDetailsTaxIdsType option,
+                type': Create'CustomerDetailsTaxIdsType option,
                 value: string option
             ) : Create'CustomerDetailsTaxIds
             =
             {
-              Type = ``type``
+              Type = type'
               Value = value
             }
 
@@ -249,6 +274,16 @@ module TaxCalculations =
             [<Config.Form>]
             TaxabilityOverride: Create'CustomerDetailsTaxabilityOverride option
         }
+
+    type Create'CustomerDetails with
+        static member New(?address: Create'CustomerDetailsAddress, ?addressSource: Create'CustomerDetailsAddressSource, ?ipAddress: string, ?taxIds: Create'CustomerDetailsTaxIds list, ?taxabilityOverride: Create'CustomerDetailsTaxabilityOverride) =
+            {
+                Address = address
+                AddressSource = addressSource
+                IpAddress = ipAddress
+                TaxIds = taxIds
+                TaxabilityOverride = taxabilityOverride
+            }
 
     module Create'CustomerDetails =
         let create
@@ -298,6 +333,18 @@ module TaxCalculations =
             TaxCode: string option
         }
 
+    type Create'LineItems with
+        static member New(?amount: int, ?metadata: Map<string, string>, ?product: string, ?quantity: int, ?reference: string, ?taxBehavior: Create'LineItemsTaxBehavior, ?taxCode: string) =
+            {
+                Amount = amount
+                Metadata = metadata
+                Product = product
+                Quantity = quantity
+                Reference = reference
+                TaxBehavior = taxBehavior
+                TaxCode = taxCode
+            }
+
     module Create'LineItems =
         let create
             (
@@ -342,6 +389,17 @@ module TaxCalculations =
             State: Choice<string,string> option
         }
 
+    type Create'ShipFromDetailsAddress with
+        static member New(?city: Choice<string,string>, ?country: IsoTypes.IsoCountryCode, ?line1: Choice<string,string>, ?line2: Choice<string,string>, ?postalCode: Choice<string,string>, ?state: Choice<string,string>) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'ShipFromDetailsAddress =
         let create
             (
@@ -368,6 +426,12 @@ module TaxCalculations =
             [<Config.Form>]
             Address: Create'ShipFromDetailsAddress option
         }
+
+    type Create'ShipFromDetails with
+        static member New(?address: Create'ShipFromDetailsAddress) =
+            {
+                Address = address
+            }
 
     module Create'ShipFromDetails =
         let create
@@ -398,6 +462,15 @@ module TaxCalculations =
             [<Config.Form>]
             TaxCode: string option
         }
+
+    type Create'ShippingCost with
+        static member New(?amount: int, ?shippingRate: string, ?taxBehavior: Create'ShippingCostTaxBehavior, ?taxCode: string) =
+            {
+                Amount = amount
+                ShippingRate = shippingRate
+                TaxBehavior = taxBehavior
+                TaxCode = taxCode
+            }
 
     module Create'ShippingCost =
         let create
@@ -443,6 +516,19 @@ module TaxCalculations =
             TaxDate: int option
         }
 
+    type CreateOptions with
+        static member New(currency: IsoTypes.IsoCurrencyCode, lineItems: Create'LineItems list, ?customer: string, ?customerDetails: Create'CustomerDetails, ?expand: string list, ?shipFromDetails: Create'ShipFromDetails, ?shippingCost: Create'ShippingCost, ?taxDate: int) =
+            {
+                Currency = currency
+                LineItems = lineItems
+                Customer = customer
+                CustomerDetails = customerDetails
+                Expand = expand
+                ShipFromDetails = shipFromDetails
+                ShippingCost = shippingCost
+                TaxDate = taxDate
+            }
+
     module CreateOptions =
         let create
             (
@@ -469,6 +555,13 @@ module TaxCalculations =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(calculation: string, ?expand: string list) =
+            {
+                Calculation = calculation
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -512,6 +605,16 @@ module TaxCalculationsLineItems =
             StartingAfter: string option
         }
 
+    type ListLineItemsOptions with
+        static member New(calculation: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Calculation = calculation
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListLineItemsOptions =
         let create
             (
@@ -553,6 +656,16 @@ module TaxRegistrations =
             Status: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
     module ListOptions =
         let create
             (
@@ -584,6 +697,12 @@ module TaxRegistrations =
             PlaceOfSupplyScheme: Create'CountryOptionsAeStandardPlaceOfSupplyScheme option
         }
 
+    type Create'CountryOptionsAeStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsAeStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     module Create'CountryOptionsAeStandard =
         let create
             (
@@ -606,16 +725,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsAeType option
         }
 
+    type Create'CountryOptionsAe with
+        static member New(?standard: Create'CountryOptionsAeStandard, ?type': Create'CountryOptionsAeType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsAe =
         let create
             (
                 standard: Create'CountryOptionsAeStandard option,
-                ``type``: Create'CountryOptionsAeType option
+                type': Create'CountryOptionsAeType option
             ) : Create'CountryOptionsAe
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsAlStandardPlaceOfSupplyScheme =
@@ -628,6 +754,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsAlStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsAlStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsAlStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsAlStandard =
         let create
@@ -651,16 +783,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsAlType option
         }
 
+    type Create'CountryOptionsAl with
+        static member New(?standard: Create'CountryOptionsAlStandard, ?type': Create'CountryOptionsAlType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsAl =
         let create
             (
                 standard: Create'CountryOptionsAlStandard option,
-                ``type``: Create'CountryOptionsAlType option
+                type': Create'CountryOptionsAlType option
             ) : Create'CountryOptionsAl
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsAmType = | Simplified
@@ -672,14 +811,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsAmType option
         }
 
+    type Create'CountryOptionsAm with
+        static member New(?type': Create'CountryOptionsAmType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsAm =
         let create
             (
-                ``type``: Create'CountryOptionsAmType option
+                type': Create'CountryOptionsAmType option
             ) : Create'CountryOptionsAm
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsAoStandardPlaceOfSupplyScheme =
@@ -692,6 +837,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsAoStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsAoStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsAoStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsAoStandard =
         let create
@@ -715,16 +866,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsAoType option
         }
 
+    type Create'CountryOptionsAo with
+        static member New(?standard: Create'CountryOptionsAoStandard, ?type': Create'CountryOptionsAoType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsAo =
         let create
             (
                 standard: Create'CountryOptionsAoStandard option,
-                ``type``: Create'CountryOptionsAoType option
+                type': Create'CountryOptionsAoType option
             ) : Create'CountryOptionsAo
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsAtStandardPlaceOfSupplyScheme =
@@ -738,6 +896,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsAtStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsAtStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsAtStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsAtStandard =
         let create
@@ -765,16 +929,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsAtType option
         }
 
+    type Create'CountryOptionsAt with
+        static member New(?standard: Create'CountryOptionsAtStandard, ?type': Create'CountryOptionsAtType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsAt =
         let create
             (
                 standard: Create'CountryOptionsAtStandard option,
-                ``type``: Create'CountryOptionsAtType option
+                type': Create'CountryOptionsAtType option
             ) : Create'CountryOptionsAt
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsAuStandardPlaceOfSupplyScheme =
@@ -787,6 +958,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsAuStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsAuStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsAuStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsAuStandard =
         let create
@@ -810,16 +987,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsAuType option
         }
 
+    type Create'CountryOptionsAu with
+        static member New(?standard: Create'CountryOptionsAuStandard, ?type': Create'CountryOptionsAuType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsAu =
         let create
             (
                 standard: Create'CountryOptionsAuStandard option,
-                ``type``: Create'CountryOptionsAuType option
+                type': Create'CountryOptionsAuType option
             ) : Create'CountryOptionsAu
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsAwStandardPlaceOfSupplyScheme =
@@ -832,6 +1016,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsAwStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsAwStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsAwStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsAwStandard =
         let create
@@ -855,16 +1045,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsAwType option
         }
 
+    type Create'CountryOptionsAw with
+        static member New(?standard: Create'CountryOptionsAwStandard, ?type': Create'CountryOptionsAwType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsAw =
         let create
             (
                 standard: Create'CountryOptionsAwStandard option,
-                ``type``: Create'CountryOptionsAwType option
+                type': Create'CountryOptionsAwType option
             ) : Create'CountryOptionsAw
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsAzType = | Simplified
@@ -876,14 +1073,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsAzType option
         }
 
+    type Create'CountryOptionsAz with
+        static member New(?type': Create'CountryOptionsAzType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsAz =
         let create
             (
-                ``type``: Create'CountryOptionsAzType option
+                type': Create'CountryOptionsAzType option
             ) : Create'CountryOptionsAz
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsBaStandardPlaceOfSupplyScheme =
@@ -896,6 +1099,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsBaStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsBaStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsBaStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsBaStandard =
         let create
@@ -919,16 +1128,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsBaType option
         }
 
+    type Create'CountryOptionsBa with
+        static member New(?standard: Create'CountryOptionsBaStandard, ?type': Create'CountryOptionsBaType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsBa =
         let create
             (
                 standard: Create'CountryOptionsBaStandard option,
-                ``type``: Create'CountryOptionsBaType option
+                type': Create'CountryOptionsBaType option
             ) : Create'CountryOptionsBa
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsBbStandardPlaceOfSupplyScheme =
@@ -941,6 +1157,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsBbStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsBbStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsBbStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsBbStandard =
         let create
@@ -964,16 +1186,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsBbType option
         }
 
+    type Create'CountryOptionsBb with
+        static member New(?standard: Create'CountryOptionsBbStandard, ?type': Create'CountryOptionsBbType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsBb =
         let create
             (
                 standard: Create'CountryOptionsBbStandard option,
-                ``type``: Create'CountryOptionsBbType option
+                type': Create'CountryOptionsBbType option
             ) : Create'CountryOptionsBb
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsBdStandardPlaceOfSupplyScheme =
@@ -986,6 +1215,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsBdStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsBdStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsBdStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsBdStandard =
         let create
@@ -1009,16 +1244,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsBdType option
         }
 
+    type Create'CountryOptionsBd with
+        static member New(?standard: Create'CountryOptionsBdStandard, ?type': Create'CountryOptionsBdType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsBd =
         let create
             (
                 standard: Create'CountryOptionsBdStandard option,
-                ``type``: Create'CountryOptionsBdType option
+                type': Create'CountryOptionsBdType option
             ) : Create'CountryOptionsBd
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsBeStandardPlaceOfSupplyScheme =
@@ -1032,6 +1274,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsBeStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsBeStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsBeStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsBeStandard =
         let create
@@ -1059,16 +1307,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsBeType option
         }
 
+    type Create'CountryOptionsBe with
+        static member New(?standard: Create'CountryOptionsBeStandard, ?type': Create'CountryOptionsBeType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsBe =
         let create
             (
                 standard: Create'CountryOptionsBeStandard option,
-                ``type``: Create'CountryOptionsBeType option
+                type': Create'CountryOptionsBeType option
             ) : Create'CountryOptionsBe
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsBfStandardPlaceOfSupplyScheme =
@@ -1081,6 +1336,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsBfStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsBfStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsBfStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsBfStandard =
         let create
@@ -1104,16 +1365,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsBfType option
         }
 
+    type Create'CountryOptionsBf with
+        static member New(?standard: Create'CountryOptionsBfStandard, ?type': Create'CountryOptionsBfType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsBf =
         let create
             (
                 standard: Create'CountryOptionsBfStandard option,
-                ``type``: Create'CountryOptionsBfType option
+                type': Create'CountryOptionsBfType option
             ) : Create'CountryOptionsBf
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsBgStandardPlaceOfSupplyScheme =
@@ -1127,6 +1395,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsBgStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsBgStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsBgStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsBgStandard =
         let create
@@ -1154,16 +1428,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsBgType option
         }
 
+    type Create'CountryOptionsBg with
+        static member New(?standard: Create'CountryOptionsBgStandard, ?type': Create'CountryOptionsBgType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsBg =
         let create
             (
                 standard: Create'CountryOptionsBgStandard option,
-                ``type``: Create'CountryOptionsBgType option
+                type': Create'CountryOptionsBgType option
             ) : Create'CountryOptionsBg
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsBhStandardPlaceOfSupplyScheme =
@@ -1176,6 +1457,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsBhStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsBhStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsBhStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsBhStandard =
         let create
@@ -1199,16 +1486,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsBhType option
         }
 
+    type Create'CountryOptionsBh with
+        static member New(?standard: Create'CountryOptionsBhStandard, ?type': Create'CountryOptionsBhType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsBh =
         let create
             (
                 standard: Create'CountryOptionsBhStandard option,
-                ``type``: Create'CountryOptionsBhType option
+                type': Create'CountryOptionsBhType option
             ) : Create'CountryOptionsBh
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsBjType = | Simplified
@@ -1220,14 +1514,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsBjType option
         }
 
+    type Create'CountryOptionsBj with
+        static member New(?type': Create'CountryOptionsBjType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsBj =
         let create
             (
-                ``type``: Create'CountryOptionsBjType option
+                type': Create'CountryOptionsBjType option
             ) : Create'CountryOptionsBj
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsBsStandardPlaceOfSupplyScheme =
@@ -1240,6 +1540,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsBsStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsBsStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsBsStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsBsStandard =
         let create
@@ -1263,16 +1569,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsBsType option
         }
 
+    type Create'CountryOptionsBs with
+        static member New(?standard: Create'CountryOptionsBsStandard, ?type': Create'CountryOptionsBsType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsBs =
         let create
             (
                 standard: Create'CountryOptionsBsStandard option,
-                ``type``: Create'CountryOptionsBsType option
+                type': Create'CountryOptionsBsType option
             ) : Create'CountryOptionsBs
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsByType = | Simplified
@@ -1284,14 +1597,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsByType option
         }
 
+    type Create'CountryOptionsBy with
+        static member New(?type': Create'CountryOptionsByType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsBy =
         let create
             (
-                ``type``: Create'CountryOptionsByType option
+                type': Create'CountryOptionsByType option
             ) : Create'CountryOptionsBy
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsCaProvinceStandard =
@@ -1300,6 +1619,12 @@ module TaxRegistrations =
             [<Config.Form>]
             Province: string option
         }
+
+    type Create'CountryOptionsCaProvinceStandard with
+        static member New(?province: string) =
+            {
+                Province = province
+            }
 
     module Create'CountryOptionsCaProvinceStandard =
         let create
@@ -1326,16 +1651,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsCaType option
         }
 
+    type Create'CountryOptionsCa with
+        static member New(?provinceStandard: Create'CountryOptionsCaProvinceStandard, ?type': Create'CountryOptionsCaType) =
+            {
+                ProvinceStandard = provinceStandard
+                Type = type'
+            }
+
     module Create'CountryOptionsCa =
         let create
             (
                 provinceStandard: Create'CountryOptionsCaProvinceStandard option,
-                ``type``: Create'CountryOptionsCaType option
+                type': Create'CountryOptionsCaType option
             ) : Create'CountryOptionsCa
             =
             {
               ProvinceStandard = provinceStandard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsCdStandardPlaceOfSupplyScheme =
@@ -1348,6 +1680,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsCdStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsCdStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsCdStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsCdStandard =
         let create
@@ -1371,16 +1709,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsCdType option
         }
 
+    type Create'CountryOptionsCd with
+        static member New(?standard: Create'CountryOptionsCdStandard, ?type': Create'CountryOptionsCdType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsCd =
         let create
             (
                 standard: Create'CountryOptionsCdStandard option,
-                ``type``: Create'CountryOptionsCdType option
+                type': Create'CountryOptionsCdType option
             ) : Create'CountryOptionsCd
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsChStandardPlaceOfSupplyScheme =
@@ -1393,6 +1738,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsChStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsChStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsChStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsChStandard =
         let create
@@ -1416,16 +1767,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsChType option
         }
 
+    type Create'CountryOptionsCh with
+        static member New(?standard: Create'CountryOptionsChStandard, ?type': Create'CountryOptionsChType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsCh =
         let create
             (
                 standard: Create'CountryOptionsChStandard option,
-                ``type``: Create'CountryOptionsChType option
+                type': Create'CountryOptionsChType option
             ) : Create'CountryOptionsCh
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsClType = | Simplified
@@ -1437,14 +1795,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsClType option
         }
 
+    type Create'CountryOptionsCl with
+        static member New(?type': Create'CountryOptionsClType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsCl =
         let create
             (
-                ``type``: Create'CountryOptionsClType option
+                type': Create'CountryOptionsClType option
             ) : Create'CountryOptionsCl
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsCmType = | Simplified
@@ -1456,14 +1820,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsCmType option
         }
 
+    type Create'CountryOptionsCm with
+        static member New(?type': Create'CountryOptionsCmType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsCm =
         let create
             (
-                ``type``: Create'CountryOptionsCmType option
+                type': Create'CountryOptionsCmType option
             ) : Create'CountryOptionsCm
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsCoType = | Simplified
@@ -1475,14 +1845,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsCoType option
         }
 
+    type Create'CountryOptionsCo with
+        static member New(?type': Create'CountryOptionsCoType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsCo =
         let create
             (
-                ``type``: Create'CountryOptionsCoType option
+                type': Create'CountryOptionsCoType option
             ) : Create'CountryOptionsCo
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsCrType = | Simplified
@@ -1494,14 +1870,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsCrType option
         }
 
+    type Create'CountryOptionsCr with
+        static member New(?type': Create'CountryOptionsCrType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsCr =
         let create
             (
-                ``type``: Create'CountryOptionsCrType option
+                type': Create'CountryOptionsCrType option
             ) : Create'CountryOptionsCr
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsCvType = | Simplified
@@ -1513,14 +1895,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsCvType option
         }
 
+    type Create'CountryOptionsCv with
+        static member New(?type': Create'CountryOptionsCvType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsCv =
         let create
             (
-                ``type``: Create'CountryOptionsCvType option
+                type': Create'CountryOptionsCvType option
             ) : Create'CountryOptionsCv
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsCyStandardPlaceOfSupplyScheme =
@@ -1534,6 +1922,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsCyStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsCyStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsCyStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsCyStandard =
         let create
@@ -1561,16 +1955,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsCyType option
         }
 
+    type Create'CountryOptionsCy with
+        static member New(?standard: Create'CountryOptionsCyStandard, ?type': Create'CountryOptionsCyType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsCy =
         let create
             (
                 standard: Create'CountryOptionsCyStandard option,
-                ``type``: Create'CountryOptionsCyType option
+                type': Create'CountryOptionsCyType option
             ) : Create'CountryOptionsCy
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsCzStandardPlaceOfSupplyScheme =
@@ -1584,6 +1985,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsCzStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsCzStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsCzStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsCzStandard =
         let create
@@ -1611,16 +2018,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsCzType option
         }
 
+    type Create'CountryOptionsCz with
+        static member New(?standard: Create'CountryOptionsCzStandard, ?type': Create'CountryOptionsCzType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsCz =
         let create
             (
                 standard: Create'CountryOptionsCzStandard option,
-                ``type``: Create'CountryOptionsCzType option
+                type': Create'CountryOptionsCzType option
             ) : Create'CountryOptionsCz
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsDeStandardPlaceOfSupplyScheme =
@@ -1634,6 +2048,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsDeStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsDeStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsDeStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsDeStandard =
         let create
@@ -1661,16 +2081,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsDeType option
         }
 
+    type Create'CountryOptionsDe with
+        static member New(?standard: Create'CountryOptionsDeStandard, ?type': Create'CountryOptionsDeType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsDe =
         let create
             (
                 standard: Create'CountryOptionsDeStandard option,
-                ``type``: Create'CountryOptionsDeType option
+                type': Create'CountryOptionsDeType option
             ) : Create'CountryOptionsDe
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsDkStandardPlaceOfSupplyScheme =
@@ -1684,6 +2111,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsDkStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsDkStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsDkStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsDkStandard =
         let create
@@ -1711,16 +2144,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsDkType option
         }
 
+    type Create'CountryOptionsDk with
+        static member New(?standard: Create'CountryOptionsDkStandard, ?type': Create'CountryOptionsDkType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsDk =
         let create
             (
                 standard: Create'CountryOptionsDkStandard option,
-                ``type``: Create'CountryOptionsDkType option
+                type': Create'CountryOptionsDkType option
             ) : Create'CountryOptionsDk
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsEcType = | Simplified
@@ -1732,14 +2172,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsEcType option
         }
 
+    type Create'CountryOptionsEc with
+        static member New(?type': Create'CountryOptionsEcType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsEc =
         let create
             (
-                ``type``: Create'CountryOptionsEcType option
+                type': Create'CountryOptionsEcType option
             ) : Create'CountryOptionsEc
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsEeStandardPlaceOfSupplyScheme =
@@ -1753,6 +2199,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsEeStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsEeStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsEeStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsEeStandard =
         let create
@@ -1780,16 +2232,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsEeType option
         }
 
+    type Create'CountryOptionsEe with
+        static member New(?standard: Create'CountryOptionsEeStandard, ?type': Create'CountryOptionsEeType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsEe =
         let create
             (
                 standard: Create'CountryOptionsEeStandard option,
-                ``type``: Create'CountryOptionsEeType option
+                type': Create'CountryOptionsEeType option
             ) : Create'CountryOptionsEe
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsEgType = | Simplified
@@ -1801,14 +2260,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsEgType option
         }
 
+    type Create'CountryOptionsEg with
+        static member New(?type': Create'CountryOptionsEgType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsEg =
         let create
             (
-                ``type``: Create'CountryOptionsEgType option
+                type': Create'CountryOptionsEgType option
             ) : Create'CountryOptionsEg
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsEsStandardPlaceOfSupplyScheme =
@@ -1822,6 +2287,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsEsStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsEsStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsEsStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsEsStandard =
         let create
@@ -1849,16 +2320,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsEsType option
         }
 
+    type Create'CountryOptionsEs with
+        static member New(?standard: Create'CountryOptionsEsStandard, ?type': Create'CountryOptionsEsType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsEs =
         let create
             (
                 standard: Create'CountryOptionsEsStandard option,
-                ``type``: Create'CountryOptionsEsType option
+                type': Create'CountryOptionsEsType option
             ) : Create'CountryOptionsEs
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsEtStandardPlaceOfSupplyScheme =
@@ -1871,6 +2349,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsEtStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsEtStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsEtStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsEtStandard =
         let create
@@ -1894,16 +2378,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsEtType option
         }
 
+    type Create'CountryOptionsEt with
+        static member New(?standard: Create'CountryOptionsEtStandard, ?type': Create'CountryOptionsEtType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsEt =
         let create
             (
                 standard: Create'CountryOptionsEtStandard option,
-                ``type``: Create'CountryOptionsEtType option
+                type': Create'CountryOptionsEtType option
             ) : Create'CountryOptionsEt
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsFiStandardPlaceOfSupplyScheme =
@@ -1917,6 +2408,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsFiStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsFiStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsFiStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsFiStandard =
         let create
@@ -1944,16 +2441,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsFiType option
         }
 
+    type Create'CountryOptionsFi with
+        static member New(?standard: Create'CountryOptionsFiStandard, ?type': Create'CountryOptionsFiType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsFi =
         let create
             (
                 standard: Create'CountryOptionsFiStandard option,
-                ``type``: Create'CountryOptionsFiType option
+                type': Create'CountryOptionsFiType option
             ) : Create'CountryOptionsFi
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsFrStandardPlaceOfSupplyScheme =
@@ -1967,6 +2471,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsFrStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsFrStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsFrStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsFrStandard =
         let create
@@ -1994,16 +2504,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsFrType option
         }
 
+    type Create'CountryOptionsFr with
+        static member New(?standard: Create'CountryOptionsFrStandard, ?type': Create'CountryOptionsFrType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsFr =
         let create
             (
                 standard: Create'CountryOptionsFrStandard option,
-                ``type``: Create'CountryOptionsFrType option
+                type': Create'CountryOptionsFrType option
             ) : Create'CountryOptionsFr
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsGbStandardPlaceOfSupplyScheme =
@@ -2016,6 +2533,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsGbStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsGbStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsGbStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsGbStandard =
         let create
@@ -2039,16 +2562,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsGbType option
         }
 
+    type Create'CountryOptionsGb with
+        static member New(?standard: Create'CountryOptionsGbStandard, ?type': Create'CountryOptionsGbType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsGb =
         let create
             (
                 standard: Create'CountryOptionsGbStandard option,
-                ``type``: Create'CountryOptionsGbType option
+                type': Create'CountryOptionsGbType option
             ) : Create'CountryOptionsGb
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsGeType = | Simplified
@@ -2060,14 +2590,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsGeType option
         }
 
+    type Create'CountryOptionsGe with
+        static member New(?type': Create'CountryOptionsGeType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsGe =
         let create
             (
-                ``type``: Create'CountryOptionsGeType option
+                type': Create'CountryOptionsGeType option
             ) : Create'CountryOptionsGe
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsGnStandardPlaceOfSupplyScheme =
@@ -2080,6 +2616,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsGnStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsGnStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsGnStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsGnStandard =
         let create
@@ -2103,16 +2645,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsGnType option
         }
 
+    type Create'CountryOptionsGn with
+        static member New(?standard: Create'CountryOptionsGnStandard, ?type': Create'CountryOptionsGnType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsGn =
         let create
             (
                 standard: Create'CountryOptionsGnStandard option,
-                ``type``: Create'CountryOptionsGnType option
+                type': Create'CountryOptionsGnType option
             ) : Create'CountryOptionsGn
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsGrStandardPlaceOfSupplyScheme =
@@ -2126,6 +2675,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsGrStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsGrStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsGrStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsGrStandard =
         let create
@@ -2153,16 +2708,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsGrType option
         }
 
+    type Create'CountryOptionsGr with
+        static member New(?standard: Create'CountryOptionsGrStandard, ?type': Create'CountryOptionsGrType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsGr =
         let create
             (
                 standard: Create'CountryOptionsGrStandard option,
-                ``type``: Create'CountryOptionsGrType option
+                type': Create'CountryOptionsGrType option
             ) : Create'CountryOptionsGr
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsHrStandardPlaceOfSupplyScheme =
@@ -2176,6 +2738,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsHrStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsHrStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsHrStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsHrStandard =
         let create
@@ -2203,16 +2771,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsHrType option
         }
 
+    type Create'CountryOptionsHr with
+        static member New(?standard: Create'CountryOptionsHrStandard, ?type': Create'CountryOptionsHrType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsHr =
         let create
             (
                 standard: Create'CountryOptionsHrStandard option,
-                ``type``: Create'CountryOptionsHrType option
+                type': Create'CountryOptionsHrType option
             ) : Create'CountryOptionsHr
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsHuStandardPlaceOfSupplyScheme =
@@ -2226,6 +2801,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsHuStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsHuStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsHuStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsHuStandard =
         let create
@@ -2253,16 +2834,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsHuType option
         }
 
+    type Create'CountryOptionsHu with
+        static member New(?standard: Create'CountryOptionsHuStandard, ?type': Create'CountryOptionsHuType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsHu =
         let create
             (
                 standard: Create'CountryOptionsHuStandard option,
-                ``type``: Create'CountryOptionsHuType option
+                type': Create'CountryOptionsHuType option
             ) : Create'CountryOptionsHu
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsIdType = | Simplified
@@ -2274,14 +2862,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsIdType option
         }
 
+    type Create'CountryOptionsId with
+        static member New(?type': Create'CountryOptionsIdType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsId =
         let create
             (
-                ``type``: Create'CountryOptionsIdType option
+                type': Create'CountryOptionsIdType option
             ) : Create'CountryOptionsId
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsIeStandardPlaceOfSupplyScheme =
@@ -2295,6 +2889,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsIeStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsIeStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsIeStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsIeStandard =
         let create
@@ -2322,16 +2922,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsIeType option
         }
 
+    type Create'CountryOptionsIe with
+        static member New(?standard: Create'CountryOptionsIeStandard, ?type': Create'CountryOptionsIeType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsIe =
         let create
             (
                 standard: Create'CountryOptionsIeStandard option,
-                ``type``: Create'CountryOptionsIeType option
+                type': Create'CountryOptionsIeType option
             ) : Create'CountryOptionsIe
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsInType = | Simplified
@@ -2343,14 +2950,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsInType option
         }
 
+    type Create'CountryOptionsIn with
+        static member New(?type': Create'CountryOptionsInType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsIn =
         let create
             (
-                ``type``: Create'CountryOptionsInType option
+                type': Create'CountryOptionsInType option
             ) : Create'CountryOptionsIn
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsIsStandardPlaceOfSupplyScheme =
@@ -2363,6 +2976,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsIsStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsIsStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsIsStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsIsStandard =
         let create
@@ -2386,16 +3005,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsIsType option
         }
 
+    type Create'CountryOptionsIs with
+        static member New(?standard: Create'CountryOptionsIsStandard, ?type': Create'CountryOptionsIsType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsIs =
         let create
             (
                 standard: Create'CountryOptionsIsStandard option,
-                ``type``: Create'CountryOptionsIsType option
+                type': Create'CountryOptionsIsType option
             ) : Create'CountryOptionsIs
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsItStandardPlaceOfSupplyScheme =
@@ -2409,6 +3035,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsItStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsItStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsItStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsItStandard =
         let create
@@ -2436,16 +3068,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsItType option
         }
 
+    type Create'CountryOptionsIt with
+        static member New(?standard: Create'CountryOptionsItStandard, ?type': Create'CountryOptionsItType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsIt =
         let create
             (
                 standard: Create'CountryOptionsItStandard option,
-                ``type``: Create'CountryOptionsItType option
+                type': Create'CountryOptionsItType option
             ) : Create'CountryOptionsIt
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsJpStandardPlaceOfSupplyScheme =
@@ -2458,6 +3097,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsJpStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsJpStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsJpStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsJpStandard =
         let create
@@ -2481,16 +3126,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsJpType option
         }
 
+    type Create'CountryOptionsJp with
+        static member New(?standard: Create'CountryOptionsJpStandard, ?type': Create'CountryOptionsJpType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsJp =
         let create
             (
                 standard: Create'CountryOptionsJpStandard option,
-                ``type``: Create'CountryOptionsJpType option
+                type': Create'CountryOptionsJpType option
             ) : Create'CountryOptionsJp
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsKeType = | Simplified
@@ -2502,14 +3154,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsKeType option
         }
 
+    type Create'CountryOptionsKe with
+        static member New(?type': Create'CountryOptionsKeType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsKe =
         let create
             (
-                ``type``: Create'CountryOptionsKeType option
+                type': Create'CountryOptionsKeType option
             ) : Create'CountryOptionsKe
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsKgType = | Simplified
@@ -2521,14 +3179,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsKgType option
         }
 
+    type Create'CountryOptionsKg with
+        static member New(?type': Create'CountryOptionsKgType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsKg =
         let create
             (
-                ``type``: Create'CountryOptionsKgType option
+                type': Create'CountryOptionsKgType option
             ) : Create'CountryOptionsKg
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsKhType = | Simplified
@@ -2540,14 +3204,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsKhType option
         }
 
+    type Create'CountryOptionsKh with
+        static member New(?type': Create'CountryOptionsKhType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsKh =
         let create
             (
-                ``type``: Create'CountryOptionsKhType option
+                type': Create'CountryOptionsKhType option
             ) : Create'CountryOptionsKh
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsKrType = | Simplified
@@ -2559,14 +3229,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsKrType option
         }
 
+    type Create'CountryOptionsKr with
+        static member New(?type': Create'CountryOptionsKrType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsKr =
         let create
             (
-                ``type``: Create'CountryOptionsKrType option
+                type': Create'CountryOptionsKrType option
             ) : Create'CountryOptionsKr
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsKzType = | Simplified
@@ -2578,14 +3254,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsKzType option
         }
 
+    type Create'CountryOptionsKz with
+        static member New(?type': Create'CountryOptionsKzType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsKz =
         let create
             (
-                ``type``: Create'CountryOptionsKzType option
+                type': Create'CountryOptionsKzType option
             ) : Create'CountryOptionsKz
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsLaType = | Simplified
@@ -2597,14 +3279,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsLaType option
         }
 
+    type Create'CountryOptionsLa with
+        static member New(?type': Create'CountryOptionsLaType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsLa =
         let create
             (
-                ``type``: Create'CountryOptionsLaType option
+                type': Create'CountryOptionsLaType option
             ) : Create'CountryOptionsLa
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsLkType = | Simplified
@@ -2616,14 +3304,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsLkType option
         }
 
+    type Create'CountryOptionsLk with
+        static member New(?type': Create'CountryOptionsLkType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsLk =
         let create
             (
-                ``type``: Create'CountryOptionsLkType option
+                type': Create'CountryOptionsLkType option
             ) : Create'CountryOptionsLk
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsLtStandardPlaceOfSupplyScheme =
@@ -2637,6 +3331,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsLtStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsLtStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsLtStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsLtStandard =
         let create
@@ -2664,16 +3364,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsLtType option
         }
 
+    type Create'CountryOptionsLt with
+        static member New(?standard: Create'CountryOptionsLtStandard, ?type': Create'CountryOptionsLtType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsLt =
         let create
             (
                 standard: Create'CountryOptionsLtStandard option,
-                ``type``: Create'CountryOptionsLtType option
+                type': Create'CountryOptionsLtType option
             ) : Create'CountryOptionsLt
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsLuStandardPlaceOfSupplyScheme =
@@ -2687,6 +3394,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsLuStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsLuStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsLuStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsLuStandard =
         let create
@@ -2714,16 +3427,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsLuType option
         }
 
+    type Create'CountryOptionsLu with
+        static member New(?standard: Create'CountryOptionsLuStandard, ?type': Create'CountryOptionsLuType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsLu =
         let create
             (
                 standard: Create'CountryOptionsLuStandard option,
-                ``type``: Create'CountryOptionsLuType option
+                type': Create'CountryOptionsLuType option
             ) : Create'CountryOptionsLu
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsLvStandardPlaceOfSupplyScheme =
@@ -2737,6 +3457,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsLvStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsLvStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsLvStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsLvStandard =
         let create
@@ -2764,16 +3490,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsLvType option
         }
 
+    type Create'CountryOptionsLv with
+        static member New(?standard: Create'CountryOptionsLvStandard, ?type': Create'CountryOptionsLvType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsLv =
         let create
             (
                 standard: Create'CountryOptionsLvStandard option,
-                ``type``: Create'CountryOptionsLvType option
+                type': Create'CountryOptionsLvType option
             ) : Create'CountryOptionsLv
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsMaType = | Simplified
@@ -2785,14 +3518,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsMaType option
         }
 
+    type Create'CountryOptionsMa with
+        static member New(?type': Create'CountryOptionsMaType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsMa =
         let create
             (
-                ``type``: Create'CountryOptionsMaType option
+                type': Create'CountryOptionsMaType option
             ) : Create'CountryOptionsMa
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsMdType = | Simplified
@@ -2804,14 +3543,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsMdType option
         }
 
+    type Create'CountryOptionsMd with
+        static member New(?type': Create'CountryOptionsMdType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsMd =
         let create
             (
-                ``type``: Create'CountryOptionsMdType option
+                type': Create'CountryOptionsMdType option
             ) : Create'CountryOptionsMd
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsMeStandardPlaceOfSupplyScheme =
@@ -2824,6 +3569,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsMeStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsMeStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsMeStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsMeStandard =
         let create
@@ -2847,16 +3598,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsMeType option
         }
 
+    type Create'CountryOptionsMe with
+        static member New(?standard: Create'CountryOptionsMeStandard, ?type': Create'CountryOptionsMeType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsMe =
         let create
             (
                 standard: Create'CountryOptionsMeStandard option,
-                ``type``: Create'CountryOptionsMeType option
+                type': Create'CountryOptionsMeType option
             ) : Create'CountryOptionsMe
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsMkStandardPlaceOfSupplyScheme =
@@ -2869,6 +3627,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsMkStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsMkStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsMkStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsMkStandard =
         let create
@@ -2892,16 +3656,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsMkType option
         }
 
+    type Create'CountryOptionsMk with
+        static member New(?standard: Create'CountryOptionsMkStandard, ?type': Create'CountryOptionsMkType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsMk =
         let create
             (
                 standard: Create'CountryOptionsMkStandard option,
-                ``type``: Create'CountryOptionsMkType option
+                type': Create'CountryOptionsMkType option
             ) : Create'CountryOptionsMk
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsMrStandardPlaceOfSupplyScheme =
@@ -2914,6 +3685,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsMrStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsMrStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsMrStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsMrStandard =
         let create
@@ -2937,16 +3714,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsMrType option
         }
 
+    type Create'CountryOptionsMr with
+        static member New(?standard: Create'CountryOptionsMrStandard, ?type': Create'CountryOptionsMrType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsMr =
         let create
             (
                 standard: Create'CountryOptionsMrStandard option,
-                ``type``: Create'CountryOptionsMrType option
+                type': Create'CountryOptionsMrType option
             ) : Create'CountryOptionsMr
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsMtStandardPlaceOfSupplyScheme =
@@ -2960,6 +3744,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsMtStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsMtStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsMtStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsMtStandard =
         let create
@@ -2987,16 +3777,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsMtType option
         }
 
+    type Create'CountryOptionsMt with
+        static member New(?standard: Create'CountryOptionsMtStandard, ?type': Create'CountryOptionsMtType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsMt =
         let create
             (
                 standard: Create'CountryOptionsMtStandard option,
-                ``type``: Create'CountryOptionsMtType option
+                type': Create'CountryOptionsMtType option
             ) : Create'CountryOptionsMt
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsMxType = | Simplified
@@ -3008,14 +3805,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsMxType option
         }
 
+    type Create'CountryOptionsMx with
+        static member New(?type': Create'CountryOptionsMxType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsMx =
         let create
             (
-                ``type``: Create'CountryOptionsMxType option
+                type': Create'CountryOptionsMxType option
             ) : Create'CountryOptionsMx
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsMyType = | Simplified
@@ -3027,14 +3830,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsMyType option
         }
 
+    type Create'CountryOptionsMy with
+        static member New(?type': Create'CountryOptionsMyType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsMy =
         let create
             (
-                ``type``: Create'CountryOptionsMyType option
+                type': Create'CountryOptionsMyType option
             ) : Create'CountryOptionsMy
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsNgType = | Simplified
@@ -3046,14 +3855,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsNgType option
         }
 
+    type Create'CountryOptionsNg with
+        static member New(?type': Create'CountryOptionsNgType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsNg =
         let create
             (
-                ``type``: Create'CountryOptionsNgType option
+                type': Create'CountryOptionsNgType option
             ) : Create'CountryOptionsNg
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsNlStandardPlaceOfSupplyScheme =
@@ -3067,6 +3882,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsNlStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsNlStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsNlStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsNlStandard =
         let create
@@ -3094,16 +3915,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsNlType option
         }
 
+    type Create'CountryOptionsNl with
+        static member New(?standard: Create'CountryOptionsNlStandard, ?type': Create'CountryOptionsNlType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsNl =
         let create
             (
                 standard: Create'CountryOptionsNlStandard option,
-                ``type``: Create'CountryOptionsNlType option
+                type': Create'CountryOptionsNlType option
             ) : Create'CountryOptionsNl
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsNoStandardPlaceOfSupplyScheme =
@@ -3116,6 +3944,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsNoStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsNoStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsNoStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsNoStandard =
         let create
@@ -3139,16 +3973,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsNoType option
         }
 
+    type Create'CountryOptionsNo with
+        static member New(?standard: Create'CountryOptionsNoStandard, ?type': Create'CountryOptionsNoType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsNo =
         let create
             (
                 standard: Create'CountryOptionsNoStandard option,
-                ``type``: Create'CountryOptionsNoType option
+                type': Create'CountryOptionsNoType option
             ) : Create'CountryOptionsNo
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsNpType = | Simplified
@@ -3160,14 +4001,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsNpType option
         }
 
+    type Create'CountryOptionsNp with
+        static member New(?type': Create'CountryOptionsNpType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsNp =
         let create
             (
-                ``type``: Create'CountryOptionsNpType option
+                type': Create'CountryOptionsNpType option
             ) : Create'CountryOptionsNp
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsNzStandardPlaceOfSupplyScheme =
@@ -3180,6 +4027,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsNzStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsNzStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsNzStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsNzStandard =
         let create
@@ -3203,16 +4056,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsNzType option
         }
 
+    type Create'CountryOptionsNz with
+        static member New(?standard: Create'CountryOptionsNzStandard, ?type': Create'CountryOptionsNzType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsNz =
         let create
             (
                 standard: Create'CountryOptionsNzStandard option,
-                ``type``: Create'CountryOptionsNzType option
+                type': Create'CountryOptionsNzType option
             ) : Create'CountryOptionsNz
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsOmStandardPlaceOfSupplyScheme =
@@ -3225,6 +4085,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsOmStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsOmStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsOmStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsOmStandard =
         let create
@@ -3248,16 +4114,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsOmType option
         }
 
+    type Create'CountryOptionsOm with
+        static member New(?standard: Create'CountryOptionsOmStandard, ?type': Create'CountryOptionsOmType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsOm =
         let create
             (
                 standard: Create'CountryOptionsOmStandard option,
-                ``type``: Create'CountryOptionsOmType option
+                type': Create'CountryOptionsOmType option
             ) : Create'CountryOptionsOm
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsPeType = | Simplified
@@ -3269,14 +4142,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsPeType option
         }
 
+    type Create'CountryOptionsPe with
+        static member New(?type': Create'CountryOptionsPeType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsPe =
         let create
             (
-                ``type``: Create'CountryOptionsPeType option
+                type': Create'CountryOptionsPeType option
             ) : Create'CountryOptionsPe
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsPhType = | Simplified
@@ -3288,14 +4167,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsPhType option
         }
 
+    type Create'CountryOptionsPh with
+        static member New(?type': Create'CountryOptionsPhType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsPh =
         let create
             (
-                ``type``: Create'CountryOptionsPhType option
+                type': Create'CountryOptionsPhType option
             ) : Create'CountryOptionsPh
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsPlStandardPlaceOfSupplyScheme =
@@ -3309,6 +4194,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsPlStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsPlStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsPlStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsPlStandard =
         let create
@@ -3336,16 +4227,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsPlType option
         }
 
+    type Create'CountryOptionsPl with
+        static member New(?standard: Create'CountryOptionsPlStandard, ?type': Create'CountryOptionsPlType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsPl =
         let create
             (
                 standard: Create'CountryOptionsPlStandard option,
-                ``type``: Create'CountryOptionsPlType option
+                type': Create'CountryOptionsPlType option
             ) : Create'CountryOptionsPl
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsPtStandardPlaceOfSupplyScheme =
@@ -3359,6 +4257,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsPtStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsPtStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsPtStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsPtStandard =
         let create
@@ -3386,16 +4290,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsPtType option
         }
 
+    type Create'CountryOptionsPt with
+        static member New(?standard: Create'CountryOptionsPtStandard, ?type': Create'CountryOptionsPtType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsPt =
         let create
             (
                 standard: Create'CountryOptionsPtStandard option,
-                ``type``: Create'CountryOptionsPtType option
+                type': Create'CountryOptionsPtType option
             ) : Create'CountryOptionsPt
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsRoStandardPlaceOfSupplyScheme =
@@ -3409,6 +4320,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsRoStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsRoStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsRoStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsRoStandard =
         let create
@@ -3436,16 +4353,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsRoType option
         }
 
+    type Create'CountryOptionsRo with
+        static member New(?standard: Create'CountryOptionsRoStandard, ?type': Create'CountryOptionsRoType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsRo =
         let create
             (
                 standard: Create'CountryOptionsRoStandard option,
-                ``type``: Create'CountryOptionsRoType option
+                type': Create'CountryOptionsRoType option
             ) : Create'CountryOptionsRo
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsRsStandardPlaceOfSupplyScheme =
@@ -3458,6 +4382,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsRsStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsRsStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsRsStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsRsStandard =
         let create
@@ -3481,16 +4411,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsRsType option
         }
 
+    type Create'CountryOptionsRs with
+        static member New(?standard: Create'CountryOptionsRsStandard, ?type': Create'CountryOptionsRsType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsRs =
         let create
             (
                 standard: Create'CountryOptionsRsStandard option,
-                ``type``: Create'CountryOptionsRsType option
+                type': Create'CountryOptionsRsType option
             ) : Create'CountryOptionsRs
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsRuType = | Simplified
@@ -3502,14 +4439,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsRuType option
         }
 
+    type Create'CountryOptionsRu with
+        static member New(?type': Create'CountryOptionsRuType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsRu =
         let create
             (
-                ``type``: Create'CountryOptionsRuType option
+                type': Create'CountryOptionsRuType option
             ) : Create'CountryOptionsRu
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsSaType = | Simplified
@@ -3521,14 +4464,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsSaType option
         }
 
+    type Create'CountryOptionsSa with
+        static member New(?type': Create'CountryOptionsSaType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsSa =
         let create
             (
-                ``type``: Create'CountryOptionsSaType option
+                type': Create'CountryOptionsSaType option
             ) : Create'CountryOptionsSa
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsSeStandardPlaceOfSupplyScheme =
@@ -3542,6 +4491,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsSeStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsSeStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsSeStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsSeStandard =
         let create
@@ -3569,16 +4524,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsSeType option
         }
 
+    type Create'CountryOptionsSe with
+        static member New(?standard: Create'CountryOptionsSeStandard, ?type': Create'CountryOptionsSeType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsSe =
         let create
             (
                 standard: Create'CountryOptionsSeStandard option,
-                ``type``: Create'CountryOptionsSeType option
+                type': Create'CountryOptionsSeType option
             ) : Create'CountryOptionsSe
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsSgStandardPlaceOfSupplyScheme =
@@ -3591,6 +4553,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsSgStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsSgStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsSgStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsSgStandard =
         let create
@@ -3614,16 +4582,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsSgType option
         }
 
+    type Create'CountryOptionsSg with
+        static member New(?standard: Create'CountryOptionsSgStandard, ?type': Create'CountryOptionsSgType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsSg =
         let create
             (
                 standard: Create'CountryOptionsSgStandard option,
-                ``type``: Create'CountryOptionsSgType option
+                type': Create'CountryOptionsSgType option
             ) : Create'CountryOptionsSg
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsSiStandardPlaceOfSupplyScheme =
@@ -3637,6 +4612,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsSiStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsSiStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsSiStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsSiStandard =
         let create
@@ -3664,16 +4645,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsSiType option
         }
 
+    type Create'CountryOptionsSi with
+        static member New(?standard: Create'CountryOptionsSiStandard, ?type': Create'CountryOptionsSiType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsSi =
         let create
             (
                 standard: Create'CountryOptionsSiStandard option,
-                ``type``: Create'CountryOptionsSiType option
+                type': Create'CountryOptionsSiType option
             ) : Create'CountryOptionsSi
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsSkStandardPlaceOfSupplyScheme =
@@ -3687,6 +4675,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsSkStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsSkStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsSkStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsSkStandard =
         let create
@@ -3714,16 +4708,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsSkType option
         }
 
+    type Create'CountryOptionsSk with
+        static member New(?standard: Create'CountryOptionsSkStandard, ?type': Create'CountryOptionsSkType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsSk =
         let create
             (
                 standard: Create'CountryOptionsSkStandard option,
-                ``type``: Create'CountryOptionsSkType option
+                type': Create'CountryOptionsSkType option
             ) : Create'CountryOptionsSk
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsSnType = | Simplified
@@ -3735,14 +4736,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsSnType option
         }
 
+    type Create'CountryOptionsSn with
+        static member New(?type': Create'CountryOptionsSnType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsSn =
         let create
             (
-                ``type``: Create'CountryOptionsSnType option
+                type': Create'CountryOptionsSnType option
             ) : Create'CountryOptionsSn
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsSrStandardPlaceOfSupplyScheme =
@@ -3755,6 +4762,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsSrStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsSrStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsSrStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsSrStandard =
         let create
@@ -3778,16 +4791,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsSrType option
         }
 
+    type Create'CountryOptionsSr with
+        static member New(?standard: Create'CountryOptionsSrStandard, ?type': Create'CountryOptionsSrType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsSr =
         let create
             (
                 standard: Create'CountryOptionsSrStandard option,
-                ``type``: Create'CountryOptionsSrType option
+                type': Create'CountryOptionsSrType option
             ) : Create'CountryOptionsSr
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsThType = | Simplified
@@ -3799,14 +4819,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsThType option
         }
 
+    type Create'CountryOptionsTh with
+        static member New(?type': Create'CountryOptionsThType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsTh =
         let create
             (
-                ``type``: Create'CountryOptionsThType option
+                type': Create'CountryOptionsThType option
             ) : Create'CountryOptionsTh
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsTjType = | Simplified
@@ -3818,14 +4844,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsTjType option
         }
 
+    type Create'CountryOptionsTj with
+        static member New(?type': Create'CountryOptionsTjType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsTj =
         let create
             (
-                ``type``: Create'CountryOptionsTjType option
+                type': Create'CountryOptionsTjType option
             ) : Create'CountryOptionsTj
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsTrType = | Simplified
@@ -3837,14 +4869,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsTrType option
         }
 
+    type Create'CountryOptionsTr with
+        static member New(?type': Create'CountryOptionsTrType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsTr =
         let create
             (
-                ``type``: Create'CountryOptionsTrType option
+                type': Create'CountryOptionsTrType option
             ) : Create'CountryOptionsTr
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsTwType = | Simplified
@@ -3856,14 +4894,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsTwType option
         }
 
+    type Create'CountryOptionsTw with
+        static member New(?type': Create'CountryOptionsTwType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsTw =
         let create
             (
-                ``type``: Create'CountryOptionsTwType option
+                type': Create'CountryOptionsTwType option
             ) : Create'CountryOptionsTw
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsTzType = | Simplified
@@ -3875,14 +4919,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsTzType option
         }
 
+    type Create'CountryOptionsTz with
+        static member New(?type': Create'CountryOptionsTzType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsTz =
         let create
             (
-                ``type``: Create'CountryOptionsTzType option
+                type': Create'CountryOptionsTzType option
             ) : Create'CountryOptionsTz
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsUaType = | Simplified
@@ -3894,14 +4944,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsUaType option
         }
 
+    type Create'CountryOptionsUa with
+        static member New(?type': Create'CountryOptionsUaType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsUa =
         let create
             (
-                ``type``: Create'CountryOptionsUaType option
+                type': Create'CountryOptionsUaType option
             ) : Create'CountryOptionsUa
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsUgType = | Simplified
@@ -3913,14 +4969,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsUgType option
         }
 
+    type Create'CountryOptionsUg with
+        static member New(?type': Create'CountryOptionsUgType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsUg =
         let create
             (
-                ``type``: Create'CountryOptionsUgType option
+                type': Create'CountryOptionsUgType option
             ) : Create'CountryOptionsUg
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsUsLocalAmusementTax =
@@ -3929,6 +4991,12 @@ module TaxRegistrations =
             [<Config.Form>]
             Jurisdiction: string option
         }
+
+    type Create'CountryOptionsUsLocalAmusementTax with
+        static member New(?jurisdiction: string) =
+            {
+                Jurisdiction = jurisdiction
+            }
 
     module Create'CountryOptionsUsLocalAmusementTax =
         let create
@@ -3946,6 +5014,12 @@ module TaxRegistrations =
             [<Config.Form>]
             Jurisdiction: string option
         }
+
+    type Create'CountryOptionsUsLocalLeaseTax with
+        static member New(?jurisdiction: string) =
+            {
+                Jurisdiction = jurisdiction
+            }
 
     module Create'CountryOptionsUsLocalLeaseTax =
         let create
@@ -3972,16 +5046,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsUsStateSalesTaxElectionsType option
         }
 
+    type Create'CountryOptionsUsStateSalesTaxElections with
+        static member New(?jurisdiction: string, ?type': Create'CountryOptionsUsStateSalesTaxElectionsType) =
+            {
+                Jurisdiction = jurisdiction
+                Type = type'
+            }
+
     module Create'CountryOptionsUsStateSalesTaxElections =
         let create
             (
                 jurisdiction: string option,
-                ``type``: Create'CountryOptionsUsStateSalesTaxElectionsType option
+                type': Create'CountryOptionsUsStateSalesTaxElectionsType option
             ) : Create'CountryOptionsUsStateSalesTaxElections
             =
             {
               Jurisdiction = jurisdiction
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsUsStateSalesTax =
@@ -3990,6 +5071,12 @@ module TaxRegistrations =
             [<Config.Form>]
             Elections: Create'CountryOptionsUsStateSalesTaxElections list option
         }
+
+    type Create'CountryOptionsUsStateSalesTax with
+        static member New(?elections: Create'CountryOptionsUsStateSalesTaxElections list) =
+            {
+                Elections = elections
+            }
 
     module Create'CountryOptionsUsStateSalesTax =
         let create
@@ -4027,6 +5114,16 @@ module TaxRegistrations =
             Type: Create'CountryOptionsUsType option
         }
 
+    type Create'CountryOptionsUs with
+        static member New(?localAmusementTax: Create'CountryOptionsUsLocalAmusementTax, ?localLeaseTax: Create'CountryOptionsUsLocalLeaseTax, ?state: string, ?stateSalesTax: Create'CountryOptionsUsStateSalesTax, ?type': Create'CountryOptionsUsType) =
+            {
+                LocalAmusementTax = localAmusementTax
+                LocalLeaseTax = localLeaseTax
+                State = state
+                StateSalesTax = stateSalesTax
+                Type = type'
+            }
+
     module Create'CountryOptionsUs =
         let create
             (
@@ -4034,7 +5131,7 @@ module TaxRegistrations =
                 localLeaseTax: Create'CountryOptionsUsLocalLeaseTax option,
                 state: string option,
                 stateSalesTax: Create'CountryOptionsUsStateSalesTax option,
-                ``type``: Create'CountryOptionsUsType option
+                type': Create'CountryOptionsUsType option
             ) : Create'CountryOptionsUs
             =
             {
@@ -4042,7 +5139,7 @@ module TaxRegistrations =
               LocalLeaseTax = localLeaseTax
               State = state
               StateSalesTax = stateSalesTax
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsUyStandardPlaceOfSupplyScheme =
@@ -4055,6 +5152,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsUyStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsUyStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsUyStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsUyStandard =
         let create
@@ -4078,16 +5181,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsUyType option
         }
 
+    type Create'CountryOptionsUy with
+        static member New(?standard: Create'CountryOptionsUyStandard, ?type': Create'CountryOptionsUyType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsUy =
         let create
             (
                 standard: Create'CountryOptionsUyStandard option,
-                ``type``: Create'CountryOptionsUyType option
+                type': Create'CountryOptionsUyType option
             ) : Create'CountryOptionsUy
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsUzType = | Simplified
@@ -4099,14 +5209,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsUzType option
         }
 
+    type Create'CountryOptionsUz with
+        static member New(?type': Create'CountryOptionsUzType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsUz =
         let create
             (
-                ``type``: Create'CountryOptionsUzType option
+                type': Create'CountryOptionsUzType option
             ) : Create'CountryOptionsUz
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsVnType = | Simplified
@@ -4118,14 +5234,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsVnType option
         }
 
+    type Create'CountryOptionsVn with
+        static member New(?type': Create'CountryOptionsVnType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsVn =
         let create
             (
-                ``type``: Create'CountryOptionsVnType option
+                type': Create'CountryOptionsVnType option
             ) : Create'CountryOptionsVn
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsZaStandardPlaceOfSupplyScheme =
@@ -4138,6 +5260,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsZaStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsZaStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsZaStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsZaStandard =
         let create
@@ -4161,16 +5289,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsZaType option
         }
 
+    type Create'CountryOptionsZa with
+        static member New(?standard: Create'CountryOptionsZaStandard, ?type': Create'CountryOptionsZaType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsZa =
         let create
             (
                 standard: Create'CountryOptionsZaStandard option,
-                ``type``: Create'CountryOptionsZaType option
+                type': Create'CountryOptionsZaType option
             ) : Create'CountryOptionsZa
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsZmType = | Simplified
@@ -4182,14 +5317,20 @@ module TaxRegistrations =
             Type: Create'CountryOptionsZmType option
         }
 
+    type Create'CountryOptionsZm with
+        static member New(?type': Create'CountryOptionsZmType) =
+            {
+                Type = type'
+            }
+
     module Create'CountryOptionsZm =
         let create
             (
-                ``type``: Create'CountryOptionsZmType option
+                type': Create'CountryOptionsZmType option
             ) : Create'CountryOptionsZm
             =
             {
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptionsZwStandardPlaceOfSupplyScheme =
@@ -4202,6 +5343,12 @@ module TaxRegistrations =
             [<Config.Form>]
             PlaceOfSupplyScheme: Create'CountryOptionsZwStandardPlaceOfSupplyScheme option
         }
+
+    type Create'CountryOptionsZwStandard with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsZwStandardPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
 
     module Create'CountryOptionsZwStandard =
         let create
@@ -4225,16 +5372,23 @@ module TaxRegistrations =
             Type: Create'CountryOptionsZwType option
         }
 
+    type Create'CountryOptionsZw with
+        static member New(?standard: Create'CountryOptionsZwStandard, ?type': Create'CountryOptionsZwType) =
+            {
+                Standard = standard
+                Type = type'
+            }
+
     module Create'CountryOptionsZw =
         let create
             (
                 standard: Create'CountryOptionsZwStandard option,
-                ``type``: Create'CountryOptionsZwType option
+                type': Create'CountryOptionsZwType option
             ) : Create'CountryOptionsZw
             =
             {
               Standard = standard
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CountryOptions =
@@ -4544,6 +5698,112 @@ module TaxRegistrations =
             Zw: Create'CountryOptionsZw option
         }
 
+    type Create'CountryOptions with
+        static member New(?ae: Create'CountryOptionsAe, ?al: Create'CountryOptionsAl, ?am: Create'CountryOptionsAm, ?ao: Create'CountryOptionsAo, ?at: Create'CountryOptionsAt, ?au: Create'CountryOptionsAu, ?aw: Create'CountryOptionsAw, ?az: Create'CountryOptionsAz, ?ba: Create'CountryOptionsBa, ?bb: Create'CountryOptionsBb, ?bd: Create'CountryOptionsBd, ?be: Create'CountryOptionsBe, ?bf: Create'CountryOptionsBf, ?bg: Create'CountryOptionsBg, ?bh: Create'CountryOptionsBh, ?bj: Create'CountryOptionsBj, ?bs: Create'CountryOptionsBs, ?by: Create'CountryOptionsBy, ?ca: Create'CountryOptionsCa, ?cd: Create'CountryOptionsCd, ?ch: Create'CountryOptionsCh, ?cl: Create'CountryOptionsCl, ?cm: Create'CountryOptionsCm, ?co: Create'CountryOptionsCo, ?cr: Create'CountryOptionsCr, ?cv: Create'CountryOptionsCv, ?cy: Create'CountryOptionsCy, ?cz: Create'CountryOptionsCz, ?de: Create'CountryOptionsDe, ?dk: Create'CountryOptionsDk, ?ec: Create'CountryOptionsEc, ?ee: Create'CountryOptionsEe, ?eg: Create'CountryOptionsEg, ?es: Create'CountryOptionsEs, ?et: Create'CountryOptionsEt, ?fi: Create'CountryOptionsFi, ?fr: Create'CountryOptionsFr, ?gb: Create'CountryOptionsGb, ?ge: Create'CountryOptionsGe, ?gn: Create'CountryOptionsGn, ?gr: Create'CountryOptionsGr, ?hr: Create'CountryOptionsHr, ?hu: Create'CountryOptionsHu, ?id: Create'CountryOptionsId, ?ie: Create'CountryOptionsIe, ?in': Create'CountryOptionsIn, ?is: Create'CountryOptionsIs, ?it: Create'CountryOptionsIt, ?jp: Create'CountryOptionsJp, ?ke: Create'CountryOptionsKe, ?kg: Create'CountryOptionsKg, ?kh: Create'CountryOptionsKh, ?kr: Create'CountryOptionsKr, ?kz: Create'CountryOptionsKz, ?la: Create'CountryOptionsLa, ?lk: Create'CountryOptionsLk, ?lt: Create'CountryOptionsLt, ?lu: Create'CountryOptionsLu, ?lv: Create'CountryOptionsLv, ?ma: Create'CountryOptionsMa, ?md: Create'CountryOptionsMd, ?me: Create'CountryOptionsMe, ?mk: Create'CountryOptionsMk, ?mr: Create'CountryOptionsMr, ?mt: Create'CountryOptionsMt, ?mx: Create'CountryOptionsMx, ?my: Create'CountryOptionsMy, ?ng: Create'CountryOptionsNg, ?nl: Create'CountryOptionsNl, ?no: Create'CountryOptionsNo, ?np: Create'CountryOptionsNp, ?nz: Create'CountryOptionsNz, ?om: Create'CountryOptionsOm, ?pe: Create'CountryOptionsPe, ?ph: Create'CountryOptionsPh, ?pl: Create'CountryOptionsPl, ?pt: Create'CountryOptionsPt, ?ro: Create'CountryOptionsRo, ?rs: Create'CountryOptionsRs, ?ru: Create'CountryOptionsRu, ?sa: Create'CountryOptionsSa, ?se: Create'CountryOptionsSe, ?sg: Create'CountryOptionsSg, ?si: Create'CountryOptionsSi, ?sk: Create'CountryOptionsSk, ?sn: Create'CountryOptionsSn, ?sr: Create'CountryOptionsSr, ?th: Create'CountryOptionsTh, ?tj: Create'CountryOptionsTj, ?tr: Create'CountryOptionsTr, ?tw: Create'CountryOptionsTw, ?tz: Create'CountryOptionsTz, ?ua: Create'CountryOptionsUa, ?ug: Create'CountryOptionsUg, ?us: Create'CountryOptionsUs, ?uy: Create'CountryOptionsUy, ?uz: Create'CountryOptionsUz, ?vn: Create'CountryOptionsVn, ?za: Create'CountryOptionsZa, ?zm: Create'CountryOptionsZm, ?zw: Create'CountryOptionsZw) =
+            {
+                Ae = ae
+                Al = al
+                Am = am
+                Ao = ao
+                At = at
+                Au = au
+                Aw = aw
+                Az = az
+                Ba = ba
+                Bb = bb
+                Bd = bd
+                Be = be
+                Bf = bf
+                Bg = bg
+                Bh = bh
+                Bj = bj
+                Bs = bs
+                By = by
+                Ca = ca
+                Cd = cd
+                Ch = ch
+                Cl = cl
+                Cm = cm
+                Co = co
+                Cr = cr
+                Cv = cv
+                Cy = cy
+                Cz = cz
+                De = de
+                Dk = dk
+                Ec = ec
+                Ee = ee
+                Eg = eg
+                Es = es
+                Et = et
+                Fi = fi
+                Fr = fr
+                Gb = gb
+                Ge = ge
+                Gn = gn
+                Gr = gr
+                Hr = hr
+                Hu = hu
+                Id = id
+                Ie = ie
+                In = in'
+                Is = is
+                It = it
+                Jp = jp
+                Ke = ke
+                Kg = kg
+                Kh = kh
+                Kr = kr
+                Kz = kz
+                La = la
+                Lk = lk
+                Lt = lt
+                Lu = lu
+                Lv = lv
+                Ma = ma
+                Md = md
+                Me = me
+                Mk = mk
+                Mr = mr
+                Mt = mt
+                Mx = mx
+                My = my
+                Ng = ng
+                Nl = nl
+                No = no
+                Np = np
+                Nz = nz
+                Om = om
+                Pe = pe
+                Ph = ph
+                Pl = pl
+                Pt = pt
+                Ro = ro
+                Rs = rs
+                Ru = ru
+                Sa = sa
+                Se = se
+                Sg = sg
+                Si = si
+                Sk = sk
+                Sn = sn
+                Sr = sr
+                Th = th
+                Tj = tj
+                Tr = tr
+                Tw = tw
+                Tz = tz
+                Ua = ua
+                Ug = ug
+                Us = us
+                Uy = uy
+                Uz = uz
+                Vn = vn
+                Za = za
+                Zm = zm
+                Zw = zw
+            }
+
     module Create'CountryOptions =
         let create
             (
@@ -4592,7 +5852,7 @@ module TaxRegistrations =
                 hu: Create'CountryOptionsHu option,
                 id: Create'CountryOptionsId option,
                 ie: Create'CountryOptionsIe option,
-                ``in``: Create'CountryOptionsIn option,
+                in': Create'CountryOptionsIn option,
                 is: Create'CountryOptionsIs option,
                 it: Create'CountryOptionsIt option,
                 jp: Create'CountryOptionsJp option,
@@ -4696,7 +5956,7 @@ module TaxRegistrations =
               Hu = hu
               Id = id
               Ie = ie
-              In = ``in``
+              In = in'
               Is = is
               It = it
               Jp = jp
@@ -4773,6 +6033,16 @@ module TaxRegistrations =
             ExpiresAt: DateTime option
         }
 
+    type CreateOptions with
+        static member New(activeFrom: Choice<Create'ActiveFrom,DateTime>, country: IsoTypes.IsoCountryCode, countryOptions: Create'CountryOptions, ?expand: string list, ?expiresAt: DateTime) =
+            {
+                ActiveFrom = activeFrom
+                Country = country
+                CountryOptions = countryOptions
+                Expand = expand
+                ExpiresAt = expiresAt
+            }
+
     module CreateOptions =
         let create
             (
@@ -4797,6 +6067,13 @@ module TaxRegistrations =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -4827,6 +6104,15 @@ module TaxRegistrations =
             [<Config.Form>]
             ExpiresAt: Choice<Update'ExpiresAt,DateTime,string> option
         }
+
+    type UpdateOptions with
+        static member New(id: string, ?activeFrom: Choice<Update'ActiveFrom,DateTime>, ?expand: string list, ?expiresAt: Choice<Update'ExpiresAt,DateTime,string>) =
+            {
+                Id = id
+                ActiveFrom = activeFrom
+                Expand = expand
+                ExpiresAt = expiresAt
+            }
 
     module UpdateOptions =
         let create
@@ -4873,6 +6159,12 @@ module TaxSettings =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(?expand: string list) =
+            {
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -4897,6 +6189,13 @@ module TaxSettings =
             [<Config.Form>]
             TaxCode: string option
         }
+
+    type Update'Defaults with
+        static member New(?taxBehavior: Update'DefaultsTaxBehavior, ?taxCode: string) =
+            {
+                TaxBehavior = taxBehavior
+                TaxCode = taxCode
+            }
 
     module Update'Defaults =
         let create
@@ -4932,6 +6231,17 @@ module TaxSettings =
             State: string option
         }
 
+    type Update'HeadOfficeAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Update'HeadOfficeAddress =
         let create
             (
@@ -4959,6 +6269,12 @@ module TaxSettings =
             Address: Update'HeadOfficeAddress option
         }
 
+    type Update'HeadOffice with
+        static member New(?address: Update'HeadOfficeAddress) =
+            {
+                Address = address
+            }
+
     module Update'HeadOffice =
         let create
             (
@@ -4981,6 +6297,14 @@ module TaxSettings =
             [<Config.Form>]
             HeadOffice: Update'HeadOffice option
         }
+
+    type UpdateOptions with
+        static member New(?defaults: Update'Defaults, ?expand: string list, ?headOffice: Update'HeadOffice) =
+            {
+                Defaults = defaults
+                Expand = expand
+                HeadOffice = headOffice
+            }
 
     module UpdateOptions =
         let create
@@ -5028,6 +6352,16 @@ module TaxTransactionsCreateFromCalculation =
             Reference: string
         }
 
+    type CreateFromCalculationOptions with
+        static member New(calculation: string, reference: string, ?expand: string list, ?metadata: Map<string, string>, ?postedAt: DateTime) =
+            {
+                Calculation = calculation
+                Reference = reference
+                Expand = expand
+                Metadata = metadata
+                PostedAt = postedAt
+            }
+
     module CreateFromCalculationOptions =
         let create
             (
@@ -5072,6 +6406,17 @@ module TaxTransactionsCreateReversal =
             Reference: string option
         }
 
+    type CreateReversal'LineItems with
+        static member New(?amount: int, ?amountTax: int, ?metadata: Map<string, string>, ?originalLineItem: string, ?quantity: int, ?reference: string) =
+            {
+                Amount = amount
+                AmountTax = amountTax
+                Metadata = metadata
+                OriginalLineItem = originalLineItem
+                Quantity = quantity
+                Reference = reference
+            }
+
     module CreateReversal'LineItems =
         let create
             (
@@ -5105,6 +6450,13 @@ module TaxTransactionsCreateReversal =
             [<Config.Form>]
             AmountTax: int option
         }
+
+    type CreateReversal'ShippingCost with
+        static member New(?amount: int, ?amountTax: int) =
+            {
+                Amount = amount
+                AmountTax = amountTax
+            }
 
     module CreateReversal'ShippingCost =
         let create
@@ -5146,6 +6498,19 @@ module TaxTransactionsCreateReversal =
             ShippingCost: CreateReversal'ShippingCost option
         }
 
+    type CreateReversalOptions with
+        static member New(mode: CreateReversal'Mode, originalTransaction: string, reference: string, ?expand: string list, ?flatAmount: int, ?lineItems: CreateReversal'LineItems list, ?metadata: Map<string, string>, ?shippingCost: CreateReversal'ShippingCost) =
+            {
+                Mode = mode
+                OriginalTransaction = originalTransaction
+                Reference = reference
+                Expand = expand
+                FlatAmount = flatAmount
+                LineItems = lineItems
+                Metadata = metadata
+                ShippingCost = shippingCost
+            }
+
     module CreateReversalOptions =
         let create
             (
@@ -5180,6 +6545,13 @@ module TaxTransactions =
             [<Config.Path>]
             Transaction: string
         }
+
+    type RetrieveOptions with
+        static member New(transaction: string, ?expand: string list) =
+            {
+                Transaction = transaction
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -5217,6 +6589,16 @@ module TaxTransactionsLineItems =
             [<Config.Path>]
             Transaction: string
         }
+
+    type ListLineItemsOptions with
+        static member New(transaction: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Transaction = transaction
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
 
     module ListLineItemsOptions =
         let create
@@ -5256,6 +6638,15 @@ module TaxCodes =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -5280,6 +6671,13 @@ module TaxCodes =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -5325,6 +6723,16 @@ module TaxIds =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?owner: Map<string, string>, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                Owner = owner
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -5365,20 +6773,29 @@ module TaxIds =
             Type: Create'OwnerType option
         }
 
+    type Create'Owner with
+        static member New(?account: string, ?customer: string, ?customerAccount: string, ?type': Create'OwnerType) =
+            {
+                Account = account
+                Customer = customer
+                CustomerAccount = customerAccount
+                Type = type'
+            }
+
     module Create'Owner =
         let create
             (
                 account: string option,
                 customer: string option,
                 customerAccount: string option,
-                ``type``: Create'OwnerType option
+                type': Create'OwnerType option
             ) : Create'Owner
             =
             {
               Account = account
               Customer = customer
               CustomerAccount = customerAccount
-              Type = ``type``
+              Type = type'
             }
 
     type Create'Type =
@@ -5515,15 +6932,24 @@ module TaxIds =
             Value: string
         }
 
+    type CreateOptions with
+        static member New(type': Create'Type, value: string, ?expand: string list, ?owner: Create'Owner) =
+            {
+                Type = type'
+                Value = value
+                Expand = expand
+                Owner = owner
+            }
+
     module CreateOptions =
         let create
             (
-                ``type``: Create'Type,
+                type': Create'Type,
                 value: string
             ) : CreateOptions
             =
             {
-              Type = ``type``
+              Type = type'
               Value = value
               Expand = None
               Owner = None
@@ -5532,6 +6958,12 @@ module TaxIds =
     type DeleteOptions =
         { [<Config.Path>]
           Id: string }
+
+    type DeleteOptions with
+        static member New(id: string) =
+            {
+                Id = id
+            }
 
     module DeleteOptions =
         let create
@@ -5551,6 +6983,13 @@ module TaxIds =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -5611,6 +7050,18 @@ module TaxRates =
             [<Config.Query>]
             StartingAfter: string option
         }
+
+    type ListOptions with
+        static member New(?active: bool, ?created: int, ?endingBefore: string, ?expand: string list, ?inclusive: bool, ?limit: int, ?startingAfter: string) =
+            {
+                Active = active
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Inclusive = inclusive
+                Limit = limit
+                StartingAfter = startingAfter
+            }
 
     module ListOptions =
         let create
@@ -5687,6 +7138,22 @@ module TaxRates =
             TaxType: Create'TaxType option
         }
 
+    type CreateOptions with
+        static member New(displayName: string, inclusive: bool, percentage: decimal, ?active: bool, ?country: IsoTypes.IsoCountryCode, ?description: string, ?expand: string list, ?jurisdiction: string, ?metadata: Map<string, string>, ?state: string, ?taxType: Create'TaxType) =
+            {
+                DisplayName = displayName
+                Inclusive = inclusive
+                Percentage = percentage
+                Active = active
+                Country = country
+                Description = description
+                Expand = expand
+                Jurisdiction = jurisdiction
+                Metadata = metadata
+                State = state
+                TaxType = taxType
+            }
+
     module CreateOptions =
         let create
             (
@@ -5717,6 +7184,13 @@ module TaxRates =
             [<Config.Path>]
             TaxRate: string
         }
+
+    type RetrieveOptions with
+        static member New(taxRate: string, ?expand: string list) =
+            {
+                TaxRate = taxRate
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -5777,6 +7251,21 @@ module TaxRates =
             [<Config.Form>]
             TaxType: Update'TaxType option
         }
+
+    type UpdateOptions with
+        static member New(taxRate: string, ?active: bool, ?country: IsoTypes.IsoCountryCode, ?description: string, ?displayName: string, ?expand: string list, ?jurisdiction: string, ?metadata: Map<string, string>, ?state: string, ?taxType: Update'TaxType) =
+            {
+                TaxRate = taxRate
+                Active = active
+                Country = country
+                Description = description
+                DisplayName = displayName
+                Expand = expand
+                Jurisdiction = jurisdiction
+                Metadata = metadata
+                State = state
+                TaxType = taxType
+            }
 
     module UpdateOptions =
         let create

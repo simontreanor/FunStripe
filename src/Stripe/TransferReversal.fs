@@ -38,6 +38,20 @@ type TransferReversal =
         Transfer: StripeId<Markers.Transfer>
     }
 
+type TransferReversal with
+    static member New(amount: int, balanceTransaction: StripeId<Markers.BalanceTransaction> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, destinationPaymentRefund: StripeId<Markers.Refund> option, id: string, metadata: Map<string, string> option, sourceRefund: StripeId<Markers.Refund> option, transfer: StripeId<Markers.Transfer>) =
+        {
+            Amount = amount
+            BalanceTransaction = balanceTransaction
+            Created = created
+            Currency = currency
+            DestinationPaymentRefund = destinationPaymentRefund
+            Id = id
+            Metadata = metadata
+            SourceRefund = sourceRefund
+            Transfer = transfer
+        }
+
 module TransferReversal =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "transfer_reversal"
@@ -52,6 +66,14 @@ type TransferReversals =
         /// The URL where this list can be accessed.
         Url: string
     }
+
+type TransferReversals with
+    static member New(data: TransferReversal list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
 
 module TransferReversals =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.

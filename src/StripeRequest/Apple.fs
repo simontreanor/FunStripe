@@ -26,6 +26,16 @@ module ApplePayDomains =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?domainName: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                DomainName = domainName
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -53,6 +63,13 @@ module ApplePayDomains =
             Expand: string list option
         }
 
+    type CreateOptions with
+        static member New(domainName: string, ?expand: string list) =
+            {
+                DomainName = domainName
+                Expand = expand
+            }
+
     module CreateOptions =
         let create
             (
@@ -67,6 +84,12 @@ module ApplePayDomains =
     type DeleteOptions =
         { [<Config.Path>]
           Domain: string }
+
+    type DeleteOptions with
+        static member New(domain: string) =
+            {
+                Domain = domain
+            }
 
     module DeleteOptions =
         let create
@@ -86,6 +109,13 @@ module ApplePayDomains =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(domain: string, ?expand: string list) =
+            {
+                Domain = domain
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

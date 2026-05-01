@@ -13,6 +13,13 @@ type DeletedCoupon =
         Id: string
     }
 
+type DeletedCoupon with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
 module DeletedCoupon =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "coupon"
@@ -23,11 +30,23 @@ type CouponCurrencyOption =
         AmountOff: int
     }
 
+type CouponCurrencyOption with
+    static member New(amountOff: int) =
+        {
+            AmountOff = amountOff
+        }
+
 type CouponAppliesTo =
     {
         /// A list of product IDs this coupon applies to
         Products: string list
     }
+
+type CouponAppliesTo with
+    static member New(products: string list) =
+        {
+            Products = products
+        }
 
 [<Struct>]
 type CouponDuration =
@@ -73,6 +92,27 @@ type Coupon =
         Valid: bool
     }
 
+type Coupon with
+    static member New(amountOff: int option, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, duration: CouponDuration, durationInMonths: int option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, name: string option, percentOff: decimal option, redeemBy: DateTime option, timesRedeemed: int, valid: bool, ?appliesTo: CouponAppliesTo, ?currencyOptions: Map<string, string list>) =
+        {
+            AmountOff = amountOff
+            Created = created
+            Currency = currency
+            Duration = duration
+            DurationInMonths = durationInMonths
+            Id = id
+            Livemode = livemode
+            MaxRedemptions = maxRedemptions
+            Metadata = metadata
+            Name = name
+            PercentOff = percentOff
+            RedeemBy = redeemBy
+            TimesRedeemed = timesRedeemed
+            Valid = valid
+            AppliesTo = appliesTo
+            CurrencyOptions = currencyOptions
+        }
+
 module Coupon =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "coupon"
@@ -80,9 +120,27 @@ module Coupon =
 /// Occurs whenever a coupon is updated.
 type CouponUpdated = { Object: Coupon }
 
+type CouponUpdated with
+    static member New(object: Coupon) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a coupon is deleted.
 type CouponDeleted = { Object: Coupon }
 
+type CouponDeleted with
+    static member New(object: Coupon) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a coupon is created.
 type CouponCreated = { Object: Coupon }
+
+type CouponCreated with
+    static member New(object: Coupon) =
+        {
+            Object = object
+        }
 

@@ -17,6 +17,15 @@ type TaxDeductedAtSource =
         TaxDeductionAccountNumber: string
     }
 
+type TaxDeductedAtSource with
+    static member New(id: string, periodEnd: DateTime, periodStart: DateTime, taxDeductionAccountNumber: string) =
+        {
+            Id = id
+            PeriodEnd = periodEnd
+            PeriodStart = periodStart
+            TaxDeductionAccountNumber = taxDeductionAccountNumber
+        }
+
 module TaxDeductedAtSource =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax_deducted_at_source"

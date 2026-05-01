@@ -17,11 +17,26 @@ type PackageDimensions =
         Width: decimal
     }
 
+type PackageDimensions with
+    static member New(height: decimal, length: decimal, weight: decimal, width: decimal) =
+        {
+            Height = height
+            Length = length
+            Weight = weight
+            Width = width
+        }
+
 type ProductMarketingFeature =
     {
         /// The marketing feature name. Up to 80 characters long.
         Name: string option
     }
+
+type ProductMarketingFeature with
+    static member New(?name: string) =
+        {
+            Name = name
+        }
 
 [<Struct>]
 type ProductType =
@@ -75,6 +90,29 @@ type Product =
         Url: string option
     }
 
+type Product with
+    static member New(active: bool, created: DateTime, description: string option, id: string, images: string list, livemode: bool, marketingFeatures: ProductMarketingFeature list, metadata: Map<string, string>, name: string, packageDimensions: PackageDimensions option, shippable: bool option, ``type``: ProductType, updated: DateTime, url: string option, ?defaultPrice: StripeId<Markers.Price> option, ?statementDescriptor: string option, ?taxCode: StripeId<Markers.TaxCode> option, ?unitLabel: string option) =
+        {
+            Active = active
+            Created = created
+            Description = description
+            Id = id
+            Images = images
+            Livemode = livemode
+            MarketingFeatures = marketingFeatures
+            Metadata = metadata
+            Name = name
+            PackageDimensions = packageDimensions
+            Shippable = shippable
+            Type = ``type``
+            Updated = updated
+            Url = url
+            DefaultPrice = defaultPrice |> Option.flatten
+            StatementDescriptor = statementDescriptor |> Option.flatten
+            TaxCode = taxCode |> Option.flatten
+            UnitLabel = unitLabel |> Option.flatten
+        }
+
 module Product =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "product"
@@ -82,11 +120,29 @@ module Product =
 /// Occurs whenever a product is updated.
 type ProductUpdated = { Object: Product }
 
+type ProductUpdated with
+    static member New(object: Product) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a product is deleted.
 type ProductDeleted = { Object: Product }
 
+type ProductDeleted with
+    static member New(object: Product) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a product is created.
 type ProductCreated = { Object: Product }
+
+type ProductCreated with
+    static member New(object: Product) =
+        {
+            Object = object
+        }
 
 type DeletedProduct =
     {
@@ -95,6 +151,13 @@ type DeletedProduct =
         /// Unique identifier for the object.
         Id: string
     }
+
+type DeletedProduct with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedProduct =
     ///String representing the object's type. Objects of the same type share the same value.

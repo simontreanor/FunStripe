@@ -14,6 +14,13 @@ type TaxRateFlatAmount =
         Currency: IsoTypes.IsoCurrencyCode
     }
 
+type TaxRateFlatAmount with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode) =
+        {
+            Amount = amount
+            Currency = currency
+        }
+
 type TaxRateJurisdictionLevel =
     | City
     | Country
@@ -85,6 +92,28 @@ type TaxRate =
         TaxType: TaxRateTaxType option
     }
 
+type TaxRate with
+    static member New(active: bool, country: IsoTypes.IsoCountryCode option, created: DateTime, description: string option, displayName: string, effectivePercentage: decimal option, flatAmount: TaxRateFlatAmount option, id: string, inclusive: bool, jurisdiction: string option, jurisdictionLevel: TaxRateJurisdictionLevel option, livemode: bool, metadata: Map<string, string> option, percentage: decimal, rateType: TaxRateRateType option, state: string option, taxType: TaxRateTaxType option) =
+        {
+            Active = active
+            Country = country
+            Created = created
+            Description = description
+            DisplayName = displayName
+            EffectivePercentage = effectivePercentage
+            FlatAmount = flatAmount
+            Id = id
+            Inclusive = inclusive
+            Jurisdiction = jurisdiction
+            JurisdictionLevel = jurisdictionLevel
+            Livemode = livemode
+            Metadata = metadata
+            Percentage = percentage
+            RateType = rateType
+            State = state
+            TaxType = taxType
+        }
+
 module TaxRate =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax_rate"
@@ -92,6 +121,18 @@ module TaxRate =
 /// Occurs whenever a tax rate is updated.
 type TaxRateUpdated = { Object: TaxRate }
 
+type TaxRateUpdated with
+    static member New(object: TaxRate) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a new tax rate is created.
 type TaxRateCreated = { Object: TaxRate }
+
+type TaxRateCreated with
+    static member New(object: TaxRate) =
+        {
+            Object = object
+        }
 

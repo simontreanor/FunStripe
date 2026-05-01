@@ -55,6 +55,27 @@ type Transfer =
         TransferGroup: string option
     }
 
+type Transfer with
+    static member New(amount: int, amountReversed: int, balanceTransaction: StripeId<Markers.BalanceTransaction> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, destination: StripeId<Markers.Account> option, id: string, livemode: bool, metadata: Map<string, string>, reversals: TransferReversals, reversed: bool, sourceTransaction: StripeId<Markers.Charge> option, transferGroup: string option, ?destinationPayment: StripeId<Markers.Charge>, ?sourceType: TransferSourceType) =
+        {
+            Amount = amount
+            AmountReversed = amountReversed
+            BalanceTransaction = balanceTransaction
+            Created = created
+            Currency = currency
+            Description = description
+            Destination = destination
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Reversals = reversals
+            Reversed = reversed
+            SourceTransaction = sourceTransaction
+            TransferGroup = transferGroup
+            DestinationPayment = destinationPayment
+            SourceType = sourceType
+        }
+
 module Transfer =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "transfer"
@@ -62,11 +83,29 @@ module Transfer =
 /// Occurs whenever a transfer's description or metadata is updated.
 type TransferUpdated = { Object: Transfer }
 
+type TransferUpdated with
+    static member New(object: Transfer) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a transfer is reversed, including partial reversals.
 type TransferReversed = { Object: Transfer }
 
+type TransferReversed with
+    static member New(object: Transfer) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a transfer is created.
 type TransferCreated = { Object: Transfer }
+
+type TransferCreated with
+    static member New(object: Transfer) =
+        {
+            Object = object
+        }
 
 type TransferData =
     {
@@ -77,6 +116,13 @@ type TransferData =
         /// The account (if any) that the payment is attributed to for tax reporting, and where funds from the payment are transferred to after payment success.
         Destination: StripeId<Markers.Account>
     }
+
+type TransferData with
+    static member New(destination: StripeId<Markers.Account>, ?amount: int) =
+        {
+            Destination = destination
+            Amount = amount
+        }
 
 [<Struct>]
 type TransferScheduleInterval =
@@ -108,4 +154,15 @@ type TransferSchedule =
         /// The days of the week when available funds are paid out, specified as an array, for example, [`monday`, `tuesday`]. Only shown if `interval` is weekly.
         WeeklyPayoutDays: TransferScheduleWeeklyPayoutDays list option
     }
+
+type TransferSchedule with
+    static member New(delayDays: int, interval: TransferScheduleInterval, ?monthlyAnchor: int, ?monthlyPayoutDays: int list, ?weeklyAnchor: string, ?weeklyPayoutDays: TransferScheduleWeeklyPayoutDays list) =
+        {
+            DelayDays = delayDays
+            Interval = interval
+            MonthlyAnchor = monthlyAnchor
+            MonthlyPayoutDays = monthlyPayoutDays
+            WeeklyAnchor = weeklyAnchor
+            WeeklyPayoutDays = weeklyPayoutDays
+        }
 

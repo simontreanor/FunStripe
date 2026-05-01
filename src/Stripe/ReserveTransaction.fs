@@ -16,6 +16,15 @@ type ReserveTransaction =
         Id: string
     }
 
+type ReserveTransaction with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, description: string option, id: string) =
+        {
+            Amount = amount
+            Currency = currency
+            Description = description
+            Id = id
+        }
+
 module ReserveTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reserve_transaction"

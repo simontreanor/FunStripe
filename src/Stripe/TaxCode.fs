@@ -16,6 +16,14 @@ type TaxCode =
         Name: string
     }
 
+type TaxCode with
+    static member New(description: string, id: string, name: string) =
+        {
+            Description = description
+            Id = id
+            Name = name
+        }
+
 module TaxCode =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax_code"

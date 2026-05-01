@@ -19,6 +19,16 @@ type EphemeralKey =
         Secret: string option
     }
 
+type EphemeralKey with
+    static member New(created: DateTime, expires: DateTime, id: string, livemode: bool, ?secret: string) =
+        {
+            Created = created
+            Expires = expires
+            Id = id
+            Livemode = livemode
+            Secret = secret
+        }
+
 module EphemeralKey =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "ephemeral_key"

@@ -33,6 +33,18 @@ module Refunds =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?charge: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string) =
+            {
+                Charge = charge
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                PaymentIntent = paymentIntent
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -101,6 +113,23 @@ module Refunds =
             ReverseTransfer: bool option
         }
 
+    type CreateOptions with
+        static member New(?amount: int, ?charge: string, ?currency: IsoTypes.IsoCurrencyCode, ?customer: string, ?expand: string list, ?instructionsEmail: string, ?metadata: Map<string, string>, ?origin: Create'Origin, ?paymentIntent: string, ?reason: Create'Reason, ?refundApplicationFee: bool, ?reverseTransfer: bool) =
+            {
+                Amount = amount
+                Charge = charge
+                Currency = currency
+                Customer = customer
+                Expand = expand
+                InstructionsEmail = instructionsEmail
+                Metadata = metadata
+                Origin = origin
+                PaymentIntent = paymentIntent
+                Reason = reason
+                RefundApplicationFee = refundApplicationFee
+                ReverseTransfer = reverseTransfer
+            }
+
     module CreateOptions =
         let create
             (
@@ -142,6 +171,13 @@ module Refunds =
             Refund: string
         }
 
+    type RetrieveOptions with
+        static member New(refund: string, ?expand: string list) =
+            {
+                Refund = refund
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -164,6 +200,14 @@ module Refunds =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(refund: string, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                Refund = refund
+                Expand = expand
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create
@@ -217,6 +261,13 @@ module RefundsCancel =
             [<Config.Form>]
             Expand: string list option
         }
+
+    type CancelOptions with
+        static member New(refund: string, ?expand: string list) =
+            {
+                Refund = refund
+                Expand = expand
+            }
 
     module CancelOptions =
         let create

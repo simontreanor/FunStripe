@@ -15,6 +15,14 @@ type ClimateRemovalsProductsPrice =
         AmountTotal: int
     }
 
+type ClimateRemovalsProductsPrice with
+    static member New(amountFees: int, amountSubtotal: int, amountTotal: int) =
+        {
+            AmountFees = amountFees
+            AmountSubtotal = amountSubtotal
+            AmountTotal = amountTotal
+        }
+
 type ClimateRemovalsLocation =
     {
         /// The city where the supplier is located.
@@ -28,6 +36,16 @@ type ClimateRemovalsLocation =
         /// The state/county/province/region where the supplier is located.
         Region: string option
     }
+
+type ClimateRemovalsLocation with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode, latitude: decimal option, longitude: decimal option, region: string option) =
+        {
+            City = city
+            Country = country
+            Latitude = latitude
+            Longitude = longitude
+            Region = region
+        }
 
 [<Struct>]
 type ClimateSupplierRemovalPathway =
@@ -52,6 +70,17 @@ type ClimateSupplier =
         /// The scientific pathway used for carbon removal.
         RemovalPathway: ClimateSupplierRemovalPathway
     }
+
+type ClimateSupplier with
+    static member New(id: string, infoUrl: string, livemode: bool, locations: ClimateRemovalsLocation list, name: string, removalPathway: ClimateSupplierRemovalPathway) =
+        {
+            Id = id
+            InfoUrl = infoUrl
+            Livemode = livemode
+            Locations = locations
+            Name = name
+            RemovalPathway = removalPathway
+        }
 
 module ClimateSupplier =
     ///String representing the object’s type. Objects of the same type share the same value.
@@ -81,6 +110,19 @@ type ClimateProduct =
         Suppliers: ClimateSupplier list
     }
 
+type ClimateProduct with
+    static member New(created: DateTime, currentPricesPerMetricTon: Map<string, string list>, deliveryYear: int option, id: string, livemode: bool, metricTonsAvailable: string, name: string, suppliers: ClimateSupplier list) =
+        {
+            Created = created
+            CurrentPricesPerMetricTon = currentPricesPerMetricTon
+            DeliveryYear = deliveryYear
+            Id = id
+            Livemode = livemode
+            MetricTonsAvailable = metricTonsAvailable
+            Name = name
+            Suppliers = suppliers
+        }
+
 module ClimateProduct =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "climate.product"
@@ -88,8 +130,20 @@ module ClimateProduct =
 /// Occurs when a Climate product is updated.
 type ClimateProductPricingUpdated = { Object: ClimateProduct }
 
+type ClimateProductPricingUpdated with
+    static member New(object: ClimateProduct) =
+        {
+            Object = object
+        }
+
 /// Occurs when a Climate product is created.
 type ClimateProductCreated = { Object: ClimateProduct }
+
+type ClimateProductCreated with
+    static member New(object: ClimateProduct) =
+        {
+            Object = object
+        }
 
 [<Struct>]
 type ClimateOrderCancellationReason =
@@ -111,6 +165,12 @@ type ClimateRemovalsBeneficiary =
         PublicName: string
     }
 
+type ClimateRemovalsBeneficiary with
+    static member New(publicName: string) =
+        {
+            PublicName = publicName
+        }
+
 /// The delivery of a specified quantity of carbon for an order.
 type ClimateRemovalsOrderDeliveries =
     {
@@ -124,6 +184,16 @@ type ClimateRemovalsOrderDeliveries =
         RegistryUrl: string option
         Supplier: ClimateSupplier
     }
+
+type ClimateRemovalsOrderDeliveries with
+    static member New(deliveredAt: DateTime, location: ClimateRemovalsLocation option, metricTons: string, registryUrl: string option, supplier: ClimateSupplier) =
+        {
+            DeliveredAt = deliveredAt
+            Location = location
+            MetricTons = metricTons
+            RegistryUrl = registryUrl
+            Supplier = supplier
+        }
 
 /// Orders represent your intent to purchase a particular Climate product. When you create an order, the
 /// payment is deducted from your merchant balance.
@@ -172,6 +242,32 @@ type ClimateOrder =
         Status: ClimateOrderStatus
     }
 
+type ClimateOrder with
+    static member New(amountFees: int, amountSubtotal: int, amountTotal: int, canceledAt: DateTime option, cancellationReason: ClimateOrderCancellationReason option, certificate: string option, confirmedAt: DateTime option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, delayedAt: DateTime option, deliveredAt: DateTime option, deliveryDetails: ClimateRemovalsOrderDeliveries list, expectedDeliveryYear: int, id: string, livemode: bool, metadata: Map<string, string>, metricTons: string, product: StripeId<Markers.ClimateProduct>, productSubstitutedAt: DateTime option, status: ClimateOrderStatus, ?beneficiary: ClimateRemovalsBeneficiary) =
+        {
+            AmountFees = amountFees
+            AmountSubtotal = amountSubtotal
+            AmountTotal = amountTotal
+            CanceledAt = canceledAt
+            CancellationReason = cancellationReason
+            Certificate = certificate
+            ConfirmedAt = confirmedAt
+            Created = created
+            Currency = currency
+            DelayedAt = delayedAt
+            DeliveredAt = deliveredAt
+            DeliveryDetails = deliveryDetails
+            ExpectedDeliveryYear = expectedDeliveryYear
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            MetricTons = metricTons
+            Product = product
+            ProductSubstitutedAt = productSubstitutedAt
+            Status = status
+            Beneficiary = beneficiary
+        }
+
 module ClimateOrder =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "climate.order"
@@ -179,15 +275,45 @@ module ClimateOrder =
 /// Occurs when a Climate order's product is substituted for another.
 type ClimateOrderProductSubstituted = { Object: ClimateOrder }
 
+type ClimateOrderProductSubstituted with
+    static member New(object: ClimateOrder) =
+        {
+            Object = object
+        }
+
 /// Occurs when a Climate order is delivered.
 type ClimateOrderDelivered = { Object: ClimateOrder }
+
+type ClimateOrderDelivered with
+    static member New(object: ClimateOrder) =
+        {
+            Object = object
+        }
 
 /// Occurs when a Climate order is delayed.
 type ClimateOrderDelayed = { Object: ClimateOrder }
 
+type ClimateOrderDelayed with
+    static member New(object: ClimateOrder) =
+        {
+            Object = object
+        }
+
 /// Occurs when a Climate order is created.
 type ClimateOrderCreated = { Object: ClimateOrder }
 
+type ClimateOrderCreated with
+    static member New(object: ClimateOrder) =
+        {
+            Object = object
+        }
+
 /// Occurs when a Climate order is canceled.
 type ClimateOrderCanceled = { Object: ClimateOrder }
+
+type ClimateOrderCanceled with
+    static member New(object: ClimateOrder) =
+        {
+            Object = object
+        }
 

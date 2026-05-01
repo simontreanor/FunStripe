@@ -4,8 +4,10 @@ open FunStripe.AsyncResultCE
 open FunStripe.WebhookSigning
 open IsoTypes
 open NUnit.Framework
-open StripeModel
-open FunStripe.StripeRequest
+open Stripe.FundingInstructions
+open Stripe.PaymentMethod
+open StripeRequest.Customers
+open StripeRequest.Payment
 open System
 open System.Security.Cryptography
 open System.Text

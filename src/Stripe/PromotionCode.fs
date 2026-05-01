@@ -12,6 +12,12 @@ type PromotionCodeCurrencyOption =
         MinimumAmount: int
     }
 
+type PromotionCodeCurrencyOption with
+    static member New(minimumAmount: int) =
+        {
+            MinimumAmount = minimumAmount
+        }
+
 type PromotionCodeCustomer'AnyOf =
     | String of string
     | Customer of Customer
@@ -22,6 +28,12 @@ type PromotionCodesResourcePromotion =
         /// If promotion `type` is `coupon`, the coupon for this promotion.
         Coupon: StripeId<Markers.Coupon> option
     }
+
+type PromotionCodesResourcePromotion with
+    static member New(coupon: StripeId<Markers.Coupon> option) =
+        {
+            Coupon = coupon
+        }
 
 module PromotionCodesResourcePromotion =
     ///The type of promotion.
@@ -38,6 +50,15 @@ type PromotionCodesResourceRestrictions =
         /// Three-letter [ISO code](https://stripe.com/docs/currencies) for minimum_amount
         MinimumAmountCurrency: IsoTypes.IsoCurrencyCode option
     }
+
+type PromotionCodesResourceRestrictions with
+    static member New(firstTimeTransaction: bool, minimumAmount: int option, minimumAmountCurrency: IsoTypes.IsoCurrencyCode option, ?currencyOptions: Map<string, string list>) =
+        {
+            FirstTimeTransaction = firstTimeTransaction
+            MinimumAmount = minimumAmount
+            MinimumAmountCurrency = minimumAmountCurrency
+            CurrencyOptions = currencyOptions
+        }
 
 /// A Promotion Code represents a customer-redeemable code for an underlying promotion.
 /// You can create multiple codes for a single promotion.
@@ -71,6 +92,24 @@ type PromotionCode =
         TimesRedeemed: int
     }
 
+type PromotionCode with
+    static member New(active: bool, code: string, created: DateTime, customer: PromotionCodeCustomer'AnyOf option, customerAccount: string option, expiresAt: DateTime option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, promotion: PromotionCodesResourcePromotion, restrictions: PromotionCodesResourceRestrictions, timesRedeemed: int) =
+        {
+            Active = active
+            Code = code
+            Created = created
+            Customer = customer
+            CustomerAccount = customerAccount
+            ExpiresAt = expiresAt
+            Id = id
+            Livemode = livemode
+            MaxRedemptions = maxRedemptions
+            Metadata = metadata
+            Promotion = promotion
+            Restrictions = restrictions
+            TimesRedeemed = timesRedeemed
+        }
+
 module PromotionCode =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "promotion_code"
@@ -78,6 +117,18 @@ module PromotionCode =
 /// Occurs whenever a promotion code is updated.
 type PromotionCodeUpdated = { Object: PromotionCode }
 
+type PromotionCodeUpdated with
+    static member New(object: PromotionCode) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a promotion code is created.
 type PromotionCodeCreated = { Object: PromotionCode }
+
+type PromotionCodeCreated with
+    static member New(object: PromotionCode) =
+        {
+            Object = object
+        }
 

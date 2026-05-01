@@ -31,6 +31,14 @@ type ReservesReserveReleasesResourcesSourceTransaction =
         Type: ReservesReserveReleasesResourcesSourceTransactionType
     }
 
+type ReservesReserveReleasesResourcesSourceTransaction with
+    static member New(``type``: ReservesReserveReleasesResourcesSourceTransactionType, ?dispute: StripeId<Markers.Dispute>, ?refund: StripeId<Markers.Refund>) =
+        {
+            Type = ``type``
+            Dispute = dispute
+            Refund = refund
+        }
+
 /// ReserveReleases represent the release of funds from a ReserveHold.
 type ReserveRelease =
     {
@@ -59,12 +67,35 @@ type ReserveRelease =
         SourceTransaction: ReservesReserveReleasesResourcesSourceTransaction option
     }
 
+type ReserveRelease with
+    static member New(amount: int, created: DateTime, createdBy: ReserveReleaseCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveReleaseReason, releasedAt: DateTime, reserveHold: StripeId<Markers.ReserveHold> option, reservePlan: StripeId<Markers.ReservePlan> option, ?metadata: Map<string, string>, ?sourceTransaction: ReservesReserveReleasesResourcesSourceTransaction) =
+        {
+            Amount = amount
+            Created = created
+            CreatedBy = createdBy
+            Currency = currency
+            Id = id
+            Livemode = livemode
+            Reason = reason
+            ReleasedAt = releasedAt
+            ReserveHold = reserveHold
+            ReservePlan = reservePlan
+            Metadata = metadata
+            SourceTransaction = sourceTransaction
+        }
+
 module ReserveRelease =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reserve.release"
 
 /// Occurs when a reserve release is created.
 type ReserveReleaseCreated = { Object: ReserveRelease }
+
+type ReserveReleaseCreated with
+    static member New(object: ReserveRelease) =
+        {
+            Object = object
+        }
 
 [<Struct>]
 type ReservePlanCreatedBy =
@@ -90,6 +121,13 @@ type ReservesReservePlansResourcesFixedRelease =
         ScheduledRelease: DateTime
     }
 
+type ReservesReservePlansResourcesFixedRelease with
+    static member New(releaseAfter: int, scheduledRelease: DateTime) =
+        {
+            ReleaseAfter = releaseAfter
+            ScheduledRelease = scheduledRelease
+        }
+
 type ReservesReservePlansResourcesRollingRelease =
     {
         /// The number of days to reserve funds before releasing.
@@ -97,6 +135,13 @@ type ReservesReservePlansResourcesRollingRelease =
         /// The time at which the ReservePlan expires.
         ExpiresOn: int option
     }
+
+type ReservesReservePlansResourcesRollingRelease with
+    static member New(daysAfterCharge: int, expiresOn: int option) =
+        {
+            DaysAfterCharge = daysAfterCharge
+            ExpiresOn = expiresOn
+        }
 
 /// ReservePlans are used to automatically place holds on a merchant's funds until the plan expires. It takes a portion of each incoming Charge (including those resulting from a Transfer from a platform account).
 type ReservePlan =
@@ -125,6 +170,23 @@ type ReservePlan =
         Type: ReservePlanType
     }
 
+type ReservePlan with
+    static member New(created: DateTime, createdBy: ReservePlanCreatedBy, currency: IsoTypes.IsoCurrencyCode option, disabledAt: DateTime option, id: string, livemode: bool, percent: int, status: ReservePlanStatus, ``type``: ReservePlanType, ?fixedRelease: ReservesReservePlansResourcesFixedRelease, ?metadata: Map<string, string>, ?rollingRelease: ReservesReservePlansResourcesRollingRelease) =
+        {
+            Created = created
+            CreatedBy = createdBy
+            Currency = currency
+            DisabledAt = disabledAt
+            Id = id
+            Livemode = livemode
+            Percent = percent
+            Status = status
+            Type = ``type``
+            FixedRelease = fixedRelease
+            Metadata = metadata
+            RollingRelease = rollingRelease
+        }
+
 module ReservePlan =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reserve.plan"
@@ -132,14 +194,38 @@ module ReservePlan =
 /// Occurs when a reserve plan is updated.
 type ReservePlanUpdated = { Object: ReservePlan }
 
+type ReservePlanUpdated with
+    static member New(object: ReservePlan) =
+        {
+            Object = object
+        }
+
 /// Occurs when a reserve plan expires.
 type ReservePlanExpired = { Object: ReservePlan }
+
+type ReservePlanExpired with
+    static member New(object: ReservePlan) =
+        {
+            Object = object
+        }
 
 /// Occurs when a reserve plan is disabled.
 type ReservePlanDisabled = { Object: ReservePlan }
 
+type ReservePlanDisabled with
+    static member New(object: ReservePlan) =
+        {
+            Object = object
+        }
+
 /// Occurs when a reserve plan is created.
 type ReservePlanCreated = { Object: ReservePlan }
+
+type ReservePlanCreated with
+    static member New(object: ReservePlan) =
+        {
+            Object = object
+        }
 
 [<Struct>]
 type ReserveHoldCreatedBy =
@@ -164,6 +250,13 @@ type ReservesReserveHoldsResourcesReleaseSchedule =
         /// The time at which the ReserveHold is scheduled to be released, automatically set to midnight UTC of the day after `release_after`.
         ScheduledRelease: DateTime option
     }
+
+type ReservesReserveHoldsResourcesReleaseSchedule with
+    static member New(releaseAfter: DateTime option, scheduledRelease: DateTime option) =
+        {
+            ReleaseAfter = releaseAfter
+            ScheduledRelease = scheduledRelease
+        }
 
 /// ReserveHolds are used to place a temporary ReserveHold on a merchant's funds.
 type ReserveHold =
@@ -197,6 +290,25 @@ type ReserveHold =
         SourceType: ReserveHoldSourceType
     }
 
+type ReserveHold with
+    static member New(amount: int, created: DateTime, createdBy: ReserveHoldCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveHoldReason, releaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule, reservePlan: StripeId<Markers.ReservePlan> option, sourceCharge: StripeId<Markers.Charge> option, sourceType: ReserveHoldSourceType, ?amountReleasable: int, ?isReleasable: bool, ?metadata: Map<string, string>) =
+        {
+            Amount = amount
+            Created = created
+            CreatedBy = createdBy
+            Currency = currency
+            Id = id
+            Livemode = livemode
+            Reason = reason
+            ReleaseSchedule = releaseSchedule
+            ReservePlan = reservePlan
+            SourceCharge = sourceCharge
+            SourceType = sourceType
+            AmountReleasable = amountReleasable
+            IsReleasable = isReleasable
+            Metadata = metadata
+        }
+
 module ReserveHold =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reserve.hold"
@@ -204,6 +316,18 @@ module ReserveHold =
 /// Occurs when a reserve hold is updated.
 type ReserveHoldUpdated = { Object: ReserveHold }
 
+type ReserveHoldUpdated with
+    static member New(object: ReserveHold) =
+        {
+            Object = object
+        }
+
 /// Occurs when a reserve hold is created.
 type ReserveHoldCreated = { Object: ReserveHold }
+
+type ReserveHoldCreated with
+    static member New(object: ReserveHold) =
+        {
+            Object = object
+        }
 

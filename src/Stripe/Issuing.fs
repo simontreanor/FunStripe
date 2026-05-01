@@ -26,6 +26,17 @@ type IssuingNetworkTokenDevice =
         Type: IssuingNetworkTokenDeviceType option
     }
 
+type IssuingNetworkTokenDevice with
+    static member New(?deviceFingerprint: string, ?ipAddress: string, ?location: string, ?name: string, ?phoneNumber: string, ?``type``: IssuingNetworkTokenDeviceType) =
+        {
+            DeviceFingerprint = deviceFingerprint
+            IpAddress = ipAddress
+            Location = location
+            Name = name
+            PhoneNumber = phoneNumber
+            Type = ``type``
+        }
+
 type IssuingNetworkTokenMastercard =
     {
         /// A unique reference ID from MasterCard to represent the card account number.
@@ -37,6 +48,15 @@ type IssuingNetworkTokenMastercard =
         /// The name of the entity requesting tokenization, if known. This is directly provided from MasterCard.
         TokenRequestorName: string option
     }
+
+type IssuingNetworkTokenMastercard with
+    static member New(tokenReferenceId: string, tokenRequestorId: string, ?cardReferenceId: string, ?tokenRequestorName: string) =
+        {
+            TokenReferenceId = tokenReferenceId
+            TokenRequestorId = tokenRequestorId
+            CardReferenceId = cardReferenceId
+            TokenRequestorName = tokenRequestorName
+        }
 
 [<Struct>]
 type IssuingNetworkTokenNetworkDataType =
@@ -55,6 +75,15 @@ type IssuingNetworkTokenVisa =
         TokenRiskScore: string option
     }
 
+type IssuingNetworkTokenVisa with
+    static member New(cardReferenceId: string option, tokenReferenceId: string, tokenRequestorId: string, ?tokenRiskScore: string) =
+        {
+            CardReferenceId = cardReferenceId
+            TokenReferenceId = tokenReferenceId
+            TokenRequestorId = tokenRequestorId
+            TokenRiskScore = tokenRiskScore
+        }
+
 type IssuingNetworkTokenAddress =
     {
         /// The street address of the cardholder tokenizing the card.
@@ -63,6 +92,13 @@ type IssuingNetworkTokenAddress =
         /// The postal code of the cardholder tokenizing the card.
         PostalCode: string
     }
+
+type IssuingNetworkTokenAddress with
+    static member New(line1: string, postalCode: string) =
+        {
+            Line1 = line1
+            PostalCode = postalCode
+        }
 
 [<Struct>]
 type IssuingNetworkTokenWalletProviderCardNumberSource =
@@ -130,6 +166,21 @@ type IssuingNetworkTokenWalletProvider =
         SuggestedDecisionVersion: string option
     }
 
+type IssuingNetworkTokenWalletProvider with
+    static member New(?accountId: string, ?accountTrustScore: int, ?cardNumberSource: IssuingNetworkTokenWalletProviderCardNumberSource, ?cardholderAddress: IssuingNetworkTokenAddress, ?cardholderName: string, ?deviceTrustScore: int, ?hashedAccountEmailAddress: string, ?reasonCodes: IssuingNetworkTokenWalletProviderReasonCodes list, ?suggestedDecision: IssuingNetworkTokenWalletProviderSuggestedDecision, ?suggestedDecisionVersion: string) =
+        {
+            AccountId = accountId
+            AccountTrustScore = accountTrustScore
+            CardNumberSource = cardNumberSource
+            CardholderAddress = cardholderAddress
+            CardholderName = cardholderName
+            DeviceTrustScore = deviceTrustScore
+            HashedAccountEmailAddress = hashedAccountEmailAddress
+            ReasonCodes = reasonCodes
+            SuggestedDecision = suggestedDecision
+            SuggestedDecisionVersion = suggestedDecisionVersion
+        }
+
 type IssuingNetworkTokenNetworkData =
     {
         Device: IssuingNetworkTokenDevice option
@@ -139,6 +190,16 @@ type IssuingNetworkTokenNetworkData =
         Visa: IssuingNetworkTokenVisa option
         WalletProvider: IssuingNetworkTokenWalletProvider option
     }
+
+type IssuingNetworkTokenNetworkData with
+    static member New(``type``: IssuingNetworkTokenNetworkDataType, ?device: IssuingNetworkTokenDevice, ?mastercard: IssuingNetworkTokenMastercard, ?visa: IssuingNetworkTokenVisa, ?walletProvider: IssuingNetworkTokenWalletProvider) =
+        {
+            Type = ``type``
+            Device = device
+            Mastercard = mastercard
+            Visa = visa
+            WalletProvider = walletProvider
+        }
 
 [<Struct>]
 type IssuingPhysicalBundleFeaturesCardLogo =
@@ -168,6 +229,14 @@ type IssuingPhysicalBundleFeatures =
         SecondLine: IssuingPhysicalBundleFeaturesSecondLine
     }
 
+type IssuingPhysicalBundleFeatures with
+    static member New(cardLogo: IssuingPhysicalBundleFeaturesCardLogo, carrierText: IssuingPhysicalBundleFeaturesCarrierText, secondLine: IssuingPhysicalBundleFeaturesSecondLine) =
+        {
+            CardLogo = cardLogo
+            CarrierText = carrierText
+            SecondLine = secondLine
+        }
+
 [<Struct>]
 type IssuingPhysicalBundleStatus =
     | Active
@@ -194,6 +263,17 @@ type IssuingPhysicalBundle =
         /// Whether this physical bundle is a standard Stripe offering or custom-made for you.
         Type: IssuingPhysicalBundleType
     }
+
+type IssuingPhysicalBundle with
+    static member New(features: IssuingPhysicalBundleFeatures, id: string, livemode: bool, name: string, status: IssuingPhysicalBundleStatus, ``type``: IssuingPhysicalBundleType) =
+        {
+            Features = features
+            Id = id
+            Livemode = livemode
+            Name = name
+            Status = status
+            Type = ``type``
+        }
 
 module IssuingPhysicalBundle =
     ///String representing the object's type. Objects of the same type share the same value.

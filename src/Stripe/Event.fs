@@ -269,6 +269,13 @@ type NotificationEventData =
         PreviousAttributes: string option
     }
 
+type NotificationEventData with
+    static member New(object: string, ?previousAttributes: string) =
+        {
+            Object = object
+            PreviousAttributes = previousAttributes
+        }
+
 type NotificationEventRequest =
     {
         /// ID of the API request that caused the event. If null, the event was automatic (e.g., Stripe's automatic subscription handling). Request logs are available in the [dashboard](https://dashboard.stripe.com/logs), but currently not in the API.
@@ -276,6 +283,13 @@ type NotificationEventRequest =
         /// The idempotency key transmitted during the request, if any. *Note: This property is populated only for events on or after May 23, 2017*.
         IdempotencyKey: string option
     }
+
+type NotificationEventRequest with
+    static member New(id: string option, idempotencyKey: string option) =
+        {
+            Id = id
+            IdempotencyKey = idempotencyKey
+        }
 
 /// Snapshot events allow you to track and react to activity in your Stripe integration. When
 /// the state of another API resource changes, Stripe creates an `Event` object that contains
@@ -314,6 +328,21 @@ type Event =
         /// Description of the event (for example, `invoice.created` or `charge.refunded`).
         Type: EventType
     }
+
+type Event with
+    static member New(apiVersion: string option, created: DateTime, data: NotificationEventData, id: string, livemode: bool, pendingWebhooks: int, request: NotificationEventRequest option, ``type``: EventType, ?account: string, ?context: string) =
+        {
+            ApiVersion = apiVersion
+            Created = created
+            Data = data
+            Id = id
+            Livemode = livemode
+            PendingWebhooks = pendingWebhooks
+            Request = request
+            Type = ``type``
+            Account = account
+            Context = context
+        }
 
 module Event =
     ///String representing the object's type. Objects of the same type share the same value.

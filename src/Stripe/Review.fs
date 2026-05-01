@@ -66,6 +66,24 @@ type Review =
         Session: RadarReviewResourceSession option
     }
 
+type Review with
+    static member New(billingZip: string option, charge: StripeId<Markers.Charge> option, closedReason: ReviewClosedReason option, created: DateTime, id: string, ipAddress: string option, ipAddressLocation: RadarReviewResourceLocation option, livemode: bool, ``open``: bool, openedReason: ReviewOpenedReason, reason: ReviewReason, session: RadarReviewResourceSession option, ?paymentIntent: StripeId<Markers.PaymentIntent>) =
+        {
+            BillingZip = billingZip
+            Charge = charge
+            ClosedReason = closedReason
+            Created = created
+            Id = id
+            IpAddress = ipAddress
+            IpAddressLocation = ipAddressLocation
+            Livemode = livemode
+            Open = ``open``
+            OpenedReason = openedReason
+            Reason = reason
+            Session = session
+            PaymentIntent = paymentIntent
+        }
+
 module Review =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "review"
@@ -73,6 +91,18 @@ module Review =
 /// Occurs whenever a review is opened.
 type ReviewOpened = { Object: Review }
 
+type ReviewOpened with
+    static member New(object: Review) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a review is closed. The review's `reason` field indicates why: `approved`, `disputed`, `refunded`, `refunded_as_fraud`, or `canceled`.
 type ReviewClosed = { Object: Review }
+
+type ReviewClosed with
+    static member New(object: Review) =
+        {
+            Object = object
+        }
 

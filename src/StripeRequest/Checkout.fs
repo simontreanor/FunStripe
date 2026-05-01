@@ -49,6 +49,23 @@ module CheckoutSessions =
             Subscription: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?customer: string, ?customerAccount: string, ?customerDetails: Map<string, string>, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?paymentLink: string, ?startingAfter: string, ?status: string, ?subscription: string) =
+            {
+                Created = created
+                Customer = customer
+                CustomerAccount = customerAccount
+                CustomerDetails = customerDetails
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                PaymentIntent = paymentIntent
+                PaymentLink = paymentLink
+                StartingAfter = startingAfter
+                Status = status
+                Subscription = subscription
+            }
+
     module ListOptions =
         let create
             (
@@ -88,6 +105,12 @@ module CheckoutSessions =
             Enabled: bool option
         }
 
+    type Create'AdaptivePricing with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
+
     module Create'AdaptivePricing =
         let create
             (
@@ -110,6 +133,13 @@ module CheckoutSessions =
             Enabled: bool option
         }
 
+    type Create'AfterExpirationRecovery with
+        static member New(?allowPromotionCodes: bool, ?enabled: bool) =
+            {
+                AllowPromotionCodes = allowPromotionCodes
+                Enabled = enabled
+            }
+
     module Create'AfterExpirationRecovery =
         let create
             (
@@ -128,6 +158,12 @@ module CheckoutSessions =
             [<Config.Form>]
             Recovery: Create'AfterExpirationRecovery option
         }
+
+    type Create'AfterExpiration with
+        static member New(?recovery: Create'AfterExpirationRecovery) =
+            {
+                Recovery = recovery
+            }
 
     module Create'AfterExpiration =
         let create
@@ -153,16 +189,23 @@ module CheckoutSessions =
             Type: Create'AutomaticTaxLiabilityType option
         }
 
+    type Create'AutomaticTaxLiability with
+        static member New(?account: string, ?type': Create'AutomaticTaxLiabilityType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Create'AutomaticTaxLiability =
         let create
             (
                 account: string option,
-                ``type``: Create'AutomaticTaxLiabilityType option
+                type': Create'AutomaticTaxLiabilityType option
             ) : Create'AutomaticTaxLiability
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Create'AutomaticTax =
@@ -175,6 +218,13 @@ module CheckoutSessions =
             [<Config.Form>]
             Liability: Create'AutomaticTaxLiability option
         }
+
+    type Create'AutomaticTax with
+        static member New(?enabled: bool, ?liability: Create'AutomaticTaxLiability) =
+            {
+                Enabled = enabled
+                Liability = liability
+            }
 
     module Create'AutomaticTax =
         let create
@@ -242,17 +292,25 @@ module CheckoutSessions =
             Url: string option
         }
 
+    type Create'BrandingSettingsIcon with
+        static member New(?file: string, ?type': Create'BrandingSettingsIconType, ?url: string) =
+            {
+                File = file
+                Type = type'
+                Url = url
+            }
+
     module Create'BrandingSettingsIcon =
         let create
             (
                 file: string option,
-                ``type``: Create'BrandingSettingsIconType option,
+                type': Create'BrandingSettingsIconType option,
                 url: string option
             ) : Create'BrandingSettingsIcon
             =
             {
               File = file
-              Type = ``type``
+              Type = type'
               Url = url
             }
 
@@ -273,17 +331,25 @@ module CheckoutSessions =
             Url: string option
         }
 
+    type Create'BrandingSettingsLogo with
+        static member New(?file: string, ?type': Create'BrandingSettingsLogoType, ?url: string) =
+            {
+                File = file
+                Type = type'
+                Url = url
+            }
+
     module Create'BrandingSettingsLogo =
         let create
             (
                 file: string option,
-                ``type``: Create'BrandingSettingsLogoType option,
+                type': Create'BrandingSettingsLogoType option,
                 url: string option
             ) : Create'BrandingSettingsLogo
             =
             {
               File = file
-              Type = ``type``
+              Type = type'
               Url = url
             }
 
@@ -311,6 +377,18 @@ module CheckoutSessions =
             [<Config.Form>]
             Logo: Create'BrandingSettingsLogo option
         }
+
+    type Create'BrandingSettings with
+        static member New(?backgroundColor: Choice<string,string>, ?borderStyle: Create'BrandingSettingsBorderStyle, ?buttonColor: Choice<string,string>, ?displayName: string, ?fontFamily: Create'BrandingSettingsFontFamily, ?icon: Create'BrandingSettingsIcon, ?logo: Create'BrandingSettingsLogo) =
+            {
+                BackgroundColor = backgroundColor
+                BorderStyle = borderStyle
+                ButtonColor = buttonColor
+                DisplayName = displayName
+                FontFamily = fontFamily
+                Icon = icon
+                Logo = logo
+            }
 
     module Create'BrandingSettings =
         let create
@@ -346,6 +424,12 @@ module CheckoutSessions =
             Position: Create'ConsentCollectionPaymentMethodReuseAgreementPosition option
         }
 
+    type Create'ConsentCollectionPaymentMethodReuseAgreement with
+        static member New(?position: Create'ConsentCollectionPaymentMethodReuseAgreementPosition) =
+            {
+                Position = position
+            }
+
     module Create'ConsentCollectionPaymentMethodReuseAgreement =
         let create
             (
@@ -380,6 +464,14 @@ module CheckoutSessions =
             TermsOfService: Create'ConsentCollectionTermsOfService option
         }
 
+    type Create'ConsentCollection with
+        static member New(?paymentMethodReuseAgreement: Create'ConsentCollectionPaymentMethodReuseAgreement, ?promotions: Create'ConsentCollectionPromotions, ?termsOfService: Create'ConsentCollectionTermsOfService) =
+            {
+                PaymentMethodReuseAgreement = paymentMethodReuseAgreement
+                Promotions = promotions
+                TermsOfService = termsOfService
+            }
+
     module Create'ConsentCollection =
         let create
             (
@@ -404,6 +496,13 @@ module CheckoutSessions =
             Value: string option
         }
 
+    type Create'CustomFieldsDropdownOptions with
+        static member New(?label: string, ?value: string) =
+            {
+                Label = label
+                Value = value
+            }
+
     module Create'CustomFieldsDropdownOptions =
         let create
             (
@@ -425,6 +524,13 @@ module CheckoutSessions =
             [<Config.Form>]
             Options: Create'CustomFieldsDropdownOptions list option
         }
+
+    type Create'CustomFieldsDropdown with
+        static member New(?defaultValue: string, ?options: Create'CustomFieldsDropdownOptions list) =
+            {
+                DefaultValue = defaultValue
+                Options = options
+            }
 
     module Create'CustomFieldsDropdown =
         let create
@@ -450,16 +556,23 @@ module CheckoutSessions =
             Type: Create'CustomFieldsLabelType option
         }
 
+    type Create'CustomFieldsLabel with
+        static member New(?custom: string, ?type': Create'CustomFieldsLabelType) =
+            {
+                Custom = custom
+                Type = type'
+            }
+
     module Create'CustomFieldsLabel =
         let create
             (
                 custom: string option,
-                ``type``: Create'CustomFieldsLabelType option
+                type': Create'CustomFieldsLabelType option
             ) : Create'CustomFieldsLabel
             =
             {
               Custom = custom
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CustomFieldsNumeric =
@@ -474,6 +587,14 @@ module CheckoutSessions =
             [<Config.Form>]
             MinimumLength: int option
         }
+
+    type Create'CustomFieldsNumeric with
+        static member New(?defaultValue: string, ?maximumLength: int, ?minimumLength: int) =
+            {
+                DefaultValue = defaultValue
+                MaximumLength = maximumLength
+                MinimumLength = minimumLength
+            }
 
     module Create'CustomFieldsNumeric =
         let create
@@ -501,6 +622,14 @@ module CheckoutSessions =
             [<Config.Form>]
             MinimumLength: int option
         }
+
+    type Create'CustomFieldsText with
+        static member New(?defaultValue: string, ?maximumLength: int, ?minimumLength: int) =
+            {
+                DefaultValue = defaultValue
+                MaximumLength = maximumLength
+                MinimumLength = minimumLength
+            }
 
     module Create'CustomFieldsText =
         let create
@@ -546,6 +675,18 @@ module CheckoutSessions =
             Type: Create'CustomFieldsType option
         }
 
+    type Create'CustomFields with
+        static member New(?dropdown: Create'CustomFieldsDropdown, ?key: string, ?label: Create'CustomFieldsLabel, ?numeric: Create'CustomFieldsNumeric, ?optional: bool, ?text: Create'CustomFieldsText, ?type': Create'CustomFieldsType) =
+            {
+                Dropdown = dropdown
+                Key = key
+                Label = label
+                Numeric = numeric
+                Optional = optional
+                Text = text
+                Type = type'
+            }
+
     module Create'CustomFields =
         let create
             (
@@ -555,7 +696,7 @@ module CheckoutSessions =
                 numeric: Create'CustomFieldsNumeric option,
                 optional: bool option,
                 text: Create'CustomFieldsText option,
-                ``type``: Create'CustomFieldsType option
+                type': Create'CustomFieldsType option
             ) : Create'CustomFields
             =
             {
@@ -565,7 +706,7 @@ module CheckoutSessions =
               Numeric = numeric
               Optional = optional
               Text = text
-              Type = ``type``
+              Type = type'
             }
 
     type Create'CustomTextAfterSubmitCustomTextPosition =
@@ -574,6 +715,12 @@ module CheckoutSessions =
             [<Config.Form>]
             Message: string option
         }
+
+    type Create'CustomTextAfterSubmitCustomTextPosition with
+        static member New(?message: string) =
+            {
+                Message = message
+            }
 
     module Create'CustomTextAfterSubmitCustomTextPosition =
         let create
@@ -592,6 +739,12 @@ module CheckoutSessions =
             Message: string option
         }
 
+    type Create'CustomTextShippingAddressCustomTextPosition with
+        static member New(?message: string) =
+            {
+                Message = message
+            }
+
     module Create'CustomTextShippingAddressCustomTextPosition =
         let create
             (
@@ -609,6 +762,12 @@ module CheckoutSessions =
             Message: string option
         }
 
+    type Create'CustomTextSubmitCustomTextPosition with
+        static member New(?message: string) =
+            {
+                Message = message
+            }
+
     module Create'CustomTextSubmitCustomTextPosition =
         let create
             (
@@ -625,6 +784,12 @@ module CheckoutSessions =
             [<Config.Form>]
             Message: string option
         }
+
+    type Create'CustomTextTermsOfServiceAcceptanceCustomTextPosition with
+        static member New(?message: string) =
+            {
+                Message = message
+            }
 
     module Create'CustomTextTermsOfServiceAcceptanceCustomTextPosition =
         let create
@@ -651,6 +816,15 @@ module CheckoutSessions =
             [<Config.Form>]
             TermsOfServiceAcceptance: Choice<Create'CustomTextTermsOfServiceAcceptanceCustomTextPosition,string> option
         }
+
+    type Create'CustomText with
+        static member New(?afterSubmit: Choice<Create'CustomTextAfterSubmitCustomTextPosition,string>, ?shippingAddress: Choice<Create'CustomTextShippingAddressCustomTextPosition,string>, ?submit: Choice<Create'CustomTextSubmitCustomTextPosition,string>, ?termsOfServiceAcceptance: Choice<Create'CustomTextTermsOfServiceAcceptanceCustomTextPosition,string>) =
+            {
+                AfterSubmit = afterSubmit
+                ShippingAddress = shippingAddress
+                Submit = submit
+                TermsOfServiceAcceptance = termsOfServiceAcceptance
+            }
 
     module Create'CustomText =
         let create
@@ -699,6 +873,14 @@ module CheckoutSessions =
             Shipping: Create'CustomerUpdateShipping option
         }
 
+    type Create'CustomerUpdate with
+        static member New(?address: Create'CustomerUpdateAddress, ?name: Create'CustomerUpdateName, ?shipping: Create'CustomerUpdateShipping) =
+            {
+                Address = address
+                Name = name
+                Shipping = shipping
+            }
+
     module Create'CustomerUpdate =
         let create
             (
@@ -722,6 +904,13 @@ module CheckoutSessions =
             [<Config.Form>]
             PromotionCode: string option
         }
+
+    type Create'Discounts with
+        static member New(?coupon: string, ?promotionCode: string) =
+            {
+                Coupon = coupon
+                PromotionCode = promotionCode
+            }
 
     module Create'Discounts =
         let create
@@ -798,6 +987,13 @@ module CheckoutSessions =
             Value: string option
         }
 
+    type Create'InvoiceCreationInvoiceDataCustomFields with
+        static member New(?name: string, ?value: string) =
+            {
+                Name = name
+                Value = value
+            }
+
     module Create'InvoiceCreationInvoiceDataCustomFields =
         let create
             (
@@ -824,16 +1020,23 @@ module CheckoutSessions =
             Type: Create'InvoiceCreationInvoiceDataIssuerType option
         }
 
+    type Create'InvoiceCreationInvoiceDataIssuer with
+        static member New(?account: string, ?type': Create'InvoiceCreationInvoiceDataIssuerType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Create'InvoiceCreationInvoiceDataIssuer =
         let create
             (
                 account: string option,
-                ``type``: Create'InvoiceCreationInvoiceDataIssuerType option
+                type': Create'InvoiceCreationInvoiceDataIssuerType option
             ) : Create'InvoiceCreationInvoiceDataIssuer
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptionsAmountTaxDisplay =
@@ -850,6 +1053,13 @@ module CheckoutSessions =
             [<Config.Form>]
             Template: string option
         }
+
+    type Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptions with
+        static member New(?amountTaxDisplay: Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptionsAmountTaxDisplay, ?template: string) =
+            {
+                AmountTaxDisplay = amountTaxDisplay
+                Template = template
+            }
 
     module Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptions =
         let create
@@ -889,6 +1099,18 @@ module CheckoutSessions =
                 Choice<Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptions,string> option
         }
 
+    type Create'InvoiceCreationInvoiceData with
+        static member New(?accountTaxIds: Choice<string list,string>, ?customFields: Choice<Create'InvoiceCreationInvoiceDataCustomFields list,string>, ?description: string, ?footer: string, ?issuer: Create'InvoiceCreationInvoiceDataIssuer, ?metadata: Map<string, string>, ?renderingOptions: Choice<Create'InvoiceCreationInvoiceDataRenderingOptionsCheckoutRenderingOptions,string>) =
+            {
+                AccountTaxIds = accountTaxIds
+                CustomFields = customFields
+                Description = description
+                Footer = footer
+                Issuer = issuer
+                Metadata = metadata
+                RenderingOptions = renderingOptions
+            }
+
     module Create'InvoiceCreationInvoiceData =
         let create
             (
@@ -921,6 +1143,13 @@ module CheckoutSessions =
             InvoiceData: Create'InvoiceCreationInvoiceData option
         }
 
+    type Create'InvoiceCreation with
+        static member New(?enabled: bool, ?invoiceData: Create'InvoiceCreationInvoiceData) =
+            {
+                Enabled = enabled
+                InvoiceData = invoiceData
+            }
+
     module Create'InvoiceCreation =
         let create
             (
@@ -945,6 +1174,14 @@ module CheckoutSessions =
             [<Config.Form>]
             Minimum: int option
         }
+
+    type Create'LineItemsAdjustableQuantity with
+        static member New(?enabled: bool, ?maximum: int, ?minimum: int) =
+            {
+                Enabled = enabled
+                Maximum = maximum
+                Minimum = minimum
+            }
 
     module Create'LineItemsAdjustableQuantity =
         let create
@@ -982,6 +1219,17 @@ module CheckoutSessions =
             UnitLabel: string option
         }
 
+    type Create'LineItemsPriceDataProductData with
+        static member New(?description: string, ?images: string list, ?metadata: Map<string, string>, ?name: string, ?taxCode: string, ?unitLabel: string) =
+            {
+                Description = description
+                Images = images
+                Metadata = metadata
+                Name = name
+                TaxCode = taxCode
+                UnitLabel = unitLabel
+            }
+
     module Create'LineItemsPriceDataProductData =
         let create
             (
@@ -1017,6 +1265,13 @@ module CheckoutSessions =
             [<Config.Form>]
             IntervalCount: int option
         }
+
+    type Create'LineItemsPriceDataRecurring with
+        static member New(?interval: Create'LineItemsPriceDataRecurringInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
 
     module Create'LineItemsPriceDataRecurring =
         let create
@@ -1059,6 +1314,18 @@ module CheckoutSessions =
             [<Config.Form>]
             UnitAmountDecimal: string option
         }
+
+    type Create'LineItemsPriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?productData: Create'LineItemsPriceDataProductData, ?recurring: Create'LineItemsPriceDataRecurring, ?taxBehavior: Create'LineItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                ProductData = productData
+                Recurring = recurring
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
 
     module Create'LineItemsPriceData =
         let create
@@ -1106,6 +1373,18 @@ module CheckoutSessions =
             [<Config.Form>]
             TaxRates: string list option
         }
+
+    type Create'LineItems with
+        static member New(?adjustableQuantity: Create'LineItemsAdjustableQuantity, ?dynamicTaxRates: string list, ?metadata: Map<string, string>, ?price: string, ?priceData: Create'LineItemsPriceData, ?quantity: int, ?taxRates: string list) =
+            {
+                AdjustableQuantity = adjustableQuantity
+                DynamicTaxRates = dynamicTaxRates
+                Metadata = metadata
+                Price = price
+                PriceData = priceData
+                Quantity = quantity
+                TaxRates = taxRates
+            }
 
     module Create'LineItems =
         let create
@@ -1179,6 +1458,12 @@ module CheckoutSessions =
             Enabled: bool option
         }
 
+    type Create'ManagedPayments with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
+
     module Create'ManagedPayments =
         let create
             (
@@ -1204,6 +1489,13 @@ module CheckoutSessions =
             Optional: bool option
         }
 
+    type Create'NameCollectionBusiness with
+        static member New(?enabled: bool, ?optional: bool) =
+            {
+                Enabled = enabled
+                Optional = optional
+            }
+
     module Create'NameCollectionBusiness =
         let create
             (
@@ -1226,6 +1518,13 @@ module CheckoutSessions =
             Optional: bool option
         }
 
+    type Create'NameCollectionIndividual with
+        static member New(?enabled: bool, ?optional: bool) =
+            {
+                Enabled = enabled
+                Optional = optional
+            }
+
     module Create'NameCollectionIndividual =
         let create
             (
@@ -1247,6 +1546,13 @@ module CheckoutSessions =
             [<Config.Form>]
             Individual: Create'NameCollectionIndividual option
         }
+
+    type Create'NameCollection with
+        static member New(?business: Create'NameCollectionBusiness, ?individual: Create'NameCollectionIndividual) =
+            {
+                Business = business
+                Individual = individual
+            }
 
     module Create'NameCollection =
         let create
@@ -1272,6 +1578,14 @@ module CheckoutSessions =
             [<Config.Form>]
             Minimum: int option
         }
+
+    type Create'OptionalItemsAdjustableQuantity with
+        static member New(?enabled: bool, ?maximum: int, ?minimum: int) =
+            {
+                Enabled = enabled
+                Maximum = maximum
+                Minimum = minimum
+            }
 
     module Create'OptionalItemsAdjustableQuantity =
         let create
@@ -1299,6 +1613,14 @@ module CheckoutSessions =
             [<Config.Form>]
             Quantity: int option
         }
+
+    type Create'OptionalItems with
+        static member New(?adjustableQuantity: Create'OptionalItemsAdjustableQuantity, ?price: string, ?quantity: int) =
+            {
+                AdjustableQuantity = adjustableQuantity
+                Price = price
+                Quantity = quantity
+            }
 
     module Create'OptionalItems =
         let create
@@ -1349,6 +1671,17 @@ module CheckoutSessions =
             State: string option
         }
 
+    type Create'PaymentIntentDataShippingAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'PaymentIntentDataShippingAddress =
         let create
             (
@@ -1388,6 +1721,16 @@ module CheckoutSessions =
             TrackingNumber: string option
         }
 
+    type Create'PaymentIntentDataShipping with
+        static member New(?address: Create'PaymentIntentDataShippingAddress, ?carrier: string, ?name: string, ?phone: string, ?trackingNumber: string) =
+            {
+                Address = address
+                Carrier = carrier
+                Name = name
+                Phone = phone
+                TrackingNumber = trackingNumber
+            }
+
     module Create'PaymentIntentDataShipping =
         let create
             (
@@ -1418,6 +1761,13 @@ module CheckoutSessions =
             [<Config.Form>]
             Destination: string option
         }
+
+    type Create'PaymentIntentDataTransferData with
+        static member New(?amount: int, ?destination: string) =
+            {
+                Amount = amount
+                Destination = destination
+            }
 
     module Create'PaymentIntentDataTransferData =
         let create
@@ -1489,6 +1839,23 @@ module CheckoutSessions =
             TransferGroup: string option
         }
 
+    type Create'PaymentIntentData with
+        static member New(?applicationFeeAmount: int, ?captureMethod: Create'PaymentIntentDataCaptureMethod, ?description: string, ?metadata: Map<string, string>, ?onBehalfOf: string, ?receiptEmail: string, ?setupFutureUsage: Create'PaymentIntentDataSetupFutureUsage, ?shipping: Create'PaymentIntentDataShipping, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: Create'PaymentIntentDataTransferData, ?transferGroup: string) =
+            {
+                ApplicationFeeAmount = applicationFeeAmount
+                CaptureMethod = captureMethod
+                Description = description
+                Metadata = metadata
+                OnBehalfOf = onBehalfOf
+                ReceiptEmail = receiptEmail
+                SetupFutureUsage = setupFutureUsage
+                Shipping = shipping
+                StatementDescriptor = statementDescriptor
+                StatementDescriptorSuffix = statementDescriptorSuffix
+                TransferData = transferData
+                TransferGroup = transferGroup
+            }
+
     module Create'PaymentIntentData =
         let create
             (
@@ -1537,6 +1904,12 @@ module CheckoutSessions =
             AllowRedisplay: Create'PaymentMethodDataAllowRedisplay option
         }
 
+    type Create'PaymentMethodData with
+        static member New(?allowRedisplay: Create'PaymentMethodDataAllowRedisplay) =
+            {
+                AllowRedisplay = allowRedisplay
+            }
+
     module Create'PaymentMethodData =
         let create
             (
@@ -1584,6 +1957,16 @@ module CheckoutSessions =
             [<Config.Form>]
             TransactionType: Create'PaymentMethodOptionsAcssDebitMandateOptionsTransactionType option
         }
+
+    type Create'PaymentMethodOptionsAcssDebitMandateOptions with
+        static member New(?customMandateUrl: Choice<string,string>, ?defaultFor: Create'PaymentMethodOptionsAcssDebitMandateOptionsDefaultFor list, ?intervalDescription: string, ?paymentSchedule: Create'PaymentMethodOptionsAcssDebitMandateOptionsPaymentSchedule, ?transactionType: Create'PaymentMethodOptionsAcssDebitMandateOptionsTransactionType) =
+            {
+                CustomMandateUrl = customMandateUrl
+                DefaultFor = defaultFor
+                IntervalDescription = intervalDescription
+                PaymentSchedule = paymentSchedule
+                TransactionType = transactionType
+            }
 
     module Create'PaymentMethodOptionsAcssDebitMandateOptions =
         let create
@@ -1635,6 +2018,16 @@ module CheckoutSessions =
             VerificationMethod: Create'PaymentMethodOptionsAcssDebitVerificationMethod option
         }
 
+    type Create'PaymentMethodOptionsAcssDebit with
+        static member New(?currency: Create'PaymentMethodOptionsAcssDebitCurrency, ?mandateOptions: Create'PaymentMethodOptionsAcssDebitMandateOptions, ?setupFutureUsage: Create'PaymentMethodOptionsAcssDebitSetupFutureUsage, ?targetDate: string, ?verificationMethod: Create'PaymentMethodOptionsAcssDebitVerificationMethod) =
+            {
+                Currency = currency
+                MandateOptions = mandateOptions
+                SetupFutureUsage = setupFutureUsage
+                TargetDate = targetDate
+                VerificationMethod = verificationMethod
+            }
+
     module Create'PaymentMethodOptionsAcssDebit =
         let create
             (
@@ -1670,6 +2063,13 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsAffirmSetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsAffirm with
+        static member New(?captureMethod: Create'PaymentMethodOptionsAffirmCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsAffirmSetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsAffirm =
         let create
             (
@@ -1699,6 +2099,13 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsAfterpayClearpaySetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsAfterpayClearpay with
+        static member New(?captureMethod: Create'PaymentMethodOptionsAfterpayClearpayCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsAfterpayClearpaySetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsAfterpayClearpay =
         let create
             (
@@ -1723,6 +2130,12 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsAlipaySetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsAlipay with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsAlipaySetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsAlipay =
         let create
             (
@@ -1741,6 +2154,12 @@ module CheckoutSessions =
             [<Config.Form>]
             CaptureMethod: Create'PaymentMethodOptionsAlmaCaptureMethod option
         }
+
+    type Create'PaymentMethodOptionsAlma with
+        static member New(?captureMethod: Create'PaymentMethodOptionsAlmaCaptureMethod) =
+            {
+                CaptureMethod = captureMethod
+            }
 
     module Create'PaymentMethodOptionsAlma =
         let create
@@ -1771,6 +2190,13 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsAmazonPaySetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsAmazonPay with
+        static member New(?captureMethod: Create'PaymentMethodOptionsAmazonPayCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsAmazonPaySetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsAmazonPay =
         let create
             (
@@ -1798,6 +2224,13 @@ module CheckoutSessions =
             TargetDate: string option
         }
 
+    type Create'PaymentMethodOptionsAuBecsDebit with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsAuBecsDebitSetupFutureUsage, ?targetDate: string) =
+            {
+                SetupFutureUsage = setupFutureUsage
+                TargetDate = targetDate
+            }
+
     module Create'PaymentMethodOptionsAuBecsDebit =
         let create
             (
@@ -1816,6 +2249,12 @@ module CheckoutSessions =
             [<Config.Form>]
             ReferencePrefix: Choice<string,string> option
         }
+
+    type Create'PaymentMethodOptionsBacsDebitMandateOptions with
+        static member New(?referencePrefix: Choice<string,string>) =
+            {
+                ReferencePrefix = referencePrefix
+            }
 
     module Create'PaymentMethodOptionsBacsDebitMandateOptions =
         let create
@@ -1848,6 +2287,14 @@ module CheckoutSessions =
             TargetDate: string option
         }
 
+    type Create'PaymentMethodOptionsBacsDebit with
+        static member New(?mandateOptions: Create'PaymentMethodOptionsBacsDebitMandateOptions, ?setupFutureUsage: Create'PaymentMethodOptionsBacsDebitSetupFutureUsage, ?targetDate: string) =
+            {
+                MandateOptions = mandateOptions
+                SetupFutureUsage = setupFutureUsage
+                TargetDate = targetDate
+            }
+
     module Create'PaymentMethodOptionsBacsDebit =
         let create
             (
@@ -1874,6 +2321,12 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsBancontactSetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsBancontact with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsBancontactSetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsBancontact =
         let create
             (
@@ -1892,6 +2345,12 @@ module CheckoutSessions =
             [<Config.Form>]
             CaptureMethod: Create'PaymentMethodOptionsBillieCaptureMethod option
         }
+
+    type Create'PaymentMethodOptionsBillie with
+        static member New(?captureMethod: Create'PaymentMethodOptionsBillieCaptureMethod) =
+            {
+                CaptureMethod = captureMethod
+            }
 
     module Create'PaymentMethodOptionsBillie =
         let create
@@ -1921,6 +2380,13 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsBoletoSetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsBoleto with
+        static member New(?expiresAfterDays: int, ?setupFutureUsage: Create'PaymentMethodOptionsBoletoSetupFutureUsage) =
+            {
+                ExpiresAfterDays = expiresAfterDays
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsBoleto =
         let create
             (
@@ -1942,6 +2408,12 @@ module CheckoutSessions =
             [<Config.Form>]
             Enabled: bool option
         }
+
+    type Create'PaymentMethodOptionsCardInstallments with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
 
     module Create'PaymentMethodOptionsCardInstallments =
         let create
@@ -1986,6 +2458,12 @@ module CheckoutSessions =
             [<Config.Form>]
             BrandsBlocked: Create'PaymentMethodOptionsCardRestrictionsBrandsBlocked list option
         }
+
+    type Create'PaymentMethodOptionsCardRestrictions with
+        static member New(?brandsBlocked: Create'PaymentMethodOptionsCardRestrictionsBrandsBlocked list) =
+            {
+                BrandsBlocked = brandsBlocked
+            }
 
     module Create'PaymentMethodOptionsCardRestrictions =
         let create
@@ -2041,6 +2519,22 @@ module CheckoutSessions =
             StatementDescriptorSuffixKanji: string option
         }
 
+    type Create'PaymentMethodOptionsCard with
+        static member New(?captureMethod: Create'PaymentMethodOptionsCardCaptureMethod, ?installments: Create'PaymentMethodOptionsCardInstallments, ?requestExtendedAuthorization: Create'PaymentMethodOptionsCardRequestExtendedAuthorization, ?requestIncrementalAuthorization: Create'PaymentMethodOptionsCardRequestIncrementalAuthorization, ?requestMulticapture: Create'PaymentMethodOptionsCardRequestMulticapture, ?requestOvercapture: Create'PaymentMethodOptionsCardRequestOvercapture, ?requestThreeDSecure: Create'PaymentMethodOptionsCardRequestThreeDSecure, ?restrictions: Create'PaymentMethodOptionsCardRestrictions, ?setupFutureUsage: Create'PaymentMethodOptionsCardSetupFutureUsage, ?statementDescriptorSuffixKana: string, ?statementDescriptorSuffixKanji: string) =
+            {
+                CaptureMethod = captureMethod
+                Installments = installments
+                RequestExtendedAuthorization = requestExtendedAuthorization
+                RequestIncrementalAuthorization = requestIncrementalAuthorization
+                RequestMulticapture = requestMulticapture
+                RequestOvercapture = requestOvercapture
+                RequestThreeDSecure = requestThreeDSecure
+                Restrictions = restrictions
+                SetupFutureUsage = setupFutureUsage
+                StatementDescriptorSuffixKana = statementDescriptorSuffixKana
+                StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
+            }
+
     module Create'PaymentMethodOptionsCard =
         let create
             (
@@ -2091,6 +2585,13 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsCashappSetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsCashapp with
+        static member New(?captureMethod: Create'PaymentMethodOptionsCashappCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsCashappSetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsCashapp =
         let create
             (
@@ -2115,6 +2616,12 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsCryptoSetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsCrypto with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsCryptoSetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsCrypto =
         let create
             (
@@ -2131,6 +2638,12 @@ module CheckoutSessions =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
         }
+
+    type Create'PaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer with
+        static member New(?country: IsoTypes.IsoCountryCode) =
+            {
+                Country = country
+            }
 
     module Create'PaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer =
         let create
@@ -2172,18 +2685,26 @@ module CheckoutSessions =
             Type: Create'PaymentMethodOptionsCustomerBalanceBankTransferType option
         }
 
+    type Create'PaymentMethodOptionsCustomerBalanceBankTransfer with
+        static member New(?euBankTransfer: Create'PaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer, ?requestedAddressTypes: Create'PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes list, ?type': Create'PaymentMethodOptionsCustomerBalanceBankTransferType) =
+            {
+                EuBankTransfer = euBankTransfer
+                RequestedAddressTypes = requestedAddressTypes
+                Type = type'
+            }
+
     module Create'PaymentMethodOptionsCustomerBalanceBankTransfer =
         let create
             (
                 euBankTransfer: Create'PaymentMethodOptionsCustomerBalanceBankTransferEuBankTransfer option,
                 requestedAddressTypes: Create'PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes list option,
-                ``type``: Create'PaymentMethodOptionsCustomerBalanceBankTransferType option
+                type': Create'PaymentMethodOptionsCustomerBalanceBankTransferType option
             ) : Create'PaymentMethodOptionsCustomerBalanceBankTransfer
             =
             {
               EuBankTransfer = euBankTransfer
               RequestedAddressTypes = requestedAddressTypes
-              Type = ``type``
+              Type = type'
             }
 
     type Create'PaymentMethodOptionsCustomerBalanceFundingType = | BankTransfer
@@ -2205,6 +2726,14 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsCustomerBalanceSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsCustomerBalance with
+        static member New(?bankTransfer: Create'PaymentMethodOptionsCustomerBalanceBankTransfer, ?fundingType: Create'PaymentMethodOptionsCustomerBalanceFundingType, ?setupFutureUsage: Create'PaymentMethodOptionsCustomerBalanceSetupFutureUsage) =
+            {
+                BankTransfer = bankTransfer
+                FundingType = fundingType
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsCustomerBalance =
         let create
@@ -2234,6 +2763,12 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsDemoPaySetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsDemoPay with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsDemoPaySetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsDemoPay =
         let create
             (
@@ -2255,6 +2790,12 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsEpsSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsEps with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsEpsSetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsEps =
         let create
@@ -2278,6 +2819,12 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsFpxSetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsFpx with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsFpxSetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsFpx =
         let create
             (
@@ -2299,6 +2846,12 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsGiropaySetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsGiropay with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsGiropaySetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsGiropay =
         let create
@@ -2322,6 +2875,12 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsGrabpaySetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsGrabpay with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsGrabpaySetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsGrabpay =
         let create
             (
@@ -2343,6 +2902,12 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsIdealSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsIdeal with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsIdealSetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsIdeal =
         let create
@@ -2372,6 +2937,13 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsKakaoPaySetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsKakaoPay with
+        static member New(?captureMethod: Create'PaymentMethodOptionsKakaoPayCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsKakaoPaySetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsKakaoPay =
         let create
@@ -2405,6 +2977,13 @@ module CheckoutSessions =
             Date: string option
         }
 
+    type Create'PaymentMethodOptionsKlarnaSubscriptionsNextBilling with
+        static member New(?amount: int, ?date: string) =
+            {
+                Amount = amount
+                Date = date
+            }
+
     module Create'PaymentMethodOptionsKlarnaSubscriptionsNextBilling =
         let create
             (
@@ -2435,6 +3014,16 @@ module CheckoutSessions =
             [<Config.Form>]
             Reference: string option
         }
+
+    type Create'PaymentMethodOptionsKlarnaSubscriptions with
+        static member New(?interval: Create'PaymentMethodOptionsKlarnaSubscriptionsInterval, ?intervalCount: int, ?name: string, ?nextBilling: Create'PaymentMethodOptionsKlarnaSubscriptionsNextBilling, ?reference: string) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+                Name = name
+                NextBilling = nextBilling
+                Reference = reference
+            }
 
     module Create'PaymentMethodOptionsKlarnaSubscriptions =
         let create
@@ -2470,6 +3059,14 @@ module CheckoutSessions =
             Subscriptions: Choice<Create'PaymentMethodOptionsKlarnaSubscriptions list,string> option
         }
 
+    type Create'PaymentMethodOptionsKlarna with
+        static member New(?captureMethod: Create'PaymentMethodOptionsKlarnaCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsKlarnaSetupFutureUsage, ?subscriptions: Choice<Create'PaymentMethodOptionsKlarnaSubscriptions list,string>) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+                Subscriptions = subscriptions
+            }
+
     module Create'PaymentMethodOptionsKlarna =
         let create
             (
@@ -2498,6 +3095,13 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsKonbiniSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsKonbini with
+        static member New(?expiresAfterDays: int, ?setupFutureUsage: Create'PaymentMethodOptionsKonbiniSetupFutureUsage) =
+            {
+                ExpiresAfterDays = expiresAfterDays
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsKonbini =
         let create
@@ -2530,6 +3134,13 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsKrCardSetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsKrCard with
+        static member New(?captureMethod: Create'PaymentMethodOptionsKrCardCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsKrCardSetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsKrCard =
         let create
             (
@@ -2561,6 +3172,13 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsLinkSetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsLink with
+        static member New(?captureMethod: Create'PaymentMethodOptionsLinkCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsLinkSetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsLink =
         let create
             (
@@ -2590,6 +3208,13 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsMobilepaySetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsMobilepay with
+        static member New(?captureMethod: Create'PaymentMethodOptionsMobilepayCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsMobilepaySetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsMobilepay =
         let create
             (
@@ -2613,6 +3238,12 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsMultibancoSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsMultibanco with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsMultibancoSetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsMultibanco =
         let create
@@ -2643,6 +3274,13 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsNaverPaySetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsNaverPay with
+        static member New(?captureMethod: Create'PaymentMethodOptionsNaverPayCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsNaverPaySetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsNaverPay =
         let create
             (
@@ -2669,6 +3307,13 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsOxxoSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsOxxo with
+        static member New(?expiresAfterDays: int, ?setupFutureUsage: Create'PaymentMethodOptionsOxxoSetupFutureUsage) =
+            {
+                ExpiresAfterDays = expiresAfterDays
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsOxxo =
         let create
@@ -2697,6 +3342,13 @@ module CheckoutSessions =
             TosShownAndAccepted: bool option
         }
 
+    type Create'PaymentMethodOptionsP24 with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsP24SetupFutureUsage, ?tosShownAndAccepted: bool) =
+            {
+                SetupFutureUsage = setupFutureUsage
+                TosShownAndAccepted = tosShownAndAccepted
+            }
+
     module Create'PaymentMethodOptionsP24 =
         let create
             (
@@ -2717,6 +3369,12 @@ module CheckoutSessions =
             [<Config.Form>]
             CaptureMethod: Create'PaymentMethodOptionsPaycoCaptureMethod option
         }
+
+    type Create'PaymentMethodOptionsPayco with
+        static member New(?captureMethod: Create'PaymentMethodOptionsPaycoCaptureMethod) =
+            {
+                CaptureMethod = captureMethod
+            }
 
     module Create'PaymentMethodOptionsPayco =
         let create
@@ -2739,6 +3397,12 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsPaynowSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsPaynow with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsPaynowSetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsPaynow =
         let create
@@ -2801,6 +3465,16 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsPaypalSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsPaypal with
+        static member New(?captureMethod: Create'PaymentMethodOptionsPaypalCaptureMethod, ?preferredLocale: Create'PaymentMethodOptionsPaypalPreferredLocale, ?reference: string, ?riskCorrelationId: string, ?setupFutureUsage: Create'PaymentMethodOptionsPaypalSetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                PreferredLocale = preferredLocale
+                Reference = reference
+                RiskCorrelationId = riskCorrelationId
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsPaypal =
         let create
@@ -2872,6 +3546,18 @@ module CheckoutSessions =
             StartDate: Choice<string,string> option
         }
 
+    type Create'PaymentMethodOptionsPaytoMandateOptions with
+        static member New(?amount: Choice<int,string>, ?amountType: Create'PaymentMethodOptionsPaytoMandateOptionsAmountType, ?endDate: Choice<string,string>, ?paymentSchedule: Create'PaymentMethodOptionsPaytoMandateOptionsPaymentSchedule, ?paymentsPerPeriod: Choice<int,string>, ?purpose: Create'PaymentMethodOptionsPaytoMandateOptionsPurpose, ?startDate: Choice<string,string>) =
+            {
+                Amount = amount
+                AmountType = amountType
+                EndDate = endDate
+                PaymentSchedule = paymentSchedule
+                PaymentsPerPeriod = paymentsPerPeriod
+                Purpose = purpose
+                StartDate = startDate
+            }
+
     module Create'PaymentMethodOptionsPaytoMandateOptions =
         let create
             (
@@ -2910,6 +3596,13 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsPaytoSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsPayto with
+        static member New(?mandateOptions: Create'PaymentMethodOptionsPaytoMandateOptions, ?setupFutureUsage: Create'PaymentMethodOptionsPaytoSetupFutureUsage) =
+            {
+                MandateOptions = mandateOptions
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsPayto =
         let create
@@ -2970,6 +3663,19 @@ module CheckoutSessions =
             StartDate: string option
         }
 
+    type Create'PaymentMethodOptionsPixMandateOptions with
+        static member New(?amount: int, ?amountIncludesIof: Create'PaymentMethodOptionsPixMandateOptionsAmountIncludesIof, ?amountType: Create'PaymentMethodOptionsPixMandateOptionsAmountType, ?currency: IsoTypes.IsoCurrencyCode, ?endDate: string, ?paymentSchedule: Create'PaymentMethodOptionsPixMandateOptionsPaymentSchedule, ?reference: string, ?startDate: string) =
+            {
+                Amount = amount
+                AmountIncludesIof = amountIncludesIof
+                AmountType = amountType
+                Currency = currency
+                EndDate = endDate
+                PaymentSchedule = paymentSchedule
+                Reference = reference
+                StartDate = startDate
+            }
+
     module Create'PaymentMethodOptionsPixMandateOptions =
         let create
             (
@@ -3017,6 +3723,15 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsPixSetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsPix with
+        static member New(?amountIncludesIof: Create'PaymentMethodOptionsPixAmountIncludesIof, ?expiresAfterSeconds: int, ?mandateOptions: Create'PaymentMethodOptionsPixMandateOptions, ?setupFutureUsage: Create'PaymentMethodOptionsPixSetupFutureUsage) =
+            {
+                AmountIncludesIof = amountIncludesIof
+                ExpiresAfterSeconds = expiresAfterSeconds
+                MandateOptions = mandateOptions
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsPix =
         let create
             (
@@ -3052,6 +3767,13 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsRevolutPaySetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsRevolutPay with
+        static member New(?captureMethod: Create'PaymentMethodOptionsRevolutPayCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsRevolutPaySetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsRevolutPay =
         let create
             (
@@ -3073,6 +3795,12 @@ module CheckoutSessions =
             CaptureMethod: Create'PaymentMethodOptionsSamsungPayCaptureMethod option
         }
 
+    type Create'PaymentMethodOptionsSamsungPay with
+        static member New(?captureMethod: Create'PaymentMethodOptionsSamsungPayCaptureMethod) =
+            {
+                CaptureMethod = captureMethod
+            }
+
     module Create'PaymentMethodOptionsSamsungPay =
         let create
             (
@@ -3092,6 +3820,12 @@ module CheckoutSessions =
             CaptureMethod: Create'PaymentMethodOptionsSatispayCaptureMethod option
         }
 
+    type Create'PaymentMethodOptionsSatispay with
+        static member New(?captureMethod: Create'PaymentMethodOptionsSatispayCaptureMethod) =
+            {
+                CaptureMethod = captureMethod
+            }
+
     module Create'PaymentMethodOptionsSatispay =
         let create
             (
@@ -3108,6 +3842,12 @@ module CheckoutSessions =
             [<Config.Form>]
             ReferencePrefix: Choice<string,string> option
         }
+
+    type Create'PaymentMethodOptionsSepaDebitMandateOptions with
+        static member New(?referencePrefix: Choice<string,string>) =
+            {
+                ReferencePrefix = referencePrefix
+            }
 
     module Create'PaymentMethodOptionsSepaDebitMandateOptions =
         let create
@@ -3140,6 +3880,14 @@ module CheckoutSessions =
             TargetDate: string option
         }
 
+    type Create'PaymentMethodOptionsSepaDebit with
+        static member New(?mandateOptions: Create'PaymentMethodOptionsSepaDebitMandateOptions, ?setupFutureUsage: Create'PaymentMethodOptionsSepaDebitSetupFutureUsage, ?targetDate: string) =
+            {
+                MandateOptions = mandateOptions
+                SetupFutureUsage = setupFutureUsage
+                TargetDate = targetDate
+            }
+
     module Create'PaymentMethodOptionsSepaDebit =
         let create
             (
@@ -3166,6 +3914,12 @@ module CheckoutSessions =
             SetupFutureUsage: Create'PaymentMethodOptionsSofortSetupFutureUsage option
         }
 
+    type Create'PaymentMethodOptionsSofort with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsSofortSetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
+
     module Create'PaymentMethodOptionsSofort =
         let create
             (
@@ -3182,6 +3936,12 @@ module CheckoutSessions =
             [<Config.Form>]
             Reference: string option
         }
+
+    type Create'PaymentMethodOptionsSwish with
+        static member New(?reference: string) =
+            {
+                Reference = reference
+            }
 
     module Create'PaymentMethodOptionsSwish =
         let create
@@ -3204,6 +3964,12 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsTwintSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsTwint with
+        static member New(?setupFutureUsage: Create'PaymentMethodOptionsTwintSetupFutureUsage) =
+            {
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsTwint =
         let create
@@ -3235,6 +4001,15 @@ module CheckoutSessions =
             EndDate: DateTime option
         }
 
+    type Create'PaymentMethodOptionsUpiMandateOptions with
+        static member New(?amount: int, ?amountType: Create'PaymentMethodOptionsUpiMandateOptionsAmountType, ?description: string, ?endDate: DateTime) =
+            {
+                Amount = amount
+                AmountType = amountType
+                Description = description
+                EndDate = endDate
+            }
+
     module Create'PaymentMethodOptionsUpiMandateOptions =
         let create
             (
@@ -3264,6 +4039,13 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsUpiSetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsUpi with
+        static member New(?mandateOptions: Create'PaymentMethodOptionsUpiMandateOptions, ?setupFutureUsage: Create'PaymentMethodOptionsUpiSetupFutureUsage) =
+            {
+                MandateOptions = mandateOptions
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsUpi =
         let create
@@ -3297,6 +4079,13 @@ module CheckoutSessions =
             [<Config.Form>]
             Prefetch: Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsPrefetch list option
         }
+
+    type Create'PaymentMethodOptionsUsBankAccountFinancialConnections with
+        static member New(?permissions: Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsPermissions list, ?prefetch: Create'PaymentMethodOptionsUsBankAccountFinancialConnectionsPrefetch list) =
+            {
+                Permissions = permissions
+                Prefetch = prefetch
+            }
 
     module Create'PaymentMethodOptionsUsBankAccountFinancialConnections =
         let create
@@ -3338,6 +4127,15 @@ module CheckoutSessions =
             VerificationMethod: Create'PaymentMethodOptionsUsBankAccountVerificationMethod option
         }
 
+    type Create'PaymentMethodOptionsUsBankAccount with
+        static member New(?financialConnections: Create'PaymentMethodOptionsUsBankAccountFinancialConnections, ?setupFutureUsage: Create'PaymentMethodOptionsUsBankAccountSetupFutureUsage, ?targetDate: string, ?verificationMethod: Create'PaymentMethodOptionsUsBankAccountVerificationMethod) =
+            {
+                FinancialConnections = financialConnections
+                SetupFutureUsage = setupFutureUsage
+                TargetDate = targetDate
+                VerificationMethod = verificationMethod
+            }
+
     module Create'PaymentMethodOptionsUsBankAccount =
         let create
             (
@@ -3376,6 +4174,14 @@ module CheckoutSessions =
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentMethodOptionsWechatPaySetupFutureUsage option
         }
+
+    type Create'PaymentMethodOptionsWechatPay with
+        static member New(?appId: string, ?client: Create'PaymentMethodOptionsWechatPayClient, ?setupFutureUsage: Create'PaymentMethodOptionsWechatPaySetupFutureUsage) =
+            {
+                AppId = appId
+                Client = client
+                SetupFutureUsage = setupFutureUsage
+            }
 
     module Create'PaymentMethodOptionsWechatPay =
         let create
@@ -3535,6 +4341,58 @@ module CheckoutSessions =
             [<Config.Form>]
             WechatPay: Create'PaymentMethodOptionsWechatPay option
         }
+
+    type Create'PaymentMethodOptions with
+        static member New(?acssDebit: Create'PaymentMethodOptionsAcssDebit, ?affirm: Create'PaymentMethodOptionsAffirm, ?afterpayClearpay: Create'PaymentMethodOptionsAfterpayClearpay, ?alipay: Create'PaymentMethodOptionsAlipay, ?alma: Create'PaymentMethodOptionsAlma, ?amazonPay: Create'PaymentMethodOptionsAmazonPay, ?auBecsDebit: Create'PaymentMethodOptionsAuBecsDebit, ?bacsDebit: Create'PaymentMethodOptionsBacsDebit, ?bancontact: Create'PaymentMethodOptionsBancontact, ?billie: Create'PaymentMethodOptionsBillie, ?boleto: Create'PaymentMethodOptionsBoleto, ?card: Create'PaymentMethodOptionsCard, ?cashapp: Create'PaymentMethodOptionsCashapp, ?crypto: Create'PaymentMethodOptionsCrypto, ?customerBalance: Create'PaymentMethodOptionsCustomerBalance, ?demoPay: Create'PaymentMethodOptionsDemoPay, ?eps: Create'PaymentMethodOptionsEps, ?fpx: Create'PaymentMethodOptionsFpx, ?giropay: Create'PaymentMethodOptionsGiropay, ?grabpay: Create'PaymentMethodOptionsGrabpay, ?ideal: Create'PaymentMethodOptionsIdeal, ?kakaoPay: Create'PaymentMethodOptionsKakaoPay, ?klarna: Create'PaymentMethodOptionsKlarna, ?konbini: Create'PaymentMethodOptionsKonbini, ?krCard: Create'PaymentMethodOptionsKrCard, ?link: Create'PaymentMethodOptionsLink, ?mobilepay: Create'PaymentMethodOptionsMobilepay, ?multibanco: Create'PaymentMethodOptionsMultibanco, ?naverPay: Create'PaymentMethodOptionsNaverPay, ?oxxo: Create'PaymentMethodOptionsOxxo, ?p24: Create'PaymentMethodOptionsP24, ?payByBank: string, ?payco: Create'PaymentMethodOptionsPayco, ?paynow: Create'PaymentMethodOptionsPaynow, ?paypal: Create'PaymentMethodOptionsPaypal, ?payto: Create'PaymentMethodOptionsPayto, ?pix: Create'PaymentMethodOptionsPix, ?revolutPay: Create'PaymentMethodOptionsRevolutPay, ?samsungPay: Create'PaymentMethodOptionsSamsungPay, ?satispay: Create'PaymentMethodOptionsSatispay, ?sepaDebit: Create'PaymentMethodOptionsSepaDebit, ?sofort: Create'PaymentMethodOptionsSofort, ?swish: Create'PaymentMethodOptionsSwish, ?twint: Create'PaymentMethodOptionsTwint, ?upi: Create'PaymentMethodOptionsUpi, ?usBankAccount: Create'PaymentMethodOptionsUsBankAccount, ?wechatPay: Create'PaymentMethodOptionsWechatPay) =
+            {
+                AcssDebit = acssDebit
+                Affirm = affirm
+                AfterpayClearpay = afterpayClearpay
+                Alipay = alipay
+                Alma = alma
+                AmazonPay = amazonPay
+                AuBecsDebit = auBecsDebit
+                BacsDebit = bacsDebit
+                Bancontact = bancontact
+                Billie = billie
+                Boleto = boleto
+                Card = card
+                Cashapp = cashapp
+                Crypto = crypto
+                CustomerBalance = customerBalance
+                DemoPay = demoPay
+                Eps = eps
+                Fpx = fpx
+                Giropay = giropay
+                Grabpay = grabpay
+                Ideal = ideal
+                KakaoPay = kakaoPay
+                Klarna = klarna
+                Konbini = konbini
+                KrCard = krCard
+                Link = link
+                Mobilepay = mobilepay
+                Multibanco = multibanco
+                NaverPay = naverPay
+                Oxxo = oxxo
+                P24 = p24
+                PayByBank = payByBank
+                Payco = payco
+                Paynow = paynow
+                Paypal = paypal
+                Payto = payto
+                Pix = pix
+                RevolutPay = revolutPay
+                SamsungPay = samsungPay
+                Satispay = satispay
+                SepaDebit = sepaDebit
+                Sofort = sofort
+                Swish = swish
+                Twint = twint
+                Upi = upi
+                UsBankAccount = usBankAccount
+                WechatPay = wechatPay
+            }
 
     module Create'PaymentMethodOptions =
         let create
@@ -3705,6 +4563,12 @@ module CheckoutSessions =
             UpdateShippingDetails: Create'PermissionsUpdateShippingDetails option
         }
 
+    type Create'Permissions with
+        static member New(?updateShippingDetails: Create'PermissionsUpdateShippingDetails) =
+            {
+                UpdateShippingDetails = updateShippingDetails
+            }
+
     module Create'Permissions =
         let create
             (
@@ -3722,6 +4586,12 @@ module CheckoutSessions =
             [<Config.Form>]
             Enabled: bool option
         }
+
+    type Create'PhoneNumberCollection with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
 
     module Create'PhoneNumberCollection =
         let create
@@ -3764,6 +4634,14 @@ module CheckoutSessions =
             PaymentMethodSave: Create'SavedPaymentMethodOptionsPaymentMethodSave option
         }
 
+    type Create'SavedPaymentMethodOptions with
+        static member New(?allowRedisplayFilters: Create'SavedPaymentMethodOptionsAllowRedisplayFilters list, ?paymentMethodRemove: Create'SavedPaymentMethodOptionsPaymentMethodRemove, ?paymentMethodSave: Create'SavedPaymentMethodOptionsPaymentMethodSave) =
+            {
+                AllowRedisplayFilters = allowRedisplayFilters
+                PaymentMethodRemove = paymentMethodRemove
+                PaymentMethodSave = paymentMethodSave
+            }
+
     module Create'SavedPaymentMethodOptions =
         let create
             (
@@ -3790,6 +4668,14 @@ module CheckoutSessions =
             [<Config.Form>]
             OnBehalfOf: string option
         }
+
+    type Create'SetupIntentData with
+        static member New(?description: string, ?metadata: Map<string, string>, ?onBehalfOf: string) =
+            {
+                Description = description
+                Metadata = metadata
+                OnBehalfOf = onBehalfOf
+            }
 
     module Create'SetupIntentData =
         let create
@@ -4053,6 +4939,12 @@ module CheckoutSessions =
             AllowedCountries: Create'ShippingAddressCollectionAllowedCountries list option
         }
 
+    type Create'ShippingAddressCollection with
+        static member New(?allowedCountries: Create'ShippingAddressCollectionAllowedCountries list) =
+            {
+                AllowedCountries = allowedCountries
+            }
+
     module Create'ShippingAddressCollection =
         let create
             (
@@ -4079,6 +4971,13 @@ module CheckoutSessions =
             [<Config.Form>]
             Value: int option
         }
+
+    type Create'ShippingOptionsShippingRateDataDeliveryEstimateMaximum with
+        static member New(?unit: Create'ShippingOptionsShippingRateDataDeliveryEstimateMaximumUnit, ?value: int) =
+            {
+                Unit = unit
+                Value = value
+            }
 
     module Create'ShippingOptionsShippingRateDataDeliveryEstimateMaximum =
         let create
@@ -4109,6 +5008,13 @@ module CheckoutSessions =
             Value: int option
         }
 
+    type Create'ShippingOptionsShippingRateDataDeliveryEstimateMinimum with
+        static member New(?unit: Create'ShippingOptionsShippingRateDataDeliveryEstimateMinimumUnit, ?value: int) =
+            {
+                Unit = unit
+                Value = value
+            }
+
     module Create'ShippingOptionsShippingRateDataDeliveryEstimateMinimum =
         let create
             (
@@ -4130,6 +5036,13 @@ module CheckoutSessions =
             [<Config.Form>]
             Minimum: Create'ShippingOptionsShippingRateDataDeliveryEstimateMinimum option
         }
+
+    type Create'ShippingOptionsShippingRateDataDeliveryEstimate with
+        static member New(?maximum: Create'ShippingOptionsShippingRateDataDeliveryEstimateMaximum, ?minimum: Create'ShippingOptionsShippingRateDataDeliveryEstimateMinimum) =
+            {
+                Maximum = maximum
+                Minimum = minimum
+            }
 
     module Create'ShippingOptionsShippingRateDataDeliveryEstimate =
         let create
@@ -4155,6 +5068,14 @@ module CheckoutSessions =
             [<Config.Form>]
             CurrencyOptions: Map<string, string> option
         }
+
+    type Create'ShippingOptionsShippingRateDataFixedAmount with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>) =
+            {
+                Amount = amount
+                Currency = currency
+                CurrencyOptions = currencyOptions
+            }
 
     module Create'ShippingOptionsShippingRateDataFixedAmount =
         let create
@@ -4202,6 +5123,18 @@ module CheckoutSessions =
             Type: Create'ShippingOptionsShippingRateDataType option
         }
 
+    type Create'ShippingOptionsShippingRateData with
+        static member New(?deliveryEstimate: Create'ShippingOptionsShippingRateDataDeliveryEstimate, ?displayName: string, ?fixedAmount: Create'ShippingOptionsShippingRateDataFixedAmount, ?metadata: Map<string, string>, ?taxBehavior: Create'ShippingOptionsShippingRateDataTaxBehavior, ?taxCode: string, ?type': Create'ShippingOptionsShippingRateDataType) =
+            {
+                DeliveryEstimate = deliveryEstimate
+                DisplayName = displayName
+                FixedAmount = fixedAmount
+                Metadata = metadata
+                TaxBehavior = taxBehavior
+                TaxCode = taxCode
+                Type = type'
+            }
+
     module Create'ShippingOptionsShippingRateData =
         let create
             (
@@ -4211,7 +5144,7 @@ module CheckoutSessions =
                 metadata: Map<string, string> option,
                 taxBehavior: Create'ShippingOptionsShippingRateDataTaxBehavior option,
                 taxCode: string option,
-                ``type``: Create'ShippingOptionsShippingRateDataType option
+                type': Create'ShippingOptionsShippingRateDataType option
             ) : Create'ShippingOptionsShippingRateData
             =
             {
@@ -4221,7 +5154,7 @@ module CheckoutSessions =
               Metadata = metadata
               TaxBehavior = taxBehavior
               TaxCode = taxCode
-              Type = ``type``
+              Type = type'
             }
 
     type Create'ShippingOptions =
@@ -4233,6 +5166,13 @@ module CheckoutSessions =
             [<Config.Form>]
             ShippingRateData: Create'ShippingOptionsShippingRateData option
         }
+
+    type Create'ShippingOptions with
+        static member New(?shippingRate: string, ?shippingRateData: Create'ShippingOptionsShippingRateData) =
+            {
+                ShippingRate = shippingRate
+                ShippingRateData = shippingRateData
+            }
 
     module Create'ShippingOptions =
         let create
@@ -4264,6 +5204,12 @@ module CheckoutSessions =
             ProrationDiscounts: Create'SubscriptionDataBillingModeFlexibleProrationDiscounts option
         }
 
+    type Create'SubscriptionDataBillingModeFlexible with
+        static member New(?prorationDiscounts: Create'SubscriptionDataBillingModeFlexibleProrationDiscounts) =
+            {
+                ProrationDiscounts = prorationDiscounts
+            }
+
     module Create'SubscriptionDataBillingModeFlexible =
         let create
             (
@@ -4288,16 +5234,23 @@ module CheckoutSessions =
             Type: Create'SubscriptionDataBillingModeType option
         }
 
+    type Create'SubscriptionDataBillingMode with
+        static member New(?flexible: Create'SubscriptionDataBillingModeFlexible, ?type': Create'SubscriptionDataBillingModeType) =
+            {
+                Flexible = flexible
+                Type = type'
+            }
+
     module Create'SubscriptionDataBillingMode =
         let create
             (
                 flexible: Create'SubscriptionDataBillingModeFlexible option,
-                ``type``: Create'SubscriptionDataBillingModeType option
+                type': Create'SubscriptionDataBillingModeType option
             ) : Create'SubscriptionDataBillingMode
             =
             {
               Flexible = flexible
-              Type = ``type``
+              Type = type'
             }
 
     type Create'SubscriptionDataInvoiceSettingsIssuerType =
@@ -4314,16 +5267,23 @@ module CheckoutSessions =
             Type: Create'SubscriptionDataInvoiceSettingsIssuerType option
         }
 
+    type Create'SubscriptionDataInvoiceSettingsIssuer with
+        static member New(?account: string, ?type': Create'SubscriptionDataInvoiceSettingsIssuerType) =
+            {
+                Account = account
+                Type = type'
+            }
+
     module Create'SubscriptionDataInvoiceSettingsIssuer =
         let create
             (
                 account: string option,
-                ``type``: Create'SubscriptionDataInvoiceSettingsIssuerType option
+                type': Create'SubscriptionDataInvoiceSettingsIssuerType option
             ) : Create'SubscriptionDataInvoiceSettingsIssuer
             =
             {
               Account = account
-              Type = ``type``
+              Type = type'
             }
 
     type Create'SubscriptionDataInvoiceSettings =
@@ -4332,6 +5292,12 @@ module CheckoutSessions =
             [<Config.Form>]
             Issuer: Create'SubscriptionDataInvoiceSettingsIssuer option
         }
+
+    type Create'SubscriptionDataInvoiceSettings with
+        static member New(?issuer: Create'SubscriptionDataInvoiceSettingsIssuer) =
+            {
+                Issuer = issuer
+            }
 
     module Create'SubscriptionDataInvoiceSettings =
         let create
@@ -4359,6 +5325,13 @@ module CheckoutSessions =
             IntervalCount: int option
         }
 
+    type Create'SubscriptionDataPendingInvoiceItemInterval with
+        static member New(?interval: Create'SubscriptionDataPendingInvoiceItemIntervalInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
     module Create'SubscriptionDataPendingInvoiceItemInterval =
         let create
             (
@@ -4385,6 +5358,13 @@ module CheckoutSessions =
             Destination: string option
         }
 
+    type Create'SubscriptionDataTransferData with
+        static member New(?amountPercent: decimal, ?destination: string) =
+            {
+                AmountPercent = amountPercent
+                Destination = destination
+            }
+
     module Create'SubscriptionDataTransferData =
         let create
             (
@@ -4409,6 +5389,12 @@ module CheckoutSessions =
             MissingPaymentMethod: Create'SubscriptionDataTrialSettingsEndBehaviorMissingPaymentMethod option
         }
 
+    type Create'SubscriptionDataTrialSettingsEndBehavior with
+        static member New(?missingPaymentMethod: Create'SubscriptionDataTrialSettingsEndBehaviorMissingPaymentMethod) =
+            {
+                MissingPaymentMethod = missingPaymentMethod
+            }
+
     module Create'SubscriptionDataTrialSettingsEndBehavior =
         let create
             (
@@ -4425,6 +5411,12 @@ module CheckoutSessions =
             [<Config.Form>]
             EndBehavior: Create'SubscriptionDataTrialSettingsEndBehavior option
         }
+
+    type Create'SubscriptionDataTrialSettings with
+        static member New(?endBehavior: Create'SubscriptionDataTrialSettingsEndBehavior) =
+            {
+                EndBehavior = endBehavior
+            }
 
     module Create'SubscriptionDataTrialSettings =
         let create
@@ -4486,6 +5478,25 @@ module CheckoutSessions =
             TrialSettings: Create'SubscriptionDataTrialSettings option
         }
 
+    type Create'SubscriptionData with
+        static member New(?applicationFeePercent: decimal, ?billingCycleAnchor: DateTime, ?billingMode: Create'SubscriptionDataBillingMode, ?defaultTaxRates: string list, ?description: string, ?invoiceSettings: Create'SubscriptionDataInvoiceSettings, ?metadata: Map<string, string>, ?onBehalfOf: string, ?pendingInvoiceItemInterval: Create'SubscriptionDataPendingInvoiceItemInterval, ?prorationBehavior: Create'SubscriptionDataProrationBehavior, ?transferData: Create'SubscriptionDataTransferData, ?trialEnd: DateTime, ?trialPeriodDays: int, ?trialSettings: Create'SubscriptionDataTrialSettings) =
+            {
+                ApplicationFeePercent = applicationFeePercent
+                BillingCycleAnchor = billingCycleAnchor
+                BillingMode = billingMode
+                DefaultTaxRates = defaultTaxRates
+                Description = description
+                InvoiceSettings = invoiceSettings
+                Metadata = metadata
+                OnBehalfOf = onBehalfOf
+                PendingInvoiceItemInterval = pendingInvoiceItemInterval
+                ProrationBehavior = prorationBehavior
+                TransferData = transferData
+                TrialEnd = trialEnd
+                TrialPeriodDays = trialPeriodDays
+                TrialSettings = trialSettings
+            }
+
     module Create'SubscriptionData =
         let create
             (
@@ -4536,6 +5547,13 @@ module CheckoutSessions =
             Required: Create'TaxIdCollectionRequired option
         }
 
+    type Create'TaxIdCollection with
+        static member New(?enabled: bool, ?required: Create'TaxIdCollectionRequired) =
+            {
+                Enabled = enabled
+                Required = required
+            }
+
     module Create'TaxIdCollection =
         let create
             (
@@ -4565,6 +5583,12 @@ module CheckoutSessions =
             Display: Create'WalletOptionsLinkDisplay option
         }
 
+    type Create'WalletOptionsLink with
+        static member New(?display: Create'WalletOptionsLinkDisplay) =
+            {
+                Display = display
+            }
+
     module Create'WalletOptionsLink =
         let create
             (
@@ -4581,6 +5605,12 @@ module CheckoutSessions =
             [<Config.Form>]
             Link: Create'WalletOptionsLink option
         }
+
+    type Create'WalletOptions with
+        static member New(?link: Create'WalletOptionsLink) =
+            {
+                Link = link
+            }
 
     module Create'WalletOptions =
         let create
@@ -4799,6 +5829,62 @@ module CheckoutSessions =
             WalletOptions: Create'WalletOptions option
         }
 
+    type CreateOptions with
+        static member New(?adaptivePricing: Create'AdaptivePricing, ?afterExpiration: Create'AfterExpiration, ?allowPromotionCodes: bool, ?automaticTax: Create'AutomaticTax, ?billingAddressCollection: Create'BillingAddressCollection, ?brandingSettings: Create'BrandingSettings, ?cancelUrl: string, ?clientReferenceId: string, ?consentCollection: Create'ConsentCollection, ?currency: IsoTypes.IsoCurrencyCode, ?customFields: Create'CustomFields list, ?customText: Create'CustomText, ?customer: string, ?customerAccount: string, ?customerCreation: Create'CustomerCreation, ?customerEmail: string, ?customerUpdate: Create'CustomerUpdate, ?discounts: Create'Discounts list, ?excludedPaymentMethodTypes: Create'ExcludedPaymentMethodTypes list, ?expand: string list, ?expiresAt: DateTime, ?integrationIdentifier: string, ?invoiceCreation: Create'InvoiceCreation, ?lineItems: Create'LineItems list, ?locale: Create'Locale, ?managedPayments: Create'ManagedPayments, ?metadata: Map<string, string>, ?mode: Create'Mode, ?nameCollection: Create'NameCollection, ?optionalItems: Create'OptionalItems list, ?originContext: Create'OriginContext, ?paymentIntentData: Create'PaymentIntentData, ?paymentMethodCollection: Create'PaymentMethodCollection, ?paymentMethodConfiguration: string, ?paymentMethodData: Create'PaymentMethodData, ?paymentMethodOptions: Create'PaymentMethodOptions, ?paymentMethodTypes: Create'PaymentMethodTypes list, ?permissions: Create'Permissions, ?phoneNumberCollection: Create'PhoneNumberCollection, ?redirectOnCompletion: Create'RedirectOnCompletion, ?returnUrl: string, ?savedPaymentMethodOptions: Create'SavedPaymentMethodOptions, ?setupIntentData: Create'SetupIntentData, ?shippingAddressCollection: Create'ShippingAddressCollection, ?shippingOptions: Create'ShippingOptions list, ?submitType: Create'SubmitType, ?subscriptionData: Create'SubscriptionData, ?successUrl: string, ?taxIdCollection: Create'TaxIdCollection, ?uiMode: Create'UiMode, ?walletOptions: Create'WalletOptions) =
+            {
+                AdaptivePricing = adaptivePricing
+                AfterExpiration = afterExpiration
+                AllowPromotionCodes = allowPromotionCodes
+                AutomaticTax = automaticTax
+                BillingAddressCollection = billingAddressCollection
+                BrandingSettings = brandingSettings
+                CancelUrl = cancelUrl
+                ClientReferenceId = clientReferenceId
+                ConsentCollection = consentCollection
+                Currency = currency
+                CustomFields = customFields
+                CustomText = customText
+                Customer = customer
+                CustomerAccount = customerAccount
+                CustomerCreation = customerCreation
+                CustomerEmail = customerEmail
+                CustomerUpdate = customerUpdate
+                Discounts = discounts
+                ExcludedPaymentMethodTypes = excludedPaymentMethodTypes
+                Expand = expand
+                ExpiresAt = expiresAt
+                IntegrationIdentifier = integrationIdentifier
+                InvoiceCreation = invoiceCreation
+                LineItems = lineItems
+                Locale = locale
+                ManagedPayments = managedPayments
+                Metadata = metadata
+                Mode = mode
+                NameCollection = nameCollection
+                OptionalItems = optionalItems
+                OriginContext = originContext
+                PaymentIntentData = paymentIntentData
+                PaymentMethodCollection = paymentMethodCollection
+                PaymentMethodConfiguration = paymentMethodConfiguration
+                PaymentMethodData = paymentMethodData
+                PaymentMethodOptions = paymentMethodOptions
+                PaymentMethodTypes = paymentMethodTypes
+                Permissions = permissions
+                PhoneNumberCollection = phoneNumberCollection
+                RedirectOnCompletion = redirectOnCompletion
+                ReturnUrl = returnUrl
+                SavedPaymentMethodOptions = savedPaymentMethodOptions
+                SetupIntentData = setupIntentData
+                ShippingAddressCollection = shippingAddressCollection
+                ShippingOptions = shippingOptions
+                SubmitType = submitType
+                SubscriptionData = subscriptionData
+                SuccessUrl = successUrl
+                TaxIdCollection = taxIdCollection
+                UiMode = uiMode
+                WalletOptions = walletOptions
+            }
+
     module CreateOptions =
         let create
             (
@@ -4918,6 +6004,13 @@ module CheckoutSessions =
             Session: string
         }
 
+    type RetrieveOptions with
+        static member New(session: string, ?expand: string list) =
+            {
+                Session = session
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -4951,6 +6044,17 @@ module CheckoutSessions =
             State: string option
         }
 
+    type Update'CollectedInformationShippingDetailsAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Update'CollectedInformationShippingDetailsAddress =
         let create
             (
@@ -4981,6 +6085,13 @@ module CheckoutSessions =
             Name: string option
         }
 
+    type Update'CollectedInformationShippingDetails with
+        static member New(?address: Update'CollectedInformationShippingDetailsAddress, ?name: string) =
+            {
+                Address = address
+                Name = name
+            }
+
     module Update'CollectedInformationShippingDetails =
         let create
             (
@@ -4999,6 +6110,12 @@ module CheckoutSessions =
             [<Config.Form>]
             ShippingDetails: Update'CollectedInformationShippingDetails option
         }
+
+    type Update'CollectedInformation with
+        static member New(?shippingDetails: Update'CollectedInformationShippingDetails) =
+            {
+                ShippingDetails = shippingDetails
+            }
 
     module Update'CollectedInformation =
         let create
@@ -5022,6 +6139,14 @@ module CheckoutSessions =
             [<Config.Form>]
             Minimum: int option
         }
+
+    type Update'LineItemsAdjustableQuantity with
+        static member New(?enabled: bool, ?maximum: int, ?minimum: int) =
+            {
+                Enabled = enabled
+                Maximum = maximum
+                Minimum = minimum
+            }
 
     module Update'LineItemsAdjustableQuantity =
         let create
@@ -5059,6 +6184,17 @@ module CheckoutSessions =
             UnitLabel: string option
         }
 
+    type Update'LineItemsPriceDataProductData with
+        static member New(?description: string, ?images: string list, ?metadata: Map<string, string>, ?name: string, ?taxCode: string, ?unitLabel: string) =
+            {
+                Description = description
+                Images = images
+                Metadata = metadata
+                Name = name
+                TaxCode = taxCode
+                UnitLabel = unitLabel
+            }
+
     module Update'LineItemsPriceDataProductData =
         let create
             (
@@ -5094,6 +6230,13 @@ module CheckoutSessions =
             [<Config.Form>]
             IntervalCount: int option
         }
+
+    type Update'LineItemsPriceDataRecurring with
+        static member New(?interval: Update'LineItemsPriceDataRecurringInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
 
     module Update'LineItemsPriceDataRecurring =
         let create
@@ -5136,6 +6279,18 @@ module CheckoutSessions =
             [<Config.Form>]
             UnitAmountDecimal: string option
         }
+
+    type Update'LineItemsPriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?product: string, ?productData: Update'LineItemsPriceDataProductData, ?recurring: Update'LineItemsPriceDataRecurring, ?taxBehavior: Update'LineItemsPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                Product = product
+                ProductData = productData
+                Recurring = recurring
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
 
     module Update'LineItemsPriceData =
         let create
@@ -5184,6 +6339,18 @@ module CheckoutSessions =
             TaxRates: Choice<string list,string> option
         }
 
+    type Update'LineItems with
+        static member New(?adjustableQuantity: Update'LineItemsAdjustableQuantity, ?id: string, ?metadata: Map<string, string>, ?price: string, ?priceData: Update'LineItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+            {
+                AdjustableQuantity = adjustableQuantity
+                Id = id
+                Metadata = metadata
+                Price = price
+                PriceData = priceData
+                Quantity = quantity
+                TaxRates = taxRates
+            }
+
     module Update'LineItems =
         let create
             (
@@ -5223,6 +6390,13 @@ module CheckoutSessions =
             Value: int option
         }
 
+    type Update'ShippingOptionsShippingRateDataDeliveryEstimateMaximum with
+        static member New(?unit: Update'ShippingOptionsShippingRateDataDeliveryEstimateMaximumUnit, ?value: int) =
+            {
+                Unit = unit
+                Value = value
+            }
+
     module Update'ShippingOptionsShippingRateDataDeliveryEstimateMaximum =
         let create
             (
@@ -5252,6 +6426,13 @@ module CheckoutSessions =
             Value: int option
         }
 
+    type Update'ShippingOptionsShippingRateDataDeliveryEstimateMinimum with
+        static member New(?unit: Update'ShippingOptionsShippingRateDataDeliveryEstimateMinimumUnit, ?value: int) =
+            {
+                Unit = unit
+                Value = value
+            }
+
     module Update'ShippingOptionsShippingRateDataDeliveryEstimateMinimum =
         let create
             (
@@ -5273,6 +6454,13 @@ module CheckoutSessions =
             [<Config.Form>]
             Minimum: Update'ShippingOptionsShippingRateDataDeliveryEstimateMinimum option
         }
+
+    type Update'ShippingOptionsShippingRateDataDeliveryEstimate with
+        static member New(?maximum: Update'ShippingOptionsShippingRateDataDeliveryEstimateMaximum, ?minimum: Update'ShippingOptionsShippingRateDataDeliveryEstimateMinimum) =
+            {
+                Maximum = maximum
+                Minimum = minimum
+            }
 
     module Update'ShippingOptionsShippingRateDataDeliveryEstimate =
         let create
@@ -5298,6 +6486,14 @@ module CheckoutSessions =
             [<Config.Form>]
             CurrencyOptions: Map<string, string> option
         }
+
+    type Update'ShippingOptionsShippingRateDataFixedAmount with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>) =
+            {
+                Amount = amount
+                Currency = currency
+                CurrencyOptions = currencyOptions
+            }
 
     module Update'ShippingOptionsShippingRateDataFixedAmount =
         let create
@@ -5345,6 +6541,18 @@ module CheckoutSessions =
             Type: Update'ShippingOptionsShippingRateDataType option
         }
 
+    type Update'ShippingOptionsShippingRateData with
+        static member New(?deliveryEstimate: Update'ShippingOptionsShippingRateDataDeliveryEstimate, ?displayName: string, ?fixedAmount: Update'ShippingOptionsShippingRateDataFixedAmount, ?metadata: Map<string, string>, ?taxBehavior: Update'ShippingOptionsShippingRateDataTaxBehavior, ?taxCode: string, ?type': Update'ShippingOptionsShippingRateDataType) =
+            {
+                DeliveryEstimate = deliveryEstimate
+                DisplayName = displayName
+                FixedAmount = fixedAmount
+                Metadata = metadata
+                TaxBehavior = taxBehavior
+                TaxCode = taxCode
+                Type = type'
+            }
+
     module Update'ShippingOptionsShippingRateData =
         let create
             (
@@ -5354,7 +6562,7 @@ module CheckoutSessions =
                 metadata: Map<string, string> option,
                 taxBehavior: Update'ShippingOptionsShippingRateDataTaxBehavior option,
                 taxCode: string option,
-                ``type``: Update'ShippingOptionsShippingRateDataType option
+                type': Update'ShippingOptionsShippingRateDataType option
             ) : Update'ShippingOptionsShippingRateData
             =
             {
@@ -5364,7 +6572,7 @@ module CheckoutSessions =
               Metadata = metadata
               TaxBehavior = taxBehavior
               TaxCode = taxCode
-              Type = ``type``
+              Type = type'
             }
 
     type Update'ShippingOptions =
@@ -5376,6 +6584,13 @@ module CheckoutSessions =
             [<Config.Form>]
             ShippingRateData: Update'ShippingOptionsShippingRateData option
         }
+
+    type Update'ShippingOptions with
+        static member New(?shippingRate: string, ?shippingRateData: Update'ShippingOptionsShippingRateData) =
+            {
+                ShippingRate = shippingRate
+                ShippingRateData = shippingRateData
+            }
 
     module Update'ShippingOptions =
         let create
@@ -5415,6 +6630,17 @@ module CheckoutSessions =
             [<Config.Form>]
             ShippingOptions: Choice<Update'ShippingOptions list,string> option
         }
+
+    type UpdateOptions with
+        static member New(session: string, ?collectedInformation: Update'CollectedInformation, ?expand: string list, ?lineItems: Update'LineItems list, ?metadata: Map<string, string>, ?shippingOptions: Choice<Update'ShippingOptions list,string>) =
+            {
+                Session = session
+                CollectedInformation = collectedInformation
+                Expand = expand
+                LineItems = lineItems
+                Metadata = metadata
+                ShippingOptions = shippingOptions
+            }
 
     module UpdateOptions =
         let create
@@ -5465,6 +6691,13 @@ module CheckoutSessionsExpire =
             Expand: string list option
         }
 
+    type ExpireOptions with
+        static member New(session: string, ?expand: string list) =
+            {
+                Session = session
+                Expand = expand
+            }
+
     module ExpireOptions =
         let create
             (
@@ -5501,6 +6734,16 @@ module CheckoutSessionsLineItems =
             [<Config.Query>]
             StartingAfter: string option
         }
+
+    type ListLineItemsOptions with
+        static member New(session: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Session = session
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
 
     module ListLineItemsOptions =
         let create

@@ -43,6 +43,21 @@ module Products =
             Url: string option
         }
 
+    type ListOptions with
+        static member New(?active: bool, ?created: int, ?endingBefore: string, ?expand: string list, ?ids: string list, ?limit: int, ?shippable: bool, ?startingAfter: string, ?type': string, ?url: string) =
+            {
+                Active = active
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Ids = ids
+                Limit = limit
+                Shippable = shippable
+                StartingAfter = startingAfter
+                Type = type'
+                Url = url
+            }
+
     module ListOptions =
         let create
             (
@@ -54,7 +69,7 @@ module Products =
                 limit: int option,
                 shippable: bool option,
                 startingAfter: string option,
-                ``type``: string option,
+                type': string option,
                 url: string option
             ) : ListOptions
             =
@@ -67,7 +82,7 @@ module Products =
               Limit = limit
               Shippable = shippable
               StartingAfter = startingAfter
-              Type = ``type``
+              Type = type'
               Url = url
             }
 
@@ -86,6 +101,15 @@ module Products =
             [<Config.Form>]
             Preset: int option
         }
+
+    type Create'DefaultPriceDataCustomUnitAmount with
+        static member New(?enabled: bool, ?maximum: int, ?minimum: int, ?preset: int) =
+            {
+                Enabled = enabled
+                Maximum = maximum
+                Minimum = minimum
+                Preset = preset
+            }
 
     module Create'DefaultPriceDataCustomUnitAmount =
         let create
@@ -118,6 +142,13 @@ module Products =
             [<Config.Form>]
             IntervalCount: int option
         }
+
+    type Create'DefaultPriceDataRecurring with
+        static member New(?interval: Create'DefaultPriceDataRecurringInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
 
     module Create'DefaultPriceDataRecurring =
         let create
@@ -164,6 +195,19 @@ module Products =
             UnitAmountDecimal: string option
         }
 
+    type Create'DefaultPriceData with
+        static member New(?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>, ?customUnitAmount: Create'DefaultPriceDataCustomUnitAmount, ?metadata: Map<string, string>, ?recurring: Create'DefaultPriceDataRecurring, ?taxBehavior: Create'DefaultPriceDataTaxBehavior, ?unitAmount: int, ?unitAmountDecimal: string) =
+            {
+                Currency = currency
+                CurrencyOptions = currencyOptions
+                CustomUnitAmount = customUnitAmount
+                Metadata = metadata
+                Recurring = recurring
+                TaxBehavior = taxBehavior
+                UnitAmount = unitAmount
+                UnitAmountDecimal = unitAmountDecimal
+            }
+
     module Create'DefaultPriceData =
         let create
             (
@@ -195,6 +239,12 @@ module Products =
             Name: string option
         }
 
+    type Create'MarketingFeatures with
+        static member New(?name: string) =
+            {
+                Name = name
+            }
+
     module Create'MarketingFeatures =
         let create
             (
@@ -220,6 +270,15 @@ module Products =
             [<Config.Form>]
             Width: decimal option
         }
+
+    type Create'PackageDimensions with
+        static member New(?height: decimal, ?length: decimal, ?weight: decimal, ?width: decimal) =
+            {
+                Height = height
+                Length = length
+                Weight = weight
+                Width = width
+            }
 
     module Create'PackageDimensions =
         let create
@@ -295,6 +354,27 @@ module Products =
             Url: string option
         }
 
+    type CreateOptions with
+        static member New(name: string, ?active: bool, ?defaultPriceData: Create'DefaultPriceData, ?description: string, ?expand: string list, ?id: string, ?images: string list, ?marketingFeatures: Create'MarketingFeatures list, ?metadata: Map<string, string>, ?packageDimensions: Create'PackageDimensions, ?shippable: bool, ?statementDescriptor: string, ?taxCode: string, ?type': Create'Type, ?unitLabel: string, ?url: string) =
+            {
+                Name = name
+                Active = active
+                DefaultPriceData = defaultPriceData
+                Description = description
+                Expand = expand
+                Id = id
+                Images = images
+                MarketingFeatures = marketingFeatures
+                Metadata = metadata
+                PackageDimensions = packageDimensions
+                Shippable = shippable
+                StatementDescriptor = statementDescriptor
+                TaxCode = taxCode
+                Type = type'
+                UnitLabel = unitLabel
+                Url = url
+            }
+
     module CreateOptions =
         let create
             (
@@ -324,6 +404,12 @@ module Products =
         { [<Config.Path>]
           Id: string }
 
+    type DeleteOptions with
+        static member New(id: string) =
+            {
+                Id = id
+            }
+
     module DeleteOptions =
         let create
             (
@@ -343,6 +429,13 @@ module Products =
             Id: string
         }
 
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -360,6 +453,12 @@ module Products =
             [<Config.Form>]
             Name: string option
         }
+
+    type Update'MarketingFeatures with
+        static member New(?name: string) =
+            {
+                Name = name
+            }
 
     module Update'MarketingFeatures =
         let create
@@ -386,6 +485,15 @@ module Products =
             [<Config.Form>]
             Width: decimal option
         }
+
+    type Update'PackageDimensionsPackageDimensionsSpecs with
+        static member New(?height: decimal, ?length: decimal, ?weight: decimal, ?width: decimal) =
+            {
+                Height = height
+                Length = length
+                Weight = weight
+                Width = width
+            }
 
     module Update'PackageDimensionsPackageDimensionsSpecs =
         let create
@@ -452,6 +560,26 @@ module Products =
             [<Config.Form>]
             Url: Choice<string,string> option
         }
+
+    type UpdateOptions with
+        static member New(id: string, ?active: bool, ?defaultPrice: string, ?description: Choice<string,string>, ?expand: string list, ?images: Choice<string list,string>, ?marketingFeatures: Choice<Update'MarketingFeatures list,string>, ?metadata: Map<string, string>, ?name: string, ?packageDimensions: Choice<Update'PackageDimensionsPackageDimensionsSpecs,string>, ?shippable: bool, ?statementDescriptor: string, ?taxCode: Choice<string,string>, ?unitLabel: Choice<string,string>, ?url: Choice<string,string>) =
+            {
+                Id = id
+                Active = active
+                DefaultPrice = defaultPrice
+                Description = description
+                Expand = expand
+                Images = images
+                MarketingFeatures = marketingFeatures
+                Metadata = metadata
+                Name = name
+                PackageDimensions = packageDimensions
+                Shippable = shippable
+                StatementDescriptor = statementDescriptor
+                TaxCode = taxCode
+                UnitLabel = unitLabel
+                Url = url
+            }
 
     module UpdateOptions =
         let create
@@ -522,6 +650,15 @@ module ProductsSearch =
             Query: string
         }
 
+    type SearchOptions with
+        static member New(query: string, ?expand: string list, ?limit: int, ?page: string) =
+            {
+                Query = query
+                Expand = expand
+                Limit = limit
+                Page = page
+            }
+
     module SearchOptions =
         let create
             (
@@ -564,6 +701,16 @@ module ProductsFeatures =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(product: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Product = product
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -590,6 +737,14 @@ module ProductsFeatures =
             Expand: string list option
         }
 
+    type CreateOptions with
+        static member New(entitlementFeature: string, product: string, ?expand: string list) =
+            {
+                EntitlementFeature = entitlementFeature
+                Product = product
+                Expand = expand
+            }
+
     module CreateOptions =
         let create
             (
@@ -608,6 +763,13 @@ module ProductsFeatures =
           Id: string
           [<Config.Path>]
           Product: string }
+
+    type DeleteOptions with
+        static member New(id: string, product: string) =
+            {
+                Id = id
+                Product = product
+            }
 
     module DeleteOptions =
         let create
@@ -633,6 +795,14 @@ module ProductsFeatures =
             [<Config.Path>]
             Product: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, product: string, ?expand: string list) =
+            {
+                Id = id
+                Product = product
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

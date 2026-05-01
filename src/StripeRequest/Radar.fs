@@ -33,6 +33,18 @@ module RadarEarlyFraudWarnings =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?charge: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?paymentIntent: string, ?startingAfter: string) =
+            {
+                Charge = charge
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                PaymentIntent = paymentIntent
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -63,6 +75,13 @@ module RadarEarlyFraudWarnings =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(earlyFraudWarning: string, ?expand: string list) =
+            {
+                EarlyFraudWarning = earlyFraudWarning
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -97,6 +116,12 @@ module RadarPaymentEvaluations =
             RadarSession: string option
         }
 
+    type Create'ClientDeviceMetadataDetails with
+        static member New(?radarSession: string) =
+            {
+                RadarSession = radarSession
+            }
+
     module Create'ClientDeviceMetadataDetails =
         let create
             (
@@ -125,6 +150,16 @@ module RadarPaymentEvaluations =
             [<Config.Form>]
             Phone: string option
         }
+
+    type Create'CustomerDetails with
+        static member New(?customer: string, ?customerAccount: string, ?email: string, ?name: string, ?phone: string) =
+            {
+                Customer = customer
+                CustomerAccount = customerAccount
+                Email = email
+                Name = name
+                Phone = phone
+            }
 
     module Create'CustomerDetails =
         let create
@@ -164,6 +199,13 @@ module RadarPaymentEvaluations =
             PaymentType: Create'PaymentDetailsMoneyMovementDetailsCardPaymentType option
         }
 
+    type Create'PaymentDetailsMoneyMovementDetailsCard with
+        static member New(?customerPresence: Create'PaymentDetailsMoneyMovementDetailsCardCustomerPresence, ?paymentType: Create'PaymentDetailsMoneyMovementDetailsCardPaymentType) =
+            {
+                CustomerPresence = customerPresence
+                PaymentType = paymentType
+            }
+
     module Create'PaymentDetailsMoneyMovementDetailsCard =
         let create
             (
@@ -187,6 +229,13 @@ module RadarPaymentEvaluations =
             [<Config.Form>]
             MoneyMovementType: Create'PaymentDetailsMoneyMovementDetailsMoneyMovementType option
         }
+
+    type Create'PaymentDetailsMoneyMovementDetails with
+        static member New(?card: Create'PaymentDetailsMoneyMovementDetailsCard, ?moneyMovementType: Create'PaymentDetailsMoneyMovementDetailsMoneyMovementType) =
+            {
+                Card = card
+                MoneyMovementType = moneyMovementType
+            }
 
     module Create'PaymentDetailsMoneyMovementDetails =
         let create
@@ -221,6 +270,17 @@ module RadarPaymentEvaluations =
             [<Config.Form>]
             State: string option
         }
+
+    type Create'PaymentDetailsPaymentMethodDetailsBillingDetailsAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     module Create'PaymentDetailsPaymentMethodDetailsBillingDetailsAddress =
         let create
@@ -258,6 +318,15 @@ module RadarPaymentEvaluations =
             Phone: string option
         }
 
+    type Create'PaymentDetailsPaymentMethodDetailsBillingDetails with
+        static member New(?address: Create'PaymentDetailsPaymentMethodDetailsBillingDetailsAddress, ?email: string, ?name: string, ?phone: string) =
+            {
+                Address = address
+                Email = email
+                Name = name
+                Phone = phone
+            }
+
     module Create'PaymentDetailsPaymentMethodDetailsBillingDetails =
         let create
             (
@@ -283,6 +352,13 @@ module RadarPaymentEvaluations =
             [<Config.Form>]
             PaymentMethod: string option
         }
+
+    type Create'PaymentDetailsPaymentMethodDetails with
+        static member New(?billingDetails: Create'PaymentDetailsPaymentMethodDetailsBillingDetails, ?paymentMethod: string) =
+            {
+                BillingDetails = billingDetails
+                PaymentMethod = paymentMethod
+            }
 
     module Create'PaymentDetailsPaymentMethodDetails =
         let create
@@ -318,6 +394,17 @@ module RadarPaymentEvaluations =
             State: string option
         }
 
+    type Create'PaymentDetailsShippingDetailsAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     module Create'PaymentDetailsShippingDetailsAddress =
         let create
             (
@@ -350,6 +437,14 @@ module RadarPaymentEvaluations =
             [<Config.Form>]
             Phone: string option
         }
+
+    type Create'PaymentDetailsShippingDetails with
+        static member New(?address: Create'PaymentDetailsShippingDetailsAddress, ?name: string, ?phone: string) =
+            {
+                Address = address
+                Name = name
+                Phone = phone
+            }
 
     module Create'PaymentDetailsShippingDetails =
         let create
@@ -389,6 +484,18 @@ module RadarPaymentEvaluations =
             [<Config.Form>]
             StatementDescriptor: string option
         }
+
+    type Create'PaymentDetails with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?description: string, ?moneyMovementDetails: Create'PaymentDetailsMoneyMovementDetails, ?paymentMethodDetails: Create'PaymentDetailsPaymentMethodDetails, ?shippingDetails: Create'PaymentDetailsShippingDetails, ?statementDescriptor: string) =
+            {
+                Amount = amount
+                Currency = currency
+                Description = description
+                MoneyMovementDetails = moneyMovementDetails
+                PaymentMethodDetails = paymentMethodDetails
+                ShippingDetails = shippingDetails
+                StatementDescriptor = statementDescriptor
+            }
 
     module Create'PaymentDetails =
         let create
@@ -430,6 +537,16 @@ module RadarPaymentEvaluations =
             [<Config.Form>]
             PaymentDetails: Create'PaymentDetails
         }
+
+    type CreateOptions with
+        static member New(customerDetails: Create'CustomerDetails, paymentDetails: Create'PaymentDetails, ?clientDeviceMetadataDetails: Create'ClientDeviceMetadataDetails, ?expand: string list, ?metadata: Map<string, string>) =
+            {
+                CustomerDetails = customerDetails
+                PaymentDetails = paymentDetails
+                ClientDeviceMetadataDetails = clientDeviceMetadataDetails
+                Expand = expand
+                Metadata = metadata
+            }
 
     module CreateOptions =
         let create
@@ -478,6 +595,18 @@ module RadarValueListItems =
             ValueList: string
         }
 
+    type ListOptions with
+        static member New(valueList: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?value: string) =
+            {
+                ValueList = valueList
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Value = value
+            }
+
     module ListOptions =
         let create
             (
@@ -507,6 +636,14 @@ module RadarValueListItems =
             ValueList: string
         }
 
+    type CreateOptions with
+        static member New(value: string, valueList: string, ?expand: string list) =
+            {
+                Value = value
+                ValueList = valueList
+                Expand = expand
+            }
+
     module CreateOptions =
         let create
             (
@@ -523,6 +660,12 @@ module RadarValueListItems =
     type DeleteOptions =
         { [<Config.Path>]
           Item: string }
+
+    type DeleteOptions with
+        static member New(item: string) =
+            {
+                Item = item
+            }
 
     module DeleteOptions =
         let create
@@ -542,6 +685,13 @@ module RadarValueListItems =
             [<Config.Path>]
             Item: string
         }
+
+    type RetrieveOptions with
+        static member New(item: string, ?expand: string list) =
+            {
+                Item = item
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -603,6 +753,18 @@ module RadarValueLists =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?alias: string, ?contains: string, ?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Alias = alias
+                Contains = contains
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -658,6 +820,16 @@ module RadarValueLists =
             Name: string
         }
 
+    type CreateOptions with
+        static member New(alias: string, name: string, ?expand: string list, ?itemType: Create'ItemType, ?metadata: Map<string, string>) =
+            {
+                Alias = alias
+                Name = name
+                Expand = expand
+                ItemType = itemType
+                Metadata = metadata
+            }
+
     module CreateOptions =
         let create
             (
@@ -677,6 +849,12 @@ module RadarValueLists =
         { [<Config.Path>]
           ValueList: string }
 
+    type DeleteOptions with
+        static member New(valueList: string) =
+            {
+                ValueList = valueList
+            }
+
     module DeleteOptions =
         let create
             (
@@ -695,6 +873,13 @@ module RadarValueLists =
             [<Config.Path>]
             ValueList: string
         }
+
+    type RetrieveOptions with
+        static member New(valueList: string, ?expand: string list) =
+            {
+                ValueList = valueList
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -724,6 +909,16 @@ module RadarValueLists =
             [<Config.Form>]
             Name: string option
         }
+
+    type UpdateOptions with
+        static member New(valueList: string, ?alias: string, ?expand: string list, ?metadata: Map<string, string>, ?name: string) =
+            {
+                ValueList = valueList
+                Alias = alias
+                Expand = expand
+                Metadata = metadata
+                Name = name
+            }
 
     module UpdateOptions =
         let create

@@ -8,6 +8,12 @@ open Stripe.FundingInstructions
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "1.0.0")>]
 type IssuingCardholderAddress = { Address: Address }
 
+type IssuingCardholderAddress with
+    static member New(address: Address) =
+        {
+            Address = address
+        }
+
 [<Struct>]
 type IssuingCardholderAuthorizationControlsAllowedCardPresences =
     | NotPresent
@@ -927,6 +933,14 @@ type IssuingCardholderSpendingLimit =
         Interval: IssuingCardholderSpendingLimitInterval
     }
 
+type IssuingCardholderSpendingLimit with
+    static member New(amount: int, categories: IssuingCardholderSpendingLimitCategories list option, interval: IssuingCardholderSpendingLimitInterval) =
+        {
+            Amount = amount
+            Categories = categories
+            Interval = interval
+        }
+
 type IssuingCardholderAuthorizationControls =
     {
         /// Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.
@@ -947,11 +961,30 @@ type IssuingCardholderAuthorizationControls =
         SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
     }
 
+type IssuingCardholderAuthorizationControls with
+    static member New(allowedCardPresences: IssuingCardholderAuthorizationControlsAllowedCardPresences list option, allowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list option, allowedMerchantCountries: string list option, blockedCardPresences: IssuingCardholderAuthorizationControlsBlockedCardPresences list option, blockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list option, blockedMerchantCountries: string list option, spendingLimits: IssuingCardholderSpendingLimit list option, spendingLimitsCurrency: IsoTypes.IsoCurrencyCode option) =
+        {
+            AllowedCardPresences = allowedCardPresences
+            AllowedCategories = allowedCategories
+            AllowedMerchantCountries = allowedMerchantCountries
+            BlockedCardPresences = blockedCardPresences
+            BlockedCategories = blockedCategories
+            BlockedMerchantCountries = blockedMerchantCountries
+            SpendingLimits = spendingLimits
+            SpendingLimitsCurrency = spendingLimitsCurrency
+        }
+
 type IssuingCardholderCompany =
     {
         /// Whether the company's business ID number was provided.
         TaxIdProvided: bool
     }
+
+type IssuingCardholderCompany with
+    static member New(taxIdProvided: bool) =
+        {
+            TaxIdProvided = taxIdProvided
+        }
 
 type IssuingCardholderUserTermsAcceptance =
     {
@@ -963,11 +996,25 @@ type IssuingCardholderUserTermsAcceptance =
         UserAgent: string option
     }
 
+type IssuingCardholderUserTermsAcceptance with
+    static member New(date: DateTime option, ip: string option, userAgent: string option) =
+        {
+            Date = date
+            Ip = ip
+            UserAgent = userAgent
+        }
+
 type IssuingCardholderCardIssuing =
     {
         /// Information about cardholder acceptance of Celtic [Authorized User Terms](https://stripe.com/docs/issuing/cards#accept-authorized-user-terms). Required for cards backed by a Celtic program.
         UserTermsAcceptance: IssuingCardholderUserTermsAcceptance option
     }
+
+type IssuingCardholderCardIssuing with
+    static member New(userTermsAcceptance: IssuingCardholderUserTermsAcceptance option) =
+        {
+            UserTermsAcceptance = userTermsAcceptance
+        }
 
 type IssuingCardholderIndividualDob =
     {
@@ -979,6 +1026,14 @@ type IssuingCardholderIndividualDob =
         Year: int option
     }
 
+type IssuingCardholderIndividualDob with
+    static member New(day: int option, month: int option, year: int option) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
+
 type IssuingCardholderIdDocument =
     {
         /// The back of a document returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
@@ -987,11 +1042,24 @@ type IssuingCardholderIdDocument =
         Front: StripeId<Markers.File> option
     }
 
+type IssuingCardholderIdDocument with
+    static member New(back: StripeId<Markers.File> option, front: StripeId<Markers.File> option) =
+        {
+            Back = back
+            Front = front
+        }
+
 type IssuingCardholderVerification =
     {
         /// An identifying document, either a passport or local ID card.
         Document: IssuingCardholderIdDocument option
     }
+
+type IssuingCardholderVerification with
+    static member New(document: IssuingCardholderIdDocument option) =
+        {
+            Document = document
+        }
 
 type IssuingCardholderIndividual =
     {
@@ -1006,6 +1074,16 @@ type IssuingCardholderIndividual =
         /// Government-issued ID document for this cardholder.
         Verification: IssuingCardholderVerification option
     }
+
+type IssuingCardholderIndividual with
+    static member New(dob: IssuingCardholderIndividualDob option, firstName: string option, lastName: string option, verification: IssuingCardholderVerification option, ?cardIssuing: IssuingCardholderCardIssuing option) =
+        {
+            Dob = dob
+            FirstName = firstName
+            LastName = lastName
+            Verification = verification
+            CardIssuing = cardIssuing |> Option.flatten
+        }
 
 [<Struct>]
 type IssuingCardholderPreferredLocales =
@@ -1040,6 +1118,13 @@ type IssuingCardholderRequirements =
         /// Array of fields that need to be collected in order to verify and re-enable the cardholder.
         PastDue: IssuingCardholderRequirementsPastDue list option
     }
+
+type IssuingCardholderRequirements with
+    static member New(disabledReason: IssuingCardholderRequirementsDisabledReason option, pastDue: IssuingCardholderRequirementsPastDue list option) =
+        {
+            DisabledReason = disabledReason
+            PastDue = pastDue
+        }
 
 [<Struct>]
 type IssuingCardholderStatus =
@@ -1087,6 +1172,26 @@ type IssuingCardholder =
         Type: IssuingCardholderType
     }
 
+type IssuingCardholder with
+    static member New(billing: IssuingCardholderAddress, company: IssuingCardholderCompany option, created: DateTime, email: string option, id: string, individual: IssuingCardholderIndividual option, livemode: bool, metadata: Map<string, string>, name: string, phoneNumber: string option, preferredLocales: IssuingCardholderPreferredLocales list option, requirements: IssuingCardholderRequirements, spendingControls: IssuingCardholderAuthorizationControls option, status: IssuingCardholderStatus, ``type``: IssuingCardholderType) =
+        {
+            Billing = billing
+            Company = company
+            Created = created
+            Email = email
+            Id = id
+            Individual = individual
+            Livemode = livemode
+            Metadata = metadata
+            Name = name
+            PhoneNumber = phoneNumber
+            PreferredLocales = preferredLocales
+            Requirements = requirements
+            SpendingControls = spendingControls
+            Status = status
+            Type = ``type``
+        }
+
 module IssuingCardholder =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "issuing.cardholder"
@@ -1094,6 +1199,18 @@ module IssuingCardholder =
 /// Occurs whenever a cardholder is updated.
 type IssuingCardholderUpdated = { Object: IssuingCardholder }
 
+type IssuingCardholderUpdated with
+    static member New(object: IssuingCardholder) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a cardholder is created.
 type IssuingCardholderCreated = { Object: IssuingCardholder }
+
+type IssuingCardholderCreated with
+    static member New(object: IssuingCardholder) =
+        {
+            Object = object
+        }
 

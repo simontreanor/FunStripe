@@ -17,6 +17,13 @@ type SecretServiceResourceScope =
         User: string option
     }
 
+type SecretServiceResourceScope with
+    static member New(``type``: SecretServiceResourceScopeType, ?user: string) =
+        {
+            Type = ``type``
+            User = user
+        }
+
 /// Secret Store is an API that allows Stripe Apps developers to securely persist secrets for use by UI Extensions and app backends.
 /// The primary resource in Secret Store is a `secret`. Other apps can't view secrets created by an app. Additionally, secrets are scoped to provide further permission control.
 /// All Dashboard users and the app backend share `account` scoped secrets. Use the `account` scope for secrets that don't change per-user, like a third-party API key.
@@ -40,6 +47,19 @@ type AppsSecret =
         Payload: string option
         Scope: SecretServiceResourceScope
     }
+
+type AppsSecret with
+    static member New(created: DateTime, expiresAt: DateTime option, id: string, livemode: bool, name: string, scope: SecretServiceResourceScope, ?deleted: bool, ?payload: string option) =
+        {
+            Created = created
+            ExpiresAt = expiresAt
+            Id = id
+            Livemode = livemode
+            Name = name
+            Scope = scope
+            Deleted = deleted
+            Payload = payload |> Option.flatten
+        }
 
 module AppsSecret =
     ///String representing the object's type. Objects of the same type share the same value.

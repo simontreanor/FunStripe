@@ -33,6 +33,18 @@ module FileLinks =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?endingBefore: string, ?expand: string list, ?expired: bool, ?file: string, ?limit: int, ?startingAfter: string) =
+            {
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Expired = expired
+                File = file
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -71,6 +83,15 @@ module FileLinks =
             Metadata: Map<string, string> option
         }
 
+    type CreateOptions with
+        static member New(file: string, ?expand: string list, ?expiresAt: DateTime, ?metadata: Map<string, string>) =
+            {
+                File = file
+                Expand = expand
+                ExpiresAt = expiresAt
+                Metadata = metadata
+            }
+
     module CreateOptions =
         let create
             (
@@ -92,6 +113,13 @@ module FileLinks =
             [<Config.Path>]
             Link: string
         }
+
+    type RetrieveOptions with
+        static member New(link: string, ?expand: string list) =
+            {
+                Link = link
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -120,6 +148,15 @@ module FileLinks =
             [<Config.Form>]
             Metadata: Map<string, string> option
         }
+
+    type UpdateOptions with
+        static member New(link: string, ?expand: string list, ?expiresAt: Choice<Update'ExpiresAt,DateTime,string>, ?metadata: Map<string, string>) =
+            {
+                Link = link
+                Expand = expand
+                ExpiresAt = expiresAt
+                Metadata = metadata
+            }
 
     module UpdateOptions =
         let create

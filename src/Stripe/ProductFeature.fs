@@ -17,6 +17,14 @@ type ProductFeature =
         Livemode: bool
     }
 
+type ProductFeature with
+    static member New(entitlementFeature: EntitlementsFeature, id: string, livemode: bool) =
+        {
+            EntitlementFeature = entitlementFeature
+            Id = id
+            Livemode = livemode
+        }
+
 module ProductFeature =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "product_feature"
@@ -28,6 +36,13 @@ type DeletedProductFeature =
         /// Unique identifier for the object.
         Id: string
     }
+
+type DeletedProductFeature with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
 
 module DeletedProductFeature =
     ///String representing the object's type. Objects of the same type share the same value.

@@ -15,6 +15,13 @@ type LoginLink =
         Url: string
     }
 
+type LoginLink with
+    static member New(created: DateTime, url: string) =
+        {
+            Created = created
+            Url = url
+        }
+
 module LoginLink =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "login_link"

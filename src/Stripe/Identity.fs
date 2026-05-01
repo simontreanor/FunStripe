@@ -14,6 +14,13 @@ type GelatoProvidedDetails =
         Phone: string option
     }
 
+type GelatoProvidedDetails with
+    static member New(?email: string, ?phone: string) =
+        {
+            Email = email
+            Phone = phone
+        }
+
 type GelatoRelatedPerson =
     {
         /// Token referencing the associated Account of the related Person resource.
@@ -21,6 +28,13 @@ type GelatoRelatedPerson =
         /// Token referencing the related Person resource.
         Person: string
     }
+
+type GelatoRelatedPerson with
+    static member New(account: string, person: string) =
+        {
+            Account = account
+            Person = person
+        }
 
 type GelatoSessionLastErrorCode =
     | Abandoned
@@ -52,6 +66,13 @@ type GelatoSessionLastError =
         Reason: string option
     }
 
+type GelatoSessionLastError with
+    static member New(code: GelatoSessionLastErrorCode option, reason: string option) =
+        {
+            Code = code
+            Reason = reason
+        }
+
 [<Struct>]
 type GelatoSessionDocumentOptionsAllowedTypes =
     | DrivingLicense
@@ -70,14 +91,35 @@ type GelatoSessionDocumentOptions =
         RequireMatchingSelfie: bool option
     }
 
+type GelatoSessionDocumentOptions with
+    static member New(?allowedTypes: GelatoSessionDocumentOptionsAllowedTypes list, ?requireIdNumber: bool, ?requireLiveCapture: bool, ?requireMatchingSelfie: bool) =
+        {
+            AllowedTypes = allowedTypes
+            RequireIdNumber = requireIdNumber
+            RequireLiveCapture = requireLiveCapture
+            RequireMatchingSelfie = requireMatchingSelfie
+        }
+
 type GelatoSessionEmailOptions =
     {
         /// Request one time password verification of `provided_details.email`.
         RequireVerification: bool option
     }
 
+type GelatoSessionEmailOptions with
+    static member New(?requireVerification: bool) =
+        {
+            RequireVerification = requireVerification
+        }
+
 type GelatoSessionIdNumberOptions =
     { GelatoSessionIdNumberOptions: string option }
+
+type GelatoSessionIdNumberOptions with
+    static member New(?gelatoSessionIdNumberOptions: string option) =
+        {
+            GelatoSessionIdNumberOptions = gelatoSessionIdNumberOptions |> Option.flatten
+        }
 
 [<Struct>]
 type GelatoSessionMatchingOptionsDob =
@@ -97,11 +139,24 @@ type GelatoSessionMatchingOptions =
         Name: GelatoSessionMatchingOptionsName option
     }
 
+type GelatoSessionMatchingOptions with
+    static member New(?dob: GelatoSessionMatchingOptionsDob, ?name: GelatoSessionMatchingOptionsName) =
+        {
+            Dob = dob
+            Name = name
+        }
+
 type GelatoSessionPhoneOptions =
     {
         /// Request one time password verification of `provided_details.phone`.
         RequireVerification: bool option
     }
+
+type GelatoSessionPhoneOptions with
+    static member New(?requireVerification: bool) =
+        {
+            RequireVerification = requireVerification
+        }
 
 type GelatoVerificationSessionOptions =
     { Document: GelatoSessionDocumentOptions option
@@ -109,6 +164,16 @@ type GelatoVerificationSessionOptions =
       IdNumber: GelatoSessionIdNumberOptions option
       Matching: GelatoSessionMatchingOptions option
       Phone: GelatoSessionPhoneOptions option }
+
+type GelatoVerificationSessionOptions with
+    static member New(?document: GelatoSessionDocumentOptions, ?email: GelatoSessionEmailOptions, ?idNumber: GelatoSessionIdNumberOptions, ?matching: GelatoSessionMatchingOptions, ?phone: GelatoSessionPhoneOptions) =
+        {
+            Document = document
+            Email = email
+            IdNumber = idNumber
+            Matching = matching
+            Phone = phone
+        }
 
 /// Point in Time
 type GelatoDataVerifiedOutputsDate =
@@ -120,6 +185,14 @@ type GelatoDataVerifiedOutputsDate =
         /// The four-digit year.
         Year: int option
     }
+
+type GelatoDataVerifiedOutputsDate with
+    static member New(day: int option, month: int option, year: int option) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
 
 [<Struct>]
 type GelatoVerifiedOutputsIdNumberType =
@@ -160,6 +233,22 @@ type GelatoVerifiedOutputs =
         UnparsedSex: string option
     }
 
+type GelatoVerifiedOutputs with
+    static member New(address: Address option, email: string option, firstName: string option, idNumberType: GelatoVerifiedOutputsIdNumberType option, lastName: string option, phone: string option, ?dob: GelatoDataVerifiedOutputsDate option, ?idNumber: string option, ?sex: GelatoVerifiedOutputsSex option, ?unparsedPlaceOfBirth: string option, ?unparsedSex: string option) =
+        {
+            Address = address
+            Email = email
+            FirstName = firstName
+            IdNumberType = idNumberType
+            LastName = lastName
+            Phone = phone
+            Dob = dob |> Option.flatten
+            IdNumber = idNumber |> Option.flatten
+            Sex = sex |> Option.flatten
+            UnparsedPlaceOfBirth = unparsedPlaceOfBirth |> Option.flatten
+            UnparsedSex = unparsedSex |> Option.flatten
+        }
+
 [<Struct>]
 type IdentityVerificationSessionStatus =
     | Canceled
@@ -183,6 +272,12 @@ type VerificationSessionRedaction =
         /// Indicates whether this object and its related objects have been redacted or not.
         Status: VerificationSessionRedactionStatus
     }
+
+type VerificationSessionRedaction with
+    static member New(status: VerificationSessionRedactionStatus) =
+        {
+            Status = status
+        }
 
 /// A VerificationSession guides you through the process of collecting and verifying the identities
 /// of your users. It contains details about the type of verification, such as what [verification
@@ -234,6 +329,30 @@ type IdentityVerificationSession =
         VerifiedOutputs: GelatoVerifiedOutputs option
     }
 
+type IdentityVerificationSession with
+    static member New(clientReferenceId: string option, clientSecret: string option, created: DateTime, id: string, lastError: GelatoSessionLastError option, lastVerificationReport: StripeId<Markers.IdentityVerificationReport> option, livemode: bool, metadata: Map<string, string>, options: GelatoVerificationSessionOptions option, redaction: VerificationSessionRedaction option, relatedCustomer: string option, relatedCustomerAccount: string option, status: IdentityVerificationSessionStatus, ``type``: IdentityVerificationSessionType, url: string option, ?providedDetails: GelatoProvidedDetails option, ?relatedPerson: GelatoRelatedPerson, ?verificationFlow: string, ?verifiedOutputs: GelatoVerifiedOutputs option) =
+        {
+            ClientReferenceId = clientReferenceId
+            ClientSecret = clientSecret
+            Created = created
+            Id = id
+            LastError = lastError
+            LastVerificationReport = lastVerificationReport
+            Livemode = livemode
+            Metadata = metadata
+            Options = options
+            Redaction = redaction
+            RelatedCustomer = relatedCustomer
+            RelatedCustomerAccount = relatedCustomerAccount
+            Status = status
+            Type = ``type``
+            Url = url
+            ProvidedDetails = providedDetails |> Option.flatten
+            RelatedPerson = relatedPerson
+            VerificationFlow = verificationFlow
+            VerifiedOutputs = verifiedOutputs |> Option.flatten
+        }
+
 module IdentityVerificationSession =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "identity.verification_session"
@@ -241,20 +360,56 @@ module IdentityVerificationSession =
 /// Occurs whenever a VerificationSession transitions to verified
 type IdentityVerificationSessionVerified = { Object: IdentityVerificationSession }
 
+type IdentityVerificationSessionVerified with
+    static member New(object: IdentityVerificationSession) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a VerificationSession transitions to require user input
 type IdentityVerificationSessionRequiresInput = { Object: IdentityVerificationSession }
+
+type IdentityVerificationSessionRequiresInput with
+    static member New(object: IdentityVerificationSession) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever a VerificationSession is redacted.
 type IdentityVerificationSessionRedacted = { Object: IdentityVerificationSession }
 
+type IdentityVerificationSessionRedacted with
+    static member New(object: IdentityVerificationSession) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a VerificationSession transitions to processing
 type IdentityVerificationSessionProcessing = { Object: IdentityVerificationSession }
+
+type IdentityVerificationSessionProcessing with
+    static member New(object: IdentityVerificationSession) =
+        {
+            Object = object
+        }
 
 /// Occurs whenever a VerificationSession is created
 type IdentityVerificationSessionCreated = { Object: IdentityVerificationSession }
 
+type IdentityVerificationSessionCreated with
+    static member New(object: IdentityVerificationSession) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a VerificationSession is canceled
 type IdentityVerificationSessionCanceled = { Object: IdentityVerificationSession }
+
+type IdentityVerificationSessionCanceled with
+    static member New(object: IdentityVerificationSession) =
+        {
+            Object = object
+        }
 
 /// Point in Time
 type GelatoDataDocumentReportDateOfBirth =
@@ -267,6 +422,14 @@ type GelatoDataDocumentReportDateOfBirth =
         Year: int option
     }
 
+type GelatoDataDocumentReportDateOfBirth with
+    static member New(day: int option, month: int option, year: int option) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
+
 /// Point in Time
 type GelatoDataDocumentReportExpirationDate =
     {
@@ -278,6 +441,14 @@ type GelatoDataDocumentReportExpirationDate =
         Year: int option
     }
 
+type GelatoDataDocumentReportExpirationDate with
+    static member New(day: int option, month: int option, year: int option) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
+
 /// Point in Time
 type GelatoDataDocumentReportIssuedDate =
     {
@@ -288,6 +459,14 @@ type GelatoDataDocumentReportIssuedDate =
         /// The four-digit year.
         Year: int option
     }
+
+type GelatoDataDocumentReportIssuedDate with
+    static member New(day: int option, month: int option, year: int option) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
 
 [<Struct>]
 type GelatoDocumentReportErrorCode =
@@ -302,6 +481,13 @@ type GelatoDocumentReportError =
         /// A human-readable message giving the reason for the failure. These messages can be shown to your users.
         Reason: string option
     }
+
+type GelatoDocumentReportError with
+    static member New(code: GelatoDocumentReportErrorCode option, reason: string option) =
+        {
+            Code = code
+            Reason = reason
+        }
 
 [<Struct>]
 type GelatoDocumentReportSex =
@@ -356,6 +542,26 @@ type GelatoDocumentReport =
         UnparsedSex: string option
     }
 
+type GelatoDocumentReport with
+    static member New(address: Address option, error: GelatoDocumentReportError option, files: string list option, firstName: string option, issuedDate: GelatoDataDocumentReportIssuedDate option, issuingCountry: IsoTypes.IsoCountryCode option, lastName: string option, status: GelatoDocumentReportStatus, ``type``: GelatoDocumentReportType option, ?dob: GelatoDataDocumentReportDateOfBirth option, ?expirationDate: GelatoDataDocumentReportExpirationDate option, ?number: string option, ?sex: GelatoDocumentReportSex option, ?unparsedPlaceOfBirth: string option, ?unparsedSex: string option) =
+        {
+            Address = address
+            Error = error
+            Files = files
+            FirstName = firstName
+            IssuedDate = issuedDate
+            IssuingCountry = issuingCountry
+            LastName = lastName
+            Status = status
+            Type = ``type``
+            Dob = dob |> Option.flatten
+            ExpirationDate = expirationDate |> Option.flatten
+            Number = number |> Option.flatten
+            Sex = sex |> Option.flatten
+            UnparsedPlaceOfBirth = unparsedPlaceOfBirth |> Option.flatten
+            UnparsedSex = unparsedSex |> Option.flatten
+        }
+
 [<Struct>]
 type GelatoEmailReportErrorCode =
     | EmailUnverifiedOther
@@ -368,6 +574,13 @@ type GelatoEmailReportError =
         /// A human-readable message giving the reason for the failure. These messages can be shown to your users.
         Reason: string option
     }
+
+type GelatoEmailReportError with
+    static member New(code: GelatoEmailReportErrorCode option, reason: string option) =
+        {
+            Code = code
+            Reason = reason
+        }
 
 [<Struct>]
 type GelatoEmailReportStatus =
@@ -385,6 +598,14 @@ type GelatoEmailReport =
         Status: GelatoEmailReportStatus
     }
 
+type GelatoEmailReport with
+    static member New(email: string option, error: GelatoEmailReportError option, status: GelatoEmailReportStatus) =
+        {
+            Email = email
+            Error = error
+            Status = status
+        }
+
 /// Point in Time
 type GelatoDataIdNumberReportDate =
     {
@@ -395,6 +616,14 @@ type GelatoDataIdNumberReportDate =
         /// The four-digit year.
         Year: int option
     }
+
+type GelatoDataIdNumberReportDate with
+    static member New(day: int option, month: int option, year: int option) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
 
 [<Struct>]
 type GelatoIdNumberReportErrorCode =
@@ -409,6 +638,13 @@ type GelatoIdNumberReportError =
         /// A human-readable message giving the reason for the failure. These messages can be shown to your users.
         Reason: string option
     }
+
+type GelatoIdNumberReportError with
+    static member New(code: GelatoIdNumberReportErrorCode option, reason: string option) =
+        {
+            Code = code
+            Reason = reason
+        }
 
 [<Struct>]
 type GelatoIdNumberReportIdNumberType =
@@ -440,6 +676,18 @@ type GelatoIdNumberReport =
         Status: GelatoIdNumberReportStatus
     }
 
+type GelatoIdNumberReport with
+    static member New(error: GelatoIdNumberReportError option, firstName: string option, idNumberType: GelatoIdNumberReportIdNumberType option, lastName: string option, status: GelatoIdNumberReportStatus, ?dob: GelatoDataIdNumberReportDate option, ?idNumber: string option) =
+        {
+            Error = error
+            FirstName = firstName
+            IdNumberType = idNumberType
+            LastName = lastName
+            Status = status
+            Dob = dob |> Option.flatten
+            IdNumber = idNumber |> Option.flatten
+        }
+
 [<Struct>]
 type GelatoPhoneReportErrorCode =
     | PhoneUnverifiedOther
@@ -452,6 +700,13 @@ type GelatoPhoneReportError =
         /// A human-readable message giving the reason for the failure. These messages can be shown to your users.
         Reason: string option
     }
+
+type GelatoPhoneReportError with
+    static member New(code: GelatoPhoneReportErrorCode option, reason: string option) =
+        {
+            Code = code
+            Reason = reason
+        }
 
 [<Struct>]
 type GelatoPhoneReportStatus =
@@ -469,6 +724,14 @@ type GelatoPhoneReport =
         Status: GelatoPhoneReportStatus
     }
 
+type GelatoPhoneReport with
+    static member New(error: GelatoPhoneReportError option, phone: string option, status: GelatoPhoneReportStatus) =
+        {
+            Error = error
+            Phone = phone
+            Status = status
+        }
+
 [<Struct>]
 type GelatoSelfieReportErrorCode =
     | SelfieDocumentMissingPhoto
@@ -483,6 +746,13 @@ type GelatoSelfieReportError =
         /// A human-readable message giving the reason for the failure. These messages can be shown to your users.
         Reason: string option
     }
+
+type GelatoSelfieReportError with
+    static member New(code: GelatoSelfieReportErrorCode option, reason: string option) =
+        {
+            Code = code
+            Reason = reason
+        }
 
 [<Struct>]
 type GelatoSelfieReportStatus =
@@ -502,6 +772,15 @@ type GelatoSelfieReport =
         Status: GelatoSelfieReportStatus
     }
 
+type GelatoSelfieReport with
+    static member New(document: string option, error: GelatoSelfieReportError option, selfie: string option, status: GelatoSelfieReportStatus) =
+        {
+            Document = document
+            Error = error
+            Selfie = selfie
+            Status = status
+        }
+
 [<Struct>]
 type GelatoReportDocumentOptionsAllowedTypes =
     | DrivingLicense
@@ -520,12 +799,34 @@ type GelatoReportDocumentOptions =
         RequireMatchingSelfie: bool option
     }
 
+type GelatoReportDocumentOptions with
+    static member New(?allowedTypes: GelatoReportDocumentOptionsAllowedTypes list, ?requireIdNumber: bool, ?requireLiveCapture: bool, ?requireMatchingSelfie: bool) =
+        {
+            AllowedTypes = allowedTypes
+            RequireIdNumber = requireIdNumber
+            RequireLiveCapture = requireLiveCapture
+            RequireMatchingSelfie = requireMatchingSelfie
+        }
+
 type GelatoReportIdNumberOptions =
     { GelatoReportIdNumberOptions: string option }
+
+type GelatoReportIdNumberOptions with
+    static member New(?gelatoReportIdNumberOptions: string option) =
+        {
+            GelatoReportIdNumberOptions = gelatoReportIdNumberOptions |> Option.flatten
+        }
 
 type GelatoVerificationReportOptions =
     { Document: GelatoReportDocumentOptions option
       IdNumber: GelatoReportIdNumberOptions option }
+
+type GelatoVerificationReportOptions with
+    static member New(?document: GelatoReportDocumentOptions, ?idNumber: GelatoReportIdNumberOptions) =
+        {
+            Document = document
+            IdNumber = idNumber
+        }
 
 [<Struct>]
 type IdentityVerificationReportType =
@@ -565,6 +866,24 @@ type IdentityVerificationReport =
         /// ID of the VerificationSession that created this report.
         VerificationSession: string option
     }
+
+type IdentityVerificationReport with
+    static member New(clientReferenceId: string option, created: DateTime, id: string, livemode: bool, ``type``: IdentityVerificationReportType, verificationSession: string option, ?document: GelatoDocumentReport, ?email: GelatoEmailReport, ?idNumber: GelatoIdNumberReport, ?options: GelatoVerificationReportOptions, ?phone: GelatoPhoneReport, ?selfie: GelatoSelfieReport, ?verificationFlow: string) =
+        {
+            ClientReferenceId = clientReferenceId
+            Created = created
+            Id = id
+            Livemode = livemode
+            Type = ``type``
+            VerificationSession = verificationSession
+            Document = document
+            Email = email
+            IdNumber = idNumber
+            Options = options
+            Phone = phone
+            Selfie = selfie
+            VerificationFlow = verificationFlow
+        }
 
 module IdentityVerificationReport =
     ///String representing the object's type. Objects of the same type share the same value.

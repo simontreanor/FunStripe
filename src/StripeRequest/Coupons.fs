@@ -27,6 +27,16 @@ module Coupons =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Created = created
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -51,6 +61,12 @@ module Coupons =
             [<Config.Form>]
             Products: string list option
         }
+
+    type Create'AppliesTo with
+        static member New(?products: string list) =
+            {
+                Products = products
+            }
 
     module Create'AppliesTo =
         let create
@@ -110,6 +126,24 @@ module Coupons =
             RedeemBy: DateTime option
         }
 
+    type CreateOptions with
+        static member New(?amountOff: int, ?appliesTo: Create'AppliesTo, ?currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string>, ?duration: Create'Duration, ?durationInMonths: int, ?expand: string list, ?id: string, ?maxRedemptions: int, ?metadata: Map<string, string>, ?name: string, ?percentOff: decimal, ?redeemBy: DateTime) =
+            {
+                AmountOff = amountOff
+                AppliesTo = appliesTo
+                Currency = currency
+                CurrencyOptions = currencyOptions
+                Duration = duration
+                DurationInMonths = durationInMonths
+                Expand = expand
+                Id = id
+                MaxRedemptions = maxRedemptions
+                Metadata = metadata
+                Name = name
+                PercentOff = percentOff
+                RedeemBy = redeemBy
+            }
+
     module CreateOptions =
         let create
             (
@@ -148,6 +182,12 @@ module Coupons =
         { [<Config.Path>]
           Coupon: string }
 
+    type DeleteOptions with
+        static member New(coupon: string) =
+            {
+                Coupon = coupon
+            }
+
     module DeleteOptions =
         let create
             (
@@ -166,6 +206,13 @@ module Coupons =
             [<Config.Query>]
             Expand: string list option
         }
+
+    type RetrieveOptions with
+        static member New(coupon: string, ?expand: string list) =
+            {
+                Coupon = coupon
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create
@@ -195,6 +242,16 @@ module Coupons =
             [<Config.Form>]
             Name: string option
         }
+
+    type UpdateOptions with
+        static member New(coupon: string, ?currencyOptions: Map<string, string>, ?expand: string list, ?metadata: Map<string, string>, ?name: string) =
+            {
+                Coupon = coupon
+                CurrencyOptions = currencyOptions
+                Expand = expand
+                Metadata = metadata
+                Name = name
+            }
 
     module UpdateOptions =
         let create

@@ -17,6 +17,13 @@ module Mandates =
             Mandate: string
         }
 
+    type RetrieveOptions with
+        static member New(mandate: string, ?expand: string list) =
+            {
+                Mandate = mandate
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (

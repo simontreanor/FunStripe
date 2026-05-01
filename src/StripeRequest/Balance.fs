@@ -16,6 +16,12 @@ module Balance =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(?expand: string list) =
+            {
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -66,6 +72,20 @@ module BalanceTransactions =
             Type: string option
         }
 
+    type ListOptions with
+        static member New(?created: int, ?currency: IsoTypes.IsoCurrencyCode, ?endingBefore: string, ?expand: string list, ?limit: int, ?payout: string, ?source: string, ?startingAfter: string, ?type': string) =
+            {
+                Created = created
+                Currency = currency
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                Payout = payout
+                Source = source
+                StartingAfter = startingAfter
+                Type = type'
+            }
+
     module ListOptions =
         let create
             (
@@ -77,7 +97,7 @@ module BalanceTransactions =
                 payout: string option,
                 source: string option,
                 startingAfter: string option,
-                ``type``: string option
+                type': string option
             ) : ListOptions
             =
             {
@@ -89,7 +109,7 @@ module BalanceTransactions =
               Payout = payout
               Source = source
               StartingAfter = startingAfter
-              Type = ``type``
+              Type = type'
             }
 
     type RetrieveOptions =
@@ -100,6 +120,13 @@ module BalanceTransactions =
             [<Config.Path>]
             Id: string
         }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

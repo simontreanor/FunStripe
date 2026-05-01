@@ -17,6 +17,13 @@ module ConfirmationTokens =
             Expand: string list option
         }
 
+    type RetrieveOptions with
+        static member New(confirmationToken: string, ?expand: string list) =
+            {
+                ConfirmationToken = confirmationToken
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (

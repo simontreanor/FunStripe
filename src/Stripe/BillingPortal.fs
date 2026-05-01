@@ -61,11 +61,23 @@ type PortalFlowsAfterCompletionHostedConfirmation =
         CustomMessage: string option
     }
 
+type PortalFlowsAfterCompletionHostedConfirmation with
+    static member New(customMessage: string option) =
+        {
+            CustomMessage = customMessage
+        }
+
 type PortalFlowsAfterCompletionRedirect =
     {
         /// The URL the customer will be redirected to after the flow is completed.
         ReturnUrl: string
     }
+
+type PortalFlowsAfterCompletionRedirect with
+    static member New(returnUrl: string) =
+        {
+            ReturnUrl = returnUrl
+        }
 
 [<Struct>]
 type PortalFlowsFlowAfterCompletionType =
@@ -83,17 +95,37 @@ type PortalFlowsFlowAfterCompletion =
         Type: PortalFlowsFlowAfterCompletionType
     }
 
+type PortalFlowsFlowAfterCompletion with
+    static member New(hostedConfirmation: PortalFlowsAfterCompletionHostedConfirmation option, redirect: PortalFlowsAfterCompletionRedirect option, ``type``: PortalFlowsFlowAfterCompletionType) =
+        {
+            HostedConfirmation = hostedConfirmation
+            Redirect = redirect
+            Type = ``type``
+        }
+
 type PortalFlowsCouponOffer =
     {
         /// The ID of the coupon to be offered.
         Coupon: string
     }
 
+type PortalFlowsCouponOffer with
+    static member New(coupon: string) =
+        {
+            Coupon = coupon
+        }
+
 type PortalFlowsRetention =
     {
         /// Configuration when `retention.type=coupon_offer`.
         CouponOffer: PortalFlowsCouponOffer option
     }
+
+type PortalFlowsRetention with
+    static member New(couponOffer: PortalFlowsCouponOffer option) =
+        {
+            CouponOffer = couponOffer
+        }
 
 module PortalFlowsRetention =
     ///Type of retention strategy that will be used.
@@ -107,11 +139,24 @@ type PortalFlowsFlowSubscriptionCancel =
         Subscription: string
     }
 
+type PortalFlowsFlowSubscriptionCancel with
+    static member New(retention: PortalFlowsRetention option, subscription: string) =
+        {
+            Retention = retention
+            Subscription = subscription
+        }
+
 type PortalFlowsFlowSubscriptionUpdate =
     {
         /// The ID of the subscription to be updated.
         Subscription: string
     }
+
+type PortalFlowsFlowSubscriptionUpdate with
+    static member New(subscription: string) =
+        {
+            Subscription = subscription
+        }
 
 type PortalFlowsSubscriptionUpdateConfirmDiscount =
     {
@@ -120,6 +165,13 @@ type PortalFlowsSubscriptionUpdateConfirmDiscount =
         /// The ID of a promotion code to apply to this subscription update.
         PromotionCode: string option
     }
+
+type PortalFlowsSubscriptionUpdateConfirmDiscount with
+    static member New(coupon: string option, promotionCode: string option) =
+        {
+            Coupon = coupon
+            PromotionCode = promotionCode
+        }
 
 type PortalFlowsSubscriptionUpdateConfirmItem =
     {
@@ -131,6 +183,14 @@ type PortalFlowsSubscriptionUpdateConfirmItem =
         Quantity: int option
     }
 
+type PortalFlowsSubscriptionUpdateConfirmItem with
+    static member New(id: string option, price: string option, ?quantity: int) =
+        {
+            Id = id
+            Price = price
+            Quantity = quantity
+        }
+
 type PortalFlowsFlowSubscriptionUpdateConfirm =
     {
         /// The coupon or promotion code to apply to this subscription update.
@@ -140,6 +200,14 @@ type PortalFlowsFlowSubscriptionUpdateConfirm =
         /// The ID of the subscription to be updated.
         Subscription: string
     }
+
+type PortalFlowsFlowSubscriptionUpdateConfirm with
+    static member New(discounts: PortalFlowsSubscriptionUpdateConfirmDiscount list option, items: PortalFlowsSubscriptionUpdateConfirmItem list, subscription: string) =
+        {
+            Discounts = discounts
+            Items = items
+            Subscription = subscription
+        }
 
 [<Struct>]
 type PortalFlowsFlowType =
@@ -160,6 +228,16 @@ type PortalFlowsFlow =
         /// Type of flow that the customer will go through.
         Type: PortalFlowsFlowType
     }
+
+type PortalFlowsFlow with
+    static member New(afterCompletion: PortalFlowsFlowAfterCompletion, subscriptionCancel: PortalFlowsFlowSubscriptionCancel option, subscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option, subscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option, ``type``: PortalFlowsFlowType) =
+        {
+            AfterCompletion = afterCompletion
+            SubscriptionCancel = subscriptionCancel
+            SubscriptionUpdate = subscriptionUpdate
+            SubscriptionUpdateConfirm = subscriptionUpdateConfirm
+            Type = ``type``
+        }
 
 /// The Billing customer portal is a Stripe-hosted UI for subscription and
 /// billing management.
@@ -198,12 +276,34 @@ type BillingPortalSession =
         Url: string
     }
 
+type BillingPortalSession with
+    static member New(configuration: StripeId<Markers.BillingPortalConfiguration>, created: DateTime, customer: string, customerAccount: string option, flow: PortalFlowsFlow option, id: string, livemode: bool, locale: BillingPortalSessionLocale option, onBehalfOf: string option, returnUrl: string option, url: string) =
+        {
+            Configuration = configuration
+            Created = created
+            Customer = customer
+            CustomerAccount = customerAccount
+            Flow = flow
+            Id = id
+            Livemode = livemode
+            Locale = locale
+            OnBehalfOf = onBehalfOf
+            ReturnUrl = returnUrl
+            Url = url
+        }
+
 module BillingPortalSession =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing_portal.session"
 
 /// Occurs whenever a portal session is created.
 type BillingPortalSessionCreated = { Object: BillingPortalSession }
+
+type BillingPortalSessionCreated with
+    static member New(object: BillingPortalSession) =
+        {
+            Object = object
+        }
 
 type BillingPortalConfigurationApplication'AnyOf =
     | String of string
@@ -219,6 +319,14 @@ type PortalBusinessProfile =
         /// A link to the business’s publicly available terms of service.
         TermsOfServiceUrl: string option
     }
+
+type PortalBusinessProfile with
+    static member New(headline: string option, privacyPolicyUrl: string option, termsOfServiceUrl: string option) =
+        {
+            Headline = headline
+            PrivacyPolicyUrl = privacyPolicyUrl
+            TermsOfServiceUrl = termsOfServiceUrl
+        }
 
 type PortalCustomerUpdateAllowedUpdates =
     | Address
@@ -236,11 +344,24 @@ type PortalCustomerUpdate =
         Enabled: bool
     }
 
+type PortalCustomerUpdate with
+    static member New(allowedUpdates: PortalCustomerUpdateAllowedUpdates list, enabled: bool) =
+        {
+            AllowedUpdates = allowedUpdates
+            Enabled = enabled
+        }
+
 type PortalInvoiceList =
     {
         /// Whether the feature is enabled.
         Enabled: bool
     }
+
+type PortalInvoiceList with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
 
 type PortalPaymentMethodUpdate =
     {
@@ -249,6 +370,13 @@ type PortalPaymentMethodUpdate =
         /// The [Payment Method Configuration](/api/payment_method_configurations) to use for this portal session. When specified, customers will be able to update their payment method to one of the options specified by the payment method configuration. If not set, the default payment method configuration is used.
         PaymentMethodConfiguration: string option
     }
+
+type PortalPaymentMethodUpdate with
+    static member New(enabled: bool, paymentMethodConfiguration: string option) =
+        {
+            Enabled = enabled
+            PaymentMethodConfiguration = paymentMethodConfiguration
+        }
 
 [<Struct>]
 type PortalSubscriptionCancelMode =
@@ -279,6 +407,13 @@ type PortalSubscriptionCancellationReason =
         Options: PortalSubscriptionCancellationReasonOptions list
     }
 
+type PortalSubscriptionCancellationReason with
+    static member New(enabled: bool, options: PortalSubscriptionCancellationReasonOptions list) =
+        {
+            Enabled = enabled
+            Options = options
+        }
+
 type PortalSubscriptionCancel =
     {
         CancellationReason: PortalSubscriptionCancellationReason
@@ -289,6 +424,15 @@ type PortalSubscriptionCancel =
         /// Whether to create prorations when canceling subscriptions. Possible values are `none` and `create_prorations`.
         ProrationBehavior: PortalSubscriptionCancelProrationBehavior
     }
+
+type PortalSubscriptionCancel with
+    static member New(cancellationReason: PortalSubscriptionCancellationReason, enabled: bool, mode: PortalSubscriptionCancelMode, prorationBehavior: PortalSubscriptionCancelProrationBehavior) =
+        {
+            CancellationReason = cancellationReason
+            Enabled = enabled
+            Mode = mode
+            ProrationBehavior = prorationBehavior
+        }
 
 [<Struct>]
 type PortalResourceScheduleUpdateAtPeriodEndConditionType =
@@ -301,11 +445,23 @@ type PortalResourceScheduleUpdateAtPeriodEndCondition =
         Type: PortalResourceScheduleUpdateAtPeriodEndConditionType
     }
 
+type PortalResourceScheduleUpdateAtPeriodEndCondition with
+    static member New(``type``: PortalResourceScheduleUpdateAtPeriodEndConditionType) =
+        {
+            Type = ``type``
+        }
+
 type PortalResourceScheduleUpdateAtPeriodEnd =
     {
         /// List of conditions. When any condition is true, an update will be scheduled at the end of the current period.
         Conditions: PortalResourceScheduleUpdateAtPeriodEndCondition list
     }
+
+type PortalResourceScheduleUpdateAtPeriodEnd with
+    static member New(conditions: PortalResourceScheduleUpdateAtPeriodEndCondition list) =
+        {
+            Conditions = conditions
+        }
 
 [<Struct>]
 type PortalSubscriptionUpdateBillingCycleAnchor =
@@ -328,6 +484,14 @@ type PortalSubscriptionUpdateProductAdjustableQuantity =
         Minimum: int
     }
 
+type PortalSubscriptionUpdateProductAdjustableQuantity with
+    static member New(enabled: bool, maximum: int option, minimum: int) =
+        {
+            Enabled = enabled
+            Maximum = maximum
+            Minimum = minimum
+        }
+
 type PortalSubscriptionUpdateProduct =
     {
         AdjustableQuantity: PortalSubscriptionUpdateProductAdjustableQuantity
@@ -336,6 +500,14 @@ type PortalSubscriptionUpdateProduct =
         /// The product ID.
         Product: string
     }
+
+type PortalSubscriptionUpdateProduct with
+    static member New(adjustableQuantity: PortalSubscriptionUpdateProductAdjustableQuantity, prices: string list, product: string) =
+        {
+            AdjustableQuantity = adjustableQuantity
+            Prices = prices
+            Product = product
+        }
 
 [<Struct>]
 type PortalSubscriptionUpdateProrationBehavior =
@@ -365,12 +537,34 @@ type PortalSubscriptionUpdate =
         TrialUpdateBehavior: PortalSubscriptionUpdateTrialUpdateBehavior
     }
 
+type PortalSubscriptionUpdate with
+    static member New(billingCycleAnchor: PortalSubscriptionUpdateBillingCycleAnchor option, defaultAllowedUpdates: PortalSubscriptionUpdateDefaultAllowedUpdates list, enabled: bool, prorationBehavior: PortalSubscriptionUpdateProrationBehavior, scheduleAtPeriodEnd: PortalResourceScheduleUpdateAtPeriodEnd, trialUpdateBehavior: PortalSubscriptionUpdateTrialUpdateBehavior, ?products: PortalSubscriptionUpdateProduct list option) =
+        {
+            BillingCycleAnchor = billingCycleAnchor
+            DefaultAllowedUpdates = defaultAllowedUpdates
+            Enabled = enabled
+            ProrationBehavior = prorationBehavior
+            ScheduleAtPeriodEnd = scheduleAtPeriodEnd
+            TrialUpdateBehavior = trialUpdateBehavior
+            Products = products |> Option.flatten
+        }
+
 type PortalFeatures =
     { CustomerUpdate: PortalCustomerUpdate
       InvoiceHistory: PortalInvoiceList
       PaymentMethodUpdate: PortalPaymentMethodUpdate
       SubscriptionCancel: PortalSubscriptionCancel
       SubscriptionUpdate: PortalSubscriptionUpdate }
+
+type PortalFeatures with
+    static member New(customerUpdate: PortalCustomerUpdate, invoiceHistory: PortalInvoiceList, paymentMethodUpdate: PortalPaymentMethodUpdate, subscriptionCancel: PortalSubscriptionCancel, subscriptionUpdate: PortalSubscriptionUpdate) =
+        {
+            CustomerUpdate = customerUpdate
+            InvoiceHistory = invoiceHistory
+            PaymentMethodUpdate = paymentMethodUpdate
+            SubscriptionCancel = subscriptionCancel
+            SubscriptionUpdate = subscriptionUpdate
+        }
 
 type PortalLoginPage =
     {
@@ -380,6 +574,13 @@ type PortalLoginPage =
         /// A shareable URL to the hosted portal login page. Your customers will be able to log in with their [email](https://docs.stripe.com/api/customers/object#customer_object-email) and receive a link to their customer portal.
         Url: string option
     }
+
+type PortalLoginPage with
+    static member New(enabled: bool, url: string option) =
+        {
+            Enabled = enabled
+            Url = url
+        }
 
 /// A portal configuration describes the functionality and behavior you embed in a portal session. Related guide: [Configure the customer portal](/customer-management/configure-portal).
 type BillingPortalConfiguration =
@@ -409,6 +610,24 @@ type BillingPortalConfiguration =
         Updated: DateTime
     }
 
+type BillingPortalConfiguration with
+    static member New(active: bool, application: BillingPortalConfigurationApplication'AnyOf option, businessProfile: PortalBusinessProfile, created: DateTime, defaultReturnUrl: string option, features: PortalFeatures, id: string, isDefault: bool, livemode: bool, loginPage: PortalLoginPage, metadata: Map<string, string> option, name: string option, updated: DateTime) =
+        {
+            Active = active
+            Application = application
+            BusinessProfile = businessProfile
+            Created = created
+            DefaultReturnUrl = defaultReturnUrl
+            Features = features
+            Id = id
+            IsDefault = isDefault
+            Livemode = livemode
+            LoginPage = loginPage
+            Metadata = metadata
+            Name = name
+            Updated = updated
+        }
+
 module BillingPortalConfiguration =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing_portal.configuration"
@@ -416,6 +635,18 @@ module BillingPortalConfiguration =
 /// Occurs whenever a portal configuration is updated.
 type BillingPortalConfigurationUpdated = { Object: BillingPortalConfiguration }
 
+type BillingPortalConfigurationUpdated with
+    static member New(object: BillingPortalConfiguration) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a portal configuration is created.
 type BillingPortalConfigurationCreated = { Object: BillingPortalConfiguration }
+
+type BillingPortalConfigurationCreated with
+    static member New(object: BillingPortalConfiguration) =
+        {
+            Object = object
+        }
 

@@ -24,6 +24,15 @@ module SigmaScheduledQueryRuns =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -48,6 +57,13 @@ module SigmaScheduledQueryRuns =
             [<Config.Path>]
             ScheduledQueryRun: string
         }
+
+    type RetrieveOptions with
+        static member New(scheduledQueryRun: string, ?expand: string list) =
+            {
+                ScheduledQueryRun = scheduledQueryRun
+                Expand = expand
+            }
 
     module RetrieveOptions =
         let create

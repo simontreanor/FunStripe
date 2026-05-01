@@ -12,12 +12,24 @@ type SourceMandateNotificationAcssDebitData =
         StatementDescriptor: string option
     }
 
+type SourceMandateNotificationAcssDebitData with
+    static member New(?statementDescriptor: string) =
+        {
+            StatementDescriptor = statementDescriptor
+        }
+
 type SourceMandateNotificationBacsDebitData =
     {
         /// Last 4 digits of the account number associated with the debit.
         [<JsonPropertyName("last4")>]
         Last4: string option
     }
+
+type SourceMandateNotificationBacsDebitData with
+    static member New(?last4: string) =
+        {
+            Last4 = last4
+        }
 
 [<Struct>]
 type SourceMandateNotificationReason =
@@ -34,6 +46,14 @@ type SourceMandateNotificationSepaDebitData =
         /// Mandate reference associated with the debit.
         MandateReference: string option
     }
+
+type SourceMandateNotificationSepaDebitData with
+    static member New(?creditorIdentifier: string, ?last4: string, ?mandateReference: string) =
+        {
+            CreditorIdentifier = creditorIdentifier
+            Last4 = last4
+            MandateReference = mandateReference
+        }
 
 [<Struct>]
 type SourceMandateNotificationStatus =
@@ -64,6 +84,22 @@ type SourceMandateNotification =
         /// The type of source this mandate notification is attached to. Should be the source type identifier code for the payment method, such as `three_d_secure`.
         Type: string
     }
+
+type SourceMandateNotification with
+    static member New(amount: int option, created: DateTime, id: string, livemode: bool, reason: SourceMandateNotificationReason, source: Source, status: SourceMandateNotificationStatus, ``type``: string, ?acssDebit: SourceMandateNotificationAcssDebitData, ?bacsDebit: SourceMandateNotificationBacsDebitData, ?sepaDebit: SourceMandateNotificationSepaDebitData) =
+        {
+            Amount = amount
+            Created = created
+            Id = id
+            Livemode = livemode
+            Reason = reason
+            Source = source
+            Status = status
+            Type = ``type``
+            AcssDebit = acssDebit
+            BacsDebit = bacsDebit
+            SepaDebit = sepaDebit
+        }
 
 module SourceMandateNotification =
     ///String representing the object's type. Objects of the same type share the same value.

@@ -15,6 +15,14 @@ type BalanceAmountBySourceType =
         Fpx: int option
     }
 
+type BalanceAmountBySourceType with
+    static member New(?bankAccount: int, ?card: int, ?fpx: int) =
+        {
+            BankAccount = bankAccount
+            Card = card
+            Fpx = fpx
+        }
+
 type BalanceAmount =
     {
         /// Balance amount.
@@ -24,6 +32,14 @@ type BalanceAmount =
         SourceTypes: BalanceAmountBySourceType option
     }
 
+type BalanceAmount with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?sourceTypes: BalanceAmountBySourceType) =
+        {
+            Amount = amount
+            Currency = currency
+            SourceTypes = sourceTypes
+        }
+
 type BalanceNetAvailable =
     {
         /// Net balance amount, subtracting fees from platform-set pricing.
@@ -32,6 +48,14 @@ type BalanceNetAvailable =
         Destination: string
         SourceTypes: BalanceAmountBySourceType option
     }
+
+type BalanceNetAvailable with
+    static member New(amount: int, destination: string, ?sourceTypes: BalanceAmountBySourceType) =
+        {
+            Amount = amount
+            Destination = destination
+            SourceTypes = sourceTypes
+        }
 
 type BalanceAmountNet =
     {
@@ -44,11 +68,26 @@ type BalanceAmountNet =
         SourceTypes: BalanceAmountBySourceType option
     }
 
+type BalanceAmountNet with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?netAvailable: BalanceNetAvailable list, ?sourceTypes: BalanceAmountBySourceType) =
+        {
+            Amount = amount
+            Currency = currency
+            NetAvailable = netAvailable
+            SourceTypes = sourceTypes
+        }
+
 type BalanceDetail =
     {
         /// Funds that are available for use.
         Available: BalanceAmount list
     }
+
+type BalanceDetail with
+    static member New(available: BalanceAmount list) =
+        {
+            Available = available
+        }
 
 type BalanceDetailUngated =
     {
@@ -57,6 +96,13 @@ type BalanceDetailUngated =
         /// Funds that are pending
         Pending: BalanceAmount list
     }
+
+type BalanceDetailUngated with
+    static member New(available: BalanceAmount list, pending: BalanceAmount list) =
+        {
+            Available = available
+            Pending = pending
+        }
 
 /// This is an object representing your Stripe balance. You can retrieve it to see
 /// the balance currently on your Stripe account.
@@ -78,10 +124,28 @@ type Balance =
         RefundAndDisputePrefunding: BalanceDetailUngated option
     }
 
+type Balance with
+    static member New(available: BalanceAmount list, livemode: bool, pending: BalanceAmount list, ?connectReserved: BalanceAmount list, ?instantAvailable: BalanceAmountNet list, ?issuing: BalanceDetail, ?refundAndDisputePrefunding: BalanceDetailUngated) =
+        {
+            Available = available
+            Livemode = livemode
+            Pending = pending
+            ConnectReserved = connectReserved
+            InstantAvailable = instantAvailable
+            Issuing = issuing
+            RefundAndDisputePrefunding = refundAndDisputePrefunding
+        }
+
 module Balance =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "balance"
 
 /// Occurs whenever your Stripe balance has been updated (e.g., when a charge is available to be paid out). By default, Stripe automatically transfers funds in your balance to your bank account on a daily basis. This event is not fired for negative transactions.
 type BalanceAvailable = { Object: Balance }
+
+type BalanceAvailable with
+    static member New(object: Balance) =
+        {
+            Object = object
+        }
 

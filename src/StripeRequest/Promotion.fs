@@ -42,6 +42,21 @@ module PromotionCodes =
             StartingAfter: string option
         }
 
+    type ListOptions with
+        static member New(?active: bool, ?code: string, ?coupon: string, ?created: int, ?customer: string, ?customerAccount: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                Active = active
+                Code = code
+                Coupon = coupon
+                Created = created
+                Customer = customer
+                CustomerAccount = customerAccount
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
     module ListOptions =
         let create
             (
@@ -82,16 +97,23 @@ module PromotionCodes =
             Type: Create'PromotionType option
         }
 
+    type Create'Promotion with
+        static member New(?coupon: string, ?type': Create'PromotionType) =
+            {
+                Coupon = coupon
+                Type = type'
+            }
+
     module Create'Promotion =
         let create
             (
                 coupon: string option,
-                ``type``: Create'PromotionType option
+                type': Create'PromotionType option
             ) : Create'Promotion
             =
             {
               Coupon = coupon
-              Type = ``type``
+              Type = type'
             }
 
     type Create'Restrictions =
@@ -109,6 +131,15 @@ module PromotionCodes =
             [<Config.Form>]
             MinimumAmountCurrency: IsoTypes.IsoCurrencyCode option
         }
+
+    type Create'Restrictions with
+        static member New(?currencyOptions: Map<string, string>, ?firstTimeTransaction: bool, ?minimumAmount: int, ?minimumAmountCurrency: IsoTypes.IsoCurrencyCode) =
+            {
+                CurrencyOptions = currencyOptions
+                FirstTimeTransaction = firstTimeTransaction
+                MinimumAmount = minimumAmount
+                MinimumAmountCurrency = minimumAmountCurrency
+            }
 
     module Create'Restrictions =
         let create
@@ -161,6 +192,21 @@ module PromotionCodes =
             Restrictions: Create'Restrictions option
         }
 
+    type CreateOptions with
+        static member New(promotion: Create'Promotion, ?active: bool, ?code: string, ?customer: string, ?customerAccount: string, ?expand: string list, ?expiresAt: DateTime, ?maxRedemptions: int, ?metadata: Map<string, string>, ?restrictions: Create'Restrictions) =
+            {
+                Promotion = promotion
+                Active = active
+                Code = code
+                Customer = customer
+                CustomerAccount = customerAccount
+                Expand = expand
+                ExpiresAt = expiresAt
+                MaxRedemptions = maxRedemptions
+                Metadata = metadata
+                Restrictions = restrictions
+            }
+
     module CreateOptions =
         let create
             (
@@ -189,6 +235,13 @@ module PromotionCodes =
             PromotionCode: string
         }
 
+    type RetrieveOptions with
+        static member New(promotionCode: string, ?expand: string list) =
+            {
+                PromotionCode = promotionCode
+                Expand = expand
+            }
+
     module RetrieveOptions =
         let create
             (
@@ -206,6 +259,12 @@ module PromotionCodes =
             [<Config.Form>]
             CurrencyOptions: Map<string, string> option
         }
+
+    type Update'Restrictions with
+        static member New(?currencyOptions: Map<string, string>) =
+            {
+                CurrencyOptions = currencyOptions
+            }
 
     module Update'Restrictions =
         let create
@@ -234,6 +293,16 @@ module PromotionCodes =
             [<Config.Form>]
             Restrictions: Update'Restrictions option
         }
+
+    type UpdateOptions with
+        static member New(promotionCode: string, ?active: bool, ?expand: string list, ?metadata: Map<string, string>, ?restrictions: Update'Restrictions) =
+            {
+                PromotionCode = promotionCode
+                Active = active
+                Expand = expand
+                Metadata = metadata
+                Restrictions = restrictions
+            }
 
     module UpdateOptions =
         let create

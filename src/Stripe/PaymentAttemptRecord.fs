@@ -55,6 +55,31 @@ type PaymentAttemptRecord =
         ShippingDetails: PaymentsPrimitivesPaymentRecordsResourceShippingDetails option
     }
 
+type PaymentAttemptRecord with
+    static member New(amount: PaymentsPrimitivesPaymentRecordsResourceAmount, amountAuthorized: PaymentsPrimitivesPaymentRecordsResourceAmount, amountCanceled: PaymentsPrimitivesPaymentRecordsResourceAmount, amountFailed: PaymentsPrimitivesPaymentRecordsResourceAmount, amountGuaranteed: PaymentsPrimitivesPaymentRecordsResourceAmount, amountRefunded: PaymentsPrimitivesPaymentRecordsResourceAmount, amountRequested: PaymentsPrimitivesPaymentRecordsResourceAmount, application: string option, created: DateTime, customerDetails: PaymentsPrimitivesPaymentRecordsResourceCustomerDetails option, customerPresence: PaymentAttemptRecordCustomerPresence option, description: string option, id: string, livemode: bool, metadata: Map<string, string>, paymentMethodDetails: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodDetails option, paymentRecord: string option, processorDetails: PaymentsPrimitivesPaymentRecordsResourceProcessorDetails, reportedBy: PaymentAttemptRecordReportedBy, shippingDetails: PaymentsPrimitivesPaymentRecordsResourceShippingDetails option) =
+        {
+            Amount = amount
+            AmountAuthorized = amountAuthorized
+            AmountCanceled = amountCanceled
+            AmountFailed = amountFailed
+            AmountGuaranteed = amountGuaranteed
+            AmountRefunded = amountRefunded
+            AmountRequested = amountRequested
+            Application = application
+            Created = created
+            CustomerDetails = customerDetails
+            CustomerPresence = customerPresence
+            Description = description
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            PaymentMethodDetails = paymentMethodDetails
+            PaymentRecord = paymentRecord
+            ProcessorDetails = processorDetails
+            ReportedBy = reportedBy
+            ShippingDetails = shippingDetails
+        }
+
 module PaymentAttemptRecord =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "payment_attempt_record"

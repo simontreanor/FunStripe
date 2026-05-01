@@ -18,6 +18,14 @@ type AccountLink =
         Url: string
     }
 
+type AccountLink with
+    static member New(created: DateTime, expiresAt: DateTime, url: string) =
+        {
+            Created = created
+            ExpiresAt = expiresAt
+            Url = url
+        }
+
 module AccountLink =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "account_link"

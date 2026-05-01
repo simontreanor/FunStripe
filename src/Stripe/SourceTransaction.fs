@@ -18,6 +18,15 @@ type SourceTransactionAchCreditTransferData =
         RoutingNumber: string option
     }
 
+type SourceTransactionAchCreditTransferData with
+    static member New(?customerData: string, ?fingerprint: string, ?last4: string, ?routingNumber: string) =
+        {
+            CustomerData = customerData
+            Fingerprint = fingerprint
+            Last4 = last4
+            RoutingNumber = routingNumber
+        }
+
 type SourceTransactionChfCreditTransferData =
     {
         /// Reference associated with the transfer.
@@ -32,6 +41,16 @@ type SourceTransactionChfCreditTransferData =
         /// Sender's name.
         SenderName: string option
     }
+
+type SourceTransactionChfCreditTransferData with
+    static member New(?reference: string, ?senderAddressCountry: IsoTypes.IsoCountryCode, ?senderAddressLine1: string, ?senderIban: string, ?senderName: string) =
+        {
+            Reference = reference
+            SenderAddressCountry = senderAddressCountry
+            SenderAddressLine1 = senderAddressLine1
+            SenderIban = senderIban
+            SenderName = senderName
+        }
 
 type SourceTransactionGbpCreditTransferData =
     {
@@ -52,6 +71,18 @@ type SourceTransactionGbpCreditTransferData =
         SenderSortCode: string option
     }
 
+type SourceTransactionGbpCreditTransferData with
+    static member New(?fingerprint: string, ?fundingMethod: string, ?last4: string, ?reference: string, ?senderAccountNumber: string, ?senderName: string, ?senderSortCode: string) =
+        {
+            Fingerprint = fingerprint
+            FundingMethod = fundingMethod
+            Last4 = last4
+            Reference = reference
+            SenderAccountNumber = senderAccountNumber
+            SenderName = senderName
+            SenderSortCode = senderSortCode
+        }
+
 type SourceTransactionPaperCheckData =
     {
         /// Time at which the deposited funds will be available for use. Measured in seconds since the Unix epoch.
@@ -59,6 +90,13 @@ type SourceTransactionPaperCheckData =
         /// Comma-separated list of invoice IDs associated with the paper check.
         Invoices: string option
     }
+
+type SourceTransactionPaperCheckData with
+    static member New(?availableAt: string, ?invoices: string) =
+        {
+            AvailableAt = availableAt
+            Invoices = invoices
+        }
 
 type SourceTransactionSepaCreditTransferData =
     {
@@ -69,6 +107,14 @@ type SourceTransactionSepaCreditTransferData =
         /// Sender's name.
         SenderName: string option
     }
+
+type SourceTransactionSepaCreditTransferData with
+    static member New(?reference: string, ?senderIban: string, ?senderName: string) =
+        {
+            Reference = reference
+            SenderIban = senderIban
+            SenderName = senderName
+        }
 
 [<Struct>]
 type SourceTransactionStatus =
@@ -123,6 +169,24 @@ type SourceTransaction =
         Type: SourceTransactionType
     }
 
+type SourceTransaction with
+    static member New(amount: int, created: DateTime, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, source: string, status: SourceTransactionStatus, ``type``: SourceTransactionType, ?achCreditTransfer: SourceTransactionAchCreditTransferData, ?chfCreditTransfer: SourceTransactionChfCreditTransferData, ?gbpCreditTransfer: SourceTransactionGbpCreditTransferData, ?paperCheck: SourceTransactionPaperCheckData, ?sepaCreditTransfer: SourceTransactionSepaCreditTransferData) =
+        {
+            Amount = amount
+            Created = created
+            Currency = currency
+            Id = id
+            Livemode = livemode
+            Source = source
+            Status = status
+            Type = ``type``
+            AchCreditTransfer = achCreditTransfer
+            ChfCreditTransfer = chfCreditTransfer
+            GbpCreditTransfer = gbpCreditTransfer
+            PaperCheck = paperCheck
+            SepaCreditTransfer = sepaCreditTransfer
+        }
+
 module SourceTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "source_transaction"
@@ -130,6 +194,18 @@ module SourceTransaction =
 /// Occurs whenever a source transaction is updated.
 type SourceTransactionUpdated = { Object: SourceTransaction }
 
+type SourceTransactionUpdated with
+    static member New(object: SourceTransaction) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a source transaction is created.
 type SourceTransactionCreated = { Object: SourceTransaction }
+
+type SourceTransactionCreated with
+    static member New(object: SourceTransaction) =
+        {
+            Object = object
+        }
 

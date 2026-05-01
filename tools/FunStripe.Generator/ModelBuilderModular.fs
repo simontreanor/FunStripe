@@ -71,6 +71,38 @@ module ModelBuilderModular =
     let private stripDeleted (s: string) =
         if s.StartsWith "deleted_" then s.Substring("deleted_".Length) else s
 
+    /// Multi-token prefix aliases: map a long underscore-separated prefix to a canonical domain.
+    /// Checked AFTER canonical-domain longest-prefix match but BEFORE first-token fallback,
+    /// in longest-prefix order. Use for schemas whose name starts with a token that's a
+    /// canonical domain but whose semantic home is elsewhere (e.g. `payment_flows_amount_details`
+    /// belongs with `payment_intent`, not the generic `payment_*` -> `payment_method` fallback).
+    /// NOTE: only triggered when canonical match fails — but since `payment_flows_*` doesn't
+    /// match any canonical domain (no `payment_flows.X` schemas), this works for those.
+    let private prefixAliases : (string * string) list =
+        [
+            // payment_flows_* → split by sub-resource
+            "payment_flows_amount_details",                  "payment_intent"
+            "payment_flows_automatic_payment_methods_setup", "setup_intent"
+            "payment_flows_automatic_payment_methods",       "payment_intent"
+            "payment_flows_private_payment_methods_card",    "card"
+            "payment_flows_private_payment_methods",         "payment_method"
+            "payment_flows",                                 "payment_method"
+            // Connect cross-domain references
+            "connect_account_reference",                     "account"
+            // Issuing terms-of-service: lives on account
+            "card_issuing_account",                          "account"
+            // automatic_tax_* → tax-related, but referenced from invoice/subscription;
+            // pin to invoice (its primary user) to remove the spurious "automatic" module
+            "automatic_tax",                                 "invoice"
+            // api_errors: depends on payment_intent/setup_intent so must live downstream;
+            // park in payment_method (the merged super-module) so the orphan "api" module disappears
+            "api_errors",                                    "payment_method"
+            // linked_account_options_*: financial_connections concepts
+            "linked_account_options",                        "financial_connections"
+            // legal_entity_*: account/person territory (already handled by `legal` token alias)
+        ]
+        |> List.sortByDescending (fun (k, _) -> k.Length)
+
     /// Try to map a non-canonical token to a canonical domain via:
     ///  1. Direct alias lookup (e.g. "subscriptions" -> "subscription")
     ///  2. Auto-pluralisation (if "fooS" was the token and "foo" is canonical)
@@ -84,13 +116,26 @@ module ModelBuilderModular =
                 if canonicalSet.Contains singular then Some singular else None
             else None
 
+    /// Try to match a multi-token prefix alias against the normalized schema name.
+    let private resolvePrefixAlias (canonicalSet: Set<string>) (normalized: string) : string option =
+        prefixAliases
+        |> List.tryPick (fun (prefix, target) ->
+            if (normalized = prefix || normalized.StartsWith(prefix + "_")) && canonicalSet.Contains target
+            then Some target else None)
+
     /// Normalize a schema name to its semantic module name by longest-prefix match
     /// against a list of canonical Stripe domains (sorted longest-first).
-    /// If no canonical match is found, falls back to the first underscore-separated token,
-    /// then attempts an alias lookup, and finally returns the orphan token as-is.
+    /// If no canonical match is found, tries the multi-token prefixAliases, then falls
+    /// back to the first underscore-separated token, alias lookup, and orphan token as-is.
     let normalizedModuleForName (canonicalDomains: string list) (schemaName: string) =
         let canonicalSet = canonicalDomains |> Set.ofList
         let normalized = schemaName |> normalizeSchemaKey |> stripDeleted
+        // First: check multi-token prefix aliases (highest priority — these override
+        // canonical longest-prefix to redirect e.g. `payment_flows_amount_details` away
+        // from the generic `payment_method` mapping).
+        match resolvePrefixAlias canonicalSet normalized with
+        | Some t -> t
+        | None ->
         match canonicalDomains |> List.tryFind (fun d -> normalized = d || normalized.StartsWith(d + "_")) with
         | Some d -> d
         | None ->
@@ -112,14 +157,30 @@ module ModelBuilderModular =
         |> fst
 
     /// Recursively collect all schema $ref references from a JSON value.
-    /// Skips refs inside an `anyOf` block that also contains a `string` type member —
-    /// those are Stripe "expandable" fields, which the model generator emits as `string`,
-    /// so they MUST NOT contribute to the inter-module dependency graph either.
-    let rec collectSchemaRefs (element: JsonValue) : Set<string> =
+    /// Skips refs inside an `anyOf` block when:
+    ///   1. The block is "expandable" (contains a `string` member alongside `$ref`s).
+    ///      These collapse to `StripeId<Markers.X>` in the F# output.
+    ///   2. The block is "polymorphic" (multiple `$ref` members, no `string`).
+    ///      These are emitted as inline DUs in the consuming module, but the
+    ///      module-level dependency is satisfied by `open` statements alone —
+    ///      the consuming module need only be ordered AFTER the variant modules,
+    ///      it doesn't need to live in the same SCC as them. Skipping these refs
+    ///      from the SCC analysis breaks otherwise-spurious cycles introduced by
+    ///      webhook event payloads (e.g. `account.external_account.created.object`
+    ///      embedding `bank_account | card | source`).
+    /// Recursively collect schema $ref references with controllable anyOf-block elision.
+    ///   - `skipExpandable`:   skip anyOf blocks containing a `string` + `$ref`s
+    ///                         (these collapse to `StripeId<Markers.X>`)
+    ///   - `skipPolymorphic`:  skip anyOf blocks with multiple `$ref`s (no string)
+    ///                         (these emit as inline DUs; opening the variant modules
+    ///                          satisfies the dep — useful for breaking spurious SCCs)
+    /// Skipping polymorphic blocks is appropriate ONLY for SCC analysis; the variant
+    /// modules must still be ordered before the consuming module, so the FULL graph
+    /// (skipPolymorphic = false) is required for compile ordering.
+    let rec collectSchemaRefsWith (skipExpandable: bool) (skipPolymorphic: bool) (element: JsonValue) : Set<string> =
         match element with
         | JsonValue.Record properties ->
-            // Detect expandable anyOf: anyOf[] contains both a string-typed member and at least one $ref member.
-            let isExpandableAnyOf =
+            let anyOfClassification =
                 properties
                 |> Array.tryFind (fun (k, _) -> k = "anyOf")
                 |> Option.bind (fun (_, v) ->
@@ -133,21 +194,29 @@ module ModelBuilderModular =
                                         k = "type" &&
                                         match v with JsonValue.String "string" -> true | _ -> false)
                                 | _ -> false)
-                        let hasRef =
-                            items |> Array.exists (fun it ->
+                        let refCount =
+                            items |> Array.sumBy (fun it ->
                                 match it with
-                                | JsonValue.Record p -> p |> Array.exists (fun (k, _) -> k = "$ref")
-                                | _ -> false)
-                        if hasString && hasRef then Some () else None
+                                | JsonValue.Record p ->
+                                    if p |> Array.exists (fun (k, _) -> k = "$ref") then 1 else 0
+                                | _ -> 0)
+                        // Classification:
+                        //   single-target expandable  = string + exactly 1 $ref  (collapses to StripeId<_>)
+                        //   multi-target expandable   = string + 2+ $refs        (emits DU; refs needed for ordering)
+                        //   pure polymorphic          = 2+ $refs, no string      (emits DU; refs needed for ordering)
+                        if hasString && refCount = 1 then Some "expandable"
+                        elif hasString && refCount >= 2 then Some "multi_expandable"
+                        elif not hasString && refCount >= 2 then Some "polymorphic"
+                        else None
                     | _ -> None)
-                |> Option.isSome
 
-            if isExpandableAnyOf then
-                // The whole anyOf collapses to `string` in the F# output, so its $refs
-                // are irrelevant for module-dependency analysis.
-                // We still need to walk non-anyOf siblings (e.g. `description`, etc.),
-                // but those can't contain $refs at this level — anyOf is the entire schema fragment.
-                Set.empty
+            let elide =
+                match anyOfClassification with
+                | Some "expandable" -> skipExpandable
+                | Some "polymorphic" -> skipPolymorphic
+                | _ -> false
+
+            if elide then Set.empty
             else
                 let refSet =
                     properties
@@ -158,11 +227,24 @@ module ModelBuilderModular =
                             Some (s.Substring("#/components/schemas/".Length))
                         | _ -> None)
                     |> Option.toList |> Set.ofList
-                let childSets = properties |> Array.map (fun (_, v) -> collectSchemaRefs v)
+                let childSets = properties |> Array.map (fun (_, v) -> collectSchemaRefsWith skipExpandable skipPolymorphic v)
                 childSets |> Array.fold Set.union refSet
         | JsonValue.Array elements ->
-            elements |> Array.map collectSchemaRefs |> Array.fold Set.union Set.empty
+            elements |> Array.map (collectSchemaRefsWith skipExpandable skipPolymorphic) |> Array.fold Set.union Set.empty
         | _ -> Set.empty
+
+    /// Default schema-level ref collection used for both SCC cycle detection and
+    /// compile ordering. Skips only expandable anyOf blocks (which collapse to
+    /// `StripeId<Markers.X>` and induce no module-level dep). Polymorphic anyOf
+    /// blocks ARE retained — they emit as inline DUs whose variant types must be
+    /// compiled before the consuming module, so the cycle (if any) is real and
+    /// must be reflected in the SCC analysis.
+    let collectSchemaRefs (element: JsonValue) : Set<string> =
+        collectSchemaRefsWith true false element
+
+    /// Alias retained for clarity at call sites where ordering is the goal.
+    let collectSchemaRefsFull = collectSchemaRefs
+
 
     /// Compute module assignments from the OpenAPI spec using schema-level SCC + majority-vote.
     /// Returns (typeToModule, moduleOrder).
@@ -227,6 +309,17 @@ module ModelBuilderModular =
             schemas.Properties
             |> Array.map (fun (key, schema) ->
                 let refs = collectSchemaRefs schema |> Set.filter (fun d -> schemaNames.Contains d && d <> key)
+                key, refs)
+            |> Map.ofArray
+
+        // Full graph (polymorphic anyOf refs retained) — used for cross-SCC ordering only.
+        // Module-level ordering must respect DU variant deps so consumers are emitted
+        // AFTER all their referenced variant modules, even when the cycle-detection
+        // graph (above) elides those refs to break spurious schema-level cycles.
+        let dependencyGraphFull =
+            schemas.Properties
+            |> Array.map (fun (key, schema) ->
+                let refs = collectSchemaRefsFull schema |> Set.filter (fun d -> schemaNames.Contains d && d <> key)
                 key, refs)
             |> Map.ofArray
 
@@ -333,13 +426,16 @@ module ModelBuilderModular =
             printfn "Non-canonical orphan modules (no canonical incoming refs): %s"
                 (String.concat ", " remainingOrphans)
 
-        // Compute SCC-level dependency graph
+        // Compute SCC-level dependency graph using the FULL graph so that module
+        // ordering respects polymorphic-anyOf DU variant deps. Self-edges (within an
+        // SCC) are filtered out, so this can't reintroduce the spurious cycles that
+        // motivated polymorphic skipping in the SCC-detection graph above.
         let sccDeps =
             sccList |> List.mapi (fun sccId members ->
                 let outgoing =
                     members
                     |> List.collect (fun m ->
-                        dependencyGraph |> Map.tryFind m |> Option.defaultValue Set.empty |> Set.toList)
+                        dependencyGraphFull |> Map.tryFind m |> Option.defaultValue Set.empty |> Set.toList)
                     |> List.choose (fun dep ->
                         let target = schemaToSccId.[dep]
                         if target = sccId then None else Some target)
@@ -709,6 +805,33 @@ module ModelBuilderModular =
 
     // --- file serialization ---
 
+    /// Emit a `type X with static member New(...) = { ... }` augmentation block as raw text
+    /// for a record type. This allows callers to construct records via named/optional
+    /// parameters rather than requiring the full positional record literal.
+    /// Returns an empty string when there are no params (so the caller can append unconditionally).
+    let serializeRecordNewMember (name: string) (newParams: ParamInfo list) : string =
+        if newParams.IsEmpty then "" else
+        let sb = Text.StringBuilder()
+        sb.AppendLine($"type {name} with") |> ignore
+        // Parameter list — required first, then optional with `?` prefix
+        let sortedParams =
+            (newParams |> List.filter (fun p -> not p.IsOptional)) @
+            (newParams |> List.filter (fun p -> p.IsOptional))
+        let paramStrs =
+            sortedParams |> List.map (fun p ->
+                let prefix = if p.IsOptional then "?" else ""
+                $"{prefix}{p.ParamName}: {p.ParamType}")
+        let paramList = String.concat ", " paramStrs
+        sb.AppendLine($"    static member New({paramList}) =") |> ignore
+        sb.AppendLine("        {") |> ignore
+        for p in newParams do
+            let body =
+                if p.NeedsFlatten then $"{p.ParamName} |> Option.flatten"
+                else p.ParamName
+            sb.AppendLine($"            {p.PascalFieldName} = {body}") |> ignore
+        sb.AppendLine("        }") |> ignore
+        sb.ToString()
+
     /// Generate a raw string for an EmptyType declaration
     let serializeEmptyType (name: string) (descLines: string list) (members: MemberInfo list) (isRecursive: bool) (extraAttribute: string option) =
         let keyword = if isRecursive then "and" else "type"
@@ -811,12 +934,18 @@ module ModelBuilderModular =
                 isFirst <- false
 
             // Now emit all companion modules (static members only — no create for response models)
+            // and `with static member New` augmentations for records.
             for (td, _) in types do
                 match td with
-                | RecordType(name, _, _, members, _, _) when not members.IsEmpty ->
-                    let snippet = serializeCompanionModule name members []
-                    sb.AppendLine(snippet.Trim()) |> ignore
-                    sb.AppendLine() |> ignore
+                | RecordType(name, _, _, members, newParams, _) ->
+                    if not newParams.IsEmpty then
+                        let augSnippet = serializeRecordNewMember name newParams
+                        sb.AppendLine(augSnippet.TrimEnd()) |> ignore
+                        sb.AppendLine() |> ignore
+                    if not members.IsEmpty then
+                        let snippet = serializeCompanionModule name members []
+                        sb.AppendLine(snippet.Trim()) |> ignore
+                        sb.AppendLine() |> ignore
 
                 | EmptyType(name, _, members, _) when not members.IsEmpty ->
                     let snippet = serializeCompanionModule name members []
@@ -852,6 +981,12 @@ module ModelBuilderModular =
                         Gen.mkOak oak |> Gen.run
                     sb.AppendLine(typeSnippet.Trim()) |> ignore
                     sb.AppendLine() |> ignore
+
+                    // `with static member New(...)` augmentation for ergonomic construction
+                    if not newParams.IsEmpty then
+                        let augSnippet = serializeRecordNewMember name newParams
+                        sb.AppendLine(augSnippet.TrimEnd()) |> ignore
+                        sb.AppendLine() |> ignore
 
                     // Companion module (static members only — no create for response models)
                     if not members.IsEmpty then
@@ -934,6 +1069,20 @@ module ModelBuilderModular =
                 printfn "  %-25s %4d types (%d recursive)" fileName typeCount recCount
 
         printfn "\nGenerated %d files in %s" generatedFiles.Count outputDir
+
+        // Emit a .props file alongside the generated modules so consuming .fsproj files can
+        // import modular compilation order without manual upkeep.
+        let propsPath = Path.Combine(outputDir, "Stripe.Modular.props")
+        let propsLines = ResizeArray<string>()
+        propsLines.Add("<!-- Auto-generated by FunStripe.Generator. Do not edit. -->")
+        propsLines.Add("<Project>")
+        propsLines.Add("  <ItemGroup>")
+        for f in generatedFiles do
+            propsLines.Add(sprintf "    <Compile Include=\"$(MSBuildThisFileDirectory)%s\" Link=\"Stripe/%s\" />" f f)
+        propsLines.Add("  </ItemGroup>")
+        propsLines.Add("</Project>")
+        File.WriteAllText(propsPath, String.concat "\n" propsLines + "\n")
+        printfn "Emitted %s" propsPath
 
         // Return the ordered list of file names for .fsproj inclusion
         generatedFiles |> Seq.toList
