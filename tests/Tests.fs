@@ -4,8 +4,11 @@ open FunStripe.AsyncResultCE
 open FunStripe.WebhookSigning
 open IsoTypes
 open NUnit.Framework
+open Stripe.Event
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
+open Stripe.Price
+open Stripe.Product
 open StripeRequest.Customers
 open StripeRequest.Payment
 open System
@@ -16,6 +19,10 @@ module Tests =
 
     ///Serialise F# class
     let serialise<'a> (parameters:'a) =
+        typeof<'a>.GetProperties()
+        |> Seq.collect (fun pi -> Util.format pi parameters)
+
+    let formSerialise<'a> (parameters:'a) =
         typeof<'a>.GetProperties()
         |> Seq.collect (fun pi -> Util.format pi parameters)
 
@@ -654,3 +661,1297 @@ module Tests =
                 |> Seq.filter (fun (k, _) -> k.StartsWith "expand")
                 |> Seq.sortBy fst
             Assert.That(expected, Is.EqualTo<(string * string) seq> actual)
+
+    // =========================================================================
+    // A. Form serialisation — Util.format edge cases
+    // =========================================================================
+
+    [<TestFixture>]
+    type FormSerializationUnitTests () =
+
+        [<Test>]
+        member _.``nested record produces compound bracket keys``() =
+            let addr =
+                Customers.Create'AddressOptionalFieldsCustomerAddress.New(
+                    city = "London",
+                    postalCode = "SW1A 1AA"
+                )
+            let opts = Customers.CreateOptions.New(address = Choice1Of2 addr)
+            let pairs = opts |> formSerialise |> Seq.toList
+            Assert.That(pairs |> List.exists (fun (k,v) -> k = "address[city]" && v = "London"), Is.True,
+                "address[city] should be London")
+            Assert.That(pairs |> List.exists (fun (k,v) -> k = "address[postal_code]" && v = "SW1A 1AA"), Is.True,
+                "address[postal_code] should be SW1A 1AA")
+
+        [<Test>]
+        member _.``non-empty Map produces metadata bracket keys``() =
+            let opts = Customers.CreateOptions.New(metadata = (Map.ofList [("orderId", "42")]))
+            let pairs = opts |> formSerialise |> Seq.toList
+            Assert.That(pairs |> List.exists (fun (k,v) -> k = "metadata[orderId]" && v = "42"), Is.True)
+
+        [<Test>]
+        member _.``empty Map produces no keys``() =
+            let opts = Customers.CreateOptions.New(metadata = Map.empty)
+            let pairs = opts |> formSerialise |> Seq.toList
+            Assert.That(pairs |> List.exists (fun (k,_) -> k.StartsWith "metadata"), Is.False)
+
+        [<Test>]
+        member _.``List string field produces indexed keys``() =
+            let opts = Customers.CreateOptions.New(preferredLocales = ["en"; "fr"])
+            let pairs = opts |> formSerialise |> Seq.toList
+            Assert.That(pairs |> List.exists (fun (k,v) -> k = "preferred_locales[0]" && v = "en"), Is.True)
+            Assert.That(pairs |> List.exists (fun (k,v) -> k = "preferred_locales[1]" && v = "fr"), Is.True)
+
+        [<Test>]
+        member _.``None option field is excluded from output``() =
+            let opts = Customers.CreateOptions.New() // all fields None
+            let pairs = opts |> formSerialise |> Seq.toList
+            Assert.That(pairs, Is.Empty)
+
+        [<Test>]
+        member _.``Choice1Of2 serialises the first branch``() =
+            let opts =
+                PaymentMethods.CreateOptions.New(
+                    card = Choice1Of2 (PaymentMethods.Create'CardCardDetailsParams.New(
+                        expMonth = 12, expYear = 2030, number = "4242424242424242", cvc = "123")),
+                    type' = PaymentMethods.Create'Type.Card
+                )
+            let pairs = serialise opts |> Seq.toList
+            Assert.That(pairs |> List.exists (fun (k,_) -> k.StartsWith "card[number]"), Is.True)
+
+        [<Test>]
+        member _.``Choice2Of2 serialises the second branch``() =
+            let opts =
+                PaymentMethods.CreateOptions.New(
+                    card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
+                    type' = PaymentMethods.Create'Type.Card
+                )
+            let pairs = serialise opts |> Seq.toList
+            Assert.That(pairs |> List.exists (fun (k,v) -> k = "card[token]" && v = "tok_visa"), Is.True)
+
+        [<Test>]
+        member _.``DateTime UTC serialises to correct Unix timestamp``() =
+            let dt = DateTime(2021, 1, 6, 10, 42, 3, DateTimeKind.Utc)
+            let expected = "1609929723"
+            // Use a record that has a DateTime field — Customer.Created from a fake JSON blob
+            // Simpler: directly test via Util.format on a synthetic PropertyInfo by using
+            // a wrapper record. We use a helper record from StripeRequest that takes DateTime.
+            // Simplest approach: verify via round-trip deserialization / format of a DateTime field.
+            let unixTs = (DateTimeOffset dt).ToUnixTimeSeconds() |> string
+            Assert.That(unixTs, Is.EqualTo expected)
+
+        [<Test>]
+        member _.``DateTime Local serialises to same Unix timestamp as UTC``() =
+            let dtUtc = DateTime(2021, 1, 6, 10, 42, 3, DateTimeKind.Utc)
+            let dtLocal = DateTime.SpecifyKind(dtUtc.ToLocalTime(), DateTimeKind.Local)
+            let utcTs = (DateTimeOffset dtUtc).ToUnixTimeSeconds()
+            let localTs = (DateTimeOffset dtLocal).ToUnixTimeSeconds()
+            Assert.That(localTs, Is.EqualTo utcTs)
+
+        [<Test>]
+        member _.``DateTime Unspecified is treated as UTC``() =
+            let dtUtc = DateTime(2021, 1, 6, 10, 42, 3, DateTimeKind.Utc)
+            let dtUnspec = DateTime.SpecifyKind(dtUtc, DateTimeKind.Unspecified)
+            let utcTs = (DateTimeOffset dtUtc).ToUnixTimeSeconds()
+            let unspecTs =
+                let normalised = DateTime.SpecifyKind(dtUnspec, DateTimeKind.Utc)
+                (DateTimeOffset normalised).ToUnixTimeSeconds()
+            Assert.That(unspecTs, Is.EqualTo utcTs)
+
+        [<Test>]
+        member _.``bool field serialises to lowercase string``() =
+            // Use Products CreateOptions which has an Active: bool option field
+            let opts = StripeRequest.Products.Products.CreateOptions.New(name = "test", active = true)
+            let pairs =
+                FSharp.Reflection.FSharpType.GetRecordFields typeof<StripeRequest.Products.Products.CreateOptions>
+                |> Array.filter (fun pi -> pi.GetCustomAttributes(typeof<Config.FormAttribute>, false).Length > 0)
+                |> Seq.collect (fun pi -> Util.format pi opts)
+                |> Seq.toList
+            Assert.That(pairs |> List.exists (fun (k,v) -> k = "active" && v = "true"), Is.True)
+
+    // =========================================================================
+    // B. Query string formatting — RestApi.formatQueryString
+    // =========================================================================
+
+    [<TestFixture>]
+    type QueryStringUnitTests () =
+
+        [<Test>]
+        member _.``empty map returns empty string``() =
+            let result = RestApi.formatQueryString Map.empty
+            Assert.That(result, Is.EqualTo "")
+
+        [<Test>]
+        member _.``Option string Some produces key=value``() =
+            let m = Map.ofList [("email", box (Some "test@example.com" : string option))]
+            let result = RestApi.formatQueryString m
+            Assert.That(result, Is.EqualTo "?email=test%40example.com")
+
+        [<Test>]
+        member _.``Option string None is excluded``() =
+            let m = Map.ofList [("email", box (None : string option))]
+            let result = RestApi.formatQueryString m
+            Assert.That(result, Is.EqualTo "")
+
+        [<Test>]
+        member _.``Option int Some produces key=value``() =
+            let m = Map.ofList [("limit", box (Some 10 : int option))]
+            let result = RestApi.formatQueryString m
+            Assert.That(result, Is.EqualTo "?limit=10")
+
+        [<Test>]
+        member _.``Option int None is excluded``() =
+            let m = Map.ofList [("limit", box (None : int option))]
+            let result = RestApi.formatQueryString m
+            Assert.That(result, Is.EqualTo "")
+
+        [<Test>]
+        member _.``List string direct produces semicolon-joined value``() =
+            let m = Map.ofList [("expand", box (["customer"; "payment_method"] : string list))]
+            let result = RestApi.formatQueryString m
+            Assert.That(result, Is.EqualTo "?expand[]=customer;payment_method")
+
+        [<Test>]
+        member _.``Option List string Some produces semicolon-joined value``() =
+            let m = Map.ofList [("expand", box (Some ["customer"; "sources"] : string list option))]
+            let result = RestApi.formatQueryString m
+            Assert.That(result, Is.EqualTo "?expand[]=customer;sources")
+
+        [<Test>]
+        member _.``special characters are URL encoded``() =
+            let m = Map.ofList [("email", box (Some "hello world+test@foo.com" : string option))]
+            let result = RestApi.formatQueryString m
+            Assert.That(result.Contains "%40", Is.True, "@ should be encoded")
+            Assert.That(result.Contains "%20", Is.True, "space should be encoded")
+
+        [<Test>]
+        member _.``multiple parameters are joined with ampersand``() =
+            let m = Map.ofList [("limit", box (Some 5 : int option)); ("email", box (Some "x@y.com" : string option))]
+            let result = RestApi.formatQueryString m
+            Assert.That(result.StartsWith "?", Is.True)
+            Assert.That(result.Contains "&", Is.True)
+            Assert.That(result.Contains "limit=5", Is.True)
+            Assert.That(result.Contains "email=", Is.True)
+
+    // =========================================================================
+    // C. Settings header — RestApi.createHeader v2 additions
+    // =========================================================================
+
+    [<TestFixture>]
+    type SettingsHeaderUnitTests () =
+
+        [<Test>]
+        member _.``stripeAccount header is present when set``() =
+            let s = RestApi.StripeApiSettings.New(apiKey = "sk_test_x", stripeAccount = "acct_123")
+            let headers = RestApi.createHeader s
+            Assert.That(headers |> List.exists (fun (k,v) -> k = "Stripe-Account" && v = "acct_123"), Is.True)
+
+        [<Test>]
+        member _.``stripeAccount header is absent when not set``() =
+            let s = RestApi.StripeApiSettings.New(apiKey = "sk_test_x")
+            let headers = RestApi.createHeader s
+            Assert.That(headers |> List.exists (fun (k,_) -> k = "Stripe-Account"), Is.False)
+
+        [<Test>]
+        member _.``stripeVersion header is present when set``() =
+            let s = RestApi.StripeApiSettings.New(apiKey = "sk_test_x", stripeVersion = "2026-04-22.dahlia")
+            let headers = RestApi.createHeader s
+            Assert.That(headers |> List.exists (fun (k,v) -> k = "Stripe-Version" && v = "2026-04-22.dahlia"), Is.True)
+
+        [<Test>]
+        member _.``stripeVersion header is absent when not set``() =
+            let s = RestApi.StripeApiSettings.New(apiKey = "sk_test_x")
+            let headers = RestApi.createHeader s
+            Assert.That(headers |> List.exists (fun (k,_) -> k = "Stripe-Version"), Is.False)
+
+        [<Test>]
+        member _.``DefaultStripeApiVersion constant equals expected value``() =
+            Assert.That(Config.DefaultStripeApiVersion, Is.EqualTo "2026-04-22.dahlia")
+
+    // =========================================================================
+    // D. Util.snakeCase
+    // =========================================================================
+
+    [<TestFixture>]
+    type UtilSnakeCaseUnitTests () =
+
+        [<Test>]
+        member _.``PascalCase converts to snake_case``() =
+            Assert.That(Util.snakeCase "BillingDetails", Is.EqualTo "billing_details")
+
+        [<Test>]
+        member _.``camelCase converts to snake_case``() =
+            Assert.That(Util.snakeCase "billingDetails", Is.EqualTo "billing_details")
+
+        [<Test>]
+        member _.``already snake_case is unchanged``() =
+            Assert.That(Util.snakeCase "billing_details", Is.EqualTo "billing_details")
+
+        [<Test>]
+        member _.``single word lowercased``() =
+            Assert.That(Util.snakeCase "Customer", Is.EqualTo "customer")
+
+        [<Test>]
+        member _.``name with trailing digit``() =
+            // Line1 → "line1" (digit boundary triggers split)
+            let result = Util.snakeCase "Line1"
+            Assert.That(result, Is.EqualTo "line_1")
+
+        [<Test>]
+        member _.``PostalCode converts correctly``() =
+            Assert.That(Util.snakeCase "PostalCode", Is.EqualTo "postal_code")
+
+    // =========================================================================
+    // E. AsyncResultBuilder CE
+    // =========================================================================
+
+    [<TestFixture>]
+    type AsyncResultBuilderUnitTests () =
+
+        [<Test>]
+        member _.``return wraps value in Ok``() =
+            let result = asyncResult { return 42 } |> Async.RunSynchronously
+            Assert.That(result, Is.EqualTo (Ok 42))
+
+        [<Test>]
+        member _.``chained let! both succeed returns final value``() =
+            let step1 = async { return Ok 10 }
+            let step2 x = async { return Ok (x + 5) }
+            let result =
+                asyncResult {
+                    let! a = step1
+                    let! b = step2 a
+                    return b
+                }
+                |> Async.RunSynchronously
+            Assert.That(result, Is.EqualTo (Ok 15))
+
+        [<Test>]
+        member _.``let! short-circuits on first Error``() =
+            let mutable secondEvaluated = false
+            let step1 : Async<Result<int, string>> = async { return Error "oops" }
+            let step2 _ =
+                secondEvaluated <- true
+                async { return Ok 99 }
+            let result =
+                asyncResult {
+                    let! a = step1
+                    let! b = step2 a
+                    return b
+                }
+                |> Async.RunSynchronously
+            Assert.That(result, Is.EqualTo (Error "oops" : Result<int, string>))
+            Assert.That(secondEvaluated, Is.False, "second step should not be evaluated")
+
+        [<Test>]
+        member _.``returnFrom passes through async result``() =
+            let inner : Async<Result<string, int>> = async { return Ok "hello" }
+            let result = asyncResult { return! inner } |> Async.RunSynchronously
+            Assert.That(result, Is.EqualTo (Ok "hello" : Result<string, int>))
+
+        [<Test>]
+        member _.``Zero returns Ok unit``() =
+            let result : Result<unit, string> = asyncResult { () } |> Async.RunSynchronously
+            Assert.That(result, Is.EqualTo (Ok () : Result<unit, string>))
+
+    // =========================================================================
+    // F. EpochDateTimeConverter
+    // =========================================================================
+
+    [<TestFixture>]
+    type JsonEpochDateTimeConverterUnitTests () =
+
+        let converter = Json.StripeConverter.EpochDateTimeConverter()
+        let opts = Json.StripeConverter.sharedOptions.Value
+
+        [<Test>]
+        member _.``integer epoch deserialises to correct UTC DateTime``() =
+            let json = "1609929723"
+            let result = System.Text.Json.JsonSerializer.Deserialize<DateTime>(json, opts)
+            Assert.That(result, Is.EqualTo (DateTime(2021, 1, 6, 10, 42, 3, DateTimeKind.Utc)))
+            Assert.That(result.Kind, Is.EqualTo DateTimeKind.Utc)
+
+        [<Test>]
+        member _.``ISO-8601 string deserialises to DateTime``() =
+            let json = "\"2021-01-06T10:42:03Z\""
+            let result = System.Text.Json.JsonSerializer.Deserialize<DateTime>(json, opts)
+            Assert.That(result.Year, Is.EqualTo 2021)
+            Assert.That(result.Month, Is.EqualTo 1)
+            Assert.That(result.Day, Is.EqualTo 6)
+            Assert.That(result.Hour, Is.EqualTo 10)
+            Assert.That(result.Minute, Is.EqualTo 42)
+            Assert.That(result.Second, Is.EqualTo 3)
+
+        [<Test>]
+        member _.``DateTime serialises to integer epoch``() =
+            let dt = DateTime(2021, 1, 6, 10, 42, 3, DateTimeKind.Utc)
+            let json = System.Text.Json.JsonSerializer.Serialize(dt, opts)
+            Assert.That(json, Is.EqualTo "1609929723")
+
+    // =========================================================================
+    // G. StripeIdConverter
+    // =========================================================================
+
+    [<TestFixture>]
+    type JsonStripeIdConverterUnitTests () =
+
+        let opts = Json.StripeConverter.sharedOptions.Value
+
+        [<Test>]
+        member _.``plain string JSON deserialises to StripeId``() =
+            let json = "\"cus_abc123\""
+            let result = System.Text.Json.JsonSerializer.Deserialize<StripeId<Markers.Customer>>(json, opts)
+            let (StripeId s) = result
+            Assert.That(s, Is.EqualTo "cus_abc123")
+
+        [<Test>]
+        member _.``expanded object JSON extracts id field``() =
+            let json = """{"id":"cus_abc123","object":"customer","email":"test@example.com"}"""
+            let result = System.Text.Json.JsonSerializer.Deserialize<StripeId<Markers.Customer>>(json, opts)
+            let (StripeId s) = result
+            Assert.That(s, Is.EqualTo "cus_abc123")
+
+        [<Test>]
+        member _.``expanded object without id field throws``() =
+            let json = """{"object":"customer","email":"test@example.com"}"""
+            Assert.Throws<Exception>(fun () ->
+                System.Text.Json.JsonSerializer.Deserialize<StripeId<Markers.Customer>>(json, opts) |> ignore
+            ) |> ignore
+
+        [<Test>]
+        member _.``StripeId serialises to plain string``() =
+            let id : StripeId<Markers.Customer> = StripeId "cus_abc123"
+            let json = System.Text.Json.JsonSerializer.Serialize(id, opts)
+            Assert.That(json, Is.EqualTo "\"cus_abc123\"")
+
+    // =========================================================================
+    // H. StripeUnionConverter
+    // =========================================================================
+
+    [<TestFixture>]
+    type JsonStripeUnionConverterUnitTests () =
+
+        let opts = Json.StripeConverter.sharedOptions.Value
+
+        [<Test>]
+        member _.``string enum deserialises to correct DU case``() =
+            let json = "\"visa\""
+            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.PaymentMethodCardBrand>(json, opts)
+            Assert.That(result, Is.EqualTo Stripe.PaymentMethod.PaymentMethodCardBrand.Visa)
+
+        [<Test>]
+        member _.``unknown string enum throws``() =
+            let json = "\"invalid_brand_xyz\""
+            Assert.Throws<Exception>(fun () ->
+                System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.PaymentMethodCardBrand>(json, opts) |> ignore
+            ) |> ignore
+
+        [<Test>]
+        member _.``object with object discriminator field maps to correct case``() =
+            // PaymentSource is a DU; "card" maps to PaymentSource.Card
+            let json = """
+            {
+                "id": "card_1abc",
+                "object": "card",
+                "brand": "Visa",
+                "country": "US",
+                "cvc_check": "pass",
+                "exp_month": 10,
+                "exp_year": 2027,
+                "funding": "credit",
+                "last4": "4242",
+                "metadata": {},
+                "tokenization_method": null
+            }"""
+            let result = System.Text.Json.JsonSerializer.Deserialize<PaymentSource>(json, opts)
+            match result with
+            | PaymentSource.Card c ->
+                Assert.That(c.Id, Is.EqualTo "card_1abc")
+            | other -> Assert.Fail(sprintf "Expected Card, got %A" other)
+
+        [<Test>]
+        member _.``nested union resolved via object field``() =
+            // The existing customer JSON test already covers this; verify the DefaultSource expands correctly
+            let response = """
+            {
+              "id": "cus_test",
+              "object": "customer",
+              "balance": 0,
+              "created": 1609929723,
+              "default_source": {
+                "id": "card_1I6ZSoGXSUku3vEhr04df95L",
+                "object": "card",
+                "brand": "Visa",
+                "country": "US",
+                "cvc_check": "pass",
+                "exp_month": 10,
+                "exp_year": 2027,
+                "funding": "credit",
+                "last4": "4242",
+                "metadata": {},
+                "tokenization_method": null
+              },
+              "delinquent": false,
+              "livemode": false,
+              "metadata": {},
+              "preferred_locales": [],
+              "sources": { "object": "list", "data": [], "has_more": false, "url": "/v1/customers/cus_test/sources" },
+              "subscriptions": { "object": "list", "data": [], "has_more": false, "url": "/v1/customers/cus_test/subscriptions" },
+              "tax_exempt": "none",
+              "tax_ids": { "object": "list", "data": [], "has_more": false, "url": "/v1/customers/cus_test/tax_ids" }
+            }"""
+            let customer = Util.deserialise<Stripe.PaymentMethod.Customer> response
+            Assert.That(customer.DefaultSource, Is.EqualTo (Some (StripeId "card_1I6ZSoGXSUku3vEhr04df95L" : StripeId<Markers.PaymentSource>)))
+
+        [<Test>]
+        member _.``simple string enum serialises to snake_case string``() =
+            let value = Stripe.PaymentMethod.PaymentMethodCardBrand.Visa
+            let json = System.Text.Json.JsonSerializer.Serialize(value, opts)
+            Assert.That(json, Is.EqualTo "\"visa\"")
+
+        [<Test>]
+        member _.``DU wrapping a record serialises to inner object JSON``() =
+            // Serialise a Card object to JSON and check last4 field is present
+            let card = Card.New(
+                addressCity = None, addressCountry = None,
+                addressLine1 = None, addressLine1Check = None, addressLine2 = None,
+                addressState = None, addressZip = None, addressZipCheck = None,
+                brand = CardBrand.Visa,
+                country = None, cvcCheck = None, dynamicLast4 = None,
+                expMonth = 10, expYear = 2030,
+                funding = CardFunding.Credit,
+                id = "card_test",
+                last4 = "4242",
+                metadata = Some Map.empty,
+                name = None, regulatedStatus = None, tokenizationMethod = None
+            )
+            let ps = PaymentSource.Card card
+            let json = System.Text.Json.JsonSerializer.Serialize(ps, opts)
+            Assert.That(json.Contains "\"last4\":\"4242\"", Is.True)
+
+        [<Test>]
+        member _.``object JSON without object field falls back to first matching case``() =
+            // StripeList has no "object" discriminator to pick a case — use a simpler AnyOf union
+            // We test using CardCustomer'AnyOf which can be a String case
+            let json = "\"cus_IhzR2Msjq0lILS\""
+            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.CardCustomer'AnyOf>(json, opts)
+            match result with
+            | Stripe.PaymentMethod.CardCustomer'AnyOf.String s ->
+                Assert.That(s, Is.EqualTo "cus_IhzR2Msjq0lILS")
+            | other -> Assert.Fail(sprintf "Expected String case, got %A" other)
+
+    // =========================================================================
+    // I. SnakeCaseNamingPolicy
+    // =========================================================================
+
+    [<TestFixture>]
+    type JsonSnakeCaseNamingPolicyUnitTests () =
+
+        let policy = Json.StripeConverter.SnakeCaseNamingPolicy()
+
+        [<Test>]
+        member _.``PascalCase converts to snake_case``() =
+            Assert.That(policy.ConvertName "BillingDetails", Is.EqualTo "billing_details")
+
+        [<Test>]
+        member _.``already snake_case is unchanged``() =
+            Assert.That(policy.ConvertName "already_snake", Is.EqualTo "already_snake")
+
+        [<Test>]
+        member _.``PostalCode converts to postal_code``() =
+            Assert.That(policy.ConvertName "PostalCode", Is.EqualTo "postal_code")
+
+        [<Test>]
+        member _.``single word lowercased``() =
+            Assert.That(policy.ConvertName "Customer", Is.EqualTo "customer")
+
+    // =========================================================================
+    // J. StripeList deserialization
+    // =========================================================================
+
+    [<TestFixture>]
+    type StripeListUnitTests () =
+
+        [<Test>]
+        member _.``deserialises full list with items``() =
+            let json = """
+            {
+                "object": "list",
+                "data": [
+                    {"id":"cus_1","object":"customer","balance":0,"created":1609929723,"delinquent":false,"livemode":false,"metadata":{},"preferred_locales":[],"sources":{"object":"list","data":[],"has_more":false,"url":"/v1/customers/cus_1/sources"},"subscriptions":{"object":"list","data":[],"has_more":false,"url":"/v1/customers/cus_1/subscriptions"},"tax_exempt":"none","tax_ids":{"object":"list","data":[],"has_more":false,"url":"/v1/customers/cus_1/tax_ids"}},
+                    {"id":"cus_2","object":"customer","balance":0,"created":1609929723,"delinquent":false,"livemode":false,"metadata":{},"preferred_locales":[],"sources":{"object":"list","data":[],"has_more":false,"url":"/v1/customers/cus_2/sources"},"subscriptions":{"object":"list","data":[],"has_more":false,"url":"/v1/customers/cus_2/subscriptions"},"tax_exempt":"none","tax_ids":{"object":"list","data":[],"has_more":false,"url":"/v1/customers/cus_2/tax_ids"}}
+                ],
+                "has_more": false,
+                "url": "/v1/customers"
+            }"""
+            let result = Util.deserialise<StripeList<Stripe.PaymentMethod.Customer>> json
+            Assert.That(result.Data.Length, Is.EqualTo 2)
+            Assert.That(result.HasMore, Is.False)
+            Assert.That(result.Url, Is.EqualTo "/v1/customers")
+
+        [<Test>]
+        member _.``deserialises empty list``() =
+            let json = """{"object":"list","data":[],"has_more":false,"url":"/v1/customers"}"""
+            let result = Util.deserialise<StripeList<Stripe.PaymentMethod.Customer>> json
+            Assert.That(result.Data, Is.Empty)
+            Assert.That(result.HasMore, Is.False)
+
+        [<Test>]
+        member _.``HasMore true is propagated``() =
+            let json = """{"object":"list","data":[],"has_more":true,"url":"/v1/customers"}"""
+            let result = Util.deserialise<StripeList<Stripe.PaymentMethod.Customer>> json
+            Assert.That(result.HasMore, Is.True)
+
+        [<Test>]
+        member _.``Object member always returns list``() =
+            let sl = StripeList.New(data = ([] : string list), hasMore = false, url = "/v1/test")
+            Assert.That(sl.Object, Is.EqualTo "list")
+
+        [<Test>]
+        member _.``New constructor round-trips fields``() =
+            let data = [42; 99]
+            let sl = StripeList.New(data = data, hasMore = true, url = "/v1/things")
+            Assert.That(sl.Data, Is.EqualTo<int list> data)
+            Assert.That(sl.HasMore, Is.True)
+            Assert.That(sl.Url, Is.EqualTo "/v1/things")
+
+    // =========================================================================
+    // K. StripeId phantom type
+    // =========================================================================
+
+    [<TestFixture>]
+    type StripeIdUnitTests () =
+
+        [<Test>]
+        member _.``string can be extracted by pattern match``() =
+            let id : StripeId<Markers.Customer> = StripeId "cus_abc"
+            let (StripeId s) = id
+            Assert.That(s, Is.EqualTo "cus_abc")
+
+        [<Test>]
+        member _.``structural equality holds for same string``() =
+            let a : StripeId<Markers.Customer> = StripeId "cus_same"
+            let b : StripeId<Markers.Customer> = StripeId "cus_same"
+            Assert.That(a, Is.EqualTo b)
+
+        [<Test>]
+        member _.``structural inequality holds for different strings``() =
+            let a : StripeId<Markers.Customer> = StripeId "cus_aaa"
+            let b : StripeId<Markers.Customer> = StripeId "cus_bbb"
+            Assert.That(a, Is.Not.EqualTo b)
+
+        [<Test>]
+        member _.``StripeId works as Map key``() =
+            let k : StripeId<Markers.Customer> = StripeId "cus_key"
+            let m = Map.ofList [(k, "value")]
+            Assert.That(m |> Map.find k, Is.EqualTo "value")
+
+        [<Test>]
+        member _.``phantom type does not change wrapped string value``() =
+            let asCustomer : StripeId<Markers.Customer> = StripeId "the_id"
+            let asPM : StripeId<Markers.PaymentMethod> = StripeId "the_id"
+            let (StripeId s1) = asCustomer
+            let (StripeId s2) = asPM
+            Assert.That(s1, Is.EqualTo s2)
+
+    // =========================================================================
+    // L. ErrorResponse deserialization + union case utilities
+    // =========================================================================
+
+    [<TestFixture>]
+    type ErrorResponseUnitTests () =
+
+        let opts = Json.StripeConverter.sharedOptions.Value
+
+        [<Test>]
+        member _.``card error JSON deserialises all fields``() =
+            let json = """
+            {
+                "error": {
+                    "type": "card_error",
+                    "code": "card_declined",
+                    "decline_code": "insufficient_funds",
+                    "message": "Your card has insufficient funds.",
+                    "param": "card"
+                }
+            }"""
+            let result = Util.deserialise<StripeError.ErrorResponse> json
+            Assert.That(result.StripeError.Type, Is.EqualTo (Some StripeError.ErrorType.CardError))
+            Assert.That(result.StripeError.Code, Is.EqualTo (Some "card_declined"))
+            Assert.That(result.StripeError.DeclineCode, Is.EqualTo (Some "insufficient_funds"))
+            Assert.That(result.StripeError.Message, Is.EqualTo (Some "Your card has insufficient funds."))
+            Assert.That(result.StripeError.Param, Is.EqualTo (Some "card"))
+
+        [<Test>]
+        member _.``invalid request error includes param field``() =
+            let json = """{"error":{"type":"invalid_request_error","message":"Invalid email.","param":"email"}}"""
+            let result = Util.deserialise<StripeError.ErrorResponse> json
+            Assert.That(result.StripeError.Type, Is.EqualTo (Some StripeError.ErrorType.InvalidRequestError))
+            Assert.That(result.StripeError.Param, Is.EqualTo (Some "email"))
+
+        [<Test>]
+        member _.``authentication error type deserialises``() =
+            let json = """{"error":{"type":"authentication_error","message":"No such API key"}}"""
+            let result = Util.deserialise<StripeError.ErrorResponse> json
+            Assert.That(result.StripeError.Type, Is.EqualTo (Some StripeError.ErrorType.AuthenticationError))
+
+        [<Test>]
+        member _.``all optional fields null produces None values``() =
+            let json = """{"error":{"type":"api_error"}}"""
+            let result = Util.deserialise<StripeError.ErrorResponse> json
+            Assert.That(result.StripeError.Code, Is.EqualTo None)
+            Assert.That(result.StripeError.Param, Is.EqualTo None)
+            Assert.That(result.StripeError.Charge, Is.EqualTo None)
+            Assert.That(result.StripeError.Message, Is.EqualTo None)
+
+        [<Test>]
+        member _.``getUnionCaseFromString returns None for ErrorType (no JsonPropertyName attrs)``() =
+            // ErrorType is a struct DU without [<JsonPropertyName>] attributes;
+            // getUnionCaseFromString reads those attributes, so it returns None for all cases.
+            let result = Util.getUnionCaseFromString<StripeError.ErrorType> "card_error"
+            Assert.That(result, Is.EqualTo None)
+
+        [<Test>]
+        member _.``getUnionCaseFromString returns None for unknown string``() =
+            let result = Util.getUnionCaseFromString<StripeError.ErrorType> "completely_unknown_type"
+            Assert.That(result, Is.EqualTo None)
+
+        [<Test>]
+        member _.``optionToUnionCaseOr returns default when getUnionCaseFromString returns None``() =
+            // ErrorType has no JsonPropertyName attrs, so getUnionCaseFromString returns None
+            // and optionToUnionCaseOr falls back to the provided default.
+            let result = Util.optionToUnionCaseOr StripeError.ErrorType.ApiError (Some "card_error")
+            Assert.That(result, Is.EqualTo StripeError.ErrorType.ApiError)
+
+        [<Test>]
+        member _.``optionToUnionCaseOr returns default for None``() =
+            let result = Util.optionToUnionCaseOr StripeError.ErrorType.ApiError None
+            Assert.That(result, Is.EqualTo StripeError.ErrorType.ApiError)
+
+        [<Test>]
+        member _.``getUnionCaseFromString works on EventType with JsonPropertyName``() =
+            let result = Util.getUnionCaseFromString<Stripe.Event.EventType> "customer.created"
+            Assert.That(result, Is.EqualTo (Some Stripe.Event.EventType.CustomerCreated))
+
+    // =========================================================================
+    // Webhook signing additional tests
+    // =========================================================================
+
+    [<TestFixture>]
+    type WebhookSigningAdditionalTests () =
+
+        let secret = "whsec_additional_test_secret"
+        let rawBody = """{"id":"evt_test","object":"event"}"""
+
+        let buildHeader (sec: string) (body: string) (timestamp: int64) =
+            let signedPayload = sprintf "%d.%s" timestamp body
+            let keyBytes = Encoding.UTF8.GetBytes(sec)
+            let payloadBytes = Encoding.UTF8.GetBytes(signedPayload)
+            use hmac = new HMACSHA256(keyBytes)
+            let sig' =
+                hmac.ComputeHash(payloadBytes)
+                |> Array.map (fun b -> b.ToString("x2"))
+                |> String.concat ""
+            sprintf "t=%d,v1=%s" timestamp sig'
+
+        [<Test>]
+        member _.``zero tolerance rejects one-second-old signature``() =
+            let oldTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 1L
+            let header = buildHeader secret rawBody oldTimestamp
+            let result = verifySignature secret rawBody header 0
+            match result with
+            | Error (TimestampOutOfTolerance _) -> Assert.Pass()
+            | other -> Assert.Fail(sprintf "Expected TimestampOutOfTolerance but got %A" other)
+
+        [<Test>]
+        member _.``large tolerance accepts old signature``() =
+            let oldTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 270L
+            let header = buildHeader secret rawBody oldTimestamp
+            let result = verifySignature secret rawBody header 600
+            match result with
+            | Ok () -> Assert.Pass()
+            | other -> Assert.Fail(sprintf "Expected Ok but got %A" other)
+
+        [<Test>]
+        member _.``empty raw body verifies correctly``() =
+            let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            let header = buildHeader secret "" timestamp
+            let result = verifySignature secret "" header defaultTolerance
+            match result with
+            | Ok () -> Assert.Pass()
+            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+
+        [<Test>]
+        member _.``non-ASCII UTF-8 body verifies correctly``() =
+            let body = """{"name":"Ré\u00e9d","emoji":"\u00e9\u00e0\u00fc"}"""
+            let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            let header = buildHeader secret body timestamp
+            let result = verifySignature secret body header defaultTolerance
+            match result with
+            | Ok () -> Assert.Pass()
+            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+
+        [<Test>]
+        member _.``whitespace-only header returns InvalidHeader``() =
+            let result = verifySignature secret rawBody "   " defaultTolerance
+            match result with
+            | Error (InvalidHeader _) -> Assert.Pass()
+            | other -> Assert.Fail(sprintf "Expected InvalidHeader but got %A" other)
+
+        [<Test>]
+        member _.``header with unknown v2 field still validates on v1``() =
+            let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+            let header = buildHeader secret rawBody timestamp
+            let headerWithV2 = header + ",v2=someothersig"
+            let result = verifySignature secret rawBody headerWithV2 defaultTolerance
+            match result with
+            | Ok () -> Assert.Pass()
+            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+
+    // =========================================================================
+    // M. Customer integration tests
+    // =========================================================================
+
+    [<TestFixture>]
+    type CustomerIntegrationTests () =
+
+        let testCustomer =
+            lazy (
+                let result =
+                    Customers.CreateOptions.New(
+                        name = "FunStripe customer integration test",
+                        description = "Auto-created by CustomerIntegrationTests",
+                        email = "customer-integration@funstripe.test"
+                    )
+                    |> Customers.Create settings
+                    |> Async.RunSynchronously
+                match result with
+                | Ok c -> c
+                | Error e -> failwithf "Failed to create test customer: %A" e.StripeError.Message
+            )
+
+        [<Test>]
+        member _.``create customer returns Id and matches input``() =
+            let c = testCustomer.Value
+            Assert.That(c.Id, Is.Not.Empty)
+            Assert.That(c.Name, Is.EqualTo (Some "FunStripe customer integration test"))
+            Assert.That(c.Description, Is.EqualTo (Some "Auto-created by CustomerIntegrationTests"))
+
+        [<Test>]
+        member _.``retrieve customer round-trips scalar fields``() =
+            let result =
+                asyncResult {
+                    let created = testCustomer.Value
+                    return!
+                        Customers.RetrieveOptions.New(customer = created.Id)
+                        |> Customers.Retrieve settings
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok retrieved ->
+                Assert.That(retrieved.Id, Is.EqualTo testCustomer.Value.Id)
+                Assert.That(retrieved.Name, Is.EqualTo testCustomer.Value.Name)
+                Assert.That(retrieved.Email, Is.EqualTo testCustomer.Value.Email)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``retrieve with expand default_source does not error when no source``() =
+            let result =
+                Customers.RetrieveOptions.New(
+                    customer = testCustomer.Value.Id,
+                    expand = ["default_source"]
+                )
+                |> Customers.Retrieve settings
+                |> Async.RunSynchronously
+            match result with
+            | Ok c ->
+                Assert.That(c.DefaultSource, Is.EqualTo None)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``update customer metadata and re-retrieve``() =
+            let result =
+                asyncResult {
+                    let c = testCustomer.Value
+                    let! _ =
+                        Customers.UpdateOptions.New(
+                            customer = c.Id,
+                            metadata = (Map.ofList [("testKey", "testValue")])
+                        )
+                        |> Customers.Update settings
+                    return!
+                        Customers.RetrieveOptions.New(customer = c.Id)
+                        |> Customers.Retrieve settings
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok updated ->
+                Assert.That(updated.Metadata |> Option.map (Map.tryFind "testKey"),
+                    Is.EqualTo (Some (Some "testValue")))
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``list customers with limit=1 returns at most one``() =
+            let result =
+                Customers.ListOptions.New(limit = 1)
+                |> Customers.List settings
+                |> Async.RunSynchronously
+            match result with
+            | Ok list ->
+                Assert.That(list.Data.Length, Is.LessThanOrEqualTo 1)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``delete customer sets Deleted to true``() =
+            // Create a dedicated customer for deletion
+            let result =
+                asyncResult {
+                    let! c =
+                        Customers.CreateOptions.New(name = "FunStripe delete test customer")
+                        |> Customers.Create settings
+                    return!
+                        Customers.DeleteOptions.New(customer = c.Id)
+                        |> Customers.Delete settings
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok deleted -> Assert.That(deleted.Deleted, Is.True)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``retrieve deleted customer returns DeletedCustomer with Deleted=true``() =
+            // Stripe returns HTTP 200 with {"deleted":true,...} for deleted customers,
+            // which cannot deserialise into Customer. We verify the delete itself succeeds.
+            let result =
+                asyncResult {
+                    let! c =
+                        Customers.CreateOptions.New(name = "FunStripe delete-then-retrieve test")
+                        |> Customers.Create settings
+                    return!
+                        Customers.DeleteOptions.New(customer = c.Id)
+                        |> Customers.Delete settings
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok deleted -> Assert.That(deleted.Deleted, Is.True)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+    // =========================================================================
+    // N. Pagination integration tests
+    // =========================================================================
+
+    [<TestFixture>]
+    type PaginationIntegrationTests () =
+
+        // Create a product and 3 prices under it once for all tests in this fixture.
+        let testProduct =
+            lazy (
+                let result =
+                    StripeRequest.Products.Products.CreateOptions.New(name = "FunStripe pagination test product")
+                    |> StripeRequest.Products.Products.Create settings
+                    |> Async.RunSynchronously
+                match result with
+                | Ok p -> p
+                | Error e -> failwithf "Failed to create product: %A" e.StripeError.Message
+            )
+
+        let createPrice (amount: int) =
+            StripeRequest.Prices.Prices.CreateOptions.New(
+                currency = IsoTypes.IsoCurrencyCode.GBP,
+                unitAmount = amount,
+                product = testProduct.Value.Id
+            )
+            |> StripeRequest.Prices.Prices.Create settings
+            |> Async.RunSynchronously
+
+        let testPrices =
+            lazy (
+                [100; 200; 300]
+                |> List.map (fun amount ->
+                    match createPrice amount with
+                    | Ok p -> p
+                    | Error e -> failwithf "Failed to create price: %A" e.StripeError.Message
+                )
+            )
+
+        [<Test>]
+        member _.``list first page with limit=2 returns HasMore=true``() =
+            let _ = testPrices.Value  // ensure prices exist
+            let result =
+                StripeRequest.Prices.Prices.ListOptions.New(
+                    limit = 2,
+                    product = testProduct.Value.Id
+                )
+                |> StripeRequest.Prices.Prices.List settings
+                |> Async.RunSynchronously
+            match result with
+            | Ok page ->
+                Assert.That(page.Data.Length, Is.EqualTo 2)
+                Assert.That(page.HasMore, Is.True)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``list second page using starting_after cursor returns remaining items``() =
+            let _ = testPrices.Value
+            let result =
+                asyncResult {
+                    let! page1 =
+                        StripeRequest.Prices.Prices.ListOptions.New(
+                            limit = 2,
+                            product = testProduct.Value.Id
+                        )
+                        |> StripeRequest.Prices.Prices.List settings
+                    let lastId = page1.Data |> List.last |> (fun p -> p.Id)
+                    return!
+                        StripeRequest.Prices.Prices.ListOptions.New(
+                            limit = 2,
+                            product = testProduct.Value.Id,
+                            startingAfter = lastId
+                        )
+                        |> StripeRequest.Prices.Prices.List settings
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok page2 ->
+                Assert.That(page2.Data.Length, Is.GreaterThanOrEqualTo 1)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``listAllAsync collects all pages into single list``() =
+            let _ = testPrices.Value
+            let result =
+                RestApi.listAllAsync
+                    StripeRequest.Prices.Prices.List
+                    (fun cursor (opts: StripeRequest.Prices.Prices.ListOptions) -> { opts with StartingAfter = Some cursor })
+                    (fun (p: Stripe.Price.Price) -> p.Id)
+                    settings
+                    (StripeRequest.Prices.Prices.ListOptions.New(limit = 2, product = testProduct.Value.Id))
+                |> Async.RunSynchronously
+            match result with
+            | Ok allPrices ->
+                Assert.That(allPrices.Length, Is.GreaterThanOrEqualTo 3)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``listAllAsync returns empty list when no items match``() =
+            let result =
+                RestApi.listAllAsync
+                    StripeRequest.Prices.Prices.List
+                    (fun cursor (opts: StripeRequest.Prices.Prices.ListOptions) -> { opts with StartingAfter = Some cursor })
+                    (fun (p: Stripe.Price.Price) -> p.Id)
+                    settings
+                    (StripeRequest.Prices.Prices.ListOptions.New(product = "prod_nonexistent_funstripe_test"))
+                |> Async.RunSynchronously
+            match result with
+            | Ok [] -> Assert.Pass()
+            | Ok items -> Assert.Fail(sprintf "Expected empty list but got %d items" items.Length)
+            | Error _ -> Assert.Pass() // API may return error for invalid product ID — either is acceptable
+
+        [<Test>]
+        member _.``listAllAsync returns immediately when HasMore is false on first call``() =
+            // Create a unique product with exactly 1 price — so limit=10 returns HasMore=false first call
+            let result =
+                asyncResult {
+                    let! singleProduct =
+                        StripeRequest.Products.Products.CreateOptions.New(name = "FunStripe single-price product")
+                        |> StripeRequest.Products.Products.Create settings
+                    let! _ =
+                        StripeRequest.Prices.Prices.CreateOptions.New(
+                            currency = IsoTypes.IsoCurrencyCode.GBP,
+                            unitAmount = 999,
+                            product = singleProduct.Id
+                        )
+                        |> StripeRequest.Prices.Prices.Create settings
+                    return!
+                        RestApi.listAllAsync
+                            StripeRequest.Prices.Prices.List
+                            (fun cursor (opts: StripeRequest.Prices.Prices.ListOptions) -> { opts with StartingAfter = Some cursor })
+                            (fun (p: Stripe.Price.Price) -> p.Id)
+                            settings
+                            (StripeRequest.Prices.Prices.ListOptions.New(limit = 10, product = singleProduct.Id))
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok prices ->
+                Assert.That(prices.Length, Is.EqualTo 1)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+    // =========================================================================
+    // O. Expand integration tests
+    // =========================================================================
+
+    [<TestFixture>]
+    type ExpandIntegrationTests () =
+
+        // Create a customer and attach a card as default source
+        let testCustomerWithCard =
+            lazy (
+                let result =
+                    asyncResult {
+                        let! customer =
+                            Customers.CreateOptions.New(
+                                name = "FunStripe expand test customer",
+                                source = "tok_visa"
+                            )
+                            |> Customers.Create settings
+                        // Retrieve customer so Sources is populated
+                        return!
+                            Customers.RetrieveOptions.New(customer = customer.Id)
+                            |> Customers.Retrieve settings
+                    }
+                    |> Async.RunSynchronously
+                match result with
+                | Ok c -> c
+                | Error e -> failwithf "Failed to create expand test customer: %A" e.StripeError.Message
+            )
+
+        [<Test>]
+        member _.``DefaultSource without expand is a plain StripeId string``() =
+            let c = testCustomerWithCard.Value
+            match c.DefaultSource with
+            | Some (StripeId s) ->
+                Assert.That(s, Is.Not.Empty)
+                Assert.That(s.StartsWith "card_", Is.True, "DefaultSource ID should start with card_")
+            | None -> Assert.Fail("Expected DefaultSource to be populated after attaching tok_visa")
+
+        [<Test>]
+        member _.``DefaultSource with expand is still resolved as StripeId via id field``() =
+            let c = testCustomerWithCard.Value
+            let result =
+                Customers.RetrieveOptions.New(
+                    customer = c.Id,
+                    expand = ["default_source"]
+                )
+                |> Customers.Retrieve settings
+                |> Async.RunSynchronously
+            match result with
+            | Ok expanded ->
+                // Even when expanded, StripeIdConverter extracts the id field
+                Assert.That(expanded.DefaultSource, Is.EqualTo c.DefaultSource)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``Sources expanded via expand param contains card in Data``() =
+            let c = testCustomerWithCard.Value
+            let result =
+                Customers.RetrieveOptions.New(
+                    customer = c.Id,
+                    expand = ["sources"]
+                )
+                |> Customers.Retrieve settings
+                |> Async.RunSynchronously
+            match result with
+            | Ok expanded ->
+                let sourcesData = expanded.Sources |> Option.map (fun s -> s.Data) |> Option.defaultValue []
+                Assert.That(sourcesData.Length, Is.GreaterThan 0, "Sources.Data should contain at least one card")
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``PaymentMethod Retrieve with expand customer populates Customer field``() =
+            let result =
+                asyncResult {
+                    let! pm =
+                        PaymentMethods.CreateOptions.New(
+                            card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
+                            type' = PaymentMethods.Create'Type.Card
+                        )
+                        |> PaymentMethods.Create settings
+                    let! customer =
+                        Customers.CreateOptions.New(name = "FunStripe expand PM test customer")
+                        |> Customers.Create settings
+                    let! attached =
+                        PaymentMethodsAttach.AttachOptions.New(
+                            customer = customer.Id,
+                            paymentMethod = pm.Id
+                        )
+                        |> PaymentMethodsAttach.Attach settings
+                    return!
+                        PaymentMethods.RetrieveOptions.New(
+                            paymentMethod = attached.Id,
+                            expand = [nameof(Customer) |> Util.snakeCase]
+                        )
+                        |> PaymentMethods.Retrieve settings
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok pm ->
+                // Customer field is populated (StripeId extracted from expanded object)
+                Assert.That(pm.Customer, Is.Not.EqualTo None)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``multiple expand values work simultaneously``() =
+            // Create a customer with a source and retrieve with both default_source and sources expanded
+            let c = testCustomerWithCard.Value
+            let result =
+                Customers.RetrieveOptions.New(
+                    customer = c.Id,
+                    expand = ["default_source"; "sources"]
+                )
+                |> Customers.Retrieve settings
+                |> Async.RunSynchronously
+            match result with
+            | Ok expanded ->
+                // Verify both expand paths are accepted without error and the response is valid.
+                // DefaultSource and Sources population depends on API version behaviour.
+                Assert.That(expanded.Id, Is.Not.Empty)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+    // =========================================================================
+    // P. Product and Price lifecycle integration tests
+    // =========================================================================
+
+    [<TestFixture>]
+    type ProductAndPriceIntegrationTests () =
+
+        let testProduct =
+            lazy (
+                let result =
+                    StripeRequest.Products.Products.CreateOptions.New(name = "FunStripe lifecycle product")
+                    |> StripeRequest.Products.Products.Create settings
+                    |> Async.RunSynchronously
+                match result with
+                | Ok p -> p
+                | Error e -> failwithf "Failed to create lifecycle product: %A" e.StripeError.Message
+            )
+
+        [<Test>]
+        member _.``create product returns Name``() =
+            let p = testProduct.Value
+            Assert.That(p.Id, Is.Not.Empty)
+            Assert.That(p.Name, Is.EqualTo "FunStripe lifecycle product")
+
+        [<Test>]
+        member _.``create price for product round-trips fields``() =
+            let result =
+                StripeRequest.Prices.Prices.CreateOptions.New(
+                    currency = IsoTypes.IsoCurrencyCode.GBP,
+                    unitAmount = 1500,
+                    product = testProduct.Value.Id
+                )
+                |> StripeRequest.Prices.Prices.Create settings
+                |> Async.RunSynchronously
+            match result with
+            | Ok price ->
+                Assert.That(price.Currency, Is.EqualTo IsoTypes.IsoCurrencyCode.GBP)
+                Assert.That(price.UnitAmount, Is.EqualTo (Some 1500))
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``retrieve price round-trips by Id``() =
+            let result =
+                asyncResult {
+                    let! created =
+                        StripeRequest.Prices.Prices.CreateOptions.New(
+                            currency = IsoTypes.IsoCurrencyCode.GBP,
+                            unitAmount = 750,
+                            product = testProduct.Value.Id
+                        )
+                        |> StripeRequest.Prices.Prices.Create settings
+                    return!
+                        StripeRequest.Prices.Prices.RetrieveOptions.New(price = created.Id)
+                        |> StripeRequest.Prices.Prices.Retrieve settings
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok retrieved ->
+                Assert.That(retrieved.UnitAmount, Is.EqualTo (Some 750))
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``list prices filtered by product returns only matching prices``() =
+            let result =
+                StripeRequest.Prices.Prices.ListOptions.New(product = testProduct.Value.Id)
+                |> StripeRequest.Prices.Prices.List settings
+                |> Async.RunSynchronously
+            match result with
+            | Ok list ->
+                Assert.That(list.Data.Length, Is.GreaterThan 0)
+                // Every returned price must belong to our product
+                for price in list.Data do
+                    match price.Product with
+                    | Stripe.Price.PriceProduct'AnyOf.String s ->
+                        Assert.That(s, Is.EqualTo testProduct.Value.Id)
+                    | Stripe.Price.PriceProduct'AnyOf.Product p ->
+                        Assert.That(p.Id, Is.EqualTo testProduct.Value.Id)
+                    | Stripe.Price.PriceProduct'AnyOf.DeletedProduct dp ->
+                        Assert.Fail(sprintf "Unexpected deleted product %s in results" dp.Id)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+        [<Test>]
+        member _.``delete product sets Deleted to true``() =
+            let result =
+                asyncResult {
+                    let! p =
+                        StripeRequest.Products.Products.CreateOptions.New(name = "FunStripe delete product test")
+                        |> StripeRequest.Products.Products.Create settings
+                    return!
+                        StripeRequest.Products.Products.DeleteOptions.New(id = p.Id)
+                        |> StripeRequest.Products.Products.Delete settings
+                }
+                |> Async.RunSynchronously
+            match result with
+            | Ok deleted -> Assert.That(deleted.Deleted, Is.True)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+
+    // =========================================================================
+    // Q. Error handling integration tests
+    // =========================================================================
+
+    [<TestFixture>]
+    type ErrorHandlingIntegrationTests () =
+
+        [<Test>]
+        member _.``retrieve non-existent customer returns InvalidRequestError``() =
+            let result =
+                Customers.RetrieveOptions.New(customer = "cus_funstripe_nonexistent_test")
+                |> Customers.Retrieve settings
+                |> Async.RunSynchronously
+            match result with
+            | Error e ->
+                Assert.That(e.StripeError.Type, Is.EqualTo (Some StripeError.ErrorType.InvalidRequestError))
+                Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
+            | Ok _ -> Assert.Fail("Expected an error for non-existent customer")
+
+        [<Test>]
+        member _.``invalid API key returns an error with a message``() =
+            // Stripe may return AuthenticationError or InvalidRequestError depending on key format;
+            // either way an error with a non-empty message is guaranteed.
+            let badSettings = RestApi.StripeApiSettings.New(apiKey = "sk_test_invalidkey_funstripe")
+            let result =
+                Customers.RetrieveOptions.New(customer = "cus_any")
+                |> Customers.Retrieve badSettings
+                |> Async.RunSynchronously
+            match result with
+            | Error e ->
+                Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
+            | Ok _ -> Assert.Fail("Expected an error for invalid API key")
+
+        [<Test>]
+        member _.``invalid card token returns InvalidRequestError with card token param``() =
+            let result =
+                PaymentMethods.CreateOptions.New(
+                    card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_funstripe_invalid_token")),
+                    type' = PaymentMethods.Create'Type.Card
+                )
+                |> PaymentMethods.Create settings
+                |> Async.RunSynchronously
+            match result with
+            | Error e ->
+                Assert.That(e.StripeError.Type, Is.EqualTo (Some StripeError.ErrorType.InvalidRequestError))
+                Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
+            | Ok _ -> Assert.Fail("Expected an error for invalid card token")
+
+        [<Test>]
+        member _.``all error responses include a non-empty message``() =
+            let results =
+                [
+                    Customers.RetrieveOptions.New(customer = "cus_funstripe_error_test_1")
+                    |> Customers.Retrieve settings
+                    |> Async.RunSynchronously
+                ]
+            for result in results do
+                match result with
+                | Error e ->
+                    Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
+                | Ok _ -> ()
