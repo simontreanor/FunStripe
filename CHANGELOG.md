@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-05-01
+
 ### Branch / package strategy
 - Dual-track maintenance model: `main` (this branch) hosts v2 — `FunStripe.Core` / `FunStripe.Core.Fable` packages — while the `v1` branch continues to ship the legacy `FunStripe` / `FunStripeLite` packages with Stripe API spec updates and critical fixes only. See `README.md`, `CONTRIBUTING.md`, and `MIGRATION-v1-to-v2.md` for the full policy.
 - Renamed default branch from `master` → `main`; legacy branch renamed from `master` → `v1` (GitHub auto-redirects old URLs).
