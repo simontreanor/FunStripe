@@ -67,7 +67,24 @@ module Tests =
     [<TestFixture>]
     type PaymentMethodUnitTests () =
 
-        let testCustomer = "cus_HxEURwENT9MKb3"
+        // A test customer is created on first access and reused across the
+        // tests in this fixture. The customer is created in the Stripe test
+        // account identified by Config.StripeTestApiKey (env var
+        // STRIPE_TEST_API_KEY). Each test run produces a fresh customer; we
+        // do not bother deleting it because Stripe test data is ephemeral.
+        let testCustomer =
+            lazy (
+                let result =
+                    Customers.CreateOptions.New(
+                        name = "FunStripe CI test customer",
+                        description = "Created automatically by FunStripe.Tests"
+                    )
+                    |> Customers.Create settings
+                    |> Async.RunSynchronously
+                match result with
+                | Ok c -> c.Id
+                | Error e -> failwithf "Failed to create test customer: %A" e.StripeError.Message
+            )
 
         let getNewPaymentMethod () =
             asyncResult {
@@ -83,7 +100,7 @@ module Tests =
             asyncResult {
                 return!
                     PaymentMethodsAttach.AttachOptions.New(
-                        customer = testCustomer,
+                        customer = testCustomer.Value,
                         paymentMethod = paymentMethodId
                     )
                     |> PaymentMethodsAttach.Attach settings
@@ -201,7 +218,7 @@ module Tests =
             match result with
             | Ok (exp, pm, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.That(testCustomer |> StripeId |> Some, Is.EqualTo act.Customer)
+                    Assert.That(testCustomer.Value |> StripeId |> Some, Is.EqualTo act.Customer)
                     Assert.That(pm.Id, Is.EqualTo act.Id)
                     Assert.That([("OrderId", "6735")] |> Map.ofList |> Some, Is.EqualTo act.Metadata)
                 )
@@ -216,7 +233,7 @@ module Tests =
                     let! actual =
                         let options =
                             PaymentMethodsAttach.AttachOptions.New(
-                                customer = testCustomer,
+                                customer = testCustomer.Value,
                                 paymentMethod = expected.Id
                             )
                         PaymentMethodsAttach.Attach settings options
@@ -226,7 +243,7 @@ module Tests =
             match result with
             | Ok (exp, act) ->
                 Assert.Multiple(fun () ->
-                    Assert.That(testCustomer |> StripeId |> Some, Is.EqualTo act.Customer)
+                    Assert.That(testCustomer.Value |> StripeId |> Some, Is.EqualTo act.Customer)
                     Assert.That(exp.Id, Is.EqualTo act.Id)
                 )
             | Error e ->
