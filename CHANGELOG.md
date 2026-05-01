@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `static member New(...)` augmentations on every modular record and request options record for ergonomic named/optional-argument construction
 - Modular code generators in `tools/FunStripe.Generator/` (`ModelBuilderModular.fs`, `RequestBuilderAST.fs`, `StripeIdsBuilder.fs`)
 - `FunStripe.Core` NuGet package (netstandard2.0/2.1) — v2 successor to `FunStripe`
-- `FunStripe.Core.Fable` NuGet package (netstandard2.0) — v2 successor to `FunStripeLite`
+- `FunStripe.Core.Fable` NuGet package (netstandard2.0) — v2 Fable-compatible package; replaces the generator-free `FunStripeLite` for Node.js projects upgrading to v2
 - `FunStripe.Generator` project (net10.0 console app) containing code generators, separated from the published library
 - Central Package Management via `Directory.Packages.props`
 - `Directory.Build.props` in `src/FunStripe.Core/` to isolate NuGet restore artefacts for the Fable project
