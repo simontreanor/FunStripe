@@ -5,7 +5,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <PackageId>FunStripe.Core</PackageId>
-    <Version>2.0.3</Version>
+    <Version>2.0.4</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
     <StripeApiVersion>2026-04-22.dahlia</StripeApiVersion>

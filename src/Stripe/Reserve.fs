@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 type ReserveHoldCreatedBy =
     | Application
     | Stripe

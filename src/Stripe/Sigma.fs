@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.File
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 type SigmaScheduledQueryRunError =
     {
         /// Information about the run failure.

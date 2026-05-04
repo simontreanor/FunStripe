@@ -10,7 +10,7 @@ open Stripe.PaymentMethod
 /// to your user. Do not save AccountSessions to your database as they expire relatively
 /// quickly, and cannot be used more than once.
 /// Related guide: [Connect embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components)
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 type AccountSession =
     {
         /// The ID of the account the AccountSession was created for

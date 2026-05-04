@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Radar
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 module RadarEarlyFraudWarnings =
 
     type ListOptions =

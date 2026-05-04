@@ -7,7 +7,7 @@ open System
 /// To share the contents of a `File` object with non-Stripe users, you can
 /// create a `FileLink`. `FileLink`s contain a URL that you can use to
 /// retrieve the contents of the file without authentication.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 type FileLink =
     {
         /// Time at which the object was created. Measured in seconds since the Unix epoch.

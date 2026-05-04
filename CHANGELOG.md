@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [2.0.4] - 2026-05-04
+
+### Changed
+- Refactored Tarjan's SCC and Kahn's topological sort algorithms in the code generator to idiomatic functional style; generated file and type ordering is updated accordingly
+
 ## [2.0.3] - 2026-05-01
 
 ### Fixed

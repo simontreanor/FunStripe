@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Issuing
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 type IssuingTokenNetwork =
     | Mastercard
     | Visa

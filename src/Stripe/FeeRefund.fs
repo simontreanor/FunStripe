@@ -8,7 +8,7 @@ open System
 /// has previously been created but not yet refunded. Funds will be refunded to
 /// the Stripe account from which the fee was originally collected.
 /// Related guide: [Refunding application fees](https://docs.stripe.com/connect/destination-charges#refunding-app-fee)
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 type FeeRefund =
     {
         /// Amount, in cents (or local equivalent).

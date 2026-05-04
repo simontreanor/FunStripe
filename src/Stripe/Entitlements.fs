@@ -5,7 +5,7 @@ open FunStripe
 open System
 
 /// An active entitlement describes access to a feature for a customer.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 type EntitlementsActiveEntitlement =
     {
         /// The [Feature](https://docs.stripe.com/api/entitlements/feature) that the customer is entitled to.

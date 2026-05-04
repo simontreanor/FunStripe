@@ -15,7 +15,7 @@ open System
 /// transfer only if the destination account has enough balance to cover the
 /// reversal.
 /// Related guide: [Reverse transfers](https://docs.stripe.com/connect/separate-charges-and-transfers#reverse-transfers)
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 type TransferReversal =
     {
         /// Amount, in cents (or local equivalent).

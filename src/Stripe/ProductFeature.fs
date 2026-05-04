@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Entitlements
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 type DeletedProductFeature =
     {
         /// Always true for a deleted object

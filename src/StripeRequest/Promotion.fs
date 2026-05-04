@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PromotionCode
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 module PromotionCodes =
 
     type ListOptions =

@@ -5,7 +5,7 @@ open FunStripe
 open System
 
 /// Contains additional details about the status of a payment method for a specific payment method domain.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 type PaymentMethodDomainResourcePaymentMethodStatusDetails =
     {
         /// The error message associated with the status of the payment method on the domain.

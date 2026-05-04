@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.Quote
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
 module Quotes =
 
     type ListOptions =
