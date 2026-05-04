@@ -80,24 +80,6 @@ module Transfer =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "transfer"
 
-/// Occurs whenever a transfer's description or metadata is updated.
-type TransferUpdated = { Object: Transfer }
-
-type TransferUpdated with
-    static member New(object: Transfer) =
-        {
-            Object = object
-        }
-
-/// Occurs whenever a transfer is reversed, including partial reversals.
-type TransferReversed = { Object: Transfer }
-
-type TransferReversed with
-    static member New(object: Transfer) =
-        {
-            Object = object
-        }
-
 /// Occurs whenever a transfer is created.
 type TransferCreated = { Object: Transfer }
 
@@ -122,6 +104,15 @@ type TransferData with
         {
             Destination = destination
             Amount = amount
+        }
+
+/// Occurs whenever a transfer is reversed, including partial reversals.
+type TransferReversed = { Object: Transfer }
+
+type TransferReversed with
+    static member New(object: Transfer) =
+        {
+            Object = object
         }
 
 [<Struct>]
@@ -164,5 +155,14 @@ type TransferSchedule with
             MonthlyPayoutDays = monthlyPayoutDays
             WeeklyAnchor = weeklyAnchor
             WeeklyPayoutDays = weeklyPayoutDays
+        }
+
+/// Occurs whenever a transfer's description or metadata is updated.
+type TransferUpdated = { Object: Transfer }
+
+type TransferUpdated with
+    static member New(object: Transfer) =
+        {
+            Object = object
         }
 

@@ -6,305 +6,6 @@ open System
 open Stripe.Application
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
-type BillingPortalSessionLocale =
-    | Auto
-    | Bg
-    | Cs
-    | Da
-    | De
-    | El
-    | En
-    | [<JsonPropertyName("en-AU")>] EnAU
-    | [<JsonPropertyName("en-CA")>] EnCA
-    | [<JsonPropertyName("en-GB")>] EnGB
-    | [<JsonPropertyName("en-IE")>] EnIE
-    | [<JsonPropertyName("en-IN")>] EnIN
-    | [<JsonPropertyName("en-NZ")>] EnNZ
-    | [<JsonPropertyName("en-SG")>] EnSG
-    | Es
-    | [<JsonPropertyName("es-419")>] Es419
-    | Et
-    | Fi
-    | Fil
-    | Fr
-    | [<JsonPropertyName("fr-CA")>] FrCA
-    | Hr
-    | Hu
-    | Id
-    | It
-    | Ja
-    | Ko
-    | Lt
-    | Lv
-    | Ms
-    | Mt
-    | Nb
-    | Nl
-    | Pl
-    | Pt
-    | [<JsonPropertyName("pt-BR")>] PtBR
-    | Ro
-    | Ru
-    | Sk
-    | Sl
-    | Sv
-    | Th
-    | Tr
-    | Vi
-    | Zh
-    | [<JsonPropertyName("zh-HK")>] ZhHK
-    | [<JsonPropertyName("zh-TW")>] ZhTW
-
-type PortalFlowsAfterCompletionHostedConfirmation =
-    {
-        /// A custom message to display to the customer after the flow is completed.
-        CustomMessage: string option
-    }
-
-type PortalFlowsAfterCompletionHostedConfirmation with
-    static member New(customMessage: string option) =
-        {
-            CustomMessage = customMessage
-        }
-
-type PortalFlowsAfterCompletionRedirect =
-    {
-        /// The URL the customer will be redirected to after the flow is completed.
-        ReturnUrl: string
-    }
-
-type PortalFlowsAfterCompletionRedirect with
-    static member New(returnUrl: string) =
-        {
-            ReturnUrl = returnUrl
-        }
-
-[<Struct>]
-type PortalFlowsFlowAfterCompletionType =
-    | HostedConfirmation
-    | PortalHomepage
-    | Redirect
-
-type PortalFlowsFlowAfterCompletion =
-    {
-        /// Configuration when `after_completion.type=hosted_confirmation`.
-        HostedConfirmation: PortalFlowsAfterCompletionHostedConfirmation option
-        /// Configuration when `after_completion.type=redirect`.
-        Redirect: PortalFlowsAfterCompletionRedirect option
-        /// The specified type of behavior after the flow is completed.
-        Type: PortalFlowsFlowAfterCompletionType
-    }
-
-type PortalFlowsFlowAfterCompletion with
-    static member New(hostedConfirmation: PortalFlowsAfterCompletionHostedConfirmation option, redirect: PortalFlowsAfterCompletionRedirect option, ``type``: PortalFlowsFlowAfterCompletionType) =
-        {
-            HostedConfirmation = hostedConfirmation
-            Redirect = redirect
-            Type = ``type``
-        }
-
-type PortalFlowsCouponOffer =
-    {
-        /// The ID of the coupon to be offered.
-        Coupon: string
-    }
-
-type PortalFlowsCouponOffer with
-    static member New(coupon: string) =
-        {
-            Coupon = coupon
-        }
-
-type PortalFlowsRetention =
-    {
-        /// Configuration when `retention.type=coupon_offer`.
-        CouponOffer: PortalFlowsCouponOffer option
-    }
-
-type PortalFlowsRetention with
-    static member New(couponOffer: PortalFlowsCouponOffer option) =
-        {
-            CouponOffer = couponOffer
-        }
-
-module PortalFlowsRetention =
-    ///Type of retention strategy that will be used.
-    let ``type`` = "coupon_offer"
-
-type PortalFlowsFlowSubscriptionCancel =
-    {
-        /// Specify a retention strategy to be used in the cancellation flow.
-        Retention: PortalFlowsRetention option
-        /// The ID of the subscription to be canceled.
-        Subscription: string
-    }
-
-type PortalFlowsFlowSubscriptionCancel with
-    static member New(retention: PortalFlowsRetention option, subscription: string) =
-        {
-            Retention = retention
-            Subscription = subscription
-        }
-
-type PortalFlowsFlowSubscriptionUpdate =
-    {
-        /// The ID of the subscription to be updated.
-        Subscription: string
-    }
-
-type PortalFlowsFlowSubscriptionUpdate with
-    static member New(subscription: string) =
-        {
-            Subscription = subscription
-        }
-
-type PortalFlowsSubscriptionUpdateConfirmDiscount =
-    {
-        /// The ID of the coupon to apply to this subscription update.
-        Coupon: string option
-        /// The ID of a promotion code to apply to this subscription update.
-        PromotionCode: string option
-    }
-
-type PortalFlowsSubscriptionUpdateConfirmDiscount with
-    static member New(coupon: string option, promotionCode: string option) =
-        {
-            Coupon = coupon
-            PromotionCode = promotionCode
-        }
-
-type PortalFlowsSubscriptionUpdateConfirmItem =
-    {
-        /// The ID of the [subscription item](https://docs.stripe.com/api/subscriptions/object#subscription_object-items-data-id) to be updated.
-        Id: string option
-        /// The price the customer should subscribe to through this flow. The price must also be included in the configuration's [`features.subscription_update.products`](https://docs.stripe.com/api/customer_portal/configuration#portal_configuration_object-features-subscription_update-products).
-        Price: string option
-        /// [Quantity](https://docs.stripe.com/subscriptions/quantities) for this item that the customer should subscribe to through this flow.
-        Quantity: int option
-    }
-
-type PortalFlowsSubscriptionUpdateConfirmItem with
-    static member New(id: string option, price: string option, ?quantity: int) =
-        {
-            Id = id
-            Price = price
-            Quantity = quantity
-        }
-
-type PortalFlowsFlowSubscriptionUpdateConfirm =
-    {
-        /// The coupon or promotion code to apply to this subscription update.
-        Discounts: PortalFlowsSubscriptionUpdateConfirmDiscount list option
-        /// The [subscription item](https://docs.stripe.com/api/subscription_items) to be updated through this flow. Currently, only up to one may be specified and subscriptions with multiple items are not updatable.
-        Items: PortalFlowsSubscriptionUpdateConfirmItem list
-        /// The ID of the subscription to be updated.
-        Subscription: string
-    }
-
-type PortalFlowsFlowSubscriptionUpdateConfirm with
-    static member New(discounts: PortalFlowsSubscriptionUpdateConfirmDiscount list option, items: PortalFlowsSubscriptionUpdateConfirmItem list, subscription: string) =
-        {
-            Discounts = discounts
-            Items = items
-            Subscription = subscription
-        }
-
-[<Struct>]
-type PortalFlowsFlowType =
-    | PaymentMethodUpdate
-    | SubscriptionCancel
-    | SubscriptionUpdate
-    | SubscriptionUpdateConfirm
-
-type PortalFlowsFlow =
-    {
-        AfterCompletion: PortalFlowsFlowAfterCompletion
-        /// Configuration when `flow.type=subscription_cancel`.
-        SubscriptionCancel: PortalFlowsFlowSubscriptionCancel option
-        /// Configuration when `flow.type=subscription_update`.
-        SubscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option
-        /// Configuration when `flow.type=subscription_update_confirm`.
-        SubscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option
-        /// Type of flow that the customer will go through.
-        Type: PortalFlowsFlowType
-    }
-
-type PortalFlowsFlow with
-    static member New(afterCompletion: PortalFlowsFlowAfterCompletion, subscriptionCancel: PortalFlowsFlowSubscriptionCancel option, subscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option, subscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option, ``type``: PortalFlowsFlowType) =
-        {
-            AfterCompletion = afterCompletion
-            SubscriptionCancel = subscriptionCancel
-            SubscriptionUpdate = subscriptionUpdate
-            SubscriptionUpdateConfirm = subscriptionUpdateConfirm
-            Type = ``type``
-        }
-
-/// The Billing customer portal is a Stripe-hosted UI for subscription and
-/// billing management.
-/// A portal configuration describes the functionality and features that you
-/// want to provide to your customers through the portal.
-/// A portal session describes the instantiation of the customer portal for
-/// a particular customer. By visiting the session's URL, the customer
-/// can manage their subscriptions and billing details. For security reasons,
-/// sessions are short-lived and will expire if the customer does not visit the URL.
-/// Create sessions on-demand when customers intend to manage their subscriptions
-/// and billing details.
-/// Related guide: [Customer management](/customer-management)
-type BillingPortalSession =
-    {
-        /// The configuration used by this session, describing the features available.
-        Configuration: StripeId<Markers.BillingPortalConfiguration>
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// The ID of the customer for this session.
-        Customer: string
-        /// The ID of the account for this session.
-        CustomerAccount: string option
-        /// Information about a specific flow for the customer to go through. See the [docs](https://docs.stripe.com/customer-management/portal-deep-links) to learn more about using customer portal deep links and flows.
-        Flow: PortalFlowsFlow option
-        /// Unique identifier for the object.
-        Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// The IETF language tag of the locale Customer Portal is displayed in. If blank or auto, the customer’s `preferred_locales` or browser’s locale is used.
-        Locale: BillingPortalSessionLocale option
-        /// The account for which the session was created on behalf of. When specified, only subscriptions and invoices with this `on_behalf_of` account appear in the portal. For more information, see the [docs](https://docs.stripe.com/connect/separate-charges-and-transfers#settlement-merchant). Use the [Accounts API](https://docs.stripe.com/api/accounts/object#account_object-settings-branding) to modify the `on_behalf_of` account's branding settings, which the portal displays.
-        OnBehalfOf: string option
-        /// The URL to redirect customers to when they click on the portal's link to return to your website.
-        ReturnUrl: string option
-        /// The short-lived URL of the session that gives customers access to the customer portal.
-        Url: string
-    }
-
-type BillingPortalSession with
-    static member New(configuration: StripeId<Markers.BillingPortalConfiguration>, created: DateTime, customer: string, customerAccount: string option, flow: PortalFlowsFlow option, id: string, livemode: bool, locale: BillingPortalSessionLocale option, onBehalfOf: string option, returnUrl: string option, url: string) =
-        {
-            Configuration = configuration
-            Created = created
-            Customer = customer
-            CustomerAccount = customerAccount
-            Flow = flow
-            Id = id
-            Livemode = livemode
-            Locale = locale
-            OnBehalfOf = onBehalfOf
-            ReturnUrl = returnUrl
-            Url = url
-        }
-
-module BillingPortalSession =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "billing_portal.session"
-
-/// Occurs whenever a portal session is created.
-type BillingPortalSessionCreated = { Object: BillingPortalSession }
-
-type BillingPortalSessionCreated with
-    static member New(object: BillingPortalSession) =
-        {
-            Object = object
-        }
-
 type BillingPortalConfigurationApplication'AnyOf =
     | String of string
     | Application of Application
@@ -632,6 +333,15 @@ module BillingPortalConfiguration =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "billing_portal.configuration"
 
+/// Occurs whenever a portal configuration is created.
+type BillingPortalConfigurationCreated = { Object: BillingPortalConfiguration }
+
+type BillingPortalConfigurationCreated with
+    static member New(object: BillingPortalConfiguration) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a portal configuration is updated.
 type BillingPortalConfigurationUpdated = { Object: BillingPortalConfiguration }
 
@@ -641,11 +351,301 @@ type BillingPortalConfigurationUpdated with
             Object = object
         }
 
-/// Occurs whenever a portal configuration is created.
-type BillingPortalConfigurationCreated = { Object: BillingPortalConfiguration }
+type BillingPortalSessionLocale =
+    | Auto
+    | Bg
+    | Cs
+    | Da
+    | De
+    | El
+    | En
+    | [<JsonPropertyName("en-AU")>] EnAU
+    | [<JsonPropertyName("en-CA")>] EnCA
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | [<JsonPropertyName("en-IE")>] EnIE
+    | [<JsonPropertyName("en-IN")>] EnIN
+    | [<JsonPropertyName("en-NZ")>] EnNZ
+    | [<JsonPropertyName("en-SG")>] EnSG
+    | Es
+    | [<JsonPropertyName("es-419")>] Es419
+    | Et
+    | Fi
+    | Fil
+    | Fr
+    | [<JsonPropertyName("fr-CA")>] FrCA
+    | Hr
+    | Hu
+    | Id
+    | It
+    | Ja
+    | Ko
+    | Lt
+    | Lv
+    | Ms
+    | Mt
+    | Nb
+    | Nl
+    | Pl
+    | Pt
+    | [<JsonPropertyName("pt-BR")>] PtBR
+    | Ro
+    | Ru
+    | Sk
+    | Sl
+    | Sv
+    | Th
+    | Tr
+    | Vi
+    | Zh
+    | [<JsonPropertyName("zh-HK")>] ZhHK
+    | [<JsonPropertyName("zh-TW")>] ZhTW
 
-type BillingPortalConfigurationCreated with
-    static member New(object: BillingPortalConfiguration) =
+type PortalFlowsAfterCompletionHostedConfirmation =
+    {
+        /// A custom message to display to the customer after the flow is completed.
+        CustomMessage: string option
+    }
+
+type PortalFlowsAfterCompletionHostedConfirmation with
+    static member New(customMessage: string option) =
+        {
+            CustomMessage = customMessage
+        }
+
+type PortalFlowsAfterCompletionRedirect =
+    {
+        /// The URL the customer will be redirected to after the flow is completed.
+        ReturnUrl: string
+    }
+
+type PortalFlowsAfterCompletionRedirect with
+    static member New(returnUrl: string) =
+        {
+            ReturnUrl = returnUrl
+        }
+
+[<Struct>]
+type PortalFlowsFlowAfterCompletionType =
+    | HostedConfirmation
+    | PortalHomepage
+    | Redirect
+
+type PortalFlowsFlowAfterCompletion =
+    {
+        /// Configuration when `after_completion.type=hosted_confirmation`.
+        HostedConfirmation: PortalFlowsAfterCompletionHostedConfirmation option
+        /// Configuration when `after_completion.type=redirect`.
+        Redirect: PortalFlowsAfterCompletionRedirect option
+        /// The specified type of behavior after the flow is completed.
+        Type: PortalFlowsFlowAfterCompletionType
+    }
+
+type PortalFlowsFlowAfterCompletion with
+    static member New(hostedConfirmation: PortalFlowsAfterCompletionHostedConfirmation option, redirect: PortalFlowsAfterCompletionRedirect option, ``type``: PortalFlowsFlowAfterCompletionType) =
+        {
+            HostedConfirmation = hostedConfirmation
+            Redirect = redirect
+            Type = ``type``
+        }
+
+type PortalFlowsCouponOffer =
+    {
+        /// The ID of the coupon to be offered.
+        Coupon: string
+    }
+
+type PortalFlowsCouponOffer with
+    static member New(coupon: string) =
+        {
+            Coupon = coupon
+        }
+
+type PortalFlowsRetention =
+    {
+        /// Configuration when `retention.type=coupon_offer`.
+        CouponOffer: PortalFlowsCouponOffer option
+    }
+
+type PortalFlowsRetention with
+    static member New(couponOffer: PortalFlowsCouponOffer option) =
+        {
+            CouponOffer = couponOffer
+        }
+
+module PortalFlowsRetention =
+    ///Type of retention strategy that will be used.
+    let ``type`` = "coupon_offer"
+
+type PortalFlowsFlowSubscriptionCancel =
+    {
+        /// Specify a retention strategy to be used in the cancellation flow.
+        Retention: PortalFlowsRetention option
+        /// The ID of the subscription to be canceled.
+        Subscription: string
+    }
+
+type PortalFlowsFlowSubscriptionCancel with
+    static member New(retention: PortalFlowsRetention option, subscription: string) =
+        {
+            Retention = retention
+            Subscription = subscription
+        }
+
+type PortalFlowsFlowSubscriptionUpdate =
+    {
+        /// The ID of the subscription to be updated.
+        Subscription: string
+    }
+
+type PortalFlowsFlowSubscriptionUpdate with
+    static member New(subscription: string) =
+        {
+            Subscription = subscription
+        }
+
+type PortalFlowsSubscriptionUpdateConfirmDiscount =
+    {
+        /// The ID of the coupon to apply to this subscription update.
+        Coupon: string option
+        /// The ID of a promotion code to apply to this subscription update.
+        PromotionCode: string option
+    }
+
+type PortalFlowsSubscriptionUpdateConfirmDiscount with
+    static member New(coupon: string option, promotionCode: string option) =
+        {
+            Coupon = coupon
+            PromotionCode = promotionCode
+        }
+
+type PortalFlowsSubscriptionUpdateConfirmItem =
+    {
+        /// The ID of the [subscription item](https://docs.stripe.com/api/subscriptions/object#subscription_object-items-data-id) to be updated.
+        Id: string option
+        /// The price the customer should subscribe to through this flow. The price must also be included in the configuration's [`features.subscription_update.products`](https://docs.stripe.com/api/customer_portal/configuration#portal_configuration_object-features-subscription_update-products).
+        Price: string option
+        /// [Quantity](https://docs.stripe.com/subscriptions/quantities) for this item that the customer should subscribe to through this flow.
+        Quantity: int option
+    }
+
+type PortalFlowsSubscriptionUpdateConfirmItem with
+    static member New(id: string option, price: string option, ?quantity: int) =
+        {
+            Id = id
+            Price = price
+            Quantity = quantity
+        }
+
+type PortalFlowsFlowSubscriptionUpdateConfirm =
+    {
+        /// The coupon or promotion code to apply to this subscription update.
+        Discounts: PortalFlowsSubscriptionUpdateConfirmDiscount list option
+        /// The [subscription item](https://docs.stripe.com/api/subscription_items) to be updated through this flow. Currently, only up to one may be specified and subscriptions with multiple items are not updatable.
+        Items: PortalFlowsSubscriptionUpdateConfirmItem list
+        /// The ID of the subscription to be updated.
+        Subscription: string
+    }
+
+type PortalFlowsFlowSubscriptionUpdateConfirm with
+    static member New(discounts: PortalFlowsSubscriptionUpdateConfirmDiscount list option, items: PortalFlowsSubscriptionUpdateConfirmItem list, subscription: string) =
+        {
+            Discounts = discounts
+            Items = items
+            Subscription = subscription
+        }
+
+[<Struct>]
+type PortalFlowsFlowType =
+    | PaymentMethodUpdate
+    | SubscriptionCancel
+    | SubscriptionUpdate
+    | SubscriptionUpdateConfirm
+
+type PortalFlowsFlow =
+    {
+        AfterCompletion: PortalFlowsFlowAfterCompletion
+        /// Configuration when `flow.type=subscription_cancel`.
+        SubscriptionCancel: PortalFlowsFlowSubscriptionCancel option
+        /// Configuration when `flow.type=subscription_update`.
+        SubscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option
+        /// Configuration when `flow.type=subscription_update_confirm`.
+        SubscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option
+        /// Type of flow that the customer will go through.
+        Type: PortalFlowsFlowType
+    }
+
+type PortalFlowsFlow with
+    static member New(afterCompletion: PortalFlowsFlowAfterCompletion, subscriptionCancel: PortalFlowsFlowSubscriptionCancel option, subscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option, subscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option, ``type``: PortalFlowsFlowType) =
+        {
+            AfterCompletion = afterCompletion
+            SubscriptionCancel = subscriptionCancel
+            SubscriptionUpdate = subscriptionUpdate
+            SubscriptionUpdateConfirm = subscriptionUpdateConfirm
+            Type = ``type``
+        }
+
+/// The Billing customer portal is a Stripe-hosted UI for subscription and
+/// billing management.
+/// A portal configuration describes the functionality and features that you
+/// want to provide to your customers through the portal.
+/// A portal session describes the instantiation of the customer portal for
+/// a particular customer. By visiting the session's URL, the customer
+/// can manage their subscriptions and billing details. For security reasons,
+/// sessions are short-lived and will expire if the customer does not visit the URL.
+/// Create sessions on-demand when customers intend to manage their subscriptions
+/// and billing details.
+/// Related guide: [Customer management](/customer-management)
+type BillingPortalSession =
+    {
+        /// The configuration used by this session, describing the features available.
+        Configuration: StripeId<Markers.BillingPortalConfiguration>
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// The ID of the customer for this session.
+        Customer: string
+        /// The ID of the account for this session.
+        CustomerAccount: string option
+        /// Information about a specific flow for the customer to go through. See the [docs](https://docs.stripe.com/customer-management/portal-deep-links) to learn more about using customer portal deep links and flows.
+        Flow: PortalFlowsFlow option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The IETF language tag of the locale Customer Portal is displayed in. If blank or auto, the customer’s `preferred_locales` or browser’s locale is used.
+        Locale: BillingPortalSessionLocale option
+        /// The account for which the session was created on behalf of. When specified, only subscriptions and invoices with this `on_behalf_of` account appear in the portal. For more information, see the [docs](https://docs.stripe.com/connect/separate-charges-and-transfers#settlement-merchant). Use the [Accounts API](https://docs.stripe.com/api/accounts/object#account_object-settings-branding) to modify the `on_behalf_of` account's branding settings, which the portal displays.
+        OnBehalfOf: string option
+        /// The URL to redirect customers to when they click on the portal's link to return to your website.
+        ReturnUrl: string option
+        /// The short-lived URL of the session that gives customers access to the customer portal.
+        Url: string
+    }
+
+type BillingPortalSession with
+    static member New(configuration: StripeId<Markers.BillingPortalConfiguration>, created: DateTime, customer: string, customerAccount: string option, flow: PortalFlowsFlow option, id: string, livemode: bool, locale: BillingPortalSessionLocale option, onBehalfOf: string option, returnUrl: string option, url: string) =
+        {
+            Configuration = configuration
+            Created = created
+            Customer = customer
+            CustomerAccount = customerAccount
+            Flow = flow
+            Id = id
+            Livemode = livemode
+            Locale = locale
+            OnBehalfOf = onBehalfOf
+            ReturnUrl = returnUrl
+            Url = url
+        }
+
+module BillingPortalSession =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "billing_portal.session"
+
+/// Occurs whenever a portal session is created.
+type BillingPortalSessionCreated = { Object: BillingPortalSession }
+
+type BillingPortalSessionCreated with
+    static member New(object: BillingPortalSession) =
         {
             Object = object
         }

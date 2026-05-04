@@ -193,10 +193,10 @@ module CreditNote =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "credit_note"
 
-/// Occurs whenever a credit note is voided.
-type CreditNoteVoided = { Object: CreditNote }
+/// Occurs whenever a credit note is created.
+type CreditNoteCreated = { Object: CreditNote }
 
-type CreditNoteVoided with
+type CreditNoteCreated with
     static member New(object: CreditNote) =
         {
             Object = object
@@ -211,10 +211,10 @@ type CreditNoteUpdated with
             Object = object
         }
 
-/// Occurs whenever a credit note is created.
-type CreditNoteCreated = { Object: CreditNote }
+/// Occurs whenever a credit note is voided.
+type CreditNoteVoided = { Object: CreditNote }
 
-type CreditNoteCreated with
+type CreditNoteVoided with
     static member New(object: CreditNote) =
         {
             Object = object

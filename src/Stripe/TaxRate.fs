@@ -118,19 +118,19 @@ module TaxRate =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax_rate"
 
-/// Occurs whenever a tax rate is updated.
-type TaxRateUpdated = { Object: TaxRate }
+/// Occurs whenever a new tax rate is created.
+type TaxRateCreated = { Object: TaxRate }
 
-type TaxRateUpdated with
+type TaxRateCreated with
     static member New(object: TaxRate) =
         {
             Object = object
         }
 
-/// Occurs whenever a new tax rate is created.
-type TaxRateCreated = { Object: TaxRate }
+/// Occurs whenever a tax rate is updated.
+type TaxRateUpdated = { Object: TaxRate }
 
-type TaxRateCreated with
+type TaxRateUpdated with
     static member New(object: TaxRate) =
         {
             Object = object

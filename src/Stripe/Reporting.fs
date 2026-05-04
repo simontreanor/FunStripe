@@ -5,61 +5,7 @@ open FunStripe
 open System
 open Stripe.File
 
-/// The Report Type resource corresponds to a particular type of report, such as
-/// the "Activity summary" or "Itemized payouts" reports. These objects are
-/// identified by an ID belonging to a set of enumerated values. See
-/// [API Access to Reports documentation](https://docs.stripe.com/reporting/statements/api)
-/// for those Report Type IDs, along with required and optional parameters.
-/// Note that certain report types can only be run based on your live-mode data (not test-mode
-/// data), and will error when queried without a [live-mode API key](https://docs.stripe.com/keys#test-live-modes).
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
-type ReportingReportType =
-    {
-        /// Most recent time for which this Report Type is available. Measured in seconds since the Unix epoch.
-        DataAvailableEnd: DateTime
-        /// Earliest time for which this Report Type is available. Measured in seconds since the Unix epoch.
-        DataAvailableStart: DateTime
-        /// List of column names that are included by default when this Report Type gets run. (If the Report Type doesn't support the `columns` parameter, this will be null.)
-        DefaultColumns: string list option
-        /// The [ID of the Report Type](https://docs.stripe.com/reporting/statements/api#available-report-types), such as `balance.summary.1`.
-        Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Human-readable name of the Report Type
-        Name: string
-        /// When this Report Type was latest updated. Measured in seconds since the Unix epoch.
-        Updated: DateTime
-        /// Version of the Report Type. Different versions report with the same ID will have the same purpose, but may take different run parameters or have different result schemas.
-        Version: int
-    }
-
-type ReportingReportType with
-    static member New(dataAvailableEnd: DateTime, dataAvailableStart: DateTime, defaultColumns: string list option, id: string, livemode: bool, name: string, updated: DateTime, version: int) =
-        {
-            DataAvailableEnd = dataAvailableEnd
-            DataAvailableStart = dataAvailableStart
-            DefaultColumns = defaultColumns
-            Id = id
-            Livemode = livemode
-            Name = name
-            Updated = updated
-            Version = version
-        }
-
-module ReportingReportType =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "reporting.report_type"
-
-/// Occurs whenever a `ReportType` is updated (typically to indicate that a new day's data has come available).
-type ReportingReportTypeUpdated = { Object: ReportingReportType }
-
-type ReportingReportTypeUpdated with
-    static member New(object: ReportingReportType) =
-        {
-            Object = object
-        }
-
-[<Struct>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
 type FinancialReportingFinanceReportRunRunParametersTimezone =
     | IntervalStart
     | IntervalEnd
@@ -148,6 +94,15 @@ module ReportingReportRun =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reporting.report_run"
 
+/// Occurs whenever a requested `ReportRun` failed to complete.
+type ReportingReportRunFailed = { Object: ReportingReportRun }
+
+type ReportingReportRunFailed with
+    static member New(object: ReportingReportRun) =
+        {
+            Object = object
+        }
+
 /// Occurs whenever a requested `ReportRun` completed successfully.
 type ReportingReportRunSucceeded = { Object: ReportingReportRun }
 
@@ -157,11 +112,55 @@ type ReportingReportRunSucceeded with
             Object = object
         }
 
-/// Occurs whenever a requested `ReportRun` failed to complete.
-type ReportingReportRunFailed = { Object: ReportingReportRun }
+/// The Report Type resource corresponds to a particular type of report, such as
+/// the "Activity summary" or "Itemized payouts" reports. These objects are
+/// identified by an ID belonging to a set of enumerated values. See
+/// [API Access to Reports documentation](https://docs.stripe.com/reporting/statements/api)
+/// for those Report Type IDs, along with required and optional parameters.
+/// Note that certain report types can only be run based on your live-mode data (not test-mode
+/// data), and will error when queried without a [live-mode API key](https://docs.stripe.com/keys#test-live-modes).
+type ReportingReportType =
+    {
+        /// Most recent time for which this Report Type is available. Measured in seconds since the Unix epoch.
+        DataAvailableEnd: DateTime
+        /// Earliest time for which this Report Type is available. Measured in seconds since the Unix epoch.
+        DataAvailableStart: DateTime
+        /// List of column names that are included by default when this Report Type gets run. (If the Report Type doesn't support the `columns` parameter, this will be null.)
+        DefaultColumns: string list option
+        /// The [ID of the Report Type](https://docs.stripe.com/reporting/statements/api#available-report-types), such as `balance.summary.1`.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Human-readable name of the Report Type
+        Name: string
+        /// When this Report Type was latest updated. Measured in seconds since the Unix epoch.
+        Updated: DateTime
+        /// Version of the Report Type. Different versions report with the same ID will have the same purpose, but may take different run parameters or have different result schemas.
+        Version: int
+    }
 
-type ReportingReportRunFailed with
-    static member New(object: ReportingReportRun) =
+type ReportingReportType with
+    static member New(dataAvailableEnd: DateTime, dataAvailableStart: DateTime, defaultColumns: string list option, id: string, livemode: bool, name: string, updated: DateTime, version: int) =
+        {
+            DataAvailableEnd = dataAvailableEnd
+            DataAvailableStart = dataAvailableStart
+            DefaultColumns = defaultColumns
+            Id = id
+            Livemode = livemode
+            Name = name
+            Updated = updated
+            Version = version
+        }
+
+module ReportingReportType =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "reporting.report_type"
+
+/// Occurs whenever a `ReportType` is updated (typically to indicate that a new day's data has come available).
+type ReportingReportTypeUpdated = { Object: ReportingReportType }
+
+type ReportingReportTypeUpdated with
+    static member New(object: ReportingReportType) =
         {
             Object = object
         }

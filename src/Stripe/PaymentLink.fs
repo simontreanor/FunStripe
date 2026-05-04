@@ -216,19 +216,19 @@ module PaymentLink =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "payment_link"
 
-/// Occurs when a payment link is updated.
-type PaymentLinkUpdated = { Object: PaymentLink }
+/// Occurs when a payment link is created.
+type PaymentLinkCreated = { Object: PaymentLink }
 
-type PaymentLinkUpdated with
+type PaymentLinkCreated with
     static member New(object: PaymentLink) =
         {
             Object = object
         }
 
-/// Occurs when a payment link is created.
-type PaymentLinkCreated = { Object: PaymentLink }
+/// Occurs when a payment link is updated.
+type PaymentLinkUpdated = { Object: PaymentLink }
 
-type PaymentLinkCreated with
+type PaymentLinkUpdated with
     static member New(object: PaymentLink) =
         {
             Object = object

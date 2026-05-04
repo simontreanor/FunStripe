@@ -5,7 +5,12 @@ open FunStripe
 open System
 open Stripe.Product
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type CurrencyOptionTaxBehavior =
+    | Exclusive
+    | Inclusive
+    | Unspecified
+
 type CustomUnitAmount =
     {
         /// The maximum unit amount the customer can specify for this item.
@@ -23,22 +28,6 @@ type CustomUnitAmount with
             Minimum = minimum
             Preset = preset
         }
-
-[<Struct>]
-type PriceBillingScheme =
-    | PerUnit
-    | Tiered
-
-type PriceProduct'AnyOf =
-    | String of string
-    | Product of Product
-    | DeletedProduct of DeletedProduct
-
-[<Struct>]
-type PriceTaxBehavior =
-    | Exclusive
-    | Inclusive
-    | Unspecified
 
 type PriceTier =
     {
@@ -63,6 +52,65 @@ type PriceTier with
             UnitAmountDecimal = unitAmountDecimal
             UpTo = upTo
         }
+
+type CurrencyOption =
+    {
+        /// When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
+        CustomUnitAmount: CustomUnitAmount option
+        /// Only required if a [default tax behavior](https://docs.stripe.com/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
+        TaxBehavior: CurrencyOptionTaxBehavior option
+        /// Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
+        Tiers: PriceTier list option
+        /// The unit amount in cents (or local equivalent) to be charged, represented as a whole integer if possible. Only set if `billing_scheme=per_unit`.
+        UnitAmount: int option
+        /// The unit amount in cents (or local equivalent) to be charged, represented as a decimal string with at most 12 decimal places. Only set if `billing_scheme=per_unit`.
+        UnitAmountDecimal: string option
+    }
+
+type CurrencyOption with
+    static member New(customUnitAmount: CustomUnitAmount option, taxBehavior: CurrencyOptionTaxBehavior option, unitAmount: int option, unitAmountDecimal: string option, ?tiers: PriceTier list) =
+        {
+            CustomUnitAmount = customUnitAmount
+            TaxBehavior = taxBehavior
+            UnitAmount = unitAmount
+            UnitAmountDecimal = unitAmountDecimal
+            Tiers = tiers
+        }
+
+type DeletedPrice =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedPrice with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedPrice =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "price"
+
+[<Struct>]
+type PriceBillingScheme =
+    | PerUnit
+    | Tiered
+
+type PriceProduct'AnyOf =
+    | String of string
+    | Product of Product
+    | DeletedProduct of DeletedProduct
+
+[<Struct>]
+type PriceTaxBehavior =
+    | Exclusive
+    | Inclusive
+    | Unspecified
 
 [<Struct>]
 type PriceTiersMode =
@@ -207,10 +255,10 @@ module Price =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "price"
 
-/// Occurs whenever a price is updated.
-type PriceUpdated = { Object: Price }
+/// Occurs whenever a price is created.
+type PriceCreated = { Object: Price }
 
-type PriceUpdated with
+type PriceCreated with
     static member New(object: Price) =
         {
             Object = object
@@ -225,61 +273,12 @@ type PriceDeleted with
             Object = object
         }
 
-/// Occurs whenever a price is created.
-type PriceCreated = { Object: Price }
+/// Occurs whenever a price is updated.
+type PriceUpdated = { Object: Price }
 
-type PriceCreated with
+type PriceUpdated with
     static member New(object: Price) =
         {
             Object = object
-        }
-
-type DeletedPrice =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedPrice with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedPrice =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "price"
-
-[<Struct>]
-type CurrencyOptionTaxBehavior =
-    | Exclusive
-    | Inclusive
-    | Unspecified
-
-type CurrencyOption =
-    {
-        /// When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
-        CustomUnitAmount: CustomUnitAmount option
-        /// Only required if a [default tax behavior](https://docs.stripe.com/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
-        TaxBehavior: CurrencyOptionTaxBehavior option
-        /// Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
-        Tiers: PriceTier list option
-        /// The unit amount in cents (or local equivalent) to be charged, represented as a whole integer if possible. Only set if `billing_scheme=per_unit`.
-        UnitAmount: int option
-        /// The unit amount in cents (or local equivalent) to be charged, represented as a decimal string with at most 12 decimal places. Only set if `billing_scheme=per_unit`.
-        UnitAmountDecimal: string option
-    }
-
-type CurrencyOption with
-    static member New(customUnitAmount: CustomUnitAmount option, taxBehavior: CurrencyOptionTaxBehavior option, unitAmount: int option, unitAmountDecimal: string option, ?tiers: PriceTier list) =
-        {
-            CustomUnitAmount = customUnitAmount
-            TaxBehavior = taxBehavior
-            UnitAmount = unitAmount
-            UnitAmountDecimal = unitAmountDecimal
-            Tiers = tiers
         }
 

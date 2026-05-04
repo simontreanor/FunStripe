@@ -5,7 +5,27 @@ open FunStripe
 open System
 open Stripe.Product
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type DeletedPlan =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedPlan with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedPlan =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "plan"
+
+[<Struct>]
 type PlanBillingScheme =
     | PerUnit
     | Tiered
@@ -151,10 +171,10 @@ module Plan =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "plan"
 
-/// Occurs whenever a plan is updated.
-type PlanUpdated = { Object: Plan }
+/// Occurs whenever a plan is created.
+type PlanCreated = { Object: Plan }
 
-type PlanUpdated with
+type PlanCreated with
     static member New(object: Plan) =
         {
             Object = object
@@ -169,31 +189,12 @@ type PlanDeleted with
             Object = object
         }
 
-/// Occurs whenever a plan is created.
-type PlanCreated = { Object: Plan }
+/// Occurs whenever a plan is updated.
+type PlanUpdated = { Object: Plan }
 
-type PlanCreated with
+type PlanUpdated with
     static member New(object: Plan) =
         {
             Object = object
         }
-
-type DeletedPlan =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedPlan with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedPlan =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "plan"
 

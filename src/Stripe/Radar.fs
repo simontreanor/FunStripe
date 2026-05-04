@@ -5,180 +5,94 @@ open FunStripe
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
-type Rule =
+type DeletedRadarValueList =
     {
-        /// The action taken on the payment.
-        Action: string
+        /// Always true for a deleted object
+        Deleted: bool
         /// Unique identifier for the object.
         Id: string
-        /// The predicate to evaluate the payment against.
-        Predicate: string
     }
 
-type Rule with
-    static member New(action: string, id: string, predicate: string) =
+type DeletedRadarValueList with
+    static member New(deleted: bool, id: string) =
         {
-            Action = action
+            Deleted = deleted
             Id = id
-            Predicate = predicate
         }
 
-type RadarReviewResourceSession =
+module DeletedRadarValueList =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "radar.value_list"
+
+type DeletedRadarValueListItem =
     {
-        /// The browser used in this browser session (e.g., `Chrome`).
-        Browser: string option
-        /// Information about the device used for the browser session (e.g., `Samsung SM-G930T`).
-        Device: string option
-        /// The platform for the browser session (e.g., `Macintosh`).
-        Platform: string option
-        /// The version for the browser session (e.g., `61.0.3163.100`).
-        Version: string option
-    }
-
-type RadarReviewResourceSession with
-    static member New(browser: string option, device: string option, platform: string option, version: string option) =
-        {
-            Browser = browser
-            Device = device
-            Platform = platform
-            Version = version
-        }
-
-type RadarReviewResourceLocation =
-    {
-        /// The city where the payment originated.
-        City: string option
-        /// Two-letter ISO code representing the country where the payment originated.
-        Country: IsoTypes.IsoCountryCode option
-        /// The geographic latitude where the payment originated.
-        Latitude: decimal option
-        /// The geographic longitude where the payment originated.
-        Longitude: decimal option
-        /// The state/county/province/region where the payment originated.
-        Region: string option
-    }
-
-type RadarReviewResourceLocation with
-    static member New(city: string option, country: IsoTypes.IsoCountryCode option, latitude: decimal option, longitude: decimal option, region: string option) =
-        {
-            City = city
-            Country = country
-            Latitude = latitude
-            Longitude = longitude
-            Region = region
-        }
-
-type RadarValueListItemType =
-    | Account
-    | CardBin
-    | CardFingerprint
-    | CaseSensitiveString
-    | Country
-    | CryptoFingerprint
-    | CustomerId
-    | Email
-    | IpAddress
-    | SepaDebitFingerprint
-    | String
-    | UsBankAccountFingerprint
-
-/// Value list items allow you to add specific values to a given Radar value list, which can then be used in rules.
-/// Related guide: [Managing list items](https://docs.stripe.com/radar/lists#managing-list-items)
-type RadarValueListItem =
-    {
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// The name or email address of the user who added this item to the value list.
-        CreatedBy: string
+        /// Always true for a deleted object
+        Deleted: bool
         /// Unique identifier for the object.
         Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// The value of the item.
-        Value: string
-        /// The identifier of the value list this item belongs to.
-        ValueList: string
     }
 
-type RadarValueListItem with
-    static member New(created: DateTime, createdBy: string, id: string, livemode: bool, value: string, valueList: string) =
+type DeletedRadarValueListItem with
+    static member New(deleted: bool, id: string) =
         {
-            Created = created
-            CreatedBy = createdBy
+            Deleted = deleted
             Id = id
-            Livemode = livemode
-            Value = value
-            ValueList = valueList
         }
 
-module RadarValueListItem =
+module DeletedRadarValueListItem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "radar.value_list_item"
 
-/// List of items contained within this value list.
-type RadarValueListListItems =
+/// Address data.
+type InsightsResourcesPaymentEvaluationAddress =
     {
-        /// Details about each object.
-        Data: RadarValueListItem list
-        /// True if this list has another page of items after this one that can be fetched.
-        HasMore: bool
-        /// The URL where this list can be accessed.
-        Url: string
+        /// City, district, suburb, town, or village.
+        City: string option
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        /// Address line 1, such as the street, PO Box, or company name.
+        [<JsonPropertyName("line1")>]
+        Line1: string option
+        /// Address line 2, such as the apartment, suite, unit, or building.
+        [<JsonPropertyName("line2")>]
+        Line2: string option
+        /// ZIP or postal code.
+        PostalCode: string option
+        /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        State: string option
     }
 
-type RadarValueListListItems with
-    static member New(data: RadarValueListItem list, hasMore: bool, url: string) =
+type InsightsResourcesPaymentEvaluationAddress with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
         {
-            Data = data
-            HasMore = hasMore
-            Url = url
+            City = city
+            Country = country
+            Line1 = line1
+            Line2 = line2
+            PostalCode = postalCode
+            State = state
         }
 
-module RadarValueListListItems =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-/// Value lists allow you to group values together which can then be referenced in rules.
-/// Related guide: [Default Stripe lists](https://docs.stripe.com/radar/lists#managing-list-items)
-type RadarValueList =
+/// Billing details attached to this payment evaluation.
+type InsightsResourcesPaymentEvaluationBillingDetails =
     {
-        /// The name of the value list for use in rules.
-        Alias: string
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// The name or email address of the user who created this value list.
-        CreatedBy: string
-        /// Unique identifier for the object.
-        Id: string
-        /// The type of items in the value list. One of `card_fingerprint`, `card_bin`, `crypto_fingerprint`, `email`, `ip_address`, `country`, `string`, `case_sensitive_string`, `customer_id`, `account`, `sepa_debit_fingerprint`, or `us_bank_account_fingerprint`.
-        ItemType: RadarValueListItemType
-        /// List of items contained within this value list.
-        ListItems: RadarValueListListItems
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-        /// The name of the value list.
-        Name: string
+        Address: InsightsResourcesPaymentEvaluationAddress
+        /// Email address.
+        Email: string option
+        /// Full name.
+        Name: string option
+        /// Billing phone number (including extension).
+        Phone: string option
     }
 
-type RadarValueList with
-    static member New(alias: string, created: DateTime, createdBy: string, id: string, itemType: RadarValueListItemType, listItems: RadarValueListListItems, livemode: bool, metadata: Map<string, string>, name: string) =
+type InsightsResourcesPaymentEvaluationBillingDetails with
+    static member New(address: InsightsResourcesPaymentEvaluationAddress, email: string option, name: string option, phone: string option) =
         {
-            Alias = alias
-            Created = created
-            CreatedBy = createdBy
-            Id = id
-            ItemType = itemType
-            ListItems = listItems
-            Livemode = livemode
-            Metadata = metadata
+            Address = address
+            Email = email
             Name = name
+            Phone = phone
         }
-
-module RadarValueList =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "radar.value_list"
 
 /// Client device metadata attached to this payment evaluation.
 type InsightsResourcesPaymentEvaluationClientDeviceMetadata =
@@ -410,6 +324,51 @@ type InsightsResourcesPaymentEvaluationMerchantBlocked with
         }
 
 [<Struct>]
+type InsightsResourcesPaymentEvaluationMoneyMovementCardCustomerPresence =
+    | OffSession
+    | OnSession
+
+[<Struct>]
+type InsightsResourcesPaymentEvaluationMoneyMovementCardPaymentType =
+    | OneOff
+    | Recurring
+    | SetupOneOff
+    | SetupRecurring
+
+/// Money Movement card details attached to this payment.
+type InsightsResourcesPaymentEvaluationMoneyMovementCard =
+    {
+        /// Describes the presence of the customer during the payment.
+        CustomerPresence: InsightsResourcesPaymentEvaluationMoneyMovementCardCustomerPresence option
+        /// Describes the type of payment.
+        PaymentType: InsightsResourcesPaymentEvaluationMoneyMovementCardPaymentType option
+    }
+
+type InsightsResourcesPaymentEvaluationMoneyMovementCard with
+    static member New(customerPresence: InsightsResourcesPaymentEvaluationMoneyMovementCardCustomerPresence option, paymentType: InsightsResourcesPaymentEvaluationMoneyMovementCardPaymentType option) =
+        {
+            CustomerPresence = customerPresence
+            PaymentType = paymentType
+        }
+
+/// Money Movement details attached to this payment.
+type InsightsResourcesPaymentEvaluationMoneyMovementDetails =
+    {
+        /// Describes card money movement details for the payment evaluation.
+        Card: InsightsResourcesPaymentEvaluationMoneyMovementCard option
+    }
+
+type InsightsResourcesPaymentEvaluationMoneyMovementDetails with
+    static member New(card: InsightsResourcesPaymentEvaluationMoneyMovementCard option) =
+        {
+            Card = card
+        }
+
+module InsightsResourcesPaymentEvaluationMoneyMovementDetails =
+    ///Describes the type of money movement. Currently only `card` is supported.
+    let moneyMovementType = "card"
+
+[<Struct>]
 type InsightsResourcesPaymentEvaluationOutcomeType =
     | Failed
     | MerchantBlocked
@@ -558,102 +517,6 @@ type InsightsResourcesPaymentEvaluationOutcome with
             Succeeded = succeeded
         }
 
-[<Struct>]
-type InsightsResourcesPaymentEvaluationMoneyMovementCardCustomerPresence =
-    | OffSession
-    | OnSession
-
-[<Struct>]
-type InsightsResourcesPaymentEvaluationMoneyMovementCardPaymentType =
-    | OneOff
-    | Recurring
-    | SetupOneOff
-    | SetupRecurring
-
-/// Money Movement card details attached to this payment.
-type InsightsResourcesPaymentEvaluationMoneyMovementCard =
-    {
-        /// Describes the presence of the customer during the payment.
-        CustomerPresence: InsightsResourcesPaymentEvaluationMoneyMovementCardCustomerPresence option
-        /// Describes the type of payment.
-        PaymentType: InsightsResourcesPaymentEvaluationMoneyMovementCardPaymentType option
-    }
-
-type InsightsResourcesPaymentEvaluationMoneyMovementCard with
-    static member New(customerPresence: InsightsResourcesPaymentEvaluationMoneyMovementCardCustomerPresence option, paymentType: InsightsResourcesPaymentEvaluationMoneyMovementCardPaymentType option) =
-        {
-            CustomerPresence = customerPresence
-            PaymentType = paymentType
-        }
-
-/// Money Movement details attached to this payment.
-type InsightsResourcesPaymentEvaluationMoneyMovementDetails =
-    {
-        /// Describes card money movement details for the payment evaluation.
-        Card: InsightsResourcesPaymentEvaluationMoneyMovementCard option
-    }
-
-type InsightsResourcesPaymentEvaluationMoneyMovementDetails with
-    static member New(card: InsightsResourcesPaymentEvaluationMoneyMovementCard option) =
-        {
-            Card = card
-        }
-
-module InsightsResourcesPaymentEvaluationMoneyMovementDetails =
-    ///Describes the type of money movement. Currently only `card` is supported.
-    let moneyMovementType = "card"
-
-/// Address data.
-type InsightsResourcesPaymentEvaluationAddress =
-    {
-        /// City, district, suburb, town, or village.
-        City: string option
-        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: IsoTypes.IsoCountryCode option
-        /// Address line 1, such as the street, PO Box, or company name.
-        [<JsonPropertyName("line1")>]
-        Line1: string option
-        /// Address line 2, such as the apartment, suite, unit, or building.
-        [<JsonPropertyName("line2")>]
-        Line2: string option
-        /// ZIP or postal code.
-        PostalCode: string option
-        /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
-        State: string option
-    }
-
-type InsightsResourcesPaymentEvaluationAddress with
-    static member New(city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
-        {
-            City = city
-            Country = country
-            Line1 = line1
-            Line2 = line2
-            PostalCode = postalCode
-            State = state
-        }
-
-/// Billing details attached to this payment evaluation.
-type InsightsResourcesPaymentEvaluationBillingDetails =
-    {
-        Address: InsightsResourcesPaymentEvaluationAddress
-        /// Email address.
-        Email: string option
-        /// Full name.
-        Name: string option
-        /// Billing phone number (including extension).
-        Phone: string option
-    }
-
-type InsightsResourcesPaymentEvaluationBillingDetails with
-    static member New(address: InsightsResourcesPaymentEvaluationAddress, email: string option, name: string option, phone: string option) =
-        {
-            Address = address
-            Email = email
-            Name = name
-            Phone = phone
-        }
-
 /// Payment method details attached to this payment evaluation.
 type InsightsResourcesPaymentEvaluationPaymentMethodDetails =
     {
@@ -756,6 +619,61 @@ type InsightsResourcesPaymentEvaluationSignals with
             FraudulentPayment = fraudulentPayment
         }
 
+/// An early fraud warning indicates that the card issuer has notified us that a
+/// charge may be fraudulent.
+/// Related guide: [Early fraud warnings](https://docs.stripe.com/disputes/measuring#early-fraud-warnings)
+type RadarEarlyFraudWarning =
+    {
+        /// An EFW is actionable if it has not received a dispute and has not been fully refunded. You may wish to proactively refund a charge that receives an EFW, in order to avoid receiving a dispute later.
+        Actionable: bool
+        /// ID of the charge this early fraud warning is for, optionally expanded.
+        Charge: StripeId<Markers.Charge>
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
+        FraudType: string
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// ID of the Payment Intent this early fraud warning is for, optionally expanded.
+        PaymentIntent: StripeId<Markers.PaymentIntent> option
+    }
+
+type RadarEarlyFraudWarning with
+    static member New(actionable: bool, charge: StripeId<Markers.Charge>, created: DateTime, fraudType: string, id: string, livemode: bool, ?paymentIntent: StripeId<Markers.PaymentIntent>) =
+        {
+            Actionable = actionable
+            Charge = charge
+            Created = created
+            FraudType = fraudType
+            Id = id
+            Livemode = livemode
+            PaymentIntent = paymentIntent
+        }
+
+module RadarEarlyFraudWarning =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "radar.early_fraud_warning"
+
+/// Occurs whenever an early fraud warning is created.
+type RadarEarlyFraudWarningCreated = { Object: RadarEarlyFraudWarning }
+
+type RadarEarlyFraudWarningCreated with
+    static member New(object: RadarEarlyFraudWarning) =
+        {
+            Object = object
+        }
+
+/// Occurs whenever an early fraud warning is updated.
+type RadarEarlyFraudWarningUpdated = { Object: RadarEarlyFraudWarning }
+
+type RadarEarlyFraudWarningUpdated with
+    static member New(object: RadarEarlyFraudWarning) =
+        {
+            Object = object
+        }
+
 [<Struct>]
 type RadarPaymentEvaluationRecommendedAction =
     | Block
@@ -804,99 +722,6 @@ module RadarPaymentEvaluation =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "radar.payment_evaluation"
 
-/// An early fraud warning indicates that the card issuer has notified us that a
-/// charge may be fraudulent.
-/// Related guide: [Early fraud warnings](https://docs.stripe.com/disputes/measuring#early-fraud-warnings)
-type RadarEarlyFraudWarning =
-    {
-        /// An EFW is actionable if it has not received a dispute and has not been fully refunded. You may wish to proactively refund a charge that receives an EFW, in order to avoid receiving a dispute later.
-        Actionable: bool
-        /// ID of the charge this early fraud warning is for, optionally expanded.
-        Charge: StripeId<Markers.Charge>
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
-        FraudType: string
-        /// Unique identifier for the object.
-        Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// ID of the Payment Intent this early fraud warning is for, optionally expanded.
-        PaymentIntent: StripeId<Markers.PaymentIntent> option
-    }
-
-type RadarEarlyFraudWarning with
-    static member New(actionable: bool, charge: StripeId<Markers.Charge>, created: DateTime, fraudType: string, id: string, livemode: bool, ?paymentIntent: StripeId<Markers.PaymentIntent>) =
-        {
-            Actionable = actionable
-            Charge = charge
-            Created = created
-            FraudType = fraudType
-            Id = id
-            Livemode = livemode
-            PaymentIntent = paymentIntent
-        }
-
-module RadarEarlyFraudWarning =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "radar.early_fraud_warning"
-
-/// Occurs whenever an early fraud warning is updated.
-type RadarEarlyFraudWarningUpdated = { Object: RadarEarlyFraudWarning }
-
-type RadarEarlyFraudWarningUpdated with
-    static member New(object: RadarEarlyFraudWarning) =
-        {
-            Object = object
-        }
-
-/// Occurs whenever an early fraud warning is created.
-type RadarEarlyFraudWarningCreated = { Object: RadarEarlyFraudWarning }
-
-type RadarEarlyFraudWarningCreated with
-    static member New(object: RadarEarlyFraudWarning) =
-        {
-            Object = object
-        }
-
-type DeletedRadarValueListItem =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedRadarValueListItem with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedRadarValueListItem =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "radar.value_list_item"
-
-type DeletedRadarValueList =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedRadarValueList with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedRadarValueList =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "radar.value_list"
-
 /// Options to configure Radar. See [Radar Session](https://docs.stripe.com/radar/radar-session) for more information.
 type RadarRadarOptions =
     {
@@ -908,5 +733,180 @@ type RadarRadarOptions with
     static member New(?session: string) =
         {
             Session = session
+        }
+
+type RadarReviewResourceLocation =
+    {
+        /// The city where the payment originated.
+        City: string option
+        /// Two-letter ISO code representing the country where the payment originated.
+        Country: IsoTypes.IsoCountryCode option
+        /// The geographic latitude where the payment originated.
+        Latitude: decimal option
+        /// The geographic longitude where the payment originated.
+        Longitude: decimal option
+        /// The state/county/province/region where the payment originated.
+        Region: string option
+    }
+
+type RadarReviewResourceLocation with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode option, latitude: decimal option, longitude: decimal option, region: string option) =
+        {
+            City = city
+            Country = country
+            Latitude = latitude
+            Longitude = longitude
+            Region = region
+        }
+
+type RadarReviewResourceSession =
+    {
+        /// The browser used in this browser session (e.g., `Chrome`).
+        Browser: string option
+        /// Information about the device used for the browser session (e.g., `Samsung SM-G930T`).
+        Device: string option
+        /// The platform for the browser session (e.g., `Macintosh`).
+        Platform: string option
+        /// The version for the browser session (e.g., `61.0.3163.100`).
+        Version: string option
+    }
+
+type RadarReviewResourceSession with
+    static member New(browser: string option, device: string option, platform: string option, version: string option) =
+        {
+            Browser = browser
+            Device = device
+            Platform = platform
+            Version = version
+        }
+
+type RadarValueListItemType =
+    | Account
+    | CardBin
+    | CardFingerprint
+    | CaseSensitiveString
+    | Country
+    | CryptoFingerprint
+    | CustomerId
+    | Email
+    | IpAddress
+    | SepaDebitFingerprint
+    | String
+    | UsBankAccountFingerprint
+
+/// Value list items allow you to add specific values to a given Radar value list, which can then be used in rules.
+/// Related guide: [Managing list items](https://docs.stripe.com/radar/lists#managing-list-items)
+type RadarValueListItem =
+    {
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// The name or email address of the user who added this item to the value list.
+        CreatedBy: string
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The value of the item.
+        Value: string
+        /// The identifier of the value list this item belongs to.
+        ValueList: string
+    }
+
+type RadarValueListItem with
+    static member New(created: DateTime, createdBy: string, id: string, livemode: bool, value: string, valueList: string) =
+        {
+            Created = created
+            CreatedBy = createdBy
+            Id = id
+            Livemode = livemode
+            Value = value
+            ValueList = valueList
+        }
+
+module RadarValueListItem =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "radar.value_list_item"
+
+/// List of items contained within this value list.
+type RadarValueListListItems =
+    {
+        /// Details about each object.
+        Data: RadarValueListItem list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+type RadarValueListListItems with
+    static member New(data: RadarValueListItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
+module RadarValueListListItems =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+/// Value lists allow you to group values together which can then be referenced in rules.
+/// Related guide: [Default Stripe lists](https://docs.stripe.com/radar/lists#managing-list-items)
+type RadarValueList =
+    {
+        /// The name of the value list for use in rules.
+        Alias: string
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// The name or email address of the user who created this value list.
+        CreatedBy: string
+        /// Unique identifier for the object.
+        Id: string
+        /// The type of items in the value list. One of `card_fingerprint`, `card_bin`, `crypto_fingerprint`, `email`, `ip_address`, `country`, `string`, `case_sensitive_string`, `customer_id`, `account`, `sepa_debit_fingerprint`, or `us_bank_account_fingerprint`.
+        ItemType: RadarValueListItemType
+        /// List of items contained within this value list.
+        ListItems: RadarValueListListItems
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// The name of the value list.
+        Name: string
+    }
+
+type RadarValueList with
+    static member New(alias: string, created: DateTime, createdBy: string, id: string, itemType: RadarValueListItemType, listItems: RadarValueListListItems, livemode: bool, metadata: Map<string, string>, name: string) =
+        {
+            Alias = alias
+            Created = created
+            CreatedBy = createdBy
+            Id = id
+            ItemType = itemType
+            ListItems = listItems
+            Livemode = livemode
+            Metadata = metadata
+            Name = name
+        }
+
+module RadarValueList =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "radar.value_list"
+
+type Rule =
+    {
+        /// The action taken on the payment.
+        Action: string
+        /// Unique identifier for the object.
+        Id: string
+        /// The predicate to evaluate the payment against.
+        Predicate: string
+    }
+
+type Rule with
+    static member New(action: string, id: string, predicate: string) =
+        {
+            Action = action
+            Id = id
+            Predicate = predicate
         }
 

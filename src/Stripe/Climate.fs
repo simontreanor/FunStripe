@@ -4,23 +4,30 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
-type ClimateRemovalsProductsPrice =
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type ClimateOrderCancellationReason =
+    | Expired
+    | ProductUnavailable
+    | Requested
+
+[<Struct>]
+type ClimateOrderStatus =
+    | AwaitingFunds
+    | Canceled
+    | Confirmed
+    | Delivered
+    | Open
+
+type ClimateRemovalsBeneficiary =
     {
-        /// Fees for one metric ton of carbon removal in the currency's smallest unit.
-        AmountFees: int
-        /// Subtotal for one metric ton of carbon removal (excluding fees) in the currency's smallest unit.
-        AmountSubtotal: int
-        /// Total for one metric ton of carbon removal (including fees) in the currency's smallest unit.
-        AmountTotal: int
+        /// Publicly displayable name for the end beneficiary of carbon removal.
+        PublicName: string
     }
 
-type ClimateRemovalsProductsPrice with
-    static member New(amountFees: int, amountSubtotal: int, amountTotal: int) =
+type ClimateRemovalsBeneficiary with
+    static member New(publicName: string) =
         {
-            AmountFees = amountFees
-            AmountSubtotal = amountSubtotal
-            AmountTotal = amountTotal
+            PublicName = publicName
         }
 
 type ClimateRemovalsLocation =
@@ -85,91 +92,6 @@ type ClimateSupplier with
 module ClimateSupplier =
     ///String representing the object’s type. Objects of the same type share the same value.
     let object = "climate.supplier"
-
-/// A Climate product represents a type of carbon removal unit available for reservation.
-/// You can retrieve it to see the current price and availability.
-type ClimateProduct =
-    {
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// Current prices for a metric ton of carbon removal in a currency's smallest unit.
-        CurrentPricesPerMetricTon: Map<string, string list>
-        /// The year in which the carbon removal is expected to be delivered.
-        DeliveryYear: int option
-        /// Unique identifier for the object. For convenience, Climate product IDs are human-readable strings
-        /// that start with `climsku_`. See [carbon removal inventory](https://stripe.com/docs/climate/orders/carbon-removal-inventory)
-        /// for a list of available carbon removal products.
-        Id: string
-        /// Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-        Livemode: bool
-        /// The quantity of metric tons available for reservation.
-        MetricTonsAvailable: string
-        /// The Climate product's name.
-        Name: string
-        /// The carbon removal suppliers that fulfill orders for this Climate product.
-        Suppliers: ClimateSupplier list
-    }
-
-type ClimateProduct with
-    static member New(created: DateTime, currentPricesPerMetricTon: Map<string, string list>, deliveryYear: int option, id: string, livemode: bool, metricTonsAvailable: string, name: string, suppliers: ClimateSupplier list) =
-        {
-            Created = created
-            CurrentPricesPerMetricTon = currentPricesPerMetricTon
-            DeliveryYear = deliveryYear
-            Id = id
-            Livemode = livemode
-            MetricTonsAvailable = metricTonsAvailable
-            Name = name
-            Suppliers = suppliers
-        }
-
-module ClimateProduct =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "climate.product"
-
-/// Occurs when a Climate product is updated.
-type ClimateProductPricingUpdated = { Object: ClimateProduct }
-
-type ClimateProductPricingUpdated with
-    static member New(object: ClimateProduct) =
-        {
-            Object = object
-        }
-
-/// Occurs when a Climate product is created.
-type ClimateProductCreated = { Object: ClimateProduct }
-
-type ClimateProductCreated with
-    static member New(object: ClimateProduct) =
-        {
-            Object = object
-        }
-
-[<Struct>]
-type ClimateOrderCancellationReason =
-    | Expired
-    | ProductUnavailable
-    | Requested
-
-[<Struct>]
-type ClimateOrderStatus =
-    | AwaitingFunds
-    | Canceled
-    | Confirmed
-    | Delivered
-    | Open
-
-type ClimateRemovalsBeneficiary =
-    {
-        /// Publicly displayable name for the end beneficiary of carbon removal.
-        PublicName: string
-    }
-
-type ClimateRemovalsBeneficiary with
-    static member New(publicName: string) =
-        {
-            PublicName = publicName
-        }
 
 /// The delivery of a specified quantity of carbon for an order.
 type ClimateRemovalsOrderDeliveries =
@@ -272,28 +194,10 @@ module ClimateOrder =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "climate.order"
 
-/// Occurs when a Climate order's product is substituted for another.
-type ClimateOrderProductSubstituted = { Object: ClimateOrder }
+/// Occurs when a Climate order is canceled.
+type ClimateOrderCanceled = { Object: ClimateOrder }
 
-type ClimateOrderProductSubstituted with
-    static member New(object: ClimateOrder) =
-        {
-            Object = object
-        }
-
-/// Occurs when a Climate order is delivered.
-type ClimateOrderDelivered = { Object: ClimateOrder }
-
-type ClimateOrderDelivered with
-    static member New(object: ClimateOrder) =
-        {
-            Object = object
-        }
-
-/// Occurs when a Climate order is delayed.
-type ClimateOrderDelayed = { Object: ClimateOrder }
-
-type ClimateOrderDelayed with
+type ClimateOrderCanceled with
     static member New(object: ClimateOrder) =
         {
             Object = object
@@ -308,12 +212,107 @@ type ClimateOrderCreated with
             Object = object
         }
 
-/// Occurs when a Climate order is canceled.
-type ClimateOrderCanceled = { Object: ClimateOrder }
+/// Occurs when a Climate order is delayed.
+type ClimateOrderDelayed = { Object: ClimateOrder }
 
-type ClimateOrderCanceled with
+type ClimateOrderDelayed with
     static member New(object: ClimateOrder) =
         {
             Object = object
+        }
+
+/// Occurs when a Climate order is delivered.
+type ClimateOrderDelivered = { Object: ClimateOrder }
+
+type ClimateOrderDelivered with
+    static member New(object: ClimateOrder) =
+        {
+            Object = object
+        }
+
+/// Occurs when a Climate order's product is substituted for another.
+type ClimateOrderProductSubstituted = { Object: ClimateOrder }
+
+type ClimateOrderProductSubstituted with
+    static member New(object: ClimateOrder) =
+        {
+            Object = object
+        }
+
+/// A Climate product represents a type of carbon removal unit available for reservation.
+/// You can retrieve it to see the current price and availability.
+type ClimateProduct =
+    {
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Current prices for a metric ton of carbon removal in a currency's smallest unit.
+        CurrentPricesPerMetricTon: Map<string, string list>
+        /// The year in which the carbon removal is expected to be delivered.
+        DeliveryYear: int option
+        /// Unique identifier for the object. For convenience, Climate product IDs are human-readable strings
+        /// that start with `climsku_`. See [carbon removal inventory](https://stripe.com/docs/climate/orders/carbon-removal-inventory)
+        /// for a list of available carbon removal products.
+        Id: string
+        /// Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+        Livemode: bool
+        /// The quantity of metric tons available for reservation.
+        MetricTonsAvailable: string
+        /// The Climate product's name.
+        Name: string
+        /// The carbon removal suppliers that fulfill orders for this Climate product.
+        Suppliers: ClimateSupplier list
+    }
+
+type ClimateProduct with
+    static member New(created: DateTime, currentPricesPerMetricTon: Map<string, string list>, deliveryYear: int option, id: string, livemode: bool, metricTonsAvailable: string, name: string, suppliers: ClimateSupplier list) =
+        {
+            Created = created
+            CurrentPricesPerMetricTon = currentPricesPerMetricTon
+            DeliveryYear = deliveryYear
+            Id = id
+            Livemode = livemode
+            MetricTonsAvailable = metricTonsAvailable
+            Name = name
+            Suppliers = suppliers
+        }
+
+module ClimateProduct =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "climate.product"
+
+/// Occurs when a Climate product is created.
+type ClimateProductCreated = { Object: ClimateProduct }
+
+type ClimateProductCreated with
+    static member New(object: ClimateProduct) =
+        {
+            Object = object
+        }
+
+/// Occurs when a Climate product is updated.
+type ClimateProductPricingUpdated = { Object: ClimateProduct }
+
+type ClimateProductPricingUpdated with
+    static member New(object: ClimateProduct) =
+        {
+            Object = object
+        }
+
+type ClimateRemovalsProductsPrice =
+    {
+        /// Fees for one metric ton of carbon removal in the currency's smallest unit.
+        AmountFees: int
+        /// Subtotal for one metric ton of carbon removal (excluding fees) in the currency's smallest unit.
+        AmountSubtotal: int
+        /// Total for one metric ton of carbon removal (including fees) in the currency's smallest unit.
+        AmountTotal: int
+    }
+
+type ClimateRemovalsProductsPrice with
+    static member New(amountFees: int, amountSubtotal: int, amountTotal: int) =
+        {
+            AmountFees = amountFees
+            AmountSubtotal = amountSubtotal
+            AmountTotal = amountTotal
         }
 

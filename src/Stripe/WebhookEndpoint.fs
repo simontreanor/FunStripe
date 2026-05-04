@@ -4,7 +4,27 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type DeletedWebhookEndpoint =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedWebhookEndpoint with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedWebhookEndpoint =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "webhook_endpoint"
+
+[<Struct>]
 type WebhookEndpointStatus =
     | Enabled
     | Disabled
@@ -57,25 +77,6 @@ type WebhookEndpoint with
         }
 
 module WebhookEndpoint =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "webhook_endpoint"
-
-type DeletedWebhookEndpoint =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedWebhookEndpoint with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedWebhookEndpoint =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "webhook_endpoint"
 

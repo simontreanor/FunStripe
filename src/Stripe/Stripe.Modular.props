@@ -40,42 +40,42 @@
     <Compile Include="$(MSBuildThisFileDirectory)WebhookEndpoint.fs" Link="Stripe/WebhookEndpoint.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)BillingPortal.fs" Link="Stripe/BillingPortal.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationFee.fs" Link="Stripe/ApplicationFee.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IssuingCardholder.fs" Link="Stripe/IssuingCardholder.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Identity.fs" Link="Stripe/Identity.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IssuingCardholder.fs" Link="Stripe/IssuingCardholder.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transfer.fs" Link="Stripe/Transfer.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Review.fs" Link="Stripe/Review.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tax.fs" Link="Stripe/Tax.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plan.fs" Link="Stripe/Plan.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Price.fs" Link="Stripe/Price.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plan.fs" Link="Stripe/Plan.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProductFeature.fs" Link="Stripe/ProductFeature.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)File.fs" Link="Stripe/File.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)IssuingToken.fs" Link="Stripe/IssuingToken.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)IssuingCard.fs" Link="Stripe/IssuingCard.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaxId.fs" Link="Stripe/TaxId.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)SubscriptionItem.fs" Link="Stripe/SubscriptionItem.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Reporting.fs" Link="Stripe/Reporting.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sigma.fs" Link="Stripe/Sigma.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Reporting.fs" Link="Stripe/Reporting.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)PaymentMethod.fs" Link="Stripe/PaymentMethod.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AccountSession.fs" Link="Stripe/AccountSession.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Capability.fs" Link="Stripe/Capability.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mandate.fs" Link="Stripe/Mandate.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ConfirmationToken.fs" Link="Stripe/ConfirmationToken.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CreditNoteLineItem.fs" Link="Stripe/CreditNoteLineItem.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Error.fs" Link="Stripe/Error.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Invoiceitem.fs" Link="Stripe/Invoiceitem.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PaymentAttemptRecord.fs" Link="Stripe/PaymentAttemptRecord.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PaymentLink.fs" Link="Stripe/PaymentLink.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PaymentMethodConfiguration.fs" Link="Stripe/PaymentMethodConfiguration.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PaymentRecord.fs" Link="Stripe/PaymentRecord.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PromotionCode.fs" Link="Stripe/PromotionCode.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Quote.fs" Link="Stripe/Quote.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SetupAttempt.fs" Link="Stripe/SetupAttempt.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SourceMandateNotification.fs" Link="Stripe/SourceMandateNotification.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SubscriptionSchedule.fs" Link="Stripe/SubscriptionSchedule.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Terminal.fs" Link="Stripe/Terminal.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TestHelpers.fs" Link="Stripe/TestHelpers.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Treasury.fs" Link="Stripe/Treasury.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Checkout.fs" Link="Stripe/Checkout.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestHelpers.fs" Link="Stripe/TestHelpers.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Terminal.fs" Link="Stripe/Terminal.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SubscriptionSchedule.fs" Link="Stripe/SubscriptionSchedule.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SourceMandateNotification.fs" Link="Stripe/SourceMandateNotification.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SetupAttempt.fs" Link="Stripe/SetupAttempt.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Quote.fs" Link="Stripe/Quote.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PromotionCode.fs" Link="Stripe/PromotionCode.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PaymentRecord.fs" Link="Stripe/PaymentRecord.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PaymentMethodConfiguration.fs" Link="Stripe/PaymentMethodConfiguration.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PaymentLink.fs" Link="Stripe/PaymentLink.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PaymentAttemptRecord.fs" Link="Stripe/PaymentAttemptRecord.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Invoiceitem.fs" Link="Stripe/Invoiceitem.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Error.fs" Link="Stripe/Error.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CreditNoteLineItem.fs" Link="Stripe/CreditNoteLineItem.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ConfirmationToken.fs" Link="Stripe/ConfirmationToken.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mandate.fs" Link="Stripe/Mandate.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Capability.fs" Link="Stripe/Capability.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AccountSession.fs" Link="Stripe/AccountSession.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)CreditNote.fs" Link="Stripe/CreditNote.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Checkout.fs" Link="Stripe/Checkout.fs" />
   </ItemGroup>
 </Project>

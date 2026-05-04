@@ -130,21 +130,11 @@ module IssuingPersonalizationDesign =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "issuing.personalization_design"
 
-/// Occurs whenever a personalization design is updated.
-type IssuingPersonalizationDesignUpdated =
+/// Occurs whenever a personalization design is activated following the activation of the physical bundle that belongs to it.
+type IssuingPersonalizationDesignActivated =
     { Object: IssuingPersonalizationDesign }
 
-type IssuingPersonalizationDesignUpdated with
-    static member New(object: IssuingPersonalizationDesign) =
-        {
-            Object = object
-        }
-
-/// Occurs whenever a personalization design is rejected by design review.
-type IssuingPersonalizationDesignRejected =
-    { Object: IssuingPersonalizationDesign }
-
-type IssuingPersonalizationDesignRejected with
+type IssuingPersonalizationDesignActivated with
     static member New(object: IssuingPersonalizationDesign) =
         {
             Object = object
@@ -160,11 +150,21 @@ type IssuingPersonalizationDesignDeactivated with
             Object = object
         }
 
-/// Occurs whenever a personalization design is activated following the activation of the physical bundle that belongs to it.
-type IssuingPersonalizationDesignActivated =
+/// Occurs whenever a personalization design is rejected by design review.
+type IssuingPersonalizationDesignRejected =
     { Object: IssuingPersonalizationDesign }
 
-type IssuingPersonalizationDesignActivated with
+type IssuingPersonalizationDesignRejected with
+    static member New(object: IssuingPersonalizationDesign) =
+        {
+            Object = object
+        }
+
+/// Occurs whenever a personalization design is updated.
+type IssuingPersonalizationDesignUpdated =
+    { Object: IssuingPersonalizationDesign }
+
+type IssuingPersonalizationDesignUpdated with
     static member New(object: IssuingPersonalizationDesign) =
         {
             Object = object

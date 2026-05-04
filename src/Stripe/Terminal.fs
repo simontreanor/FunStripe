@@ -7,6 +7,454 @@ open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type DeletedTerminalConfiguration =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedTerminalConfiguration with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedTerminalConfiguration =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "terminal.configuration"
+
+type DeletedTerminalLocation =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedTerminalLocation with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedTerminalLocation =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "terminal.location"
+
+type DeletedTerminalReaderDeviceType =
+    | BbposChipper2x
+    | BbposWisepad3
+    | BbposWiseposE
+    | MobilePhoneReader
+    | SimulatedStripeS700
+    | SimulatedStripeS710
+    | SimulatedWiseposE
+    | StripeM2
+    | StripeS700
+    | StripeS710
+    | VerifoneP400
+
+type DeletedTerminalReader =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Device type of the reader.
+        DeviceType: DeletedTerminalReaderDeviceType
+        /// Unique identifier for the object.
+        Id: string
+        /// Serial number of the reader.
+        SerialNumber: string
+    }
+
+type DeletedTerminalReader with
+    static member New(deleted: bool, deviceType: DeletedTerminalReaderDeviceType, id: string, serialNumber: string) =
+        {
+            Deleted = deleted
+            DeviceType = deviceType
+            Id = id
+            SerialNumber = serialNumber
+        }
+
+module DeletedTerminalReader =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "terminal.reader"
+
+type TerminalConfigurationConfigurationResourceCellularConfig =
+    {
+        /// Whether a cellular-capable reader can connect to the internet over cellular.
+        Enabled: bool
+    }
+
+type TerminalConfigurationConfigurationResourceCellularConfig with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
+
+type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig =
+    {
+        /// A File ID representing an image to display on the reader
+        Splashscreen: StripeId<Markers.File> option
+    }
+
+type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig with
+    static member New(?splashscreen: StripeId<Markers.File>) =
+        {
+            Splashscreen = splashscreen
+        }
+
+type TerminalConfigurationConfigurationResourceOfflineConfig =
+    {
+        /// Determines whether to allow transactions to be collected while reader is offline. Defaults to false.
+        Enabled: bool option
+    }
+
+type TerminalConfigurationConfigurationResourceOfflineConfig with
+    static member New(enabled: bool option) =
+        {
+            Enabled = enabled
+        }
+
+type TerminalConfigurationConfigurationResourceRebootWindow =
+    {
+        /// Integer between 0 to 23 that represents the end hour of the reboot time window. The value must be different than the start_hour.
+        EndHour: int
+        /// Integer between 0 to 23 that represents the start hour of the reboot time window.
+        StartHour: int
+    }
+
+type TerminalConfigurationConfigurationResourceRebootWindow with
+    static member New(endHour: int, startHour: int) =
+        {
+            EndHour = endHour
+            StartHour = startHour
+        }
+
+type TerminalConfigurationConfigurationResourceCurrencySpecificConfig =
+    {
+        /// Fixed amounts displayed when collecting a tip
+        FixedAmounts: int list option
+        /// Percentages displayed when collecting a tip
+        Percentages: int list option
+        /// Below this amount, fixed amounts will be displayed; above it, percentages will be displayed
+        SmartTipThreshold: int option
+    }
+
+type TerminalConfigurationConfigurationResourceCurrencySpecificConfig with
+    static member New(?fixedAmounts: int list option, ?percentages: int list option, ?smartTipThreshold: int) =
+        {
+            FixedAmounts = fixedAmounts |> Option.flatten
+            Percentages = percentages |> Option.flatten
+            SmartTipThreshold = smartTipThreshold
+        }
+
+type TerminalConfigurationConfigurationResourceTipping =
+    { Aed: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Aud: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Cad: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Chf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Czk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Dkk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Eur: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Gbp: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Gip: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Hkd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Huf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Jpy: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Mxn: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Myr: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Nok: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Nzd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Pln: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Ron: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Sek: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Sgd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
+      Usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option }
+
+type TerminalConfigurationConfigurationResourceTipping with
+    static member New(?aed: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?aud: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?cad: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?chf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?czk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?dkk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?eur: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?gbp: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?gip: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?hkd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?huf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?jpy: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?mxn: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?myr: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?nok: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?nzd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?pln: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?ron: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?sek: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?sgd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig) =
+        {
+            Aed = aed
+            Aud = aud
+            Cad = cad
+            Chf = chf
+            Czk = czk
+            Dkk = dkk
+            Eur = eur
+            Gbp = gbp
+            Gip = gip
+            Hkd = hkd
+            Huf = huf
+            Jpy = jpy
+            Mxn = mxn
+            Myr = myr
+            Nok = nok
+            Nzd = nzd
+            Pln = pln
+            Ron = ron
+            Sek = sek
+            Sgd = sgd
+            Usd = usd
+        }
+
+type TerminalConfigurationConfigurationResourceEnterprisePeapWifi =
+    {
+        /// A File ID representing a PEM file containing the server certificate
+        CaCertificateFile: string option
+        /// Password for connecting to the WiFi network
+        Password: string
+        /// Name of the WiFi network
+        Ssid: string
+        /// Username for connecting to the WiFi network
+        Username: string
+    }
+
+type TerminalConfigurationConfigurationResourceEnterprisePeapWifi with
+    static member New(password: string, ssid: string, username: string, ?caCertificateFile: string) =
+        {
+            Password = password
+            Ssid = ssid
+            Username = username
+            CaCertificateFile = caCertificateFile
+        }
+
+type TerminalConfigurationConfigurationResourceEnterpriseTlsWifi =
+    {
+        /// A File ID representing a PEM file containing the server certificate
+        CaCertificateFile: string option
+        /// A File ID representing a PEM file containing the client certificate
+        ClientCertificateFile: string
+        /// A File ID representing a PEM file containing the client RSA private key
+        PrivateKeyFile: string
+        /// Password for the private key file
+        PrivateKeyFilePassword: string option
+        /// Name of the WiFi network
+        Ssid: string
+    }
+
+type TerminalConfigurationConfigurationResourceEnterpriseTlsWifi with
+    static member New(clientCertificateFile: string, privateKeyFile: string, ssid: string, ?caCertificateFile: string, ?privateKeyFilePassword: string) =
+        {
+            ClientCertificateFile = clientCertificateFile
+            PrivateKeyFile = privateKeyFile
+            Ssid = ssid
+            CaCertificateFile = caCertificateFile
+            PrivateKeyFilePassword = privateKeyFilePassword
+        }
+
+type TerminalConfigurationConfigurationResourcePersonalPskWifi =
+    {
+        /// Password for connecting to the WiFi network
+        Password: string
+        /// Name of the WiFi network
+        Ssid: string
+    }
+
+type TerminalConfigurationConfigurationResourcePersonalPskWifi with
+    static member New(password: string, ssid: string) =
+        {
+            Password = password
+            Ssid = ssid
+        }
+
+[<Struct>]
+type TerminalConfigurationConfigurationResourceWifiConfigType =
+    | EnterpriseEapPeap
+    | EnterpriseEapTls
+    | PersonalPsk
+
+type TerminalConfigurationConfigurationResourceWifiConfig =
+    {
+        EnterpriseEapPeap: TerminalConfigurationConfigurationResourceEnterprisePeapWifi option
+        EnterpriseEapTls: TerminalConfigurationConfigurationResourceEnterpriseTlsWifi option
+        PersonalPsk: TerminalConfigurationConfigurationResourcePersonalPskWifi option
+        /// Security type of the WiFi network. The hash with the corresponding name contains the credentials for this security type.
+        Type: TerminalConfigurationConfigurationResourceWifiConfigType
+    }
+
+type TerminalConfigurationConfigurationResourceWifiConfig with
+    static member New(``type``: TerminalConfigurationConfigurationResourceWifiConfigType, ?enterpriseEapPeap: TerminalConfigurationConfigurationResourceEnterprisePeapWifi, ?enterpriseEapTls: TerminalConfigurationConfigurationResourceEnterpriseTlsWifi, ?personalPsk: TerminalConfigurationConfigurationResourcePersonalPskWifi) =
+        {
+            Type = ``type``
+            EnterpriseEapPeap = enterpriseEapPeap
+            EnterpriseEapTls = enterpriseEapTls
+            PersonalPsk = personalPsk
+        }
+
+/// A Configurations object represents how features should be configured for terminal readers.
+/// For information about how to use it, see the [Terminal configurations documentation](https://docs.stripe.com/terminal/fleet/configurations-overview).
+type TerminalConfiguration =
+    {
+        [<JsonPropertyName("bbpos_wisepad3")>]
+        BbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        BbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        Cellular: TerminalConfigurationConfigurationResourceCellularConfig option
+        /// Unique identifier for the object.
+        Id: string
+        /// Whether this Configuration is the default for your account
+        IsAccountDefault: bool option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// String indicating the name of the Configuration object, set by the user
+        Name: string option
+        Offline: TerminalConfigurationConfigurationResourceOfflineConfig option
+        RebootWindow: TerminalConfigurationConfigurationResourceRebootWindow option
+        [<JsonPropertyName("stripe_s700")>]
+        StripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        [<JsonPropertyName("stripe_s710")>]
+        StripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        Tipping: TerminalConfigurationConfigurationResourceTipping option
+        [<JsonPropertyName("verifone_p400")>]
+        VerifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        Wifi: TerminalConfigurationConfigurationResourceWifiConfig option
+    }
+
+type TerminalConfiguration with
+    static member New(id: string, isAccountDefault: bool option, livemode: bool, name: string option, ?bbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?bbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?cellular: TerminalConfigurationConfigurationResourceCellularConfig, ?offline: TerminalConfigurationConfigurationResourceOfflineConfig, ?rebootWindow: TerminalConfigurationConfigurationResourceRebootWindow, ?stripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?stripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?tipping: TerminalConfigurationConfigurationResourceTipping, ?verifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?wifi: TerminalConfigurationConfigurationResourceWifiConfig) =
+        {
+            Id = id
+            IsAccountDefault = isAccountDefault
+            Livemode = livemode
+            Name = name
+            BbposWisepad3 = bbposWisepad3
+            BbposWiseposE = bbposWiseposE
+            Cellular = cellular
+            Offline = offline
+            RebootWindow = rebootWindow
+            StripeS700 = stripeS700
+            StripeS710 = stripeS710
+            Tipping = tipping
+            VerifoneP400 = verifoneP400
+            Wifi = wifi
+        }
+
+module TerminalConfiguration =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "terminal.configuration"
+
+/// A Connection Token is used by the Stripe Terminal SDK to connect to a reader.
+/// Related guide: [Fleet management](https://docs.stripe.com/terminal/fleet/locations)
+type TerminalConnectionToken =
+    {
+        /// The id of the location that this connection token is scoped to. Note that location scoping only applies to internet-connected readers. For more details, see [the docs on scoping connection tokens](https://docs.stripe.com/terminal/fleet/locations-and-zones?dashboard-or-api=api#connection-tokens).
+        Location: string option
+        /// Your application should pass this token to the Stripe Terminal SDK.
+        Secret: string
+    }
+
+type TerminalConnectionToken with
+    static member New(secret: string, ?location: string) =
+        {
+            Secret = secret
+            Location = location
+        }
+
+module TerminalConnectionToken =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "terminal.connection_token"
+
+/// A Location represents a grouping of readers.
+/// Related guide: [Fleet management](https://docs.stripe.com/terminal/fleet/locations)
+type TerminalLocation =
+    {
+        Address: Address
+        AddressKana: LegalEntityJapanAddress option
+        AddressKanji: LegalEntityJapanAddress option
+        /// The ID of a configuration that will be used to customize all readers in this location.
+        ConfigurationOverrides: string option
+        /// The display name of the location.
+        DisplayName: string
+        /// The Kana variation of the display name of the location.
+        DisplayNameKana: string option
+        /// The Kanji variation of the display name of the location.
+        DisplayNameKanji: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// The phone number of the location.
+        Phone: string option
+    }
+
+type TerminalLocation with
+    static member New(address: Address, displayName: string, id: string, livemode: bool, metadata: Map<string, string>, ?addressKana: LegalEntityJapanAddress, ?addressKanji: LegalEntityJapanAddress, ?configurationOverrides: string, ?displayNameKana: string, ?displayNameKanji: string, ?phone: string) =
+        {
+            Address = address
+            DisplayName = displayName
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            AddressKana = addressKana
+            AddressKanji = addressKanji
+            ConfigurationOverrides = configurationOverrides
+            DisplayNameKana = displayNameKana
+            DisplayNameKanji = displayNameKanji
+            Phone = phone
+        }
+
+module TerminalLocation =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "terminal.location"
+
+/// Options associated with the Apple Terms and Conditions link type.
+type TerminalOnboardingLinkAppleTermsAndConditions =
+    {
+        /// Whether the link should also support users relinking their Apple account.
+        AllowRelinking: bool option
+        /// The business name of the merchant accepting Apple's Terms and Conditions.
+        MerchantDisplayName: string
+    }
+
+type TerminalOnboardingLinkAppleTermsAndConditions with
+    static member New(allowRelinking: bool option, merchantDisplayName: string) =
+        {
+            AllowRelinking = allowRelinking
+            MerchantDisplayName = merchantDisplayName
+        }
+
+/// Link type options associated with the current onboarding link object.
+type TerminalOnboardingLinkLinkOptions =
+    {
+        /// The options associated with the Apple Terms and Conditions link type.
+        AppleTermsAndConditions: TerminalOnboardingLinkAppleTermsAndConditions option
+    }
+
+type TerminalOnboardingLinkLinkOptions with
+    static member New(appleTermsAndConditions: TerminalOnboardingLinkAppleTermsAndConditions option) =
+        {
+            AppleTermsAndConditions = appleTermsAndConditions
+        }
+
+/// Returns redirect links used for onboarding onto Tap to Pay on iPhone.
+type TerminalOnboardingLink =
+    {
+        LinkOptions: TerminalOnboardingLinkLinkOptions
+        /// Stripe account ID to generate the link for.
+        OnBehalfOf: string option
+        /// The link passed back to the user for their onboarding.
+        RedirectUrl: string
+    }
+
+type TerminalOnboardingLink with
+    static member New(linkOptions: TerminalOnboardingLinkLinkOptions, onBehalfOf: string option, redirectUrl: string) =
+        {
+            LinkOptions = linkOptions
+            OnBehalfOf = onBehalfOf
+            RedirectUrl = redirectUrl
+        }
+
+module TerminalOnboardingLink =
+    ///The type of link being generated.
+    let linkType = "apple_terms_and_conditions"
+
+    let object = "terminal.onboarding_link"
+
 type TerminalReaderDeviceType =
     | BbposChipper2x
     | BbposWisepad3
@@ -606,10 +1054,10 @@ module TerminalReader =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "terminal.reader"
 
-/// Occurs whenever an action sent to a Terminal reader is updated.
-type TerminalReaderActionUpdated = { Object: TerminalReader }
+/// Occurs whenever an action sent to a Terminal reader failed.
+type TerminalReaderActionFailed = { Object: TerminalReader }
 
-type TerminalReaderActionUpdated with
+type TerminalReaderActionFailed with
     static member New(object: TerminalReader) =
         {
             Object = object
@@ -624,460 +1072,12 @@ type TerminalReaderActionSucceeded with
             Object = object
         }
 
-/// Occurs whenever an action sent to a Terminal reader failed.
-type TerminalReaderActionFailed = { Object: TerminalReader }
+/// Occurs whenever an action sent to a Terminal reader is updated.
+type TerminalReaderActionUpdated = { Object: TerminalReader }
 
-type TerminalReaderActionFailed with
+type TerminalReaderActionUpdated with
     static member New(object: TerminalReader) =
         {
             Object = object
         }
-
-/// Options associated with the Apple Terms and Conditions link type.
-type TerminalOnboardingLinkAppleTermsAndConditions =
-    {
-        /// Whether the link should also support users relinking their Apple account.
-        AllowRelinking: bool option
-        /// The business name of the merchant accepting Apple's Terms and Conditions.
-        MerchantDisplayName: string
-    }
-
-type TerminalOnboardingLinkAppleTermsAndConditions with
-    static member New(allowRelinking: bool option, merchantDisplayName: string) =
-        {
-            AllowRelinking = allowRelinking
-            MerchantDisplayName = merchantDisplayName
-        }
-
-/// Link type options associated with the current onboarding link object.
-type TerminalOnboardingLinkLinkOptions =
-    {
-        /// The options associated with the Apple Terms and Conditions link type.
-        AppleTermsAndConditions: TerminalOnboardingLinkAppleTermsAndConditions option
-    }
-
-type TerminalOnboardingLinkLinkOptions with
-    static member New(appleTermsAndConditions: TerminalOnboardingLinkAppleTermsAndConditions option) =
-        {
-            AppleTermsAndConditions = appleTermsAndConditions
-        }
-
-/// Returns redirect links used for onboarding onto Tap to Pay on iPhone.
-type TerminalOnboardingLink =
-    {
-        LinkOptions: TerminalOnboardingLinkLinkOptions
-        /// Stripe account ID to generate the link for.
-        OnBehalfOf: string option
-        /// The link passed back to the user for their onboarding.
-        RedirectUrl: string
-    }
-
-type TerminalOnboardingLink with
-    static member New(linkOptions: TerminalOnboardingLinkLinkOptions, onBehalfOf: string option, redirectUrl: string) =
-        {
-            LinkOptions = linkOptions
-            OnBehalfOf = onBehalfOf
-            RedirectUrl = redirectUrl
-        }
-
-module TerminalOnboardingLink =
-    ///The type of link being generated.
-    let linkType = "apple_terms_and_conditions"
-
-    let object = "terminal.onboarding_link"
-
-/// A Location represents a grouping of readers.
-/// Related guide: [Fleet management](https://docs.stripe.com/terminal/fleet/locations)
-type TerminalLocation =
-    {
-        Address: Address
-        AddressKana: LegalEntityJapanAddress option
-        AddressKanji: LegalEntityJapanAddress option
-        /// The ID of a configuration that will be used to customize all readers in this location.
-        ConfigurationOverrides: string option
-        /// The display name of the location.
-        DisplayName: string
-        /// The Kana variation of the display name of the location.
-        DisplayNameKana: string option
-        /// The Kanji variation of the display name of the location.
-        DisplayNameKanji: string option
-        /// Unique identifier for the object.
-        Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string>
-        /// The phone number of the location.
-        Phone: string option
-    }
-
-type TerminalLocation with
-    static member New(address: Address, displayName: string, id: string, livemode: bool, metadata: Map<string, string>, ?addressKana: LegalEntityJapanAddress, ?addressKanji: LegalEntityJapanAddress, ?configurationOverrides: string, ?displayNameKana: string, ?displayNameKanji: string, ?phone: string) =
-        {
-            Address = address
-            DisplayName = displayName
-            Id = id
-            Livemode = livemode
-            Metadata = metadata
-            AddressKana = addressKana
-            AddressKanji = addressKanji
-            ConfigurationOverrides = configurationOverrides
-            DisplayNameKana = displayNameKana
-            DisplayNameKanji = displayNameKanji
-            Phone = phone
-        }
-
-module TerminalLocation =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "terminal.location"
-
-/// A Connection Token is used by the Stripe Terminal SDK to connect to a reader.
-/// Related guide: [Fleet management](https://docs.stripe.com/terminal/fleet/locations)
-type TerminalConnectionToken =
-    {
-        /// The id of the location that this connection token is scoped to. Note that location scoping only applies to internet-connected readers. For more details, see [the docs on scoping connection tokens](https://docs.stripe.com/terminal/fleet/locations-and-zones?dashboard-or-api=api#connection-tokens).
-        Location: string option
-        /// Your application should pass this token to the Stripe Terminal SDK.
-        Secret: string
-    }
-
-type TerminalConnectionToken with
-    static member New(secret: string, ?location: string) =
-        {
-            Secret = secret
-            Location = location
-        }
-
-module TerminalConnectionToken =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "terminal.connection_token"
-
-type TerminalConfigurationConfigurationResourceCellularConfig =
-    {
-        /// Whether a cellular-capable reader can connect to the internet over cellular.
-        Enabled: bool
-    }
-
-type TerminalConfigurationConfigurationResourceCellularConfig with
-    static member New(enabled: bool) =
-        {
-            Enabled = enabled
-        }
-
-type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig =
-    {
-        /// A File ID representing an image to display on the reader
-        Splashscreen: StripeId<Markers.File> option
-    }
-
-type TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig with
-    static member New(?splashscreen: StripeId<Markers.File>) =
-        {
-            Splashscreen = splashscreen
-        }
-
-type TerminalConfigurationConfigurationResourceOfflineConfig =
-    {
-        /// Determines whether to allow transactions to be collected while reader is offline. Defaults to false.
-        Enabled: bool option
-    }
-
-type TerminalConfigurationConfigurationResourceOfflineConfig with
-    static member New(enabled: bool option) =
-        {
-            Enabled = enabled
-        }
-
-type TerminalConfigurationConfigurationResourceRebootWindow =
-    {
-        /// Integer between 0 to 23 that represents the end hour of the reboot time window. The value must be different than the start_hour.
-        EndHour: int
-        /// Integer between 0 to 23 that represents the start hour of the reboot time window.
-        StartHour: int
-    }
-
-type TerminalConfigurationConfigurationResourceRebootWindow with
-    static member New(endHour: int, startHour: int) =
-        {
-            EndHour = endHour
-            StartHour = startHour
-        }
-
-type TerminalConfigurationConfigurationResourceCurrencySpecificConfig =
-    {
-        /// Fixed amounts displayed when collecting a tip
-        FixedAmounts: int list option
-        /// Percentages displayed when collecting a tip
-        Percentages: int list option
-        /// Below this amount, fixed amounts will be displayed; above it, percentages will be displayed
-        SmartTipThreshold: int option
-    }
-
-type TerminalConfigurationConfigurationResourceCurrencySpecificConfig with
-    static member New(?fixedAmounts: int list option, ?percentages: int list option, ?smartTipThreshold: int) =
-        {
-            FixedAmounts = fixedAmounts |> Option.flatten
-            Percentages = percentages |> Option.flatten
-            SmartTipThreshold = smartTipThreshold
-        }
-
-type TerminalConfigurationConfigurationResourceTipping =
-    { Aed: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Aud: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Cad: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Chf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Czk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Dkk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Eur: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Gbp: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Gip: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Hkd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Huf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Jpy: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Mxn: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Myr: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Nok: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Nzd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Pln: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Ron: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Sek: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Sgd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option
-      Usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig option }
-
-type TerminalConfigurationConfigurationResourceTipping with
-    static member New(?aed: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?aud: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?cad: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?chf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?czk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?dkk: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?eur: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?gbp: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?gip: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?hkd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?huf: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?jpy: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?mxn: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?myr: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?nok: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?nzd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?pln: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?ron: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?sek: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?sgd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig, ?usd: TerminalConfigurationConfigurationResourceCurrencySpecificConfig) =
-        {
-            Aed = aed
-            Aud = aud
-            Cad = cad
-            Chf = chf
-            Czk = czk
-            Dkk = dkk
-            Eur = eur
-            Gbp = gbp
-            Gip = gip
-            Hkd = hkd
-            Huf = huf
-            Jpy = jpy
-            Mxn = mxn
-            Myr = myr
-            Nok = nok
-            Nzd = nzd
-            Pln = pln
-            Ron = ron
-            Sek = sek
-            Sgd = sgd
-            Usd = usd
-        }
-
-type TerminalConfigurationConfigurationResourceEnterprisePeapWifi =
-    {
-        /// A File ID representing a PEM file containing the server certificate
-        CaCertificateFile: string option
-        /// Password for connecting to the WiFi network
-        Password: string
-        /// Name of the WiFi network
-        Ssid: string
-        /// Username for connecting to the WiFi network
-        Username: string
-    }
-
-type TerminalConfigurationConfigurationResourceEnterprisePeapWifi with
-    static member New(password: string, ssid: string, username: string, ?caCertificateFile: string) =
-        {
-            Password = password
-            Ssid = ssid
-            Username = username
-            CaCertificateFile = caCertificateFile
-        }
-
-type TerminalConfigurationConfigurationResourceEnterpriseTlsWifi =
-    {
-        /// A File ID representing a PEM file containing the server certificate
-        CaCertificateFile: string option
-        /// A File ID representing a PEM file containing the client certificate
-        ClientCertificateFile: string
-        /// A File ID representing a PEM file containing the client RSA private key
-        PrivateKeyFile: string
-        /// Password for the private key file
-        PrivateKeyFilePassword: string option
-        /// Name of the WiFi network
-        Ssid: string
-    }
-
-type TerminalConfigurationConfigurationResourceEnterpriseTlsWifi with
-    static member New(clientCertificateFile: string, privateKeyFile: string, ssid: string, ?caCertificateFile: string, ?privateKeyFilePassword: string) =
-        {
-            ClientCertificateFile = clientCertificateFile
-            PrivateKeyFile = privateKeyFile
-            Ssid = ssid
-            CaCertificateFile = caCertificateFile
-            PrivateKeyFilePassword = privateKeyFilePassword
-        }
-
-type TerminalConfigurationConfigurationResourcePersonalPskWifi =
-    {
-        /// Password for connecting to the WiFi network
-        Password: string
-        /// Name of the WiFi network
-        Ssid: string
-    }
-
-type TerminalConfigurationConfigurationResourcePersonalPskWifi with
-    static member New(password: string, ssid: string) =
-        {
-            Password = password
-            Ssid = ssid
-        }
-
-[<Struct>]
-type TerminalConfigurationConfigurationResourceWifiConfigType =
-    | EnterpriseEapPeap
-    | EnterpriseEapTls
-    | PersonalPsk
-
-type TerminalConfigurationConfigurationResourceWifiConfig =
-    {
-        EnterpriseEapPeap: TerminalConfigurationConfigurationResourceEnterprisePeapWifi option
-        EnterpriseEapTls: TerminalConfigurationConfigurationResourceEnterpriseTlsWifi option
-        PersonalPsk: TerminalConfigurationConfigurationResourcePersonalPskWifi option
-        /// Security type of the WiFi network. The hash with the corresponding name contains the credentials for this security type.
-        Type: TerminalConfigurationConfigurationResourceWifiConfigType
-    }
-
-type TerminalConfigurationConfigurationResourceWifiConfig with
-    static member New(``type``: TerminalConfigurationConfigurationResourceWifiConfigType, ?enterpriseEapPeap: TerminalConfigurationConfigurationResourceEnterprisePeapWifi, ?enterpriseEapTls: TerminalConfigurationConfigurationResourceEnterpriseTlsWifi, ?personalPsk: TerminalConfigurationConfigurationResourcePersonalPskWifi) =
-        {
-            Type = ``type``
-            EnterpriseEapPeap = enterpriseEapPeap
-            EnterpriseEapTls = enterpriseEapTls
-            PersonalPsk = personalPsk
-        }
-
-/// A Configurations object represents how features should be configured for terminal readers.
-/// For information about how to use it, see the [Terminal configurations documentation](https://docs.stripe.com/terminal/fleet/configurations-overview).
-type TerminalConfiguration =
-    {
-        [<JsonPropertyName("bbpos_wisepad3")>]
-        BbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
-        BbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
-        Cellular: TerminalConfigurationConfigurationResourceCellularConfig option
-        /// Unique identifier for the object.
-        Id: string
-        /// Whether this Configuration is the default for your account
-        IsAccountDefault: bool option
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// String indicating the name of the Configuration object, set by the user
-        Name: string option
-        Offline: TerminalConfigurationConfigurationResourceOfflineConfig option
-        RebootWindow: TerminalConfigurationConfigurationResourceRebootWindow option
-        [<JsonPropertyName("stripe_s700")>]
-        StripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
-        [<JsonPropertyName("stripe_s710")>]
-        StripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
-        Tipping: TerminalConfigurationConfigurationResourceTipping option
-        [<JsonPropertyName("verifone_p400")>]
-        VerifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
-        Wifi: TerminalConfigurationConfigurationResourceWifiConfig option
-    }
-
-type TerminalConfiguration with
-    static member New(id: string, isAccountDefault: bool option, livemode: bool, name: string option, ?bbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?bbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?cellular: TerminalConfigurationConfigurationResourceCellularConfig, ?offline: TerminalConfigurationConfigurationResourceOfflineConfig, ?rebootWindow: TerminalConfigurationConfigurationResourceRebootWindow, ?stripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?stripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?tipping: TerminalConfigurationConfigurationResourceTipping, ?verifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?wifi: TerminalConfigurationConfigurationResourceWifiConfig) =
-        {
-            Id = id
-            IsAccountDefault = isAccountDefault
-            Livemode = livemode
-            Name = name
-            BbposWisepad3 = bbposWisepad3
-            BbposWiseposE = bbposWiseposE
-            Cellular = cellular
-            Offline = offline
-            RebootWindow = rebootWindow
-            StripeS700 = stripeS700
-            StripeS710 = stripeS710
-            Tipping = tipping
-            VerifoneP400 = verifoneP400
-            Wifi = wifi
-        }
-
-module TerminalConfiguration =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "terminal.configuration"
-
-type DeletedTerminalReaderDeviceType =
-    | BbposChipper2x
-    | BbposWisepad3
-    | BbposWiseposE
-    | MobilePhoneReader
-    | SimulatedStripeS700
-    | SimulatedStripeS710
-    | SimulatedWiseposE
-    | StripeM2
-    | StripeS700
-    | StripeS710
-    | VerifoneP400
-
-type DeletedTerminalReader =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Device type of the reader.
-        DeviceType: DeletedTerminalReaderDeviceType
-        /// Unique identifier for the object.
-        Id: string
-        /// Serial number of the reader.
-        SerialNumber: string
-    }
-
-type DeletedTerminalReader with
-    static member New(deleted: bool, deviceType: DeletedTerminalReaderDeviceType, id: string, serialNumber: string) =
-        {
-            Deleted = deleted
-            DeviceType = deviceType
-            Id = id
-            SerialNumber = serialNumber
-        }
-
-module DeletedTerminalReader =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "terminal.reader"
-
-type DeletedTerminalLocation =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedTerminalLocation with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedTerminalLocation =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "terminal.location"
-
-type DeletedTerminalConfiguration =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedTerminalConfiguration with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedTerminalConfiguration =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "terminal.configuration"
 

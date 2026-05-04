@@ -414,19 +414,10 @@ module Quote =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "quote"
 
-/// Occurs whenever a quote is finalized.
-type QuoteFinalized = { Object: Quote }
+/// Occurs whenever a quote is accepted.
+type QuoteAccepted = { Object: Quote }
 
-type QuoteFinalized with
-    static member New(object: Quote) =
-        {
-            Object = object
-        }
-
-/// Occurs whenever a quote is created.
-type QuoteCreated = { Object: Quote }
-
-type QuoteCreated with
+type QuoteAccepted with
     static member New(object: Quote) =
         {
             Object = object
@@ -441,10 +432,19 @@ type QuoteCanceled with
             Object = object
         }
 
-/// Occurs whenever a quote is accepted.
-type QuoteAccepted = { Object: Quote }
+/// Occurs whenever a quote is created.
+type QuoteCreated = { Object: Quote }
 
-type QuoteAccepted with
+type QuoteCreated with
+    static member New(object: Quote) =
+        {
+            Object = object
+        }
+
+/// Occurs whenever a quote is finalized.
+type QuoteFinalized = { Object: Quote }
+
+type QuoteFinalized with
     static member New(object: Quote) =
         {
             Object = object

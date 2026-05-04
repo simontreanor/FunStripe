@@ -5,70 +5,70 @@ open FunStripe
 open System
 
 [<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
-type ReserveReleaseCreatedBy =
+type ReserveHoldCreatedBy =
     | Application
     | Stripe
 
 [<Struct>]
-type ReserveReleaseReason =
-    | BulkHoldExpiry
-    | HoldReleasedEarly
-    | HoldReversed
-    | PlanDisabled
+type ReserveHoldReason =
+    | Charge
+    | Standalone
 
 [<Struct>]
-type ReservesReserveReleasesResourcesSourceTransactionType =
-    | Dispute
-    | Refund
+type ReserveHoldSourceType =
+    | BankAccount
+    | Card
+    | Fpx
 
-type ReservesReserveReleasesResourcesSourceTransaction =
+type ReservesReserveHoldsResourcesReleaseSchedule =
     {
-        /// The ID of the dispute.
-        Dispute: StripeId<Markers.Dispute> option
-        /// The ID of the refund.
-        Refund: StripeId<Markers.Refund> option
-        /// The type of source transaction.
-        Type: ReservesReserveReleasesResourcesSourceTransactionType
+        /// The time after which the ReserveHold is requested to be released.
+        ReleaseAfter: DateTime option
+        /// The time at which the ReserveHold is scheduled to be released, automatically set to midnight UTC of the day after `release_after`.
+        ScheduledRelease: DateTime option
     }
 
-type ReservesReserveReleasesResourcesSourceTransaction with
-    static member New(``type``: ReservesReserveReleasesResourcesSourceTransactionType, ?dispute: StripeId<Markers.Dispute>, ?refund: StripeId<Markers.Refund>) =
+type ReservesReserveHoldsResourcesReleaseSchedule with
+    static member New(releaseAfter: DateTime option, scheduledRelease: DateTime option) =
         {
-            Type = ``type``
-            Dispute = dispute
-            Refund = refund
+            ReleaseAfter = releaseAfter
+            ScheduledRelease = scheduledRelease
         }
 
-/// ReserveReleases represent the release of funds from a ReserveHold.
-type ReserveRelease =
+/// ReserveHolds are used to place a temporary ReserveHold on a merchant's funds.
+type ReserveHold =
     {
-        /// Amount released. A positive integer representing how much is released in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
+        /// Amount reserved. A positive integer representing how much is reserved in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
         Amount: int
+        /// Amount in cents that can be released from this ReserveHold
+        AmountReleasable: int option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
-        /// Indicates which party created this ReserveRelease.
-        CreatedBy: ReserveReleaseCreatedBy
+        /// Indicates which party created this ReserveHold.
+        CreatedBy: ReserveHoldCreatedBy
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// Unique identifier for the object.
         Id: string
+        /// Whether there are any funds available to release on this ReserveHold. Note that if the ReserveHold is in the process of being released, this could be false, even though the funds haven't been fully released yet.
+        IsReleasable: bool option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
-        /// The reason for the ReserveRelease, indicating why the funds were released.
-        Reason: ReserveReleaseReason
-        /// The release timestamp of the funds.
-        ReleasedAt: DateTime
-        /// The ReserveHold this ReserveRelease is associated with.
-        ReserveHold: StripeId<Markers.ReserveHold> option
-        /// The ReservePlan ID this ReserveRelease is associated with. This field is only populated if a ReserveRelease is created by a ReservePlan disable operation, or from a scheduled ReservedHold expiry.
+        /// The reason for the ReserveHold.
+        Reason: ReserveHoldReason
+        ReleaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule
+        /// The ReservePlan which produced this ReserveHold (i.e., resplan_123)
         ReservePlan: StripeId<Markers.ReservePlan> option
-        SourceTransaction: ReservesReserveReleasesResourcesSourceTransaction option
+        /// The Charge which funded this ReserveHold (e.g., ch_123)
+        SourceCharge: StripeId<Markers.Charge> option
+        /// Which source balance type this ReserveHold reserves funds from. One of `bank_account`, `card`, or `fpx`.
+        SourceType: ReserveHoldSourceType
     }
 
-type ReserveRelease with
-    static member New(amount: int, created: DateTime, createdBy: ReserveReleaseCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveReleaseReason, releasedAt: DateTime, reserveHold: StripeId<Markers.ReserveHold> option, reservePlan: StripeId<Markers.ReservePlan> option, ?metadata: Map<string, string>, ?sourceTransaction: ReservesReserveReleasesResourcesSourceTransaction) =
+type ReserveHold with
+    static member New(amount: int, created: DateTime, createdBy: ReserveHoldCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveHoldReason, releaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule, reservePlan: StripeId<Markers.ReservePlan> option, sourceCharge: StripeId<Markers.Charge> option, sourceType: ReserveHoldSourceType, ?amountReleasable: int, ?isReleasable: bool, ?metadata: Map<string, string>) =
         {
             Amount = amount
             Created = created
@@ -77,22 +77,33 @@ type ReserveRelease with
             Id = id
             Livemode = livemode
             Reason = reason
-            ReleasedAt = releasedAt
-            ReserveHold = reserveHold
+            ReleaseSchedule = releaseSchedule
             ReservePlan = reservePlan
+            SourceCharge = sourceCharge
+            SourceType = sourceType
+            AmountReleasable = amountReleasable
+            IsReleasable = isReleasable
             Metadata = metadata
-            SourceTransaction = sourceTransaction
         }
 
-module ReserveRelease =
+module ReserveHold =
     ///String representing the object's type. Objects of the same type share the same value.
-    let object = "reserve.release"
+    let object = "reserve.hold"
 
-/// Occurs when a reserve release is created.
-type ReserveReleaseCreated = { Object: ReserveRelease }
+/// Occurs when a reserve hold is created.
+type ReserveHoldCreated = { Object: ReserveHold }
 
-type ReserveReleaseCreated with
-    static member New(object: ReserveRelease) =
+type ReserveHoldCreated with
+    static member New(object: ReserveHold) =
+        {
+            Object = object
+        }
+
+/// Occurs when a reserve hold is updated.
+type ReserveHoldUpdated = { Object: ReserveHold }
+
+type ReserveHoldUpdated with
+    static member New(object: ReserveHold) =
         {
             Object = object
         }
@@ -191,19 +202,10 @@ module ReservePlan =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "reserve.plan"
 
-/// Occurs when a reserve plan is updated.
-type ReservePlanUpdated = { Object: ReservePlan }
+/// Occurs when a reserve plan is created.
+type ReservePlanCreated = { Object: ReservePlan }
 
-type ReservePlanUpdated with
-    static member New(object: ReservePlan) =
-        {
-            Object = object
-        }
-
-/// Occurs when a reserve plan expires.
-type ReservePlanExpired = { Object: ReservePlan }
-
-type ReservePlanExpired with
+type ReservePlanCreated with
     static member New(object: ReservePlan) =
         {
             Object = object
@@ -218,80 +220,89 @@ type ReservePlanDisabled with
             Object = object
         }
 
-/// Occurs when a reserve plan is created.
-type ReservePlanCreated = { Object: ReservePlan }
+/// Occurs when a reserve plan expires.
+type ReservePlanExpired = { Object: ReservePlan }
 
-type ReservePlanCreated with
+type ReservePlanExpired with
+    static member New(object: ReservePlan) =
+        {
+            Object = object
+        }
+
+/// Occurs when a reserve plan is updated.
+type ReservePlanUpdated = { Object: ReservePlan }
+
+type ReservePlanUpdated with
     static member New(object: ReservePlan) =
         {
             Object = object
         }
 
 [<Struct>]
-type ReserveHoldCreatedBy =
+type ReserveReleaseCreatedBy =
     | Application
     | Stripe
 
 [<Struct>]
-type ReserveHoldReason =
-    | Charge
-    | Standalone
+type ReserveReleaseReason =
+    | BulkHoldExpiry
+    | HoldReleasedEarly
+    | HoldReversed
+    | PlanDisabled
 
 [<Struct>]
-type ReserveHoldSourceType =
-    | BankAccount
-    | Card
-    | Fpx
+type ReservesReserveReleasesResourcesSourceTransactionType =
+    | Dispute
+    | Refund
 
-type ReservesReserveHoldsResourcesReleaseSchedule =
+type ReservesReserveReleasesResourcesSourceTransaction =
     {
-        /// The time after which the ReserveHold is requested to be released.
-        ReleaseAfter: DateTime option
-        /// The time at which the ReserveHold is scheduled to be released, automatically set to midnight UTC of the day after `release_after`.
-        ScheduledRelease: DateTime option
+        /// The ID of the dispute.
+        Dispute: StripeId<Markers.Dispute> option
+        /// The ID of the refund.
+        Refund: StripeId<Markers.Refund> option
+        /// The type of source transaction.
+        Type: ReservesReserveReleasesResourcesSourceTransactionType
     }
 
-type ReservesReserveHoldsResourcesReleaseSchedule with
-    static member New(releaseAfter: DateTime option, scheduledRelease: DateTime option) =
+type ReservesReserveReleasesResourcesSourceTransaction with
+    static member New(``type``: ReservesReserveReleasesResourcesSourceTransactionType, ?dispute: StripeId<Markers.Dispute>, ?refund: StripeId<Markers.Refund>) =
         {
-            ReleaseAfter = releaseAfter
-            ScheduledRelease = scheduledRelease
+            Type = ``type``
+            Dispute = dispute
+            Refund = refund
         }
 
-/// ReserveHolds are used to place a temporary ReserveHold on a merchant's funds.
-type ReserveHold =
+/// ReserveReleases represent the release of funds from a ReserveHold.
+type ReserveRelease =
     {
-        /// Amount reserved. A positive integer representing how much is reserved in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
+        /// Amount released. A positive integer representing how much is released in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
         Amount: int
-        /// Amount in cents that can be released from this ReserveHold
-        AmountReleasable: int option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
-        /// Indicates which party created this ReserveHold.
-        CreatedBy: ReserveHoldCreatedBy
+        /// Indicates which party created this ReserveRelease.
+        CreatedBy: ReserveReleaseCreatedBy
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// Unique identifier for the object.
         Id: string
-        /// Whether there are any funds available to release on this ReserveHold. Note that if the ReserveHold is in the process of being released, this could be false, even though the funds haven't been fully released yet.
-        IsReleasable: bool option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
-        /// The reason for the ReserveHold.
-        Reason: ReserveHoldReason
-        ReleaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule
-        /// The ReservePlan which produced this ReserveHold (i.e., resplan_123)
+        /// The reason for the ReserveRelease, indicating why the funds were released.
+        Reason: ReserveReleaseReason
+        /// The release timestamp of the funds.
+        ReleasedAt: DateTime
+        /// The ReserveHold this ReserveRelease is associated with.
+        ReserveHold: StripeId<Markers.ReserveHold> option
+        /// The ReservePlan ID this ReserveRelease is associated with. This field is only populated if a ReserveRelease is created by a ReservePlan disable operation, or from a scheduled ReservedHold expiry.
         ReservePlan: StripeId<Markers.ReservePlan> option
-        /// The Charge which funded this ReserveHold (e.g., ch_123)
-        SourceCharge: StripeId<Markers.Charge> option
-        /// Which source balance type this ReserveHold reserves funds from. One of `bank_account`, `card`, or `fpx`.
-        SourceType: ReserveHoldSourceType
+        SourceTransaction: ReservesReserveReleasesResourcesSourceTransaction option
     }
 
-type ReserveHold with
-    static member New(amount: int, created: DateTime, createdBy: ReserveHoldCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveHoldReason, releaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule, reservePlan: StripeId<Markers.ReservePlan> option, sourceCharge: StripeId<Markers.Charge> option, sourceType: ReserveHoldSourceType, ?amountReleasable: int, ?isReleasable: bool, ?metadata: Map<string, string>) =
+type ReserveRelease with
+    static member New(amount: int, created: DateTime, createdBy: ReserveReleaseCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveReleaseReason, releasedAt: DateTime, reserveHold: StripeId<Markers.ReserveHold> option, reservePlan: StripeId<Markers.ReservePlan> option, ?metadata: Map<string, string>, ?sourceTransaction: ReservesReserveReleasesResourcesSourceTransaction) =
         {
             Amount = amount
             Created = created
@@ -300,33 +311,22 @@ type ReserveHold with
             Id = id
             Livemode = livemode
             Reason = reason
-            ReleaseSchedule = releaseSchedule
+            ReleasedAt = releasedAt
+            ReserveHold = reserveHold
             ReservePlan = reservePlan
-            SourceCharge = sourceCharge
-            SourceType = sourceType
-            AmountReleasable = amountReleasable
-            IsReleasable = isReleasable
             Metadata = metadata
+            SourceTransaction = sourceTransaction
         }
 
-module ReserveHold =
+module ReserveRelease =
     ///String representing the object's type. Objects of the same type share the same value.
-    let object = "reserve.hold"
+    let object = "reserve.release"
 
-/// Occurs when a reserve hold is updated.
-type ReserveHoldUpdated = { Object: ReserveHold }
+/// Occurs when a reserve release is created.
+type ReserveReleaseCreated = { Object: ReserveRelease }
 
-type ReserveHoldUpdated with
-    static member New(object: ReserveHold) =
-        {
-            Object = object
-        }
-
-/// Occurs when a reserve hold is created.
-type ReserveHoldCreated = { Object: ReserveHold }
-
-type ReserveHoldCreated with
-    static member New(object: ReserveHold) =
+type ReserveReleaseCreated with
+    static member New(object: ReserveRelease) =
         {
             Object = object
         }

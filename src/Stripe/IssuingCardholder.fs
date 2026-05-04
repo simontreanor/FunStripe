@@ -1196,19 +1196,19 @@ module IssuingCardholder =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "issuing.cardholder"
 
-/// Occurs whenever a cardholder is updated.
-type IssuingCardholderUpdated = { Object: IssuingCardholder }
+/// Occurs whenever a cardholder is created.
+type IssuingCardholderCreated = { Object: IssuingCardholder }
 
-type IssuingCardholderUpdated with
+type IssuingCardholderCreated with
     static member New(object: IssuingCardholder) =
         {
             Object = object
         }
 
-/// Occurs whenever a cardholder is created.
-type IssuingCardholderCreated = { Object: IssuingCardholder }
+/// Occurs whenever a cardholder is updated.
+type IssuingCardholderUpdated = { Object: IssuingCardholder }
 
-type IssuingCardholderCreated with
+type IssuingCardholderUpdated with
     static member New(object: IssuingCardholder) =
         {
             Object = object

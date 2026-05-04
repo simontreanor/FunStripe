@@ -7,103 +7,6 @@ open Stripe.Mandate
 open Stripe.PaymentMethod
 
 [<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
-type CheckoutSessionBillingAddressCollection =
-    | Auto
-    | Required
-
-type CheckoutSessionCustomer'AnyOf =
-    | String of string
-    | Customer of Customer
-    | DeletedCustomer of DeletedCustomer
-
-[<Struct>]
-type CheckoutSessionCustomerCreation =
-    | Always
-    | IfRequired
-
-/// The line items purchased by the customer.
-type CheckoutSessionLineItems =
-    {
-        /// Details about each object.
-        Data: Item list
-        /// True if this list has another page of items after this one that can be fetched.
-        HasMore: bool
-        /// The URL where this list can be accessed.
-        Url: string
-    }
-
-type CheckoutSessionLineItems with
-    static member New(data: Item list, hasMore: bool, url: string) =
-        {
-            Data = data
-            HasMore = hasMore
-            Url = url
-        }
-
-module CheckoutSessionLineItems =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-type CheckoutSessionLocale =
-    | Auto
-    | Bg
-    | Cs
-    | Da
-    | De
-    | El
-    | En
-    | [<JsonPropertyName("en-GB")>] EnGB
-    | Es
-    | [<JsonPropertyName("es-419")>] Es419
-    | Et
-    | Fi
-    | Fil
-    | Fr
-    | [<JsonPropertyName("fr-CA")>] FrCA
-    | Hr
-    | Hu
-    | Id
-    | It
-    | Ja
-    | Ko
-    | Lt
-    | Lv
-    | Ms
-    | Mt
-    | Nb
-    | Nl
-    | Pl
-    | Pt
-    | [<JsonPropertyName("pt-BR")>] PtBR
-    | Ro
-    | Ru
-    | Sk
-    | Sl
-    | Sv
-    | Th
-    | Tr
-    | Vi
-    | Zh
-    | [<JsonPropertyName("zh-HK")>] ZhHK
-    | [<JsonPropertyName("zh-TW")>] ZhTW
-
-[<Struct>]
-type CheckoutSessionMode =
-    | Payment
-    | Setup
-    | Subscription
-
-[<Struct>]
-type CheckoutSessionOriginContext =
-    | MobileApp
-    | Web
-
-[<Struct>]
-type CheckoutSessionPaymentMethodCollection =
-    | Always
-    | IfRequired
-
-[<Struct>]
 type CheckoutAcssDebitMandateOptionsDefaultFor =
     | Invoice
     | Subscription
@@ -732,6 +635,23 @@ module CheckoutLinkPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
 
+[<Struct>]
+type CheckoutLinkWalletOptionsDisplay =
+    | Auto
+    | Never
+
+type CheckoutLinkWalletOptions =
+    {
+        /// Describes whether Checkout should display Link. Defaults to `auto`.
+        Display: CheckoutLinkWalletOptionsDisplay option
+    }
+
+type CheckoutLinkWalletOptions with
+    static member New(?display: CheckoutLinkWalletOptionsDisplay) =
+        {
+            Display = display
+        }
+
 type CheckoutMobilepayPaymentMethodOptions () = 
     ///Controls when the funds will be captured from the customer's account.
     member _.CaptureMethod = "manual"
@@ -833,6 +753,18 @@ type CheckoutPaycoPaymentMethodOptions () =
 module CheckoutPaycoPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
+
+type CheckoutPaymentMethodOptionsMandateOptionsSepaDebit =
+    {
+        /// Prefix used to generate the Mandate reference. Must be at most 12 characters long. Must consist of only uppercase letters, numbers, spaces, or the following special characters: '/', '_', '-', '&', '.'. Cannot begin with 'STRIPE'.
+        ReferencePrefix: string option
+    }
+
+type CheckoutPaymentMethodOptionsMandateOptionsSepaDebit with
+    static member New(?referencePrefix: string) =
+        {
+            ReferencePrefix = referencePrefix
+        }
 
 type CheckoutPaynowPaymentMethodOptions () = 
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -976,18 +908,6 @@ module CheckoutSatispayPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
 
-type CheckoutPaymentMethodOptionsMandateOptionsSepaDebit =
-    {
-        /// Prefix used to generate the Mandate reference. Must be at most 12 characters long. Must consist of only uppercase letters, numbers, spaces, or the following special characters: '/', '_', '-', '&', '.'. Cannot begin with 'STRIPE'.
-        ReferencePrefix: string option
-    }
-
-type CheckoutPaymentMethodOptionsMandateOptionsSepaDebit with
-    static member New(?referencePrefix: string) =
-        {
-            ReferencePrefix = referencePrefix
-        }
-
 [<Struct>]
 type CheckoutSepaDebitPaymentMethodOptionsSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
@@ -1013,6 +933,103 @@ type CheckoutSepaDebitPaymentMethodOptions with
             SetupFutureUsage = setupFutureUsage
             TargetDate = targetDate
         }
+
+[<Struct>]
+type CheckoutSessionBillingAddressCollection =
+    | Auto
+    | Required
+
+type CheckoutSessionCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
+
+[<Struct>]
+type CheckoutSessionCustomerCreation =
+    | Always
+    | IfRequired
+
+/// The line items purchased by the customer.
+type CheckoutSessionLineItems =
+    {
+        /// Details about each object.
+        Data: Item list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+type CheckoutSessionLineItems with
+    static member New(data: Item list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
+module CheckoutSessionLineItems =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+type CheckoutSessionLocale =
+    | Auto
+    | Bg
+    | Cs
+    | Da
+    | De
+    | El
+    | En
+    | [<JsonPropertyName("en-GB")>] EnGB
+    | Es
+    | [<JsonPropertyName("es-419")>] Es419
+    | Et
+    | Fi
+    | Fil
+    | Fr
+    | [<JsonPropertyName("fr-CA")>] FrCA
+    | Hr
+    | Hu
+    | Id
+    | It
+    | Ja
+    | Ko
+    | Lt
+    | Lv
+    | Ms
+    | Mt
+    | Nb
+    | Nl
+    | Pl
+    | Pt
+    | [<JsonPropertyName("pt-BR")>] PtBR
+    | Ro
+    | Ru
+    | Sk
+    | Sl
+    | Sv
+    | Th
+    | Tr
+    | Vi
+    | Zh
+    | [<JsonPropertyName("zh-HK")>] ZhHK
+    | [<JsonPropertyName("zh-TW")>] ZhTW
+
+[<Struct>]
+type CheckoutSessionMode =
+    | Payment
+    | Setup
+    | Subscription
+
+[<Struct>]
+type CheckoutSessionOriginContext =
+    | MobileApp
+    | Web
+
+[<Struct>]
+type CheckoutSessionPaymentMethodCollection =
+    | Always
+    | IfRequired
 
 type CheckoutSofortPaymentMethodOptions () = 
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -1239,23 +1256,6 @@ type CheckoutSessionUiMode =
     | EmbeddedPage
     | Form
     | HostedPage
-
-[<Struct>]
-type CheckoutLinkWalletOptionsDisplay =
-    | Auto
-    | Never
-
-type CheckoutLinkWalletOptions =
-    {
-        /// Describes whether Checkout should display Link. Defaults to `auto`.
-        Display: CheckoutLinkWalletOptionsDisplay option
-    }
-
-type CheckoutLinkWalletOptions with
-    static member New(?display: CheckoutLinkWalletOptionsDisplay) =
-        {
-            Display = display
-        }
 
 type CheckoutSessionWalletOptions =
     { Link: CheckoutLinkWalletOptions option }
@@ -1502,19 +1502,10 @@ module CheckoutSession =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "checkout.session"
 
-/// Occurs when a Checkout Session is expired.
-type CheckoutSessionExpired = { Object: CheckoutSession }
+/// Occurs when a payment intent using a delayed payment method fails.
+type CheckoutSessionAsyncPaymentFailed = { Object: CheckoutSession }
 
-type CheckoutSessionExpired with
-    static member New(object: CheckoutSession) =
-        {
-            Object = object
-        }
-
-/// Occurs when a Checkout Session has been successfully completed.
-type CheckoutSessionCompleted = { Object: CheckoutSession }
-
-type CheckoutSessionCompleted with
+type CheckoutSessionAsyncPaymentFailed with
     static member New(object: CheckoutSession) =
         {
             Object = object
@@ -1529,10 +1520,19 @@ type CheckoutSessionAsyncPaymentSucceeded with
             Object = object
         }
 
-/// Occurs when a payment intent using a delayed payment method fails.
-type CheckoutSessionAsyncPaymentFailed = { Object: CheckoutSession }
+/// Occurs when a Checkout Session has been successfully completed.
+type CheckoutSessionCompleted = { Object: CheckoutSession }
 
-type CheckoutSessionAsyncPaymentFailed with
+type CheckoutSessionCompleted with
+    static member New(object: CheckoutSession) =
+        {
+            Object = object
+        }
+
+/// Occurs when a Checkout Session is expired.
+type CheckoutSessionExpired = { Object: CheckoutSession }
+
+type CheckoutSessionExpired with
     static member New(object: CheckoutSession) =
         {
             Object = object

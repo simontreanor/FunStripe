@@ -5,37 +5,6 @@ open FunStripe
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
-type DeletedCoupon =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedCoupon with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedCoupon =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "coupon"
-
-type CouponCurrencyOption =
-    {
-        /// Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.
-        AmountOff: int
-    }
-
-type CouponCurrencyOption with
-    static member New(amountOff: int) =
-        {
-            AmountOff = amountOff
-        }
-
 type CouponAppliesTo =
     {
         /// A list of product IDs this coupon applies to
@@ -117,13 +86,25 @@ module Coupon =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "coupon"
 
-/// Occurs whenever a coupon is updated.
-type CouponUpdated = { Object: Coupon }
+/// Occurs whenever a coupon is created.
+type CouponCreated = { Object: Coupon }
 
-type CouponUpdated with
+type CouponCreated with
     static member New(object: Coupon) =
         {
             Object = object
+        }
+
+type CouponCurrencyOption =
+    {
+        /// Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.
+        AmountOff: int
+    }
+
+type CouponCurrencyOption with
+    static member New(amountOff: int) =
+        {
+            AmountOff = amountOff
         }
 
 /// Occurs whenever a coupon is deleted.
@@ -135,12 +116,31 @@ type CouponDeleted with
             Object = object
         }
 
-/// Occurs whenever a coupon is created.
-type CouponCreated = { Object: Coupon }
+/// Occurs whenever a coupon is updated.
+type CouponUpdated = { Object: Coupon }
 
-type CouponCreated with
+type CouponUpdated with
     static member New(object: Coupon) =
         {
             Object = object
         }
+
+type DeletedCoupon =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedCoupon with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedCoupon =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "coupon"
 

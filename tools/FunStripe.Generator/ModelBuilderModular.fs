@@ -245,6 +245,63 @@ module ModelBuilderModular =
     /// Alias retained for clarity at call sites where ordering is the goal.
     let collectSchemaRefsFull = collectSchemaRefs
 
+    /// Threaded state for Tarjan's SCC algorithm.
+    type private TarjanState<'a when 'a : comparison> = {
+        Index: int
+        Stack: 'a list
+        Disc: Map<'a, int>
+        Low: Map<'a, int>
+        OnStack: Set<'a>
+        Sccs: 'a list list
+    }
+
+    /// Functional Tarjan's SCC algorithm.
+    /// Returns SCCs in topological order (dependencies before dependents).
+    let private tarjanScc (graph: Map<'a, Set<'a>>) : 'a list list when 'a : comparison =
+        let rec strongConnect v state =
+            let i = state.Index
+            let state = {
+                state with
+                    Index = i + 1
+                    Stack = v :: state.Stack
+                    Disc = Map.add v i state.Disc
+                    Low = Map.add v i state.Low
+                    OnStack = Set.add v state.OnStack
+            }
+            let state =
+                graph
+                |> Map.tryFind v
+                |> Option.defaultValue Set.empty
+                |> Set.fold
+                    (fun st w ->
+                        if not (Map.containsKey w st.Disc) then
+                            let st = strongConnect w st
+                            { st with Low = Map.add v (min (Map.find v st.Low) (Map.find w st.Low)) st.Low }
+                        elif Set.contains w st.OnStack then
+                            { st with Low = Map.add v (min (Map.find v st.Low) (Map.find w st.Disc)) st.Low }
+                        else
+                            st)
+                    state
+            if Map.find v state.Low = Map.find v state.Disc then
+                let idx = state.Stack |> List.findIndex ((=) v)
+                let scc = state.Stack |> List.take (idx + 1) |> List.rev
+                { state with
+                    Stack = state.Stack |> List.skip (idx + 1)
+                    OnStack = scc |> List.fold (fun s w -> Set.remove w s) state.OnStack
+                    Sccs = scc :: state.Sccs }
+            else
+                state
+
+        let initial = { Index = 0; Stack = []; Disc = Map.empty; Low = Map.empty; OnStack = Set.empty; Sccs = [] }
+        (graph
+         |> Map.keys
+         |> Seq.fold
+             (fun state v ->
+                 if Map.containsKey v state.Disc then state
+                 else strongConnect v state)
+             initial)
+            .Sccs
+        |> List.rev
 
     /// Compute module assignments from the OpenAPI spec using schema-level SCC + majority-vote.
     /// Returns (typeToModule, moduleOrder).
@@ -324,42 +381,9 @@ module ModelBuilderModular =
             |> Map.ofArray
 
         // Schema-level Tarjan SCC
-        let allSchemasList = schemaNames |> Set.toList
-        let mutable sIdx = 0
-        let mutable sStack: string list = []
-        let sIndices = Collections.Generic.Dictionary<string, int>()
-        let sLowlinks = Collections.Generic.Dictionary<string, int>()
-        let sOnStack = Collections.Generic.Dictionary<string, bool>()
-        let sSccs = Collections.Generic.List<string list>()
-
-        let rec sStrongconnect (v: string) =
-            sIndices.[v] <- sIdx
-            sLowlinks.[v] <- sIdx
-            sIdx <- sIdx + 1
-            sStack <- v :: sStack
-            sOnStack.[v] <- true
-            let successors = dependencyGraph |> Map.tryFind v |> Option.defaultValue Set.empty
-            for w in successors do
-                if not (sIndices.ContainsKey w) then
-                    sStrongconnect w
-                    sLowlinks.[v] <- min sLowlinks.[v] sLowlinks.[w]
-                elif sOnStack.ContainsKey w && sOnStack.[w] then
-                    sLowlinks.[v] <- min sLowlinks.[v] sIndices.[w]
-            if sLowlinks.[v] = sIndices.[v] then
-                let mutable scc = []
-                let mutable cont = true
-                while cont do
-                    let w = sStack.Head
-                    sStack <- sStack.Tail
-                    sOnStack.[w] <- false
-                    scc <- w :: scc
-                    if w = v then cont <- false
-                sSccs.Add(scc |> List.sort)
-
-        for node in allSchemasList do
-            if not (sIndices.ContainsKey node) then sStrongconnect node
-
-        let sccList = sSccs |> Seq.toList
+        let sccList =
+            tarjanScc dependencyGraph
+            |> List.map List.sort
 
         // Assign each SCC to a module by majority vote against canonical domains
         let initialSccToModule =
@@ -456,41 +480,9 @@ module ModelBuilderModular =
                 moduleName, outgoing) |> Map.ofSeq
 
         // Module-level Tarjan SCC
-        let mutable mIdx = 0
-        let mutable mStack: string list = []
-        let mIndices = Collections.Generic.Dictionary<string, int>()
-        let mLowlinks = Collections.Generic.Dictionary<string, int>()
-        let mOnStack = Collections.Generic.Dictionary<string, bool>()
-        let mSccs = Collections.Generic.List<string list>()
-
-        let rec mStrongconnect (v: string) =
-            mIndices.[v] <- mIdx
-            mLowlinks.[v] <- mIdx
-            mIdx <- mIdx + 1
-            mStack <- v :: mStack
-            mOnStack.[v] <- true
-            let successors = moduleDeps |> Map.tryFind v |> Option.defaultValue Set.empty
-            for w in successors do
-                if not (mIndices.ContainsKey w) then
-                    mStrongconnect w
-                    mLowlinks.[v] <- min mLowlinks.[v] mLowlinks.[w]
-                elif mOnStack.ContainsKey w && mOnStack.[w] then
-                    mLowlinks.[v] <- min mLowlinks.[v] mIndices.[w]
-            if mLowlinks.[v] = mIndices.[v] then
-                let mutable scc = []
-                let mutable cont = true
-                while cont do
-                    let w = mStack.Head
-                    mStack <- mStack.Tail
-                    mOnStack.[w] <- false
-                    scc <- w :: scc
-                    if w = v then cont <- false
-                mSccs.Add(scc |> List.sort)
-
-        for m in allModules do
-            if not (mIndices.ContainsKey m) then mStrongconnect m
-
-        let moduleSccList = mSccs |> Seq.toList
+        let moduleSccList =
+            tarjanScc moduleDeps
+            |> List.map List.sort
 
         // Determine merged module names for multi-module SCCs
         let moduleToMergedName =
@@ -528,38 +520,46 @@ module ModelBuilderModular =
                     |> Set.ofList
                 sccId, outgoing) |> Map.ofList
 
-        let moduleSccDependents =
+        // Kahn's topological sort over module SCCs
+        // in-degree = number of dependencies (things this node depends on); sources (in-degree 0) go first
+        let inDegrees =
+            moduleSccDeps
+            |> Map.map (fun _ deps -> Set.count deps)
+
+        // Reverse map: for each node v, which nodes depend on v
+        let dependents =
             moduleSccDeps
             |> Map.toSeq
-            |> Seq.collect (fun (fromScc, targets) -> targets |> Seq.map (fun toScc -> toScc, fromScc))
+            |> Seq.collect (fun (u, deps) -> deps |> Seq.map (fun dep -> dep, u))
             |> Seq.groupBy fst
-            |> Seq.map (fun (toScc, incoming) -> toScc, incoming |> Seq.map snd |> Set.ofSeq)
+            |> Seq.map (fun (dep, pairs) -> dep, pairs |> Seq.map snd |> Set.ofSeq)
             |> Map.ofSeq
 
-        let indegree =
-            [0 .. moduleSccList.Length - 1]
-            |> List.map (fun i -> i, moduleSccDeps |> Map.tryFind i |> Option.defaultValue Set.empty |> Set.count)
-            |> Map.ofList
+        let initialQueue =
+            inDegrees
+            |> Map.toList
+            |> List.choose (fun (v, d) -> if d = 0 then Some v else None)
 
-        let queue = Collections.Generic.Queue<int>()
-        for kv in indegree do
-            if kv.Value = 0 then queue.Enqueue kv.Key
-
-        let mutable orderedModuleSccIds = []
-        let mutable indegreeWork = indegree
-
-        while queue.Count > 0 do
-            let current = queue.Dequeue()
-            orderedModuleSccIds <- current :: orderedModuleSccIds
-            let dependents = moduleSccDependents |> Map.tryFind current |> Option.defaultValue Set.empty
-            for depScc in dependents do
-                let nextDeg = indegreeWork.[depScc] - 1
-                indegreeWork <- indegreeWork.Add(depScc, nextDeg)
-                if nextDeg = 0 then queue.Enqueue depScc
+        let orderedModuleSccIds =
+            List.unfold
+                (fun (queue, inDegrees) ->
+                    match queue with
+                    | [] -> None
+                    | v :: rest ->
+                        let inDegrees', newlyZero =
+                            dependents
+                            |> Map.tryFind v
+                            |> Option.defaultValue Set.empty
+                            |> Set.fold
+                                (fun (degs, zeros) u ->
+                                    let d = Map.find u degs - 1
+                                    Map.add u d degs, if d = 0 then u :: zeros else zeros)
+                                (inDegrees, [])
+                        Some(v, (rest @ newlyZero, inDegrees')))
+                (initialQueue, inDegrees)
 
         let moduleOrder =
             orderedModuleSccIds
-            |> List.rev
             |> List.collect (fun sccId -> moduleSccList.[sccId] |> List.sort)
             |> List.map (fun m -> moduleToMergedName.[m])
             |> List.distinct
@@ -620,48 +620,9 @@ module ModelBuilderModular =
         let allNames = typeDefs |> List.map getTypeName |> Set.ofList
         let deps = typeDefs |> List.map (fun td -> getTypeName td, getTypeDependencies allNames td) |> Map.ofList
 
-        // Tarjan's SCC
-        let mutable idx = 0
-        let mutable stack: string list = []
-        let indices = Collections.Generic.Dictionary<string, int>()
-        let lowlinks = Collections.Generic.Dictionary<string, int>()
-        let onStack = Collections.Generic.Dictionary<string, bool>()
-        let sccs = Collections.Generic.List<string list>()
-
-        let rec strongconnect (v: string) =
-            indices.[v] <- idx
-            lowlinks.[v] <- idx
-            idx <- idx + 1
-            stack <- v :: stack
-            onStack.[v] <- true
-
-            let successors = deps |> Map.tryFind v |> Option.defaultValue Set.empty
-            for w in successors do
-                if not (indices.ContainsKey w) then
-                    strongconnect w
-                    lowlinks.[v] <- min lowlinks.[v] lowlinks.[w]
-                elif onStack.ContainsKey w && onStack.[w] then
-                    lowlinks.[v] <- min lowlinks.[v] indices.[w]
-
-            if lowlinks.[v] = indices.[v] then
-                let mutable scc = []
-                let mutable cont = true
-                while cont do
-                    let w = stack.Head
-                    stack <- stack.Tail
-                    onStack.[w] <- false
-                    scc <- w :: scc
-                    if w = v then cont <- false
-                sccs.Add(scc)
-
-        for td in typeDefs do
-            let name = getTypeName td
-            if not (indices.ContainsKey name) then
-                strongconnect name
-
         // Tarjan naturally outputs SCCs with dependencies first.
         // Do NOT reverse - this is the correct compilation order.
-        let orderedSCCs = sccs |> Seq.toList
+        let orderedSCCs = tarjanScc deps
 
         let originalIndex = typeDefs |> List.mapi (fun i td -> getTypeName td, i) |> Map.ofList
 

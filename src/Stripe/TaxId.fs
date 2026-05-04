@@ -6,6 +6,25 @@ open System
 open Stripe.Tax
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type DeletedTaxId =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedTaxId with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedTaxId =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax_id"
+
 type TaxIdType =
     | AdNrt
     | AeTrn
@@ -193,25 +212,6 @@ type TaxId with
         }
 
 module TaxId =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "tax_id"
-
-type DeletedTaxId =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedTaxId with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedTaxId =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "tax_id"
 

@@ -5,7 +5,27 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type DeletedTestHelpersTestClock =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedTestHelpersTestClock with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedTestHelpersTestClock =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "test_helpers.test_clock"
+
+[<Struct>]
 type TestHelpersTestClockStatus =
     | Advancing
     | InternalFailure
@@ -50,28 +70,10 @@ module TestHelpersTestClock =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "test_helpers.test_clock"
 
-/// Occurs whenever a test clock transitions to a ready status.
-type TestHelpersTestClockReady = { Object: TestHelpersTestClock }
+/// Occurs whenever a test clock starts advancing.
+type TestHelpersTestClockAdvancing = { Object: TestHelpersTestClock }
 
-type TestHelpersTestClockReady with
-    static member New(object: TestHelpersTestClock) =
-        {
-            Object = object
-        }
-
-/// Occurs whenever a test clock fails to advance its frozen time.
-type TestHelpersTestClockInternalFailure = { Object: TestHelpersTestClock }
-
-type TestHelpersTestClockInternalFailure with
-    static member New(object: TestHelpersTestClock) =
-        {
-            Object = object
-        }
-
-/// Occurs whenever a test clock is deleted.
-type TestHelpersTestClockDeleted = { Object: TestHelpersTestClock }
-
-type TestHelpersTestClockDeleted with
+type TestHelpersTestClockAdvancing with
     static member New(object: TestHelpersTestClock) =
         {
             Object = object
@@ -86,31 +88,30 @@ type TestHelpersTestClockCreated with
             Object = object
         }
 
-/// Occurs whenever a test clock starts advancing.
-type TestHelpersTestClockAdvancing = { Object: TestHelpersTestClock }
+/// Occurs whenever a test clock is deleted.
+type TestHelpersTestClockDeleted = { Object: TestHelpersTestClock }
 
-type TestHelpersTestClockAdvancing with
+type TestHelpersTestClockDeleted with
     static member New(object: TestHelpersTestClock) =
         {
             Object = object
         }
 
-type DeletedTestHelpersTestClock =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
+/// Occurs whenever a test clock fails to advance its frozen time.
+type TestHelpersTestClockInternalFailure = { Object: TestHelpersTestClock }
 
-type DeletedTestHelpersTestClock with
-    static member New(deleted: bool, id: string) =
+type TestHelpersTestClockInternalFailure with
+    static member New(object: TestHelpersTestClock) =
         {
-            Deleted = deleted
-            Id = id
+            Object = object
         }
 
-module DeletedTestHelpersTestClock =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "test_helpers.test_clock"
+/// Occurs whenever a test clock transitions to a ready status.
+type TestHelpersTestClockReady = { Object: TestHelpersTestClock }
+
+type TestHelpersTestClockReady with
+    static member New(object: TestHelpersTestClock) =
+        {
+            Object = object
+        }
 

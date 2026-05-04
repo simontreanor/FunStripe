@@ -107,10 +107,10 @@ module ApplicationFee =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "application_fee"
 
-/// Occurs whenever an application fee is refunded, whether from refunding a charge or from [refunding the application fee directly](#fee_refunds). This includes partial refunds.
-type ApplicationFeeRefunded = { Object: ApplicationFee }
+/// Occurs whenever an application fee is created on a charge.
+type ApplicationFeeCreated = { Object: ApplicationFee }
 
-type ApplicationFeeRefunded with
+type ApplicationFeeCreated with
     static member New(object: ApplicationFee) =
         {
             Object = object
@@ -125,10 +125,10 @@ type ApplicationFeeRefundUpdated with
             Object = object
         }
 
-/// Occurs whenever an application fee is created on a charge.
-type ApplicationFeeCreated = { Object: ApplicationFee }
+/// Occurs whenever an application fee is refunded, whether from refunding a charge or from [refunding the application fee directly](#fee_refunds). This includes partial refunds.
+type ApplicationFeeRefunded = { Object: ApplicationFee }
 
-type ApplicationFeeCreated with
+type ApplicationFeeRefunded with
     static member New(object: ApplicationFee) =
         {
             Object = object

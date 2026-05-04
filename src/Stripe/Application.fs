@@ -5,6 +5,25 @@ open FunStripe
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type Application =
+    {
+        /// Unique identifier for the object.
+        Id: string
+        /// The name of the application.
+        Name: string option
+    }
+
+type Application with
+    static member New(id: string, name: string option) =
+        {
+            Id = id
+            Name = name
+        }
+
+module Application =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "application"
+
 type DeletedApplication =
     {
         /// Always true for a deleted object
@@ -24,25 +43,6 @@ type DeletedApplication with
         }
 
 module DeletedApplication =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "application"
-
-type Application =
-    {
-        /// Unique identifier for the object.
-        Id: string
-        /// The name of the application.
-        Name: string option
-    }
-
-type Application with
-    static member New(id: string, name: string option) =
-        {
-            Id = id
-            Name = name
-        }
-
-module Application =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "application"
 

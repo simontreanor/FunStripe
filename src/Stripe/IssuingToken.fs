@@ -70,19 +70,19 @@ module IssuingToken =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "issuing.token"
 
-/// Occurs whenever an issuing digital wallet token is updated.
-type IssuingTokenUpdated = { Object: IssuingToken }
+/// Occurs whenever an issuing digital wallet token is created.
+type IssuingTokenCreated = { Object: IssuingToken }
 
-type IssuingTokenUpdated with
+type IssuingTokenCreated with
     static member New(object: IssuingToken) =
         {
             Object = object
         }
 
-/// Occurs whenever an issuing digital wallet token is created.
-type IssuingTokenCreated = { Object: IssuingToken }
+/// Occurs whenever an issuing digital wallet token is updated.
+type IssuingTokenUpdated = { Object: IssuingToken }
 
-type IssuingTokenCreated with
+type IssuingTokenUpdated with
     static member New(object: IssuingToken) =
         {
             Object = object

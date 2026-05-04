@@ -14,12 +14,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Identity.fs" Link="StripeRequest/Identity.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tax.fs" Link="StripeRequest/Tax.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)File.fs" Link="StripeRequest/File.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Reporting.fs" Link="StripeRequest/Reporting.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sigma.fs" Link="StripeRequest/Sigma.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Reporting.fs" Link="StripeRequest/Reporting.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)PaymentMethod.fs" Link="StripeRequest/PaymentMethod.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Terminal.fs" Link="StripeRequest/Terminal.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TestHelpers.fs" Link="StripeRequest/TestHelpers.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Treasury.fs" Link="StripeRequest/Treasury.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestHelpers.fs" Link="StripeRequest/TestHelpers.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Terminal.fs" Link="StripeRequest/Terminal.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Checkout.fs" Link="StripeRequest/Checkout.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Accounts.fs" Link="StripeRequest/Accounts.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Apple.fs" Link="StripeRequest/Apple.fs" />

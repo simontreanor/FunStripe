@@ -6,18 +6,6 @@ open System
 open Stripe.PaymentMethod
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
-type PromotionCodeCurrencyOption =
-    {
-        /// Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
-        MinimumAmount: int
-    }
-
-type PromotionCodeCurrencyOption with
-    static member New(minimumAmount: int) =
-        {
-            MinimumAmount = minimumAmount
-        }
-
 type PromotionCodeCustomer'AnyOf =
     | String of string
     | Customer of Customer
@@ -114,19 +102,31 @@ module PromotionCode =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "promotion_code"
 
-/// Occurs whenever a promotion code is updated.
-type PromotionCodeUpdated = { Object: PromotionCode }
+/// Occurs whenever a promotion code is created.
+type PromotionCodeCreated = { Object: PromotionCode }
 
-type PromotionCodeUpdated with
+type PromotionCodeCreated with
     static member New(object: PromotionCode) =
         {
             Object = object
         }
 
-/// Occurs whenever a promotion code is created.
-type PromotionCodeCreated = { Object: PromotionCode }
+type PromotionCodeCurrencyOption =
+    {
+        /// Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
+        MinimumAmount: int
+    }
 
-type PromotionCodeCreated with
+type PromotionCodeCurrencyOption with
+    static member New(minimumAmount: int) =
+        {
+            MinimumAmount = minimumAmount
+        }
+
+/// Occurs whenever a promotion code is updated.
+type PromotionCodeUpdated = { Object: PromotionCode }
+
+type PromotionCodeUpdated with
     static member New(object: PromotionCode) =
         {
             Object = object

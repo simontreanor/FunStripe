@@ -205,6 +205,64 @@ module ModelBuilderAST =
         |> List.filter (fun t -> allNames.Contains t && t <> selfName)
         |> Set.ofList
 
+    /// Threaded state for Tarjan's SCC algorithm.
+    type private TarjanState = {
+        Index: int
+        Stack: string list
+        Disc: Map<string, int>
+        Low: Map<string, int>
+        OnStack: Set<string>
+        Sccs: string list list
+    }
+
+    /// Functional Tarjan's SCC algorithm over a string dependency graph.
+    /// Returns SCCs in topological order (dependencies before dependents).
+    let private tarjanScc (graph: Map<string, Set<string>>) : string list list =
+        let rec strongConnect v state =
+            let i = state.Index
+            let state = {
+                state with
+                    Index = i + 1
+                    Stack = v :: state.Stack
+                    Disc = Map.add v i state.Disc
+                    Low = Map.add v i state.Low
+                    OnStack = Set.add v state.OnStack
+            }
+            let state =
+                graph
+                |> Map.tryFind v
+                |> Option.defaultValue Set.empty
+                |> Set.fold
+                    (fun st w ->
+                        if not (Map.containsKey w st.Disc) then
+                            let st = strongConnect w st
+                            { st with Low = Map.add v (min (Map.find v st.Low) (Map.find w st.Low)) st.Low }
+                        elif Set.contains w st.OnStack then
+                            { st with Low = Map.add v (min (Map.find v st.Low) (Map.find w st.Disc)) st.Low }
+                        else
+                            st)
+                    state
+            if Map.find v state.Low = Map.find v state.Disc then
+                let idx = state.Stack |> List.findIndex ((=) v)
+                let scc = state.Stack |> List.take (idx + 1) |> List.rev
+                { state with
+                    Stack = state.Stack |> List.skip (idx + 1)
+                    OnStack = scc |> List.fold (fun s w -> Set.remove w s) state.OnStack
+                    Sccs = scc :: state.Sccs }
+            else
+                state
+
+        let initial = { Index = 0; Stack = []; Disc = Map.empty; Low = Map.empty; OnStack = Set.empty; Sccs = [] }
+        (graph
+         |> Map.keys
+         |> Seq.fold
+             (fun state v ->
+                 if Map.containsKey v state.Disc then state
+                 else strongConnect v state)
+             initial)
+            .Sccs
+        |> List.rev
+
     /// Topologically order type definitions using Tarjan's SCC algorithm,
     /// minimising the use of recursive ('and') type keywords.
     /// Returns a list of (TypeDef * isRecursive) pairs in dependency order.
@@ -213,48 +271,8 @@ module ModelBuilderAST =
         let allNames = typeDefs |> List.map getTypeName |> Set.ofList
         let deps = typeDefs |> List.map (fun td -> getTypeName td, getTypeDependencies allNames td) |> Map.ofList
 
-        // Tarjan's strongly connected components
-        let mutable idx = 0
-        let mutable stack: string list = []
-        let indices = Collections.Generic.Dictionary<string, int>()
-        let lowlinks = Collections.Generic.Dictionary<string, int>()
-        let onStack = Collections.Generic.Dictionary<string, bool>()
-        let sccs = Collections.Generic.List<string list>()
-
-        let rec strongconnect (v: string) =
-            indices.[v] <- idx
-            lowlinks.[v] <- idx
-            idx <- idx + 1
-            stack <- v :: stack
-            onStack.[v] <- true
-
-            let successors = deps |> Map.tryFind v |> Option.defaultValue Set.empty
-            for w in successors do
-                if not (indices.ContainsKey w) then
-                    strongconnect w
-                    lowlinks.[v] <- min lowlinks.[v] lowlinks.[w]
-                elif onStack.ContainsKey w && onStack.[w] then
-                    lowlinks.[v] <- min lowlinks.[v] indices.[w]
-
-            if lowlinks.[v] = indices.[v] then
-                let mutable scc = []
-                let mutable cont = true
-                while cont do
-                    let w = stack.Head
-                    stack <- stack.Tail
-                    onStack.[w] <- false
-                    scc <- w :: scc
-                    if w = v then cont <- false
-                sccs.Add(scc)
-
-        // Visit nodes in their original order for stability
-        for td in typeDefs do
-            let name = getTypeName td
-            if not (indices.ContainsKey name) then
-                strongconnect name
-
         // Tarjan's produces SCCs in reverse topological order; reverse them
-        let orderedSCCs = sccs |> Seq.toList |> List.rev
+        let orderedSCCs = tarjanScc deps |> List.rev
 
         // Preserve original ordering within each SCC
         let originalIndex = typeDefs |> List.mapi (fun i td -> getTypeName td, i) |> Map.ofList

@@ -7,6 +7,25 @@ open Stripe.PaymentMethod
 open Stripe.TaxRate
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type DeletedInvoiceitem =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedInvoiceitem with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedInvoiceitem =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "invoiceitem"
+
 type InvoiceitemCustomer'AnyOf =
     | String of string
     | Customer of Customer
@@ -107,15 +126,6 @@ module Invoiceitem =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "invoiceitem"
 
-/// Occurs whenever an invoice item is deleted.
-type InvoiceitemDeleted = { Object: Invoiceitem }
-
-type InvoiceitemDeleted with
-    static member New(object: Invoiceitem) =
-        {
-            Object = object
-        }
-
 /// Occurs whenever an invoice item is created.
 type InvoiceitemCreated = { Object: Invoiceitem }
 
@@ -125,22 +135,12 @@ type InvoiceitemCreated with
             Object = object
         }
 
-type DeletedInvoiceitem =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
+/// Occurs whenever an invoice item is deleted.
+type InvoiceitemDeleted = { Object: Invoiceitem }
 
-type DeletedInvoiceitem with
-    static member New(deleted: bool, id: string) =
+type InvoiceitemDeleted with
+    static member New(object: Invoiceitem) =
         {
-            Deleted = deleted
-            Id = id
+            Object = object
         }
-
-module DeletedInvoiceitem =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "invoiceitem"
 

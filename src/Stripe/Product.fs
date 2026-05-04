@@ -5,6 +5,25 @@ open FunStripe
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type DeletedProduct =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedProduct with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedProduct =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "product"
+
 type PackageDimensions =
     {
         /// Height, in inches.
@@ -117,10 +136,10 @@ module Product =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "product"
 
-/// Occurs whenever a product is updated.
-type ProductUpdated = { Object: Product }
+/// Occurs whenever a product is created.
+type ProductCreated = { Object: Product }
 
-type ProductUpdated with
+type ProductCreated with
     static member New(object: Product) =
         {
             Object = object
@@ -135,31 +154,12 @@ type ProductDeleted with
             Object = object
         }
 
-/// Occurs whenever a product is created.
-type ProductCreated = { Object: Product }
+/// Occurs whenever a product is updated.
+type ProductUpdated = { Object: Product }
 
-type ProductCreated with
+type ProductUpdated with
     static member New(object: Product) =
         {
             Object = object
         }
-
-type DeletedProduct =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedProduct with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedProduct =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "product"
 

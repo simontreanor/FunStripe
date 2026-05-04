@@ -468,41 +468,6 @@ module Mandate =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "mandate"
 
-/// Occurs whenever a Mandate is updated.
-type MandateUpdated = { Object: Mandate }
-
-type MandateUpdated with
-    static member New(object: Mandate) =
-        {
-            Object = object
-        }
-
-[<Struct>]
-type MandateOptionsUpiAmountType =
-    | Fixed
-    | Maximum
-
-type MandateOptionsUpi =
-    {
-        /// Amount to be charged for future payments.
-        Amount: int option
-        /// One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
-        AmountType: MandateOptionsUpiAmountType option
-        /// A description of the mandate or subscription that is meant to be displayed to the customer.
-        Description: string option
-        /// End date of the mandate or subscription.
-        EndDate: DateTime option
-    }
-
-type MandateOptionsUpi with
-    static member New(amount: int option, amountType: MandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
-        {
-            Amount = amount
-            AmountType = amountType
-            Description = description
-            EndDate = endDate
-        }
-
 [<Struct>]
 type MandateOptionsPaytoAmountType =
     | Fixed
@@ -559,5 +524,40 @@ type MandateOptionsPayto with
             PaymentsPerPeriod = paymentsPerPeriod
             Purpose = purpose
             StartDate = startDate
+        }
+
+[<Struct>]
+type MandateOptionsUpiAmountType =
+    | Fixed
+    | Maximum
+
+type MandateOptionsUpi =
+    {
+        /// Amount to be charged for future payments.
+        Amount: int option
+        /// One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
+        AmountType: MandateOptionsUpiAmountType option
+        /// A description of the mandate or subscription that is meant to be displayed to the customer.
+        Description: string option
+        /// End date of the mandate or subscription.
+        EndDate: DateTime option
+    }
+
+type MandateOptionsUpi with
+    static member New(amount: int option, amountType: MandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            Description = description
+            EndDate = endDate
+        }
+
+/// Occurs whenever a Mandate is updated.
+type MandateUpdated = { Object: Mandate }
+
+type MandateUpdated with
+    static member New(object: Mandate) =
+        {
+            Object = object
         }
 

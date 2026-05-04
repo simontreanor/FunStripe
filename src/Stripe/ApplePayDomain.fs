@@ -5,25 +5,6 @@ open FunStripe
 open System
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
-type DeletedApplePayDomain =
-    {
-        /// Always true for a deleted object
-        Deleted: bool
-        /// Unique identifier for the object.
-        Id: string
-    }
-
-type DeletedApplePayDomain with
-    static member New(deleted: bool, id: string) =
-        {
-            Deleted = deleted
-            Id = id
-        }
-
-module DeletedApplePayDomain =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "apple_pay_domain"
-
 type ApplePayDomain =
     {
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -45,6 +26,25 @@ type ApplePayDomain with
         }
 
 module ApplePayDomain =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "apple_pay_domain"
+
+type DeletedApplePayDomain =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedApplePayDomain with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedApplePayDomain =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "apple_pay_domain"
 

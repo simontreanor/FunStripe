@@ -5,27 +5,6 @@ open FunStripe
 open System
 
 [<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
-type ShippingRateCurrencyOptionTaxBehavior =
-    | Exclusive
-    | Inclusive
-    | Unspecified
-
-type ShippingRateCurrencyOption =
-    {
-        /// A non-negative integer in cents representing how much to charge.
-        Amount: int
-        /// Specifies whether the rate is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`.
-        TaxBehavior: ShippingRateCurrencyOptionTaxBehavior
-    }
-
-type ShippingRateCurrencyOption with
-    static member New(amount: int, taxBehavior: ShippingRateCurrencyOptionTaxBehavior) =
-        {
-            Amount = amount
-            TaxBehavior = taxBehavior
-        }
-
-[<Struct>]
 type ShippingRateDeliveryEstimateBoundUnit =
     | BusinessDay
     | Day
@@ -133,4 +112,25 @@ module ShippingRate =
 
     ///The type of calculation to use on the shipping rate.
     let ``type`` = "fixed_amount"
+
+[<Struct>]
+type ShippingRateCurrencyOptionTaxBehavior =
+    | Exclusive
+    | Inclusive
+    | Unspecified
+
+type ShippingRateCurrencyOption =
+    {
+        /// A non-negative integer in cents representing how much to charge.
+        Amount: int
+        /// Specifies whether the rate is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`.
+        TaxBehavior: ShippingRateCurrencyOptionTaxBehavior
+    }
+
+type ShippingRateCurrencyOption with
+    static member New(amount: int, taxBehavior: ShippingRateCurrencyOptionTaxBehavior) =
+        {
+            Amount = amount
+            TaxBehavior = taxBehavior
+        }
 

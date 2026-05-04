@@ -11,6 +11,61 @@ open Stripe.SubscriptionItem
 open Stripe.TaxRate
 
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type SchedulesPhaseAutomaticTax =
+    {
+        /// Whether Stripe automatically computes tax on invoices created during this phase.
+        Enabled: bool
+        /// The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account.
+        Liability: ConnectAccountReference option
+    }
+
+type SchedulesPhaseAutomaticTax with
+    static member New(enabled: bool, liability: ConnectAccountReference option) =
+        {
+            Enabled = enabled
+            Liability = liability
+        }
+
+module SchedulesPhaseAutomaticTax =
+    ///If Stripe disabled automatic tax, this enum describes why.
+    let disabledReason = "requires_location_inputs"
+
+type StackableDiscountWithDiscountSettings =
+    {
+        /// ID of the coupon to create a new discount for.
+        Coupon: StripeId<Markers.Coupon> option
+        /// ID of an existing discount on the object (or one of its ancestors) to reuse.
+        Discount: StripeId<Markers.Discount> option
+        /// ID of the promotion code to create a new discount for.
+        PromotionCode: StripeId<Markers.PromotionCode> option
+    }
+
+type StackableDiscountWithDiscountSettings with
+    static member New(coupon: StripeId<Markers.Coupon> option, discount: StripeId<Markers.Discount> option, promotionCode: StripeId<Markers.PromotionCode> option) =
+        {
+            Coupon = coupon
+            Discount = discount
+            PromotionCode = promotionCode
+        }
+
+type StackableDiscountWithDiscountSettingsAndDiscountEnd =
+    {
+        /// ID of the coupon to create a new discount for.
+        Coupon: StripeId<Markers.Coupon> option
+        /// ID of an existing discount on the object (or one of its ancestors) to reuse.
+        Discount: StripeId<Markers.Discount> option
+        /// ID of the promotion code to create a new discount for.
+        PromotionCode: StripeId<Markers.PromotionCode> option
+    }
+
+type StackableDiscountWithDiscountSettingsAndDiscountEnd with
+    static member New(coupon: StripeId<Markers.Coupon> option, discount: StripeId<Markers.Discount> option, promotionCode: StripeId<Markers.PromotionCode> option) =
+        {
+            Coupon = coupon
+            Discount = discount
+            PromotionCode = promotionCode
+        }
+
 type SubscriptionScheduleApplication'AnyOf =
     | String of string
     | Application of Application
@@ -42,43 +97,6 @@ type SubscriptionScheduleEndBehavior =
     | [<JsonPropertyName("none")>] None'
     | Release
     | Renew
-
-type SchedulesPhaseAutomaticTax =
-    {
-        /// Whether Stripe automatically computes tax on invoices created during this phase.
-        Enabled: bool
-        /// The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account.
-        Liability: ConnectAccountReference option
-    }
-
-type SchedulesPhaseAutomaticTax with
-    static member New(enabled: bool, liability: ConnectAccountReference option) =
-        {
-            Enabled = enabled
-            Liability = liability
-        }
-
-module SchedulesPhaseAutomaticTax =
-    ///If Stripe disabled automatic tax, this enum describes why.
-    let disabledReason = "requires_location_inputs"
-
-type StackableDiscountWithDiscountSettingsAndDiscountEnd =
-    {
-        /// ID of the coupon to create a new discount for.
-        Coupon: StripeId<Markers.Coupon> option
-        /// ID of an existing discount on the object (or one of its ancestors) to reuse.
-        Discount: StripeId<Markers.Discount> option
-        /// ID of the promotion code to create a new discount for.
-        PromotionCode: StripeId<Markers.PromotionCode> option
-    }
-
-type StackableDiscountWithDiscountSettingsAndDiscountEnd with
-    static member New(coupon: StripeId<Markers.Coupon> option, discount: StripeId<Markers.Discount> option, promotionCode: StripeId<Markers.PromotionCode> option) =
-        {
-            Coupon = coupon
-            Discount = discount
-            PromotionCode = promotionCode
-        }
 
 type SubscriptionScheduleAddInvoiceItemPeriod =
     { End: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodEnd
@@ -121,24 +139,6 @@ type SubscriptionScheduleAddInvoiceItem with
             Price = price
             Quantity = quantity
             TaxRates = taxRates |> Option.flatten
-        }
-
-type StackableDiscountWithDiscountSettings =
-    {
-        /// ID of the coupon to create a new discount for.
-        Coupon: StripeId<Markers.Coupon> option
-        /// ID of an existing discount on the object (or one of its ancestors) to reuse.
-        Discount: StripeId<Markers.Discount> option
-        /// ID of the promotion code to create a new discount for.
-        PromotionCode: StripeId<Markers.PromotionCode> option
-    }
-
-type StackableDiscountWithDiscountSettings with
-    static member New(coupon: StripeId<Markers.Coupon> option, discount: StripeId<Markers.Discount> option, promotionCode: StripeId<Markers.PromotionCode> option) =
-        {
-            Coupon = coupon
-            Discount = discount
-            PromotionCode = promotionCode
         }
 
 type SubscriptionScheduleConfigurationItemPlan'AnyOf =
@@ -345,46 +345,10 @@ module SubscriptionSchedule =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "subscription_schedule"
 
-/// Occurs whenever a subscription schedule is updated.
-type SubscriptionScheduleUpdated = { Object: SubscriptionSchedule }
+/// Occurs whenever a subscription schedule is canceled due to the underlying subscription being canceled because of delinquency.
+type SubscriptionScheduleAborted = { Object: SubscriptionSchedule }
 
-type SubscriptionScheduleUpdated with
-    static member New(object: SubscriptionSchedule) =
-        {
-            Object = object
-        }
-
-/// Occurs whenever a new subscription schedule is released.
-type SubscriptionScheduleReleased = { Object: SubscriptionSchedule }
-
-type SubscriptionScheduleReleased with
-    static member New(object: SubscriptionSchedule) =
-        {
-            Object = object
-        }
-
-/// Occurs 7 days before a subscription schedule will expire.
-type SubscriptionScheduleExpiring = { Object: SubscriptionSchedule }
-
-type SubscriptionScheduleExpiring with
-    static member New(object: SubscriptionSchedule) =
-        {
-            Object = object
-        }
-
-/// Occurs whenever a new subscription schedule is created.
-type SubscriptionScheduleCreated = { Object: SubscriptionSchedule }
-
-type SubscriptionScheduleCreated with
-    static member New(object: SubscriptionSchedule) =
-        {
-            Object = object
-        }
-
-/// Occurs whenever a new subscription schedule is completed.
-type SubscriptionScheduleCompleted = { Object: SubscriptionSchedule }
-
-type SubscriptionScheduleCompleted with
+type SubscriptionScheduleAborted with
     static member New(object: SubscriptionSchedule) =
         {
             Object = object
@@ -399,10 +363,46 @@ type SubscriptionScheduleCanceled with
             Object = object
         }
 
-/// Occurs whenever a subscription schedule is canceled due to the underlying subscription being canceled because of delinquency.
-type SubscriptionScheduleAborted = { Object: SubscriptionSchedule }
+/// Occurs whenever a new subscription schedule is completed.
+type SubscriptionScheduleCompleted = { Object: SubscriptionSchedule }
 
-type SubscriptionScheduleAborted with
+type SubscriptionScheduleCompleted with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
+
+/// Occurs whenever a new subscription schedule is created.
+type SubscriptionScheduleCreated = { Object: SubscriptionSchedule }
+
+type SubscriptionScheduleCreated with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
+
+/// Occurs 7 days before a subscription schedule will expire.
+type SubscriptionScheduleExpiring = { Object: SubscriptionSchedule }
+
+type SubscriptionScheduleExpiring with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
+
+/// Occurs whenever a new subscription schedule is released.
+type SubscriptionScheduleReleased = { Object: SubscriptionSchedule }
+
+type SubscriptionScheduleReleased with
+    static member New(object: SubscriptionSchedule) =
+        {
+            Object = object
+        }
+
+/// Occurs whenever a subscription schedule is updated.
+type SubscriptionScheduleUpdated = { Object: SubscriptionSchedule }
+
+type SubscriptionScheduleUpdated with
     static member New(object: SubscriptionSchedule) =
         {
             Object = object

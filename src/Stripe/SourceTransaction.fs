@@ -191,19 +191,19 @@ module SourceTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "source_transaction"
 
-/// Occurs whenever a source transaction is updated.
-type SourceTransactionUpdated = { Object: SourceTransaction }
+/// Occurs whenever a source transaction is created.
+type SourceTransactionCreated = { Object: SourceTransaction }
 
-type SourceTransactionUpdated with
+type SourceTransactionCreated with
     static member New(object: SourceTransaction) =
         {
             Object = object
         }
 
-/// Occurs whenever a source transaction is created.
-type SourceTransactionCreated = { Object: SourceTransaction }
+/// Occurs whenever a source transaction is updated.
+type SourceTransactionUpdated = { Object: SourceTransaction }
 
-type SourceTransactionCreated with
+type SourceTransactionUpdated with
     static member New(object: SourceTransaction) =
         {
             Object = object

@@ -4,7 +4,24 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type IssuingNetworkTokenAddress =
+    {
+        /// The street address of the cardholder tokenizing the card.
+        [<JsonPropertyName("line1")>]
+        Line1: string
+        /// The postal code of the cardholder tokenizing the card.
+        PostalCode: string
+    }
+
+type IssuingNetworkTokenAddress with
+    static member New(line1: string, postalCode: string) =
+        {
+            Line1 = line1
+            PostalCode = postalCode
+        }
+
+[<Struct>]
 type IssuingNetworkTokenDeviceType =
     | Other
     | Phone
@@ -82,22 +99,6 @@ type IssuingNetworkTokenVisa with
             TokenReferenceId = tokenReferenceId
             TokenRequestorId = tokenRequestorId
             TokenRiskScore = tokenRiskScore
-        }
-
-type IssuingNetworkTokenAddress =
-    {
-        /// The street address of the cardholder tokenizing the card.
-        [<JsonPropertyName("line1")>]
-        Line1: string
-        /// The postal code of the cardholder tokenizing the card.
-        PostalCode: string
-    }
-
-type IssuingNetworkTokenAddress with
-    static member New(line1: string, postalCode: string) =
-        {
-            Line1 = line1
-            PostalCode = postalCode
         }
 
 [<Struct>]

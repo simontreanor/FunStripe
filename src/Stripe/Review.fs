@@ -88,19 +88,19 @@ module Review =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "review"
 
-/// Occurs whenever a review is opened.
-type ReviewOpened = { Object: Review }
+/// Occurs whenever a review is closed. The review's `reason` field indicates why: `approved`, `disputed`, `refunded`, `refunded_as_fraud`, or `canceled`.
+type ReviewClosed = { Object: Review }
 
-type ReviewOpened with
+type ReviewClosed with
     static member New(object: Review) =
         {
             Object = object
         }
 
-/// Occurs whenever a review is closed. The review's `reason` field indicates why: `approved`, `disputed`, `refunded`, `refunded_as_fraud`, or `canceled`.
-type ReviewClosed = { Object: Review }
+/// Occurs whenever a review is opened.
+type ReviewOpened = { Object: Review }
 
-type ReviewClosed with
+type ReviewOpened with
     static member New(object: Review) =
         {
             Object = object

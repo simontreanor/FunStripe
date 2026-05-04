@@ -6,7 +6,275 @@ open System
 open Stripe.FundingInstructions
 open Stripe.TaxRate
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.3")>]
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted =
+    {
+        /// The [Tax Transaction](https://docs.stripe.com/api/tax/transaction/object)
+        Transaction: string
+    }
+
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted with
+    static member New(transaction: string) =
+        {
+            Transaction = transaction
+        }
+
+[<Struct>]
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason =
+    | AnotherPaymentAssociatedWithCalculation
+    | CalculationExpired
+    | CurrencyMismatch
+    | OriginalTransactionVoided
+    | UniqueReferenceViolation
+
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored =
+    {
+        /// Details on why we couldn't commit the tax transaction.
+        Reason: TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason
+    }
+
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored with
+    static member New(reason: TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason) =
+        {
+            Reason = reason
+        }
+
+[<Struct>]
+type TaxProductResourceTaxAssociationTransactionAttemptsStatus =
+    | Errored
+    | Committed
+
+type TaxProductResourceTaxAssociationTransactionAttempts =
+    {
+        Committed: TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted option
+        Errored: TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored option
+        /// The source of the tax transaction attempt. This is either a refund or a payment intent.
+        Source: string
+        /// The status of the transaction attempt. This can be `errored` or `committed`.
+        Status: TaxProductResourceTaxAssociationTransactionAttemptsStatus
+    }
+
+type TaxProductResourceTaxAssociationTransactionAttempts with
+    static member New(source: string, status: TaxProductResourceTaxAssociationTransactionAttemptsStatus, ?committed: TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted, ?errored: TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored) =
+        {
+            Source = source
+            Status = status
+            Committed = committed
+            Errored = errored
+        }
+
+/// A Tax Association exposes the Tax Transactions that Stripe attempted to create on your behalf based on the PaymentIntent input
+type TaxAssociation =
+    {
+        /// The [Tax Calculation](https://docs.stripe.com/api/tax/calculations/object) that was included in PaymentIntent.
+        Calculation: string
+        /// Unique identifier for the object.
+        Id: string
+        /// The [PaymentIntent](https://docs.stripe.com/api/payment_intents/object) that this Tax Association is tracking.
+        PaymentIntent: string
+        /// Information about the tax transactions linked to this payment intent
+        TaxTransactionAttempts: TaxProductResourceTaxAssociationTransactionAttempts list option
+    }
+
+type TaxAssociation with
+    static member New(calculation: string, id: string, paymentIntent: string, taxTransactionAttempts: TaxProductResourceTaxAssociationTransactionAttempts list option) =
+        {
+            Calculation = calculation
+            Id = id
+            PaymentIntent = paymentIntent
+            TaxTransactionAttempts = taxTransactionAttempts
+        }
+
+module TaxAssociation =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.association"
+
+[<Struct>]
+type TaxCalculationLineItemTaxBehavior =
+    | Exclusive
+    | Inclusive
+
+[<Struct>]
+type TaxProductResourceJurisdictionLevel =
+    | City
+    | Country
+    | County
+    | District
+    | State
+
+type TaxProductResourceJurisdiction =
+    {
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode
+        /// A human-readable name for the jurisdiction imposing the tax.
+        DisplayName: string
+        /// Indicates the level of the jurisdiction imposing the tax.
+        Level: TaxProductResourceJurisdictionLevel
+        /// [ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2), without country prefix. For example, "NY" for New York, United States.
+        State: string option
+    }
+
+type TaxProductResourceJurisdiction with
+    static member New(country: IsoTypes.IsoCountryCode, displayName: string, level: TaxProductResourceJurisdictionLevel, state: string option) =
+        {
+            Country = country
+            DisplayName = displayName
+            Level = level
+            State = state
+        }
+
+[<Struct>]
+type TaxProductResourceLineItemTaxBreakdownSourcing =
+    | Destination
+    | Origin
+
+type TaxProductResourceLineItemTaxBreakdownTaxabilityReason =
+    | CustomerExempt
+    | NotCollecting
+    | NotSubjectToTax
+    | NotSupported
+    | PortionProductExempt
+    | PortionReducedRated
+    | PortionStandardRated
+    | ProductExempt
+    | ProductExemptHoliday
+    | ProportionallyRated
+    | ReducedRated
+    | ReverseCharge
+    | StandardRated
+    | TaxableBasisReduced
+    | ZeroRated
+
+type TaxProductResourceLineItemTaxRateDetailsTaxType =
+    | AmusementTax
+    | CommunicationsTax
+    | Gst
+    | Hst
+    | Igst
+    | Jct
+    | LeaseTax
+    | Pst
+    | Qst
+    | RetailDeliveryFee
+    | Rst
+    | SalesTax
+    | ServiceTax
+    | Vat
+
+type TaxProductResourceLineItemTaxRateDetails =
+    {
+        /// A localized display name for tax type, intended to be human-readable. For example, "Local Sales and Use Tax", "Value-added tax (VAT)", or "Umsatzsteuer (USt.)".
+        DisplayName: string
+        /// The tax rate percentage as a string. For example, 8.5% is represented as "8.5".
+        PercentageDecimal: string
+        /// The tax type, such as `vat` or `sales_tax`.
+        TaxType: TaxProductResourceLineItemTaxRateDetailsTaxType
+    }
+
+type TaxProductResourceLineItemTaxRateDetails with
+    static member New(displayName: string, percentageDecimal: string, taxType: TaxProductResourceLineItemTaxRateDetailsTaxType) =
+        {
+            DisplayName = displayName
+            PercentageDecimal = percentageDecimal
+            TaxType = taxType
+        }
+
+type TaxProductResourceLineItemTaxBreakdown =
+    {
+        /// The amount of tax, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        Amount: int
+        Jurisdiction: TaxProductResourceJurisdiction
+        /// Indicates whether the jurisdiction was determined by the origin (merchant's address) or destination (customer's address).
+        Sourcing: TaxProductResourceLineItemTaxBreakdownSourcing
+        /// Details regarding the rate for this tax. This field will be `null` when the tax is not imposed, for example if the product is exempt from tax.
+        TaxRateDetails: TaxProductResourceLineItemTaxRateDetails option
+        /// The reasoning behind this tax, for example, if the product is tax exempt. The possible values for this field may be extended as new tax rules are supported.
+        TaxabilityReason: TaxProductResourceLineItemTaxBreakdownTaxabilityReason
+        /// The amount on which tax is calculated, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        TaxableAmount: int
+    }
+
+type TaxProductResourceLineItemTaxBreakdown with
+    static member New(amount: int, jurisdiction: TaxProductResourceJurisdiction, sourcing: TaxProductResourceLineItemTaxBreakdownSourcing, taxRateDetails: TaxProductResourceLineItemTaxRateDetails option, taxabilityReason: TaxProductResourceLineItemTaxBreakdownTaxabilityReason, taxableAmount: int) =
+        {
+            Amount = amount
+            Jurisdiction = jurisdiction
+            Sourcing = sourcing
+            TaxRateDetails = taxRateDetails
+            TaxabilityReason = taxabilityReason
+            TaxableAmount = taxableAmount
+        }
+
+type TaxCalculationLineItem =
+    {
+        /// The line item amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
+        Amount: int
+        /// The amount of tax calculated for this line item, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        AmountTax: int
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// The ID of an existing [Product](https://docs.stripe.com/api/products/object).
+        Product: string option
+        /// The number of units of the item being purchased. For reversals, this is the quantity reversed.
+        Quantity: int
+        /// A custom identifier for this line item.
+        Reference: string
+        /// Specifies whether the `amount` includes taxes. If `tax_behavior=inclusive`, then the amount includes taxes.
+        TaxBehavior: TaxCalculationLineItemTaxBehavior
+        /// Detailed account of taxes relevant to this line item.
+        TaxBreakdown: TaxProductResourceLineItemTaxBreakdown list option
+        /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for this resource.
+        TaxCode: string
+    }
+
+type TaxCalculationLineItem with
+    static member New(amount: int, amountTax: int, id: string, livemode: bool, metadata: Map<string, string> option, product: string option, quantity: int, reference: string, taxBehavior: TaxCalculationLineItemTaxBehavior, taxCode: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list option) =
+        {
+            Amount = amount
+            AmountTax = amountTax
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Product = product
+            Quantity = quantity
+            Reference = reference
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            TaxBreakdown = taxBreakdown |> Option.flatten
+        }
+
+module TaxCalculationLineItem =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.calculation_line_item"
+
+/// The list of items the customer is purchasing.
+type TaxCalculationLineItems =
+    {
+        /// Details about each object.
+        Data: TaxCalculationLineItem list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+type TaxCalculationLineItems with
+    static member New(data: TaxCalculationLineItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
+module TaxCalculationLineItems =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+[<Struct>]
 type TaxProductResourceCustomerDetailsAddressSource =
     | Billing
     | Shipping
@@ -213,53 +481,7 @@ type TaxProductResourceShipFromDetails with
             Address = address
         }
 
-type TaxProductResourceTaxTransactionResourceReversal =
-    {
-        /// The `id` of the reversed `Transaction` object.
-        OriginalTransaction: string option
-    }
-
-type TaxProductResourceTaxTransactionResourceReversal with
-    static member New(originalTransaction: string option) =
-        {
-            OriginalTransaction = originalTransaction
-        }
-
-[<Struct>]
-type TaxProductResourceJurisdictionLevel =
-    | City
-    | Country
-    | County
-    | District
-    | State
-
-type TaxProductResourceJurisdiction =
-    {
-        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: IsoTypes.IsoCountryCode
-        /// A human-readable name for the jurisdiction imposing the tax.
-        DisplayName: string
-        /// Indicates the level of the jurisdiction imposing the tax.
-        Level: TaxProductResourceJurisdictionLevel
-        /// [ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2), without country prefix. For example, "NY" for New York, United States.
-        State: string option
-    }
-
-type TaxProductResourceJurisdiction with
-    static member New(country: IsoTypes.IsoCountryCode, displayName: string, level: TaxProductResourceJurisdictionLevel, state: string option) =
-        {
-            Country = country
-            DisplayName = displayName
-            Level = level
-            State = state
-        }
-
-[<Struct>]
-type TaxProductResourceLineItemTaxBreakdownSourcing =
-    | Destination
-    | Origin
-
-type TaxProductResourceLineItemTaxBreakdownTaxabilityReason =
+type TaxProductResourceTaxBreakdownTaxabilityReason =
     | CustomerExempt
     | NotCollecting
     | NotSubjectToTax
@@ -276,7 +498,12 @@ type TaxProductResourceLineItemTaxBreakdownTaxabilityReason =
     | TaxableBasisReduced
     | ZeroRated
 
-type TaxProductResourceLineItemTaxRateDetailsTaxType =
+[<Struct>]
+type TaxProductResourceTaxRateDetailsRateType =
+    | FlatAmount
+    | Percentage
+
+type TaxProductResourceTaxRateDetailsTaxType =
     | AmusementTax
     | CommunicationsTax
     | Gst
@@ -292,56 +519,62 @@ type TaxProductResourceLineItemTaxRateDetailsTaxType =
     | ServiceTax
     | Vat
 
-type TaxProductResourceLineItemTaxRateDetails =
+type TaxProductResourceTaxRateDetails =
     {
-        /// A localized display name for tax type, intended to be human-readable. For example, "Local Sales and Use Tax", "Value-added tax (VAT)", or "Umsatzsteuer (USt.)".
-        DisplayName: string
-        /// The tax rate percentage as a string. For example, 8.5% is represented as "8.5".
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        /// The amount of the tax rate when the `rate_type` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate.
+        FlatAmount: TaxRateFlatAmount option
+        /// The tax rate percentage as a string. For example, 8.5% is represented as `"8.5"`.
         PercentageDecimal: string
+        /// Indicates the type of tax rate applied to the taxable amount. This value can be `null` when no tax applies to the location. This field is only present for TaxRates created by Stripe Tax.
+        RateType: TaxProductResourceTaxRateDetailsRateType option
+        /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        State: string option
         /// The tax type, such as `vat` or `sales_tax`.
-        TaxType: TaxProductResourceLineItemTaxRateDetailsTaxType
+        TaxType: TaxProductResourceTaxRateDetailsTaxType option
     }
 
-type TaxProductResourceLineItemTaxRateDetails with
-    static member New(displayName: string, percentageDecimal: string, taxType: TaxProductResourceLineItemTaxRateDetailsTaxType) =
+type TaxProductResourceTaxRateDetails with
+    static member New(country: IsoTypes.IsoCountryCode option, flatAmount: TaxRateFlatAmount option, percentageDecimal: string, rateType: TaxProductResourceTaxRateDetailsRateType option, state: string option, taxType: TaxProductResourceTaxRateDetailsTaxType option) =
         {
-            DisplayName = displayName
+            Country = country
+            FlatAmount = flatAmount
             PercentageDecimal = percentageDecimal
+            RateType = rateType
+            State = state
             TaxType = taxType
         }
 
-type TaxProductResourceLineItemTaxBreakdown =
+type TaxProductResourceTaxBreakdown =
     {
         /// The amount of tax, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
         Amount: int
-        Jurisdiction: TaxProductResourceJurisdiction
-        /// Indicates whether the jurisdiction was determined by the origin (merchant's address) or destination (customer's address).
-        Sourcing: TaxProductResourceLineItemTaxBreakdownSourcing
-        /// Details regarding the rate for this tax. This field will be `null` when the tax is not imposed, for example if the product is exempt from tax.
-        TaxRateDetails: TaxProductResourceLineItemTaxRateDetails option
-        /// The reasoning behind this tax, for example, if the product is tax exempt. The possible values for this field may be extended as new tax rules are supported.
-        TaxabilityReason: TaxProductResourceLineItemTaxBreakdownTaxabilityReason
+        /// Specifies whether the tax amount is included in the line item amount.
+        Inclusive: bool
+        TaxRateDetails: TaxProductResourceTaxRateDetails
+        /// The reasoning behind this tax, for example, if the product is tax exempt. We might extend the possible values for this field to support new tax rules.
+        TaxabilityReason: TaxProductResourceTaxBreakdownTaxabilityReason
         /// The amount on which tax is calculated, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
         TaxableAmount: int
     }
 
-type TaxProductResourceLineItemTaxBreakdown with
-    static member New(amount: int, jurisdiction: TaxProductResourceJurisdiction, sourcing: TaxProductResourceLineItemTaxBreakdownSourcing, taxRateDetails: TaxProductResourceLineItemTaxRateDetails option, taxabilityReason: TaxProductResourceLineItemTaxBreakdownTaxabilityReason, taxableAmount: int) =
+type TaxProductResourceTaxBreakdown with
+    static member New(amount: int, inclusive: bool, taxRateDetails: TaxProductResourceTaxRateDetails, taxabilityReason: TaxProductResourceTaxBreakdownTaxabilityReason, taxableAmount: int) =
         {
             Amount = amount
-            Jurisdiction = jurisdiction
-            Sourcing = sourcing
+            Inclusive = inclusive
             TaxRateDetails = taxRateDetails
             TaxabilityReason = taxabilityReason
             TaxableAmount = taxableAmount
         }
 
 [<Struct>]
-type TaxProductResourceTaxTransactionShippingCostTaxBehavior =
+type TaxProductResourceTaxCalculationShippingCostTaxBehavior =
     | Exclusive
     | Inclusive
 
-type TaxProductResourceTaxTransactionShippingCost =
+type TaxProductResourceTaxCalculationShippingCost =
     {
         /// The shipping amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
         Amount: int
@@ -350,15 +583,15 @@ type TaxProductResourceTaxTransactionShippingCost =
         /// The ID of an existing [ShippingRate](https://docs.stripe.com/api/shipping_rates/object).
         ShippingRate: string option
         /// Specifies whether the `amount` includes taxes. If `tax_behavior=inclusive`, then the amount includes taxes.
-        TaxBehavior: TaxProductResourceTaxTransactionShippingCostTaxBehavior
-        /// Detailed account of taxes relevant to shipping cost. (It is not populated for the transaction resource object and will be removed in the next API version.)
+        TaxBehavior: TaxProductResourceTaxCalculationShippingCostTaxBehavior
+        /// Detailed account of taxes relevant to shipping cost.
         TaxBreakdown: TaxProductResourceLineItemTaxBreakdown list option
         /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for shipping.
         TaxCode: string
     }
 
-type TaxProductResourceTaxTransactionShippingCost with
-    static member New(amount: int, amountTax: int, taxBehavior: TaxProductResourceTaxTransactionShippingCostTaxBehavior, taxCode: string, ?shippingRate: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list) =
+type TaxProductResourceTaxCalculationShippingCost with
+    static member New(amount: int, amountTax: int, taxBehavior: TaxProductResourceTaxCalculationShippingCostTaxBehavior, taxCode: string, ?shippingRate: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list) =
         {
             Amount = amount
             AmountTax = amountTax
@@ -368,275 +601,91 @@ type TaxProductResourceTaxTransactionShippingCost with
             TaxBreakdown = taxBreakdown
         }
 
-type TaxProductResourceTaxTransactionLineItemResourceReversal =
+/// A Tax Calculation allows you to calculate the tax to collect from your customer.
+/// Related guide: [Calculate tax in your custom payment flow](https://docs.stripe.com/tax/custom)
+type TaxCalculation =
     {
-        /// The `id` of the line item to reverse in the original transaction.
-        OriginalLineItem: string
-    }
-
-type TaxProductResourceTaxTransactionLineItemResourceReversal with
-    static member New(originalLineItem: string) =
-        {
-            OriginalLineItem = originalLineItem
-        }
-
-[<Struct>]
-type TaxTransactionLineItemTaxBehavior =
-    | Exclusive
-    | Inclusive
-
-[<Struct>]
-type TaxTransactionLineItemType =
-    | Reversal
-    | Transaction
-
-type TaxTransactionLineItem =
-    {
-        /// The line item amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
-        Amount: int
-        /// The amount of tax calculated for this line item, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
-        AmountTax: int
-        /// Unique identifier for the object.
-        Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-        /// The ID of an existing [Product](https://docs.stripe.com/api/products/object).
-        Product: string option
-        /// The number of units of the item being purchased. For reversals, this is the quantity reversed.
-        Quantity: int
-        /// A custom identifier for this line item in the transaction.
-        Reference: string
-        /// If `type=reversal`, contains information about what was reversed.
-        Reversal: TaxProductResourceTaxTransactionLineItemResourceReversal option
-        /// Specifies whether the `amount` includes taxes. If `tax_behavior=inclusive`, then the amount includes taxes.
-        TaxBehavior: TaxTransactionLineItemTaxBehavior
-        /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for this resource.
-        TaxCode: string
-        /// If `reversal`, this line item reverses an earlier transaction.
-        Type: TaxTransactionLineItemType
-    }
-
-type TaxTransactionLineItem with
-    static member New(amount: int, amountTax: int, id: string, livemode: bool, metadata: Map<string, string> option, product: string option, quantity: int, reference: string, reversal: TaxProductResourceTaxTransactionLineItemResourceReversal option, taxBehavior: TaxTransactionLineItemTaxBehavior, taxCode: string, ``type``: TaxTransactionLineItemType) =
-        {
-            Amount = amount
-            AmountTax = amountTax
-            Id = id
-            Livemode = livemode
-            Metadata = metadata
-            Product = product
-            Quantity = quantity
-            Reference = reference
-            Reversal = reversal
-            TaxBehavior = taxBehavior
-            TaxCode = taxCode
-            Type = ``type``
-        }
-
-module TaxTransactionLineItem =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "tax.transaction_line_item"
-
-/// The tax collected or refunded, by line item.
-type TaxTransactionLineItems =
-    {
-        /// Details about each object.
-        Data: TaxTransactionLineItem list
-        /// True if this list has another page of items after this one that can be fetched.
-        HasMore: bool
-        /// The URL where this list can be accessed.
-        Url: string
-    }
-
-type TaxTransactionLineItems with
-    static member New(data: TaxTransactionLineItem list, hasMore: bool, url: string) =
-        {
-            Data = data
-            HasMore = hasMore
-            Url = url
-        }
-
-module TaxTransactionLineItems =
-    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    let object = "list"
-
-[<Struct>]
-type TaxTransactionType =
-    | Reversal
-    | Transaction
-
-/// A Tax Transaction records the tax collected from or refunded to your customer.
-/// Related guide: [Calculate tax in your custom payment flow](https://docs.stripe.com/tax/custom#tax-transaction)
-type TaxTransaction =
-    {
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
+        /// Total amount after taxes in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        AmountTotal: int
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// The ID of an existing [Customer](https://docs.stripe.com/api/customers/object) used for the resource.
         Customer: string option
         CustomerDetails: TaxProductResourceCustomerDetails
-        /// Unique identifier for the transaction.
-        Id: string
-        /// The tax collected or refunded, by line item.
-        LineItems: TaxTransactionLineItems option
+        /// Timestamp of date at which the tax calculation will expire.
+        ExpiresAt: DateTime option
+        /// Unique identifier for the calculation.
+        Id: string option
+        /// The list of items the customer is purchasing.
+        LineItems: TaxCalculationLineItems option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
-        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
-        Metadata: Map<string, string> option
-        /// The Unix timestamp representing when the tax liability is assumed or reduced.
-        PostedAt: DateTime
-        /// A custom unique identifier, such as 'myOrder_123'.
-        Reference: string
-        /// If `type=reversal`, contains information about what was reversed.
-        Reversal: TaxProductResourceTaxTransactionResourceReversal option
         /// The details of the ship from location, such as the address.
         ShipFromDetails: TaxProductResourceShipFromDetails option
-        /// The shipping cost details for the transaction.
-        ShippingCost: TaxProductResourceTaxTransactionShippingCost option
+        /// The shipping cost details for the calculation.
+        ShippingCost: TaxProductResourceTaxCalculationShippingCost option
+        /// The amount of tax to be collected on top of the line item prices.
+        TaxAmountExclusive: int
+        /// The amount of tax already included in the line item prices.
+        TaxAmountInclusive: int
+        /// Breakdown of individual tax amounts that add up to the total.
+        TaxBreakdown: TaxProductResourceTaxBreakdown list
         /// The calculation uses the tax rules and rates that are in effect at this timestamp. You can use a date up to 31 days in the past or up to 31 days in the future. If you use a future date, Stripe doesn't guarantee that the expected tax rules and rate being used match the actual rules and rate that will be in effect on that date. We deploy tax changes before their effective date, but not within a fixed window.
         TaxDate: DateTime
-        /// If `reversal`, this transaction reverses an earlier transaction.
-        Type: TaxTransactionType
     }
 
-type TaxTransaction with
-    static member New(created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: string option, customerDetails: TaxProductResourceCustomerDetails, id: string, livemode: bool, metadata: Map<string, string> option, postedAt: DateTime, reference: string, reversal: TaxProductResourceTaxTransactionResourceReversal option, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxTransactionShippingCost option, taxDate: DateTime, ``type``: TaxTransactionType, ?lineItems: TaxTransactionLineItems option) =
+type TaxCalculation with
+    static member New(amountTotal: int, currency: IsoTypes.IsoCurrencyCode, customer: string option, customerDetails: TaxProductResourceCustomerDetails, expiresAt: DateTime option, id: string option, livemode: bool, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxCalculationShippingCost option, taxAmountExclusive: int, taxAmountInclusive: int, taxBreakdown: TaxProductResourceTaxBreakdown list, taxDate: DateTime, ?lineItems: TaxCalculationLineItems option) =
         {
-            Created = created
+            AmountTotal = amountTotal
             Currency = currency
             Customer = customer
             CustomerDetails = customerDetails
+            ExpiresAt = expiresAt
             Id = id
             Livemode = livemode
-            Metadata = metadata
-            PostedAt = postedAt
-            Reference = reference
-            Reversal = reversal
             ShipFromDetails = shipFromDetails
             ShippingCost = shippingCost
+            TaxAmountExclusive = taxAmountExclusive
+            TaxAmountInclusive = taxAmountInclusive
+            TaxBreakdown = taxBreakdown
             TaxDate = taxDate
-            Type = ``type``
             LineItems = lineItems |> Option.flatten
         }
 
-module TaxTransaction =
+module TaxCalculation =
     ///String representing the object's type. Objects of the same type share the same value.
-    let object = "tax.transaction"
+    let object = "tax.calculation"
 
 [<Struct>]
-type TaxProductResourceTaxSettingsDefaultsProvider =
-    | Anrok
-    | Avalara
-    | Sphere
-    | Stripe
+type TaxIDsOwnerType =
+    | Account
+    | Application
+    | Customer
+    | Self
 
-[<Struct>]
-type TaxProductResourceTaxSettingsDefaultsTaxBehavior =
-    | Exclusive
-    | Inclusive
-    | InferredByCurrency
-
-type TaxProductResourceTaxSettingsDefaults =
+type TaxIDsOwner =
     {
-        /// The tax calculation provider this account uses. Defaults to `stripe` when not using a [third-party provider](/tax/third-party-apps).
-        Provider: TaxProductResourceTaxSettingsDefaultsProvider
-        /// Default [tax behavior](https://stripe.com/docs/tax/products-prices-tax-categories-tax-behavior#tax-behavior) used to specify whether the price is considered inclusive of taxes or exclusive of taxes. If the item's price has a tax behavior set, it will take precedence over the default tax behavior.
-        TaxBehavior: TaxProductResourceTaxSettingsDefaultsTaxBehavior option
-        /// Default [tax code](https://stripe.com/docs/tax/tax-categories) used to classify your products and prices.
-        TaxCode: string option
+        /// The account being referenced when `type` is `account`.
+        Account: StripeId<Markers.Account> option
+        /// The Connect Application being referenced when `type` is `application`.
+        Application: StripeId<Markers.Application> option
+        /// The customer being referenced when `type` is `customer`.
+        Customer: StripeId<Markers.Customer> option
+        /// The Account representing the customer being referenced when `type` is `customer`.
+        CustomerAccount: string option
+        /// Type of owner referenced.
+        Type: TaxIDsOwnerType
     }
 
-type TaxProductResourceTaxSettingsDefaults with
-    static member New(provider: TaxProductResourceTaxSettingsDefaultsProvider, taxBehavior: TaxProductResourceTaxSettingsDefaultsTaxBehavior option, taxCode: string option) =
+type TaxIDsOwner with
+    static member New(customerAccount: string option, ``type``: TaxIDsOwnerType, ?account: StripeId<Markers.Account>, ?application: StripeId<Markers.Application>, ?customer: StripeId<Markers.Customer>) =
         {
-            Provider = provider
-            TaxBehavior = taxBehavior
-            TaxCode = taxCode
-        }
-
-type TaxProductResourceTaxSettingsHeadOffice = { Address: Address }
-
-type TaxProductResourceTaxSettingsHeadOffice with
-    static member New(address: Address) =
-        {
-            Address = address
-        }
-
-type TaxProductResourceTaxSettingsStatusDetailsResourceActive =
-    { TaxProductResourceTaxSettingsStatusDetailsResourceActive: string option }
-
-type TaxProductResourceTaxSettingsStatusDetailsResourceActive with
-    static member New(?taxProductResourceTaxSettingsStatusDetailsResourceActive: string option) =
-        {
-            TaxProductResourceTaxSettingsStatusDetailsResourceActive = taxProductResourceTaxSettingsStatusDetailsResourceActive |> Option.flatten
-        }
-
-type TaxProductResourceTaxSettingsStatusDetailsResourcePending =
-    {
-        /// The list of missing fields that are required to perform calculations. It includes the entry `head_office` when the status is `pending`. It is recommended to set the optional values even if they aren't listed as required for calculating taxes. Calculations can fail if missing fields aren't explicitly provided on every call.
-        MissingFields: string list option
-    }
-
-type TaxProductResourceTaxSettingsStatusDetailsResourcePending with
-    static member New(missingFields: string list option) =
-        {
-            MissingFields = missingFields
-        }
-
-type TaxProductResourceTaxSettingsStatusDetails =
-    { Active: TaxProductResourceTaxSettingsStatusDetailsResourceActive option
-      Pending: TaxProductResourceTaxSettingsStatusDetailsResourcePending option }
-
-type TaxProductResourceTaxSettingsStatusDetails with
-    static member New(?active: TaxProductResourceTaxSettingsStatusDetailsResourceActive, ?pending: TaxProductResourceTaxSettingsStatusDetailsResourcePending) =
-        {
-            Active = active
-            Pending = pending
-        }
-
-[<Struct>]
-type TaxSettingsStatus =
-    | Active
-    | Pending
-
-/// You can use Tax `Settings` to manage configurations used by Stripe Tax calculations.
-/// Related guide: [Using the Settings API](https://docs.stripe.com/tax/settings-api)
-type TaxSettings =
-    {
-        Defaults: TaxProductResourceTaxSettingsDefaults
-        /// The place where your business is located.
-        HeadOffice: TaxProductResourceTaxSettingsHeadOffice option
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// The status of the Tax `Settings`.
-        Status: TaxSettingsStatus
-        StatusDetails: TaxProductResourceTaxSettingsStatusDetails
-    }
-
-type TaxSettings with
-    static member New(defaults: TaxProductResourceTaxSettingsDefaults, headOffice: TaxProductResourceTaxSettingsHeadOffice option, livemode: bool, status: TaxSettingsStatus, statusDetails: TaxProductResourceTaxSettingsStatusDetails) =
-        {
-            Defaults = defaults
-            HeadOffice = headOffice
-            Livemode = livemode
-            Status = status
-            StatusDetails = statusDetails
-        }
-
-module TaxSettings =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "tax.settings"
-
-/// Occurs whenever tax settings is updated.
-type TaxSettingsUpdated = { Object: TaxSettings }
-
-type TaxSettingsUpdated with
-    static member New(object: TaxSettings) =
-        {
-            Object = object
+            CustomerAccount = customerAccount
+            Type = ``type``
+            Account = account
+            Application = application
+            Customer = customer
         }
 
 type TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard =
@@ -1063,6 +1112,133 @@ type TaxProductRegistrationsResourceCountryOptions with
         }
 
 [<Struct>]
+type TaxProductResourceTaxSettingsDefaultsProvider =
+    | Anrok
+    | Avalara
+    | Sphere
+    | Stripe
+
+[<Struct>]
+type TaxProductResourceTaxSettingsDefaultsTaxBehavior =
+    | Exclusive
+    | Inclusive
+    | InferredByCurrency
+
+type TaxProductResourceTaxSettingsDefaults =
+    {
+        /// The tax calculation provider this account uses. Defaults to `stripe` when not using a [third-party provider](/tax/third-party-apps).
+        Provider: TaxProductResourceTaxSettingsDefaultsProvider
+        /// Default [tax behavior](https://stripe.com/docs/tax/products-prices-tax-categories-tax-behavior#tax-behavior) used to specify whether the price is considered inclusive of taxes or exclusive of taxes. If the item's price has a tax behavior set, it will take precedence over the default tax behavior.
+        TaxBehavior: TaxProductResourceTaxSettingsDefaultsTaxBehavior option
+        /// Default [tax code](https://stripe.com/docs/tax/tax-categories) used to classify your products and prices.
+        TaxCode: string option
+    }
+
+type TaxProductResourceTaxSettingsDefaults with
+    static member New(provider: TaxProductResourceTaxSettingsDefaultsProvider, taxBehavior: TaxProductResourceTaxSettingsDefaultsTaxBehavior option, taxCode: string option) =
+        {
+            Provider = provider
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+        }
+
+type TaxProductResourceTaxSettingsHeadOffice = { Address: Address }
+
+type TaxProductResourceTaxSettingsHeadOffice with
+    static member New(address: Address) =
+        {
+            Address = address
+        }
+
+type TaxProductResourceTaxSettingsStatusDetailsResourceActive =
+    { TaxProductResourceTaxSettingsStatusDetailsResourceActive: string option }
+
+type TaxProductResourceTaxSettingsStatusDetailsResourceActive with
+    static member New(?taxProductResourceTaxSettingsStatusDetailsResourceActive: string option) =
+        {
+            TaxProductResourceTaxSettingsStatusDetailsResourceActive = taxProductResourceTaxSettingsStatusDetailsResourceActive |> Option.flatten
+        }
+
+type TaxProductResourceTaxSettingsStatusDetailsResourcePending =
+    {
+        /// The list of missing fields that are required to perform calculations. It includes the entry `head_office` when the status is `pending`. It is recommended to set the optional values even if they aren't listed as required for calculating taxes. Calculations can fail if missing fields aren't explicitly provided on every call.
+        MissingFields: string list option
+    }
+
+type TaxProductResourceTaxSettingsStatusDetailsResourcePending with
+    static member New(missingFields: string list option) =
+        {
+            MissingFields = missingFields
+        }
+
+type TaxProductResourceTaxSettingsStatusDetails =
+    { Active: TaxProductResourceTaxSettingsStatusDetailsResourceActive option
+      Pending: TaxProductResourceTaxSettingsStatusDetailsResourcePending option }
+
+type TaxProductResourceTaxSettingsStatusDetails with
+    static member New(?active: TaxProductResourceTaxSettingsStatusDetailsResourceActive, ?pending: TaxProductResourceTaxSettingsStatusDetailsResourcePending) =
+        {
+            Active = active
+            Pending = pending
+        }
+
+type TaxProductResourceTaxTransactionLineItemResourceReversal =
+    {
+        /// The `id` of the line item to reverse in the original transaction.
+        OriginalLineItem: string
+    }
+
+type TaxProductResourceTaxTransactionLineItemResourceReversal with
+    static member New(originalLineItem: string) =
+        {
+            OriginalLineItem = originalLineItem
+        }
+
+type TaxProductResourceTaxTransactionResourceReversal =
+    {
+        /// The `id` of the reversed `Transaction` object.
+        OriginalTransaction: string option
+    }
+
+type TaxProductResourceTaxTransactionResourceReversal with
+    static member New(originalTransaction: string option) =
+        {
+            OriginalTransaction = originalTransaction
+        }
+
+[<Struct>]
+type TaxProductResourceTaxTransactionShippingCostTaxBehavior =
+    | Exclusive
+    | Inclusive
+
+type TaxProductResourceTaxTransactionShippingCost =
+    {
+        /// The shipping amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
+        Amount: int
+        /// The amount of tax calculated for shipping, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        AmountTax: int
+        /// The ID of an existing [ShippingRate](https://docs.stripe.com/api/shipping_rates/object).
+        ShippingRate: string option
+        /// Specifies whether the `amount` includes taxes. If `tax_behavior=inclusive`, then the amount includes taxes.
+        TaxBehavior: TaxProductResourceTaxTransactionShippingCostTaxBehavior
+        /// Detailed account of taxes relevant to shipping cost. (It is not populated for the transaction resource object and will be removed in the next API version.)
+        TaxBreakdown: TaxProductResourceLineItemTaxBreakdown list option
+        /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for shipping.
+        TaxCode: string
+    }
+
+type TaxProductResourceTaxTransactionShippingCost with
+    static member New(amount: int, amountTax: int, taxBehavior: TaxProductResourceTaxTransactionShippingCostTaxBehavior, taxCode: string, ?shippingRate: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list) =
+        {
+            Amount = amount
+            AmountTax = amountTax
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            ShippingRate = shippingRate
+            TaxBreakdown = taxBreakdown
+        }
+
+[<Struct>]
 type TaxRegistrationStatus =
     | Active
     | Expired
@@ -1108,11 +1284,58 @@ module TaxRegistration =
     let object = "tax.registration"
 
 [<Struct>]
-type TaxCalculationLineItemTaxBehavior =
+type TaxSettingsStatus =
+    | Active
+    | Pending
+
+/// You can use Tax `Settings` to manage configurations used by Stripe Tax calculations.
+/// Related guide: [Using the Settings API](https://docs.stripe.com/tax/settings-api)
+type TaxSettings =
+    {
+        Defaults: TaxProductResourceTaxSettingsDefaults
+        /// The place where your business is located.
+        HeadOffice: TaxProductResourceTaxSettingsHeadOffice option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The status of the Tax `Settings`.
+        Status: TaxSettingsStatus
+        StatusDetails: TaxProductResourceTaxSettingsStatusDetails
+    }
+
+type TaxSettings with
+    static member New(defaults: TaxProductResourceTaxSettingsDefaults, headOffice: TaxProductResourceTaxSettingsHeadOffice option, livemode: bool, status: TaxSettingsStatus, statusDetails: TaxProductResourceTaxSettingsStatusDetails) =
+        {
+            Defaults = defaults
+            HeadOffice = headOffice
+            Livemode = livemode
+            Status = status
+            StatusDetails = statusDetails
+        }
+
+module TaxSettings =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.settings"
+
+/// Occurs whenever tax settings is updated.
+type TaxSettingsUpdated = { Object: TaxSettings }
+
+type TaxSettingsUpdated with
+    static member New(object: TaxSettings) =
+        {
+            Object = object
+        }
+
+[<Struct>]
+type TaxTransactionLineItemTaxBehavior =
     | Exclusive
     | Inclusive
 
-type TaxCalculationLineItem =
+[<Struct>]
+type TaxTransactionLineItemType =
+    | Reversal
+    | Transaction
+
+type TaxTransactionLineItem =
     {
         /// The line item amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
         Amount: int
@@ -1128,18 +1351,20 @@ type TaxCalculationLineItem =
         Product: string option
         /// The number of units of the item being purchased. For reversals, this is the quantity reversed.
         Quantity: int
-        /// A custom identifier for this line item.
+        /// A custom identifier for this line item in the transaction.
         Reference: string
+        /// If `type=reversal`, contains information about what was reversed.
+        Reversal: TaxProductResourceTaxTransactionLineItemResourceReversal option
         /// Specifies whether the `amount` includes taxes. If `tax_behavior=inclusive`, then the amount includes taxes.
-        TaxBehavior: TaxCalculationLineItemTaxBehavior
-        /// Detailed account of taxes relevant to this line item.
-        TaxBreakdown: TaxProductResourceLineItemTaxBreakdown list option
+        TaxBehavior: TaxTransactionLineItemTaxBehavior
         /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for this resource.
         TaxCode: string
+        /// If `reversal`, this line item reverses an earlier transaction.
+        Type: TaxTransactionLineItemType
     }
 
-type TaxCalculationLineItem with
-    static member New(amount: int, amountTax: int, id: string, livemode: bool, metadata: Map<string, string> option, product: string option, quantity: int, reference: string, taxBehavior: TaxCalculationLineItemTaxBehavior, taxCode: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list option) =
+type TaxTransactionLineItem with
+    static member New(amount: int, amountTax: int, id: string, livemode: bool, metadata: Map<string, string> option, product: string option, quantity: int, reference: string, reversal: TaxProductResourceTaxTransactionLineItemResourceReversal option, taxBehavior: TaxTransactionLineItemTaxBehavior, taxCode: string, ``type``: TaxTransactionLineItemType) =
         {
             Amount = amount
             AmountTax = amountTax
@@ -1149,324 +1374,100 @@ type TaxCalculationLineItem with
             Product = product
             Quantity = quantity
             Reference = reference
+            Reversal = reversal
             TaxBehavior = taxBehavior
             TaxCode = taxCode
-            TaxBreakdown = taxBreakdown |> Option.flatten
+            Type = ``type``
         }
 
-module TaxCalculationLineItem =
+module TaxTransactionLineItem =
     ///String representing the object's type. Objects of the same type share the same value.
-    let object = "tax.calculation_line_item"
+    let object = "tax.transaction_line_item"
 
-/// The list of items the customer is purchasing.
-type TaxCalculationLineItems =
+/// The tax collected or refunded, by line item.
+type TaxTransactionLineItems =
     {
         /// Details about each object.
-        Data: TaxCalculationLineItem list
+        Data: TaxTransactionLineItem list
         /// True if this list has another page of items after this one that can be fetched.
         HasMore: bool
         /// The URL where this list can be accessed.
         Url: string
     }
 
-type TaxCalculationLineItems with
-    static member New(data: TaxCalculationLineItem list, hasMore: bool, url: string) =
+type TaxTransactionLineItems with
+    static member New(data: TaxTransactionLineItem list, hasMore: bool, url: string) =
         {
             Data = data
             HasMore = hasMore
             Url = url
         }
 
-module TaxCalculationLineItems =
+module TaxTransactionLineItems =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
-type TaxProductResourceTaxBreakdownTaxabilityReason =
-    | CustomerExempt
-    | NotCollecting
-    | NotSubjectToTax
-    | NotSupported
-    | PortionProductExempt
-    | PortionReducedRated
-    | PortionStandardRated
-    | ProductExempt
-    | ProductExemptHoliday
-    | ProportionallyRated
-    | ReducedRated
-    | ReverseCharge
-    | StandardRated
-    | TaxableBasisReduced
-    | ZeroRated
-
 [<Struct>]
-type TaxProductResourceTaxRateDetailsRateType =
-    | FlatAmount
-    | Percentage
+type TaxTransactionType =
+    | Reversal
+    | Transaction
 
-type TaxProductResourceTaxRateDetailsTaxType =
-    | AmusementTax
-    | CommunicationsTax
-    | Gst
-    | Hst
-    | Igst
-    | Jct
-    | LeaseTax
-    | Pst
-    | Qst
-    | RetailDeliveryFee
-    | Rst
-    | SalesTax
-    | ServiceTax
-    | Vat
-
-type TaxProductResourceTaxRateDetails =
+/// A Tax Transaction records the tax collected from or refunded to your customer.
+/// Related guide: [Calculate tax in your custom payment flow](https://docs.stripe.com/tax/custom#tax-transaction)
+type TaxTransaction =
     {
-        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        Country: IsoTypes.IsoCountryCode option
-        /// The amount of the tax rate when the `rate_type` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate.
-        FlatAmount: TaxRateFlatAmount option
-        /// The tax rate percentage as a string. For example, 8.5% is represented as `"8.5"`.
-        PercentageDecimal: string
-        /// Indicates the type of tax rate applied to the taxable amount. This value can be `null` when no tax applies to the location. This field is only present for TaxRates created by Stripe Tax.
-        RateType: TaxProductResourceTaxRateDetailsRateType option
-        /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
-        State: string option
-        /// The tax type, such as `vat` or `sales_tax`.
-        TaxType: TaxProductResourceTaxRateDetailsTaxType option
-    }
-
-type TaxProductResourceTaxRateDetails with
-    static member New(country: IsoTypes.IsoCountryCode option, flatAmount: TaxRateFlatAmount option, percentageDecimal: string, rateType: TaxProductResourceTaxRateDetailsRateType option, state: string option, taxType: TaxProductResourceTaxRateDetailsTaxType option) =
-        {
-            Country = country
-            FlatAmount = flatAmount
-            PercentageDecimal = percentageDecimal
-            RateType = rateType
-            State = state
-            TaxType = taxType
-        }
-
-type TaxProductResourceTaxBreakdown =
-    {
-        /// The amount of tax, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
-        Amount: int
-        /// Specifies whether the tax amount is included in the line item amount.
-        Inclusive: bool
-        TaxRateDetails: TaxProductResourceTaxRateDetails
-        /// The reasoning behind this tax, for example, if the product is tax exempt. We might extend the possible values for this field to support new tax rules.
-        TaxabilityReason: TaxProductResourceTaxBreakdownTaxabilityReason
-        /// The amount on which tax is calculated, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
-        TaxableAmount: int
-    }
-
-type TaxProductResourceTaxBreakdown with
-    static member New(amount: int, inclusive: bool, taxRateDetails: TaxProductResourceTaxRateDetails, taxabilityReason: TaxProductResourceTaxBreakdownTaxabilityReason, taxableAmount: int) =
-        {
-            Amount = amount
-            Inclusive = inclusive
-            TaxRateDetails = taxRateDetails
-            TaxabilityReason = taxabilityReason
-            TaxableAmount = taxableAmount
-        }
-
-[<Struct>]
-type TaxProductResourceTaxCalculationShippingCostTaxBehavior =
-    | Exclusive
-    | Inclusive
-
-type TaxProductResourceTaxCalculationShippingCost =
-    {
-        /// The shipping amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
-        Amount: int
-        /// The amount of tax calculated for shipping, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
-        AmountTax: int
-        /// The ID of an existing [ShippingRate](https://docs.stripe.com/api/shipping_rates/object).
-        ShippingRate: string option
-        /// Specifies whether the `amount` includes taxes. If `tax_behavior=inclusive`, then the amount includes taxes.
-        TaxBehavior: TaxProductResourceTaxCalculationShippingCostTaxBehavior
-        /// Detailed account of taxes relevant to shipping cost.
-        TaxBreakdown: TaxProductResourceLineItemTaxBreakdown list option
-        /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for shipping.
-        TaxCode: string
-    }
-
-type TaxProductResourceTaxCalculationShippingCost with
-    static member New(amount: int, amountTax: int, taxBehavior: TaxProductResourceTaxCalculationShippingCostTaxBehavior, taxCode: string, ?shippingRate: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list) =
-        {
-            Amount = amount
-            AmountTax = amountTax
-            TaxBehavior = taxBehavior
-            TaxCode = taxCode
-            ShippingRate = shippingRate
-            TaxBreakdown = taxBreakdown
-        }
-
-/// A Tax Calculation allows you to calculate the tax to collect from your customer.
-/// Related guide: [Calculate tax in your custom payment flow](https://docs.stripe.com/tax/custom)
-type TaxCalculation =
-    {
-        /// Total amount after taxes in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
-        AmountTotal: int
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// The ID of an existing [Customer](https://docs.stripe.com/api/customers/object) used for the resource.
         Customer: string option
         CustomerDetails: TaxProductResourceCustomerDetails
-        /// Timestamp of date at which the tax calculation will expire.
-        ExpiresAt: DateTime option
-        /// Unique identifier for the calculation.
-        Id: string option
-        /// The list of items the customer is purchasing.
-        LineItems: TaxCalculationLineItems option
+        /// Unique identifier for the transaction.
+        Id: string
+        /// The tax collected or refunded, by line item.
+        LineItems: TaxTransactionLineItems option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// The Unix timestamp representing when the tax liability is assumed or reduced.
+        PostedAt: DateTime
+        /// A custom unique identifier, such as 'myOrder_123'.
+        Reference: string
+        /// If `type=reversal`, contains information about what was reversed.
+        Reversal: TaxProductResourceTaxTransactionResourceReversal option
         /// The details of the ship from location, such as the address.
         ShipFromDetails: TaxProductResourceShipFromDetails option
-        /// The shipping cost details for the calculation.
-        ShippingCost: TaxProductResourceTaxCalculationShippingCost option
-        /// The amount of tax to be collected on top of the line item prices.
-        TaxAmountExclusive: int
-        /// The amount of tax already included in the line item prices.
-        TaxAmountInclusive: int
-        /// Breakdown of individual tax amounts that add up to the total.
-        TaxBreakdown: TaxProductResourceTaxBreakdown list
+        /// The shipping cost details for the transaction.
+        ShippingCost: TaxProductResourceTaxTransactionShippingCost option
         /// The calculation uses the tax rules and rates that are in effect at this timestamp. You can use a date up to 31 days in the past or up to 31 days in the future. If you use a future date, Stripe doesn't guarantee that the expected tax rules and rate being used match the actual rules and rate that will be in effect on that date. We deploy tax changes before their effective date, but not within a fixed window.
         TaxDate: DateTime
+        /// If `reversal`, this transaction reverses an earlier transaction.
+        Type: TaxTransactionType
     }
 
-type TaxCalculation with
-    static member New(amountTotal: int, currency: IsoTypes.IsoCurrencyCode, customer: string option, customerDetails: TaxProductResourceCustomerDetails, expiresAt: DateTime option, id: string option, livemode: bool, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxCalculationShippingCost option, taxAmountExclusive: int, taxAmountInclusive: int, taxBreakdown: TaxProductResourceTaxBreakdown list, taxDate: DateTime, ?lineItems: TaxCalculationLineItems option) =
+type TaxTransaction with
+    static member New(created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: string option, customerDetails: TaxProductResourceCustomerDetails, id: string, livemode: bool, metadata: Map<string, string> option, postedAt: DateTime, reference: string, reversal: TaxProductResourceTaxTransactionResourceReversal option, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxTransactionShippingCost option, taxDate: DateTime, ``type``: TaxTransactionType, ?lineItems: TaxTransactionLineItems option) =
         {
-            AmountTotal = amountTotal
+            Created = created
             Currency = currency
             Customer = customer
             CustomerDetails = customerDetails
-            ExpiresAt = expiresAt
             Id = id
             Livemode = livemode
+            Metadata = metadata
+            PostedAt = postedAt
+            Reference = reference
+            Reversal = reversal
             ShipFromDetails = shipFromDetails
             ShippingCost = shippingCost
-            TaxAmountExclusive = taxAmountExclusive
-            TaxAmountInclusive = taxAmountInclusive
-            TaxBreakdown = taxBreakdown
             TaxDate = taxDate
+            Type = ``type``
             LineItems = lineItems |> Option.flatten
         }
 
-module TaxCalculation =
+module TaxTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
-    let object = "tax.calculation"
-
-type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted =
-    {
-        /// The [Tax Transaction](https://docs.stripe.com/api/tax/transaction/object)
-        Transaction: string
-    }
-
-type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted with
-    static member New(transaction: string) =
-        {
-            Transaction = transaction
-        }
-
-[<Struct>]
-type TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason =
-    | AnotherPaymentAssociatedWithCalculation
-    | CalculationExpired
-    | CurrencyMismatch
-    | OriginalTransactionVoided
-    | UniqueReferenceViolation
-
-type TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored =
-    {
-        /// Details on why we couldn't commit the tax transaction.
-        Reason: TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason
-    }
-
-type TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored with
-    static member New(reason: TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason) =
-        {
-            Reason = reason
-        }
-
-[<Struct>]
-type TaxProductResourceTaxAssociationTransactionAttemptsStatus =
-    | Errored
-    | Committed
-
-type TaxProductResourceTaxAssociationTransactionAttempts =
-    {
-        Committed: TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted option
-        Errored: TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored option
-        /// The source of the tax transaction attempt. This is either a refund or a payment intent.
-        Source: string
-        /// The status of the transaction attempt. This can be `errored` or `committed`.
-        Status: TaxProductResourceTaxAssociationTransactionAttemptsStatus
-    }
-
-type TaxProductResourceTaxAssociationTransactionAttempts with
-    static member New(source: string, status: TaxProductResourceTaxAssociationTransactionAttemptsStatus, ?committed: TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted, ?errored: TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored) =
-        {
-            Source = source
-            Status = status
-            Committed = committed
-            Errored = errored
-        }
-
-/// A Tax Association exposes the Tax Transactions that Stripe attempted to create on your behalf based on the PaymentIntent input
-type TaxAssociation =
-    {
-        /// The [Tax Calculation](https://docs.stripe.com/api/tax/calculations/object) that was included in PaymentIntent.
-        Calculation: string
-        /// Unique identifier for the object.
-        Id: string
-        /// The [PaymentIntent](https://docs.stripe.com/api/payment_intents/object) that this Tax Association is tracking.
-        PaymentIntent: string
-        /// Information about the tax transactions linked to this payment intent
-        TaxTransactionAttempts: TaxProductResourceTaxAssociationTransactionAttempts list option
-    }
-
-type TaxAssociation with
-    static member New(calculation: string, id: string, paymentIntent: string, taxTransactionAttempts: TaxProductResourceTaxAssociationTransactionAttempts list option) =
-        {
-            Calculation = calculation
-            Id = id
-            PaymentIntent = paymentIntent
-            TaxTransactionAttempts = taxTransactionAttempts
-        }
-
-module TaxAssociation =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "tax.association"
-
-[<Struct>]
-type TaxIDsOwnerType =
-    | Account
-    | Application
-    | Customer
-    | Self
-
-type TaxIDsOwner =
-    {
-        /// The account being referenced when `type` is `account`.
-        Account: StripeId<Markers.Account> option
-        /// The Connect Application being referenced when `type` is `application`.
-        Application: StripeId<Markers.Application> option
-        /// The customer being referenced when `type` is `customer`.
-        Customer: StripeId<Markers.Customer> option
-        /// The Account representing the customer being referenced when `type` is `customer`.
-        CustomerAccount: string option
-        /// Type of owner referenced.
-        Type: TaxIDsOwnerType
-    }
-
-type TaxIDsOwner with
-    static member New(customerAccount: string option, ``type``: TaxIDsOwnerType, ?account: StripeId<Markers.Account>, ?application: StripeId<Markers.Application>, ?customer: StripeId<Markers.Customer>) =
-        {
-            CustomerAccount = customerAccount
-            Type = ``type``
-            Account = account
-            Application = application
-            Customer = customer
-        }
+    let object = "tax.transaction"
 
