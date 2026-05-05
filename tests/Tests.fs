@@ -1829,3 +1829,86 @@ module Tests =
                 | Error e ->
                     Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
                 | Ok _ -> ()
+
+    // =========================================================================
+    // N. DU serialization round-trip edge cases
+    // =========================================================================
+
+    /// Tests that guard against generator regressions for three classes of DU
+    /// case that cannot be correctly round-tripped by the default pascalToSnake
+    /// conversion and therefore require an explicit [<JsonPropertyName>] attribute:
+    ///
+    ///  1. "none" – the standalone value must not gain an apostrophe suffix.
+    ///  2. Digit-suffix – e.g. "p24" must not become "p_24".
+    ///  3. Single-letter segment – e.g. "heating_plumbing_a_c" must not collapse
+    ///     the single-letter segments to "heating_plumbing_ac".
+    [<TestFixture>]
+    type DuSerializationRoundTripTests () =
+
+        let opts = Json.StripeConverter.sharedOptions.Value
+
+        // ----- Bug 1: "none" standalone value -----
+
+        [<Test>]
+        member _.``'none_of_these_apply' serializes correctly``() =
+            let v = Stripe.PaymentMethod.AccountBusinessProfileMinorityOwnedBusinessDesignation.NoneOfTheseApply
+            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"none_of_these_apply\"")
+
+        [<Test>]
+        member _.``'none_of_these_apply' deserializes correctly``() =
+            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.AccountBusinessProfileMinorityOwnedBusinessDesignation>("\"none_of_these_apply\"", opts)
+            Assert.That(result, Is.EqualTo Stripe.PaymentMethod.AccountBusinessProfileMinorityOwnedBusinessDesignation.NoneOfTheseApply)
+
+        // ----- Bug 2: digit-suffix values -----
+
+        [<Test>]
+        member _.``'p24' serializes correctly``() =
+            let v = Stripe.PaymentMethod.SourceType.P24
+            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"p24\"")
+
+        [<Test>]
+        member _.``'p24' deserializes correctly``() =
+            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.SourceType>("\"p24\"", opts)
+            Assert.That(result, Is.EqualTo Stripe.PaymentMethod.SourceType.P24)
+
+        [<Test>]
+        member _.``'etransfer_pocztowy24' serializes correctly``() =
+            let v = StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank.EtransferPocztowy24
+            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"etransfer_pocztowy24\"")
+
+        [<Test>]
+        member _.``'etransfer_pocztowy24' deserializes correctly``() =
+            let result = System.Text.Json.JsonSerializer.Deserialize<StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank>("\"etransfer_pocztowy24\"", opts)
+            Assert.That(result, Is.EqualTo StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank.EtransferPocztowy24)
+
+        [<Test>]
+        member _.``'santander_przelew24' serializes correctly``() =
+            let v = StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank.SantanderPrzelew24
+            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"santander_przelew24\"")
+
+        [<Test>]
+        member _.``'santander_przelew24' deserializes correctly``() =
+            let result = System.Text.Json.JsonSerializer.Deserialize<StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank>("\"santander_przelew24\"", opts)
+            Assert.That(result, Is.EqualTo StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank.SantanderPrzelew24)
+
+        // ----- Bug 3: single-letter-segment values -----
+
+        [<Test>]
+        member _.``'heating_plumbing_a_c' serializes correctly``() =
+            let v = Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories.HeatingPlumbingAC
+            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"heating_plumbing_a_c\"")
+
+        [<Test>]
+        member _.``'heating_plumbing_a_c' deserializes correctly``() =
+            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories>("\"heating_plumbing_a_c\"", opts)
+            Assert.That(result, Is.EqualTo Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories.HeatingPlumbingAC)
+
+        [<Test>]
+        member _.``'t_ui_travel_germany' serializes correctly``() =
+            let v = Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories.TUiTravelGermany
+            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"t_ui_travel_germany\"")
+
+        [<Test>]
+        member _.``'t_ui_travel_germany' deserializes correctly``() =
+            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories>("\"t_ui_travel_germany\"", opts)
+            Assert.That(result, Is.EqualTo Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories.TUiTravelGermany)
