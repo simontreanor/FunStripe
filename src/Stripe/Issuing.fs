@@ -115,7 +115,7 @@ type IssuingNetworkTokenWalletProviderReasonCodes =
     | AccountTooNewSinceLaunch
     | AdditionalDevice
     | DataExpired
-    | DeferIdVDecision
+    | [<JsonPropertyName("defer_id_v_decision")>] DeferIdVDecision
     | DeviceRecentlyLost
     | GoodActivityHistory
     | HasSuspendedTokens

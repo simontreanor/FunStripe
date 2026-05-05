@@ -1041,7 +1041,7 @@ module Subscriptions =
         | Multibanco
         | NaverPay
         | NzBankAccount
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -2349,7 +2349,7 @@ module Subscriptions =
         | Multibanco
         | NaverPay
         | NzBankAccount
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow

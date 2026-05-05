@@ -133,7 +133,7 @@ type ConfirmationTokensResourcePaymentMethodPreviewType =
     | NaverPay
     | NzBankAccount
     | Oxxo
-    | P24
+    | [<JsonPropertyName("p24")>] P24
     | PayByBank
     | Payco
     | Paynow

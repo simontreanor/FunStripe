@@ -134,10 +134,10 @@ type SourceTransactionType =
     | Ideal
     | Klarna
     | Multibanco
-    | P24
+    | [<JsonPropertyName("p24")>] P24
     | SepaDebit
     | Sofort
-    | ThreeDSecure
+    | [<JsonPropertyName("three_d_secure")>] ThreeDSecure
     | Wechat
 
 /// Some payment methods have no required amount that a customer must send.

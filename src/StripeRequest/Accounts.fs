@@ -63,7 +63,7 @@ module Accounts =
     type Create'BusinessProfileMinorityOwnedBusinessDesignation =
         | LgbtqiOwnedBusiness
         | MinorityOwnedBusiness
-        | None'OfTheseApply
+        | NoneOfTheseApply
         | PreferNotToAnswer
         | WomenOwnedBusiness
 
@@ -2737,7 +2737,7 @@ module Accounts =
     type Update'BusinessProfileMinorityOwnedBusinessDesignation =
         | LgbtqiOwnedBusiness
         | MinorityOwnedBusiness
-        | None'OfTheseApply
+        | NoneOfTheseApply
         | PreferNotToAnswer
         | WomenOwnedBusiness
 

@@ -169,7 +169,7 @@ module CheckoutSessions =
         | Inter
         | Lato
         | Lora
-        | MPlus1Code
+        | [<JsonPropertyName("m_plus_1_code")>] MPlus1Code
         | Montserrat
         | NotoSans
         | NotoSansJp
@@ -626,7 +626,7 @@ module CheckoutSessions =
         | NaverPay
         | NzBankAccount
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -3023,7 +3023,7 @@ module CheckoutSessions =
         | NaverPay
         | NzBankAccount
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow

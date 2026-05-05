@@ -161,7 +161,7 @@ type IssuingCardAuthorizationControlsAllowedCategories =
     | HardwareStores
     | HealthAndBeautySpas
     | HearingAidsSalesAndSupplies
-    | HeatingPlumbingAC
+    | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
     | HobbyToyAndGameShops
     | HomeSupplyWarehouseStores
     | Hospitals
@@ -266,7 +266,7 @@ type IssuingCardAuthorizationControlsAllowedCategories =
     | StationaryOfficeSuppliesPrintingAndWritingPaper
     | StationeryStoresOfficeAndSchoolSupplyStores
     | SwimmingPoolsSales
-    | TUiTravelGermany
+    | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
     | TailorsAlterations
     | TaxPaymentsGovernmentAgencies
     | TaxPreparationServices
@@ -289,7 +289,7 @@ type IssuingCardAuthorizationControlsAllowedCategories =
     | TruckUtilityTrailerRentals
     | TypesettingPlateMakingAndRelatedServices
     | TypewriterStores
-    | USFederalGovernmentAgenciesOrDepartments
+    | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
     | UniformsCommercialClothing
     | UsedMerchandiseAndSecondhandStores
     | Utilities
@@ -463,7 +463,7 @@ type IssuingCardAuthorizationControlsBlockedCategories =
     | HardwareStores
     | HealthAndBeautySpas
     | HearingAidsSalesAndSupplies
-    | HeatingPlumbingAC
+    | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
     | HobbyToyAndGameShops
     | HomeSupplyWarehouseStores
     | Hospitals
@@ -568,7 +568,7 @@ type IssuingCardAuthorizationControlsBlockedCategories =
     | StationaryOfficeSuppliesPrintingAndWritingPaper
     | StationeryStoresOfficeAndSchoolSupplyStores
     | SwimmingPoolsSales
-    | TUiTravelGermany
+    | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
     | TailorsAlterations
     | TaxPaymentsGovernmentAgencies
     | TaxPreparationServices
@@ -591,7 +591,7 @@ type IssuingCardAuthorizationControlsBlockedCategories =
     | TruckUtilityTrailerRentals
     | TypesettingPlateMakingAndRelatedServices
     | TypewriterStores
-    | USFederalGovernmentAgenciesOrDepartments
+    | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
     | UniformsCommercialClothing
     | UsedMerchandiseAndSecondhandStores
     | Utilities
@@ -760,7 +760,7 @@ type IssuingCardSpendingLimitCategories =
     | HardwareStores
     | HealthAndBeautySpas
     | HearingAidsSalesAndSupplies
-    | HeatingPlumbingAC
+    | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
     | HobbyToyAndGameShops
     | HomeSupplyWarehouseStores
     | Hospitals
@@ -865,7 +865,7 @@ type IssuingCardSpendingLimitCategories =
     | StationaryOfficeSuppliesPrintingAndWritingPaper
     | StationeryStoresOfficeAndSchoolSupplyStores
     | SwimmingPoolsSales
-    | TUiTravelGermany
+    | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
     | TailorsAlterations
     | TaxPaymentsGovernmentAgencies
     | TaxPreparationServices
@@ -888,7 +888,7 @@ type IssuingCardSpendingLimitCategories =
     | TruckUtilityTrailerRentals
     | TypesettingPlateMakingAndRelatedServices
     | TypewriterStores
-    | USFederalGovernmentAgenciesOrDepartments
+    | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
     | UniformsCommercialClothing
     | UsedMerchandiseAndSecondhandStores
     | Utilities

@@ -548,7 +548,7 @@ module IssuingCardholders =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -653,7 +653,7 @@ module IssuingCardholders =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -676,7 +676,7 @@ module IssuingCardholders =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -849,7 +849,7 @@ module IssuingCardholders =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -954,7 +954,7 @@ module IssuingCardholders =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -977,7 +977,7 @@ module IssuingCardholders =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -1146,7 +1146,7 @@ module IssuingCardholders =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -1251,7 +1251,7 @@ module IssuingCardholders =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -1274,7 +1274,7 @@ module IssuingCardholders =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -1779,7 +1779,7 @@ module IssuingCardholders =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -1884,7 +1884,7 @@ module IssuingCardholders =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -1907,7 +1907,7 @@ module IssuingCardholders =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -2080,7 +2080,7 @@ module IssuingCardholders =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -2185,7 +2185,7 @@ module IssuingCardholders =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -2208,7 +2208,7 @@ module IssuingCardholders =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -2377,7 +2377,7 @@ module IssuingCardholders =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -2482,7 +2482,7 @@ module IssuingCardholders =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -2505,7 +2505,7 @@ module IssuingCardholders =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -3044,7 +3044,7 @@ module IssuingCards =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -3149,7 +3149,7 @@ module IssuingCards =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -3172,7 +3172,7 @@ module IssuingCards =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -3345,7 +3345,7 @@ module IssuingCards =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -3450,7 +3450,7 @@ module IssuingCards =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -3473,7 +3473,7 @@ module IssuingCards =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -3642,7 +3642,7 @@ module IssuingCards =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -3747,7 +3747,7 @@ module IssuingCards =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -3770,7 +3770,7 @@ module IssuingCards =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -4241,7 +4241,7 @@ module IssuingCards =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -4346,7 +4346,7 @@ module IssuingCards =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -4369,7 +4369,7 @@ module IssuingCards =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -4542,7 +4542,7 @@ module IssuingCards =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -4647,7 +4647,7 @@ module IssuingCards =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -4670,7 +4670,7 @@ module IssuingCards =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -4839,7 +4839,7 @@ module IssuingCards =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -4944,7 +4944,7 @@ module IssuingCards =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -4967,7 +4967,7 @@ module IssuingCards =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities

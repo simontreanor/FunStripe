@@ -633,7 +633,7 @@ module Invoices =
         | Multibanco
         | NaverPay
         | NzBankAccount
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -680,7 +680,7 @@ module Invoices =
         | IncludeInclusiveTax
 
     type Create'RenderingPdfPageSize =
-        | A4
+        | [<JsonPropertyName("a4")>] A4
         | Auto
         | Letter
 
@@ -1663,7 +1663,7 @@ module Invoices =
         | Multibanco
         | NaverPay
         | NzBankAccount
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -1706,7 +1706,7 @@ module Invoices =
         | IncludeInclusiveTax
 
     type Update'RenderingPdfPageSize =
-        | A4
+        | [<JsonPropertyName("a4")>] A4
         | Auto
         | Letter
 

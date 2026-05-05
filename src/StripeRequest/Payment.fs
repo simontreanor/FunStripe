@@ -393,7 +393,7 @@ module PaymentIntents =
         | NaverPay
         | NzBankAccount
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -687,7 +687,7 @@ module PaymentIntents =
         | ErsteBankUndSparkassen
         | HypoAlpeadriabankInternationalAg
         | HypoBankBurgenlandAktiengesellschaft
-        | HypoNoeLbFurNiederosterreichUWien
+        | [<JsonPropertyName("hypo_noe_lb_fur_niederosterreich_u_wien")>] HypoNoeLbFurNiederosterreichUWien
         | HypoOberosterreichSalzburgSteiermark
         | HypoTirolBankAg
         | HypoVorarlbergBankAg
@@ -770,7 +770,7 @@ module PaymentIntents =
         | Knab
         | Mollie
         | Moneyou
-        | N26
+        | [<JsonPropertyName("n26")>] N26
         | Nn
         | Rabobank
         | Regiobank
@@ -888,7 +888,7 @@ module PaymentIntents =
         | CitiHandlowy
         | CreditAgricole
         | Envelobank
-        | EtransferPocztowy24
+        | [<JsonPropertyName("etransfer_pocztowy24")>] EtransferPocztowy24
         | GetinBank
         | Ideabank
         | Ing
@@ -896,9 +896,9 @@ module PaymentIntents =
         | MbankMtransfer
         | NestPrzelew
         | NoblePay
-        | PbacZIpko
+        | [<JsonPropertyName("pbac_z_ipko")>] PbacZIpko
         | PlusBank
-        | SantanderPrzelew24
+        | [<JsonPropertyName("santander_przelew24")>] SantanderPrzelew24
         | TmobileUsbugiBankowe
         | ToyotaBank
         | Velobank
@@ -1017,7 +1017,7 @@ module PaymentIntents =
         | NaverPay
         | NzBankAccount
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -4350,7 +4350,7 @@ module PaymentIntents =
         | NaverPay
         | NzBankAccount
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -4581,7 +4581,7 @@ module PaymentIntents =
         | ErsteBankUndSparkassen
         | HypoAlpeadriabankInternationalAg
         | HypoBankBurgenlandAktiengesellschaft
-        | HypoNoeLbFurNiederosterreichUWien
+        | [<JsonPropertyName("hypo_noe_lb_fur_niederosterreich_u_wien")>] HypoNoeLbFurNiederosterreichUWien
         | HypoOberosterreichSalzburgSteiermark
         | HypoTirolBankAg
         | HypoVorarlbergBankAg
@@ -4664,7 +4664,7 @@ module PaymentIntents =
         | Knab
         | Mollie
         | Moneyou
-        | N26
+        | [<JsonPropertyName("n26")>] N26
         | Nn
         | Rabobank
         | Regiobank
@@ -4782,7 +4782,7 @@ module PaymentIntents =
         | CitiHandlowy
         | CreditAgricole
         | Envelobank
-        | EtransferPocztowy24
+        | [<JsonPropertyName("etransfer_pocztowy24")>] EtransferPocztowy24
         | GetinBank
         | Ideabank
         | Ing
@@ -4790,9 +4790,9 @@ module PaymentIntents =
         | MbankMtransfer
         | NestPrzelew
         | NoblePay
-        | PbacZIpko
+        | [<JsonPropertyName("pbac_z_ipko")>] PbacZIpko
         | PlusBank
-        | SantanderPrzelew24
+        | [<JsonPropertyName("santander_przelew24")>] SantanderPrzelew24
         | TmobileUsbugiBankowe
         | ToyotaBank
         | Velobank
@@ -4911,7 +4911,7 @@ module PaymentIntents =
         | NaverPay
         | NzBankAccount
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -8692,7 +8692,7 @@ module PaymentIntentsConfirm =
         | NaverPay
         | NzBankAccount
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -9035,7 +9035,7 @@ module PaymentIntentsConfirm =
         | ErsteBankUndSparkassen
         | HypoAlpeadriabankInternationalAg
         | HypoBankBurgenlandAktiengesellschaft
-        | HypoNoeLbFurNiederosterreichUWien
+        | [<JsonPropertyName("hypo_noe_lb_fur_niederosterreich_u_wien")>] HypoNoeLbFurNiederosterreichUWien
         | HypoOberosterreichSalzburgSteiermark
         | HypoTirolBankAg
         | HypoVorarlbergBankAg
@@ -9118,7 +9118,7 @@ module PaymentIntentsConfirm =
         | Knab
         | Mollie
         | Moneyou
-        | N26
+        | [<JsonPropertyName("n26")>] N26
         | Nn
         | Rabobank
         | Regiobank
@@ -9236,7 +9236,7 @@ module PaymentIntentsConfirm =
         | CitiHandlowy
         | CreditAgricole
         | Envelobank
-        | EtransferPocztowy24
+        | [<JsonPropertyName("etransfer_pocztowy24")>] EtransferPocztowy24
         | GetinBank
         | Ideabank
         | Ing
@@ -9244,9 +9244,9 @@ module PaymentIntentsConfirm =
         | MbankMtransfer
         | NestPrzelew
         | NoblePay
-        | PbacZIpko
+        | [<JsonPropertyName("pbac_z_ipko")>] PbacZIpko
         | PlusBank
-        | SantanderPrzelew24
+        | [<JsonPropertyName("santander_przelew24")>] SantanderPrzelew24
         | TmobileUsbugiBankowe
         | ToyotaBank
         | Velobank
@@ -9365,7 +9365,7 @@ module PaymentIntentsConfirm =
         | NaverPay
         | NzBankAccount
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -13603,7 +13603,7 @@ module PaymentLinks =
         | Mobilepay
         | Multibanco
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Paynow
         | Paypal
@@ -14844,7 +14844,7 @@ module PaymentLinks =
         | Mobilepay
         | Multibanco
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Paynow
         | Paypal
@@ -15713,7 +15713,7 @@ module PaymentMethods =
         | ErsteBankUndSparkassen
         | HypoAlpeadriabankInternationalAg
         | HypoBankBurgenlandAktiengesellschaft
-        | HypoNoeLbFurNiederosterreichUWien
+        | [<JsonPropertyName("hypo_noe_lb_fur_niederosterreich_u_wien")>] HypoNoeLbFurNiederosterreichUWien
         | HypoOberosterreichSalzburgSteiermark
         | HypoTirolBankAg
         | HypoVorarlbergBankAg
@@ -15796,7 +15796,7 @@ module PaymentMethods =
         | Knab
         | Mollie
         | Moneyou
-        | N26
+        | [<JsonPropertyName("n26")>] N26
         | Nn
         | Rabobank
         | Regiobank
@@ -15914,7 +15914,7 @@ module PaymentMethods =
         | CitiHandlowy
         | CreditAgricole
         | Envelobank
-        | EtransferPocztowy24
+        | [<JsonPropertyName("etransfer_pocztowy24")>] EtransferPocztowy24
         | GetinBank
         | Ideabank
         | Ing
@@ -15922,9 +15922,9 @@ module PaymentMethods =
         | MbankMtransfer
         | NestPrzelew
         | NoblePay
-        | PbacZIpko
+        | [<JsonPropertyName("pbac_z_ipko")>] PbacZIpko
         | PlusBank
-        | SantanderPrzelew24
+        | [<JsonPropertyName("santander_przelew24")>] SantanderPrzelew24
         | TmobileUsbugiBankowe
         | ToyotaBank
         | Velobank
@@ -16045,7 +16045,7 @@ module PaymentMethods =
         | NaverPay
         | NzBankAccount
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow

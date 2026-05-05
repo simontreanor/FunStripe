@@ -47,16 +47,16 @@ module DeletedTerminalLocation =
 
 type DeletedTerminalReaderDeviceType =
     | BbposChipper2x
-    | BbposWisepad3
-    | BbposWiseposE
+    | [<JsonPropertyName("bbpos_wisepad3")>] BbposWisepad3
+    | [<JsonPropertyName("bbpos_wisepos_e")>] BbposWiseposE
     | MobilePhoneReader
-    | SimulatedStripeS700
-    | SimulatedStripeS710
-    | SimulatedWiseposE
-    | StripeM2
-    | StripeS700
-    | StripeS710
-    | VerifoneP400
+    | [<JsonPropertyName("simulated_stripe_s700")>] SimulatedStripeS700
+    | [<JsonPropertyName("simulated_stripe_s710")>] SimulatedStripeS710
+    | [<JsonPropertyName("simulated_wisepos_e")>] SimulatedWiseposE
+    | [<JsonPropertyName("stripe_m2")>] StripeM2
+    | [<JsonPropertyName("stripe_s700")>] StripeS700
+    | [<JsonPropertyName("stripe_s710")>] StripeS710
+    | [<JsonPropertyName("verifone_P400")>] VerifoneP400
 
 type DeletedTerminalReader =
     {
@@ -457,16 +457,16 @@ module TerminalOnboardingLink =
 
 type TerminalReaderDeviceType =
     | BbposChipper2x
-    | BbposWisepad3
-    | BbposWiseposE
+    | [<JsonPropertyName("bbpos_wisepad3")>] BbposWisepad3
+    | [<JsonPropertyName("bbpos_wisepos_e")>] BbposWiseposE
     | MobilePhoneReader
-    | SimulatedStripeS700
-    | SimulatedStripeS710
-    | SimulatedWiseposE
-    | StripeM2
-    | StripeS700
-    | StripeS710
-    | VerifoneP400
+    | [<JsonPropertyName("simulated_stripe_s700")>] SimulatedStripeS700
+    | [<JsonPropertyName("simulated_stripe_s710")>] SimulatedStripeS710
+    | [<JsonPropertyName("simulated_wisepos_e")>] SimulatedWiseposE
+    | [<JsonPropertyName("stripe_m2")>] StripeM2
+    | [<JsonPropertyName("stripe_s700")>] StripeS700
+    | [<JsonPropertyName("stripe_s710")>] StripeS710
+    | [<JsonPropertyName("verifone_P400")>] VerifoneP400
 
 /// Represents custom text to be displayed when collecting the input using a reader
 type TerminalReaderReaderResourceCustomText =

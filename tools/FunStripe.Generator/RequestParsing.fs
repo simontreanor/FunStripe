@@ -117,7 +117,7 @@ module RequestParsing =
 
     ///Remove/replace problematic chars/strings from discriminated-union names
     let clean (s: string) =
-        s.Replace("*", "Asterix").Replace("GMT+", "GMTplus").Replace("GMT-", "GMTminus").Replace("/", "").Replace("-", "").Replace(" ", "").Replace("none", "none'")
+        s.Replace("*", "Asterix").Replace("GMT+", "GMTplus").Replace("GMT-", "GMTminus").Replace("/", "").Replace("-", "").Replace(" ", "")
 
     ///Prepend `Numeric` to discriminated-union names that start with numbers, not permissible in F#
     let escapeNumeric s =

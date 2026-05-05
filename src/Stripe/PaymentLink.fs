@@ -75,7 +75,7 @@ type PaymentLinkPaymentMethodTypes =
     | Mobilepay
     | Multibanco
     | Oxxo
-    | P24
+    | [<JsonPropertyName("p24")>] P24
     | PayByBank
     | Paynow
     | Paypal

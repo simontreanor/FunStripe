@@ -166,7 +166,7 @@ module TestHelpersConfirmationTokens =
         | ErsteBankUndSparkassen
         | HypoAlpeadriabankInternationalAg
         | HypoBankBurgenlandAktiengesellschaft
-        | HypoNoeLbFurNiederosterreichUWien
+        | [<JsonPropertyName("hypo_noe_lb_fur_niederosterreich_u_wien")>] HypoNoeLbFurNiederosterreichUWien
         | HypoOberosterreichSalzburgSteiermark
         | HypoTirolBankAg
         | HypoVorarlbergBankAg
@@ -249,7 +249,7 @@ module TestHelpersConfirmationTokens =
         | Knab
         | Mollie
         | Moneyou
-        | N26
+        | [<JsonPropertyName("n26")>] N26
         | Nn
         | Rabobank
         | Regiobank
@@ -367,7 +367,7 @@ module TestHelpersConfirmationTokens =
         | CitiHandlowy
         | CreditAgricole
         | Envelobank
-        | EtransferPocztowy24
+        | [<JsonPropertyName("etransfer_pocztowy24")>] EtransferPocztowy24
         | GetinBank
         | Ideabank
         | Ing
@@ -375,9 +375,9 @@ module TestHelpersConfirmationTokens =
         | MbankMtransfer
         | NestPrzelew
         | NoblePay
-        | PbacZIpko
+        | [<JsonPropertyName("pbac_z_ipko")>] PbacZIpko
         | PlusBank
-        | SantanderPrzelew24
+        | [<JsonPropertyName("santander_przelew24")>] SantanderPrzelew24
         | TmobileUsbugiBankowe
         | ToyotaBank
         | Velobank
@@ -496,7 +496,7 @@ module TestHelpersConfirmationTokens =
         | NaverPay
         | NzBankAccount
         | Oxxo
-        | P24
+        | [<JsonPropertyName("p24")>] P24
         | PayByBank
         | Payco
         | Paynow
@@ -1394,7 +1394,7 @@ module TestHelpersIssuingAuthorizations =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -1498,7 +1498,7 @@ module TestHelpersIssuingAuthorizations =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -1521,7 +1521,7 @@ module TestHelpersIssuingAuthorizations =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -2916,7 +2916,7 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -3020,7 +3020,7 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -3043,7 +3043,7 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities
@@ -3602,7 +3602,7 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
         | HardwareStores
         | HealthAndBeautySpas
         | HearingAidsSalesAndSupplies
-        | HeatingPlumbingAC
+        | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
         | HobbyToyAndGameShops
         | HomeSupplyWarehouseStores
         | Hospitals
@@ -3706,7 +3706,7 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
         | StationaryOfficeSuppliesPrintingAndWritingPaper
         | StationeryStoresOfficeAndSchoolSupplyStores
         | SwimmingPoolsSales
-        | TUiTravelGermany
+        | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
         | TailorsAlterations
         | TaxPaymentsGovernmentAgencies
         | TaxPreparationServices
@@ -3729,7 +3729,7 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
         | TruckUtilityTrailerRentals
         | TypesettingPlateMakingAndRelatedServices
         | TypewriterStores
-        | USFederalGovernmentAgenciesOrDepartments
+        | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
         | UniformsCommercialClothing
         | UsedMerchandiseAndSecondhandStores
         | Utilities

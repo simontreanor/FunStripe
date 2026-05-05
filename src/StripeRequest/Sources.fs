@@ -102,7 +102,7 @@ module Sources =
         | Variable
 
     type Create'MandateNotificationMethod =
-        | DeprecatedNone'
+        | DeprecatedNone
         | Email
         | Manual
         | [<JsonPropertyName("none")>] None'
@@ -522,7 +522,7 @@ module Sources =
         | Variable
 
     type Update'MandateNotificationMethod =
-        | DeprecatedNone'
+        | DeprecatedNone
         | Email
         | Manual
         | [<JsonPropertyName("none")>] None'

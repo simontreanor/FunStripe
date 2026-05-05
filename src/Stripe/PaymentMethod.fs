@@ -869,11 +869,11 @@ type SourceType =
     | Ideal
     | Klarna
     | Multibanco
-    | P24
+    | [<JsonPropertyName("p24")>] P24
     | SepaCreditTransfer
     | SepaDebit
     | Sofort
-    | ThreeDSecure
+    | [<JsonPropertyName("three_d_secure")>] ThreeDSecure
     | Wechat
 
 type SourceTypeAchCreditTransfer =
@@ -1641,7 +1641,7 @@ type SubscriptionsResourcePaymentSettingsPaymentMethodTypes =
     | Multibanco
     | NaverPay
     | NzBankAccount
-    | P24
+    | [<JsonPropertyName("p24")>] P24
     | PayByBank
     | Payco
     | Paynow
@@ -3265,7 +3265,7 @@ type ApiErrorsCode =
     | AccountInformationMismatch
     | AccountInvalid
     | AccountNumberInvalid
-    | AccountTokenRequiredForV2Account
+    | [<JsonPropertyName("account_token_required_for_v2_account")>] AccountTokenRequiredForV2Account
     | AcssDebitSessionIncomplete
     | ActionBlocked
     | AlipayUpgradeRequired
@@ -3683,7 +3683,7 @@ type PaymentIntentExcludedPaymentMethodTypes =
     | NaverPay
     | NzBankAccount
     | Oxxo
-    | P24
+    | [<JsonPropertyName("p24")>] P24
     | PayByBank
     | Payco
     | Paynow
@@ -5328,7 +5328,7 @@ type PaymentMethodDetailsCardPresentReadMethod =
     | ContactlessEmv
     | ContactlessMagstripeMode
     | MagneticStripeFallback
-    | MagneticStripeTrack2
+    | [<JsonPropertyName("magnetic_stripe_track2")>] MagneticStripeTrack2
 
 [<Struct>]
 type PaymentMethodDetailsCardPresentReceiptAccountType =
@@ -5593,7 +5593,7 @@ type PaymentMethodCardPresentReadMethod =
     | ContactlessEmv
     | ContactlessMagstripeMode
     | MagneticStripeFallback
-    | MagneticStripeTrack2
+    | [<JsonPropertyName("magnetic_stripe_track2")>] MagneticStripeTrack2
 
 type PaymentMethodCardPresent =
     {
@@ -5682,7 +5682,7 @@ type PaymentMethodEpsBank =
     | ErsteBankUndSparkassen
     | HypoAlpeadriabankInternationalAg
     | HypoBankBurgenlandAktiengesellschaft
-    | HypoNoeLbFurNiederosterreichUWien
+    | [<JsonPropertyName("hypo_noe_lb_fur_niederosterreich_u_wien")>] HypoNoeLbFurNiederosterreichUWien
     | HypoOberosterreichSalzburgSteiermark
     | HypoTirolBankAg
     | HypoVorarlbergBankAg
@@ -5754,7 +5754,7 @@ type PaymentMethodIdealBank =
     | Knab
     | Mollie
     | Moneyou
-    | N26
+    | [<JsonPropertyName("n26")>] N26
     | Nn
     | Rabobank
     | Regiobank
@@ -5814,7 +5814,7 @@ type PaymentMethodInteracPresentReadMethod =
     | ContactlessEmv
     | ContactlessMagstripeMode
     | MagneticStripeFallback
-    | MagneticStripeTrack2
+    | [<JsonPropertyName("magnetic_stripe_track2")>] MagneticStripeTrack2
 
 type PaymentMethodInteracPresent =
     {
@@ -5964,7 +5964,7 @@ type PaymentMethodP24Bank =
     | CitiHandlowy
     | CreditAgricole
     | Envelobank
-    | EtransferPocztowy24
+    | [<JsonPropertyName("etransfer_pocztowy24")>] EtransferPocztowy24
     | GetinBank
     | Ideabank
     | Ing
@@ -5972,9 +5972,9 @@ type PaymentMethodP24Bank =
     | MbankMtransfer
     | NestPrzelew
     | NoblePay
-    | PbacZIpko
+    | [<JsonPropertyName("pbac_z_ipko")>] PbacZIpko
     | PlusBank
-    | SantanderPrzelew24
+    | [<JsonPropertyName("santander_przelew24")>] SantanderPrzelew24
     | TmobileUsbugiBankowe
     | ToyotaBank
     | Velobank
@@ -6102,7 +6102,7 @@ type PaymentMethodType =
     | NaverPay
     | NzBankAccount
     | Oxxo
-    | P24
+    | [<JsonPropertyName("p24")>] P24
     | PayByBank
     | Payco
     | Paynow
@@ -6352,7 +6352,7 @@ type SetupIntentExcludedPaymentMethodTypes =
     | NaverPay
     | NzBankAccount
     | Oxxo
-    | P24
+    | [<JsonPropertyName("p24")>] P24
     | PayByBank
     | Payco
     | Paynow
@@ -8088,7 +8088,7 @@ type PaymentMethodDetailsEpsBank =
     | ErsteBankUndSparkassen
     | HypoAlpeadriabankInternationalAg
     | HypoBankBurgenlandAktiengesellschaft
-    | HypoNoeLbFurNiederosterreichUWien
+    | [<JsonPropertyName("hypo_noe_lb_fur_niederosterreich_u_wien")>] HypoNoeLbFurNiederosterreichUWien
     | HypoOberosterreichSalzburgSteiermark
     | HypoTirolBankAg
     | HypoVorarlbergBankAg
@@ -8182,7 +8182,7 @@ type PaymentMethodDetailsIdealBank =
     | Knab
     | Mollie
     | Moneyou
-    | N26
+    | [<JsonPropertyName("n26")>] N26
     | Nn
     | Rabobank
     | Regiobank
@@ -8268,7 +8268,7 @@ type PaymentMethodDetailsInteracPresentReadMethod =
     | ContactlessEmv
     | ContactlessMagstripeMode
     | MagneticStripeFallback
-    | MagneticStripeTrack2
+    | [<JsonPropertyName("magnetic_stripe_track2")>] MagneticStripeTrack2
 
 [<Struct>]
 type PaymentMethodDetailsInteracPresentReceiptAccountType =
@@ -8529,7 +8529,7 @@ type PaymentMethodDetailsP24Bank =
     | CitiHandlowy
     | CreditAgricole
     | Envelobank
-    | EtransferPocztowy24
+    | [<JsonPropertyName("etransfer_pocztowy24")>] EtransferPocztowy24
     | GetinBank
     | Ideabank
     | Ing
@@ -8537,9 +8537,9 @@ type PaymentMethodDetailsP24Bank =
     | MbankMtransfer
     | NestPrzelew
     | NoblePay
-    | PbacZIpko
+    | [<JsonPropertyName("pbac_z_ipko")>] PbacZIpko
     | PlusBank
-    | SantanderPrzelew24
+    | [<JsonPropertyName("santander_przelew24")>] SantanderPrzelew24
     | TmobileUsbugiBankowe
     | ToyotaBank
     | Velobank
@@ -10287,7 +10287,7 @@ type IssuingDisputeEvidence =
 
 type IssuingDisputeLossReason =
     | CardholderAuthenticationIssuerLiability
-    | Eci5TokenTransactionWithTavv
+    | [<JsonPropertyName("eci5_token_transaction_with_tavv")>] Eci5TokenTransactionWithTavv
     | ExcessDisputesInTimeframe
     | HasNotMetTheMinimumDisputeAmountRequirements
     | InvalidDuplicateDispute
@@ -12196,7 +12196,7 @@ type InvoicesPaymentSettingsPaymentMethodTypes =
     | Multibanco
     | NaverPay
     | NzBankAccount
-    | P24
+    | [<JsonPropertyName("p24")>] P24
     | PayByBank
     | Payco
     | Paynow
@@ -12241,7 +12241,7 @@ type InvoicesResourceFromInvoice =
 
 [<Struct>]
 type InvoiceRenderingPdfPageSize =
-    | A4
+    | [<JsonPropertyName("a4")>] A4
     | Auto
     | Letter
 
@@ -13688,7 +13688,7 @@ type PaymentMethodDetailsPaymentRecordEpsBank =
     | ErsteBankUndSparkassen
     | HypoAlpeadriabankInternationalAg
     | HypoBankBurgenlandAktiengesellschaft
-    | HypoNoeLbFurNiederosterreichUWien
+    | [<JsonPropertyName("hypo_noe_lb_fur_niederosterreich_u_wien")>] HypoNoeLbFurNiederosterreichUWien
     | HypoOberosterreichSalzburgSteiermark
     | HypoTirolBankAg
     | HypoVorarlbergBankAg
@@ -13733,7 +13733,7 @@ type PaymentMethodDetailsPaymentRecordIdealBank =
     | Knab
     | Mollie
     | Moneyou
-    | N26
+    | [<JsonPropertyName("n26")>] N26
     | Nn
     | Rabobank
     | Regiobank

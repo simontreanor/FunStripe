@@ -361,7 +361,7 @@ type SetupAttemptPaymentMethodDetailsIdealBank =
     | Knab
     | Mollie
     | Moneyou
-    | N26
+    | [<JsonPropertyName("n26")>] N26
     | Nn
     | Rabobank
     | Regiobank

@@ -97,7 +97,7 @@ module ModelBuilderAST =
             let caseName = parts.[0] |> pascalCasify
             let payloadType = parts.[1]
             { RawValue = rawValue; CaseName = caseName; JsonUnionCaseValue = None; PayloadType = Some payloadType }
-        elif Regex.IsMatch(rawValue, @"^\p{Lu}") || Regex.IsMatch(rawValue, @"^\d") || rawValue.Contains("-") || rawValue.Contains(" ") || rawValue.Contains(".") then
+        elif Regex.IsMatch(rawValue, @"^\p{Lu}") || Regex.IsMatch(rawValue, @"^\d") || rawValue.Contains("-") || rawValue.Contains(" ") || rawValue.Contains(".") || Regex.IsMatch(rawValue, @"[a-zA-Z]\d+(?![a-z])") || Regex.IsMatch(rawValue, @"(^[a-zA-Z]_|_[a-zA-Z]_|_[a-zA-Z]$)") then
             let caseName = rawValue |> clean |> pascalCasify |> escapeNumeric
             { RawValue = rawValue; CaseName = caseName; JsonUnionCaseValue = Some rawValue; PayloadType = None }
         elif rawValue = "none" then
