@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [2.0.5] - 2026-05-05
+
+### Added
+- Unit tests for serialisation edge cases in `tests/Tests.fs`
+- CI workflow (`.github/workflows/check-stripe-spec.yml`) to detect new Stripe OpenAPI spec versions and trigger regeneration automatically
+
+### Fixed
+- Serialisation edge cases in generated model and request files (`ConfirmationToken`, `Issuing`, `IssuingCard`, `IssuingCardholder`, `PaymentLink`, `PaymentMethod`, `SetupAttempt`, `SourceTransaction`, `Terminal`, and request files for `Accounts`, `Checkout`, `Invoices`, `Issuing`, `Payment`, `Setup`, `Sources`, `Subscriptions`, `TestHelpers`)
+
 ## [2.0.4] - 2026-05-04
 
 ### Changed
