@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [2.0.6] - 2026-05-06
+
+### Fixed
+- `formatQueryString`: `List<string>` and `Option<List<string>>` query parameters (e.g. `expand`, `ids`) now emit Rack-style repeated keys (`key[]=a&key[]=b`) instead of a single semicolon-joined value (`key[]=a;b`), matching Stripe's expected encoding
+- `WebhookSigning.verifySignature`: future-dated timestamps (clock skew or replay) are now correctly rejected; tolerance check uses `abs (currentTime - timestamp)` instead of the one-sided `currentTime - timestamp`
+
+### Added
+- `WebhookSigning.verifyWithDefaultTolerance`: convenience wrapper using the default 5-minute tolerance
+- `WebhookSigning.parseHeader`: previously private; now public so callers can inspect or log parsed header components
+- `AsyncResult` module with `ofResult`, `ofAsync`, `map`, and `mapError` helpers
+- `AsyncResultBuilder.ReturnFrom` overload for `Result<'a,'e>` (lifting a plain `Result` into `AsyncResult`)
+- `AsyncResultBuilder.Bind` error-type constraint tightened: both arms now share the same `'e` type parameter
+
+### Tests
+- Updated `expand list produces array notation` assertion to match corrected Rack-style encoding (`expand[]=default_source&expand[]=sources`)
+- Added `future timestamp outside tolerance returns TimestampOutOfTolerance` test to `WebhookSigningTests`
+- Added `hasStripeKey` / `assumeStripeKey` helpers; all integration test fixtures now emit `Assert.Ignore` and skip cleanly when `STRIPE_TEST_API_KEY` is not set
+
 ## [2.0.5] - 2026-05-05
 
 ### Added
@@ -63,7 +81,7 @@ Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the
 - `Config.StripeTestApiKey` now reads from the `STRIPE_TEST_API_KEY` environment variable; replaces `Microsoft.Extensions.Configuration.UserSecrets`
 
 ### Removed
-- Monolithic `src/StripeModel.fs` (~50k lines) and per-group `src/StripeRequest.*.fs` files
+- Monolithic `src/StripeModel.fs` (~40k lines) and `src/StripeRequest.fs` files (73k lines)
 - Forked `FSharp.Json` library files (`InterfaceTypes.fs`, `Reflection.fs`, `Core.fs`, `Transforms.fs`, `JsonValueHelpers.fs`)
 - `Microsoft.Extensions.Configuration.*` dependency
 

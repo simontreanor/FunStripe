@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.FundingInstructions
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
 type IssuingCardholderAddress = { Address: Address }
 
 type IssuingCardholderAddress with

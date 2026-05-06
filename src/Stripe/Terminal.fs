@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
 type DeletedTerminalConfiguration =
     {
         /// Always true for a deleted object

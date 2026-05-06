@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
 type EventType =
     | [<JsonPropertyName("account.application.authorized")>] AccountApplicationAuthorized
     | [<JsonPropertyName("account.application.deauthorized")>] AccountApplicationDeauthorized

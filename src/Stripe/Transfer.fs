@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.TransferReversal
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
 type TransferSourceType =
     | Card
     | Fpx

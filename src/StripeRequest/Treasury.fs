@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
 module TreasuryCreditReversals =
 
     type ListOptions =

@@ -20,7 +20,7 @@ open Stripe.TaxRate
 open Stripe.Transfer
 open Stripe.TransferReversal
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
 type AccountAnnualRevenue =
     {
         /// A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).

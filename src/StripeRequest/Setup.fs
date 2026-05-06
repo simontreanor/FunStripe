@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.SetupAttempt
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
 module SetupAttempts =
 
     type ListOptions =

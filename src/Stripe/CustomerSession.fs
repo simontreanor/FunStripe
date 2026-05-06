@@ -5,7 +5,7 @@ open FunStripe
 open System
 
 /// This hash contains whether the buy button is enabled.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
 type CustomerSessionResourceComponentsResourceBuyButton =
     {
         /// Whether the buy button is enabled.

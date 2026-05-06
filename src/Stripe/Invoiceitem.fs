@@ -6,7 +6,7 @@ open System
 open Stripe.PaymentMethod
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
 type DeletedInvoiceitem =
     {
         /// Always true for a deleted object

@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.4")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
 type ConfirmationTokenSetupFutureUsage =
     | OffSession
     | OnSession
