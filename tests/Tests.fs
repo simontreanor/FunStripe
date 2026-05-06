@@ -33,6 +33,13 @@ module Tests =
 
     let settings = RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey)
 
+    let hasStripeKey = not (String.IsNullOrWhiteSpace Config.StripeTestApiKey)
+
+    ///Skip the enclosing test fixture when the Stripe test API key is not available
+    let assumeStripeKey () =
+        if not hasStripeKey then
+            Assert.Ignore "Skipping integration test – STRIPE_TEST_API_KEY is not set"
+
     [<TestFixture>]
     type IdempotencyKeyUnitTests () =
 
@@ -154,6 +161,9 @@ module Tests =
                     ``type`` = PaymentMethodType.Card
                 )
             paymentMethod
+
+        [<OneTimeSetUp>]
+        member _.Setup() = assumeStripeKey()
 
         [<Test>]
         member _.``test JSON to x-www-form-urlencoded conversion``() =
@@ -513,6 +523,15 @@ module Tests =
             | other -> Assert.Fail(sprintf "Expected TimestampOutOfTolerance but got %A" other)
 
         [<Test>]
+        member _.``future timestamp outside tolerance returns TimestampOutOfTolerance``() =
+            let futureTimestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 600L
+            let header = buildHeader secret rawBody futureTimestamp
+            let result = verifySignature secret rawBody header defaultTolerance
+            match result with
+            | Error (TimestampOutOfTolerance _) -> Assert.Pass()
+            | other -> Assert.Fail(sprintf "Expected TimestampOutOfTolerance but got %A" other)
+
+        [<Test>]
         member _.``wrong signature returns SignatureMismatch``() =
             let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
             let header = sprintf "t=%d,v1=%s" timestamp (String.replicate 64 "0")
@@ -765,7 +784,7 @@ module Tests =
         [<Test>]
         member _.``expand list produces array notation``() =
             let qs = Customers.ListOptions.New(expand = ["default_source"; "sources"]) |> querySerialise
-            Assert.That(qs, Is.EqualTo "?expand[]=default_source;sources")
+            Assert.That(qs, Is.EqualTo "?expand[]=default_source&expand[]=sources")
 
         [<Test>]
         member _.``multiple options combine in a single query string``() =
@@ -1304,6 +1323,9 @@ module Tests =
                 | Error e -> failwithf "Failed to create test customer: %A" e.StripeError.Message
             )
 
+        [<OneTimeSetUp>]
+        member _.Setup() = assumeStripeKey()
+
         [<Test>]
         member _.``create customer returns Id and matches input``() =
             let c = testCustomer.Value
@@ -1448,6 +1470,9 @@ module Tests =
                 )
             )
 
+        [<OneTimeSetUp>]
+        member _.Setup() = assumeStripeKey()
+
         [<Test>]
         member _.``list first page with limit=2 returns HasMore=true``() =
             let _ = testPrices.Value  // ensure prices exist
@@ -1579,6 +1604,9 @@ module Tests =
                 | Error e -> failwithf "Failed to create expand test customer: %A" e.StripeError.Message
             )
 
+        [<OneTimeSetUp>]
+        member _.Setup() = assumeStripeKey()
+
         [<Test>]
         member _.``DefaultSource without expand is a plain StripeId string``() =
             let c = testCustomerWithCard.Value
@@ -1689,6 +1717,9 @@ module Tests =
                 | Error e -> failwithf "Failed to create lifecycle product: %A" e.StripeError.Message
             )
 
+        [<OneTimeSetUp>]
+        member _.Setup() = assumeStripeKey()
+
         [<Test>]
         member _.``create product returns Name``() =
             let p = testProduct.Value
@@ -1774,6 +1805,9 @@ module Tests =
 
     [<TestFixture>]
     type ErrorHandlingIntegrationTests () =
+
+        [<OneTimeSetUp>]
+        member _.Setup() = assumeStripeKey()
 
         [<Test>]
         member _.``retrieve non-existent customer returns InvalidRequestError``() =

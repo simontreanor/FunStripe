@@ -20,8 +20,9 @@ module WebhookSigning =
     ///Default tolerance window in seconds (300 seconds = 5 minutes)
     let defaultTolerance = 300
 
-    ///Parse the Stripe-Signature header into a Unix timestamp and a list of v1 signatures
-    let private parseHeader (header: string) =
+    ///Parse the Stripe-Signature header into a Unix timestamp and a list of v1 signatures.
+    ///Returns the parsed components so callers can inspect or log suspicious headers.
+    let parseHeader (header: string) =
         let parts = header.Split(',')
         let mutable timestamp: int64 option = None
         let mutable signatures: string list = []
@@ -72,7 +73,7 @@ module WebhookSigning =
         | Error e -> Error e
         | Ok (timestamp, signatures) ->
             let currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-            let age = currentTime - timestamp
+            let age = abs (currentTime - timestamp)
             if age > int64 tolerance then
                 Error (TimestampOutOfTolerance (sprintf "Webhook timestamp is %d seconds old, which exceeds the tolerance of %d seconds" age tolerance))
             else
@@ -83,3 +84,8 @@ module WebhookSigning =
                     Ok ()
                 else
                     Error (SignatureMismatch "Computed HMAC-SHA256 signature does not match any v1 signature in the Stripe-Signature header")
+
+    ///Verify a Stripe webhook using the default 5-minute tolerance window.
+    ///Equivalent to calling verifySignature with defaultTolerance.
+    let verifyWithDefaultTolerance (secret: string) (rawBody: string) (header: string) : Result<unit, WebhookError> =
+        verifySignature secret rawBody header defaultTolerance

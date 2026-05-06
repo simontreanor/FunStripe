@@ -89,11 +89,13 @@ module RestApi =
                 match v with
                 | :? Option<List<string>> as o ->
                     o
-                    |> Option.map(fun ss ->
-                        ss
-                        |> List.map urlEncode
-                        |> String.concat ";"
-                        |> fun s -> $"{encodedKey}[]={s}"
+                    |> Option.bind(fun ss ->
+                        if ss.IsEmpty then None
+                        else
+                            ss
+                            |> List.map (fun v -> $"{encodedKey}[]={urlEncode v}")
+                            |> String.concat "&"
+                            |> Some
                     )
                 | :? Option<bool> as o ->
                     o |> Option.map(fun b -> $"{encodedKey}={urlEncode (b |> string |> fun s -> s.ToLowerInvariant())}")
@@ -104,11 +106,12 @@ module RestApi =
                 | :? bool as b ->
                     $"{encodedKey}={urlEncode (b |> string |> fun s -> s.ToLowerInvariant())}" |> Some
                 | :? List<string> as ss ->
-                    ss
-                    |> List.map urlEncode
-                    |> String.concat ";"
-                    |> fun s -> $"{encodedKey}[]={s}"
-                    |> Some
+                    if ss.IsEmpty then None
+                    else
+                        ss
+                        |> List.map (fun v -> $"{encodedKey}[]={urlEncode v}")
+                        |> String.concat "&"
+                        |> Some
                 | :? int as i ->
                     $"{encodedKey}={urlEncode (i |> string)}" |> Some
                 | :? string as s ->
