@@ -142,9 +142,10 @@ FunStripe.Core can be compiled to JavaScript via [Fable](https://fable.io) using
 > [!WARNING]
 > **Do not use this package in browser applications.**
 > Calling the Stripe REST API directly from a browser requires embedding a Stripe API key in
-> the client, where it is trivially extractable from network traffic or the JS bundle.  Even
-> a *publishable* key grants more access than should be exposed client-side, and a *secret*
-> key would expose your full Stripe account to anyone who inspects your app.
+> the client, where it is trivially extractable from network traffic or the JS bundle.  A
+> *secret* key would expose your full Stripe account to anyone who inspects your app, and
+> even a *publishable* key would bypass Stripe's iframe sandbox, putting raw card data in
+> your own code and expanding your PCI compliance scope.
 >
 > For browser-side card collection, use
 > [Stripe.js / Stripe Elements](https://stripe.com/docs/js) instead — it keeps all sensitive
