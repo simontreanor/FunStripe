@@ -2,6 +2,8 @@
 
 An F# library to connect to the Stripe API, including code generators to update the model and requests. Targets .NET Standard 2.0 and .NET Standard 2.1.
 
+> **Disclaimer:** FunStripe is not an official Stripe product and is not affiliated with Stripe, Inc.
+
 
 ## Changelog
 
