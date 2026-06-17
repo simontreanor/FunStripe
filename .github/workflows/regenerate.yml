@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       spec:
-        description: 'OpenAPI spec file (relative to repo root)'
+        description: 'OpenAPI spec file (relative to repo root). Blank = StripeApiVersion from Directory.Build.props'
         required: false
-        default: 'spec/stripe-openapi-2026-04-22.dahlia.json'
+        default: ''
       version:
-        description: 'Version string embedded in generated code'
+        description: 'Version stamped into generated code. Blank = FunStripeVersion from Directory.Build.props'
         required: false
-        default: '2.0.0'
+        default: ''
 
 permissions:
   contents: write
@@ -28,11 +28,14 @@ jobs:
         uses: actions/setup-dotnet@v5
 
       - name: Run generator
-        run: >
-          dotnet run --project tools/FunStripe.Generator
-          -- --spec ${{ github.event.inputs.spec }}
-             --output src
-             --version ${{ github.event.inputs.version }}
+        # Blank inputs fall back to the centralised defaults in Directory.Build.props,
+        # so the generator can't be run with a stale hard-coded version/spec.
+        run: |
+          ARGS="--output src"
+          if [ -n "${{ github.event.inputs.spec }}" ]; then ARGS="$ARGS --spec ${{ github.event.inputs.spec }}"; fi
+          if [ -n "${{ github.event.inputs.version }}" ]; then ARGS="$ARGS --version ${{ github.event.inputs.version }}"; fi
+          echo "dotnet run --project tools/FunStripe.Generator -- $ARGS"
+          dotnet run --project tools/FunStripe.Generator -- $ARGS
 
       - name: Check for changes
         id: diff

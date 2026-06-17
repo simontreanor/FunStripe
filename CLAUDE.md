@@ -49,10 +49,8 @@ F# is compile-order sensitive: files compile in the order listed in the `.fsproj
 `tools/FunStripe.Generator/` and regenerate:
 
 ```powershell
-dotnet run --project tools/FunStripe.Generator -- `
-  --spec spec/stripe-openapi-2026-04-22.dahlia.json `
-  --output src `
-  --version 2.0.6
+# --spec and --version default to StripeApiVersion / FunStripeVersion in Directory.Build.props
+dotnet run --project tools/FunStripe.Generator -- --output src
 ```
 
 Key generator modules:
@@ -77,12 +75,24 @@ the generator.
 - **`ci.yml`** — build + test on PR/push, plus a generator smoke-test that runs the generator
   end-to-end so generator regressions are caught in PR CI (not only in the weekly job).
 
-## Releasing
+## Versioning & releasing
 
-See `CONTRIBUTING.md` for the full process. In short: bump `<Version>` in both
-`FunStripe.Core*.fsproj`, update the `GeneratedCode("FunStripe", "X.Y.Z")` attributes across
-generated files, add a `CHANGELOG.md` entry, commit as `release: X.Y.Z`, then push `v2/X.Y.Z`
-and `v2-fable/X.Y.Z` tags to trigger the publish workflows.
+The version is centralized in **`Directory.Build.props`** (repo root) — the single source of
+truth. Never hard-code a version anywhere else:
+
+- `FunStripeVersion` — NuGet package version. Both `.fsproj` files read `$(FunStripeVersion)`,
+  and the generator reads it to stamp `GeneratedCode("FunStripe", "X.Y.Z")` attributes.
+- `StripeApiVersion` — the `spec/` file the generated code targets.
+
+`src/FunStripe.Core/Directory.Build.props` chains up to the root one via `GetPathOfFileAbove`,
+since MSBuild only auto-imports the nearest `Directory.Build.props`.
+
+Bump policy: new Stripe API spec version → **minor**; library fix/feature → patch; breaking
+library change → major. The spec-update workflow applies the minor bump automatically.
+
+Release: ensure `FunStripeVersion` is set, regenerate if needed, expand `CHANGELOG.md`, commit
+as `release: X.Y.Z`, then push `v2/X.Y.Z` and `v2-fable/X.Y.Z` tags (the publish workflows take
+the package version from the tag). See `CONTRIBUTING.md` for the full process.
 
 ## Conventions
 

@@ -3,6 +3,7 @@ module FunStripe.Generator
 open FunStripe
 open System
 open System.IO
+open System.Xml.Linq
 
 let private parseArgs (argv: string array) =
     let args = argv |> Array.toList
@@ -12,10 +13,31 @@ let private parseArgs (argv: string array) =
         |> Option.bind (fun i -> args |> List.tryItem (i + 1))
     getArg "--spec", getArg "--output", getArg "--version"
 
+/// Repo root, relative to this source file's compile-time location.
+let private repoRoot = Path.GetFullPath(Path.Combine(__SOURCE_DIRECTORY__, "../.."))
+
+/// Read a property value from the centralised /Directory.Build.props (the single source
+/// of truth for FunStripeVersion and StripeApiVersion), so the generator's defaults never
+/// drift from the published package version.
+let private readBuildProp (name: string) =
+    let propsPath = Path.Combine(repoRoot, "Directory.Build.props")
+    if File.Exists propsPath then
+        XDocument.Load(propsPath).Descendants(XName.Get name)
+        |> Seq.tryHead
+        |> Option.map (fun e -> e.Value.Trim())
+        |> Option.filter (fun v -> v <> "")
+    else
+        None
+
 [<EntryPoint>]
 let main argv =
     let specPath, outputDir, version = parseArgs argv
-    let version' = version |> Option.defaultValue "2.0.4"
+    // Default the version from the single source of truth rather than a hard-coded literal
+    // (a stale literal previously stamped the wrong version into generated files).
+    let version' =
+        version
+        |> Option.orElse (readBuildProp "FunStripeVersion")
+        |> Option.defaultValue "0.0.0"
     // Default output dir is the src/ folder relative to this source file's compile-time location
     let outputDir' =
         outputDir
@@ -33,10 +55,14 @@ let main argv =
     let normalizeLineEndings (s: string) =
         s.Replace("\r\n", "\n").Replace("\n", System.Environment.NewLine)
 
-    // Resolve the spec path the same way the model builders do (default = bundled spec).
+    // Resolve the spec path the same way the model builders do; default to the bundled spec
+    // for the StripeApiVersion recorded in /Directory.Build.props.
     let resolvedSpecPath =
         specPath
-        |> Option.defaultValue (Path.GetFullPath(Path.Combine(__SOURCE_DIRECTORY__, "../../spec/stripe-openapi-2026-04-22.dahlia.json")))
+        |> Option.defaultValue (
+            match readBuildProp "StripeApiVersion" with
+            | Some v -> Path.Combine(repoRoot, "spec", $"stripe-openapi-{v}.json")
+            | None -> Path.Combine(repoRoot, "spec", "stripe-openapi-2026-04-22.dahlia.json"))
 
     printfn "Generating StripeIds.fs..."
     StripeIdsBuilder.generate version' outputDir' resolvedSpecPath |> ignore

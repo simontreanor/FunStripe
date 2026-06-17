@@ -5,11 +5,11 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <PackageId>FunStripe.Core.Fable</PackageId>
-    <Version>2.0.6</Version>
+    <!-- Version and StripeApiVersion are defined centrally in /Directory.Build.props -->
+    <Version>$(FunStripeVersion)</Version>
     <Authors>Simon Treanor</Authors>
     <Company>Fund Ourselves</Company>
     <PackageDescription>F# Stripe Library — Fable (Node.js server-side) edition (targets Stripe API $(StripeApiVersion))</PackageDescription>
-    <StripeApiVersion>2026-04-22.dahlia</StripeApiVersion>
     <PackageTags>fable-javascript;stripe;fsharp;nodejs;api;payments;$(StripeApiVersion)</PackageTags>
     <FablePackageType>library</FablePackageType>
     <RepositoryUrl>https://github.com/simontreanor/FunStripe</RepositoryUrl>
