@@ -21,6 +21,16 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
 
+      - name: Generator smoke test
+        # Runs the code generator end-to-end against the bundled spec so that any
+        # crash in the generator (e.g. an unhandled schema shape) is caught here on
+        # every PR, instead of only surfacing in the weekly "Check for new Stripe
+        # OpenAPI spec" job. Output goes to a throwaway dir; we only assert it exits 0.
+        run: |
+          dotnet run --project tools/FunStripe.Generator \
+            -- --spec spec/stripe-openapi-2026-04-22.dahlia.json \
+               --output "${RUNNER_TEMP}/gen-smoke"
+
       - name: Restore
         run: dotnet restore
 

@@ -59,6 +59,7 @@ module RequestParsing =
 
     ///Record for OpenAPI schema object
     type SchemaObject = {
+        AdditionalProperties: JsonValue option
         AnyOf: JsonValue array option
         Description: string
         Enum: JsonValue array option
@@ -83,6 +84,7 @@ module RequestParsing =
     ///Parse a `JsonValue` into an OpenAPI schema-object record
     let getSchemaObject (jv: JsonValue) =
         {
+            AdditionalProperties = jv.TryGetProperty("additionalProperties") |> Option.map id
             AnyOf = jv.TryGetProperty("anyOf") |> Option.map(fun v -> v.AsArray())
             Description = jv.TryGetProperty("description") |> Option.map(fun v -> v.AsString()) |> Option.defaultValue ""
             Enum = jv.TryGetProperty("enum") |> Option.map(fun v -> v.AsArray())
@@ -197,7 +199,14 @@ module RequestParsing =
                 | "payload" ->
                     { Description = desc; Name = name; Required = req; Type = "Map<string, string>"; OptionType = Form; EnumValues = None; SubValues = None }
                 | _ ->
-                    failwith $"This `never` fails #2: {name}"
+                    // Title-less objects that define `additionalProperties` are free-form key/value maps
+                    // (e.g. the various `*_by_currency` fields). Stripe keeps adding these, so detect them
+                    // generically rather than by name to avoid the generator crashing on each new spec.
+                    match so.AdditionalProperties with
+                    | Some _ ->
+                        { Description = desc; Name = name; Required = req; Type = "Map<string, string>"; OptionType = Form; EnumValues = None; SubValues = None }
+                    | None ->
+                        failwith $"This `never` fails #2: {name}"
         | Some t when t = "int" ->
             match so.Format with
             | Some "unix-time" ->
