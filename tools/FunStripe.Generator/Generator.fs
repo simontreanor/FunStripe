@@ -27,6 +27,9 @@ let main argv =
     printfn "  Version: %s" version'
     printfn ""
 
+    // Ensure the output directory exists; StripeIds.fs is written to its root directly.
+    Directory.CreateDirectory(outputDir') |> ignore
+
     let normalizeLineEndings (s: string) =
         s.Replace("\r\n", "\n").Replace("\n", System.Environment.NewLine)
 

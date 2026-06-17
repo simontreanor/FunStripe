@@ -27,6 +27,7 @@ jobs:
         # every PR, instead of only surfacing in the weekly "Check for new Stripe
         # OpenAPI spec" job. Output goes to a throwaway dir; we only assert it exits 0.
         run: |
+          mkdir -p "${RUNNER_TEMP}/gen-smoke"
           dotnet run --project tools/FunStripe.Generator \
             -- --spec spec/stripe-openapi-2026-04-22.dahlia.json \
                --output "${RUNNER_TEMP}/gen-smoke"
