@@ -10,7 +10,7 @@ open Stripe.Price
 open Stripe.SubscriptionItem
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type SchedulesPhaseAutomaticTax =
     {
         /// Whether Stripe automatically computes tax on invoices created during this phase.
@@ -117,6 +117,8 @@ type SubscriptionScheduleAddInvoiceItemPrice'AnyOf =
 /// An Add Invoice Item describes the prices and quantities that will be added as pending invoice items when entering a phase.
 type SubscriptionScheduleAddInvoiceItem =
     {
+        /// Controls whether discounts apply to this invoice item. Defaults to true if no value is provided.
+        Discountable: bool option
         /// The stackable discounts that will be applied to the item.
         Discounts: DiscountsResourceStackableDiscountWithDiscountEnd list
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -131,8 +133,9 @@ type SubscriptionScheduleAddInvoiceItem =
     }
 
 type SubscriptionScheduleAddInvoiceItem with
-    static member New(discounts: DiscountsResourceStackableDiscountWithDiscountEnd list, metadata: Map<string, string> option, period: SubscriptionScheduleAddInvoiceItemPeriod, price: SubscriptionScheduleAddInvoiceItemPrice'AnyOf, quantity: int option, ?taxRates: TaxRate list option) =
+    static member New(discountable: bool option, discounts: DiscountsResourceStackableDiscountWithDiscountEnd list, metadata: Map<string, string> option, period: SubscriptionScheduleAddInvoiceItemPeriod, price: SubscriptionScheduleAddInvoiceItemPrice'AnyOf, quantity: int option, ?taxRates: TaxRate list option) =
         {
+            Discountable = discountable
             Discounts = discounts
             Metadata = metadata
             Period = period

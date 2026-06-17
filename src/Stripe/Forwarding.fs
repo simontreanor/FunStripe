@@ -5,7 +5,7 @@ open FunStripe
 open System
 
 /// Metadata about the forwarded request.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type ForwardedRequestContext =
     {
         /// The time it took in milliseconds for the destination endpoint to respond.

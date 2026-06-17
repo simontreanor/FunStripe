@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.SetupAttempt
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module SetupAttempts =
 
     type ListOptions =
@@ -132,6 +132,7 @@ module SetupIntents =
         | BacsDebit
         | Bancontact
         | Billie
+        | Bizum
         | Blik
         | Boleto
         | Card
@@ -164,6 +165,7 @@ module SetupIntents =
         | RevolutPay
         | SamsungPay
         | Satispay
+        | Scalapay
         | SepaDebit
         | Sofort
         | Sunbit
@@ -698,6 +700,7 @@ module SetupIntents =
         | BacsDebit
         | Bancontact
         | Billie
+        | Bizum
         | Blik
         | Boleto
         | Cashapp
@@ -730,6 +733,7 @@ module SetupIntents =
         | RevolutPay
         | SamsungPay
         | Satispay
+        | Scalapay
         | SepaDebit
         | Sofort
         | Sunbit
@@ -857,6 +861,9 @@ module SetupIntents =
             /// Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
             [<Config.Form>]
             BillingDetails: Create'PaymentMethodDataBillingDetails option
+            /// If this is a `bizum` PaymentMethod, this hash contains details about the Bizum payment method.
+            [<Config.Form>]
+            Bizum: string option
             /// If this is a `blik` PaymentMethod, this hash contains details about the BLIK payment method.
             [<Config.Form>]
             Blik: string option
@@ -902,7 +909,7 @@ module SetupIntents =
             /// If this is a `kr_card` PaymentMethod, this hash contains details about the Korean Card payment method.
             [<Config.Form>]
             KrCard: string option
-            /// If this is an `Link` PaymentMethod, this hash contains details about the Link payment method.
+            /// If this is an `Link` PaymentMethod, this hash contains details about the Link payment method (Link is also known as Onelink in the UK).
             [<Config.Form>]
             Link: string option
             /// If this is a MB WAY PaymentMethod, this hash contains details about the MB WAY payment method.
@@ -962,6 +969,9 @@ module SetupIntents =
             /// If this is a `satispay` PaymentMethod, this hash contains details about the Satispay payment method.
             [<Config.Form>]
             Satispay: string option
+            /// If this is a Scalapay PaymentMethod, this hash contains details about the Scalapay payment method.
+            [<Config.Form>]
+            Scalapay: string option
             /// If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account.
             [<Config.Form>]
             SepaDebit: Create'PaymentMethodDataSepaDebit option
@@ -995,7 +1005,7 @@ module SetupIntents =
         }
 
     type Create'PaymentMethodData with
-        static member New(?acssDebit: Create'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Create'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Create'PaymentMethodDataAuBecsDebit, ?bacsDebit: Create'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Create'PaymentMethodDataBillingDetails, ?blik: string, ?boleto: Create'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Create'PaymentMethodDataEps, ?fpx: Create'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Create'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Create'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Create'PaymentMethodDataNaverPay, ?nzBankAccount: Create'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Create'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?payto: Create'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Create'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?sepaDebit: Create'PaymentMethodDataSepaDebit, ?sofort: Create'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Create'PaymentMethodDataType, ?upi: Create'PaymentMethodDataUpi, ?usBankAccount: Create'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
+        static member New(?acssDebit: Create'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Create'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Create'PaymentMethodDataAuBecsDebit, ?bacsDebit: Create'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Create'PaymentMethodDataBillingDetails, ?bizum: string, ?blik: string, ?boleto: Create'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Create'PaymentMethodDataEps, ?fpx: Create'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Create'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Create'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Create'PaymentMethodDataNaverPay, ?nzBankAccount: Create'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Create'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?payto: Create'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Create'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?scalapay: string, ?sepaDebit: Create'PaymentMethodDataSepaDebit, ?sofort: Create'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Create'PaymentMethodDataType, ?upi: Create'PaymentMethodDataUpi, ?usBankAccount: Create'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -1009,6 +1019,7 @@ module SetupIntents =
                 Bancontact = bancontact
                 Billie = billie
                 BillingDetails = billingDetails
+                Bizum = bizum
                 Blik = blik
                 Boleto = boleto
                 Cashapp = cashapp
@@ -1044,6 +1055,7 @@ module SetupIntents =
                 RevolutPay = revolutPay
                 SamsungPay = samsungPay
                 Satispay = satispay
+                Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
                 Sunbit = sunbit
@@ -1921,6 +1933,9 @@ module SetupIntents =
             /// If this is a `bacs_debit` SetupIntent, this sub-hash contains details about the Bacs Debit payment method options.
             [<Config.Form>]
             BacsDebit: Create'PaymentMethodOptionsBacsDebit option
+            /// If this is a `bizum` SetupIntent, this sub-hash contains details about the Bizum payment method options.
+            [<Config.Form>]
+            Bizum: string option
             /// Configuration for any card setup attempted on this SetupIntent.
             [<Config.Form>]
             Card: Create'PaymentMethodOptionsCard option
@@ -1930,7 +1945,7 @@ module SetupIntents =
             /// If this is a `klarna` PaymentMethod, this hash contains details about the Klarna payment method options.
             [<Config.Form>]
             Klarna: Create'PaymentMethodOptionsKlarna option
-            /// If this is a `link` PaymentMethod, this sub-hash contains details about the Link payment method options.
+            /// If this is a `link` PaymentMethod, this sub-hash contains details about the Link payment method options (Link is also known as Onelink in the UK).
             [<Config.Form>]
             Link: Create'PaymentMethodOptionsLink option
             /// If this is a `paypal` PaymentMethod, this sub-hash contains details about the PayPal payment method options.
@@ -1954,11 +1969,12 @@ module SetupIntents =
         }
 
     type Create'PaymentMethodOptions with
-        static member New(?acssDebit: Create'PaymentMethodOptionsAcssDebit, ?amazonPay: string, ?bacsDebit: Create'PaymentMethodOptionsBacsDebit, ?card: Create'PaymentMethodOptionsCard, ?cardPresent: string, ?klarna: Create'PaymentMethodOptionsKlarna, ?link: Create'PaymentMethodOptionsLink, ?paypal: Create'PaymentMethodOptionsPaypal, ?payto: Create'PaymentMethodOptionsPayto, ?pix: Create'PaymentMethodOptionsPix, ?sepaDebit: Create'PaymentMethodOptionsSepaDebit, ?upi: Create'PaymentMethodOptionsUpi, ?usBankAccount: Create'PaymentMethodOptionsUsBankAccount) =
+        static member New(?acssDebit: Create'PaymentMethodOptionsAcssDebit, ?amazonPay: string, ?bacsDebit: Create'PaymentMethodOptionsBacsDebit, ?bizum: string, ?card: Create'PaymentMethodOptionsCard, ?cardPresent: string, ?klarna: Create'PaymentMethodOptionsKlarna, ?link: Create'PaymentMethodOptionsLink, ?paypal: Create'PaymentMethodOptionsPaypal, ?payto: Create'PaymentMethodOptionsPayto, ?pix: Create'PaymentMethodOptionsPix, ?sepaDebit: Create'PaymentMethodOptionsSepaDebit, ?upi: Create'PaymentMethodOptionsUpi, ?usBankAccount: Create'PaymentMethodOptionsUsBankAccount) =
             {
                 AcssDebit = acssDebit
                 AmazonPay = amazonPay
                 BacsDebit = bacsDebit
+                Bizum = bizum
                 Card = card
                 CardPresent = cardPresent
                 Klarna = klarna
@@ -2127,6 +2143,7 @@ module SetupIntents =
         | BacsDebit
         | Bancontact
         | Billie
+        | Bizum
         | Blik
         | Boleto
         | Card
@@ -2159,6 +2176,7 @@ module SetupIntents =
         | RevolutPay
         | SamsungPay
         | Satispay
+        | Scalapay
         | SepaDebit
         | Sofort
         | Sunbit
@@ -2634,6 +2652,7 @@ module SetupIntents =
         | BacsDebit
         | Bancontact
         | Billie
+        | Bizum
         | Blik
         | Boleto
         | Cashapp
@@ -2666,6 +2685,7 @@ module SetupIntents =
         | RevolutPay
         | SamsungPay
         | Satispay
+        | Scalapay
         | SepaDebit
         | Sofort
         | Sunbit
@@ -2793,6 +2813,9 @@ module SetupIntents =
             /// Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
             [<Config.Form>]
             BillingDetails: Update'PaymentMethodDataBillingDetails option
+            /// If this is a `bizum` PaymentMethod, this hash contains details about the Bizum payment method.
+            [<Config.Form>]
+            Bizum: string option
             /// If this is a `blik` PaymentMethod, this hash contains details about the BLIK payment method.
             [<Config.Form>]
             Blik: string option
@@ -2838,7 +2861,7 @@ module SetupIntents =
             /// If this is a `kr_card` PaymentMethod, this hash contains details about the Korean Card payment method.
             [<Config.Form>]
             KrCard: string option
-            /// If this is an `Link` PaymentMethod, this hash contains details about the Link payment method.
+            /// If this is an `Link` PaymentMethod, this hash contains details about the Link payment method (Link is also known as Onelink in the UK).
             [<Config.Form>]
             Link: string option
             /// If this is a MB WAY PaymentMethod, this hash contains details about the MB WAY payment method.
@@ -2898,6 +2921,9 @@ module SetupIntents =
             /// If this is a `satispay` PaymentMethod, this hash contains details about the Satispay payment method.
             [<Config.Form>]
             Satispay: string option
+            /// If this is a Scalapay PaymentMethod, this hash contains details about the Scalapay payment method.
+            [<Config.Form>]
+            Scalapay: string option
             /// If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account.
             [<Config.Form>]
             SepaDebit: Update'PaymentMethodDataSepaDebit option
@@ -2931,7 +2957,7 @@ module SetupIntents =
         }
 
     type Update'PaymentMethodData with
-        static member New(?acssDebit: Update'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Update'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Update'PaymentMethodDataAuBecsDebit, ?bacsDebit: Update'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Update'PaymentMethodDataBillingDetails, ?blik: string, ?boleto: Update'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Update'PaymentMethodDataEps, ?fpx: Update'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Update'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Update'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Update'PaymentMethodDataNaverPay, ?nzBankAccount: Update'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Update'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?payto: Update'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Update'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?sepaDebit: Update'PaymentMethodDataSepaDebit, ?sofort: Update'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Update'PaymentMethodDataType, ?upi: Update'PaymentMethodDataUpi, ?usBankAccount: Update'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
+        static member New(?acssDebit: Update'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Update'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Update'PaymentMethodDataAuBecsDebit, ?bacsDebit: Update'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Update'PaymentMethodDataBillingDetails, ?bizum: string, ?blik: string, ?boleto: Update'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Update'PaymentMethodDataEps, ?fpx: Update'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Update'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Update'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Update'PaymentMethodDataNaverPay, ?nzBankAccount: Update'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Update'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?payto: Update'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Update'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?scalapay: string, ?sepaDebit: Update'PaymentMethodDataSepaDebit, ?sofort: Update'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Update'PaymentMethodDataType, ?upi: Update'PaymentMethodDataUpi, ?usBankAccount: Update'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -2945,6 +2971,7 @@ module SetupIntents =
                 Bancontact = bancontact
                 Billie = billie
                 BillingDetails = billingDetails
+                Bizum = bizum
                 Blik = blik
                 Boleto = boleto
                 Cashapp = cashapp
@@ -2980,6 +3007,7 @@ module SetupIntents =
                 RevolutPay = revolutPay
                 SamsungPay = samsungPay
                 Satispay = satispay
+                Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
                 Sunbit = sunbit
@@ -3857,6 +3885,9 @@ module SetupIntents =
             /// If this is a `bacs_debit` SetupIntent, this sub-hash contains details about the Bacs Debit payment method options.
             [<Config.Form>]
             BacsDebit: Update'PaymentMethodOptionsBacsDebit option
+            /// If this is a `bizum` SetupIntent, this sub-hash contains details about the Bizum payment method options.
+            [<Config.Form>]
+            Bizum: string option
             /// Configuration for any card setup attempted on this SetupIntent.
             [<Config.Form>]
             Card: Update'PaymentMethodOptionsCard option
@@ -3866,7 +3897,7 @@ module SetupIntents =
             /// If this is a `klarna` PaymentMethod, this hash contains details about the Klarna payment method options.
             [<Config.Form>]
             Klarna: Update'PaymentMethodOptionsKlarna option
-            /// If this is a `link` PaymentMethod, this sub-hash contains details about the Link payment method options.
+            /// If this is a `link` PaymentMethod, this sub-hash contains details about the Link payment method options (Link is also known as Onelink in the UK).
             [<Config.Form>]
             Link: Update'PaymentMethodOptionsLink option
             /// If this is a `paypal` PaymentMethod, this sub-hash contains details about the PayPal payment method options.
@@ -3890,11 +3921,12 @@ module SetupIntents =
         }
 
     type Update'PaymentMethodOptions with
-        static member New(?acssDebit: Update'PaymentMethodOptionsAcssDebit, ?amazonPay: string, ?bacsDebit: Update'PaymentMethodOptionsBacsDebit, ?card: Update'PaymentMethodOptionsCard, ?cardPresent: string, ?klarna: Update'PaymentMethodOptionsKlarna, ?link: Update'PaymentMethodOptionsLink, ?paypal: Update'PaymentMethodOptionsPaypal, ?payto: Update'PaymentMethodOptionsPayto, ?pix: Update'PaymentMethodOptionsPix, ?sepaDebit: Update'PaymentMethodOptionsSepaDebit, ?upi: Update'PaymentMethodOptionsUpi, ?usBankAccount: Update'PaymentMethodOptionsUsBankAccount) =
+        static member New(?acssDebit: Update'PaymentMethodOptionsAcssDebit, ?amazonPay: string, ?bacsDebit: Update'PaymentMethodOptionsBacsDebit, ?bizum: string, ?card: Update'PaymentMethodOptionsCard, ?cardPresent: string, ?klarna: Update'PaymentMethodOptionsKlarna, ?link: Update'PaymentMethodOptionsLink, ?paypal: Update'PaymentMethodOptionsPaypal, ?payto: Update'PaymentMethodOptionsPayto, ?pix: Update'PaymentMethodOptionsPix, ?sepaDebit: Update'PaymentMethodOptionsSepaDebit, ?upi: Update'PaymentMethodOptionsUpi, ?usBankAccount: Update'PaymentMethodOptionsUsBankAccount) =
             {
                 AcssDebit = acssDebit
                 AmazonPay = amazonPay
                 BacsDebit = bacsDebit
+                Bizum = bizum
                 Card = card
                 CardPresent = cardPresent
                 Klarna = klarna
@@ -4606,6 +4638,7 @@ module SetupIntentsConfirm =
         | BacsDebit
         | Bancontact
         | Billie
+        | Bizum
         | Blik
         | Boleto
         | Cashapp
@@ -4638,6 +4671,7 @@ module SetupIntentsConfirm =
         | RevolutPay
         | SamsungPay
         | Satispay
+        | Scalapay
         | SepaDebit
         | Sofort
         | Sunbit
@@ -4765,6 +4799,9 @@ module SetupIntentsConfirm =
             /// Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
             [<Config.Form>]
             BillingDetails: Confirm'PaymentMethodDataBillingDetails option
+            /// If this is a `bizum` PaymentMethod, this hash contains details about the Bizum payment method.
+            [<Config.Form>]
+            Bizum: string option
             /// If this is a `blik` PaymentMethod, this hash contains details about the BLIK payment method.
             [<Config.Form>]
             Blik: string option
@@ -4810,7 +4847,7 @@ module SetupIntentsConfirm =
             /// If this is a `kr_card` PaymentMethod, this hash contains details about the Korean Card payment method.
             [<Config.Form>]
             KrCard: string option
-            /// If this is an `Link` PaymentMethod, this hash contains details about the Link payment method.
+            /// If this is an `Link` PaymentMethod, this hash contains details about the Link payment method (Link is also known as Onelink in the UK).
             [<Config.Form>]
             Link: string option
             /// If this is a MB WAY PaymentMethod, this hash contains details about the MB WAY payment method.
@@ -4870,6 +4907,9 @@ module SetupIntentsConfirm =
             /// If this is a `satispay` PaymentMethod, this hash contains details about the Satispay payment method.
             [<Config.Form>]
             Satispay: string option
+            /// If this is a Scalapay PaymentMethod, this hash contains details about the Scalapay payment method.
+            [<Config.Form>]
+            Scalapay: string option
             /// If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account.
             [<Config.Form>]
             SepaDebit: Confirm'PaymentMethodDataSepaDebit option
@@ -4903,7 +4943,7 @@ module SetupIntentsConfirm =
         }
 
     type Confirm'PaymentMethodData with
-        static member New(?acssDebit: Confirm'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Confirm'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Confirm'PaymentMethodDataAuBecsDebit, ?bacsDebit: Confirm'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Confirm'PaymentMethodDataBillingDetails, ?blik: string, ?boleto: Confirm'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Confirm'PaymentMethodDataEps, ?fpx: Confirm'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Confirm'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Confirm'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Confirm'PaymentMethodDataNaverPay, ?nzBankAccount: Confirm'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Confirm'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?payto: Confirm'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Confirm'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?sepaDebit: Confirm'PaymentMethodDataSepaDebit, ?sofort: Confirm'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Confirm'PaymentMethodDataType, ?upi: Confirm'PaymentMethodDataUpi, ?usBankAccount: Confirm'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
+        static member New(?acssDebit: Confirm'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Confirm'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Confirm'PaymentMethodDataAuBecsDebit, ?bacsDebit: Confirm'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Confirm'PaymentMethodDataBillingDetails, ?bizum: string, ?blik: string, ?boleto: Confirm'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Confirm'PaymentMethodDataEps, ?fpx: Confirm'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Confirm'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Confirm'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Confirm'PaymentMethodDataNaverPay, ?nzBankAccount: Confirm'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Confirm'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?payto: Confirm'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Confirm'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?scalapay: string, ?sepaDebit: Confirm'PaymentMethodDataSepaDebit, ?sofort: Confirm'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Confirm'PaymentMethodDataType, ?upi: Confirm'PaymentMethodDataUpi, ?usBankAccount: Confirm'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -4917,6 +4957,7 @@ module SetupIntentsConfirm =
                 Bancontact = bancontact
                 Billie = billie
                 BillingDetails = billingDetails
+                Bizum = bizum
                 Blik = blik
                 Boleto = boleto
                 Cashapp = cashapp
@@ -4952,6 +4993,7 @@ module SetupIntentsConfirm =
                 RevolutPay = revolutPay
                 SamsungPay = samsungPay
                 Satispay = satispay
+                Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
                 Sunbit = sunbit
@@ -5829,6 +5871,9 @@ module SetupIntentsConfirm =
             /// If this is a `bacs_debit` SetupIntent, this sub-hash contains details about the Bacs Debit payment method options.
             [<Config.Form>]
             BacsDebit: Confirm'PaymentMethodOptionsBacsDebit option
+            /// If this is a `bizum` SetupIntent, this sub-hash contains details about the Bizum payment method options.
+            [<Config.Form>]
+            Bizum: string option
             /// Configuration for any card setup attempted on this SetupIntent.
             [<Config.Form>]
             Card: Confirm'PaymentMethodOptionsCard option
@@ -5838,7 +5883,7 @@ module SetupIntentsConfirm =
             /// If this is a `klarna` PaymentMethod, this hash contains details about the Klarna payment method options.
             [<Config.Form>]
             Klarna: Confirm'PaymentMethodOptionsKlarna option
-            /// If this is a `link` PaymentMethod, this sub-hash contains details about the Link payment method options.
+            /// If this is a `link` PaymentMethod, this sub-hash contains details about the Link payment method options (Link is also known as Onelink in the UK).
             [<Config.Form>]
             Link: Confirm'PaymentMethodOptionsLink option
             /// If this is a `paypal` PaymentMethod, this sub-hash contains details about the PayPal payment method options.
@@ -5862,11 +5907,12 @@ module SetupIntentsConfirm =
         }
 
     type Confirm'PaymentMethodOptions with
-        static member New(?acssDebit: Confirm'PaymentMethodOptionsAcssDebit, ?amazonPay: string, ?bacsDebit: Confirm'PaymentMethodOptionsBacsDebit, ?card: Confirm'PaymentMethodOptionsCard, ?cardPresent: string, ?klarna: Confirm'PaymentMethodOptionsKlarna, ?link: Confirm'PaymentMethodOptionsLink, ?paypal: Confirm'PaymentMethodOptionsPaypal, ?payto: Confirm'PaymentMethodOptionsPayto, ?pix: Confirm'PaymentMethodOptionsPix, ?sepaDebit: Confirm'PaymentMethodOptionsSepaDebit, ?upi: Confirm'PaymentMethodOptionsUpi, ?usBankAccount: Confirm'PaymentMethodOptionsUsBankAccount) =
+        static member New(?acssDebit: Confirm'PaymentMethodOptionsAcssDebit, ?amazonPay: string, ?bacsDebit: Confirm'PaymentMethodOptionsBacsDebit, ?bizum: string, ?card: Confirm'PaymentMethodOptionsCard, ?cardPresent: string, ?klarna: Confirm'PaymentMethodOptionsKlarna, ?link: Confirm'PaymentMethodOptionsLink, ?paypal: Confirm'PaymentMethodOptionsPaypal, ?payto: Confirm'PaymentMethodOptionsPayto, ?pix: Confirm'PaymentMethodOptionsPix, ?sepaDebit: Confirm'PaymentMethodOptionsSepaDebit, ?upi: Confirm'PaymentMethodOptionsUpi, ?usBankAccount: Confirm'PaymentMethodOptionsUsBankAccount) =
             {
                 AcssDebit = acssDebit
                 AmazonPay = amazonPay
                 BacsDebit = bacsDebit
+                Bizum = bizum
                 Card = card
                 CardPresent = cardPresent
                 Klarna = klarna

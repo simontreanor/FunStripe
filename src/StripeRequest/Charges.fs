@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module Charges =
 
     type ListOptions =
@@ -146,15 +146,19 @@ module Charges =
             /// The amount transferred to the destination account, if specified. By default, the entire charge amount is transferred to the destination account.
             [<Config.Form>]
             Amount: int option
+            /// An arbitrary string attached to the transfer. Often useful for displaying to users.
+            [<Config.Form>]
+            Description: string option
             /// ID of an existing, connected Stripe account.
             [<Config.Form>]
             Destination: string option
         }
 
     type Create'TransferData with
-        static member New(?amount: int, ?destination: string) =
+        static member New(?amount: int, ?description: string, ?destination: string) =
             {
                 Amount = amount
+                Description = description
                 Destination = destination
             }
 

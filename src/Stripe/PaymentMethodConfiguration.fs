@@ -14,7 +14,7 @@ open Stripe.PaymentMethod
 /// - [Payment Method Configurations API](https://docs.stripe.com/connect/payment-method-configurations)
 /// - [Multiple configurations on dynamic payment methods](https://docs.stripe.com/payments/multiple-payment-method-configs)
 /// - [Multiple configurations for your Connect accounts](https://docs.stripe.com/connect/multiple-payment-method-configurations)
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type PaymentMethodConfiguration =
     {
         AcssDebit: PaymentMethodConfigResourcePaymentMethodProperties option
@@ -32,6 +32,7 @@ type PaymentMethodConfiguration =
         BacsDebit: PaymentMethodConfigResourcePaymentMethodProperties option
         Bancontact: PaymentMethodConfigResourcePaymentMethodProperties option
         Billie: PaymentMethodConfigResourcePaymentMethodProperties option
+        Bizum: PaymentMethodConfigResourcePaymentMethodProperties option
         Blik: PaymentMethodConfigResourcePaymentMethodProperties option
         Boleto: PaymentMethodConfigResourcePaymentMethodProperties option
         Card: PaymentMethodConfigResourcePaymentMethodProperties option
@@ -79,6 +80,7 @@ type PaymentMethodConfiguration =
         RevolutPay: PaymentMethodConfigResourcePaymentMethodProperties option
         SamsungPay: PaymentMethodConfigResourcePaymentMethodProperties option
         Satispay: PaymentMethodConfigResourcePaymentMethodProperties option
+        Scalapay: PaymentMethodConfigResourcePaymentMethodProperties option
         SepaDebit: PaymentMethodConfigResourcePaymentMethodProperties option
         Sofort: PaymentMethodConfigResourcePaymentMethodProperties option
         Sunbit: PaymentMethodConfigResourcePaymentMethodProperties option
@@ -91,7 +93,7 @@ type PaymentMethodConfiguration =
     }
 
 type PaymentMethodConfiguration with
-    static member New(active: bool, application: string option, id: string, isDefault: bool, livemode: bool, name: string, parent: string option, ?acssDebit: PaymentMethodConfigResourcePaymentMethodProperties, ?affirm: PaymentMethodConfigResourcePaymentMethodProperties, ?afterpayClearpay: PaymentMethodConfigResourcePaymentMethodProperties, ?alipay: PaymentMethodConfigResourcePaymentMethodProperties, ?alma: PaymentMethodConfigResourcePaymentMethodProperties, ?amazonPay: PaymentMethodConfigResourcePaymentMethodProperties, ?applePay: PaymentMethodConfigResourcePaymentMethodProperties, ?auBecsDebit: PaymentMethodConfigResourcePaymentMethodProperties, ?bacsDebit: PaymentMethodConfigResourcePaymentMethodProperties, ?bancontact: PaymentMethodConfigResourcePaymentMethodProperties, ?billie: PaymentMethodConfigResourcePaymentMethodProperties, ?blik: PaymentMethodConfigResourcePaymentMethodProperties, ?boleto: PaymentMethodConfigResourcePaymentMethodProperties, ?card: PaymentMethodConfigResourcePaymentMethodProperties, ?cartesBancaires: PaymentMethodConfigResourcePaymentMethodProperties, ?cashapp: PaymentMethodConfigResourcePaymentMethodProperties, ?crypto: PaymentMethodConfigResourcePaymentMethodProperties, ?customerBalance: PaymentMethodConfigResourcePaymentMethodProperties, ?eps: PaymentMethodConfigResourcePaymentMethodProperties, ?fpx: PaymentMethodConfigResourcePaymentMethodProperties, ?giropay: PaymentMethodConfigResourcePaymentMethodProperties, ?googlePay: PaymentMethodConfigResourcePaymentMethodProperties, ?grabpay: PaymentMethodConfigResourcePaymentMethodProperties, ?ideal: PaymentMethodConfigResourcePaymentMethodProperties, ?jcb: PaymentMethodConfigResourcePaymentMethodProperties, ?kakaoPay: PaymentMethodConfigResourcePaymentMethodProperties, ?klarna: PaymentMethodConfigResourcePaymentMethodProperties, ?konbini: PaymentMethodConfigResourcePaymentMethodProperties, ?krCard: PaymentMethodConfigResourcePaymentMethodProperties, ?link: PaymentMethodConfigResourcePaymentMethodProperties, ?mbWay: PaymentMethodConfigResourcePaymentMethodProperties, ?mobilepay: PaymentMethodConfigResourcePaymentMethodProperties, ?multibanco: PaymentMethodConfigResourcePaymentMethodProperties, ?naverPay: PaymentMethodConfigResourcePaymentMethodProperties, ?nzBankAccount: PaymentMethodConfigResourcePaymentMethodProperties, ?oxxo: PaymentMethodConfigResourcePaymentMethodProperties, ?p24: PaymentMethodConfigResourcePaymentMethodProperties, ?payByBank: PaymentMethodConfigResourcePaymentMethodProperties, ?payco: PaymentMethodConfigResourcePaymentMethodProperties, ?paynow: PaymentMethodConfigResourcePaymentMethodProperties, ?paypal: PaymentMethodConfigResourcePaymentMethodProperties, ?payto: PaymentMethodConfigResourcePaymentMethodProperties, ?pix: PaymentMethodConfigResourcePaymentMethodProperties, ?promptpay: PaymentMethodConfigResourcePaymentMethodProperties, ?revolutPay: PaymentMethodConfigResourcePaymentMethodProperties, ?samsungPay: PaymentMethodConfigResourcePaymentMethodProperties, ?satispay: PaymentMethodConfigResourcePaymentMethodProperties, ?sepaDebit: PaymentMethodConfigResourcePaymentMethodProperties, ?sofort: PaymentMethodConfigResourcePaymentMethodProperties, ?sunbit: PaymentMethodConfigResourcePaymentMethodProperties, ?swish: PaymentMethodConfigResourcePaymentMethodProperties, ?twint: PaymentMethodConfigResourcePaymentMethodProperties, ?upi: PaymentMethodConfigResourcePaymentMethodProperties, ?usBankAccount: PaymentMethodConfigResourcePaymentMethodProperties, ?wechatPay: PaymentMethodConfigResourcePaymentMethodProperties, ?zip: PaymentMethodConfigResourcePaymentMethodProperties) =
+    static member New(active: bool, application: string option, id: string, isDefault: bool, livemode: bool, name: string, parent: string option, ?acssDebit: PaymentMethodConfigResourcePaymentMethodProperties, ?affirm: PaymentMethodConfigResourcePaymentMethodProperties, ?afterpayClearpay: PaymentMethodConfigResourcePaymentMethodProperties, ?alipay: PaymentMethodConfigResourcePaymentMethodProperties, ?alma: PaymentMethodConfigResourcePaymentMethodProperties, ?amazonPay: PaymentMethodConfigResourcePaymentMethodProperties, ?applePay: PaymentMethodConfigResourcePaymentMethodProperties, ?auBecsDebit: PaymentMethodConfigResourcePaymentMethodProperties, ?bacsDebit: PaymentMethodConfigResourcePaymentMethodProperties, ?bancontact: PaymentMethodConfigResourcePaymentMethodProperties, ?billie: PaymentMethodConfigResourcePaymentMethodProperties, ?bizum: PaymentMethodConfigResourcePaymentMethodProperties, ?blik: PaymentMethodConfigResourcePaymentMethodProperties, ?boleto: PaymentMethodConfigResourcePaymentMethodProperties, ?card: PaymentMethodConfigResourcePaymentMethodProperties, ?cartesBancaires: PaymentMethodConfigResourcePaymentMethodProperties, ?cashapp: PaymentMethodConfigResourcePaymentMethodProperties, ?crypto: PaymentMethodConfigResourcePaymentMethodProperties, ?customerBalance: PaymentMethodConfigResourcePaymentMethodProperties, ?eps: PaymentMethodConfigResourcePaymentMethodProperties, ?fpx: PaymentMethodConfigResourcePaymentMethodProperties, ?giropay: PaymentMethodConfigResourcePaymentMethodProperties, ?googlePay: PaymentMethodConfigResourcePaymentMethodProperties, ?grabpay: PaymentMethodConfigResourcePaymentMethodProperties, ?ideal: PaymentMethodConfigResourcePaymentMethodProperties, ?jcb: PaymentMethodConfigResourcePaymentMethodProperties, ?kakaoPay: PaymentMethodConfigResourcePaymentMethodProperties, ?klarna: PaymentMethodConfigResourcePaymentMethodProperties, ?konbini: PaymentMethodConfigResourcePaymentMethodProperties, ?krCard: PaymentMethodConfigResourcePaymentMethodProperties, ?link: PaymentMethodConfigResourcePaymentMethodProperties, ?mbWay: PaymentMethodConfigResourcePaymentMethodProperties, ?mobilepay: PaymentMethodConfigResourcePaymentMethodProperties, ?multibanco: PaymentMethodConfigResourcePaymentMethodProperties, ?naverPay: PaymentMethodConfigResourcePaymentMethodProperties, ?nzBankAccount: PaymentMethodConfigResourcePaymentMethodProperties, ?oxxo: PaymentMethodConfigResourcePaymentMethodProperties, ?p24: PaymentMethodConfigResourcePaymentMethodProperties, ?payByBank: PaymentMethodConfigResourcePaymentMethodProperties, ?payco: PaymentMethodConfigResourcePaymentMethodProperties, ?paynow: PaymentMethodConfigResourcePaymentMethodProperties, ?paypal: PaymentMethodConfigResourcePaymentMethodProperties, ?payto: PaymentMethodConfigResourcePaymentMethodProperties, ?pix: PaymentMethodConfigResourcePaymentMethodProperties, ?promptpay: PaymentMethodConfigResourcePaymentMethodProperties, ?revolutPay: PaymentMethodConfigResourcePaymentMethodProperties, ?samsungPay: PaymentMethodConfigResourcePaymentMethodProperties, ?satispay: PaymentMethodConfigResourcePaymentMethodProperties, ?scalapay: PaymentMethodConfigResourcePaymentMethodProperties, ?sepaDebit: PaymentMethodConfigResourcePaymentMethodProperties, ?sofort: PaymentMethodConfigResourcePaymentMethodProperties, ?sunbit: PaymentMethodConfigResourcePaymentMethodProperties, ?swish: PaymentMethodConfigResourcePaymentMethodProperties, ?twint: PaymentMethodConfigResourcePaymentMethodProperties, ?upi: PaymentMethodConfigResourcePaymentMethodProperties, ?usBankAccount: PaymentMethodConfigResourcePaymentMethodProperties, ?wechatPay: PaymentMethodConfigResourcePaymentMethodProperties, ?zip: PaymentMethodConfigResourcePaymentMethodProperties) =
         {
             Active = active
             Application = application
@@ -111,6 +113,7 @@ type PaymentMethodConfiguration with
             BacsDebit = bacsDebit
             Bancontact = bancontact
             Billie = billie
+            Bizum = bizum
             Blik = blik
             Boleto = boleto
             Card = card
@@ -147,6 +150,7 @@ type PaymentMethodConfiguration with
             RevolutPay = revolutPay
             SamsungPay = samsungPay
             Satispay = satispay
+            Scalapay = scalapay
             SepaDebit = sepaDebit
             Sofort = sofort
             Sunbit = sunbit

@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type SetupAttemptCustomer'AnyOf =
     | String of string
     | Customer of Customer
@@ -568,6 +568,15 @@ type SetupAttemptPaymentMethodDetailsSofort with
             VerifiedName = verifiedName
         }
 
+type SetupAttemptPaymentMethodDetailsTwint =
+    { SetupAttemptPaymentMethodDetailsTwint: string option }
+
+type SetupAttemptPaymentMethodDetailsTwint with
+    static member New(?setupAttemptPaymentMethodDetailsTwint: string option) =
+        {
+            SetupAttemptPaymentMethodDetailsTwint = setupAttemptPaymentMethodDetailsTwint |> Option.flatten
+        }
+
 type SetupAttemptPaymentMethodDetailsUpi =
     { SetupAttemptPaymentMethodDetailsUpi: string option }
 
@@ -610,6 +619,7 @@ type SetupAttemptPaymentMethodDetails =
         RevolutPay: SetupAttemptPaymentMethodDetailsRevolutPay option
         SepaDebit: SetupAttemptPaymentMethodDetailsSepaDebit option
         Sofort: SetupAttemptPaymentMethodDetailsSofort option
+        Twint: SetupAttemptPaymentMethodDetailsTwint option
         /// The type of the payment method used in the SetupIntent (e.g., `card`). An additional hash is included on `payment_method_details` with a name matching this value. It contains confirmation-specific information for the payment method.
         Type: string
         Upi: SetupAttemptPaymentMethodDetailsUpi option
@@ -617,7 +627,7 @@ type SetupAttemptPaymentMethodDetails =
     }
 
 type SetupAttemptPaymentMethodDetails with
-    static member New(``type``: string, ?acssDebit: SetupAttemptPaymentMethodDetailsAcssDebit, ?amazonPay: SetupAttemptPaymentMethodDetailsAmazonPay, ?auBecsDebit: SetupAttemptPaymentMethodDetailsAuBecsDebit, ?bacsDebit: SetupAttemptPaymentMethodDetailsBacsDebit, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?boleto: SetupAttemptPaymentMethodDetailsBoleto, ?card: SetupAttemptPaymentMethodDetailsCard, ?cardPresent: SetupAttemptPaymentMethodDetailsCardPresent, ?cashapp: SetupAttemptPaymentMethodDetailsCashapp, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?kakaoPay: SetupAttemptPaymentMethodDetailsKakaoPay, ?klarna: SetupAttemptPaymentMethodDetailsKlarna, ?krCard: SetupAttemptPaymentMethodDetailsKrCard, ?link: SetupAttemptPaymentMethodDetailsLink, ?naverPay: SetupAttemptPaymentMethodDetailsNaverPay, ?nzBankAccount: SetupAttemptPaymentMethodDetailsNzBankAccount, ?paypal: SetupAttemptPaymentMethodDetailsPaypal, ?payto: SetupAttemptPaymentMethodDetailsPayto, ?pix: SetupAttemptPaymentMethodDetailsPix, ?revolutPay: SetupAttemptPaymentMethodDetailsRevolutPay, ?sepaDebit: SetupAttemptPaymentMethodDetailsSepaDebit, ?sofort: SetupAttemptPaymentMethodDetailsSofort, ?upi: SetupAttemptPaymentMethodDetailsUpi, ?usBankAccount: SetupAttemptPaymentMethodDetailsUsBankAccount) =
+    static member New(``type``: string, ?acssDebit: SetupAttemptPaymentMethodDetailsAcssDebit, ?amazonPay: SetupAttemptPaymentMethodDetailsAmazonPay, ?auBecsDebit: SetupAttemptPaymentMethodDetailsAuBecsDebit, ?bacsDebit: SetupAttemptPaymentMethodDetailsBacsDebit, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?boleto: SetupAttemptPaymentMethodDetailsBoleto, ?card: SetupAttemptPaymentMethodDetailsCard, ?cardPresent: SetupAttemptPaymentMethodDetailsCardPresent, ?cashapp: SetupAttemptPaymentMethodDetailsCashapp, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?kakaoPay: SetupAttemptPaymentMethodDetailsKakaoPay, ?klarna: SetupAttemptPaymentMethodDetailsKlarna, ?krCard: SetupAttemptPaymentMethodDetailsKrCard, ?link: SetupAttemptPaymentMethodDetailsLink, ?naverPay: SetupAttemptPaymentMethodDetailsNaverPay, ?nzBankAccount: SetupAttemptPaymentMethodDetailsNzBankAccount, ?paypal: SetupAttemptPaymentMethodDetailsPaypal, ?payto: SetupAttemptPaymentMethodDetailsPayto, ?pix: SetupAttemptPaymentMethodDetailsPix, ?revolutPay: SetupAttemptPaymentMethodDetailsRevolutPay, ?sepaDebit: SetupAttemptPaymentMethodDetailsSepaDebit, ?sofort: SetupAttemptPaymentMethodDetailsSofort, ?twint: SetupAttemptPaymentMethodDetailsTwint, ?upi: SetupAttemptPaymentMethodDetailsUpi, ?usBankAccount: SetupAttemptPaymentMethodDetailsUsBankAccount) =
         {
             Type = ``type``
             AcssDebit = acssDebit
@@ -642,6 +652,7 @@ type SetupAttemptPaymentMethodDetails with
             RevolutPay = revolutPay
             SepaDebit = sepaDebit
             Sofort = sofort
+            Twint = twint
             Upi = upi
             UsBankAccount = usBankAccount
         }

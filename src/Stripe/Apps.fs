@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type SecretServiceResourceScopeType =
     | Account
     | User

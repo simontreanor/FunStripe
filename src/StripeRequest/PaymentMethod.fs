@@ -13,7 +13,7 @@ open Stripe.SubscriptionItem
 open Stripe.SubscriptionSchedule
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module Account =
 
     type RetrieveOptions =
@@ -2742,6 +2742,9 @@ module PaymentMethodConfigurations =
 
     type ListOptions =
         {
+            /// Whether the configuration is active.
+            [<Config.Query>]
+            Active: bool option
             /// The Connect application to filter by.
             [<Config.Query>]
             Application: string option
@@ -2760,8 +2763,9 @@ module PaymentMethodConfigurations =
         }
 
     type ListOptions with
-        static member New(?application: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+        static member New(?active: bool, ?application: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
             {
+                Active = active
                 Application = application
                 EndingBefore = endingBefore
                 Expand = expand
@@ -3137,6 +3141,37 @@ module PaymentMethodConfigurations =
 
     type Create'Billie with
         static member New(?displayPreference: Create'BillieDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
+
+    type Create'BizumDisplayPreferencePreference =
+        | [<JsonPropertyName("none")>] None'
+        | Off
+        | On
+
+    type Create'BizumDisplayPreference =
+        {
+            /// The account's preference for whether or not to display this payment method.
+            [<Config.Form>]
+            Preference: Create'BizumDisplayPreferencePreference option
+        }
+
+    type Create'BizumDisplayPreference with
+        static member New(?preference: Create'BizumDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
+    type Create'Bizum =
+        {
+            /// Whether or not the payment method should be displayed.
+            [<Config.Form>]
+            DisplayPreference: Create'BizumDisplayPreference option
+        }
+
+    type Create'Bizum with
+        static member New(?displayPreference: Create'BizumDisplayPreference) =
             {
                 DisplayPreference = displayPreference
             }
@@ -4288,6 +4323,37 @@ module PaymentMethodConfigurations =
                 DisplayPreference = displayPreference
             }
 
+    type Create'ScalapayDisplayPreferencePreference =
+        | [<JsonPropertyName("none")>] None'
+        | Off
+        | On
+
+    type Create'ScalapayDisplayPreference =
+        {
+            /// The account's preference for whether or not to display this payment method.
+            [<Config.Form>]
+            Preference: Create'ScalapayDisplayPreferencePreference option
+        }
+
+    type Create'ScalapayDisplayPreference with
+        static member New(?preference: Create'ScalapayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
+    type Create'Scalapay =
+        {
+            /// Whether or not the payment method should be displayed.
+            [<Config.Form>]
+            DisplayPreference: Create'ScalapayDisplayPreference option
+        }
+
+    type Create'Scalapay with
+        static member New(?displayPreference: Create'ScalapayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
+
     type Create'SepaDebitDisplayPreferencePreference =
         | [<JsonPropertyName("none")>] None'
         | Off
@@ -4605,6 +4671,9 @@ module PaymentMethodConfigurations =
             /// Billie is a [single-use](https://docs.stripe.com/payments/payment-methods#usage) payment method that offers businesses Pay by Invoice where they offer payment terms ranging from 7-120 days. Customers are redirected from your website or app, authorize the payment with Billie, then return to your website or app. You get [immediate notification](/payments/payment-methods#payment-notification) of whether the payment succeeded or failed.
             [<Config.Form>]
             Billie: Create'Billie option
+            /// To enable Bizum, buyers need a Spanish IBAN from a bank connected to Bizum. Within their banking app, they can enable Bizum and link their mobile number to their IBAN.
+            [<Config.Form>]
+            Bizum: Create'Bizum option
             /// BLIK is a [single use](https://docs.stripe.com/payments/payment-methods#usage) payment method that requires customers to authenticate their payments. When customers want to pay online using BLIK, they request a six-digit code from their banking application and enter it into the payment collection form. Check this [page](https://docs.stripe.com/payments/blik) for more details.
             [<Config.Form>]
             Blik: Create'Blik option
@@ -4722,9 +4791,12 @@ module PaymentMethodConfigurations =
             /// Samsung Pay is a [single-use](https://docs.stripe.com/payments/payment-methods#usage local wallet available in South Korea.
             [<Config.Form>]
             SamsungPay: Create'SamsungPay option
-            /// Satispay is a [single-use](https://docs.stripe.com/payments/payment-methods#usage) payment method where customers are required to [authenticate](/payments/payment-methods#customer-actions) their payment. Customers pay by being redirected from your website or app, authorizing the payment with Satispay, then returning to your website or app. You get [immediate notification](/payments/payment-methods#payment-notification) of whether the payment succeeded or failed.
+            /// Satispay is a [single-use](/payments/payment-methods#usage) payment method where customers are required to [authenticate](/payments/payment-methods#customer-actions) their payment. Customers pay by being redirected from your website or app, authorizing the payment with Satispay, then returning to your website or app. You get [immediate notification](/payments/payment-methods#payment-notification) of whether the payment succeeded or failed.
             [<Config.Form>]
             Satispay: Create'Satispay option
+            /// Scalapay is a [single-use](/payments/payment-methods#usage) payment method that lets customers pay in 3 or 4 installments. Customers are redirected from your website or app, authorize the payment with Scalapay, then return to your website or app. You get [immediate notification](/payments/payment-methods#payment-notification) of whether the payment succeeded or failed.
+            [<Config.Form>]
+            Scalapay: Create'Scalapay option
             /// The [Single Euro Payments Area (SEPA)](https://en.wikipedia.org/wiki/Single_Euro_Payments_Area) is an initiative of the European Union to simplify payments within and across member countries. SEPA established and enforced banking standards to allow for the direct debiting of every EUR-denominated bank account within the SEPA region, check this [page](https://docs.stripe.com/payments/sepa-debit) for more details.
             [<Config.Form>]
             SepaDebit: Create'SepaDebit option
@@ -4755,7 +4827,7 @@ module PaymentMethodConfigurations =
         }
 
     type CreateOptions with
-        static member New(?acssDebit: Create'AcssDebit, ?affirm: Create'Affirm, ?afterpayClearpay: Create'AfterpayClearpay, ?alipay: Create'Alipay, ?alma: Create'Alma, ?amazonPay: Create'AmazonPay, ?applePay: Create'ApplePay, ?applePayLater: Create'ApplePayLater, ?auBecsDebit: Create'AuBecsDebit, ?bacsDebit: Create'BacsDebit, ?bancontact: Create'Bancontact, ?billie: Create'Billie, ?blik: Create'Blik, ?boleto: Create'Boleto, ?card: Create'Card, ?cartesBancaires: Create'CartesBancaires, ?cashapp: Create'Cashapp, ?crypto: Create'Crypto, ?customerBalance: Create'CustomerBalance, ?eps: Create'Eps, ?expand: string list, ?fpx: Create'Fpx, ?frMealVoucherConecs: Create'FrMealVoucherConecs, ?giropay: Create'Giropay, ?googlePay: Create'GooglePay, ?grabpay: Create'Grabpay, ?ideal: Create'Ideal, ?jcb: Create'Jcb, ?kakaoPay: Create'KakaoPay, ?klarna: Create'Klarna, ?konbini: Create'Konbini, ?krCard: Create'KrCard, ?link: Create'Link, ?mbWay: Create'MbWay, ?mobilepay: Create'Mobilepay, ?multibanco: Create'Multibanco, ?name: string, ?naverPay: Create'NaverPay, ?nzBankAccount: Create'NzBankAccount, ?oxxo: Create'Oxxo, ?p24: Create'P24, ?parent: string, ?payByBank: Create'PayByBank, ?payco: Create'Payco, ?paynow: Create'Paynow, ?paypal: Create'Paypal, ?payto: Create'Payto, ?pix: Create'Pix, ?promptpay: Create'Promptpay, ?revolutPay: Create'RevolutPay, ?samsungPay: Create'SamsungPay, ?satispay: Create'Satispay, ?sepaDebit: Create'SepaDebit, ?sofort: Create'Sofort, ?sunbit: Create'Sunbit, ?swish: Create'Swish, ?twint: Create'Twint, ?upi: Create'Upi, ?usBankAccount: Create'UsBankAccount, ?wechatPay: Create'WechatPay, ?zip: Create'Zip) =
+        static member New(?acssDebit: Create'AcssDebit, ?affirm: Create'Affirm, ?afterpayClearpay: Create'AfterpayClearpay, ?alipay: Create'Alipay, ?alma: Create'Alma, ?amazonPay: Create'AmazonPay, ?applePay: Create'ApplePay, ?applePayLater: Create'ApplePayLater, ?auBecsDebit: Create'AuBecsDebit, ?bacsDebit: Create'BacsDebit, ?bancontact: Create'Bancontact, ?billie: Create'Billie, ?bizum: Create'Bizum, ?blik: Create'Blik, ?boleto: Create'Boleto, ?card: Create'Card, ?cartesBancaires: Create'CartesBancaires, ?cashapp: Create'Cashapp, ?crypto: Create'Crypto, ?customerBalance: Create'CustomerBalance, ?eps: Create'Eps, ?expand: string list, ?fpx: Create'Fpx, ?frMealVoucherConecs: Create'FrMealVoucherConecs, ?giropay: Create'Giropay, ?googlePay: Create'GooglePay, ?grabpay: Create'Grabpay, ?ideal: Create'Ideal, ?jcb: Create'Jcb, ?kakaoPay: Create'KakaoPay, ?klarna: Create'Klarna, ?konbini: Create'Konbini, ?krCard: Create'KrCard, ?link: Create'Link, ?mbWay: Create'MbWay, ?mobilepay: Create'Mobilepay, ?multibanco: Create'Multibanco, ?name: string, ?naverPay: Create'NaverPay, ?nzBankAccount: Create'NzBankAccount, ?oxxo: Create'Oxxo, ?p24: Create'P24, ?parent: string, ?payByBank: Create'PayByBank, ?payco: Create'Payco, ?paynow: Create'Paynow, ?paypal: Create'Paypal, ?payto: Create'Payto, ?pix: Create'Pix, ?promptpay: Create'Promptpay, ?revolutPay: Create'RevolutPay, ?samsungPay: Create'SamsungPay, ?satispay: Create'Satispay, ?scalapay: Create'Scalapay, ?sepaDebit: Create'SepaDebit, ?sofort: Create'Sofort, ?sunbit: Create'Sunbit, ?swish: Create'Swish, ?twint: Create'Twint, ?upi: Create'Upi, ?usBankAccount: Create'UsBankAccount, ?wechatPay: Create'WechatPay, ?zip: Create'Zip) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -4769,6 +4841,7 @@ module PaymentMethodConfigurations =
                 BacsDebit = bacsDebit
                 Bancontact = bancontact
                 Billie = billie
+                Bizum = bizum
                 Blik = blik
                 Boleto = boleto
                 Card = card
@@ -4809,6 +4882,7 @@ module PaymentMethodConfigurations =
                 RevolutPay = revolutPay
                 SamsungPay = samsungPay
                 Satispay = satispay
+                Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
                 Sunbit = sunbit
@@ -5204,6 +5278,37 @@ module PaymentMethodConfigurations =
 
     type Update'Billie with
         static member New(?displayPreference: Update'BillieDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
+
+    type Update'BizumDisplayPreferencePreference =
+        | [<JsonPropertyName("none")>] None'
+        | Off
+        | On
+
+    type Update'BizumDisplayPreference =
+        {
+            /// The account's preference for whether or not to display this payment method.
+            [<Config.Form>]
+            Preference: Update'BizumDisplayPreferencePreference option
+        }
+
+    type Update'BizumDisplayPreference with
+        static member New(?preference: Update'BizumDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
+    type Update'Bizum =
+        {
+            /// Whether or not the payment method should be displayed.
+            [<Config.Form>]
+            DisplayPreference: Update'BizumDisplayPreference option
+        }
+
+    type Update'Bizum with
+        static member New(?displayPreference: Update'BizumDisplayPreference) =
             {
                 DisplayPreference = displayPreference
             }
@@ -6355,6 +6460,37 @@ module PaymentMethodConfigurations =
                 DisplayPreference = displayPreference
             }
 
+    type Update'ScalapayDisplayPreferencePreference =
+        | [<JsonPropertyName("none")>] None'
+        | Off
+        | On
+
+    type Update'ScalapayDisplayPreference =
+        {
+            /// The account's preference for whether or not to display this payment method.
+            [<Config.Form>]
+            Preference: Update'ScalapayDisplayPreferencePreference option
+        }
+
+    type Update'ScalapayDisplayPreference with
+        static member New(?preference: Update'ScalapayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
+    type Update'Scalapay =
+        {
+            /// Whether or not the payment method should be displayed.
+            [<Config.Form>]
+            DisplayPreference: Update'ScalapayDisplayPreference option
+        }
+
+    type Update'Scalapay with
+        static member New(?displayPreference: Update'ScalapayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
+
     type Update'SepaDebitDisplayPreferencePreference =
         | [<JsonPropertyName("none")>] None'
         | Off
@@ -6677,6 +6813,9 @@ module PaymentMethodConfigurations =
             /// Billie is a [single-use](https://docs.stripe.com/payments/payment-methods#usage) payment method that offers businesses Pay by Invoice where they offer payment terms ranging from 7-120 days. Customers are redirected from your website or app, authorize the payment with Billie, then return to your website or app. You get [immediate notification](/payments/payment-methods#payment-notification) of whether the payment succeeded or failed.
             [<Config.Form>]
             Billie: Update'Billie option
+            /// To enable Bizum, buyers need a Spanish IBAN from a bank connected to Bizum. Within their banking app, they can enable Bizum and link their mobile number to their IBAN.
+            [<Config.Form>]
+            Bizum: Update'Bizum option
             /// BLIK is a [single use](https://docs.stripe.com/payments/payment-methods#usage) payment method that requires customers to authenticate their payments. When customers want to pay online using BLIK, they request a six-digit code from their banking application and enter it into the payment collection form. Check this [page](https://docs.stripe.com/payments/blik) for more details.
             [<Config.Form>]
             Blik: Update'Blik option
@@ -6791,9 +6930,12 @@ module PaymentMethodConfigurations =
             /// Samsung Pay is a [single-use](https://docs.stripe.com/payments/payment-methods#usage local wallet available in South Korea.
             [<Config.Form>]
             SamsungPay: Update'SamsungPay option
-            /// Satispay is a [single-use](https://docs.stripe.com/payments/payment-methods#usage) payment method where customers are required to [authenticate](/payments/payment-methods#customer-actions) their payment. Customers pay by being redirected from your website or app, authorizing the payment with Satispay, then returning to your website or app. You get [immediate notification](/payments/payment-methods#payment-notification) of whether the payment succeeded or failed.
+            /// Satispay is a [single-use](/payments/payment-methods#usage) payment method where customers are required to [authenticate](/payments/payment-methods#customer-actions) their payment. Customers pay by being redirected from your website or app, authorizing the payment with Satispay, then returning to your website or app. You get [immediate notification](/payments/payment-methods#payment-notification) of whether the payment succeeded or failed.
             [<Config.Form>]
             Satispay: Update'Satispay option
+            /// Scalapay is a [single-use](/payments/payment-methods#usage) payment method that lets customers pay in 3 or 4 installments. Customers are redirected from your website or app, authorize the payment with Scalapay, then return to your website or app. You get [immediate notification](/payments/payment-methods#payment-notification) of whether the payment succeeded or failed.
+            [<Config.Form>]
+            Scalapay: Update'Scalapay option
             /// The [Single Euro Payments Area (SEPA)](https://en.wikipedia.org/wiki/Single_Euro_Payments_Area) is an initiative of the European Union to simplify payments within and across member countries. SEPA established and enforced banking standards to allow for the direct debiting of every EUR-denominated bank account within the SEPA region, check this [page](https://docs.stripe.com/payments/sepa-debit) for more details.
             [<Config.Form>]
             SepaDebit: Update'SepaDebit option
@@ -6824,7 +6966,7 @@ module PaymentMethodConfigurations =
         }
 
     type UpdateOptions with
-        static member New(configuration: string, ?acssDebit: Update'AcssDebit, ?active: bool, ?affirm: Update'Affirm, ?afterpayClearpay: Update'AfterpayClearpay, ?alipay: Update'Alipay, ?alma: Update'Alma, ?amazonPay: Update'AmazonPay, ?applePay: Update'ApplePay, ?applePayLater: Update'ApplePayLater, ?auBecsDebit: Update'AuBecsDebit, ?bacsDebit: Update'BacsDebit, ?bancontact: Update'Bancontact, ?billie: Update'Billie, ?blik: Update'Blik, ?boleto: Update'Boleto, ?card: Update'Card, ?cartesBancaires: Update'CartesBancaires, ?cashapp: Update'Cashapp, ?crypto: Update'Crypto, ?customerBalance: Update'CustomerBalance, ?eps: Update'Eps, ?expand: string list, ?fpx: Update'Fpx, ?frMealVoucherConecs: Update'FrMealVoucherConecs, ?giropay: Update'Giropay, ?googlePay: Update'GooglePay, ?grabpay: Update'Grabpay, ?ideal: Update'Ideal, ?jcb: Update'Jcb, ?kakaoPay: Update'KakaoPay, ?klarna: Update'Klarna, ?konbini: Update'Konbini, ?krCard: Update'KrCard, ?link: Update'Link, ?mbWay: Update'MbWay, ?mobilepay: Update'Mobilepay, ?multibanco: Update'Multibanco, ?name: string, ?naverPay: Update'NaverPay, ?nzBankAccount: Update'NzBankAccount, ?oxxo: Update'Oxxo, ?p24: Update'P24, ?payByBank: Update'PayByBank, ?payco: Update'Payco, ?paynow: Update'Paynow, ?paypal: Update'Paypal, ?payto: Update'Payto, ?pix: Update'Pix, ?promptpay: Update'Promptpay, ?revolutPay: Update'RevolutPay, ?samsungPay: Update'SamsungPay, ?satispay: Update'Satispay, ?sepaDebit: Update'SepaDebit, ?sofort: Update'Sofort, ?sunbit: Update'Sunbit, ?swish: Update'Swish, ?twint: Update'Twint, ?upi: Update'Upi, ?usBankAccount: Update'UsBankAccount, ?wechatPay: Update'WechatPay, ?zip: Update'Zip) =
+        static member New(configuration: string, ?acssDebit: Update'AcssDebit, ?active: bool, ?affirm: Update'Affirm, ?afterpayClearpay: Update'AfterpayClearpay, ?alipay: Update'Alipay, ?alma: Update'Alma, ?amazonPay: Update'AmazonPay, ?applePay: Update'ApplePay, ?applePayLater: Update'ApplePayLater, ?auBecsDebit: Update'AuBecsDebit, ?bacsDebit: Update'BacsDebit, ?bancontact: Update'Bancontact, ?billie: Update'Billie, ?bizum: Update'Bizum, ?blik: Update'Blik, ?boleto: Update'Boleto, ?card: Update'Card, ?cartesBancaires: Update'CartesBancaires, ?cashapp: Update'Cashapp, ?crypto: Update'Crypto, ?customerBalance: Update'CustomerBalance, ?eps: Update'Eps, ?expand: string list, ?fpx: Update'Fpx, ?frMealVoucherConecs: Update'FrMealVoucherConecs, ?giropay: Update'Giropay, ?googlePay: Update'GooglePay, ?grabpay: Update'Grabpay, ?ideal: Update'Ideal, ?jcb: Update'Jcb, ?kakaoPay: Update'KakaoPay, ?klarna: Update'Klarna, ?konbini: Update'Konbini, ?krCard: Update'KrCard, ?link: Update'Link, ?mbWay: Update'MbWay, ?mobilepay: Update'Mobilepay, ?multibanco: Update'Multibanco, ?name: string, ?naverPay: Update'NaverPay, ?nzBankAccount: Update'NzBankAccount, ?oxxo: Update'Oxxo, ?p24: Update'P24, ?payByBank: Update'PayByBank, ?payco: Update'Payco, ?paynow: Update'Paynow, ?paypal: Update'Paypal, ?payto: Update'Payto, ?pix: Update'Pix, ?promptpay: Update'Promptpay, ?revolutPay: Update'RevolutPay, ?samsungPay: Update'SamsungPay, ?satispay: Update'Satispay, ?scalapay: Update'Scalapay, ?sepaDebit: Update'SepaDebit, ?sofort: Update'Sofort, ?sunbit: Update'Sunbit, ?swish: Update'Swish, ?twint: Update'Twint, ?upi: Update'Upi, ?usBankAccount: Update'UsBankAccount, ?wechatPay: Update'WechatPay, ?zip: Update'Zip) =
             {
                 Configuration = configuration
                 AcssDebit = acssDebit
@@ -6840,6 +6982,7 @@ module PaymentMethodConfigurations =
                 BacsDebit = bacsDebit
                 Bancontact = bancontact
                 Billie = billie
+                Bizum = bizum
                 Blik = blik
                 Boleto = boleto
                 Card = card
@@ -6879,6 +7022,7 @@ module PaymentMethodConfigurations =
                 RevolutPay = revolutPay
                 SamsungPay = samsungPay
                 Satispay = satispay
+                Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
                 Sunbit = sunbit
@@ -6892,7 +7036,7 @@ module PaymentMethodConfigurations =
 
     ///<p>List payment method configurations</p>
     let List settings (options: ListOptions) =
-        let qs = [("application", options.Application |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+        let qs = [("active", options.Active |> box); ("application", options.Application |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
         $"/v1/payment_method_configurations"
         |> RestApi.getAsync<StripeList<PaymentMethodConfiguration>> settings qs
 
@@ -7203,10 +7347,7 @@ module SubscriptionItems =
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
-            /// Use `allow_incomplete` to transition the subscription to `status=past_due` if a payment is required but cannot be paid. This allows you to manage scenarios where additional user actions are needed to pay a subscription's invoice. For example, SCA regulation may require 3DS authentication to complete payment. See the [SCA Migration Guide](https://docs.stripe.com/billing/migration/strong-customer-authentication) for Billing to learn more. This is the default behavior.
-            /// Use `default_incomplete` to transition the subscription to `status=past_due` when payment is required and await explicit confirmation of the invoice's payment intent. This allows simpler management of scenarios where additional user actions are needed to pay a subscription’s invoice. Such as failed payments, [SCA regulation](https://docs.stripe.com/billing/migration/strong-customer-authentication), or collecting a mandate for a bank debit payment method.
-            /// Use `pending_if_incomplete` to update the subscription using [pending updates](https://docs.stripe.com/billing/subscriptions/pending-updates). When you use `pending_if_incomplete` you can only pass the parameters [supported by pending updates](https://docs.stripe.com/billing/pending-updates-reference#supported-attributes).
-            /// Use `error_if_incomplete` if you want Stripe to return an HTTP 402 status code if a subscription's invoice cannot be paid. For example, if a payment method requires 3DS authentication due to SCA regulation and further user action is needed, this parameter does not update the subscription and returns an error instead. This was the default behavior for API versions prior to 2019-03-14. See the [changelog](https://docs.stripe.com/changelog/2019-03-14) to learn more.
+            /// Controls how Stripe handles payment when a subscription update requires payment and `collection_method=charge_automatically`.
             [<Config.Form>]
             PaymentBehavior: Create'PaymentBehavior option
             /// The identifier of the plan to add to the subscription.
@@ -7271,10 +7412,7 @@ module SubscriptionItems =
             /// Delete all usage for the given subscription item. Allowed only when the current plan's `usage_type` is `metered`.
             [<Config.Form>]
             ClearUsage: bool option
-            /// Use `allow_incomplete` to transition the subscription to `status=past_due` if a payment is required but cannot be paid. This allows you to manage scenarios where additional user actions are needed to pay a subscription's invoice. For example, SCA regulation may require 3DS authentication to complete payment. See the [SCA Migration Guide](https://docs.stripe.com/billing/migration/strong-customer-authentication) for Billing to learn more. This is the default behavior.
-            /// Use `default_incomplete` to transition the subscription to `status=past_due` when payment is required and await explicit confirmation of the invoice's payment intent. This allows simpler management of scenarios where additional user actions are needed to pay a subscription’s invoice. Such as failed payments, [SCA regulation](https://docs.stripe.com/billing/migration/strong-customer-authentication), or collecting a mandate for a bank debit payment method.
-            /// Use `pending_if_incomplete` to update the subscription using [pending updates](https://docs.stripe.com/billing/subscriptions/pending-updates). When you use `pending_if_incomplete` you can only pass the parameters [supported by pending updates](https://docs.stripe.com/billing/pending-updates-reference#supported-attributes).
-            /// Use `error_if_incomplete` if you want Stripe to return an HTTP 402 status code if a subscription's invoice cannot be paid. For example, if a payment method requires 3DS authentication due to SCA regulation and further user action is needed, this parameter does not update the subscription and returns an error instead. This was the default behavior for API versions prior to 2019-03-14. See the [changelog](https://docs.stripe.com/changelog/2019-03-14) to learn more.
+            /// Controls how Stripe handles payment when a subscription update requires payment and `collection_method=charge_automatically`.
             [<Config.Form>]
             PaymentBehavior: Delete'PaymentBehavior option
             /// Determines how to handle [prorations](https://docs.stripe.com/billing/subscriptions/prorations) when the billing cycle changes (e.g., when switching plans, resetting `billing_cycle_anchor=now`, or starting a trial), or if an item's `quantity` changes. The default value is `create_prorations`.
@@ -7436,10 +7574,7 @@ module SubscriptionItems =
             /// Indicates if a customer is on or off-session while an invoice payment is attempted. Defaults to `false` (on-session).
             [<Config.Form>]
             OffSession: bool option
-            /// Use `allow_incomplete` to transition the subscription to `status=past_due` if a payment is required but cannot be paid. This allows you to manage scenarios where additional user actions are needed to pay a subscription's invoice. For example, SCA regulation may require 3DS authentication to complete payment. See the [SCA Migration Guide](https://docs.stripe.com/billing/migration/strong-customer-authentication) for Billing to learn more. This is the default behavior.
-            /// Use `default_incomplete` to transition the subscription to `status=past_due` when payment is required and await explicit confirmation of the invoice's payment intent. This allows simpler management of scenarios where additional user actions are needed to pay a subscription’s invoice. Such as failed payments, [SCA regulation](https://docs.stripe.com/billing/migration/strong-customer-authentication), or collecting a mandate for a bank debit payment method.
-            /// Use `pending_if_incomplete` to update the subscription using [pending updates](https://docs.stripe.com/billing/subscriptions/pending-updates). When you use `pending_if_incomplete` you can only pass the parameters [supported by pending updates](https://docs.stripe.com/billing/pending-updates-reference#supported-attributes).
-            /// Use `error_if_incomplete` if you want Stripe to return an HTTP 402 status code if a subscription's invoice cannot be paid. For example, if a payment method requires 3DS authentication due to SCA regulation and further user action is needed, this parameter does not update the subscription and returns an error instead. This was the default behavior for API versions prior to 2019-03-14. See the [changelog](https://docs.stripe.com/changelog/2019-03-14) to learn more.
+            /// Controls how Stripe handles payment when a subscription update requires payment and `collection_method=charge_automatically`.
             [<Config.Form>]
             PaymentBehavior: Update'PaymentBehavior option
             /// The identifier of the new plan for this subscription item.
@@ -7899,6 +8034,9 @@ module SubscriptionSchedules =
 
     type Create'PhasesAddInvoiceItems =
         {
+            /// Controls whether discounts apply to this invoice item. Defaults to true if no value is provided.
+            [<Config.Form>]
+            Discountable: bool option
             /// The coupons to redeem into discounts for the item.
             [<Config.Form>]
             Discounts: Create'PhasesAddInvoiceItemsDiscounts list option
@@ -7923,8 +8061,9 @@ module SubscriptionSchedules =
         }
 
     type Create'PhasesAddInvoiceItems with
-        static member New(?discounts: Create'PhasesAddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: Create'PhasesAddInvoiceItemsPeriod, ?price: string, ?priceData: Create'PhasesAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+        static member New(?discountable: bool, ?discounts: Create'PhasesAddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: Create'PhasesAddInvoiceItemsPeriod, ?price: string, ?priceData: Create'PhasesAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
             {
+                Discountable = discountable
                 Discounts = discounts
                 Metadata = metadata
                 Period = period
@@ -8696,6 +8835,9 @@ module SubscriptionSchedules =
 
     type Update'PhasesAddInvoiceItems =
         {
+            /// Controls whether discounts apply to this invoice item. Defaults to true if no value is provided.
+            [<Config.Form>]
+            Discountable: bool option
             /// The coupons to redeem into discounts for the item.
             [<Config.Form>]
             Discounts: Update'PhasesAddInvoiceItemsDiscounts list option
@@ -8720,8 +8862,9 @@ module SubscriptionSchedules =
         }
 
     type Update'PhasesAddInvoiceItems with
-        static member New(?discounts: Update'PhasesAddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: Update'PhasesAddInvoiceItemsPeriod, ?price: string, ?priceData: Update'PhasesAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+        static member New(?discountable: bool, ?discounts: Update'PhasesAddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: Update'PhasesAddInvoiceItemsPeriod, ?price: string, ?priceData: Update'PhasesAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
             {
+                Discountable = discountable
                 Discounts = discounts
                 Metadata = metadata
                 Period = period

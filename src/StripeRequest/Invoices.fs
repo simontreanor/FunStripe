@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module Invoices =
 
     type ListOptions =
@@ -646,6 +646,7 @@ module Invoices =
         | SepaDebit
         | Sofort
         | Swish
+        | Twint
         | Upi
         | UsBankAccount
         | WechatPay
@@ -1676,6 +1677,7 @@ module Invoices =
         | SepaDebit
         | Sofort
         | Swish
+        | Twint
         | Upi
         | UsBankAccount
         | WechatPay
@@ -2788,6 +2790,9 @@ module InvoicesCreatePreview =
 
     type CreatePreview'ScheduleDetailsPhasesAddInvoiceItems =
         {
+            /// Controls whether discounts apply to this invoice item. Defaults to true if no value is provided.
+            [<Config.Form>]
+            Discountable: bool option
             /// The coupons to redeem into discounts for the item.
             [<Config.Form>]
             Discounts: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsDiscounts list option
@@ -2812,8 +2817,9 @@ module InvoicesCreatePreview =
         }
 
     type CreatePreview'ScheduleDetailsPhasesAddInvoiceItems with
-        static member New(?discounts: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriod, ?price: string, ?priceData: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+        static member New(?discountable: bool, ?discounts: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPeriod, ?price: string, ?priceData: CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
             {
+                Discountable = discountable
                 Discounts = discounts
                 Metadata = metadata
                 Period = period
@@ -3306,7 +3312,96 @@ module InvoicesCreatePreview =
                 Type = type'
             }
 
+    type CreatePreview'SubscriptionDetailsBillingSchedulesAppliesToType = | Price
+
+    type CreatePreview'SubscriptionDetailsBillingSchedulesAppliesTo =
+        {
+            /// The ID of the price object.
+            [<Config.Form>]
+            Price: string option
+            /// Controls which subscription items the billing schedule applies to.
+            [<Config.Form>]
+            Type: CreatePreview'SubscriptionDetailsBillingSchedulesAppliesToType option
+        }
+
+    type CreatePreview'SubscriptionDetailsBillingSchedulesAppliesTo with
+        static member New(?price: string, ?type': CreatePreview'SubscriptionDetailsBillingSchedulesAppliesToType) =
+            {
+                Price = price
+                Type = type'
+            }
+
+    type CreatePreview'SubscriptionDetailsBillingSchedulesBillUntilDurationInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    type CreatePreview'SubscriptionDetailsBillingSchedulesBillUntilDuration =
+        {
+            /// Specifies billing duration. Either `day`, `week`, `month` or `year`.
+            [<Config.Form>]
+            Interval: CreatePreview'SubscriptionDetailsBillingSchedulesBillUntilDurationInterval option
+            /// The multiplier applied to the interval.
+            [<Config.Form>]
+            IntervalCount: int option
+        }
+
+    type CreatePreview'SubscriptionDetailsBillingSchedulesBillUntilDuration with
+        static member New(?interval: CreatePreview'SubscriptionDetailsBillingSchedulesBillUntilDurationInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
+    type CreatePreview'SubscriptionDetailsBillingSchedulesBillUntilType =
+        | Duration
+        | Timestamp
+
+    type CreatePreview'SubscriptionDetailsBillingSchedulesBillUntil =
+        {
+            /// Specifies the billing period.
+            [<Config.Form>]
+            Duration: CreatePreview'SubscriptionDetailsBillingSchedulesBillUntilDuration option
+            /// The end date of the billing schedule.
+            [<Config.Form>]
+            Timestamp: DateTime option
+            /// Describes how the billing schedule will determine the end date. Either `duration` or `timestamp`.
+            [<Config.Form>]
+            Type: CreatePreview'SubscriptionDetailsBillingSchedulesBillUntilType option
+        }
+
+    type CreatePreview'SubscriptionDetailsBillingSchedulesBillUntil with
+        static member New(?duration: CreatePreview'SubscriptionDetailsBillingSchedulesBillUntilDuration, ?timestamp: DateTime, ?type': CreatePreview'SubscriptionDetailsBillingSchedulesBillUntilType) =
+            {
+                Duration = duration
+                Timestamp = timestamp
+                Type = type'
+            }
+
+    type CreatePreview'SubscriptionDetailsBillingSchedules =
+        {
+            /// Configure billing schedule differently for individual subscription items.
+            [<Config.Form>]
+            AppliesTo: CreatePreview'SubscriptionDetailsBillingSchedulesAppliesTo list option
+            /// The end date for the billing schedule.
+            [<Config.Form>]
+            BillUntil: CreatePreview'SubscriptionDetailsBillingSchedulesBillUntil option
+            /// Specify a key for the billing schedule. Must be unique to this field, alphanumeric, and up to 200 characters. If not provided, a unique key will be generated.
+            [<Config.Form>]
+            Key: string option
+        }
+
+    type CreatePreview'SubscriptionDetailsBillingSchedules with
+        static member New(?appliesTo: CreatePreview'SubscriptionDetailsBillingSchedulesAppliesTo list, ?billUntil: CreatePreview'SubscriptionDetailsBillingSchedulesBillUntil, ?key: string) =
+            {
+                AppliesTo = appliesTo
+                BillUntil = billUntil
+                Key = key
+            }
+
     type CreatePreview'SubscriptionDetailsCancelAt =
+        | MaxBilledUntil
         | MaxPeriodEnd
         | MinPeriodEnd
 
@@ -3476,6 +3571,9 @@ module InvoicesCreatePreview =
             /// Controls how prorations and invoices for subscriptions are calculated and orchestrated.
             [<Config.Form>]
             BillingMode: CreatePreview'SubscriptionDetailsBillingMode option
+            /// Sets the billing schedules for the subscription.
+            [<Config.Form>]
+            BillingSchedules: Choice<CreatePreview'SubscriptionDetailsBillingSchedules list,string> option
             /// A timestamp at which the subscription should cancel. If set to a date before the current period ends, this will cause a proration if prorations have been enabled using `proration_behavior`. If set during a future period, this will always cause a proration for that period.
             [<Config.Form>]
             CancelAt: Choice<DateTime,string,CreatePreview'SubscriptionDetailsCancelAt> option
@@ -3509,10 +3607,11 @@ module InvoicesCreatePreview =
         }
 
     type CreatePreview'SubscriptionDetails with
-        static member New(?billingCycleAnchor: Choice<CreatePreview'SubscriptionDetailsBillingCycleAnchor,DateTime>, ?billingMode: CreatePreview'SubscriptionDetailsBillingMode, ?cancelAt: Choice<DateTime,string,CreatePreview'SubscriptionDetailsCancelAt>, ?cancelAtPeriodEnd: bool, ?cancelNow: bool, ?defaultTaxRates: Choice<string list,string>, ?items: CreatePreview'SubscriptionDetailsItems list, ?prorationBehavior: CreatePreview'SubscriptionDetailsProrationBehavior, ?prorationDate: DateTime, ?resumeAt: CreatePreview'SubscriptionDetailsResumeAt, ?startDate: DateTime, ?trialEnd: Choice<CreatePreview'SubscriptionDetailsTrialEnd,DateTime>) =
+        static member New(?billingCycleAnchor: Choice<CreatePreview'SubscriptionDetailsBillingCycleAnchor,DateTime>, ?billingMode: CreatePreview'SubscriptionDetailsBillingMode, ?billingSchedules: Choice<CreatePreview'SubscriptionDetailsBillingSchedules list,string>, ?cancelAt: Choice<DateTime,string,CreatePreview'SubscriptionDetailsCancelAt>, ?cancelAtPeriodEnd: bool, ?cancelNow: bool, ?defaultTaxRates: Choice<string list,string>, ?items: CreatePreview'SubscriptionDetailsItems list, ?prorationBehavior: CreatePreview'SubscriptionDetailsProrationBehavior, ?prorationDate: DateTime, ?resumeAt: CreatePreview'SubscriptionDetailsResumeAt, ?startDate: DateTime, ?trialEnd: Choice<CreatePreview'SubscriptionDetailsTrialEnd,DateTime>) =
             {
                 BillingCycleAnchor = billingCycleAnchor
                 BillingMode = billingMode
+                BillingSchedules = billingSchedules
                 CancelAt = cancelAt
                 CancelAtPeriodEnd = cancelAtPeriodEnd
                 CancelNow = cancelNow

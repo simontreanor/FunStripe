@@ -2,11 +2,11 @@ namespace StripeRequest.Transfers
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Transfer
+open Stripe.PaymentMethod
 open Stripe.TransferReversal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module Transfers =
 
     type ListOptions =

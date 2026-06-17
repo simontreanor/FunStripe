@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type BalanceSettingsResourcePayoutScheduleInterval =
     | Daily
     | Manual
@@ -44,6 +44,8 @@ type BalanceSettingsResourcePayoutsStatus =
 
 type BalanceSettingsResourcePayouts =
     {
+        /// Configures per-currency rules for automatically transferring funds from the payments balance to a FinancialAccount.
+        AutomaticTransferRulesByCurrency: Map<string, string list> option
         /// The minimum balance amount to retain per currency after automatic payouts. Only funds that exceed these amounts are paid out. Learn more about the [minimum balances for automatic payouts](/payouts/minimum-balances-for-automatic-payouts).
         MinimumBalanceByCurrency: Map<string, string list> option
         /// Details on when funds from charges are available, and when they are paid out to an external account. See our [Setting Bank and Debit Card Payouts](https://docs.stripe.com/connect/bank-transfers#payout-information) documentation for details.
@@ -55,12 +57,31 @@ type BalanceSettingsResourcePayouts =
     }
 
 type BalanceSettingsResourcePayouts with
-    static member New(minimumBalanceByCurrency: Map<string, string list> option, schedule: BalanceSettingsResourcePayoutSchedule option, statementDescriptor: string option, status: BalanceSettingsResourcePayoutsStatus) =
+    static member New(automaticTransferRulesByCurrency: Map<string, string list> option, minimumBalanceByCurrency: Map<string, string list> option, schedule: BalanceSettingsResourcePayoutSchedule option, statementDescriptor: string option, status: BalanceSettingsResourcePayoutsStatus) =
         {
+            AutomaticTransferRulesByCurrency = automaticTransferRulesByCurrency
             MinimumBalanceByCurrency = minimumBalanceByCurrency
             Schedule = schedule
             StatementDescriptor = statementDescriptor
             Status = status
+        }
+
+type BalanceSettingsResourceStartOfDay =
+    {
+        /// Hour at which the customized start of day begins according to the given timezone. Must be a [supported customized start of day hour](/connect/customized-start-of-day#available-timezones-and-cutoffs).
+        Hour: int
+        /// Minutes at which the customized start of day begins according to the given timezone. Must be either 0 or 30.
+        Minutes: int
+        /// Timezone for the customized start of day. Must be a [supported customized start of day timezone](/connect/customized-start-of-day#available-timezones-and-cutoffs).
+        Timezone: string
+    }
+
+type BalanceSettingsResourceStartOfDay with
+    static member New(hour: int, minutes: int, timezone: string) =
+        {
+            Hour = hour
+            Minutes = minutes
+            Timezone = timezone
         }
 
 type BalanceSettingsResourceSettlementTiming =
@@ -69,12 +90,15 @@ type BalanceSettingsResourceSettlementTiming =
         DelayDays: int
         /// The number of days charge funds are held before becoming available. If present, overrides the default, or minimum available, for the account.
         DelayDaysOverride: int option
+        /// Customized start of day configuration for automatic payouts to group and send payments in local timezones with a customized day starting time. For details, see our [Customized start of day](/connect/customized-start-of-day) documentation.
+        StartOfDay: BalanceSettingsResourceStartOfDay option
     }
 
 type BalanceSettingsResourceSettlementTiming with
-    static member New(delayDays: int, ?delayDaysOverride: int) =
+    static member New(delayDays: int, startOfDay: BalanceSettingsResourceStartOfDay option, ?delayDaysOverride: int) =
         {
             DelayDays = delayDays
+            StartOfDay = startOfDay
             DelayDaysOverride = delayDaysOverride
         }
 
@@ -108,6 +132,29 @@ type BalanceSettings with
 module BalanceSettings =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "balance_settings"
+
+[<Struct>]
+type BalanceSettingsResourceAutomaticTransferRuleType =
+    | TransferAll
+    | TransferUpToAmount
+
+type BalanceSettingsResourceAutomaticTransferRule =
+    {
+        /// The ID of the FinancialAccount that funds will be transferred to during automatic transfers.
+        PayoutMethod: string
+        /// The maximum amount in minor units to transfer to the FinancialAccount. Only applicable when `type` is `transfer_up_to_amount`.
+        TransferUpToAmount: int option
+        /// The type of automatic transfer rule.
+        Type: BalanceSettingsResourceAutomaticTransferRuleType
+    }
+
+type BalanceSettingsResourceAutomaticTransferRule with
+    static member New(payoutMethod: string, transferUpToAmount: int option, ``type``: BalanceSettingsResourceAutomaticTransferRuleType) =
+        {
+            PayoutMethod = payoutMethod
+            TransferUpToAmount = transferUpToAmount
+            Type = ``type``
+        }
 
 /// Occurs whenever a balance settings status or property has changed.
 type BalanceSettingsUpdated = { Object: BalanceSettings }

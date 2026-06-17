@@ -6,7 +6,7 @@ open System
 open Stripe.Mandate
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type CheckoutAcssDebitMandateOptionsDefaultFor =
     | Invoice
     | Subscription
@@ -908,6 +908,15 @@ module CheckoutSatispayPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
 
+type CheckoutScalapayPaymentMethodOptions () = 
+    ///Controls when the funds will be captured from the customer's account.
+    member _.CaptureMethod = "manual"
+
+
+module CheckoutScalapayPaymentMethodOptions =
+    ///Controls when the funds will be captured from the customer's account.
+    let captureMethod = "manual"
+
 [<Struct>]
 type CheckoutSepaDebitPaymentMethodOptionsSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
@@ -1058,20 +1067,25 @@ type CheckoutSwishPaymentMethodOptions with
             Reference = reference
         }
 
-type CheckoutTwintPaymentMethodOptions () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type CheckoutTwintPaymentMethodOptionsSetupFutureUsage =
+    | [<JsonPropertyName("none")>] None'
+    | OffSession
 
+type CheckoutTwintPaymentMethodOptions =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: CheckoutTwintPaymentMethodOptionsSetupFutureUsage option
+    }
 
-module CheckoutTwintPaymentMethodOptions =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type CheckoutTwintPaymentMethodOptions with
+    static member New(?setupFutureUsage: CheckoutTwintPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 [<Struct>]
 type CheckoutUpiPaymentMethodOptionsSetupFutureUsage =
@@ -1169,6 +1183,7 @@ type CheckoutSessionPaymentMethodOptions =
       RevolutPay: CheckoutRevolutPayPaymentMethodOptions option
       SamsungPay: CheckoutSamsungPayPaymentMethodOptions option
       Satispay: CheckoutSatispayPaymentMethodOptions option
+      Scalapay: CheckoutScalapayPaymentMethodOptions option
       SepaDebit: CheckoutSepaDebitPaymentMethodOptions option
       Sofort: CheckoutSofortPaymentMethodOptions option
       Swish: CheckoutSwishPaymentMethodOptions option
@@ -1177,7 +1192,7 @@ type CheckoutSessionPaymentMethodOptions =
       UsBankAccount: CheckoutUsBankAccountPaymentMethodOptions option }
 
 type CheckoutSessionPaymentMethodOptions with
-    static member New(?acssDebit: CheckoutAcssDebitPaymentMethodOptions, ?affirm: CheckoutAffirmPaymentMethodOptions, ?afterpayClearpay: CheckoutAfterpayClearpayPaymentMethodOptions, ?alipay: CheckoutAlipayPaymentMethodOptions, ?alma: CheckoutAlmaPaymentMethodOptions, ?amazonPay: CheckoutAmazonPayPaymentMethodOptions, ?auBecsDebit: CheckoutAuBecsDebitPaymentMethodOptions, ?bacsDebit: CheckoutBacsDebitPaymentMethodOptions, ?bancontact: CheckoutBancontactPaymentMethodOptions, ?billie: CheckoutBilliePaymentMethodOptions, ?boleto: CheckoutBoletoPaymentMethodOptions, ?card: CheckoutCardPaymentMethodOptions, ?cashapp: CheckoutCashappPaymentMethodOptions, ?customerBalance: CheckoutCustomerBalancePaymentMethodOptions, ?eps: CheckoutEpsPaymentMethodOptions, ?fpx: CheckoutFpxPaymentMethodOptions, ?giropay: CheckoutGiropayPaymentMethodOptions, ?grabpay: CheckoutGrabPayPaymentMethodOptions, ?ideal: CheckoutIdealPaymentMethodOptions, ?kakaoPay: CheckoutKakaoPayPaymentMethodOptions, ?klarna: CheckoutKlarnaPaymentMethodOptions, ?konbini: CheckoutKonbiniPaymentMethodOptions, ?krCard: CheckoutKrCardPaymentMethodOptions, ?link: CheckoutLinkPaymentMethodOptions, ?mobilepay: CheckoutMobilepayPaymentMethodOptions, ?multibanco: CheckoutMultibancoPaymentMethodOptions, ?naverPay: CheckoutNaverPayPaymentMethodOptions, ?oxxo: CheckoutOxxoPaymentMethodOptions, ?p24: CheckoutP24PaymentMethodOptions, ?payco: CheckoutPaycoPaymentMethodOptions, ?paynow: CheckoutPaynowPaymentMethodOptions, ?paypal: CheckoutPaypalPaymentMethodOptions, ?payto: CheckoutPaytoPaymentMethodOptions, ?pix: CheckoutPixPaymentMethodOptions, ?revolutPay: CheckoutRevolutPayPaymentMethodOptions, ?samsungPay: CheckoutSamsungPayPaymentMethodOptions, ?satispay: CheckoutSatispayPaymentMethodOptions, ?sepaDebit: CheckoutSepaDebitPaymentMethodOptions, ?sofort: CheckoutSofortPaymentMethodOptions, ?swish: CheckoutSwishPaymentMethodOptions, ?twint: CheckoutTwintPaymentMethodOptions, ?upi: CheckoutUpiPaymentMethodOptions, ?usBankAccount: CheckoutUsBankAccountPaymentMethodOptions) =
+    static member New(?acssDebit: CheckoutAcssDebitPaymentMethodOptions, ?affirm: CheckoutAffirmPaymentMethodOptions, ?afterpayClearpay: CheckoutAfterpayClearpayPaymentMethodOptions, ?alipay: CheckoutAlipayPaymentMethodOptions, ?alma: CheckoutAlmaPaymentMethodOptions, ?amazonPay: CheckoutAmazonPayPaymentMethodOptions, ?auBecsDebit: CheckoutAuBecsDebitPaymentMethodOptions, ?bacsDebit: CheckoutBacsDebitPaymentMethodOptions, ?bancontact: CheckoutBancontactPaymentMethodOptions, ?billie: CheckoutBilliePaymentMethodOptions, ?boleto: CheckoutBoletoPaymentMethodOptions, ?card: CheckoutCardPaymentMethodOptions, ?cashapp: CheckoutCashappPaymentMethodOptions, ?customerBalance: CheckoutCustomerBalancePaymentMethodOptions, ?eps: CheckoutEpsPaymentMethodOptions, ?fpx: CheckoutFpxPaymentMethodOptions, ?giropay: CheckoutGiropayPaymentMethodOptions, ?grabpay: CheckoutGrabPayPaymentMethodOptions, ?ideal: CheckoutIdealPaymentMethodOptions, ?kakaoPay: CheckoutKakaoPayPaymentMethodOptions, ?klarna: CheckoutKlarnaPaymentMethodOptions, ?konbini: CheckoutKonbiniPaymentMethodOptions, ?krCard: CheckoutKrCardPaymentMethodOptions, ?link: CheckoutLinkPaymentMethodOptions, ?mobilepay: CheckoutMobilepayPaymentMethodOptions, ?multibanco: CheckoutMultibancoPaymentMethodOptions, ?naverPay: CheckoutNaverPayPaymentMethodOptions, ?oxxo: CheckoutOxxoPaymentMethodOptions, ?p24: CheckoutP24PaymentMethodOptions, ?payco: CheckoutPaycoPaymentMethodOptions, ?paynow: CheckoutPaynowPaymentMethodOptions, ?paypal: CheckoutPaypalPaymentMethodOptions, ?payto: CheckoutPaytoPaymentMethodOptions, ?pix: CheckoutPixPaymentMethodOptions, ?revolutPay: CheckoutRevolutPayPaymentMethodOptions, ?samsungPay: CheckoutSamsungPayPaymentMethodOptions, ?satispay: CheckoutSatispayPaymentMethodOptions, ?scalapay: CheckoutScalapayPaymentMethodOptions, ?sepaDebit: CheckoutSepaDebitPaymentMethodOptions, ?sofort: CheckoutSofortPaymentMethodOptions, ?swish: CheckoutSwishPaymentMethodOptions, ?twint: CheckoutTwintPaymentMethodOptions, ?upi: CheckoutUpiPaymentMethodOptions, ?usBankAccount: CheckoutUsBankAccountPaymentMethodOptions) =
         {
             AcssDebit = acssDebit
             Affirm = affirm
@@ -1216,6 +1231,7 @@ type CheckoutSessionPaymentMethodOptions with
             RevolutPay = revolutPay
             SamsungPay = samsungPay
             Satispay = satispay
+            Scalapay = scalapay
             SepaDebit = sepaDebit
             Sofort = sofort
             Swish = swish
@@ -1299,8 +1315,8 @@ type CheckoutSession =
         /// customer ID, a cart ID, or similar, and can be used to reconcile the
         /// Session with your internal systems.
         ClientReferenceId: string option
-        /// The client secret of your Checkout Session. Applies to Checkout Sessions with `ui_mode: embedded` or `ui_mode: custom`. For `ui_mode: embedded`, the client secret is to be used when initializing Stripe.js embedded checkout.
-        ///  For `ui_mode: custom`, use the client secret with [initCheckout](https://docs.stripe.com/js/custom_checkout/init) on your front end.
+        /// The client secret of your Checkout Session. Applies to Checkout Sessions with `ui_mode: embedded_page` or `ui_mode: elements`. For `ui_mode: embedded_page`, the client secret is to be used when initializing Stripe.js embedded checkout.
+        ///  For `ui_mode: elements`, use the client secret with [initCheckout](https://docs.stripe.com/js/custom_checkout/init) on your front end.
         ClientSecret: string option
         /// Information about the customer collected within the Checkout Session.
         CollectedInformation: PaymentPagesCheckoutSessionCollectedInformation option
@@ -1389,9 +1405,9 @@ type CheckoutSession =
         PresentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails option
         /// The ID of the original expired Checkout Session that triggered the recovery flow.
         RecoveredFrom: string option
-        /// This parameter applies to `ui_mode: embedded`. Learn more about the [redirect behavior](https://docs.stripe.com/payments/checkout/custom-success-page?payment-ui=embedded-form) of embedded sessions. Defaults to `always`.
+        /// This parameter applies to `ui_mode: embedded_page`. Learn more about the [redirect behavior](https://docs.stripe.com/payments/checkout/custom-success-page?payment-ui=embedded-form) of embedded sessions. Defaults to `always`.
         RedirectOnCompletion: CheckoutSessionRedirectOnCompletion option
-        /// Applies to Checkout Sessions with `ui_mode: embedded` or `ui_mode: custom`. The URL to redirect your customer back to after they authenticate or cancel their payment on the payment method's app or site.
+        /// Applies to Checkout Sessions with `ui_mode: embedded_page` or `ui_mode: elements`. The URL to redirect your customer back to after they authenticate or cancel their payment on the payment method's app or site.
         ReturnUrl: string option
         /// Controls saved payment method settings for the session. Only available in `payment` and `subscription` mode.
         SavedPaymentMethodOptions: PaymentPagesCheckoutSessionSavedPaymentMethodOptions option
@@ -1419,7 +1435,7 @@ type CheckoutSession =
         TotalDetails: PaymentPagesCheckoutSessionTotalDetails option
         /// The UI mode of the Session. Defaults to `hosted_page`.
         UiMode: CheckoutSessionUiMode option
-        /// The URL to the Checkout Session. Applies to Checkout Sessions with `ui_mode: hosted`. Redirect customers to this URL to take them to Checkout. If you’re using [Custom Domains](https://docs.stripe.com/payments/checkout/custom-domains), the URL will use your subdomain. Otherwise, it’ll use `checkout.stripe.com.`
+        /// The URL to the Checkout Session. Applies to Checkout Sessions with `ui_mode: hosted_page`. Redirect customers to this URL to take them to Checkout. If you’re using [Custom Domains](https://docs.stripe.com/payments/checkout/custom-domains), the URL will use your subdomain. Otherwise, it’ll use `checkout.stripe.com.`
         /// This value is only present when the session is active.
         Url: string option
         /// Wallet-specific configuration for this Checkout Session.
