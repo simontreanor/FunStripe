@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module Subscriptions =
 
     type ListOptions =
@@ -194,6 +194,9 @@ module Subscriptions =
 
     type Create'AddInvoiceItems =
         {
+            /// Controls whether discounts apply to this invoice item. Defaults to true if no value is provided.
+            [<Config.Form>]
+            Discountable: bool option
             /// The coupons to redeem into discounts for the item.
             [<Config.Form>]
             Discounts: Create'AddInvoiceItemsDiscounts list option
@@ -218,8 +221,9 @@ module Subscriptions =
         }
 
     type Create'AddInvoiceItems with
-        static member New(?discounts: Create'AddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: Create'AddInvoiceItemsPeriod, ?price: string, ?priceData: Create'AddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+        static member New(?discountable: bool, ?discounts: Create'AddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: Create'AddInvoiceItemsPeriod, ?price: string, ?priceData: Create'AddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
             {
+                Discountable = discountable
                 Discounts = discounts
                 Metadata = metadata
                 Period = period
@@ -334,6 +338,94 @@ module Subscriptions =
                 Type = type'
             }
 
+    type Create'BillingSchedulesAppliesToType = | Price
+
+    type Create'BillingSchedulesAppliesTo =
+        {
+            /// The ID of the price object.
+            [<Config.Form>]
+            Price: string option
+            /// Controls which subscription items the billing schedule applies to.
+            [<Config.Form>]
+            Type: Create'BillingSchedulesAppliesToType option
+        }
+
+    type Create'BillingSchedulesAppliesTo with
+        static member New(?price: string, ?type': Create'BillingSchedulesAppliesToType) =
+            {
+                Price = price
+                Type = type'
+            }
+
+    type Create'BillingSchedulesBillUntilDurationInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    type Create'BillingSchedulesBillUntilDuration =
+        {
+            /// Specifies billing duration. Either `day`, `week`, `month` or `year`.
+            [<Config.Form>]
+            Interval: Create'BillingSchedulesBillUntilDurationInterval option
+            /// The multiplier applied to the interval.
+            [<Config.Form>]
+            IntervalCount: int option
+        }
+
+    type Create'BillingSchedulesBillUntilDuration with
+        static member New(?interval: Create'BillingSchedulesBillUntilDurationInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
+    type Create'BillingSchedulesBillUntilType =
+        | Duration
+        | Timestamp
+
+    type Create'BillingSchedulesBillUntil =
+        {
+            /// Specifies the billing period.
+            [<Config.Form>]
+            Duration: Create'BillingSchedulesBillUntilDuration option
+            /// The end date of the billing schedule.
+            [<Config.Form>]
+            Timestamp: DateTime option
+            /// Describes how the billing schedule will determine the end date. Either `duration` or `timestamp`.
+            [<Config.Form>]
+            Type: Create'BillingSchedulesBillUntilType option
+        }
+
+    type Create'BillingSchedulesBillUntil with
+        static member New(?duration: Create'BillingSchedulesBillUntilDuration, ?timestamp: DateTime, ?type': Create'BillingSchedulesBillUntilType) =
+            {
+                Duration = duration
+                Timestamp = timestamp
+                Type = type'
+            }
+
+    type Create'BillingSchedules =
+        {
+            /// Configure billing schedule differently for individual subscription items.
+            [<Config.Form>]
+            AppliesTo: Create'BillingSchedulesAppliesTo list option
+            /// The end date for the billing schedule.
+            [<Config.Form>]
+            BillUntil: Create'BillingSchedulesBillUntil option
+            /// Specify a key for the billing schedule. Must be unique to this field, alphanumeric, and up to 200 characters. If not provided, a unique key will be generated.
+            [<Config.Form>]
+            Key: string option
+        }
+
+    type Create'BillingSchedules with
+        static member New(?appliesTo: Create'BillingSchedulesAppliesTo list, ?billUntil: Create'BillingSchedulesBillUntil, ?key: string) =
+            {
+                AppliesTo = appliesTo
+                BillUntil = billUntil
+                Key = key
+            }
+
     type Create'BillingThresholdsBillingThresholds =
         {
             /// Monetary threshold that triggers the subscription to advance to a new billing period
@@ -352,6 +444,7 @@ module Subscriptions =
             }
 
     type Create'CancelAt =
+        | MaxBilledUntil
         | MaxPeriodEnd
         | MinPeriodEnd
 
@@ -1054,6 +1147,7 @@ module Subscriptions =
         | SepaDebit
         | Sofort
         | Swish
+        | Twint
         | Upi
         | UsBankAccount
         | WechatPay
@@ -1184,6 +1278,9 @@ module Subscriptions =
             /// Controls how prorations and invoices for subscriptions are calculated and orchestrated.
             [<Config.Form>]
             BillingMode: Create'BillingMode option
+            /// Sets the billing schedules for the subscription.
+            [<Config.Form>]
+            BillingSchedules: Create'BillingSchedules list option
             /// Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
             [<Config.Form>]
             BillingThresholds: Choice<Create'BillingThresholdsBillingThresholds,string> option
@@ -1241,12 +1338,7 @@ module Subscriptions =
             /// The account on behalf of which to charge, for each of the subscription's invoices.
             [<Config.Form>]
             OnBehalfOf: Choice<string,string> option
-            /// Only applies to subscriptions with `collection_method=charge_automatically`.
-            /// Use `allow_incomplete` to create Subscriptions with `status=incomplete` if the first invoice can't be paid. Creating Subscriptions with this status allows you to manage scenarios where additional customer actions are needed to pay a subscription's invoice. For example, SCA regulation may require 3DS authentication to complete payment. See the [SCA Migration Guide](https://docs.stripe.com/billing/migration/strong-customer-authentication) for Billing to learn more. This is the default behavior.
-            /// Use `default_incomplete` to create Subscriptions with `status=incomplete` when the first invoice requires payment, otherwise start as active. Subscriptions transition to `status=active` when successfully confirming the PaymentIntent on the first invoice. This allows simpler management of scenarios where additional customer actions are needed to pay a subscription’s invoice, such as failed payments, [SCA regulation](https://docs.stripe.com/billing/migration/strong-customer-authentication), or collecting a mandate for a bank debit payment method. If the PaymentIntent is not confirmed within 23 hours Subscriptions transition to `status=incomplete_expired`, which is a terminal state.
-            /// Use `error_if_incomplete` if you want Stripe to return an HTTP 402 status code if a subscription's first invoice can't be paid. For example, if a payment method requires 3DS authentication due to SCA regulation and further customer action is needed, this parameter doesn't create a Subscription and returns an error instead. This was the default behavior for API versions prior to 2019-03-14. See the [changelog](https://docs.stripe.com/upgrades#2019-03-14) to learn more.
-            /// `pending_if_incomplete` is only used with updates and cannot be passed when creating a Subscription.
-            /// Subscriptions with `collection_method=send_invoice` are automatically activated regardless of the first Invoice status.
+            /// Controls how Stripe handles the first invoice when payment is required and `collection_method=charge_automatically`. Subscriptions with `collection_method=send_invoice` are automatically activated regardless of the first Invoice status.
             [<Config.Form>]
             PaymentBehavior: Create'PaymentBehavior option
             /// Payment settings to pass to invoices created by the subscription.
@@ -1277,7 +1369,7 @@ module Subscriptions =
         }
 
     type CreateOptions with
-        static member New(?addInvoiceItems: Create'AddInvoiceItems list, ?applicationFeePercent: Choice<decimal,string>, ?automaticTax: Create'AutomaticTax, ?backdateStartDate: DateTime, ?billingCycleAnchor: DateTime, ?billingCycleAnchorConfig: Create'BillingCycleAnchorConfig, ?billingMode: Create'BillingMode, ?billingThresholds: Choice<Create'BillingThresholdsBillingThresholds,string>, ?cancelAt: Choice<DateTime,Create'CancelAt>, ?cancelAtPeriodEnd: bool, ?collectionMethod: Create'CollectionMethod, ?currency: IsoTypes.IsoCurrencyCode, ?customer: string, ?customerAccount: string, ?daysUntilDue: int, ?defaultPaymentMethod: string, ?defaultSource: string, ?defaultTaxRates: Choice<string list,string>, ?description: string, ?discounts: Choice<Create'Discounts list,string>, ?expand: string list, ?invoiceSettings: Create'InvoiceSettings, ?items: Create'Items list, ?metadata: Map<string, string>, ?offSession: bool, ?onBehalfOf: Choice<string,string>, ?paymentBehavior: Create'PaymentBehavior, ?paymentSettings: Create'PaymentSettings, ?pendingInvoiceItemInterval: Choice<Create'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string>, ?prorationBehavior: Create'ProrationBehavior, ?transferData: Create'TransferData, ?trialEnd: Choice<Create'TrialEnd,DateTime>, ?trialFromPlan: bool, ?trialPeriodDays: int, ?trialSettings: Create'TrialSettings) =
+        static member New(?addInvoiceItems: Create'AddInvoiceItems list, ?applicationFeePercent: Choice<decimal,string>, ?automaticTax: Create'AutomaticTax, ?backdateStartDate: DateTime, ?billingCycleAnchor: DateTime, ?billingCycleAnchorConfig: Create'BillingCycleAnchorConfig, ?billingMode: Create'BillingMode, ?billingSchedules: Create'BillingSchedules list, ?billingThresholds: Choice<Create'BillingThresholdsBillingThresholds,string>, ?cancelAt: Choice<DateTime,Create'CancelAt>, ?cancelAtPeriodEnd: bool, ?collectionMethod: Create'CollectionMethod, ?currency: IsoTypes.IsoCurrencyCode, ?customer: string, ?customerAccount: string, ?daysUntilDue: int, ?defaultPaymentMethod: string, ?defaultSource: string, ?defaultTaxRates: Choice<string list,string>, ?description: string, ?discounts: Choice<Create'Discounts list,string>, ?expand: string list, ?invoiceSettings: Create'InvoiceSettings, ?items: Create'Items list, ?metadata: Map<string, string>, ?offSession: bool, ?onBehalfOf: Choice<string,string>, ?paymentBehavior: Create'PaymentBehavior, ?paymentSettings: Create'PaymentSettings, ?pendingInvoiceItemInterval: Choice<Create'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string>, ?prorationBehavior: Create'ProrationBehavior, ?transferData: Create'TransferData, ?trialEnd: Choice<Create'TrialEnd,DateTime>, ?trialFromPlan: bool, ?trialPeriodDays: int, ?trialSettings: Create'TrialSettings) =
             {
                 AddInvoiceItems = addInvoiceItems
                 ApplicationFeePercent = applicationFeePercent
@@ -1286,6 +1378,7 @@ module Subscriptions =
                 BillingCycleAnchor = billingCycleAnchor
                 BillingCycleAnchorConfig = billingCycleAnchorConfig
                 BillingMode = billingMode
+                BillingSchedules = billingSchedules
                 BillingThresholds = billingThresholds
                 CancelAt = cancelAt
                 CancelAtPeriodEnd = cancelAtPeriodEnd
@@ -1504,6 +1597,9 @@ module Subscriptions =
 
     type Update'AddInvoiceItems =
         {
+            /// Controls whether discounts apply to this invoice item. Defaults to true if no value is provided.
+            [<Config.Form>]
+            Discountable: bool option
             /// The coupons to redeem into discounts for the item.
             [<Config.Form>]
             Discounts: Update'AddInvoiceItemsDiscounts list option
@@ -1528,8 +1624,9 @@ module Subscriptions =
         }
 
     type Update'AddInvoiceItems with
-        static member New(?discounts: Update'AddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: Update'AddInvoiceItemsPeriod, ?price: string, ?priceData: Update'AddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+        static member New(?discountable: bool, ?discounts: Update'AddInvoiceItemsDiscounts list, ?metadata: Map<string, string>, ?period: Update'AddInvoiceItemsPeriod, ?price: string, ?priceData: Update'AddInvoiceItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
             {
+                Discountable = discountable
                 Discounts = discounts
                 Metadata = metadata
                 Period = period
@@ -1581,6 +1678,94 @@ module Subscriptions =
         | Now
         | Unchanged
 
+    type Update'BillingSchedulesAppliesToType = | Price
+
+    type Update'BillingSchedulesAppliesTo =
+        {
+            /// The ID of the price object.
+            [<Config.Form>]
+            Price: string option
+            /// Controls which subscription items the billing schedule applies to.
+            [<Config.Form>]
+            Type: Update'BillingSchedulesAppliesToType option
+        }
+
+    type Update'BillingSchedulesAppliesTo with
+        static member New(?price: string, ?type': Update'BillingSchedulesAppliesToType) =
+            {
+                Price = price
+                Type = type'
+            }
+
+    type Update'BillingSchedulesBillUntilDurationInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    type Update'BillingSchedulesBillUntilDuration =
+        {
+            /// Specifies billing duration. Either `day`, `week`, `month` or `year`.
+            [<Config.Form>]
+            Interval: Update'BillingSchedulesBillUntilDurationInterval option
+            /// The multiplier applied to the interval.
+            [<Config.Form>]
+            IntervalCount: int option
+        }
+
+    type Update'BillingSchedulesBillUntilDuration with
+        static member New(?interval: Update'BillingSchedulesBillUntilDurationInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
+    type Update'BillingSchedulesBillUntilType =
+        | Duration
+        | Timestamp
+
+    type Update'BillingSchedulesBillUntil =
+        {
+            /// Specifies the billing period.
+            [<Config.Form>]
+            Duration: Update'BillingSchedulesBillUntilDuration option
+            /// The end date of the billing schedule.
+            [<Config.Form>]
+            Timestamp: DateTime option
+            /// Describes how the billing schedule will determine the end date. Either `duration` or `timestamp`.
+            [<Config.Form>]
+            Type: Update'BillingSchedulesBillUntilType option
+        }
+
+    type Update'BillingSchedulesBillUntil with
+        static member New(?duration: Update'BillingSchedulesBillUntilDuration, ?timestamp: DateTime, ?type': Update'BillingSchedulesBillUntilType) =
+            {
+                Duration = duration
+                Timestamp = timestamp
+                Type = type'
+            }
+
+    type Update'BillingSchedules =
+        {
+            /// Configure billing schedule differently for individual subscription items.
+            [<Config.Form>]
+            AppliesTo: Update'BillingSchedulesAppliesTo list option
+            /// The end date for the billing schedule.
+            [<Config.Form>]
+            BillUntil: Update'BillingSchedulesBillUntil option
+            /// Specify a key for the billing schedule. Must be unique to this field, alphanumeric, and up to 200 characters. If not provided, a unique key will be generated.
+            [<Config.Form>]
+            Key: string option
+        }
+
+    type Update'BillingSchedules with
+        static member New(?appliesTo: Update'BillingSchedulesAppliesTo list, ?billUntil: Update'BillingSchedulesBillUntil, ?key: string) =
+            {
+                AppliesTo = appliesTo
+                BillUntil = billUntil
+                Key = key
+            }
+
     type Update'BillingThresholdsBillingThresholds =
         {
             /// Monetary threshold that triggers the subscription to advance to a new billing period
@@ -1599,6 +1784,7 @@ module Subscriptions =
             }
 
     type Update'CancelAt =
+        | MaxBilledUntil
         | MaxPeriodEnd
         | MinPeriodEnd
 
@@ -2362,6 +2548,7 @@ module Subscriptions =
         | SepaDebit
         | Sofort
         | Swish
+        | Twint
         | Upi
         | UsBankAccount
         | WechatPay
@@ -2485,6 +2672,9 @@ module Subscriptions =
             /// Either `now` or `unchanged`. Setting the value to `now` resets the subscription's billing cycle anchor to the current time (in UTC). For more information, see the billing cycle [documentation](https://docs.stripe.com/billing/subscriptions/billing-cycle).
             [<Config.Form>]
             BillingCycleAnchor: Update'BillingCycleAnchor option
+            /// Sets the billing schedules for the subscription.
+            [<Config.Form>]
+            BillingSchedules: Choice<Update'BillingSchedules list,string> option
             /// Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
             [<Config.Form>]
             BillingThresholds: Choice<Update'BillingThresholdsBillingThresholds,string> option
@@ -2515,7 +2705,7 @@ module Subscriptions =
             /// The subscription's description, meant to be displayable to the customer. Use this field to optionally store an explanation of the subscription for rendering in Stripe surfaces and certain local payment methods UIs.
             [<Config.Form>]
             Description: Choice<string,string> option
-            /// The coupons to redeem into discounts for the subscription. If not specified or empty, inherits the discount from the subscription's customer.
+            /// The coupons to redeem into discounts for the subscription. A populated array overwrites the existing discounts on the subscription. If not specified or empty array, it leaves the subscription's discounts unchanged. If empty string, it clears the subscription's discounts.
             [<Config.Form>]
             Discounts: Choice<Update'Discounts list,string> option
             /// Specifies which fields in the response should be expanded.
@@ -2539,10 +2729,7 @@ module Subscriptions =
             /// If specified, payment collection for this subscription will be paused. Note that the subscription status will be unchanged and will not be updated to `paused`. Learn more about [pausing collection](https://docs.stripe.com/billing/subscriptions/pause-payment).
             [<Config.Form>]
             PauseCollection: Choice<Update'PauseCollectionPauseCollection,string> option
-            /// Use `allow_incomplete` to transition the subscription to `status=past_due` if a payment is required but cannot be paid. This allows you to manage scenarios where additional user actions are needed to pay a subscription's invoice. For example, SCA regulation may require 3DS authentication to complete payment. See the [SCA Migration Guide](https://docs.stripe.com/billing/migration/strong-customer-authentication) for Billing to learn more. This is the default behavior.
-            /// Use `default_incomplete` to transition the subscription to `status=past_due` when payment is required and await explicit confirmation of the invoice's payment intent. This allows simpler management of scenarios where additional user actions are needed to pay a subscription’s invoice. Such as failed payments, [SCA regulation](https://docs.stripe.com/billing/migration/strong-customer-authentication), or collecting a mandate for a bank debit payment method.
-            /// Use `pending_if_incomplete` to update the subscription using [pending updates](https://docs.stripe.com/billing/subscriptions/pending-updates). When you use `pending_if_incomplete` you can only pass the parameters [supported by pending updates](https://docs.stripe.com/billing/pending-updates-reference#supported-attributes).
-            /// Use `error_if_incomplete` if you want Stripe to return an HTTP 402 status code if a subscription's invoice cannot be paid. For example, if a payment method requires 3DS authentication due to SCA regulation and further user action is needed, this parameter does not update the subscription and returns an error instead. This was the default behavior for API versions prior to 2019-03-14. See the [changelog](https://docs.stripe.com/changelog/2019-03-14) to learn more.
+            /// Controls how Stripe handles payment when a subscription update requires payment and `collection_method=charge_automatically`.
             [<Config.Form>]
             PaymentBehavior: Update'PaymentBehavior option
             /// Payment settings to pass to invoices created by the subscription.
@@ -2573,13 +2760,14 @@ module Subscriptions =
         }
 
     type UpdateOptions with
-        static member New(subscriptionExposedId: string, ?addInvoiceItems: Update'AddInvoiceItems list, ?applicationFeePercent: Choice<decimal,string>, ?automaticTax: Update'AutomaticTax, ?billingCycleAnchor: Update'BillingCycleAnchor, ?billingThresholds: Choice<Update'BillingThresholdsBillingThresholds,string>, ?cancelAt: Choice<DateTime,string,Update'CancelAt>, ?cancelAtPeriodEnd: bool, ?cancellationDetails: Update'CancellationDetails, ?collectionMethod: Update'CollectionMethod, ?daysUntilDue: int, ?defaultPaymentMethod: string, ?defaultSource: Choice<string,string>, ?defaultTaxRates: Choice<string list,string>, ?description: Choice<string,string>, ?discounts: Choice<Update'Discounts list,string>, ?expand: string list, ?invoiceSettings: Update'InvoiceSettings, ?items: Update'Items list, ?metadata: Map<string, string>, ?offSession: bool, ?onBehalfOf: Choice<string,string>, ?pauseCollection: Choice<Update'PauseCollectionPauseCollection,string>, ?paymentBehavior: Update'PaymentBehavior, ?paymentSettings: Update'PaymentSettings, ?pendingInvoiceItemInterval: Choice<Update'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string>, ?prorationBehavior: Update'ProrationBehavior, ?prorationDate: DateTime, ?transferData: Choice<Update'TransferDataTransferDataSpecs,string>, ?trialEnd: Choice<Update'TrialEnd,DateTime>, ?trialFromPlan: bool, ?trialSettings: Update'TrialSettings) =
+        static member New(subscriptionExposedId: string, ?addInvoiceItems: Update'AddInvoiceItems list, ?applicationFeePercent: Choice<decimal,string>, ?automaticTax: Update'AutomaticTax, ?billingCycleAnchor: Update'BillingCycleAnchor, ?billingSchedules: Choice<Update'BillingSchedules list,string>, ?billingThresholds: Choice<Update'BillingThresholdsBillingThresholds,string>, ?cancelAt: Choice<DateTime,string,Update'CancelAt>, ?cancelAtPeriodEnd: bool, ?cancellationDetails: Update'CancellationDetails, ?collectionMethod: Update'CollectionMethod, ?daysUntilDue: int, ?defaultPaymentMethod: string, ?defaultSource: Choice<string,string>, ?defaultTaxRates: Choice<string list,string>, ?description: Choice<string,string>, ?discounts: Choice<Update'Discounts list,string>, ?expand: string list, ?invoiceSettings: Update'InvoiceSettings, ?items: Update'Items list, ?metadata: Map<string, string>, ?offSession: bool, ?onBehalfOf: Choice<string,string>, ?pauseCollection: Choice<Update'PauseCollectionPauseCollection,string>, ?paymentBehavior: Update'PaymentBehavior, ?paymentSettings: Update'PaymentSettings, ?pendingInvoiceItemInterval: Choice<Update'PendingInvoiceItemIntervalPendingInvoiceItemIntervalParams,string>, ?prorationBehavior: Update'ProrationBehavior, ?prorationDate: DateTime, ?transferData: Choice<Update'TransferDataTransferDataSpecs,string>, ?trialEnd: Choice<Update'TrialEnd,DateTime>, ?trialFromPlan: bool, ?trialSettings: Update'TrialSettings) =
             {
                 SubscriptionExposedId = subscriptionExposedId
                 AddInvoiceItems = addInvoiceItems
                 ApplicationFeePercent = applicationFeePercent
                 AutomaticTax = automaticTax
                 BillingCycleAnchor = billingCycleAnchor
+                BillingSchedules = billingSchedules
                 BillingThresholds = billingThresholds
                 CancelAt = cancelAt
                 CancelAtPeriodEnd = cancelAtPeriodEnd
@@ -2624,7 +2812,7 @@ module Subscriptions =
         $"/v1/subscriptions"
         |> RestApi.postAsync<_, Subscription> settings (Map.empty) options
 
-    ///<p>Cancels a customer’s subscription immediately. The customer won’t be charged again for the subscription. After it’s canceled, you can no longer update the subscription or its <a href="/metadata">metadata</a>.</p>
+    ///<p>Cancels a customer’s subscription immediately. The customer won’t be charged again for the subscription. After it’s canceled, the subscription is largely immutable. You can still update its <a href="/metadata">metadata</a> and <code>cancellation_details</code>.</p>
     ///<p>Any pending invoice items that you’ve created are still charged at the end of the period, unless manually <a href="/api/invoiceitems/delete">deleted</a>. If you’ve set the subscription to cancel at the end of the period, any pending prorations are also left in place and collected at the end of the period. But if the subscription is set to cancel immediately, pending prorations are removed if <code>invoice_now</code> and <code>prorate</code> are both set to true.</p>
     ///<p>By default, upon subscription cancellation, Stripe stops automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>
     let Cancel settings (options: CancelOptions) =
@@ -2810,7 +2998,7 @@ module SubscriptionsResume =
                 ProrationDate = prorationDate
             }
 
-    ///<p>Initiates resumption of a paused subscription, optionally resetting the billing cycle anchor and creating prorations. If no resumption invoice is generated, the subscription becomes <code>active</code> immediately. If a resumption invoice is generated, the subscription remains <code>paused</code> until the invoice is paid or marked uncollectible. If the invoice isn’t paid by the expiration date, it is voided and the subscription remains <code>paused</code>. You can only resume subscriptions with <code>collection_method</code> set to <code>charge_automatically</code>. <code>send_invoice</code> subscriptions are not supported.</p>
+    ///<p>Initiates resumption of a paused subscription, optionally resetting the billing cycle anchor and creating prorations. Resume is only available for subscriptions that use <code>charge_automatically</code> collection. If Stripe doesn’t generate a resumption invoice, the subscription becomes <code>active</code> immediately. When a resumption invoice is generated, Stripe finalizes it immediately. If the invoice is paid or marked uncollectible, the subscription becomes <code>active</code>. If the invoice is manually voided, the subscription stays <code>paused</code>. If there is no payment attempt within 23 hours, Stripe voids the invoice and the subscription stays <code>paused</code>. Learn more about <a href="/docs/billing/subscriptions/pause#resume-subscriptions">resuming subscriptions</a>.</p>
     let Resume settings (options: ResumeOptions) =
         $"/v1/subscriptions/{options.Subscription}/resume"
         |> RestApi.postAsync<_, Subscription> settings (Map.empty) options

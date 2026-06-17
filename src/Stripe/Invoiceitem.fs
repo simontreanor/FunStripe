@@ -6,7 +6,7 @@ open System
 open Stripe.PaymentMethod
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type DeletedInvoiceitem =
     {
         /// Always true for a deleted object
@@ -33,13 +33,16 @@ type InvoiceitemCustomer'AnyOf =
 
 type ProrationDetails =
     {
+        /// For a credit proration, links to the debit invoice line items or invoice item that the credit applies to.
+        CreditedItems: InvoiceItemProrationCreditedItems option
         /// Discount amounts applied when the proration was created.
         DiscountAmounts: DiscountsResourceDiscountAmount list
     }
 
 type ProrationDetails with
-    static member New(discountAmounts: DiscountsResourceDiscountAmount list) =
+    static member New(creditedItems: InvoiceItemProrationCreditedItems option, discountAmounts: DiscountsResourceDiscountAmount list) =
         {
+            CreditedItems = creditedItems
             DiscountAmounts = discountAmounts
         }
 

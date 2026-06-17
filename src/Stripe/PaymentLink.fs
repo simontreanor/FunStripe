@@ -6,7 +6,7 @@ open System
 open Stripe.Application
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type PaymentLinkApplication'AnyOf =
     | String of string
     | Application of Application
@@ -59,6 +59,7 @@ type PaymentLinkPaymentMethodTypes =
     | BacsDebit
     | Bancontact
     | Billie
+    | Bizum
     | Blik
     | Boleto
     | Card
@@ -152,6 +153,8 @@ type PaymentLink =
         PaymentIntentData: PaymentLinksResourcePaymentIntentData option
         /// Configuration for collecting a payment method during checkout. Defaults to `always`.
         PaymentMethodCollection: PaymentLinkPaymentMethodCollection
+        /// Payment-method-specific configuration.
+        PaymentMethodOptions: PaymentLinksResourcePaymentMethodOptions option
         /// The list of payment method types that customers can use. When `null`, Stripe will dynamically show relevant payment methods you've enabled in your [payment method settings](https://dashboard.stripe.com/settings/payment_methods).
         PaymentMethodTypes: PaymentLinkPaymentMethodTypes list option
         PhoneNumberCollection: PaymentLinksResourcePhoneNumberCollection
@@ -173,7 +176,7 @@ type PaymentLink =
     }
 
 type PaymentLink with
-    static member New(active: bool, afterCompletion: PaymentLinksResourceAfterCompletion, allowPromotionCodes: bool, application: PaymentLinkApplication'AnyOf option, applicationFeeAmount: int option, applicationFeePercent: decimal option, automaticTax: PaymentLinksResourceAutomaticTax, billingAddressCollection: PaymentLinkBillingAddressCollection, consentCollection: PaymentLinksResourceConsentCollection option, currency: IsoTypes.IsoCurrencyCode, customFields: PaymentLinksResourceCustomFields list, customText: PaymentLinksResourceCustomText, customerCreation: PaymentLinkCustomerCreation, id: string, inactiveMessage: string option, invoiceCreation: PaymentLinksResourceInvoiceCreation option, livemode: bool, managedPayments: PaymentPagesCheckoutSessionManagedPayments option, metadata: Map<string, string>, onBehalfOf: StripeId<Markers.Account> option, paymentIntentData: PaymentLinksResourcePaymentIntentData option, paymentMethodCollection: PaymentLinkPaymentMethodCollection, paymentMethodTypes: PaymentLinkPaymentMethodTypes list option, phoneNumberCollection: PaymentLinksResourcePhoneNumberCollection, restrictions: PaymentLinksResourceRestrictions option, shippingAddressCollection: PaymentLinksResourceShippingAddressCollection option, shippingOptions: PaymentLinksResourceShippingOption list, submitType: PaymentLinkSubmitType, subscriptionData: PaymentLinksResourceSubscriptionData option, taxIdCollection: PaymentLinksResourceTaxIdCollection, transferData: PaymentLinksResourceTransferData option, url: string, ?lineItems: PaymentLinkLineItems, ?nameCollection: PaymentLinksResourceNameCollection, ?optionalItems: PaymentLinksResourceOptionalItem list option) =
+    static member New(active: bool, afterCompletion: PaymentLinksResourceAfterCompletion, allowPromotionCodes: bool, application: PaymentLinkApplication'AnyOf option, applicationFeeAmount: int option, applicationFeePercent: decimal option, automaticTax: PaymentLinksResourceAutomaticTax, billingAddressCollection: PaymentLinkBillingAddressCollection, consentCollection: PaymentLinksResourceConsentCollection option, currency: IsoTypes.IsoCurrencyCode, customFields: PaymentLinksResourceCustomFields list, customText: PaymentLinksResourceCustomText, customerCreation: PaymentLinkCustomerCreation, id: string, inactiveMessage: string option, invoiceCreation: PaymentLinksResourceInvoiceCreation option, livemode: bool, managedPayments: PaymentPagesCheckoutSessionManagedPayments option, metadata: Map<string, string>, onBehalfOf: StripeId<Markers.Account> option, paymentIntentData: PaymentLinksResourcePaymentIntentData option, paymentMethodCollection: PaymentLinkPaymentMethodCollection, paymentMethodOptions: PaymentLinksResourcePaymentMethodOptions option, paymentMethodTypes: PaymentLinkPaymentMethodTypes list option, phoneNumberCollection: PaymentLinksResourcePhoneNumberCollection, restrictions: PaymentLinksResourceRestrictions option, shippingAddressCollection: PaymentLinksResourceShippingAddressCollection option, shippingOptions: PaymentLinksResourceShippingOption list, submitType: PaymentLinkSubmitType, subscriptionData: PaymentLinksResourceSubscriptionData option, taxIdCollection: PaymentLinksResourceTaxIdCollection, transferData: PaymentLinksResourceTransferData option, url: string, ?lineItems: PaymentLinkLineItems, ?nameCollection: PaymentLinksResourceNameCollection, ?optionalItems: PaymentLinksResourceOptionalItem list option) =
         {
             Active = active
             AfterCompletion = afterCompletion
@@ -197,6 +200,7 @@ type PaymentLink with
             OnBehalfOf = onBehalfOf
             PaymentIntentData = paymentIntentData
             PaymentMethodCollection = paymentMethodCollection
+            PaymentMethodOptions = paymentMethodOptions
             PaymentMethodTypes = paymentMethodTypes
             PhoneNumberCollection = phoneNumberCollection
             Restrictions = restrictions

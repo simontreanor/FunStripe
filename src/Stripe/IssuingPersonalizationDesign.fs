@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type IssuingPersonalizationDesignCarrierText =
     {
         /// The footer body text of the carrier letter.
@@ -85,7 +85,7 @@ type IssuingPersonalizationDesignStatus =
 /// A Personalization Design is a logical grouping of a Physical Bundle, card logo, and carrier text that represents a product line.
 type IssuingPersonalizationDesign =
     {
-        /// The file for the card logo to use with physical bundles that support card logos. Must have a `purpose` value of `issuing_logo`.
+        /// The file for the card logo to use with physical bundles that support card logos. Must have a `purpose` value of `issuing_logo`. Image must be in PNG format with dimensions of 1000px by 200px. It must be a binary (black and white) image containing a black logo on a white background. We don't accept grayscale.
         CardLogo: StripeId<Markers.File> option
         /// Hash containing carrier text, for use with physical bundles that support carrier text.
         CarrierText: IssuingPersonalizationDesignCarrierText option

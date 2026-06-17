@@ -6,7 +6,7 @@ open Stripe.Checkout
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module CheckoutSessions =
 
     type ListOptions =
@@ -307,7 +307,7 @@ module CheckoutSessions =
             PaymentMethodReuseAgreement: Create'ConsentCollectionPaymentMethodReuseAgreement option
             /// If set to `auto`, enables the collection of customer consent for promotional communications. The Checkout
             /// Session will determine whether to display an option to opt into promotional communication
-            /// from the merchant depending on the customer's locale. Only available to US merchants.
+            /// from the merchant depending on the customer's locale. Only available to US merchants and US customers.
             [<Config.Form>]
             Promotions: Create'ConsentCollectionPromotions option
             /// If set to `required`, it requires customers to check a terms of service checkbox before being able to pay.
@@ -605,6 +605,7 @@ module CheckoutSessions =
         | BacsDebit
         | Bancontact
         | Billie
+        | Bizum
         | Blik
         | Boleto
         | Card
@@ -637,6 +638,7 @@ module CheckoutSessions =
         | RevolutPay
         | SamsungPay
         | Satispay
+        | Scalapay
         | SepaDebit
         | Sofort
         | Sunbit
@@ -1628,7 +1630,7 @@ module CheckoutSessions =
 
     type Create'PaymentMethodOptionsCardRestrictions =
         {
-            /// Specify the card brands to block in the Checkout Session. If a customer enters or selects a card belonging to a blocked brand, they can't complete the Session.
+            /// The card brands to block. If a customer enters or selects a card belonging to a blocked brand, they can't complete the payment.
             [<Config.Form>]
             BrandsBlocked: Create'PaymentMethodOptionsCardRestrictionsBrandsBlocked list option
         }
@@ -2556,6 +2558,21 @@ module CheckoutSessions =
                 CaptureMethod = captureMethod
             }
 
+    type Create'PaymentMethodOptionsScalapayCaptureMethod = | Manual
+
+    type Create'PaymentMethodOptionsScalapay =
+        {
+            /// Controls when the funds will be captured from the customer's account.
+            [<Config.Form>]
+            CaptureMethod: Create'PaymentMethodOptionsScalapayCaptureMethod option
+        }
+
+    type Create'PaymentMethodOptionsScalapay with
+        static member New(?captureMethod: Create'PaymentMethodOptionsScalapayCaptureMethod) =
+            {
+                CaptureMethod = captureMethod
+            }
+
     type Create'PaymentMethodOptionsSepaDebitMandateOptions =
         {
             /// Prefix used to generate the Mandate reference. Must be at most 12 characters long. Must consist of only uppercase letters, numbers, spaces, or the following special characters: '/', '_', '-', '&', '.'. Cannot begin with 'STRIPE'.
@@ -2629,7 +2646,9 @@ module CheckoutSessions =
                 Reference = reference
             }
 
-    type Create'PaymentMethodOptionsTwintSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+    type Create'PaymentMethodOptionsTwintSetupFutureUsage =
+        | [<JsonPropertyName("none")>] None'
+        | OffSession
 
     type Create'PaymentMethodOptionsTwint =
         {
@@ -2795,7 +2814,7 @@ module CheckoutSessions =
 
     type Create'PaymentMethodOptions =
         {
-            /// contains details about the ACSS Debit payment method options. You can't set this parameter if `ui_mode` is `custom`.
+            /// contains details about the ACSS Debit payment method options. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             AcssDebit: Create'PaymentMethodOptionsAcssDebit option
             /// contains details about the Affirm payment method options.
@@ -2870,7 +2889,7 @@ module CheckoutSessions =
             /// contains details about the Korean card payment method options.
             [<Config.Form>]
             KrCard: Create'PaymentMethodOptionsKrCard option
-            /// contains details about the Link payment method options.
+            /// contains details about the Link payment method options (Link is also known as Onelink in the UK).
             [<Config.Form>]
             Link: Create'PaymentMethodOptionsLink option
             /// contains details about the Mobilepay payment method options.
@@ -2915,6 +2934,9 @@ module CheckoutSessions =
             /// contains details about the Satispay payment method options.
             [<Config.Form>]
             Satispay: Create'PaymentMethodOptionsSatispay option
+            /// contains details about the Scalapay payment method options.
+            [<Config.Form>]
+            Scalapay: Create'PaymentMethodOptionsScalapay option
             /// contains details about the Sepa Debit payment method options.
             [<Config.Form>]
             SepaDebit: Create'PaymentMethodOptionsSepaDebit option
@@ -2939,7 +2961,7 @@ module CheckoutSessions =
         }
 
     type Create'PaymentMethodOptions with
-        static member New(?acssDebit: Create'PaymentMethodOptionsAcssDebit, ?affirm: Create'PaymentMethodOptionsAffirm, ?afterpayClearpay: Create'PaymentMethodOptionsAfterpayClearpay, ?alipay: Create'PaymentMethodOptionsAlipay, ?alma: Create'PaymentMethodOptionsAlma, ?amazonPay: Create'PaymentMethodOptionsAmazonPay, ?auBecsDebit: Create'PaymentMethodOptionsAuBecsDebit, ?bacsDebit: Create'PaymentMethodOptionsBacsDebit, ?bancontact: Create'PaymentMethodOptionsBancontact, ?billie: Create'PaymentMethodOptionsBillie, ?boleto: Create'PaymentMethodOptionsBoleto, ?card: Create'PaymentMethodOptionsCard, ?cashapp: Create'PaymentMethodOptionsCashapp, ?crypto: Create'PaymentMethodOptionsCrypto, ?customerBalance: Create'PaymentMethodOptionsCustomerBalance, ?demoPay: Create'PaymentMethodOptionsDemoPay, ?eps: Create'PaymentMethodOptionsEps, ?fpx: Create'PaymentMethodOptionsFpx, ?giropay: Create'PaymentMethodOptionsGiropay, ?grabpay: Create'PaymentMethodOptionsGrabpay, ?ideal: Create'PaymentMethodOptionsIdeal, ?kakaoPay: Create'PaymentMethodOptionsKakaoPay, ?klarna: Create'PaymentMethodOptionsKlarna, ?konbini: Create'PaymentMethodOptionsKonbini, ?krCard: Create'PaymentMethodOptionsKrCard, ?link: Create'PaymentMethodOptionsLink, ?mobilepay: Create'PaymentMethodOptionsMobilepay, ?multibanco: Create'PaymentMethodOptionsMultibanco, ?naverPay: Create'PaymentMethodOptionsNaverPay, ?oxxo: Create'PaymentMethodOptionsOxxo, ?p24: Create'PaymentMethodOptionsP24, ?payByBank: string, ?payco: Create'PaymentMethodOptionsPayco, ?paynow: Create'PaymentMethodOptionsPaynow, ?paypal: Create'PaymentMethodOptionsPaypal, ?payto: Create'PaymentMethodOptionsPayto, ?pix: Create'PaymentMethodOptionsPix, ?revolutPay: Create'PaymentMethodOptionsRevolutPay, ?samsungPay: Create'PaymentMethodOptionsSamsungPay, ?satispay: Create'PaymentMethodOptionsSatispay, ?sepaDebit: Create'PaymentMethodOptionsSepaDebit, ?sofort: Create'PaymentMethodOptionsSofort, ?swish: Create'PaymentMethodOptionsSwish, ?twint: Create'PaymentMethodOptionsTwint, ?upi: Create'PaymentMethodOptionsUpi, ?usBankAccount: Create'PaymentMethodOptionsUsBankAccount, ?wechatPay: Create'PaymentMethodOptionsWechatPay) =
+        static member New(?acssDebit: Create'PaymentMethodOptionsAcssDebit, ?affirm: Create'PaymentMethodOptionsAffirm, ?afterpayClearpay: Create'PaymentMethodOptionsAfterpayClearpay, ?alipay: Create'PaymentMethodOptionsAlipay, ?alma: Create'PaymentMethodOptionsAlma, ?amazonPay: Create'PaymentMethodOptionsAmazonPay, ?auBecsDebit: Create'PaymentMethodOptionsAuBecsDebit, ?bacsDebit: Create'PaymentMethodOptionsBacsDebit, ?bancontact: Create'PaymentMethodOptionsBancontact, ?billie: Create'PaymentMethodOptionsBillie, ?boleto: Create'PaymentMethodOptionsBoleto, ?card: Create'PaymentMethodOptionsCard, ?cashapp: Create'PaymentMethodOptionsCashapp, ?crypto: Create'PaymentMethodOptionsCrypto, ?customerBalance: Create'PaymentMethodOptionsCustomerBalance, ?demoPay: Create'PaymentMethodOptionsDemoPay, ?eps: Create'PaymentMethodOptionsEps, ?fpx: Create'PaymentMethodOptionsFpx, ?giropay: Create'PaymentMethodOptionsGiropay, ?grabpay: Create'PaymentMethodOptionsGrabpay, ?ideal: Create'PaymentMethodOptionsIdeal, ?kakaoPay: Create'PaymentMethodOptionsKakaoPay, ?klarna: Create'PaymentMethodOptionsKlarna, ?konbini: Create'PaymentMethodOptionsKonbini, ?krCard: Create'PaymentMethodOptionsKrCard, ?link: Create'PaymentMethodOptionsLink, ?mobilepay: Create'PaymentMethodOptionsMobilepay, ?multibanco: Create'PaymentMethodOptionsMultibanco, ?naverPay: Create'PaymentMethodOptionsNaverPay, ?oxxo: Create'PaymentMethodOptionsOxxo, ?p24: Create'PaymentMethodOptionsP24, ?payByBank: string, ?payco: Create'PaymentMethodOptionsPayco, ?paynow: Create'PaymentMethodOptionsPaynow, ?paypal: Create'PaymentMethodOptionsPaypal, ?payto: Create'PaymentMethodOptionsPayto, ?pix: Create'PaymentMethodOptionsPix, ?revolutPay: Create'PaymentMethodOptionsRevolutPay, ?samsungPay: Create'PaymentMethodOptionsSamsungPay, ?satispay: Create'PaymentMethodOptionsSatispay, ?scalapay: Create'PaymentMethodOptionsScalapay, ?sepaDebit: Create'PaymentMethodOptionsSepaDebit, ?sofort: Create'PaymentMethodOptionsSofort, ?swish: Create'PaymentMethodOptionsSwish, ?twint: Create'PaymentMethodOptionsTwint, ?upi: Create'PaymentMethodOptionsUpi, ?usBankAccount: Create'PaymentMethodOptionsUsBankAccount, ?wechatPay: Create'PaymentMethodOptionsWechatPay) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -2981,6 +3003,7 @@ module CheckoutSessions =
                 RevolutPay = revolutPay
                 SamsungPay = samsungPay
                 Satispay = satispay
+                Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
                 Swish = swish
@@ -3001,6 +3024,7 @@ module CheckoutSessions =
         | BacsDebit
         | Bancontact
         | Billie
+        | Bizum
         | Blik
         | Boleto
         | Card
@@ -3034,6 +3058,7 @@ module CheckoutSessions =
         | RevolutPay
         | SamsungPay
         | Satispay
+        | Scalapay
         | SepaDebit
         | Sofort
         | Sunbit
@@ -3697,7 +3722,7 @@ module CheckoutSessions =
             /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account. To use an application fee percent, the request must be made on behalf of another account, using the `Stripe-Account` header or an OAuth key. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
             [<Config.Form>]
             ApplicationFeePercent: decimal option
-            /// A future timestamp to anchor the subscription's billing cycle for new subscriptions. You can't set this parameter if `ui_mode` is `custom`.
+            /// A future timestamp to anchor the subscription's billing cycle for new subscriptions. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             BillingCycleAnchor: DateTime option
             /// Controls how prorations and invoices for subscriptions are calculated and orchestrated.
@@ -3807,7 +3832,7 @@ module CheckoutSessions =
 
     type Create'WalletOptions =
         {
-            /// contains details about the Link wallet options.
+            /// contains details about the Link wallet options (Link is also known as Onelink in the UK).
             [<Config.Form>]
             Link: Create'WalletOptionsLink option
         }
@@ -3823,7 +3848,7 @@ module CheckoutSessions =
             /// Settings for price localization with [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing).
             [<Config.Form>]
             AdaptivePricing: Create'AdaptivePricing option
-            /// Configure actions after a Checkout Session has expired. You can't set this parameter if `ui_mode` is `custom`.
+            /// Configure actions after a Checkout Session has expired. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             AfterExpiration: Create'AfterExpiration option
             /// Enables user redeemable promotion codes.
@@ -3835,10 +3860,10 @@ module CheckoutSessions =
             /// Specify whether Checkout should collect the customer's billing address. Defaults to `auto`.
             [<Config.Form>]
             BillingAddressCollection: Create'BillingAddressCollection option
-            /// The branding settings for the Checkout Session. This parameter is not allowed if ui_mode is `custom`.
+            /// The branding settings for the Checkout Session. This parameter is not allowed if ui_mode is `elements`.
             [<Config.Form>]
             BrandingSettings: Create'BrandingSettings option
-            /// If set, Checkout displays a back button and customers will be directed to this URL if they decide to cancel payment and return to your website. This parameter is not allowed if ui_mode is `embedded` or `custom`.
+            /// If set, Checkout displays a back button and customers will be directed to this URL if they decide to cancel payment and return to your website. This parameter is not allowed if ui_mode is `embedded_page` or `elements`.
             [<Config.Form>]
             CancelUrl: string option
             /// A unique string to reference the Checkout Session. This can be a
@@ -3937,7 +3962,7 @@ module CheckoutSessions =
             /// You can't set this parameter if `ui_mode` is `custom`.
             [<Config.Form>]
             OptionalItems: Create'OptionalItems list option
-            /// Where the user is coming from. This informs the optimizations that are applied to the session. You can't set this parameter if `ui_mode` is `custom`.
+            /// Where the user is coming from. This informs the optimizations that are applied to the session. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             OriginContext: Create'OriginContext option
             /// A subset of parameters to be passed to PaymentIntent creation for Checkout Sessions in `payment` mode.
@@ -3977,11 +4002,11 @@ module CheckoutSessions =
             /// before using this feature. Learn more about [collecting phone numbers with Checkout](https://docs.stripe.com/payments/checkout/phone-numbers).
             [<Config.Form>]
             PhoneNumberCollection: Create'PhoneNumberCollection option
-            /// This parameter applies to `ui_mode: embedded`. Learn more about the [redirect behavior](https://docs.stripe.com/payments/checkout/custom-success-page?payment-ui=embedded-form) of embedded sessions. Defaults to `always`.
+            /// This parameter applies to `ui_mode: embedded_page`. Learn more about the [redirect behavior](https://docs.stripe.com/payments/checkout/custom-success-page?payment-ui=embedded-form) of embedded sessions. Defaults to `always`.
             [<Config.Form>]
             RedirectOnCompletion: Create'RedirectOnCompletion option
             /// The URL to redirect your customer back to after they authenticate or cancel their payment on the
-            /// payment method's app or site. This parameter is required if `ui_mode` is `embedded` or `custom`
+            /// payment method's app or site. This parameter is required if `ui_mode` is `embedded_page` or `elements`
             /// and redirect-based payment methods are enabled on the session.
             [<Config.Form>]
             ReturnUrl: string option
@@ -4001,7 +4026,7 @@ module CheckoutSessions =
             /// to customize relevant text on the page, such as the submit button.
             /// `submit_type` can only be specified on Checkout Sessions in
             /// `payment` or `subscription` mode. If blank or `auto`, `pay` is used.
-            /// You can't set this parameter if `ui_mode` is `custom`.
+            /// You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             SubmitType: Create'SubmitType option
             /// A subset of parameters to be passed to subscription creation for Checkout Sessions in `subscription` mode.
@@ -4009,7 +4034,7 @@ module CheckoutSessions =
             SubscriptionData: Create'SubscriptionData option
             /// The URL to which Stripe should send customers when payment or setup
             /// is complete.
-            /// This parameter is not allowed if ui_mode is `embedded` or `custom`. If you'd like to use
+            /// This parameter is not allowed if ui_mode is `embedded_page` or `elements`. If you'd like to use
             /// information from the successful Checkout Session on your page, read the
             /// guide on [customizing your success page](https://docs.stripe.com/payments/checkout/custom-success-page).
             [<Config.Form>]
@@ -4017,7 +4042,7 @@ module CheckoutSessions =
             /// Controls tax ID collection during checkout.
             [<Config.Form>]
             TaxIdCollection: Create'TaxIdCollection option
-            /// The UI mode of the Session. Defaults to `hosted`.
+            /// The UI mode of the Session. Defaults to `hosted_page`.
             [<Config.Form>]
             UiMode: Create'UiMode option
             /// Wallet-specific configuration.

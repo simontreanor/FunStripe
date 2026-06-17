@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type DeletedTerminalConfiguration =
     {
         /// Always true for a deleted object
@@ -52,11 +52,19 @@ type DeletedTerminalReaderDeviceType =
     | MobilePhoneReader
     | [<JsonPropertyName("simulated_stripe_s700")>] SimulatedStripeS700
     | [<JsonPropertyName("simulated_stripe_s710")>] SimulatedStripeS710
+    | [<JsonPropertyName("simulated_verifone_m425")>] SimulatedVerifoneM425
+    | [<JsonPropertyName("simulated_verifone_p630")>] SimulatedVerifoneP630
+    | [<JsonPropertyName("simulated_verifone_ux700")>] SimulatedVerifoneUx700
+    | [<JsonPropertyName("simulated_verifone_v660p")>] SimulatedVerifoneV660p
     | [<JsonPropertyName("simulated_wisepos_e")>] SimulatedWiseposE
     | [<JsonPropertyName("stripe_m2")>] StripeM2
     | [<JsonPropertyName("stripe_s700")>] StripeS700
     | [<JsonPropertyName("stripe_s710")>] StripeS710
     | [<JsonPropertyName("verifone_P400")>] VerifoneP400
+    | [<JsonPropertyName("verifone_m425")>] VerifoneM425
+    | [<JsonPropertyName("verifone_p630")>] VerifoneP630
+    | [<JsonPropertyName("verifone_ux700")>] VerifoneUx700
+    | [<JsonPropertyName("verifone_v660p")>] VerifoneV660p
 
 type DeletedTerminalReader =
     {
@@ -308,13 +316,21 @@ type TerminalConfiguration =
         [<JsonPropertyName("stripe_s710")>]
         StripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
         Tipping: TerminalConfigurationConfigurationResourceTipping option
+        [<JsonPropertyName("verifone_m425")>]
+        VerifoneM425: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
         [<JsonPropertyName("verifone_p400")>]
         VerifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        [<JsonPropertyName("verifone_p630")>]
+        VerifoneP630: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        [<JsonPropertyName("verifone_ux700")>]
+        VerifoneUx700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        [<JsonPropertyName("verifone_v660p")>]
+        VerifoneV660p: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
         Wifi: TerminalConfigurationConfigurationResourceWifiConfig option
     }
 
 type TerminalConfiguration with
-    static member New(id: string, isAccountDefault: bool option, livemode: bool, name: string option, ?bbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?bbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?cellular: TerminalConfigurationConfigurationResourceCellularConfig, ?offline: TerminalConfigurationConfigurationResourceOfflineConfig, ?rebootWindow: TerminalConfigurationConfigurationResourceRebootWindow, ?stripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?stripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?tipping: TerminalConfigurationConfigurationResourceTipping, ?verifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?wifi: TerminalConfigurationConfigurationResourceWifiConfig) =
+    static member New(id: string, isAccountDefault: bool option, livemode: bool, name: string option, ?bbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?bbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?cellular: TerminalConfigurationConfigurationResourceCellularConfig, ?offline: TerminalConfigurationConfigurationResourceOfflineConfig, ?rebootWindow: TerminalConfigurationConfigurationResourceRebootWindow, ?stripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?stripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?tipping: TerminalConfigurationConfigurationResourceTipping, ?verifoneM425: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneP630: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneUx700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneV660p: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?wifi: TerminalConfigurationConfigurationResourceWifiConfig) =
         {
             Id = id
             IsAccountDefault = isAccountDefault
@@ -328,7 +344,11 @@ type TerminalConfiguration with
             StripeS700 = stripeS700
             StripeS710 = stripeS710
             Tipping = tipping
+            VerifoneM425 = verifoneM425
             VerifoneP400 = verifoneP400
+            VerifoneP630 = verifoneP630
+            VerifoneUx700 = verifoneUx700
+            VerifoneV660p = verifoneV660p
             Wifi = wifi
         }
 
@@ -462,11 +482,19 @@ type TerminalReaderDeviceType =
     | MobilePhoneReader
     | [<JsonPropertyName("simulated_stripe_s700")>] SimulatedStripeS700
     | [<JsonPropertyName("simulated_stripe_s710")>] SimulatedStripeS710
+    | [<JsonPropertyName("simulated_verifone_m425")>] SimulatedVerifoneM425
+    | [<JsonPropertyName("simulated_verifone_p630")>] SimulatedVerifoneP630
+    | [<JsonPropertyName("simulated_verifone_ux700")>] SimulatedVerifoneUx700
+    | [<JsonPropertyName("simulated_verifone_v660p")>] SimulatedVerifoneV660p
     | [<JsonPropertyName("simulated_wisepos_e")>] SimulatedWiseposE
     | [<JsonPropertyName("stripe_m2")>] StripeM2
     | [<JsonPropertyName("stripe_s700")>] StripeS700
     | [<JsonPropertyName("stripe_s710")>] StripeS710
     | [<JsonPropertyName("verifone_P400")>] VerifoneP400
+    | [<JsonPropertyName("verifone_m425")>] VerifoneM425
+    | [<JsonPropertyName("verifone_p630")>] VerifoneP630
+    | [<JsonPropertyName("verifone_ux700")>] VerifoneUx700
+    | [<JsonPropertyName("verifone_v660p")>] VerifoneV660p
 
 /// Represents custom text to be displayed when collecting the input using a reader
 type TerminalReaderReaderResourceCustomText =
@@ -767,6 +795,42 @@ type TerminalReaderReaderResourceConfirmPaymentIntentAction with
             ConfirmConfig = confirmConfig
         }
 
+/// Metadata of an uploaded file
+type TerminalReaderReaderResourceFileMetadata =
+    {
+        /// Creation time of the object (in seconds since the Unix epoch).
+        CreatedAt: DateTime
+        /// The original name of the uploaded file (e.g. `receipt.png`).
+        Filename: string
+        /// The size (in bytes) of the uploaded file.
+        Size: int
+        /// The format of the uploaded file.
+        Type: string
+    }
+
+type TerminalReaderReaderResourceFileMetadata with
+    static member New(createdAt: DateTime, filename: string, size: int, ``type``: string) =
+        {
+            CreatedAt = createdAt
+            Filename = filename
+            Size = size
+            Type = ``type``
+        }
+
+/// Represents a reader action to print content
+type TerminalReaderReaderResourcePrintContent =
+    { Image: TerminalReaderReaderResourceFileMetadata option }
+
+type TerminalReaderReaderResourcePrintContent with
+    static member New(?image: TerminalReaderReaderResourceFileMetadata) =
+        {
+            Image = image
+        }
+
+module TerminalReaderReaderResourcePrintContent =
+    ///The type of content to print. Currently supports `image`.
+    let ``type`` = "image"
+
 /// Represents a per-transaction override of a reader configuration
 type TerminalReaderReaderResourceProcessConfig =
     {
@@ -844,6 +908,7 @@ type TerminalReaderReaderResourceReaderActionType =
     | CollectInputs
     | CollectPaymentMethod
     | ConfirmPaymentIntent
+    | PrintContent
     | ProcessPaymentIntent
     | ProcessSetupIntent
     | RefundPayment
@@ -965,6 +1030,8 @@ module TerminalReaderReaderResourceSetReaderDisplayAction =
 /// Represents an action performed by the reader
 type TerminalReaderReaderResourceReaderAction =
     {
+        /// The reader action failed due to an [API error](https://docs.stripe.com/api/errors). Only present when `status` is `failed` and the underlying failure was an API error. Avoid parsing the `message` field for programmatic logic; use `type` or `code` instead. The `message` field is for display to humans only and may be updated at anytime. Requires [reader version](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710#reader-software-version) 2.42 or later. Readers on older versions always return null.
+        ApiError: ApiErrors option
         CollectInputs: TerminalReaderReaderResourceCollectInputsAction option
         CollectPaymentMethod: TerminalReaderReaderResourceCollectPaymentMethodAction option
         ConfirmPaymentIntent: TerminalReaderReaderResourceConfirmPaymentIntentAction option
@@ -972,6 +1039,7 @@ type TerminalReaderReaderResourceReaderAction =
         FailureCode: string option
         /// Detailed failure message, only set if status is `failed`.
         FailureMessage: string option
+        PrintContent: TerminalReaderReaderResourcePrintContent option
         ProcessPaymentIntent: TerminalReaderReaderResourceProcessPaymentIntentAction option
         ProcessSetupIntent: TerminalReaderReaderResourceProcessSetupIntentAction option
         RefundPayment: TerminalReaderReaderResourceRefundPaymentAction option
@@ -983,8 +1051,9 @@ type TerminalReaderReaderResourceReaderAction =
     }
 
 type TerminalReaderReaderResourceReaderAction with
-    static member New(failureCode: string option, failureMessage: string option, status: TerminalReaderReaderResourceReaderActionStatus, ``type``: TerminalReaderReaderResourceReaderActionType, ?collectInputs: TerminalReaderReaderResourceCollectInputsAction, ?collectPaymentMethod: TerminalReaderReaderResourceCollectPaymentMethodAction, ?confirmPaymentIntent: TerminalReaderReaderResourceConfirmPaymentIntentAction, ?processPaymentIntent: TerminalReaderReaderResourceProcessPaymentIntentAction, ?processSetupIntent: TerminalReaderReaderResourceProcessSetupIntentAction, ?refundPayment: TerminalReaderReaderResourceRefundPaymentAction, ?setReaderDisplay: TerminalReaderReaderResourceSetReaderDisplayAction) =
+    static member New(apiError: ApiErrors option, failureCode: string option, failureMessage: string option, status: TerminalReaderReaderResourceReaderActionStatus, ``type``: TerminalReaderReaderResourceReaderActionType, ?collectInputs: TerminalReaderReaderResourceCollectInputsAction, ?collectPaymentMethod: TerminalReaderReaderResourceCollectPaymentMethodAction, ?confirmPaymentIntent: TerminalReaderReaderResourceConfirmPaymentIntentAction, ?printContent: TerminalReaderReaderResourcePrintContent, ?processPaymentIntent: TerminalReaderReaderResourceProcessPaymentIntentAction, ?processSetupIntent: TerminalReaderReaderResourceProcessSetupIntentAction, ?refundPayment: TerminalReaderReaderResourceRefundPaymentAction, ?setReaderDisplay: TerminalReaderReaderResourceSetReaderDisplayAction) =
         {
+            ApiError = apiError
             FailureCode = failureCode
             FailureMessage = failureMessage
             Status = status
@@ -992,6 +1061,7 @@ type TerminalReaderReaderResourceReaderAction with
             CollectInputs = collectInputs
             CollectPaymentMethod = collectPaymentMethod
             ConfirmPaymentIntent = confirmPaymentIntent
+            PrintContent = printContent
             ProcessPaymentIntent = processPaymentIntent
             ProcessSetupIntent = processSetupIntent
             RefundPayment = refundPayment

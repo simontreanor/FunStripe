@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type ConfirmationTokenSetupFutureUsage =
     | OffSession
     | OnSession
@@ -108,6 +108,7 @@ type ConfirmationTokensResourcePaymentMethodPreviewType =
     | BacsDebit
     | Bancontact
     | Billie
+    | Bizum
     | Blik
     | Boleto
     | Card
@@ -144,6 +145,7 @@ type ConfirmationTokensResourcePaymentMethodPreviewType =
     | RevolutPay
     | SamsungPay
     | Satispay
+    | Scalapay
     | SepaDebit
     | Sofort
     | Sunbit
@@ -170,6 +172,7 @@ type ConfirmationTokensResourcePaymentMethodPreview =
         Bancontact: PaymentMethodBancontact option
         Billie: PaymentMethodBillie option
         BillingDetails: BillingDetails
+        Bizum: PaymentMethodBizum option
         Blik: PaymentMethodBlik option
         Boleto: PaymentMethodBoleto option
         Card: PaymentMethodCard option
@@ -209,6 +212,7 @@ type ConfirmationTokensResourcePaymentMethodPreview =
         RevolutPay: PaymentMethodRevolutPay option
         SamsungPay: PaymentMethodSamsungPay option
         Satispay: PaymentMethodSatispay option
+        Scalapay: PaymentMethodScalapay option
         SepaDebit: PaymentMethodSepaDebit option
         Sofort: PaymentMethodSofort option
         Sunbit: PaymentMethodSunbit option
@@ -223,7 +227,7 @@ type ConfirmationTokensResourcePaymentMethodPreview =
     }
 
 type ConfirmationTokensResourcePaymentMethodPreview with
-    static member New(billingDetails: BillingDetails, customer: StripeId<Markers.Customer> option, customerAccount: string option, ``type``: ConfirmationTokensResourcePaymentMethodPreviewType, ?acssDebit: PaymentMethodAcssDebit, ?affirm: PaymentMethodAffirm, ?afterpayClearpay: PaymentMethodAfterpayClearpay, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipay, ?allowRedisplay: ConfirmationTokensResourcePaymentMethodPreviewAllowRedisplay, ?alma: PaymentMethodAlma, ?amazonPay: PaymentMethodAmazonPay, ?auBecsDebit: PaymentMethodAuBecsDebit, ?bacsDebit: PaymentMethodBacsDebit, ?bancontact: PaymentMethodBancontact, ?billie: PaymentMethodBillie, ?blik: PaymentMethodBlik, ?boleto: PaymentMethodBoleto, ?card: PaymentMethodCard, ?cardPresent: PaymentMethodCardPresent, ?cashapp: PaymentMethodCashapp, ?crypto: PaymentMethodCrypto, ?customerBalance: PaymentMethodCustomerBalance, ?eps: PaymentMethodEps, ?fpx: PaymentMethodFpx, ?giropay: PaymentMethodGiropay, ?grabpay: PaymentMethodGrabpay, ?ideal: PaymentMethodIdeal, ?interacPresent: PaymentMethodInteracPresent, ?kakaoPay: PaymentMethodKakaoPay, ?klarna: PaymentMethodKlarna, ?konbini: PaymentMethodKonbini, ?krCard: PaymentMethodKrCard, ?link: PaymentMethodLink, ?mbWay: PaymentMethodMbWay, ?mobilepay: PaymentMethodMobilepay, ?multibanco: PaymentMethodMultibanco, ?naverPay: PaymentMethodNaverPay, ?nzBankAccount: PaymentMethodNzBankAccount, ?oxxo: PaymentMethodOxxo, ?p24: PaymentMethodP24, ?payByBank: PaymentMethodPayByBank, ?payco: PaymentMethodPayco, ?paynow: PaymentMethodPaynow, ?paypal: PaymentMethodPaypal, ?payto: PaymentMethodPayto, ?pix: PaymentMethodPix, ?promptpay: PaymentMethodPromptpay, ?revolutPay: PaymentMethodRevolutPay, ?samsungPay: PaymentMethodSamsungPay, ?satispay: PaymentMethodSatispay, ?sepaDebit: PaymentMethodSepaDebit, ?sofort: PaymentMethodSofort, ?sunbit: PaymentMethodSunbit, ?swish: PaymentMethodSwish, ?twint: PaymentMethodTwint, ?upi: PaymentMethodUpi, ?usBankAccount: PaymentMethodUsBankAccount, ?wechatPay: PaymentMethodWechatPay, ?zip: PaymentMethodZip) =
+    static member New(billingDetails: BillingDetails, customer: StripeId<Markers.Customer> option, customerAccount: string option, ``type``: ConfirmationTokensResourcePaymentMethodPreviewType, ?acssDebit: PaymentMethodAcssDebit, ?affirm: PaymentMethodAffirm, ?afterpayClearpay: PaymentMethodAfterpayClearpay, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipay, ?allowRedisplay: ConfirmationTokensResourcePaymentMethodPreviewAllowRedisplay, ?alma: PaymentMethodAlma, ?amazonPay: PaymentMethodAmazonPay, ?auBecsDebit: PaymentMethodAuBecsDebit, ?bacsDebit: PaymentMethodBacsDebit, ?bancontact: PaymentMethodBancontact, ?billie: PaymentMethodBillie, ?bizum: PaymentMethodBizum, ?blik: PaymentMethodBlik, ?boleto: PaymentMethodBoleto, ?card: PaymentMethodCard, ?cardPresent: PaymentMethodCardPresent, ?cashapp: PaymentMethodCashapp, ?crypto: PaymentMethodCrypto, ?customerBalance: PaymentMethodCustomerBalance, ?eps: PaymentMethodEps, ?fpx: PaymentMethodFpx, ?giropay: PaymentMethodGiropay, ?grabpay: PaymentMethodGrabpay, ?ideal: PaymentMethodIdeal, ?interacPresent: PaymentMethodInteracPresent, ?kakaoPay: PaymentMethodKakaoPay, ?klarna: PaymentMethodKlarna, ?konbini: PaymentMethodKonbini, ?krCard: PaymentMethodKrCard, ?link: PaymentMethodLink, ?mbWay: PaymentMethodMbWay, ?mobilepay: PaymentMethodMobilepay, ?multibanco: PaymentMethodMultibanco, ?naverPay: PaymentMethodNaverPay, ?nzBankAccount: PaymentMethodNzBankAccount, ?oxxo: PaymentMethodOxxo, ?p24: PaymentMethodP24, ?payByBank: PaymentMethodPayByBank, ?payco: PaymentMethodPayco, ?paynow: PaymentMethodPaynow, ?paypal: PaymentMethodPaypal, ?payto: PaymentMethodPayto, ?pix: PaymentMethodPix, ?promptpay: PaymentMethodPromptpay, ?revolutPay: PaymentMethodRevolutPay, ?samsungPay: PaymentMethodSamsungPay, ?satispay: PaymentMethodSatispay, ?scalapay: PaymentMethodScalapay, ?sepaDebit: PaymentMethodSepaDebit, ?sofort: PaymentMethodSofort, ?sunbit: PaymentMethodSunbit, ?swish: PaymentMethodSwish, ?twint: PaymentMethodTwint, ?upi: PaymentMethodUpi, ?usBankAccount: PaymentMethodUsBankAccount, ?wechatPay: PaymentMethodWechatPay, ?zip: PaymentMethodZip) =
         {
             BillingDetails = billingDetails
             Customer = customer
@@ -240,6 +244,7 @@ type ConfirmationTokensResourcePaymentMethodPreview with
             BacsDebit = bacsDebit
             Bancontact = bancontact
             Billie = billie
+            Bizum = bizum
             Blik = blik
             Boleto = boleto
             Card = card
@@ -275,6 +280,7 @@ type ConfirmationTokensResourcePaymentMethodPreview with
             RevolutPay = revolutPay
             SamsungPay = samsungPay
             Satispay = satispay
+            Scalapay = scalapay
             SepaDebit = sepaDebit
             Sofort = sofort
             Sunbit = sunbit

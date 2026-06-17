@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.BalanceSettings
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module BalanceSettings =
 
     type RetrieveOptions =
@@ -57,6 +57,9 @@ module BalanceSettings =
 
     type Update'PaymentsPayouts =
         {
+            /// Configures per-currency rules for automatically transferring funds from the payments balance to a FinancialAccount.
+            [<Config.Form>]
+            AutomaticTransferRulesByCurrency: Choice<Map<string, string>,string> option
             /// The minimum balance amount to retain per currency after automatic payouts. Only funds that exceed these amounts are paid out. Learn more about the [minimum balances for automatic payouts](/payouts/minimum-balances-for-automatic-payouts).
             [<Config.Form>]
             MinimumBalanceByCurrency: Choice<Map<string, string>,string> option
@@ -69,11 +72,33 @@ module BalanceSettings =
         }
 
     type Update'PaymentsPayouts with
-        static member New(?minimumBalanceByCurrency: Choice<Map<string, string>,string>, ?schedule: Update'PaymentsPayoutsSchedule, ?statementDescriptor: string) =
+        static member New(?automaticTransferRulesByCurrency: Choice<Map<string, string>,string>, ?minimumBalanceByCurrency: Choice<Map<string, string>,string>, ?schedule: Update'PaymentsPayoutsSchedule, ?statementDescriptor: string) =
             {
+                AutomaticTransferRulesByCurrency = automaticTransferRulesByCurrency
                 MinimumBalanceByCurrency = minimumBalanceByCurrency
                 Schedule = schedule
                 StatementDescriptor = statementDescriptor
+            }
+
+    type Update'PaymentsSettlementTimingStartOfDayStartOfDay =
+        {
+            /// Hour at which the customized start of day begins according to the given timezone. Must be a [supported customized start of day hour](/connect/customized-start-of-day#available-timezones-and-cutoffs).
+            [<Config.Form>]
+            Hour: int option
+            /// Minutes at which the customized start of day begins according to the given timezone. Must be either 0 or 30.
+            [<Config.Form>]
+            Minutes: int option
+            /// Timezone for the customized start of day. Must be a [supported customized start of day timezone](/connect/customized-start-of-day#available-timezones-and-cutoffs).
+            [<Config.Form>]
+            Timezone: string option
+        }
+
+    type Update'PaymentsSettlementTimingStartOfDayStartOfDay with
+        static member New(?hour: int, ?minutes: int, ?timezone: string) =
+            {
+                Hour = hour
+                Minutes = minutes
+                Timezone = timezone
             }
 
     type Update'PaymentsSettlementTiming =
@@ -81,12 +106,16 @@ module BalanceSettings =
             /// Change `delay_days` for this account, which determines the number of days charge funds are held before becoming available. The maximum value is 31. Passing an empty string to `delay_days_override` will return `delay_days` to the default, which is the lowest available value for the account. [Learn more about controlling delay days](/connect/manage-payout-schedule).
             [<Config.Form>]
             DelayDaysOverride: Choice<int,string> option
+            /// Customized start of day configuration for automatic payouts to group and send payments in local timezones with a customized day starting time. For details, see our [Customized start of day](/connect/customized-start-of-day) documentation.
+            [<Config.Form>]
+            StartOfDay: Choice<Update'PaymentsSettlementTimingStartOfDayStartOfDay,string> option
         }
 
     type Update'PaymentsSettlementTiming with
-        static member New(?delayDaysOverride: Choice<int,string>) =
+        static member New(?delayDaysOverride: Choice<int,string>, ?startOfDay: Choice<Update'PaymentsSettlementTimingStartOfDayStartOfDay,string>) =
             {
                 DelayDaysOverride = delayDaysOverride
+                StartOfDay = startOfDay
             }
 
     type Update'Payments =

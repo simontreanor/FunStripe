@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type MandateMultiUse =
     {
         /// The amount of the payment on a multi use mandate.
@@ -317,6 +317,14 @@ type MandateSepaDebit with
             Url = url
         }
 
+type MandateTwint = { MandateTwint: string option }
+
+type MandateTwint with
+    static member New(?mandateTwint: string option) =
+        {
+            MandateTwint = mandateTwint |> Option.flatten
+        }
+
 [<Struct>]
 type MandateUpiAmountType =
     | Fixed
@@ -371,6 +379,7 @@ type MandatePaymentMethodDetails =
         Pix: MandatePix option
         RevolutPay: MandateRevolutPay option
         SepaDebit: MandateSepaDebit option
+        Twint: MandateTwint option
         /// This mandate corresponds with a specific payment method type. The `payment_method_details` includes an additional hash with the same name and contains mandate information that's specific to that payment method.
         Type: string
         Upi: MandateUpi option
@@ -378,7 +387,7 @@ type MandatePaymentMethodDetails =
     }
 
 type MandatePaymentMethodDetails with
-    static member New(``type``: string, ?acssDebit: MandateAcssDebit, ?amazonPay: MandateAmazonPay, ?auBecsDebit: MandateAuBecsDebit, ?bacsDebit: MandateBacsDebit, ?card: CardMandatePaymentMethodDetails, ?cashapp: MandateCashapp, ?kakaoPay: MandateKakaoPay, ?klarna: MandateKlarna, ?krCard: MandateKrCard, ?link: MandateLink, ?naverPay: MandateNaverPay, ?nzBankAccount: MandateNzBankAccount, ?paypal: MandatePaypal, ?payto: MandatePayto, ?pix: MandatePix, ?revolutPay: MandateRevolutPay, ?sepaDebit: MandateSepaDebit, ?upi: MandateUpi, ?usBankAccount: MandateUsBankAccount) =
+    static member New(``type``: string, ?acssDebit: MandateAcssDebit, ?amazonPay: MandateAmazonPay, ?auBecsDebit: MandateAuBecsDebit, ?bacsDebit: MandateBacsDebit, ?card: CardMandatePaymentMethodDetails, ?cashapp: MandateCashapp, ?kakaoPay: MandateKakaoPay, ?klarna: MandateKlarna, ?krCard: MandateKrCard, ?link: MandateLink, ?naverPay: MandateNaverPay, ?nzBankAccount: MandateNzBankAccount, ?paypal: MandatePaypal, ?payto: MandatePayto, ?pix: MandatePix, ?revolutPay: MandateRevolutPay, ?sepaDebit: MandateSepaDebit, ?twint: MandateTwint, ?upi: MandateUpi, ?usBankAccount: MandateUsBankAccount) =
         {
             Type = ``type``
             AcssDebit = acssDebit
@@ -398,6 +407,7 @@ type MandatePaymentMethodDetails with
             Pix = pix
             RevolutPay = revolutPay
             SepaDebit = sepaDebit
+            Twint = twint
             Upi = upi
             UsBankAccount = usBankAccount
         }

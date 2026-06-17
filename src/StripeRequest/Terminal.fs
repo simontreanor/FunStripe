@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Terminal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module TerminalConfigurations =
 
     type ListOptions =
@@ -666,6 +666,19 @@ module TerminalConfigurations =
                 Usd = usd
             }
 
+    type Create'VerifoneM425 =
+        {
+            /// A File ID representing an image you want to display on the reader.
+            [<Config.Form>]
+            Splashscreen: Choice<string,string> option
+        }
+
+    type Create'VerifoneM425 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
     type Create'VerifoneP400 =
         {
             /// A File ID representing an image you want to display on the reader.
@@ -674,6 +687,45 @@ module TerminalConfigurations =
         }
 
     type Create'VerifoneP400 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
+    type Create'VerifoneP630 =
+        {
+            /// A File ID representing an image you want to display on the reader.
+            [<Config.Form>]
+            Splashscreen: Choice<string,string> option
+        }
+
+    type Create'VerifoneP630 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
+    type Create'VerifoneUx700 =
+        {
+            /// A File ID representing an image you want to display on the reader.
+            [<Config.Form>]
+            Splashscreen: Choice<string,string> option
+        }
+
+    type Create'VerifoneUx700 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
+    type Create'VerifoneV660p =
+        {
+            /// A File ID representing an image you want to display on the reader.
+            [<Config.Form>]
+            Splashscreen: Choice<string,string> option
+        }
+
+    type Create'VerifoneV660p with
         static member New(?splashscreen: Choice<string,string>) =
             {
                 Splashscreen = splashscreen
@@ -812,16 +864,28 @@ module TerminalConfigurations =
             /// Tipping configurations for readers that support on-reader tips.
             [<Config.Form>]
             Tipping: Choice<Create'TippingTipping,string> option
+            /// An object containing device type specific settings for Verifone M425 readers.
+            [<Config.Form>]
+            VerifoneM425: Create'VerifoneM425 option
             /// An object containing device type specific settings for Verifone P400 readers.
             [<Config.Form>]
             VerifoneP400: Create'VerifoneP400 option
+            /// An object containing device type specific settings for Verifone P630 readers.
+            [<Config.Form>]
+            VerifoneP630: Create'VerifoneP630 option
+            /// An object containing device type specific settings for Verifone UX700 readers.
+            [<Config.Form>]
+            VerifoneUx700: Create'VerifoneUx700 option
+            /// An object containing device type specific settings for Verifone V660p readers.
+            [<Config.Form>]
+            VerifoneV660p: Create'VerifoneV660p option
             /// Configurations for connecting to a WiFi network.
             [<Config.Form>]
             Wifi: Choice<Create'WifiWifi,string> option
         }
 
     type CreateOptions with
-        static member New(?bbposWisepad3: Create'BbposWisepad3, ?bbposWiseposE: Create'BbposWiseposE, ?cellular: Choice<Create'CellularCellular,string>, ?expand: string list, ?name: string, ?offline: Choice<Create'OfflineOffline,string>, ?rebootWindow: Create'RebootWindow, ?stripeS700: Create'StripeS700, ?stripeS710: Create'StripeS710, ?tipping: Choice<Create'TippingTipping,string>, ?verifoneP400: Create'VerifoneP400, ?wifi: Choice<Create'WifiWifi,string>) =
+        static member New(?bbposWisepad3: Create'BbposWisepad3, ?bbposWiseposE: Create'BbposWiseposE, ?cellular: Choice<Create'CellularCellular,string>, ?expand: string list, ?name: string, ?offline: Choice<Create'OfflineOffline,string>, ?rebootWindow: Create'RebootWindow, ?stripeS700: Create'StripeS700, ?stripeS710: Create'StripeS710, ?tipping: Choice<Create'TippingTipping,string>, ?verifoneM425: Create'VerifoneM425, ?verifoneP400: Create'VerifoneP400, ?verifoneP630: Create'VerifoneP630, ?verifoneUx700: Create'VerifoneUx700, ?verifoneV660p: Create'VerifoneV660p, ?wifi: Choice<Create'WifiWifi,string>) =
             {
                 BbposWisepad3 = bbposWisepad3
                 BbposWiseposE = bbposWiseposE
@@ -833,7 +897,11 @@ module TerminalConfigurations =
                 StripeS700 = stripeS700
                 StripeS710 = stripeS710
                 Tipping = tipping
+                VerifoneM425 = verifoneM425
                 VerifoneP400 = verifoneP400
+                VerifoneP630 = verifoneP630
+                VerifoneUx700 = verifoneUx700
+                VerifoneV660p = verifoneV660p
                 Wifi = wifi
             }
 
@@ -1492,6 +1560,19 @@ module TerminalConfigurations =
                 Usd = usd
             }
 
+    type Update'VerifoneM425VerifoneM425 =
+        {
+            /// A File ID representing an image you want to display on the reader.
+            [<Config.Form>]
+            Splashscreen: Choice<string,string> option
+        }
+
+    type Update'VerifoneM425VerifoneM425 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
     type Update'VerifoneP400VerifoneP400 =
         {
             /// A File ID representing an image you want to display on the reader.
@@ -1500,6 +1581,45 @@ module TerminalConfigurations =
         }
 
     type Update'VerifoneP400VerifoneP400 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
+    type Update'VerifoneP630VerifoneP630 =
+        {
+            /// A File ID representing an image you want to display on the reader.
+            [<Config.Form>]
+            Splashscreen: Choice<string,string> option
+        }
+
+    type Update'VerifoneP630VerifoneP630 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
+    type Update'VerifoneUx700VerifoneUx700 =
+        {
+            /// A File ID representing an image you want to display on the reader.
+            [<Config.Form>]
+            Splashscreen: Choice<string,string> option
+        }
+
+    type Update'VerifoneUx700VerifoneUx700 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
+    type Update'VerifoneV660pVerifoneV660p =
+        {
+            /// A File ID representing an image you want to display on the reader.
+            [<Config.Form>]
+            Splashscreen: Choice<string,string> option
+        }
+
+    type Update'VerifoneV660pVerifoneV660p with
         static member New(?splashscreen: Choice<string,string>) =
             {
                 Splashscreen = splashscreen
@@ -1640,16 +1760,28 @@ module TerminalConfigurations =
             /// Tipping configurations for readers that support on-reader tips.
             [<Config.Form>]
             Tipping: Choice<Update'TippingTipping,string> option
+            /// An object containing device type specific settings for Verifone M425 readers.
+            [<Config.Form>]
+            VerifoneM425: Choice<Update'VerifoneM425VerifoneM425,string> option
             /// An object containing device type specific settings for Verifone P400 readers.
             [<Config.Form>]
             VerifoneP400: Choice<Update'VerifoneP400VerifoneP400,string> option
+            /// An object containing device type specific settings for Verifone P630 readers.
+            [<Config.Form>]
+            VerifoneP630: Choice<Update'VerifoneP630VerifoneP630,string> option
+            /// An object containing device type specific settings for Verifone UX700 readers.
+            [<Config.Form>]
+            VerifoneUx700: Choice<Update'VerifoneUx700VerifoneUx700,string> option
+            /// An object containing device type specific settings for Verifone V660p readers.
+            [<Config.Form>]
+            VerifoneV660p: Choice<Update'VerifoneV660pVerifoneV660p,string> option
             /// Configurations for connecting to a WiFi network.
             [<Config.Form>]
             Wifi: Choice<Update'WifiWifi,string> option
         }
 
     type UpdateOptions with
-        static member New(configuration: string, ?bbposWisepad3: Choice<Update'BbposWisepad3BbposWisePad3,string>, ?bbposWiseposE: Choice<Update'BbposWiseposEBbposWisePose,string>, ?cellular: Choice<Update'CellularCellular,string>, ?expand: string list, ?name: string, ?offline: Choice<Update'OfflineOffline,string>, ?rebootWindow: Choice<Update'RebootWindowRebootWindow,string>, ?stripeS700: Choice<Update'StripeS700StripeS700,string>, ?stripeS710: Choice<Update'StripeS710StripeS710,string>, ?tipping: Choice<Update'TippingTipping,string>, ?verifoneP400: Choice<Update'VerifoneP400VerifoneP400,string>, ?wifi: Choice<Update'WifiWifi,string>) =
+        static member New(configuration: string, ?bbposWisepad3: Choice<Update'BbposWisepad3BbposWisePad3,string>, ?bbposWiseposE: Choice<Update'BbposWiseposEBbposWisePose,string>, ?cellular: Choice<Update'CellularCellular,string>, ?expand: string list, ?name: string, ?offline: Choice<Update'OfflineOffline,string>, ?rebootWindow: Choice<Update'RebootWindowRebootWindow,string>, ?stripeS700: Choice<Update'StripeS700StripeS700,string>, ?stripeS710: Choice<Update'StripeS710StripeS710,string>, ?tipping: Choice<Update'TippingTipping,string>, ?verifoneM425: Choice<Update'VerifoneM425VerifoneM425,string>, ?verifoneP400: Choice<Update'VerifoneP400VerifoneP400,string>, ?verifoneP630: Choice<Update'VerifoneP630VerifoneP630,string>, ?verifoneUx700: Choice<Update'VerifoneUx700VerifoneUx700,string>, ?verifoneV660p: Choice<Update'VerifoneV660pVerifoneV660p,string>, ?wifi: Choice<Update'WifiWifi,string>) =
             {
                 Configuration = configuration
                 BbposWisepad3 = bbposWisepad3
@@ -1662,7 +1794,11 @@ module TerminalConfigurations =
                 StripeS700 = stripeS700
                 StripeS710 = stripeS710
                 Tipping = tipping
+                VerifoneM425 = verifoneM425
                 VerifoneP400 = verifoneP400
+                VerifoneP630 = verifoneP630
+                VerifoneUx700 = verifoneUx700
+                VerifoneV660p = verifoneV660p
                 Wifi = wifi
             }
 

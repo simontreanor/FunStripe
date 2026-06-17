@@ -7,7 +7,7 @@ open Stripe.LoginLink
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module Accounts =
 
     type ListOptions =
@@ -318,6 +318,19 @@ module Accounts =
         }
 
     type Create'CapabilitiesBilliePayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
+    type Create'CapabilitiesBizumPayments =
+        {
+            /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
+            [<Config.Form>]
+            Requested: bool option
+        }
+
+    type Create'CapabilitiesBizumPayments with
         static member New(?requested: bool) =
             {
                 Requested = requested
@@ -830,6 +843,19 @@ module Accounts =
                 Requested = requested
             }
 
+    type Create'CapabilitiesScalapayPayments =
+        {
+            /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
+            [<Config.Form>]
+            Requested: bool option
+        }
+
+    type Create'CapabilitiesScalapayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     type Create'CapabilitiesSepaBankTransferPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1047,6 +1073,9 @@ module Accounts =
             /// The billie_payments capability.
             [<Config.Form>]
             BilliePayments: Create'CapabilitiesBilliePayments option
+            /// The bizum_payments capability.
+            [<Config.Form>]
+            BizumPayments: Create'CapabilitiesBizumPayments option
             /// The blik_payments capability.
             [<Config.Form>]
             BlikPayments: Create'CapabilitiesBlikPayments option
@@ -1164,6 +1193,9 @@ module Accounts =
             /// The satispay_payments capability.
             [<Config.Form>]
             SatispayPayments: Create'CapabilitiesSatispayPayments option
+            /// The scalapay_payments capability.
+            [<Config.Form>]
+            ScalapayPayments: Create'CapabilitiesScalapayPayments option
             /// The sepa_bank_transfer_payments capability.
             [<Config.Form>]
             SepaBankTransferPayments: Create'CapabilitiesSepaBankTransferPayments option
@@ -1209,7 +1241,7 @@ module Accounts =
         }
 
     type Create'Capabilities with
-        static member New(?acssDebitPayments: Create'CapabilitiesAcssDebitPayments, ?affirmPayments: Create'CapabilitiesAffirmPayments, ?afterpayClearpayPayments: Create'CapabilitiesAfterpayClearpayPayments, ?almaPayments: Create'CapabilitiesAlmaPayments, ?amazonPayPayments: Create'CapabilitiesAmazonPayPayments, ?appDistribution: Create'CapabilitiesAppDistribution, ?auBecsDebitPayments: Create'CapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: Create'CapabilitiesBacsDebitPayments, ?bancontactPayments: Create'CapabilitiesBancontactPayments, ?bankTransferPayments: Create'CapabilitiesBankTransferPayments, ?billiePayments: Create'CapabilitiesBilliePayments, ?blikPayments: Create'CapabilitiesBlikPayments, ?boletoPayments: Create'CapabilitiesBoletoPayments, ?cardIssuing: Create'CapabilitiesCardIssuing, ?cardPayments: Create'CapabilitiesCardPayments, ?cartesBancairesPayments: Create'CapabilitiesCartesBancairesPayments, ?cashappPayments: Create'CapabilitiesCashappPayments, ?cryptoPayments: Create'CapabilitiesCryptoPayments, ?epsPayments: Create'CapabilitiesEpsPayments, ?fpxPayments: Create'CapabilitiesFpxPayments, ?gbBankTransferPayments: Create'CapabilitiesGbBankTransferPayments, ?giropayPayments: Create'CapabilitiesGiropayPayments, ?grabpayPayments: Create'CapabilitiesGrabpayPayments, ?idealPayments: Create'CapabilitiesIdealPayments, ?indiaInternationalPayments: Create'CapabilitiesIndiaInternationalPayments, ?jcbPayments: Create'CapabilitiesJcbPayments, ?jpBankTransferPayments: Create'CapabilitiesJpBankTransferPayments, ?kakaoPayPayments: Create'CapabilitiesKakaoPayPayments, ?klarnaPayments: Create'CapabilitiesKlarnaPayments, ?konbiniPayments: Create'CapabilitiesKonbiniPayments, ?krCardPayments: Create'CapabilitiesKrCardPayments, ?legacyPayments: Create'CapabilitiesLegacyPayments, ?linkPayments: Create'CapabilitiesLinkPayments, ?mbWayPayments: Create'CapabilitiesMbWayPayments, ?mobilepayPayments: Create'CapabilitiesMobilepayPayments, ?multibancoPayments: Create'CapabilitiesMultibancoPayments, ?mxBankTransferPayments: Create'CapabilitiesMxBankTransferPayments, ?naverPayPayments: Create'CapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: Create'CapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: Create'CapabilitiesOxxoPayments, ?p24Payments: Create'CapabilitiesP24Payments, ?payByBankPayments: Create'CapabilitiesPayByBankPayments, ?paycoPayments: Create'CapabilitiesPaycoPayments, ?paynowPayments: Create'CapabilitiesPaynowPayments, ?paytoPayments: Create'CapabilitiesPaytoPayments, ?pixPayments: Create'CapabilitiesPixPayments, ?promptpayPayments: Create'CapabilitiesPromptpayPayments, ?revolutPayPayments: Create'CapabilitiesRevolutPayPayments, ?samsungPayPayments: Create'CapabilitiesSamsungPayPayments, ?satispayPayments: Create'CapabilitiesSatispayPayments, ?sepaBankTransferPayments: Create'CapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: Create'CapabilitiesSepaDebitPayments, ?sofortPayments: Create'CapabilitiesSofortPayments, ?sunbitPayments: Create'CapabilitiesSunbitPayments, ?swishPayments: Create'CapabilitiesSwishPayments, ?taxReportingUs1099K: Create'CapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: Create'CapabilitiesTaxReportingUs1099Misc, ?transfers: Create'CapabilitiesTransfers, ?treasury: Create'CapabilitiesTreasury, ?twintPayments: Create'CapabilitiesTwintPayments, ?upiPayments: Create'CapabilitiesUpiPayments, ?usBankAccountAchPayments: Create'CapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: Create'CapabilitiesUsBankTransferPayments, ?zipPayments: Create'CapabilitiesZipPayments) =
+        static member New(?acssDebitPayments: Create'CapabilitiesAcssDebitPayments, ?affirmPayments: Create'CapabilitiesAffirmPayments, ?afterpayClearpayPayments: Create'CapabilitiesAfterpayClearpayPayments, ?almaPayments: Create'CapabilitiesAlmaPayments, ?amazonPayPayments: Create'CapabilitiesAmazonPayPayments, ?appDistribution: Create'CapabilitiesAppDistribution, ?auBecsDebitPayments: Create'CapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: Create'CapabilitiesBacsDebitPayments, ?bancontactPayments: Create'CapabilitiesBancontactPayments, ?bankTransferPayments: Create'CapabilitiesBankTransferPayments, ?billiePayments: Create'CapabilitiesBilliePayments, ?bizumPayments: Create'CapabilitiesBizumPayments, ?blikPayments: Create'CapabilitiesBlikPayments, ?boletoPayments: Create'CapabilitiesBoletoPayments, ?cardIssuing: Create'CapabilitiesCardIssuing, ?cardPayments: Create'CapabilitiesCardPayments, ?cartesBancairesPayments: Create'CapabilitiesCartesBancairesPayments, ?cashappPayments: Create'CapabilitiesCashappPayments, ?cryptoPayments: Create'CapabilitiesCryptoPayments, ?epsPayments: Create'CapabilitiesEpsPayments, ?fpxPayments: Create'CapabilitiesFpxPayments, ?gbBankTransferPayments: Create'CapabilitiesGbBankTransferPayments, ?giropayPayments: Create'CapabilitiesGiropayPayments, ?grabpayPayments: Create'CapabilitiesGrabpayPayments, ?idealPayments: Create'CapabilitiesIdealPayments, ?indiaInternationalPayments: Create'CapabilitiesIndiaInternationalPayments, ?jcbPayments: Create'CapabilitiesJcbPayments, ?jpBankTransferPayments: Create'CapabilitiesJpBankTransferPayments, ?kakaoPayPayments: Create'CapabilitiesKakaoPayPayments, ?klarnaPayments: Create'CapabilitiesKlarnaPayments, ?konbiniPayments: Create'CapabilitiesKonbiniPayments, ?krCardPayments: Create'CapabilitiesKrCardPayments, ?legacyPayments: Create'CapabilitiesLegacyPayments, ?linkPayments: Create'CapabilitiesLinkPayments, ?mbWayPayments: Create'CapabilitiesMbWayPayments, ?mobilepayPayments: Create'CapabilitiesMobilepayPayments, ?multibancoPayments: Create'CapabilitiesMultibancoPayments, ?mxBankTransferPayments: Create'CapabilitiesMxBankTransferPayments, ?naverPayPayments: Create'CapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: Create'CapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: Create'CapabilitiesOxxoPayments, ?p24Payments: Create'CapabilitiesP24Payments, ?payByBankPayments: Create'CapabilitiesPayByBankPayments, ?paycoPayments: Create'CapabilitiesPaycoPayments, ?paynowPayments: Create'CapabilitiesPaynowPayments, ?paytoPayments: Create'CapabilitiesPaytoPayments, ?pixPayments: Create'CapabilitiesPixPayments, ?promptpayPayments: Create'CapabilitiesPromptpayPayments, ?revolutPayPayments: Create'CapabilitiesRevolutPayPayments, ?samsungPayPayments: Create'CapabilitiesSamsungPayPayments, ?satispayPayments: Create'CapabilitiesSatispayPayments, ?scalapayPayments: Create'CapabilitiesScalapayPayments, ?sepaBankTransferPayments: Create'CapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: Create'CapabilitiesSepaDebitPayments, ?sofortPayments: Create'CapabilitiesSofortPayments, ?sunbitPayments: Create'CapabilitiesSunbitPayments, ?swishPayments: Create'CapabilitiesSwishPayments, ?taxReportingUs1099K: Create'CapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: Create'CapabilitiesTaxReportingUs1099Misc, ?transfers: Create'CapabilitiesTransfers, ?treasury: Create'CapabilitiesTreasury, ?twintPayments: Create'CapabilitiesTwintPayments, ?upiPayments: Create'CapabilitiesUpiPayments, ?usBankAccountAchPayments: Create'CapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: Create'CapabilitiesUsBankTransferPayments, ?zipPayments: Create'CapabilitiesZipPayments) =
             {
                 AcssDebitPayments = acssDebitPayments
                 AffirmPayments = affirmPayments
@@ -1222,6 +1254,7 @@ module Accounts =
                 BancontactPayments = bancontactPayments
                 BankTransferPayments = bankTransferPayments
                 BilliePayments = billiePayments
+                BizumPayments = bizumPayments
                 BlikPayments = blikPayments
                 BoletoPayments = boletoPayments
                 CardIssuing = cardIssuing
@@ -1261,6 +1294,7 @@ module Accounts =
                 RevolutPayPayments = revolutPayPayments
                 SamsungPayPayments = samsungPayPayments
                 SatispayPayments = satispayPayments
+                ScalapayPayments = scalapayPayments
                 SepaBankTransferPayments = sepaBankTransferPayments
                 SepaDebitPayments = sepaDebitPayments
                 SofortPayments = sofortPayments
@@ -2997,6 +3031,19 @@ module Accounts =
                 Requested = requested
             }
 
+    type Update'CapabilitiesBizumPayments =
+        {
+            /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
+            [<Config.Form>]
+            Requested: bool option
+        }
+
+    type Update'CapabilitiesBizumPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     type Update'CapabilitiesBlikPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -3504,6 +3551,19 @@ module Accounts =
                 Requested = requested
             }
 
+    type Update'CapabilitiesScalapayPayments =
+        {
+            /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
+            [<Config.Form>]
+            Requested: bool option
+        }
+
+    type Update'CapabilitiesScalapayPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     type Update'CapabilitiesSepaBankTransferPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -3721,6 +3781,9 @@ module Accounts =
             /// The billie_payments capability.
             [<Config.Form>]
             BilliePayments: Update'CapabilitiesBilliePayments option
+            /// The bizum_payments capability.
+            [<Config.Form>]
+            BizumPayments: Update'CapabilitiesBizumPayments option
             /// The blik_payments capability.
             [<Config.Form>]
             BlikPayments: Update'CapabilitiesBlikPayments option
@@ -3838,6 +3901,9 @@ module Accounts =
             /// The satispay_payments capability.
             [<Config.Form>]
             SatispayPayments: Update'CapabilitiesSatispayPayments option
+            /// The scalapay_payments capability.
+            [<Config.Form>]
+            ScalapayPayments: Update'CapabilitiesScalapayPayments option
             /// The sepa_bank_transfer_payments capability.
             [<Config.Form>]
             SepaBankTransferPayments: Update'CapabilitiesSepaBankTransferPayments option
@@ -3883,7 +3949,7 @@ module Accounts =
         }
 
     type Update'Capabilities with
-        static member New(?acssDebitPayments: Update'CapabilitiesAcssDebitPayments, ?affirmPayments: Update'CapabilitiesAffirmPayments, ?afterpayClearpayPayments: Update'CapabilitiesAfterpayClearpayPayments, ?almaPayments: Update'CapabilitiesAlmaPayments, ?amazonPayPayments: Update'CapabilitiesAmazonPayPayments, ?appDistribution: Update'CapabilitiesAppDistribution, ?auBecsDebitPayments: Update'CapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: Update'CapabilitiesBacsDebitPayments, ?bancontactPayments: Update'CapabilitiesBancontactPayments, ?bankTransferPayments: Update'CapabilitiesBankTransferPayments, ?billiePayments: Update'CapabilitiesBilliePayments, ?blikPayments: Update'CapabilitiesBlikPayments, ?boletoPayments: Update'CapabilitiesBoletoPayments, ?cardIssuing: Update'CapabilitiesCardIssuing, ?cardPayments: Update'CapabilitiesCardPayments, ?cartesBancairesPayments: Update'CapabilitiesCartesBancairesPayments, ?cashappPayments: Update'CapabilitiesCashappPayments, ?cryptoPayments: Update'CapabilitiesCryptoPayments, ?epsPayments: Update'CapabilitiesEpsPayments, ?fpxPayments: Update'CapabilitiesFpxPayments, ?gbBankTransferPayments: Update'CapabilitiesGbBankTransferPayments, ?giropayPayments: Update'CapabilitiesGiropayPayments, ?grabpayPayments: Update'CapabilitiesGrabpayPayments, ?idealPayments: Update'CapabilitiesIdealPayments, ?indiaInternationalPayments: Update'CapabilitiesIndiaInternationalPayments, ?jcbPayments: Update'CapabilitiesJcbPayments, ?jpBankTransferPayments: Update'CapabilitiesJpBankTransferPayments, ?kakaoPayPayments: Update'CapabilitiesKakaoPayPayments, ?klarnaPayments: Update'CapabilitiesKlarnaPayments, ?konbiniPayments: Update'CapabilitiesKonbiniPayments, ?krCardPayments: Update'CapabilitiesKrCardPayments, ?legacyPayments: Update'CapabilitiesLegacyPayments, ?linkPayments: Update'CapabilitiesLinkPayments, ?mbWayPayments: Update'CapabilitiesMbWayPayments, ?mobilepayPayments: Update'CapabilitiesMobilepayPayments, ?multibancoPayments: Update'CapabilitiesMultibancoPayments, ?mxBankTransferPayments: Update'CapabilitiesMxBankTransferPayments, ?naverPayPayments: Update'CapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: Update'CapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: Update'CapabilitiesOxxoPayments, ?p24Payments: Update'CapabilitiesP24Payments, ?payByBankPayments: Update'CapabilitiesPayByBankPayments, ?paycoPayments: Update'CapabilitiesPaycoPayments, ?paynowPayments: Update'CapabilitiesPaynowPayments, ?paytoPayments: Update'CapabilitiesPaytoPayments, ?pixPayments: Update'CapabilitiesPixPayments, ?promptpayPayments: Update'CapabilitiesPromptpayPayments, ?revolutPayPayments: Update'CapabilitiesRevolutPayPayments, ?samsungPayPayments: Update'CapabilitiesSamsungPayPayments, ?satispayPayments: Update'CapabilitiesSatispayPayments, ?sepaBankTransferPayments: Update'CapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: Update'CapabilitiesSepaDebitPayments, ?sofortPayments: Update'CapabilitiesSofortPayments, ?sunbitPayments: Update'CapabilitiesSunbitPayments, ?swishPayments: Update'CapabilitiesSwishPayments, ?taxReportingUs1099K: Update'CapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: Update'CapabilitiesTaxReportingUs1099Misc, ?transfers: Update'CapabilitiesTransfers, ?treasury: Update'CapabilitiesTreasury, ?twintPayments: Update'CapabilitiesTwintPayments, ?upiPayments: Update'CapabilitiesUpiPayments, ?usBankAccountAchPayments: Update'CapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: Update'CapabilitiesUsBankTransferPayments, ?zipPayments: Update'CapabilitiesZipPayments) =
+        static member New(?acssDebitPayments: Update'CapabilitiesAcssDebitPayments, ?affirmPayments: Update'CapabilitiesAffirmPayments, ?afterpayClearpayPayments: Update'CapabilitiesAfterpayClearpayPayments, ?almaPayments: Update'CapabilitiesAlmaPayments, ?amazonPayPayments: Update'CapabilitiesAmazonPayPayments, ?appDistribution: Update'CapabilitiesAppDistribution, ?auBecsDebitPayments: Update'CapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: Update'CapabilitiesBacsDebitPayments, ?bancontactPayments: Update'CapabilitiesBancontactPayments, ?bankTransferPayments: Update'CapabilitiesBankTransferPayments, ?billiePayments: Update'CapabilitiesBilliePayments, ?bizumPayments: Update'CapabilitiesBizumPayments, ?blikPayments: Update'CapabilitiesBlikPayments, ?boletoPayments: Update'CapabilitiesBoletoPayments, ?cardIssuing: Update'CapabilitiesCardIssuing, ?cardPayments: Update'CapabilitiesCardPayments, ?cartesBancairesPayments: Update'CapabilitiesCartesBancairesPayments, ?cashappPayments: Update'CapabilitiesCashappPayments, ?cryptoPayments: Update'CapabilitiesCryptoPayments, ?epsPayments: Update'CapabilitiesEpsPayments, ?fpxPayments: Update'CapabilitiesFpxPayments, ?gbBankTransferPayments: Update'CapabilitiesGbBankTransferPayments, ?giropayPayments: Update'CapabilitiesGiropayPayments, ?grabpayPayments: Update'CapabilitiesGrabpayPayments, ?idealPayments: Update'CapabilitiesIdealPayments, ?indiaInternationalPayments: Update'CapabilitiesIndiaInternationalPayments, ?jcbPayments: Update'CapabilitiesJcbPayments, ?jpBankTransferPayments: Update'CapabilitiesJpBankTransferPayments, ?kakaoPayPayments: Update'CapabilitiesKakaoPayPayments, ?klarnaPayments: Update'CapabilitiesKlarnaPayments, ?konbiniPayments: Update'CapabilitiesKonbiniPayments, ?krCardPayments: Update'CapabilitiesKrCardPayments, ?legacyPayments: Update'CapabilitiesLegacyPayments, ?linkPayments: Update'CapabilitiesLinkPayments, ?mbWayPayments: Update'CapabilitiesMbWayPayments, ?mobilepayPayments: Update'CapabilitiesMobilepayPayments, ?multibancoPayments: Update'CapabilitiesMultibancoPayments, ?mxBankTransferPayments: Update'CapabilitiesMxBankTransferPayments, ?naverPayPayments: Update'CapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: Update'CapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: Update'CapabilitiesOxxoPayments, ?p24Payments: Update'CapabilitiesP24Payments, ?payByBankPayments: Update'CapabilitiesPayByBankPayments, ?paycoPayments: Update'CapabilitiesPaycoPayments, ?paynowPayments: Update'CapabilitiesPaynowPayments, ?paytoPayments: Update'CapabilitiesPaytoPayments, ?pixPayments: Update'CapabilitiesPixPayments, ?promptpayPayments: Update'CapabilitiesPromptpayPayments, ?revolutPayPayments: Update'CapabilitiesRevolutPayPayments, ?samsungPayPayments: Update'CapabilitiesSamsungPayPayments, ?satispayPayments: Update'CapabilitiesSatispayPayments, ?scalapayPayments: Update'CapabilitiesScalapayPayments, ?sepaBankTransferPayments: Update'CapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: Update'CapabilitiesSepaDebitPayments, ?sofortPayments: Update'CapabilitiesSofortPayments, ?sunbitPayments: Update'CapabilitiesSunbitPayments, ?swishPayments: Update'CapabilitiesSwishPayments, ?taxReportingUs1099K: Update'CapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: Update'CapabilitiesTaxReportingUs1099Misc, ?transfers: Update'CapabilitiesTransfers, ?treasury: Update'CapabilitiesTreasury, ?twintPayments: Update'CapabilitiesTwintPayments, ?upiPayments: Update'CapabilitiesUpiPayments, ?usBankAccountAchPayments: Update'CapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: Update'CapabilitiesUsBankTransferPayments, ?zipPayments: Update'CapabilitiesZipPayments) =
             {
                 AcssDebitPayments = acssDebitPayments
                 AffirmPayments = affirmPayments
@@ -3896,6 +3962,7 @@ module Accounts =
                 BancontactPayments = bancontactPayments
                 BankTransferPayments = bankTransferPayments
                 BilliePayments = billiePayments
+                BizumPayments = bizumPayments
                 BlikPayments = blikPayments
                 BoletoPayments = boletoPayments
                 CardIssuing = cardIssuing
@@ -3935,6 +4002,7 @@ module Accounts =
                 RevolutPayPayments = revolutPayPayments
                 SamsungPayPayments = samsungPayPayments
                 SatispayPayments = satispayPayments
+                ScalapayPayments = scalapayPayments
                 SepaBankTransferPayments = sepaBankTransferPayments
                 SepaDebitPayments = sepaDebitPayments
                 SofortPayments = sofortPayments

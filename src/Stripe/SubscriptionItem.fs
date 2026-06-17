@@ -7,7 +7,7 @@ open Stripe.Plan
 open Stripe.Price
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 type DeletedSubscriptionItem =
     {
         /// Always true for a deleted object
@@ -43,6 +43,8 @@ type SubscriptionItemBillingThresholds with
 /// one plan, making it easy to represent complex billing relationships.
 type SubscriptionItem =
     {
+        /// The time period the subscription item has been billed for.
+        BilledUntil: DateTime option
         /// Define thresholds at which an invoice will be sent, and the related subscription advanced to a new billing period
         BillingThresholds: SubscriptionItemBillingThresholds option
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -68,7 +70,7 @@ type SubscriptionItem =
     }
 
 type SubscriptionItem with
-    static member New(billingThresholds: SubscriptionItemBillingThresholds option, created: int, currentPeriodEnd: DateTime, currentPeriodStart: DateTime, discounts: StripeId<Markers.Discount> list, id: string, metadata: Map<string, string>, plan: Plan, price: Price, subscription: string, taxRates: TaxRate list option, ?quantity: int) =
+    static member New(billingThresholds: SubscriptionItemBillingThresholds option, created: int, currentPeriodEnd: DateTime, currentPeriodStart: DateTime, discounts: StripeId<Markers.Discount> list, id: string, metadata: Map<string, string>, plan: Plan, price: Price, subscription: string, taxRates: TaxRate list option, ?billedUntil: DateTime, ?quantity: int) =
         {
             BillingThresholds = billingThresholds
             Created = created
@@ -81,6 +83,7 @@ type SubscriptionItem with
             Price = price
             Subscription = subscription
             TaxRates = taxRates
+            BilledUntil = billedUntil
             Quantity = quantity
         }
 

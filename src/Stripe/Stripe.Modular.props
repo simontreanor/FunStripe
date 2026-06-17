@@ -42,11 +42,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationFee.fs" Link="Stripe/ApplicationFee.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Identity.fs" Link="Stripe/Identity.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)IssuingCardholder.fs" Link="Stripe/IssuingCardholder.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Transfer.fs" Link="Stripe/Transfer.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Review.fs" Link="Stripe/Review.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tax.fs" Link="Stripe/Tax.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Price.fs" Link="Stripe/Price.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Plan.fs" Link="Stripe/Plan.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Price.fs" Link="Stripe/Price.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProductFeature.fs" Link="Stripe/ProductFeature.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)File.fs" Link="Stripe/File.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)IssuingToken.fs" Link="Stripe/IssuingToken.fs" />

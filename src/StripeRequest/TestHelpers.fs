@@ -11,7 +11,7 @@ open Stripe.TestHelpers
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.0.6")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
 module TestHelpersConfirmationTokens =
 
     type Create'PaymentMethodDataAcssDebit =
@@ -475,6 +475,7 @@ module TestHelpersConfirmationTokens =
         | BacsDebit
         | Bancontact
         | Billie
+        | Bizum
         | Blik
         | Boleto
         | Cashapp
@@ -507,6 +508,7 @@ module TestHelpersConfirmationTokens =
         | RevolutPay
         | SamsungPay
         | Satispay
+        | Scalapay
         | SepaDebit
         | Sofort
         | Sunbit
@@ -634,6 +636,9 @@ module TestHelpersConfirmationTokens =
             /// Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
             [<Config.Form>]
             BillingDetails: Create'PaymentMethodDataBillingDetails option
+            /// If this is a `bizum` PaymentMethod, this hash contains details about the Bizum payment method.
+            [<Config.Form>]
+            Bizum: string option
             /// If this is a `blik` PaymentMethod, this hash contains details about the BLIK payment method.
             [<Config.Form>]
             Blik: string option
@@ -679,7 +684,7 @@ module TestHelpersConfirmationTokens =
             /// If this is a `kr_card` PaymentMethod, this hash contains details about the Korean Card payment method.
             [<Config.Form>]
             KrCard: string option
-            /// If this is an `Link` PaymentMethod, this hash contains details about the Link payment method.
+            /// If this is an `Link` PaymentMethod, this hash contains details about the Link payment method (Link is also known as Onelink in the UK).
             [<Config.Form>]
             Link: string option
             /// If this is a MB WAY PaymentMethod, this hash contains details about the MB WAY payment method.
@@ -739,6 +744,9 @@ module TestHelpersConfirmationTokens =
             /// If this is a `satispay` PaymentMethod, this hash contains details about the Satispay payment method.
             [<Config.Form>]
             Satispay: string option
+            /// If this is a Scalapay PaymentMethod, this hash contains details about the Scalapay payment method.
+            [<Config.Form>]
+            Scalapay: string option
             /// If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account.
             [<Config.Form>]
             SepaDebit: Create'PaymentMethodDataSepaDebit option
@@ -772,7 +780,7 @@ module TestHelpersConfirmationTokens =
         }
 
     type Create'PaymentMethodData with
-        static member New(?acssDebit: Create'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Create'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Create'PaymentMethodDataAuBecsDebit, ?bacsDebit: Create'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Create'PaymentMethodDataBillingDetails, ?blik: string, ?boleto: Create'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Create'PaymentMethodDataEps, ?fpx: Create'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Create'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Create'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Create'PaymentMethodDataNaverPay, ?nzBankAccount: Create'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Create'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?payto: Create'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Create'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?sepaDebit: Create'PaymentMethodDataSepaDebit, ?sofort: Create'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Create'PaymentMethodDataType, ?upi: Create'PaymentMethodDataUpi, ?usBankAccount: Create'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
+        static member New(?acssDebit: Create'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Create'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Create'PaymentMethodDataAuBecsDebit, ?bacsDebit: Create'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Create'PaymentMethodDataBillingDetails, ?bizum: string, ?blik: string, ?boleto: Create'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Create'PaymentMethodDataEps, ?fpx: Create'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Create'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Create'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Create'PaymentMethodDataNaverPay, ?nzBankAccount: Create'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Create'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?payto: Create'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Create'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?scalapay: string, ?sepaDebit: Create'PaymentMethodDataSepaDebit, ?sofort: Create'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Create'PaymentMethodDataType, ?upi: Create'PaymentMethodDataUpi, ?usBankAccount: Create'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -786,6 +794,7 @@ module TestHelpersConfirmationTokens =
                 Bancontact = bancontact
                 Billie = billie
                 BillingDetails = billingDetails
+                Bizum = bizum
                 Blik = blik
                 Boleto = boleto
                 Cashapp = cashapp
@@ -821,6 +830,7 @@ module TestHelpersConfirmationTokens =
                 RevolutPay = revolutPay
                 SamsungPay = samsungPay
                 Satispay = satispay
+                Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
                 Sunbit = sunbit
@@ -4368,6 +4378,9 @@ module TestHelpersTestClocks =
 
     type CreateOptions =
         {
+            /// Existing customer this test clock will be attached to. Once attached, customers can't be removed from a test clock.
+            [<Config.Form>]
+            Customer: string option
             /// Specifies which fields in the response should be expanded.
             [<Config.Form>]
             Expand: string list option
@@ -4380,9 +4393,10 @@ module TestHelpersTestClocks =
         }
 
     type CreateOptions with
-        static member New(frozenTime: DateTime, ?expand: string list, ?name: string) =
+        static member New(frozenTime: DateTime, ?customer: string, ?expand: string list, ?name: string) =
             {
                 FrozenTime = frozenTime
+                Customer = customer
                 Expand = expand
                 Name = name
             }
