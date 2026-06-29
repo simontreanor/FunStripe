@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module Disputes =
 
     type ListOptions =
@@ -59,6 +59,19 @@ module Disputes =
             {
                 Dispute = dispute
                 Expand = expand
+            }
+
+    type Update'EvidenceEnhancedEvidenceEnhancedEvidenceMastercardCompliance =
+        {
+            /// A field acknowledging the fee incurred when countering a Mastercard compliance dispute. If this field is set to true, evidence can be submitted for the compliance dispute.
+            [<Config.Form>]
+            FeeAcknowledged: bool option
+        }
+
+    type Update'EvidenceEnhancedEvidenceEnhancedEvidenceMastercardCompliance with
+        static member New(?feeAcknowledged: bool) =
+            {
+                FeeAcknowledged = feeAcknowledged
             }
 
     type Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3DisputedTransactionMerchandiseOrServices =
@@ -250,6 +263,9 @@ module Disputes =
 
     type Update'EvidenceEnhancedEvidenceEnhancedEvidence =
         {
+            /// Evidence provided for Mastercard compliance evidence submission.
+            [<Config.Form>]
+            MastercardCompliance: Update'EvidenceEnhancedEvidenceEnhancedEvidenceMastercardCompliance option
             /// Evidence provided for Visa Compelling Evidence 3.0 evidence submission.
             [<Config.Form>]
             VisaCompellingEvidence3: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3 option
@@ -259,8 +275,9 @@ module Disputes =
         }
 
     type Update'EvidenceEnhancedEvidenceEnhancedEvidence with
-        static member New(?visaCompellingEvidence3: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3, ?visaCompliance: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompliance) =
+        static member New(?mastercardCompliance: Update'EvidenceEnhancedEvidenceEnhancedEvidenceMastercardCompliance, ?visaCompellingEvidence3: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompellingEvidence3, ?visaCompliance: Update'EvidenceEnhancedEvidenceEnhancedEvidenceVisaCompliance) =
             {
+                MastercardCompliance = mastercardCompliance
                 VisaCompellingEvidence3 = visaCompellingEvidence3
                 VisaCompliance = visaCompliance
             }

@@ -1,6 +1,6 @@
 namespace FunStripe
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 [<AutoOpen>]
 module StripeIds =
 
@@ -26,7 +26,7 @@ module StripeIds =
             static member New (data: 'T list, hasMore: bool, url: string) =
                 { Data = data; HasMore = hasMore; Url = url }
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module Markers =
 
     // Phantom marker types — one per resource that appears as a single-target

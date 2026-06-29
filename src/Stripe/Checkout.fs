@@ -6,7 +6,7 @@ open System
 open Stripe.Mandate
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 type CheckoutAcssDebitMandateOptionsDefaultFor =
     | Invoice
     | Subscription
@@ -1055,6 +1055,26 @@ module CheckoutSofortPaymentMethodOptions =
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
 
+type CheckoutSunbitPaymentMethodOptions () = 
+    ///Controls when the funds will be captured from the customer's account.
+    member _.CaptureMethod = "manual"
+    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
+    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+    member _.SetupFutureUsage = "none"
+
+
+module CheckoutSunbitPaymentMethodOptions =
+    ///Controls when the funds will be captured from the customer's account.
+    let captureMethod = "manual"
+
+    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
+    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+    let setupFutureUsage = "none"
+
 type CheckoutSwishPaymentMethodOptions =
     {
         /// The order reference that will be displayed to customers in the Swish application. Defaults to the `id` of the Payment Intent.
@@ -1144,6 +1164,34 @@ type CheckoutUsBankAccountPaymentMethodOptions with
             VerificationMethod = verificationMethod
         }
 
+[<Struct>]
+type CheckoutWechatPayPaymentMethodOptionsClient =
+    | Android
+    | Ios
+    | Web
+
+type CheckoutWechatPayPaymentMethodOptions =
+    {
+        /// The app ID registered with WeChat Pay. Only required when client is iOS or Android.
+        AppId: string option
+        /// The client type that the end customer will pay from
+        Client: CheckoutWechatPayPaymentMethodOptionsClient option
+    }
+
+type CheckoutWechatPayPaymentMethodOptions with
+    static member New(appId: string option, client: CheckoutWechatPayPaymentMethodOptionsClient option) =
+        {
+            AppId = appId
+            Client = client
+        }
+
+module CheckoutWechatPayPaymentMethodOptions =
+    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
+    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+    let setupFutureUsage = "none"
+
 type CheckoutSessionPaymentMethodOptions =
     { AcssDebit: CheckoutAcssDebitPaymentMethodOptions option
       Affirm: CheckoutAffirmPaymentMethodOptions option
@@ -1186,13 +1234,15 @@ type CheckoutSessionPaymentMethodOptions =
       Scalapay: CheckoutScalapayPaymentMethodOptions option
       SepaDebit: CheckoutSepaDebitPaymentMethodOptions option
       Sofort: CheckoutSofortPaymentMethodOptions option
+      Sunbit: CheckoutSunbitPaymentMethodOptions option
       Swish: CheckoutSwishPaymentMethodOptions option
       Twint: CheckoutTwintPaymentMethodOptions option
       Upi: CheckoutUpiPaymentMethodOptions option
-      UsBankAccount: CheckoutUsBankAccountPaymentMethodOptions option }
+      UsBankAccount: CheckoutUsBankAccountPaymentMethodOptions option
+      WechatPay: CheckoutWechatPayPaymentMethodOptions option }
 
 type CheckoutSessionPaymentMethodOptions with
-    static member New(?acssDebit: CheckoutAcssDebitPaymentMethodOptions, ?affirm: CheckoutAffirmPaymentMethodOptions, ?afterpayClearpay: CheckoutAfterpayClearpayPaymentMethodOptions, ?alipay: CheckoutAlipayPaymentMethodOptions, ?alma: CheckoutAlmaPaymentMethodOptions, ?amazonPay: CheckoutAmazonPayPaymentMethodOptions, ?auBecsDebit: CheckoutAuBecsDebitPaymentMethodOptions, ?bacsDebit: CheckoutBacsDebitPaymentMethodOptions, ?bancontact: CheckoutBancontactPaymentMethodOptions, ?billie: CheckoutBilliePaymentMethodOptions, ?boleto: CheckoutBoletoPaymentMethodOptions, ?card: CheckoutCardPaymentMethodOptions, ?cashapp: CheckoutCashappPaymentMethodOptions, ?customerBalance: CheckoutCustomerBalancePaymentMethodOptions, ?eps: CheckoutEpsPaymentMethodOptions, ?fpx: CheckoutFpxPaymentMethodOptions, ?giropay: CheckoutGiropayPaymentMethodOptions, ?grabpay: CheckoutGrabPayPaymentMethodOptions, ?ideal: CheckoutIdealPaymentMethodOptions, ?kakaoPay: CheckoutKakaoPayPaymentMethodOptions, ?klarna: CheckoutKlarnaPaymentMethodOptions, ?konbini: CheckoutKonbiniPaymentMethodOptions, ?krCard: CheckoutKrCardPaymentMethodOptions, ?link: CheckoutLinkPaymentMethodOptions, ?mobilepay: CheckoutMobilepayPaymentMethodOptions, ?multibanco: CheckoutMultibancoPaymentMethodOptions, ?naverPay: CheckoutNaverPayPaymentMethodOptions, ?oxxo: CheckoutOxxoPaymentMethodOptions, ?p24: CheckoutP24PaymentMethodOptions, ?payco: CheckoutPaycoPaymentMethodOptions, ?paynow: CheckoutPaynowPaymentMethodOptions, ?paypal: CheckoutPaypalPaymentMethodOptions, ?payto: CheckoutPaytoPaymentMethodOptions, ?pix: CheckoutPixPaymentMethodOptions, ?revolutPay: CheckoutRevolutPayPaymentMethodOptions, ?samsungPay: CheckoutSamsungPayPaymentMethodOptions, ?satispay: CheckoutSatispayPaymentMethodOptions, ?scalapay: CheckoutScalapayPaymentMethodOptions, ?sepaDebit: CheckoutSepaDebitPaymentMethodOptions, ?sofort: CheckoutSofortPaymentMethodOptions, ?swish: CheckoutSwishPaymentMethodOptions, ?twint: CheckoutTwintPaymentMethodOptions, ?upi: CheckoutUpiPaymentMethodOptions, ?usBankAccount: CheckoutUsBankAccountPaymentMethodOptions) =
+    static member New(?acssDebit: CheckoutAcssDebitPaymentMethodOptions, ?affirm: CheckoutAffirmPaymentMethodOptions, ?afterpayClearpay: CheckoutAfterpayClearpayPaymentMethodOptions, ?alipay: CheckoutAlipayPaymentMethodOptions, ?alma: CheckoutAlmaPaymentMethodOptions, ?amazonPay: CheckoutAmazonPayPaymentMethodOptions, ?auBecsDebit: CheckoutAuBecsDebitPaymentMethodOptions, ?bacsDebit: CheckoutBacsDebitPaymentMethodOptions, ?bancontact: CheckoutBancontactPaymentMethodOptions, ?billie: CheckoutBilliePaymentMethodOptions, ?boleto: CheckoutBoletoPaymentMethodOptions, ?card: CheckoutCardPaymentMethodOptions, ?cashapp: CheckoutCashappPaymentMethodOptions, ?customerBalance: CheckoutCustomerBalancePaymentMethodOptions, ?eps: CheckoutEpsPaymentMethodOptions, ?fpx: CheckoutFpxPaymentMethodOptions, ?giropay: CheckoutGiropayPaymentMethodOptions, ?grabpay: CheckoutGrabPayPaymentMethodOptions, ?ideal: CheckoutIdealPaymentMethodOptions, ?kakaoPay: CheckoutKakaoPayPaymentMethodOptions, ?klarna: CheckoutKlarnaPaymentMethodOptions, ?konbini: CheckoutKonbiniPaymentMethodOptions, ?krCard: CheckoutKrCardPaymentMethodOptions, ?link: CheckoutLinkPaymentMethodOptions, ?mobilepay: CheckoutMobilepayPaymentMethodOptions, ?multibanco: CheckoutMultibancoPaymentMethodOptions, ?naverPay: CheckoutNaverPayPaymentMethodOptions, ?oxxo: CheckoutOxxoPaymentMethodOptions, ?p24: CheckoutP24PaymentMethodOptions, ?payco: CheckoutPaycoPaymentMethodOptions, ?paynow: CheckoutPaynowPaymentMethodOptions, ?paypal: CheckoutPaypalPaymentMethodOptions, ?payto: CheckoutPaytoPaymentMethodOptions, ?pix: CheckoutPixPaymentMethodOptions, ?revolutPay: CheckoutRevolutPayPaymentMethodOptions, ?samsungPay: CheckoutSamsungPayPaymentMethodOptions, ?satispay: CheckoutSatispayPaymentMethodOptions, ?scalapay: CheckoutScalapayPaymentMethodOptions, ?sepaDebit: CheckoutSepaDebitPaymentMethodOptions, ?sofort: CheckoutSofortPaymentMethodOptions, ?sunbit: CheckoutSunbitPaymentMethodOptions, ?swish: CheckoutSwishPaymentMethodOptions, ?twint: CheckoutTwintPaymentMethodOptions, ?upi: CheckoutUpiPaymentMethodOptions, ?usBankAccount: CheckoutUsBankAccountPaymentMethodOptions, ?wechatPay: CheckoutWechatPayPaymentMethodOptions) =
         {
             AcssDebit = acssDebit
             Affirm = affirm
@@ -1234,10 +1284,12 @@ type CheckoutSessionPaymentMethodOptions with
             Scalapay = scalapay
             SepaDebit = sepaDebit
             Sofort = sofort
+            Sunbit = sunbit
             Swish = swish
             Twint = twint
             Upi = upi
             UsBankAccount = usBankAccount
+            WechatPay = wechatPay
         }
 
 [<Struct>]

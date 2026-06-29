@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.ExchangeRate
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module ExchangeRates =
 
     type ListOptions =

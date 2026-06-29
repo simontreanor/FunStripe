@@ -10,7 +10,7 @@ open Stripe.IssuingToken
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module IssuingAuthorizations =
 
     type ListOptions =

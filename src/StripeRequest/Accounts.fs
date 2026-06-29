@@ -7,7 +7,7 @@ open Stripe.LoginLink
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module Accounts =
 
     type ListOptions =
@@ -1902,7 +1902,7 @@ module Accounts =
             /// One or more documents that demonstrate proof of a company's license to operate.
             [<Config.Form>]
             CompanyLicense: Create'DocumentsCompanyLicense option
-            /// One or more documents showing the company's Memorandum of Association.
+            /// One or more documents showing the company's governing document (for example, a memorandum of association, constitution, or articles of association).
             [<Config.Form>]
             CompanyMemorandumOfAssociation: Create'DocumentsCompanyMemorandumOfAssociation option
             /// (Certain countries only) One or more documents showing the ministerial decree legalizing the company's establishment.
@@ -4528,7 +4528,7 @@ module Accounts =
             /// One or more documents that demonstrate proof of a company's license to operate.
             [<Config.Form>]
             CompanyLicense: Update'DocumentsCompanyLicense option
-            /// One or more documents showing the company's Memorandum of Association.
+            /// One or more documents showing the company's governing document (for example, a memorandum of association, constitution, or articles of association).
             [<Config.Form>]
             CompanyMemorandumOfAssociation: Update'DocumentsCompanyMemorandumOfAssociation option
             /// (Certain countries only) One or more documents showing the ministerial decree legalizing the company's establishment.

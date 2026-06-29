@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.WebhookEndpoint
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module WebhookEndpoints =
 
     type ListOptions =
@@ -158,6 +158,7 @@ module WebhookEndpoints =
         | [<JsonPropertyName("2026-03-25.dahlia")>] Numeric20260325Dahlia
         | [<JsonPropertyName("2026-04-22.dahlia")>] Numeric20260422Dahlia
         | [<JsonPropertyName("2026-05-27.dahlia")>] Numeric20260527Dahlia
+        | [<JsonPropertyName("2026-06-24.dahlia")>] Numeric20260624Dahlia
 
     type Create'EnabledEvents =
         | Asterix
@@ -173,7 +174,13 @@ module WebhookEndpoints =
         | [<JsonPropertyName("balance.available")>] BalanceAvailable
         | [<JsonPropertyName("balance_settings.updated")>] BalanceSettingsUpdated
         | [<JsonPropertyName("billing.alert.triggered")>] BillingAlertTriggered
+        | [<JsonPropertyName("billing.credit_balance_transaction.created")>] BillingCreditBalanceTransactionCreated
         | [<JsonPropertyName("billing.credit_grant.created")>] BillingCreditGrantCreated
+        | [<JsonPropertyName("billing.credit_grant.updated")>] BillingCreditGrantUpdated
+        | [<JsonPropertyName("billing.meter.created")>] BillingMeterCreated
+        | [<JsonPropertyName("billing.meter.deactivated")>] BillingMeterDeactivated
+        | [<JsonPropertyName("billing.meter.reactivated")>] BillingMeterReactivated
+        | [<JsonPropertyName("billing.meter.updated")>] BillingMeterUpdated
         | [<JsonPropertyName("billing_portal.configuration.created")>] BillingPortalConfigurationCreated
         | [<JsonPropertyName("billing_portal.configuration.updated")>] BillingPortalConfigurationUpdated
         | [<JsonPropertyName("billing_portal.session.created")>] BillingPortalSessionCreated
@@ -493,7 +500,13 @@ module WebhookEndpoints =
         | [<JsonPropertyName("balance.available")>] BalanceAvailable
         | [<JsonPropertyName("balance_settings.updated")>] BalanceSettingsUpdated
         | [<JsonPropertyName("billing.alert.triggered")>] BillingAlertTriggered
+        | [<JsonPropertyName("billing.credit_balance_transaction.created")>] BillingCreditBalanceTransactionCreated
         | [<JsonPropertyName("billing.credit_grant.created")>] BillingCreditGrantCreated
+        | [<JsonPropertyName("billing.credit_grant.updated")>] BillingCreditGrantUpdated
+        | [<JsonPropertyName("billing.meter.created")>] BillingMeterCreated
+        | [<JsonPropertyName("billing.meter.deactivated")>] BillingMeterDeactivated
+        | [<JsonPropertyName("billing.meter.reactivated")>] BillingMeterReactivated
+        | [<JsonPropertyName("billing.meter.updated")>] BillingMeterUpdated
         | [<JsonPropertyName("billing_portal.configuration.created")>] BillingPortalConfigurationCreated
         | [<JsonPropertyName("billing_portal.configuration.updated")>] BillingPortalConfigurationUpdated
         | [<JsonPropertyName("billing_portal.session.created")>] BillingPortalSessionCreated

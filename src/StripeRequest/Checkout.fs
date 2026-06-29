@@ -6,7 +6,7 @@ open Stripe.Checkout
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module CheckoutSessions =
 
     type ListOptions =
@@ -2633,6 +2633,30 @@ module CheckoutSessions =
                 SetupFutureUsage = setupFutureUsage
             }
 
+    type Create'PaymentMethodOptionsSunbitCaptureMethod = | Manual
+
+    type Create'PaymentMethodOptionsSunbitSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
+    type Create'PaymentMethodOptionsSunbit =
+        {
+            /// Controls when the funds will be captured from the customer's account.
+            [<Config.Form>]
+            CaptureMethod: Create'PaymentMethodOptionsSunbitCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Create'PaymentMethodOptionsSunbitSetupFutureUsage option
+        }
+
+    type Create'PaymentMethodOptionsSunbit with
+        static member New(?captureMethod: Create'PaymentMethodOptionsSunbitCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsSunbitSetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
+            }
+
     type Create'PaymentMethodOptionsSwish =
         {
             /// The order reference that will be displayed to customers in the Swish application. Defaults to the `id` of the Payment Intent.
@@ -2943,6 +2967,9 @@ module CheckoutSessions =
             /// contains details about the Sofort payment method options.
             [<Config.Form>]
             Sofort: Create'PaymentMethodOptionsSofort option
+            /// contains details about the Sunbit payment method options.
+            [<Config.Form>]
+            Sunbit: Create'PaymentMethodOptionsSunbit option
             /// contains details about the Swish payment method options.
             [<Config.Form>]
             Swish: Create'PaymentMethodOptionsSwish option
@@ -2961,7 +2988,7 @@ module CheckoutSessions =
         }
 
     type Create'PaymentMethodOptions with
-        static member New(?acssDebit: Create'PaymentMethodOptionsAcssDebit, ?affirm: Create'PaymentMethodOptionsAffirm, ?afterpayClearpay: Create'PaymentMethodOptionsAfterpayClearpay, ?alipay: Create'PaymentMethodOptionsAlipay, ?alma: Create'PaymentMethodOptionsAlma, ?amazonPay: Create'PaymentMethodOptionsAmazonPay, ?auBecsDebit: Create'PaymentMethodOptionsAuBecsDebit, ?bacsDebit: Create'PaymentMethodOptionsBacsDebit, ?bancontact: Create'PaymentMethodOptionsBancontact, ?billie: Create'PaymentMethodOptionsBillie, ?boleto: Create'PaymentMethodOptionsBoleto, ?card: Create'PaymentMethodOptionsCard, ?cashapp: Create'PaymentMethodOptionsCashapp, ?crypto: Create'PaymentMethodOptionsCrypto, ?customerBalance: Create'PaymentMethodOptionsCustomerBalance, ?demoPay: Create'PaymentMethodOptionsDemoPay, ?eps: Create'PaymentMethodOptionsEps, ?fpx: Create'PaymentMethodOptionsFpx, ?giropay: Create'PaymentMethodOptionsGiropay, ?grabpay: Create'PaymentMethodOptionsGrabpay, ?ideal: Create'PaymentMethodOptionsIdeal, ?kakaoPay: Create'PaymentMethodOptionsKakaoPay, ?klarna: Create'PaymentMethodOptionsKlarna, ?konbini: Create'PaymentMethodOptionsKonbini, ?krCard: Create'PaymentMethodOptionsKrCard, ?link: Create'PaymentMethodOptionsLink, ?mobilepay: Create'PaymentMethodOptionsMobilepay, ?multibanco: Create'PaymentMethodOptionsMultibanco, ?naverPay: Create'PaymentMethodOptionsNaverPay, ?oxxo: Create'PaymentMethodOptionsOxxo, ?p24: Create'PaymentMethodOptionsP24, ?payByBank: string, ?payco: Create'PaymentMethodOptionsPayco, ?paynow: Create'PaymentMethodOptionsPaynow, ?paypal: Create'PaymentMethodOptionsPaypal, ?payto: Create'PaymentMethodOptionsPayto, ?pix: Create'PaymentMethodOptionsPix, ?revolutPay: Create'PaymentMethodOptionsRevolutPay, ?samsungPay: Create'PaymentMethodOptionsSamsungPay, ?satispay: Create'PaymentMethodOptionsSatispay, ?scalapay: Create'PaymentMethodOptionsScalapay, ?sepaDebit: Create'PaymentMethodOptionsSepaDebit, ?sofort: Create'PaymentMethodOptionsSofort, ?swish: Create'PaymentMethodOptionsSwish, ?twint: Create'PaymentMethodOptionsTwint, ?upi: Create'PaymentMethodOptionsUpi, ?usBankAccount: Create'PaymentMethodOptionsUsBankAccount, ?wechatPay: Create'PaymentMethodOptionsWechatPay) =
+        static member New(?acssDebit: Create'PaymentMethodOptionsAcssDebit, ?affirm: Create'PaymentMethodOptionsAffirm, ?afterpayClearpay: Create'PaymentMethodOptionsAfterpayClearpay, ?alipay: Create'PaymentMethodOptionsAlipay, ?alma: Create'PaymentMethodOptionsAlma, ?amazonPay: Create'PaymentMethodOptionsAmazonPay, ?auBecsDebit: Create'PaymentMethodOptionsAuBecsDebit, ?bacsDebit: Create'PaymentMethodOptionsBacsDebit, ?bancontact: Create'PaymentMethodOptionsBancontact, ?billie: Create'PaymentMethodOptionsBillie, ?boleto: Create'PaymentMethodOptionsBoleto, ?card: Create'PaymentMethodOptionsCard, ?cashapp: Create'PaymentMethodOptionsCashapp, ?crypto: Create'PaymentMethodOptionsCrypto, ?customerBalance: Create'PaymentMethodOptionsCustomerBalance, ?demoPay: Create'PaymentMethodOptionsDemoPay, ?eps: Create'PaymentMethodOptionsEps, ?fpx: Create'PaymentMethodOptionsFpx, ?giropay: Create'PaymentMethodOptionsGiropay, ?grabpay: Create'PaymentMethodOptionsGrabpay, ?ideal: Create'PaymentMethodOptionsIdeal, ?kakaoPay: Create'PaymentMethodOptionsKakaoPay, ?klarna: Create'PaymentMethodOptionsKlarna, ?konbini: Create'PaymentMethodOptionsKonbini, ?krCard: Create'PaymentMethodOptionsKrCard, ?link: Create'PaymentMethodOptionsLink, ?mobilepay: Create'PaymentMethodOptionsMobilepay, ?multibanco: Create'PaymentMethodOptionsMultibanco, ?naverPay: Create'PaymentMethodOptionsNaverPay, ?oxxo: Create'PaymentMethodOptionsOxxo, ?p24: Create'PaymentMethodOptionsP24, ?payByBank: string, ?payco: Create'PaymentMethodOptionsPayco, ?paynow: Create'PaymentMethodOptionsPaynow, ?paypal: Create'PaymentMethodOptionsPaypal, ?payto: Create'PaymentMethodOptionsPayto, ?pix: Create'PaymentMethodOptionsPix, ?revolutPay: Create'PaymentMethodOptionsRevolutPay, ?samsungPay: Create'PaymentMethodOptionsSamsungPay, ?satispay: Create'PaymentMethodOptionsSatispay, ?scalapay: Create'PaymentMethodOptionsScalapay, ?sepaDebit: Create'PaymentMethodOptionsSepaDebit, ?sofort: Create'PaymentMethodOptionsSofort, ?sunbit: Create'PaymentMethodOptionsSunbit, ?swish: Create'PaymentMethodOptionsSwish, ?twint: Create'PaymentMethodOptionsTwint, ?upi: Create'PaymentMethodOptionsUpi, ?usBankAccount: Create'PaymentMethodOptionsUsBankAccount, ?wechatPay: Create'PaymentMethodOptionsWechatPay) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -3006,6 +3033,7 @@ module CheckoutSessions =
                 Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
+                Sunbit = sunbit
                 Swish = swish
                 Twint = twint
                 Upi = upi
@@ -3570,6 +3598,35 @@ module CheckoutSessions =
         | Pay
         | Subscribe
 
+    type Create'SubscriptionDataBillingCycleAnchorConfig =
+        {
+            /// The day of the month the anchor should be. Ranges from 1 to 31.
+            [<Config.Form>]
+            DayOfMonth: int option
+            /// The hour of the day the anchor should be. Ranges from 0 to 23.
+            [<Config.Form>]
+            Hour: int option
+            /// The minute of the hour the anchor should be. Ranges from 0 to 59.
+            [<Config.Form>]
+            Minute: int option
+            /// The month to start full cycle periods. Ranges from 1 to 12.
+            [<Config.Form>]
+            Month: int option
+            /// The second of the minute the anchor should be. Ranges from 0 to 59.
+            [<Config.Form>]
+            Second: int option
+        }
+
+    type Create'SubscriptionDataBillingCycleAnchorConfig with
+        static member New(?dayOfMonth: int, ?hour: int, ?minute: int, ?month: int, ?second: int) =
+            {
+                DayOfMonth = dayOfMonth
+                Hour = hour
+                Minute = minute
+                Month = month
+                Second = second
+            }
+
     type Create'SubscriptionDataBillingModeFlexibleProrationDiscounts =
         | Included
         | Itemized
@@ -3725,6 +3782,9 @@ module CheckoutSessions =
             /// A future timestamp to anchor the subscription's billing cycle for new subscriptions. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             BillingCycleAnchor: DateTime option
+            /// Configures when the subscription schedule's billing cycle anchors to a specific day of the week or month.
+            [<Config.Form>]
+            BillingCycleAnchorConfig: Create'SubscriptionDataBillingCycleAnchorConfig option
             /// Controls how prorations and invoices for subscriptions are calculated and orchestrated.
             [<Config.Form>]
             BillingMode: Create'SubscriptionDataBillingMode option
@@ -3768,10 +3828,11 @@ module CheckoutSessions =
         }
 
     type Create'SubscriptionData with
-        static member New(?applicationFeePercent: decimal, ?billingCycleAnchor: DateTime, ?billingMode: Create'SubscriptionDataBillingMode, ?defaultTaxRates: string list, ?description: string, ?invoiceSettings: Create'SubscriptionDataInvoiceSettings, ?metadata: Map<string, string>, ?onBehalfOf: string, ?pendingInvoiceItemInterval: Create'SubscriptionDataPendingInvoiceItemInterval, ?prorationBehavior: Create'SubscriptionDataProrationBehavior, ?transferData: Create'SubscriptionDataTransferData, ?trialEnd: DateTime, ?trialPeriodDays: int, ?trialSettings: Create'SubscriptionDataTrialSettings) =
+        static member New(?applicationFeePercent: decimal, ?billingCycleAnchor: DateTime, ?billingCycleAnchorConfig: Create'SubscriptionDataBillingCycleAnchorConfig, ?billingMode: Create'SubscriptionDataBillingMode, ?defaultTaxRates: string list, ?description: string, ?invoiceSettings: Create'SubscriptionDataInvoiceSettings, ?metadata: Map<string, string>, ?onBehalfOf: string, ?pendingInvoiceItemInterval: Create'SubscriptionDataPendingInvoiceItemInterval, ?prorationBehavior: Create'SubscriptionDataProrationBehavior, ?transferData: Create'SubscriptionDataTransferData, ?trialEnd: DateTime, ?trialPeriodDays: int, ?trialSettings: Create'SubscriptionDataTrialSettings) =
             {
                 ApplicationFeePercent = applicationFeePercent
                 BillingCycleAnchor = billingCycleAnchor
+                BillingCycleAnchorConfig = billingCycleAnchorConfig
                 BillingMode = billingMode
                 DefaultTaxRates = defaultTaxRates
                 Description = description
@@ -3952,7 +4013,6 @@ module CheckoutSessions =
             /// Controls name collection settings for the session.
             /// You can configure Checkout to collect your customers' business names, individual names, or both. Each name field can be either required or optional.
             /// If a [Customer](https://docs.stripe.com/api/customers) is created or provided, the names can be saved to the Customer object as well.
-            /// You can't set this parameter if `ui_mode` is `custom`.
             [<Config.Form>]
             NameCollection: Create'NameCollection option
             /// A list of optional items the customer can add to their order at checkout. Use this parameter to pass one-time or recurring [Prices](https://docs.stripe.com/api/prices).
