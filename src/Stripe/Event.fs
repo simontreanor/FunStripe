@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 type EventType =
     | [<JsonPropertyName("account.application.authorized")>] AccountApplicationAuthorized
     | [<JsonPropertyName("account.application.deauthorized")>] AccountApplicationDeauthorized
@@ -18,7 +18,13 @@ type EventType =
     | [<JsonPropertyName("balance.available")>] BalanceAvailable
     | [<JsonPropertyName("balance_settings.updated")>] BalanceSettingsUpdated
     | [<JsonPropertyName("billing.alert.triggered")>] BillingAlertTriggered
+    | [<JsonPropertyName("billing.credit_balance_transaction.created")>] BillingCreditBalanceTransactionCreated
     | [<JsonPropertyName("billing.credit_grant.created")>] BillingCreditGrantCreated
+    | [<JsonPropertyName("billing.credit_grant.updated")>] BillingCreditGrantUpdated
+    | [<JsonPropertyName("billing.meter.created")>] BillingMeterCreated
+    | [<JsonPropertyName("billing.meter.deactivated")>] BillingMeterDeactivated
+    | [<JsonPropertyName("billing.meter.reactivated")>] BillingMeterReactivated
+    | [<JsonPropertyName("billing.meter.updated")>] BillingMeterUpdated
     | [<JsonPropertyName("billing_portal.configuration.created")>] BillingPortalConfigurationCreated
     | [<JsonPropertyName("billing_portal.configuration.updated")>] BillingPortalConfigurationUpdated
     | [<JsonPropertyName("billing_portal.session.created")>] BillingPortalSessionCreated

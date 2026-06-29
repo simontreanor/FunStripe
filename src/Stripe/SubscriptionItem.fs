@@ -7,7 +7,7 @@ open Stripe.Plan
 open Stripe.Price
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 type DeletedSubscriptionItem =
     {
         /// Always true for a deleted object

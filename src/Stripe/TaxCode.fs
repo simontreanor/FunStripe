@@ -5,7 +5,7 @@ open FunStripe
 open System
 
 /// [Tax codes](https://stripe.com/docs/tax/tax-categories) classify goods and services for tax purposes.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 type TaxCode =
     {
         /// A detailed description of which types of products the tax code represents.

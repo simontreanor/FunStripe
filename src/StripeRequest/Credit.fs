@@ -6,7 +6,7 @@ open Stripe.CreditNote
 open Stripe.CreditNoteLineItem
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module CreditNotes =
 
     type ListOptions =
@@ -96,7 +96,7 @@ module CreditNotes =
             /// The line item quantity to credit.
             [<Config.Form>]
             Quantity: int option
-            /// A list of up to 10 tax amounts for the credit note line item. Not valid when `tax_rates` is used or if invoice is set up with `automatic_tax[enabled]=true`.
+            /// A list of up to 20 tax amounts for the credit note line item. Not valid when `tax_rates` is used or if invoice is set up with `automatic_tax[enabled]=true`.
             [<Config.Form>]
             TaxAmounts: Choice<Create'LinesTaxAmounts list,string> option
             /// The tax rates which apply to the credit note line item. Only valid when the `type` is `custom_line_item` and `tax_amounts` is not used.
@@ -314,6 +314,7 @@ module CreditNotes =
     ///<p>The sum of refunds, customer balance credits, and outside of Stripe credits must equal the <code>post_payment_amount</code>.</p>
     ///<p>You may issue multiple credit notes for an invoice. Each credit note may increment the invoice’s <code>pre_payment_credit_notes_amount</code>,
     ///<code>post_payment_credit_notes_amount</code>, or both, depending on the invoice’s <code>amount_remaining</code> at the time of credit note creation.</p>
+    ///<p>For invoices that also have refunds created through the <a href="/docs/api/refunds">Refund API</a>, the credit note API subtracts those refund amounts from the maximum creditable amount. This prevents the combined credit notes and refunds from exceeding the invoice amount. If you use both, ensure the combined total does not exceed the invoice’s paid amount.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/credit_notes"
         |> RestApi.postAsync<_, CreditNote> settings (Map.empty) options

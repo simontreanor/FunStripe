@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 
 /// Point in Time
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 type GelatoDataDocumentReportDateOfBirth =
     {
         /// Numerical day between 1 and 31.
@@ -744,6 +744,7 @@ type IdentityVerificationSessionType =
 type VerificationSessionRedactionStatus =
     | Processing
     | Redacted
+    | Validated
 
 type VerificationSessionRedaction =
     {

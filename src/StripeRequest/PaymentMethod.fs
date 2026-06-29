@@ -13,7 +13,7 @@ open Stripe.SubscriptionItem
 open Stripe.SubscriptionSchedule
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module Account =
 
     type RetrieveOptions =
@@ -1311,7 +1311,7 @@ module BillingCreditGrants =
             /// The price type that credit grants can apply to. We currently only support the `metered` price type. Cannot be used in combination with `prices`.
             [<Config.Form>]
             PriceType: Create'ApplicabilityConfigScopePriceType option
-            /// A list of prices that the credit grant can apply to. We currently only support the `metered` prices. Cannot be used in combination with `price_type`.
+            /// A list of prices that the credit grant can apply to. We currently only support the `metered` prices. Cannot be used in combination with `price_type`. Limit 20 prices.
             [<Config.Form>]
             Prices: Create'ApplicabilityConfigScopePrices list option
         }

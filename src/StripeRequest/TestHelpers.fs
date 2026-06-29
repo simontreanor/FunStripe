@@ -11,7 +11,7 @@ open Stripe.TestHelpers
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module TestHelpersConfirmationTokens =
 
     type Create'PaymentMethodDataAcssDebit =
@@ -753,7 +753,7 @@ module TestHelpersConfirmationTokens =
             /// If this is a `sofort` PaymentMethod, this hash contains details about the SOFORT payment method.
             [<Config.Form>]
             Sofort: Create'PaymentMethodDataSofort option
-            /// If this is a Sunbit PaymentMethod, this hash contains details about the Sunbit payment method.
+            /// If this is a `sunbit` PaymentMethod, this hash contains details about the Sunbit payment method.
             [<Config.Form>]
             Sunbit: string option
             /// If this is a `swish` PaymentMethod, this hash contains details about the Swish payment method.

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module Topups =
 
     type ListOptions =
@@ -45,6 +45,28 @@ module Topups =
                 Status = status
             }
 
+    type Create'PaymentMethodOptionsUsBankAccountNetwork = | Ach
+
+    type Create'PaymentMethodOptionsUsBankAccount =
+        { [<Config.Form>]
+          Network: Create'PaymentMethodOptionsUsBankAccountNetwork option }
+
+    type Create'PaymentMethodOptionsUsBankAccount with
+        static member New(?network: Create'PaymentMethodOptionsUsBankAccountNetwork) =
+            {
+                Network = network
+            }
+
+    type Create'PaymentMethodOptions =
+        { [<Config.Form>]
+          UsBankAccount: Create'PaymentMethodOptionsUsBankAccount option }
+
+    type Create'PaymentMethodOptions with
+        static member New(?usBankAccount: Create'PaymentMethodOptionsUsBankAccount) =
+            {
+                UsBankAccount = usBankAccount
+            }
+
     type CreateOptions =
         {
             /// A positive integer representing how much to transfer.
@@ -62,6 +84,12 @@ module Topups =
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
+            /// The ID of a PaymentMethod representing the payment method to be used for the top-up. A PaymentMethod of type `us_bank_account` can be used.
+            [<Config.Form>]
+            PaymentMethod: string option
+            /// Payment method-specific configuration for this top-up.
+            [<Config.Form>]
+            PaymentMethodOptions: Create'PaymentMethodOptions option
             /// The ID of a source to transfer funds from. For most users, this should be left unspecified which will use the bank account that was set up in the dashboard for the specified currency. In test mode, this can be a test bank token (see [Testing Top-ups](https://docs.stripe.com/connect/testing#testing-top-ups)).
             [<Config.Form>]
             Source: string option
@@ -74,13 +102,15 @@ module Topups =
         }
 
     type CreateOptions with
-        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?source: string, ?statementDescriptor: string, ?transferGroup: string) =
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?description: string, ?expand: string list, ?metadata: Map<string, string>, ?paymentMethod: string, ?paymentMethodOptions: Create'PaymentMethodOptions, ?source: string, ?statementDescriptor: string, ?transferGroup: string) =
             {
                 Amount = amount
                 Currency = currency
                 Description = description
                 Expand = expand
                 Metadata = metadata
+                PaymentMethod = paymentMethod
+                PaymentMethodOptions = paymentMethodOptions
                 Source = source
                 StatementDescriptor = statementDescriptor
                 TransferGroup = transferGroup

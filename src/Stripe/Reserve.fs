@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 type ReserveHoldCreatedBy =
     | Application
     | Stripe
@@ -19,6 +19,21 @@ type ReserveHoldSourceType =
     | BankAccount
     | Card
     | Fpx
+
+type ReservesReserveHoldsResourcesReleaseDetail =
+    {
+        /// The amount released by the ReserveRelease from this ReserveHold. A positive integer representing how much is released in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
+        Amount: int
+        /// The ReserveRelease which released funds from this ReserveHold (e.g., resrel_123).
+        ReserveRelease: string
+    }
+
+type ReservesReserveHoldsResourcesReleaseDetail with
+    static member New(amount: int, reserveRelease: string) =
+        {
+            Amount = amount
+            ReserveRelease = reserveRelease
+        }
 
 type ReservesReserveHoldsResourcesReleaseSchedule =
     {
@@ -58,6 +73,8 @@ type ReserveHold =
         Metadata: Map<string, string> option
         /// The reason for the ReserveHold.
         Reason: ReserveHoldReason
+        /// List of ReserveReleases and the amounts released from this ReserveHold.
+        ReleaseDetails: ReservesReserveHoldsResourcesReleaseDetail list option
         ReleaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule
         /// The ReservePlan which produced this ReserveHold (i.e., resplan_123)
         ReservePlan: StripeId<Markers.ReservePlan> option
@@ -68,7 +85,7 @@ type ReserveHold =
     }
 
 type ReserveHold with
-    static member New(amount: int, created: DateTime, createdBy: ReserveHoldCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveHoldReason, releaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule, reservePlan: StripeId<Markers.ReservePlan> option, sourceCharge: StripeId<Markers.Charge> option, sourceType: ReserveHoldSourceType, ?amountReleasable: int, ?isReleasable: bool, ?metadata: Map<string, string>) =
+    static member New(amount: int, created: DateTime, createdBy: ReserveHoldCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveHoldReason, releaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule, reservePlan: StripeId<Markers.ReservePlan> option, sourceCharge: StripeId<Markers.Charge> option, sourceType: ReserveHoldSourceType, ?amountReleasable: int, ?isReleasable: bool, ?metadata: Map<string, string>, ?releaseDetails: ReservesReserveHoldsResourcesReleaseDetail list) =
         {
             Amount = amount
             Created = created
@@ -84,6 +101,7 @@ type ReserveHold with
             AmountReleasable = amountReleasable
             IsReleasable = isReleasable
             Metadata = metadata
+            ReleaseDetails = releaseDetails
         }
 
 module ReserveHold =

@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.PaymentRecord
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
 module PaymentAttemptRecords =
 
     type ListOptions =
@@ -1276,7 +1276,7 @@ module PaymentIntents =
             /// If this is a `sofort` PaymentMethod, this hash contains details about the SOFORT payment method.
             [<Config.Form>]
             Sofort: Create'PaymentMethodDataSofort option
-            /// If this is a Sunbit PaymentMethod, this hash contains details about the Sunbit payment method.
+            /// If this is a `sunbit` PaymentMethod, this hash contains details about the Sunbit payment method.
             [<Config.Form>]
             Sunbit: string option
             /// If this is a `swish` PaymentMethod, this hash contains details about the Swish payment method.
@@ -3192,6 +3192,11 @@ module PaymentIntents =
 
     type Create'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod = | Manual
 
+    type Create'PaymentMethodOptionsSatispayPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonPropertyName("none")>] None'
+        | OffSession
+        | OnSession
+
     type Create'PaymentMethodOptionsSatispayPaymentMethodOptions =
         {
             /// Controls when the funds are captured from the customer's account.
@@ -3199,12 +3204,19 @@ module PaymentIntents =
             /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
             [<Config.Form>]
             CaptureMethod: Create'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Create'PaymentMethodOptionsSatispayPaymentMethodOptionsSetupFutureUsage option
         }
 
     type Create'PaymentMethodOptionsSatispayPaymentMethodOptions with
-        static member New(?captureMethod: Create'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod) =
+        static member New(?captureMethod: Create'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsSatispayPaymentMethodOptionsSetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsScalapayPaymentMethodOptionsCaptureMethod = | Manual
@@ -3298,6 +3310,32 @@ module PaymentIntents =
         static member New(?preferredLanguage: Create'PaymentMethodOptionsSofortPaymentMethodOptionsPreferredLanguage, ?setupFutureUsage: Create'PaymentMethodOptionsSofortPaymentMethodOptionsSetupFutureUsage) =
             {
                 PreferredLanguage = preferredLanguage
+                SetupFutureUsage = setupFutureUsage
+            }
+
+    type Create'PaymentMethodOptionsSunbitPaymentMethodOptionsCaptureMethod = | Manual
+
+    type Create'PaymentMethodOptionsSunbitPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
+    type Create'PaymentMethodOptionsSunbitPaymentMethodOptions =
+        {
+            /// Controls when the funds are captured from the customer's account.
+            /// If provided, this parameter overrides the behavior of the top-level [capture_method](/api/payment_intents/update#update_payment_intent-capture_method) for this payment method type when finalizing the payment with this payment method type.
+            /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
+            [<Config.Form>]
+            CaptureMethod: Create'PaymentMethodOptionsSunbitPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Create'PaymentMethodOptionsSunbitPaymentMethodOptionsSetupFutureUsage option
+        }
+
+    type Create'PaymentMethodOptionsSunbitPaymentMethodOptions with
+        static member New(?captureMethod: Create'PaymentMethodOptionsSunbitPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsSunbitPaymentMethodOptionsSetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
                 SetupFutureUsage = setupFutureUsage
             }
 
@@ -3558,7 +3596,7 @@ module PaymentIntents =
 
     type Create'PaymentMethodOptionsWechatPayPaymentMethodOptions =
         {
-            /// The app ID registered with WeChat Pay. Only required when client is ios or android.
+            /// The app ID registered with WeChat Pay. Only required when client is ios, android, or mini_program.
             [<Config.Form>]
             AppId: string option
             /// The client type that the end customer will pay from
@@ -3750,6 +3788,9 @@ module PaymentIntents =
             /// If this is a `sofort` PaymentMethod, this sub-hash contains details about the SOFORT payment method options.
             [<Config.Form>]
             Sofort: Choice<Create'PaymentMethodOptionsSofortPaymentMethodOptions,string> option
+            /// If this is a `sunbit` PaymentMethod, this sub-hash contains details about the Sunbit payment method options.
+            [<Config.Form>]
+            Sunbit: Choice<Create'PaymentMethodOptionsSunbitPaymentMethodOptions,string> option
             /// If this is a `Swish` PaymentMethod, this sub-hash contains details about the Swish payment method options.
             [<Config.Form>]
             Swish: Choice<Create'PaymentMethodOptionsSwishPaymentIntentPaymentMethodOptions,string> option
@@ -3771,7 +3812,7 @@ module PaymentIntents =
         }
 
     type Create'PaymentMethodOptions with
-        static member New(?acssDebit: Choice<Create'PaymentMethodOptionsAcssDebitPaymentIntentPaymentMethodOptions,string>, ?affirm: Choice<Create'PaymentMethodOptionsAffirmPaymentMethodOptions,string>, ?afterpayClearpay: Choice<Create'PaymentMethodOptionsAfterpayClearpayPaymentMethodOptions,string>, ?alipay: Choice<Create'PaymentMethodOptionsAlipayPaymentMethodOptions,string>, ?alma: Choice<Create'PaymentMethodOptionsAlmaPaymentMethodOptions,string>, ?amazonPay: Choice<Create'PaymentMethodOptionsAmazonPayPaymentMethodOptions,string>, ?auBecsDebit: Choice<Create'PaymentMethodOptionsAuBecsDebitPaymentIntentPaymentMethodOptions,string>, ?bacsDebit: Choice<Create'PaymentMethodOptionsBacsDebitPaymentIntentPaymentMethodOptions,string>, ?bancontact: Choice<Create'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?billie: Choice<Create'PaymentMethodOptionsBilliePaymentMethodOptions,string>, ?bizum: Choice<string,string>, ?blik: Choice<Create'PaymentMethodOptionsBlikPaymentIntentPaymentMethodOptions,string>, ?boleto: Choice<Create'PaymentMethodOptionsBoletoPaymentMethodOptions,string>, ?card: Choice<Create'PaymentMethodOptionsCardPaymentIntent,string>, ?cardPresent: Choice<Create'PaymentMethodOptionsCardPresentPaymentMethodOptions,string>, ?cashapp: Choice<Create'PaymentMethodOptionsCashappPaymentIntentPaymentMethodOptions,string>, ?crypto: Choice<Create'PaymentMethodOptionsCryptoPaymentMethodOptions,string>, ?customerBalance: Choice<Create'PaymentMethodOptionsCustomerBalancePaymentIntentPaymentMethodOptions,string>, ?eps: Choice<Create'PaymentMethodOptionsEpsPaymentIntentPaymentMethodOptions,string>, ?fpx: Choice<Create'PaymentMethodOptionsFpxPaymentMethodOptions,string>, ?giropay: Choice<Create'PaymentMethodOptionsGiropayPaymentMethodOptions,string>, ?grabpay: Choice<Create'PaymentMethodOptionsGrabpayPaymentMethodOptions,string>, ?ideal: Choice<Create'PaymentMethodOptionsIdealPaymentMethodOptions,string>, ?interacPresent: Choice<string,string>, ?kakaoPay: Choice<Create'PaymentMethodOptionsKakaoPayPaymentMethodOptions,string>, ?klarna: Choice<Create'PaymentMethodOptionsKlarnaPaymentMethodOptions,string>, ?konbini: Choice<Create'PaymentMethodOptionsKonbiniPaymentMethodOptions,string>, ?krCard: Choice<Create'PaymentMethodOptionsKrCardPaymentMethodOptions,string>, ?link: Choice<Create'PaymentMethodOptionsLinkPaymentIntentPaymentMethodOptions,string>, ?mbWay: Choice<Create'PaymentMethodOptionsMbWayPaymentMethodOptions,string>, ?mobilepay: Choice<Create'PaymentMethodOptionsMobilepayPaymentMethodOptions,string>, ?multibanco: Choice<Create'PaymentMethodOptionsMultibancoPaymentMethodOptions,string>, ?naverPay: Choice<Create'PaymentMethodOptionsNaverPayPaymentMethodOptions,string>, ?nzBankAccount: Choice<Create'PaymentMethodOptionsNzBankAccountPaymentIntentPaymentMethodOptions,string>, ?oxxo: Choice<Create'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<Create'PaymentMethodOptionsP24PaymentMethodOptions,string>, ?payByBank: Choice<string,string>, ?payco: Choice<Create'PaymentMethodOptionsPaycoPaymentMethodOptions,string>, ?paynow: Choice<Create'PaymentMethodOptionsPaynowPaymentMethodOptions,string>, ?paypal: Choice<Create'PaymentMethodOptionsPaypalPaymentMethodOptions,string>, ?payto: Choice<Create'PaymentMethodOptionsPaytoPaymentIntentPaymentMethodOptions,string>, ?pix: Choice<Create'PaymentMethodOptionsPixPaymentMethodOptions,string>, ?promptpay: Choice<Create'PaymentMethodOptionsPromptpayPaymentMethodOptions,string>, ?revolutPay: Choice<Create'PaymentMethodOptionsRevolutPayPaymentMethodOptions,string>, ?samsungPay: Choice<Create'PaymentMethodOptionsSamsungPayPaymentMethodOptions,string>, ?satispay: Choice<Create'PaymentMethodOptionsSatispayPaymentMethodOptions,string>, ?scalapay: Choice<Create'PaymentMethodOptionsScalapayPaymentMethodOptions,string>, ?sepaDebit: Choice<Create'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Create'PaymentMethodOptionsSofortPaymentMethodOptions,string>, ?swish: Choice<Create'PaymentMethodOptionsSwishPaymentIntentPaymentMethodOptions,string>, ?twint: Choice<Create'PaymentMethodOptionsTwintPaymentMethodOptions,string>, ?upi: Choice<Create'PaymentMethodOptionsUpiPaymentMethodOptions,string>, ?usBankAccount: Choice<Create'PaymentMethodOptionsUsBankAccountPaymentIntentPaymentMethodOptions,string>, ?wechatPay: Choice<Create'PaymentMethodOptionsWechatPayPaymentMethodOptions,string>, ?zip: Choice<Create'PaymentMethodOptionsZipPaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Create'PaymentMethodOptionsAcssDebitPaymentIntentPaymentMethodOptions,string>, ?affirm: Choice<Create'PaymentMethodOptionsAffirmPaymentMethodOptions,string>, ?afterpayClearpay: Choice<Create'PaymentMethodOptionsAfterpayClearpayPaymentMethodOptions,string>, ?alipay: Choice<Create'PaymentMethodOptionsAlipayPaymentMethodOptions,string>, ?alma: Choice<Create'PaymentMethodOptionsAlmaPaymentMethodOptions,string>, ?amazonPay: Choice<Create'PaymentMethodOptionsAmazonPayPaymentMethodOptions,string>, ?auBecsDebit: Choice<Create'PaymentMethodOptionsAuBecsDebitPaymentIntentPaymentMethodOptions,string>, ?bacsDebit: Choice<Create'PaymentMethodOptionsBacsDebitPaymentIntentPaymentMethodOptions,string>, ?bancontact: Choice<Create'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?billie: Choice<Create'PaymentMethodOptionsBilliePaymentMethodOptions,string>, ?bizum: Choice<string,string>, ?blik: Choice<Create'PaymentMethodOptionsBlikPaymentIntentPaymentMethodOptions,string>, ?boleto: Choice<Create'PaymentMethodOptionsBoletoPaymentMethodOptions,string>, ?card: Choice<Create'PaymentMethodOptionsCardPaymentIntent,string>, ?cardPresent: Choice<Create'PaymentMethodOptionsCardPresentPaymentMethodOptions,string>, ?cashapp: Choice<Create'PaymentMethodOptionsCashappPaymentIntentPaymentMethodOptions,string>, ?crypto: Choice<Create'PaymentMethodOptionsCryptoPaymentMethodOptions,string>, ?customerBalance: Choice<Create'PaymentMethodOptionsCustomerBalancePaymentIntentPaymentMethodOptions,string>, ?eps: Choice<Create'PaymentMethodOptionsEpsPaymentIntentPaymentMethodOptions,string>, ?fpx: Choice<Create'PaymentMethodOptionsFpxPaymentMethodOptions,string>, ?giropay: Choice<Create'PaymentMethodOptionsGiropayPaymentMethodOptions,string>, ?grabpay: Choice<Create'PaymentMethodOptionsGrabpayPaymentMethodOptions,string>, ?ideal: Choice<Create'PaymentMethodOptionsIdealPaymentMethodOptions,string>, ?interacPresent: Choice<string,string>, ?kakaoPay: Choice<Create'PaymentMethodOptionsKakaoPayPaymentMethodOptions,string>, ?klarna: Choice<Create'PaymentMethodOptionsKlarnaPaymentMethodOptions,string>, ?konbini: Choice<Create'PaymentMethodOptionsKonbiniPaymentMethodOptions,string>, ?krCard: Choice<Create'PaymentMethodOptionsKrCardPaymentMethodOptions,string>, ?link: Choice<Create'PaymentMethodOptionsLinkPaymentIntentPaymentMethodOptions,string>, ?mbWay: Choice<Create'PaymentMethodOptionsMbWayPaymentMethodOptions,string>, ?mobilepay: Choice<Create'PaymentMethodOptionsMobilepayPaymentMethodOptions,string>, ?multibanco: Choice<Create'PaymentMethodOptionsMultibancoPaymentMethodOptions,string>, ?naverPay: Choice<Create'PaymentMethodOptionsNaverPayPaymentMethodOptions,string>, ?nzBankAccount: Choice<Create'PaymentMethodOptionsNzBankAccountPaymentIntentPaymentMethodOptions,string>, ?oxxo: Choice<Create'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<Create'PaymentMethodOptionsP24PaymentMethodOptions,string>, ?payByBank: Choice<string,string>, ?payco: Choice<Create'PaymentMethodOptionsPaycoPaymentMethodOptions,string>, ?paynow: Choice<Create'PaymentMethodOptionsPaynowPaymentMethodOptions,string>, ?paypal: Choice<Create'PaymentMethodOptionsPaypalPaymentMethodOptions,string>, ?payto: Choice<Create'PaymentMethodOptionsPaytoPaymentIntentPaymentMethodOptions,string>, ?pix: Choice<Create'PaymentMethodOptionsPixPaymentMethodOptions,string>, ?promptpay: Choice<Create'PaymentMethodOptionsPromptpayPaymentMethodOptions,string>, ?revolutPay: Choice<Create'PaymentMethodOptionsRevolutPayPaymentMethodOptions,string>, ?samsungPay: Choice<Create'PaymentMethodOptionsSamsungPayPaymentMethodOptions,string>, ?satispay: Choice<Create'PaymentMethodOptionsSatispayPaymentMethodOptions,string>, ?scalapay: Choice<Create'PaymentMethodOptionsScalapayPaymentMethodOptions,string>, ?sepaDebit: Choice<Create'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Create'PaymentMethodOptionsSofortPaymentMethodOptions,string>, ?sunbit: Choice<Create'PaymentMethodOptionsSunbitPaymentMethodOptions,string>, ?swish: Choice<Create'PaymentMethodOptionsSwishPaymentIntentPaymentMethodOptions,string>, ?twint: Choice<Create'PaymentMethodOptionsTwintPaymentMethodOptions,string>, ?upi: Choice<Create'PaymentMethodOptionsUpiPaymentMethodOptions,string>, ?usBankAccount: Choice<Create'PaymentMethodOptionsUsBankAccountPaymentIntentPaymentMethodOptions,string>, ?wechatPay: Choice<Create'PaymentMethodOptionsWechatPayPaymentMethodOptions,string>, ?zip: Choice<Create'PaymentMethodOptionsZipPaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -3822,6 +3863,7 @@ module PaymentIntents =
                 Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
+                Sunbit = sunbit
                 Swish = swish
                 Twint = twint
                 Upi = upi
@@ -5238,7 +5280,7 @@ module PaymentIntents =
             /// If this is a `sofort` PaymentMethod, this hash contains details about the SOFORT payment method.
             [<Config.Form>]
             Sofort: Update'PaymentMethodDataSofort option
-            /// If this is a Sunbit PaymentMethod, this hash contains details about the Sunbit payment method.
+            /// If this is a `sunbit` PaymentMethod, this hash contains details about the Sunbit payment method.
             [<Config.Form>]
             Sunbit: string option
             /// If this is a `swish` PaymentMethod, this hash contains details about the Swish payment method.
@@ -7154,6 +7196,11 @@ module PaymentIntents =
 
     type Update'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod = | Manual
 
+    type Update'PaymentMethodOptionsSatispayPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonPropertyName("none")>] None'
+        | OffSession
+        | OnSession
+
     type Update'PaymentMethodOptionsSatispayPaymentMethodOptions =
         {
             /// Controls when the funds are captured from the customer's account.
@@ -7161,12 +7208,19 @@ module PaymentIntents =
             /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
             [<Config.Form>]
             CaptureMethod: Update'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Update'PaymentMethodOptionsSatispayPaymentMethodOptionsSetupFutureUsage option
         }
 
     type Update'PaymentMethodOptionsSatispayPaymentMethodOptions with
-        static member New(?captureMethod: Update'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod) =
+        static member New(?captureMethod: Update'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Update'PaymentMethodOptionsSatispayPaymentMethodOptionsSetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Update'PaymentMethodOptionsScalapayPaymentMethodOptionsCaptureMethod = | Manual
@@ -7260,6 +7314,32 @@ module PaymentIntents =
         static member New(?preferredLanguage: Update'PaymentMethodOptionsSofortPaymentMethodOptionsPreferredLanguage, ?setupFutureUsage: Update'PaymentMethodOptionsSofortPaymentMethodOptionsSetupFutureUsage) =
             {
                 PreferredLanguage = preferredLanguage
+                SetupFutureUsage = setupFutureUsage
+            }
+
+    type Update'PaymentMethodOptionsSunbitPaymentMethodOptionsCaptureMethod = | Manual
+
+    type Update'PaymentMethodOptionsSunbitPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
+    type Update'PaymentMethodOptionsSunbitPaymentMethodOptions =
+        {
+            /// Controls when the funds are captured from the customer's account.
+            /// If provided, this parameter overrides the behavior of the top-level [capture_method](/api/payment_intents/update#update_payment_intent-capture_method) for this payment method type when finalizing the payment with this payment method type.
+            /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
+            [<Config.Form>]
+            CaptureMethod: Update'PaymentMethodOptionsSunbitPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Update'PaymentMethodOptionsSunbitPaymentMethodOptionsSetupFutureUsage option
+        }
+
+    type Update'PaymentMethodOptionsSunbitPaymentMethodOptions with
+        static member New(?captureMethod: Update'PaymentMethodOptionsSunbitPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Update'PaymentMethodOptionsSunbitPaymentMethodOptionsSetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
                 SetupFutureUsage = setupFutureUsage
             }
 
@@ -7520,7 +7600,7 @@ module PaymentIntents =
 
     type Update'PaymentMethodOptionsWechatPayPaymentMethodOptions =
         {
-            /// The app ID registered with WeChat Pay. Only required when client is ios or android.
+            /// The app ID registered with WeChat Pay. Only required when client is ios, android, or mini_program.
             [<Config.Form>]
             AppId: string option
             /// The client type that the end customer will pay from
@@ -7712,6 +7792,9 @@ module PaymentIntents =
             /// If this is a `sofort` PaymentMethod, this sub-hash contains details about the SOFORT payment method options.
             [<Config.Form>]
             Sofort: Choice<Update'PaymentMethodOptionsSofortPaymentMethodOptions,string> option
+            /// If this is a `sunbit` PaymentMethod, this sub-hash contains details about the Sunbit payment method options.
+            [<Config.Form>]
+            Sunbit: Choice<Update'PaymentMethodOptionsSunbitPaymentMethodOptions,string> option
             /// If this is a `Swish` PaymentMethod, this sub-hash contains details about the Swish payment method options.
             [<Config.Form>]
             Swish: Choice<Update'PaymentMethodOptionsSwishPaymentIntentPaymentMethodOptions,string> option
@@ -7733,7 +7816,7 @@ module PaymentIntents =
         }
 
     type Update'PaymentMethodOptions with
-        static member New(?acssDebit: Choice<Update'PaymentMethodOptionsAcssDebitPaymentIntentPaymentMethodOptions,string>, ?affirm: Choice<Update'PaymentMethodOptionsAffirmPaymentMethodOptions,string>, ?afterpayClearpay: Choice<Update'PaymentMethodOptionsAfterpayClearpayPaymentMethodOptions,string>, ?alipay: Choice<Update'PaymentMethodOptionsAlipayPaymentMethodOptions,string>, ?alma: Choice<Update'PaymentMethodOptionsAlmaPaymentMethodOptions,string>, ?amazonPay: Choice<Update'PaymentMethodOptionsAmazonPayPaymentMethodOptions,string>, ?auBecsDebit: Choice<Update'PaymentMethodOptionsAuBecsDebitPaymentIntentPaymentMethodOptions,string>, ?bacsDebit: Choice<Update'PaymentMethodOptionsBacsDebitPaymentIntentPaymentMethodOptions,string>, ?bancontact: Choice<Update'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?billie: Choice<Update'PaymentMethodOptionsBilliePaymentMethodOptions,string>, ?bizum: Choice<string,string>, ?blik: Choice<Update'PaymentMethodOptionsBlikPaymentIntentPaymentMethodOptions,string>, ?boleto: Choice<Update'PaymentMethodOptionsBoletoPaymentMethodOptions,string>, ?card: Choice<Update'PaymentMethodOptionsCardPaymentIntent,string>, ?cardPresent: Choice<Update'PaymentMethodOptionsCardPresentPaymentMethodOptions,string>, ?cashapp: Choice<Update'PaymentMethodOptionsCashappPaymentIntentPaymentMethodOptions,string>, ?crypto: Choice<Update'PaymentMethodOptionsCryptoPaymentMethodOptions,string>, ?customerBalance: Choice<Update'PaymentMethodOptionsCustomerBalancePaymentIntentPaymentMethodOptions,string>, ?eps: Choice<Update'PaymentMethodOptionsEpsPaymentIntentPaymentMethodOptions,string>, ?fpx: Choice<Update'PaymentMethodOptionsFpxPaymentMethodOptions,string>, ?giropay: Choice<Update'PaymentMethodOptionsGiropayPaymentMethodOptions,string>, ?grabpay: Choice<Update'PaymentMethodOptionsGrabpayPaymentMethodOptions,string>, ?ideal: Choice<Update'PaymentMethodOptionsIdealPaymentMethodOptions,string>, ?interacPresent: Choice<string,string>, ?kakaoPay: Choice<Update'PaymentMethodOptionsKakaoPayPaymentMethodOptions,string>, ?klarna: Choice<Update'PaymentMethodOptionsKlarnaPaymentMethodOptions,string>, ?konbini: Choice<Update'PaymentMethodOptionsKonbiniPaymentMethodOptions,string>, ?krCard: Choice<Update'PaymentMethodOptionsKrCardPaymentMethodOptions,string>, ?link: Choice<Update'PaymentMethodOptionsLinkPaymentIntentPaymentMethodOptions,string>, ?mbWay: Choice<Update'PaymentMethodOptionsMbWayPaymentMethodOptions,string>, ?mobilepay: Choice<Update'PaymentMethodOptionsMobilepayPaymentMethodOptions,string>, ?multibanco: Choice<Update'PaymentMethodOptionsMultibancoPaymentMethodOptions,string>, ?naverPay: Choice<Update'PaymentMethodOptionsNaverPayPaymentMethodOptions,string>, ?nzBankAccount: Choice<Update'PaymentMethodOptionsNzBankAccountPaymentIntentPaymentMethodOptions,string>, ?oxxo: Choice<Update'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<Update'PaymentMethodOptionsP24PaymentMethodOptions,string>, ?payByBank: Choice<string,string>, ?payco: Choice<Update'PaymentMethodOptionsPaycoPaymentMethodOptions,string>, ?paynow: Choice<Update'PaymentMethodOptionsPaynowPaymentMethodOptions,string>, ?paypal: Choice<Update'PaymentMethodOptionsPaypalPaymentMethodOptions,string>, ?payto: Choice<Update'PaymentMethodOptionsPaytoPaymentIntentPaymentMethodOptions,string>, ?pix: Choice<Update'PaymentMethodOptionsPixPaymentMethodOptions,string>, ?promptpay: Choice<Update'PaymentMethodOptionsPromptpayPaymentMethodOptions,string>, ?revolutPay: Choice<Update'PaymentMethodOptionsRevolutPayPaymentMethodOptions,string>, ?samsungPay: Choice<Update'PaymentMethodOptionsSamsungPayPaymentMethodOptions,string>, ?satispay: Choice<Update'PaymentMethodOptionsSatispayPaymentMethodOptions,string>, ?scalapay: Choice<Update'PaymentMethodOptionsScalapayPaymentMethodOptions,string>, ?sepaDebit: Choice<Update'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Update'PaymentMethodOptionsSofortPaymentMethodOptions,string>, ?swish: Choice<Update'PaymentMethodOptionsSwishPaymentIntentPaymentMethodOptions,string>, ?twint: Choice<Update'PaymentMethodOptionsTwintPaymentMethodOptions,string>, ?upi: Choice<Update'PaymentMethodOptionsUpiPaymentMethodOptions,string>, ?usBankAccount: Choice<Update'PaymentMethodOptionsUsBankAccountPaymentIntentPaymentMethodOptions,string>, ?wechatPay: Choice<Update'PaymentMethodOptionsWechatPayPaymentMethodOptions,string>, ?zip: Choice<Update'PaymentMethodOptionsZipPaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Update'PaymentMethodOptionsAcssDebitPaymentIntentPaymentMethodOptions,string>, ?affirm: Choice<Update'PaymentMethodOptionsAffirmPaymentMethodOptions,string>, ?afterpayClearpay: Choice<Update'PaymentMethodOptionsAfterpayClearpayPaymentMethodOptions,string>, ?alipay: Choice<Update'PaymentMethodOptionsAlipayPaymentMethodOptions,string>, ?alma: Choice<Update'PaymentMethodOptionsAlmaPaymentMethodOptions,string>, ?amazonPay: Choice<Update'PaymentMethodOptionsAmazonPayPaymentMethodOptions,string>, ?auBecsDebit: Choice<Update'PaymentMethodOptionsAuBecsDebitPaymentIntentPaymentMethodOptions,string>, ?bacsDebit: Choice<Update'PaymentMethodOptionsBacsDebitPaymentIntentPaymentMethodOptions,string>, ?bancontact: Choice<Update'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?billie: Choice<Update'PaymentMethodOptionsBilliePaymentMethodOptions,string>, ?bizum: Choice<string,string>, ?blik: Choice<Update'PaymentMethodOptionsBlikPaymentIntentPaymentMethodOptions,string>, ?boleto: Choice<Update'PaymentMethodOptionsBoletoPaymentMethodOptions,string>, ?card: Choice<Update'PaymentMethodOptionsCardPaymentIntent,string>, ?cardPresent: Choice<Update'PaymentMethodOptionsCardPresentPaymentMethodOptions,string>, ?cashapp: Choice<Update'PaymentMethodOptionsCashappPaymentIntentPaymentMethodOptions,string>, ?crypto: Choice<Update'PaymentMethodOptionsCryptoPaymentMethodOptions,string>, ?customerBalance: Choice<Update'PaymentMethodOptionsCustomerBalancePaymentIntentPaymentMethodOptions,string>, ?eps: Choice<Update'PaymentMethodOptionsEpsPaymentIntentPaymentMethodOptions,string>, ?fpx: Choice<Update'PaymentMethodOptionsFpxPaymentMethodOptions,string>, ?giropay: Choice<Update'PaymentMethodOptionsGiropayPaymentMethodOptions,string>, ?grabpay: Choice<Update'PaymentMethodOptionsGrabpayPaymentMethodOptions,string>, ?ideal: Choice<Update'PaymentMethodOptionsIdealPaymentMethodOptions,string>, ?interacPresent: Choice<string,string>, ?kakaoPay: Choice<Update'PaymentMethodOptionsKakaoPayPaymentMethodOptions,string>, ?klarna: Choice<Update'PaymentMethodOptionsKlarnaPaymentMethodOptions,string>, ?konbini: Choice<Update'PaymentMethodOptionsKonbiniPaymentMethodOptions,string>, ?krCard: Choice<Update'PaymentMethodOptionsKrCardPaymentMethodOptions,string>, ?link: Choice<Update'PaymentMethodOptionsLinkPaymentIntentPaymentMethodOptions,string>, ?mbWay: Choice<Update'PaymentMethodOptionsMbWayPaymentMethodOptions,string>, ?mobilepay: Choice<Update'PaymentMethodOptionsMobilepayPaymentMethodOptions,string>, ?multibanco: Choice<Update'PaymentMethodOptionsMultibancoPaymentMethodOptions,string>, ?naverPay: Choice<Update'PaymentMethodOptionsNaverPayPaymentMethodOptions,string>, ?nzBankAccount: Choice<Update'PaymentMethodOptionsNzBankAccountPaymentIntentPaymentMethodOptions,string>, ?oxxo: Choice<Update'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<Update'PaymentMethodOptionsP24PaymentMethodOptions,string>, ?payByBank: Choice<string,string>, ?payco: Choice<Update'PaymentMethodOptionsPaycoPaymentMethodOptions,string>, ?paynow: Choice<Update'PaymentMethodOptionsPaynowPaymentMethodOptions,string>, ?paypal: Choice<Update'PaymentMethodOptionsPaypalPaymentMethodOptions,string>, ?payto: Choice<Update'PaymentMethodOptionsPaytoPaymentIntentPaymentMethodOptions,string>, ?pix: Choice<Update'PaymentMethodOptionsPixPaymentMethodOptions,string>, ?promptpay: Choice<Update'PaymentMethodOptionsPromptpayPaymentMethodOptions,string>, ?revolutPay: Choice<Update'PaymentMethodOptionsRevolutPayPaymentMethodOptions,string>, ?samsungPay: Choice<Update'PaymentMethodOptionsSamsungPayPaymentMethodOptions,string>, ?satispay: Choice<Update'PaymentMethodOptionsSatispayPaymentMethodOptions,string>, ?scalapay: Choice<Update'PaymentMethodOptionsScalapayPaymentMethodOptions,string>, ?sepaDebit: Choice<Update'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Update'PaymentMethodOptionsSofortPaymentMethodOptions,string>, ?sunbit: Choice<Update'PaymentMethodOptionsSunbitPaymentMethodOptions,string>, ?swish: Choice<Update'PaymentMethodOptionsSwishPaymentIntentPaymentMethodOptions,string>, ?twint: Choice<Update'PaymentMethodOptionsTwintPaymentMethodOptions,string>, ?upi: Choice<Update'PaymentMethodOptionsUpiPaymentMethodOptions,string>, ?usBankAccount: Choice<Update'PaymentMethodOptionsUsBankAccountPaymentIntentPaymentMethodOptions,string>, ?wechatPay: Choice<Update'PaymentMethodOptionsWechatPayPaymentMethodOptions,string>, ?zip: Choice<Update'PaymentMethodOptionsZipPaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -7784,6 +7867,7 @@ module PaymentIntents =
                 Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
+                Sunbit = sunbit
                 Swish = swish
                 Twint = twint
                 Upi = upi
@@ -8072,7 +8156,7 @@ module PaymentIntentsSearch =
             /// A cursor for pagination across multiple pages of results. Don't include this parameter on the first call. Use the next_page value returned in a previous response to request subsequent results.
             [<Config.Query>]
             Page: string option
-            /// The search query string. See [search query language](https://docs.stripe.com/search#search-query-language) and the list of supported [query fields for payment intents](https://docs.stripe.com/search#query-fields-for-payment-intents).
+            /// The search query string. See [search query language](https://docs.stripe.com/search#search-query-language) and the list of supported [query fields for payment intents](https://docs.stripe.com/search#query-fields-for-paymentintents).
             [<Config.Query>]
             Query: string
         }
@@ -9760,7 +9844,7 @@ module PaymentIntentsConfirm =
             /// If this is a `sofort` PaymentMethod, this hash contains details about the SOFORT payment method.
             [<Config.Form>]
             Sofort: Confirm'PaymentMethodDataSofort option
-            /// If this is a Sunbit PaymentMethod, this hash contains details about the Sunbit payment method.
+            /// If this is a `sunbit` PaymentMethod, this hash contains details about the Sunbit payment method.
             [<Config.Form>]
             Sunbit: string option
             /// If this is a `swish` PaymentMethod, this hash contains details about the Swish payment method.
@@ -11677,6 +11761,11 @@ module PaymentIntentsConfirm =
 
     type Confirm'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod = | Manual
 
+    type Confirm'PaymentMethodOptionsSatispayPaymentMethodOptionsSetupFutureUsage =
+        | [<JsonPropertyName("none")>] None'
+        | OffSession
+        | OnSession
+
     type Confirm'PaymentMethodOptionsSatispayPaymentMethodOptions =
         {
             /// Controls when the funds are captured from the customer's account.
@@ -11684,12 +11773,19 @@ module PaymentIntentsConfirm =
             /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
             [<Config.Form>]
             CaptureMethod: Confirm'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Confirm'PaymentMethodOptionsSatispayPaymentMethodOptionsSetupFutureUsage option
         }
 
     type Confirm'PaymentMethodOptionsSatispayPaymentMethodOptions with
-        static member New(?captureMethod: Confirm'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod) =
+        static member New(?captureMethod: Confirm'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Confirm'PaymentMethodOptionsSatispayPaymentMethodOptionsSetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Confirm'PaymentMethodOptionsScalapayPaymentMethodOptionsCaptureMethod = | Manual
@@ -11783,6 +11879,32 @@ module PaymentIntentsConfirm =
         static member New(?preferredLanguage: Confirm'PaymentMethodOptionsSofortPaymentMethodOptionsPreferredLanguage, ?setupFutureUsage: Confirm'PaymentMethodOptionsSofortPaymentMethodOptionsSetupFutureUsage) =
             {
                 PreferredLanguage = preferredLanguage
+                SetupFutureUsage = setupFutureUsage
+            }
+
+    type Confirm'PaymentMethodOptionsSunbitPaymentMethodOptionsCaptureMethod = | Manual
+
+    type Confirm'PaymentMethodOptionsSunbitPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
+    type Confirm'PaymentMethodOptionsSunbitPaymentMethodOptions =
+        {
+            /// Controls when the funds are captured from the customer's account.
+            /// If provided, this parameter overrides the behavior of the top-level [capture_method](/api/payment_intents/update#update_payment_intent-capture_method) for this payment method type when finalizing the payment with this payment method type.
+            /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
+            [<Config.Form>]
+            CaptureMethod: Confirm'PaymentMethodOptionsSunbitPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Confirm'PaymentMethodOptionsSunbitPaymentMethodOptionsSetupFutureUsage option
+        }
+
+    type Confirm'PaymentMethodOptionsSunbitPaymentMethodOptions with
+        static member New(?captureMethod: Confirm'PaymentMethodOptionsSunbitPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Confirm'PaymentMethodOptionsSunbitPaymentMethodOptionsSetupFutureUsage) =
+            {
+                CaptureMethod = captureMethod
                 SetupFutureUsage = setupFutureUsage
             }
 
@@ -12043,7 +12165,7 @@ module PaymentIntentsConfirm =
 
     type Confirm'PaymentMethodOptionsWechatPayPaymentMethodOptions =
         {
-            /// The app ID registered with WeChat Pay. Only required when client is ios or android.
+            /// The app ID registered with WeChat Pay. Only required when client is ios, android, or mini_program.
             [<Config.Form>]
             AppId: string option
             /// The client type that the end customer will pay from
@@ -12235,6 +12357,9 @@ module PaymentIntentsConfirm =
             /// If this is a `sofort` PaymentMethod, this sub-hash contains details about the SOFORT payment method options.
             [<Config.Form>]
             Sofort: Choice<Confirm'PaymentMethodOptionsSofortPaymentMethodOptions,string> option
+            /// If this is a `sunbit` PaymentMethod, this sub-hash contains details about the Sunbit payment method options.
+            [<Config.Form>]
+            Sunbit: Choice<Confirm'PaymentMethodOptionsSunbitPaymentMethodOptions,string> option
             /// If this is a `Swish` PaymentMethod, this sub-hash contains details about the Swish payment method options.
             [<Config.Form>]
             Swish: Choice<Confirm'PaymentMethodOptionsSwishPaymentIntentPaymentMethodOptions,string> option
@@ -12256,7 +12381,7 @@ module PaymentIntentsConfirm =
         }
 
     type Confirm'PaymentMethodOptions with
-        static member New(?acssDebit: Choice<Confirm'PaymentMethodOptionsAcssDebitPaymentIntentPaymentMethodOptions,string>, ?affirm: Choice<Confirm'PaymentMethodOptionsAffirmPaymentMethodOptions,string>, ?afterpayClearpay: Choice<Confirm'PaymentMethodOptionsAfterpayClearpayPaymentMethodOptions,string>, ?alipay: Choice<Confirm'PaymentMethodOptionsAlipayPaymentMethodOptions,string>, ?alma: Choice<Confirm'PaymentMethodOptionsAlmaPaymentMethodOptions,string>, ?amazonPay: Choice<Confirm'PaymentMethodOptionsAmazonPayPaymentMethodOptions,string>, ?auBecsDebit: Choice<Confirm'PaymentMethodOptionsAuBecsDebitPaymentIntentPaymentMethodOptions,string>, ?bacsDebit: Choice<Confirm'PaymentMethodOptionsBacsDebitPaymentIntentPaymentMethodOptions,string>, ?bancontact: Choice<Confirm'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?billie: Choice<Confirm'PaymentMethodOptionsBilliePaymentMethodOptions,string>, ?bizum: Choice<string,string>, ?blik: Choice<Confirm'PaymentMethodOptionsBlikPaymentIntentPaymentMethodOptions,string>, ?boleto: Choice<Confirm'PaymentMethodOptionsBoletoPaymentMethodOptions,string>, ?card: Choice<Confirm'PaymentMethodOptionsCardPaymentIntent,string>, ?cardPresent: Choice<Confirm'PaymentMethodOptionsCardPresentPaymentMethodOptions,string>, ?cashapp: Choice<Confirm'PaymentMethodOptionsCashappPaymentIntentPaymentMethodOptions,string>, ?crypto: Choice<Confirm'PaymentMethodOptionsCryptoPaymentMethodOptions,string>, ?customerBalance: Choice<Confirm'PaymentMethodOptionsCustomerBalancePaymentIntentPaymentMethodOptions,string>, ?eps: Choice<Confirm'PaymentMethodOptionsEpsPaymentIntentPaymentMethodOptions,string>, ?fpx: Choice<Confirm'PaymentMethodOptionsFpxPaymentMethodOptions,string>, ?giropay: Choice<Confirm'PaymentMethodOptionsGiropayPaymentMethodOptions,string>, ?grabpay: Choice<Confirm'PaymentMethodOptionsGrabpayPaymentMethodOptions,string>, ?ideal: Choice<Confirm'PaymentMethodOptionsIdealPaymentMethodOptions,string>, ?interacPresent: Choice<string,string>, ?kakaoPay: Choice<Confirm'PaymentMethodOptionsKakaoPayPaymentMethodOptions,string>, ?klarna: Choice<Confirm'PaymentMethodOptionsKlarnaPaymentMethodOptions,string>, ?konbini: Choice<Confirm'PaymentMethodOptionsKonbiniPaymentMethodOptions,string>, ?krCard: Choice<Confirm'PaymentMethodOptionsKrCardPaymentMethodOptions,string>, ?link: Choice<Confirm'PaymentMethodOptionsLinkPaymentIntentPaymentMethodOptions,string>, ?mbWay: Choice<Confirm'PaymentMethodOptionsMbWayPaymentMethodOptions,string>, ?mobilepay: Choice<Confirm'PaymentMethodOptionsMobilepayPaymentMethodOptions,string>, ?multibanco: Choice<Confirm'PaymentMethodOptionsMultibancoPaymentMethodOptions,string>, ?naverPay: Choice<Confirm'PaymentMethodOptionsNaverPayPaymentMethodOptions,string>, ?nzBankAccount: Choice<Confirm'PaymentMethodOptionsNzBankAccountPaymentIntentPaymentMethodOptions,string>, ?oxxo: Choice<Confirm'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<Confirm'PaymentMethodOptionsP24PaymentMethodOptions,string>, ?payByBank: Choice<string,string>, ?payco: Choice<Confirm'PaymentMethodOptionsPaycoPaymentMethodOptions,string>, ?paynow: Choice<Confirm'PaymentMethodOptionsPaynowPaymentMethodOptions,string>, ?paypal: Choice<Confirm'PaymentMethodOptionsPaypalPaymentMethodOptions,string>, ?payto: Choice<Confirm'PaymentMethodOptionsPaytoPaymentIntentPaymentMethodOptions,string>, ?pix: Choice<Confirm'PaymentMethodOptionsPixPaymentMethodOptions,string>, ?promptpay: Choice<Confirm'PaymentMethodOptionsPromptpayPaymentMethodOptions,string>, ?revolutPay: Choice<Confirm'PaymentMethodOptionsRevolutPayPaymentMethodOptions,string>, ?samsungPay: Choice<Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptions,string>, ?satispay: Choice<Confirm'PaymentMethodOptionsSatispayPaymentMethodOptions,string>, ?scalapay: Choice<Confirm'PaymentMethodOptionsScalapayPaymentMethodOptions,string>, ?sepaDebit: Choice<Confirm'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Confirm'PaymentMethodOptionsSofortPaymentMethodOptions,string>, ?swish: Choice<Confirm'PaymentMethodOptionsSwishPaymentIntentPaymentMethodOptions,string>, ?twint: Choice<Confirm'PaymentMethodOptionsTwintPaymentMethodOptions,string>, ?upi: Choice<Confirm'PaymentMethodOptionsUpiPaymentMethodOptions,string>, ?usBankAccount: Choice<Confirm'PaymentMethodOptionsUsBankAccountPaymentIntentPaymentMethodOptions,string>, ?wechatPay: Choice<Confirm'PaymentMethodOptionsWechatPayPaymentMethodOptions,string>, ?zip: Choice<Confirm'PaymentMethodOptionsZipPaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Confirm'PaymentMethodOptionsAcssDebitPaymentIntentPaymentMethodOptions,string>, ?affirm: Choice<Confirm'PaymentMethodOptionsAffirmPaymentMethodOptions,string>, ?afterpayClearpay: Choice<Confirm'PaymentMethodOptionsAfterpayClearpayPaymentMethodOptions,string>, ?alipay: Choice<Confirm'PaymentMethodOptionsAlipayPaymentMethodOptions,string>, ?alma: Choice<Confirm'PaymentMethodOptionsAlmaPaymentMethodOptions,string>, ?amazonPay: Choice<Confirm'PaymentMethodOptionsAmazonPayPaymentMethodOptions,string>, ?auBecsDebit: Choice<Confirm'PaymentMethodOptionsAuBecsDebitPaymentIntentPaymentMethodOptions,string>, ?bacsDebit: Choice<Confirm'PaymentMethodOptionsBacsDebitPaymentIntentPaymentMethodOptions,string>, ?bancontact: Choice<Confirm'PaymentMethodOptionsBancontactPaymentMethodOptions,string>, ?billie: Choice<Confirm'PaymentMethodOptionsBilliePaymentMethodOptions,string>, ?bizum: Choice<string,string>, ?blik: Choice<Confirm'PaymentMethodOptionsBlikPaymentIntentPaymentMethodOptions,string>, ?boleto: Choice<Confirm'PaymentMethodOptionsBoletoPaymentMethodOptions,string>, ?card: Choice<Confirm'PaymentMethodOptionsCardPaymentIntent,string>, ?cardPresent: Choice<Confirm'PaymentMethodOptionsCardPresentPaymentMethodOptions,string>, ?cashapp: Choice<Confirm'PaymentMethodOptionsCashappPaymentIntentPaymentMethodOptions,string>, ?crypto: Choice<Confirm'PaymentMethodOptionsCryptoPaymentMethodOptions,string>, ?customerBalance: Choice<Confirm'PaymentMethodOptionsCustomerBalancePaymentIntentPaymentMethodOptions,string>, ?eps: Choice<Confirm'PaymentMethodOptionsEpsPaymentIntentPaymentMethodOptions,string>, ?fpx: Choice<Confirm'PaymentMethodOptionsFpxPaymentMethodOptions,string>, ?giropay: Choice<Confirm'PaymentMethodOptionsGiropayPaymentMethodOptions,string>, ?grabpay: Choice<Confirm'PaymentMethodOptionsGrabpayPaymentMethodOptions,string>, ?ideal: Choice<Confirm'PaymentMethodOptionsIdealPaymentMethodOptions,string>, ?interacPresent: Choice<string,string>, ?kakaoPay: Choice<Confirm'PaymentMethodOptionsKakaoPayPaymentMethodOptions,string>, ?klarna: Choice<Confirm'PaymentMethodOptionsKlarnaPaymentMethodOptions,string>, ?konbini: Choice<Confirm'PaymentMethodOptionsKonbiniPaymentMethodOptions,string>, ?krCard: Choice<Confirm'PaymentMethodOptionsKrCardPaymentMethodOptions,string>, ?link: Choice<Confirm'PaymentMethodOptionsLinkPaymentIntentPaymentMethodOptions,string>, ?mbWay: Choice<Confirm'PaymentMethodOptionsMbWayPaymentMethodOptions,string>, ?mobilepay: Choice<Confirm'PaymentMethodOptionsMobilepayPaymentMethodOptions,string>, ?multibanco: Choice<Confirm'PaymentMethodOptionsMultibancoPaymentMethodOptions,string>, ?naverPay: Choice<Confirm'PaymentMethodOptionsNaverPayPaymentMethodOptions,string>, ?nzBankAccount: Choice<Confirm'PaymentMethodOptionsNzBankAccountPaymentIntentPaymentMethodOptions,string>, ?oxxo: Choice<Confirm'PaymentMethodOptionsOxxoPaymentMethodOptions,string>, ?p24: Choice<Confirm'PaymentMethodOptionsP24PaymentMethodOptions,string>, ?payByBank: Choice<string,string>, ?payco: Choice<Confirm'PaymentMethodOptionsPaycoPaymentMethodOptions,string>, ?paynow: Choice<Confirm'PaymentMethodOptionsPaynowPaymentMethodOptions,string>, ?paypal: Choice<Confirm'PaymentMethodOptionsPaypalPaymentMethodOptions,string>, ?payto: Choice<Confirm'PaymentMethodOptionsPaytoPaymentIntentPaymentMethodOptions,string>, ?pix: Choice<Confirm'PaymentMethodOptionsPixPaymentMethodOptions,string>, ?promptpay: Choice<Confirm'PaymentMethodOptionsPromptpayPaymentMethodOptions,string>, ?revolutPay: Choice<Confirm'PaymentMethodOptionsRevolutPayPaymentMethodOptions,string>, ?samsungPay: Choice<Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptions,string>, ?satispay: Choice<Confirm'PaymentMethodOptionsSatispayPaymentMethodOptions,string>, ?scalapay: Choice<Confirm'PaymentMethodOptionsScalapayPaymentMethodOptions,string>, ?sepaDebit: Choice<Confirm'PaymentMethodOptionsSepaDebitPaymentIntentPaymentMethodOptions,string>, ?sofort: Choice<Confirm'PaymentMethodOptionsSofortPaymentMethodOptions,string>, ?sunbit: Choice<Confirm'PaymentMethodOptionsSunbitPaymentMethodOptions,string>, ?swish: Choice<Confirm'PaymentMethodOptionsSwishPaymentIntentPaymentMethodOptions,string>, ?twint: Choice<Confirm'PaymentMethodOptionsTwintPaymentMethodOptions,string>, ?upi: Choice<Confirm'PaymentMethodOptionsUpiPaymentMethodOptions,string>, ?usBankAccount: Choice<Confirm'PaymentMethodOptionsUsBankAccountPaymentIntentPaymentMethodOptions,string>, ?wechatPay: Choice<Confirm'PaymentMethodOptionsWechatPayPaymentMethodOptions,string>, ?zip: Choice<Confirm'PaymentMethodOptionsZipPaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -12307,6 +12432,7 @@ module PaymentIntentsConfirm =
                 Scalapay = scalapay
                 SepaDebit = sepaDebit
                 Sofort = sofort
+                Sunbit = sunbit
                 Swish = swish
                 Twint = twint
                 Upi = upi
@@ -14364,6 +14490,7 @@ module PaymentLinks =
             /// If you'd like information on how to collect a payment method outside of Checkout, read the guide on [configuring subscriptions with a free trial](https://docs.stripe.com/payments/checkout/free-trials).
             [<Config.Form>]
             PaymentMethodCollection: Create'PaymentMethodCollection option
+            /// Payment-method-specific configuration.
             [<Config.Form>]
             PaymentMethodOptions: Create'PaymentMethodOptions option
             /// The list of payment method types that customers can use. If no value is passed, Stripe will dynamically show relevant payment methods from your [payment method settings](https://dashboard.stripe.com/settings/payment_methods) (20+ payment methods [supported](https://docs.stripe.com/payments/payment-methods/integration-options#payment-method-product-support)).
@@ -16598,7 +16725,7 @@ module PaymentMethods =
             /// If this is a `sofort` PaymentMethod, this hash contains details about the SOFORT payment method.
             [<Config.Form>]
             Sofort: Create'Sofort option
-            /// If this is a Sunbit PaymentMethod, this hash contains details about the Sunbit payment method.
+            /// If this is a `sunbit` PaymentMethod, this hash contains details about the Sunbit payment method.
             [<Config.Form>]
             Sunbit: string option
             /// If this is a `swish` PaymentMethod, this hash contains details about the Swish payment method.
@@ -17899,20 +18026,20 @@ module PaymentRecordsReportRefund =
             ProcessorDetails: ReportRefund'ProcessorDetails
             /// Information about the payment attempt refund.
             [<Config.Form>]
-            Refunded: ReportRefund'Refunded
+            Refunded: ReportRefund'Refunded option
         }
 
     type ReportRefundOptions with
-        static member New(id: string, outcome: ReportRefund'Outcome, processorDetails: ReportRefund'ProcessorDetails, refunded: ReportRefund'Refunded, ?amount: ReportRefund'Amount, ?expand: string list, ?initiatedAt: DateTime, ?metadata: Map<string, string>) =
+        static member New(id: string, outcome: ReportRefund'Outcome, processorDetails: ReportRefund'ProcessorDetails, ?amount: ReportRefund'Amount, ?expand: string list, ?initiatedAt: DateTime, ?metadata: Map<string, string>, ?refunded: ReportRefund'Refunded) =
             {
                 Id = id
                 Outcome = outcome
                 ProcessorDetails = processorDetails
-                Refunded = refunded
                 Amount = amount
                 Expand = expand
                 InitiatedAt = initiatedAt
                 Metadata = metadata
+                Refunded = refunded
             }
 
     ///<p>Report that the most recent payment attempt on the specified Payment Record
