@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.SetupAttempt
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module SetupAttempts =
 
     type ListOptions =
@@ -98,6 +98,104 @@ module SetupIntents =
                 PaymentMethod = paymentMethod
                 StartingAfter = startingAfter
             }
+
+    type Create'AllowedPaymentMethodTypes =
+        | AcssDebit
+        | Affirm
+        | AfterpayClearpay
+        | Alipay
+        | Alma
+        | AmazonPay
+        | AuBecsDebit
+        | BacsDebit
+        | Bancontact
+        | Billie
+        | Bizum
+        | Blik
+        | BokuPromptpay
+        | Boleto
+        | CapchasePay
+        | Card
+        | Cashapp
+        | CheckScan
+        | ClickToPay
+        | Crypto
+        | CustomerBalance
+        | DemoPay
+        | Duitnow
+        | DummyAuthPush
+        | DummyPassthroughCard
+        | Edenred
+        | Eps
+        | Fpx
+        | Gcash
+        | Getbalance
+        | GiftCard
+        | Giropay
+        | Gopay
+        | Grabpay
+        | IdBankTransfer
+        | Ideal
+        | KakaoPay
+        | Klarna
+        | Knet
+        | Konbini
+        | KrCard
+        | KrMarket
+        | Kriya
+        | Link
+        | MbWay
+        | Mobilepay
+        | Momo
+        | Mondu
+        | Multibanco
+        | NaverPay
+        | Netbanking
+        | NgBank
+        | NgBankTransfer
+        | NgCard
+        | NgMarket
+        | NgUssd
+        | NgWallet
+        | NzBankAccount
+        | Octopus
+        | Oxxo
+        | [<JsonPropertyName("p24")>] P24
+        | PaperCheck
+        | PayByBank
+        | Payco
+        | Paynow
+        | Paypal
+        | Paypay
+        | Payto
+        | Pix
+        | Promptpay
+        | Qris
+        | Rechnung
+        | RevolutPay
+        | SamsungPay
+        | Satispay
+        | Scalapay
+        | SepaDebit
+        | Sequra
+        | ShopPay
+        | Shopeepay
+        | Sofort
+        | SouthKoreaMarket
+        | StripeBalance
+        | Sunbit
+        | Swish
+        | Tamara
+        | TestPay
+        | Truemoney
+        | Twint
+        | Upi
+        | UsBankAccount
+        | UsCashVoucher
+        | Vipps
+        | WechatPay
+        | Wero
+        | Zip
 
     type Create'AutomaticPaymentMethodsAllowRedirects =
         | Always
@@ -430,14 +528,17 @@ module SetupIntents =
         | BankMuamalat
         | BankOfChina
         | BankRakyat
+        | BnpParibas
         | Bsn
         | Cimb
+        | Citibank
         | DeutscheBank
         | HongLeongBank
         | Hsbc
         | Kfh
         | Maybank2e
         | Maybank2u
+        | MbsbBank
         | Ocbc
         | PbEnterprise
         | PublicBank
@@ -2010,6 +2111,9 @@ module SetupIntents =
 
     type CreateOptions =
         {
+            /// The list of payment method types to allow for this SetupIntent. Stripe will only use methods in this list when determining the payment methods to offer. A list of valid payment method types can be found [here](https://docs.stripe.com/api/payment_methods/object#payment_method_object-type).
+            [<Config.Form>]
+            AllowedPaymentMethodTypes: Create'AllowedPaymentMethodTypes list option
             /// If present, the SetupIntent's payment method will be attached to the in-context Stripe Account.
             /// It can only be used for this Stripe Account’s own money movement flows like InboundTransfer and OutboundTransfers. It cannot be set to true when setting up a PaymentMethod for a Customer, and defaults to false when attaching a PaymentMethod to a Customer.
             [<Config.Form>]
@@ -2086,8 +2190,9 @@ module SetupIntents =
         }
 
     type CreateOptions with
-        static member New(?attachToSelf: bool, ?automaticPaymentMethods: Create'AutomaticPaymentMethods, ?confirm: bool, ?confirmationToken: string, ?customer: string, ?customerAccount: string, ?description: string, ?excludedPaymentMethodTypes: Create'ExcludedPaymentMethodTypes list, ?expand: string list, ?flowDirections: Create'FlowDirections list, ?mandateData: Choice<Create'MandateDataSecretKey,string>, ?metadata: Map<string, string>, ?onBehalfOf: string, ?paymentMethod: string, ?paymentMethodConfiguration: string, ?paymentMethodData: Create'PaymentMethodData, ?paymentMethodOptions: Create'PaymentMethodOptions, ?paymentMethodTypes: string list, ?returnUrl: string, ?singleUse: Create'SingleUse, ?usage: Create'Usage, ?useStripeSdk: bool) =
+        static member New(?allowedPaymentMethodTypes: Create'AllowedPaymentMethodTypes list, ?attachToSelf: bool, ?automaticPaymentMethods: Create'AutomaticPaymentMethods, ?confirm: bool, ?confirmationToken: string, ?customer: string, ?customerAccount: string, ?description: string, ?excludedPaymentMethodTypes: Create'ExcludedPaymentMethodTypes list, ?expand: string list, ?flowDirections: Create'FlowDirections list, ?mandateData: Choice<Create'MandateDataSecretKey,string>, ?metadata: Map<string, string>, ?onBehalfOf: string, ?paymentMethod: string, ?paymentMethodConfiguration: string, ?paymentMethodData: Create'PaymentMethodData, ?paymentMethodOptions: Create'PaymentMethodOptions, ?paymentMethodTypes: string list, ?returnUrl: string, ?singleUse: Create'SingleUse, ?usage: Create'Usage, ?useStripeSdk: bool) =
             {
+                AllowedPaymentMethodTypes = allowedPaymentMethodTypes
                 AttachToSelf = attachToSelf
                 AutomaticPaymentMethods = automaticPaymentMethods
                 Confirm = confirm
@@ -2131,6 +2236,104 @@ module SetupIntents =
                 ClientSecret = clientSecret
                 Expand = expand
             }
+
+    type Update'AllowedPaymentMethodTypes =
+        | AcssDebit
+        | Affirm
+        | AfterpayClearpay
+        | Alipay
+        | Alma
+        | AmazonPay
+        | AuBecsDebit
+        | BacsDebit
+        | Bancontact
+        | Billie
+        | Bizum
+        | Blik
+        | BokuPromptpay
+        | Boleto
+        | CapchasePay
+        | Card
+        | Cashapp
+        | CheckScan
+        | ClickToPay
+        | Crypto
+        | CustomerBalance
+        | DemoPay
+        | Duitnow
+        | DummyAuthPush
+        | DummyPassthroughCard
+        | Edenred
+        | Eps
+        | Fpx
+        | Gcash
+        | Getbalance
+        | GiftCard
+        | Giropay
+        | Gopay
+        | Grabpay
+        | IdBankTransfer
+        | Ideal
+        | KakaoPay
+        | Klarna
+        | Knet
+        | Konbini
+        | KrCard
+        | KrMarket
+        | Kriya
+        | Link
+        | MbWay
+        | Mobilepay
+        | Momo
+        | Mondu
+        | Multibanco
+        | NaverPay
+        | Netbanking
+        | NgBank
+        | NgBankTransfer
+        | NgCard
+        | NgMarket
+        | NgUssd
+        | NgWallet
+        | NzBankAccount
+        | Octopus
+        | Oxxo
+        | [<JsonPropertyName("p24")>] P24
+        | PaperCheck
+        | PayByBank
+        | Payco
+        | Paynow
+        | Paypal
+        | Paypay
+        | Payto
+        | Pix
+        | Promptpay
+        | Qris
+        | Rechnung
+        | RevolutPay
+        | SamsungPay
+        | Satispay
+        | Scalapay
+        | SepaDebit
+        | Sequra
+        | ShopPay
+        | Shopeepay
+        | Sofort
+        | SouthKoreaMarket
+        | StripeBalance
+        | Sunbit
+        | Swish
+        | Tamara
+        | TestPay
+        | Truemoney
+        | Twint
+        | Upi
+        | UsBankAccount
+        | UsCashVoucher
+        | Vipps
+        | WechatPay
+        | Wero
+        | Zip
 
     type Update'ExcludedPaymentMethodTypes =
         | AcssDebit
@@ -2382,14 +2585,17 @@ module SetupIntents =
         | BankMuamalat
         | BankOfChina
         | BankRakyat
+        | BnpParibas
         | Bsn
         | Cimb
+        | Citibank
         | DeutscheBank
         | HongLeongBank
         | Hsbc
         | Kfh
         | Maybank2e
         | Maybank2u
+        | MbsbBank
         | Ocbc
         | PbEnterprise
         | PublicBank
@@ -3943,6 +4149,9 @@ module SetupIntents =
         {
             [<Config.Path>]
             Intent: string
+            /// The list of payment method types to allow for this SetupIntent. Stripe will only use methods in this list when determining the payment methods to offer. A list of valid payment method types can be found [here](https://docs.stripe.com/api/payment_methods/object#payment_method_object-type).
+            [<Config.Form>]
+            AllowedPaymentMethodTypes: Choice<Update'AllowedPaymentMethodTypes list,string> option
             /// If present, the SetupIntent's payment method will be attached to the in-context Stripe Account.
             /// It can only be used for this Stripe Account’s own money movement flows like InboundTransfer and OutboundTransfers. It cannot be set to true when setting up a PaymentMethod for a Customer, and defaults to false when attaching a PaymentMethod to a Customer.
             [<Config.Form>]
@@ -3990,9 +4199,10 @@ module SetupIntents =
         }
 
     type UpdateOptions with
-        static member New(intent: string, ?attachToSelf: bool, ?customer: string, ?customerAccount: string, ?description: string, ?excludedPaymentMethodTypes: Choice<Update'ExcludedPaymentMethodTypes list,string>, ?expand: string list, ?flowDirections: Update'FlowDirections list, ?metadata: Map<string, string>, ?paymentMethod: string, ?paymentMethodConfiguration: string, ?paymentMethodData: Update'PaymentMethodData, ?paymentMethodOptions: Update'PaymentMethodOptions, ?paymentMethodTypes: string list) =
+        static member New(intent: string, ?allowedPaymentMethodTypes: Choice<Update'AllowedPaymentMethodTypes list,string>, ?attachToSelf: bool, ?customer: string, ?customerAccount: string, ?description: string, ?excludedPaymentMethodTypes: Choice<Update'ExcludedPaymentMethodTypes list,string>, ?expand: string list, ?flowDirections: Update'FlowDirections list, ?metadata: Map<string, string>, ?paymentMethod: string, ?paymentMethodConfiguration: string, ?paymentMethodData: Update'PaymentMethodData, ?paymentMethodOptions: Update'PaymentMethodOptions, ?paymentMethodTypes: string list) =
             {
                 Intent = intent
+                AllowedPaymentMethodTypes = allowedPaymentMethodTypes
                 AttachToSelf = attachToSelf
                 Customer = customer
                 CustomerAccount = customerAccount
@@ -4068,6 +4278,104 @@ module SetupIntentsCancel =
         |> RestApi.postAsync<_, SetupIntent> settings (Map.empty) options
 
 module SetupIntentsConfirm =
+
+    type Confirm'AllowedPaymentMethodTypes =
+        | AcssDebit
+        | Affirm
+        | AfterpayClearpay
+        | Alipay
+        | Alma
+        | AmazonPay
+        | AuBecsDebit
+        | BacsDebit
+        | Bancontact
+        | Billie
+        | Bizum
+        | Blik
+        | BokuPromptpay
+        | Boleto
+        | CapchasePay
+        | Card
+        | Cashapp
+        | CheckScan
+        | ClickToPay
+        | Crypto
+        | CustomerBalance
+        | DemoPay
+        | Duitnow
+        | DummyAuthPush
+        | DummyPassthroughCard
+        | Edenred
+        | Eps
+        | Fpx
+        | Gcash
+        | Getbalance
+        | GiftCard
+        | Giropay
+        | Gopay
+        | Grabpay
+        | IdBankTransfer
+        | Ideal
+        | KakaoPay
+        | Klarna
+        | Knet
+        | Konbini
+        | KrCard
+        | KrMarket
+        | Kriya
+        | Link
+        | MbWay
+        | Mobilepay
+        | Momo
+        | Mondu
+        | Multibanco
+        | NaverPay
+        | Netbanking
+        | NgBank
+        | NgBankTransfer
+        | NgCard
+        | NgMarket
+        | NgUssd
+        | NgWallet
+        | NzBankAccount
+        | Octopus
+        | Oxxo
+        | [<JsonPropertyName("p24")>] P24
+        | PaperCheck
+        | PayByBank
+        | Payco
+        | Paynow
+        | Paypal
+        | Paypay
+        | Payto
+        | Pix
+        | Promptpay
+        | Qris
+        | Rechnung
+        | RevolutPay
+        | SamsungPay
+        | Satispay
+        | Scalapay
+        | SepaDebit
+        | Sequra
+        | ShopPay
+        | Shopeepay
+        | Sofort
+        | SouthKoreaMarket
+        | StripeBalance
+        | Sunbit
+        | Swish
+        | Tamara
+        | TestPay
+        | Truemoney
+        | Twint
+        | Upi
+        | UsBankAccount
+        | UsCashVoucher
+        | Vipps
+        | WechatPay
+        | Wero
+        | Zip
 
     type Confirm'MandateDataSecretKeyCustomerAcceptanceOnline =
         {
@@ -4368,14 +4676,17 @@ module SetupIntentsConfirm =
         | BankMuamalat
         | BankOfChina
         | BankRakyat
+        | BnpParibas
         | Bsn
         | Cimb
+        | Citibank
         | DeutscheBank
         | HongLeongBank
         | Hsbc
         | Kfh
         | Maybank2e
         | Maybank2u
+        | MbsbBank
         | Ocbc
         | PbEnterprise
         | PublicBank
@@ -5929,6 +6240,9 @@ module SetupIntentsConfirm =
         {
             [<Config.Path>]
             Intent: string
+            /// The list of payment method types to allow for this SetupIntent. Stripe will only use methods in this list when determining the payment methods to offer. A list of valid payment method types can be found [here](https://docs.stripe.com/api/payment_methods/object#payment_method_object-type).
+            [<Config.Form>]
+            AllowedPaymentMethodTypes: Confirm'AllowedPaymentMethodTypes list option
             /// ID of the ConfirmationToken used to confirm this SetupIntent.
             /// If the provided ConfirmationToken contains properties that are also being provided in this request, such as `payment_method`, then the values in this request will take precedence.
             [<Config.Form>]
@@ -5959,9 +6273,10 @@ module SetupIntentsConfirm =
         }
 
     type ConfirmOptions with
-        static member New(intent: string, ?confirmationToken: string, ?expand: string list, ?mandateData: Choice<Confirm'MandateDataSecretKey,string,Confirm'MandateDataClientKey>, ?paymentMethod: string, ?paymentMethodData: Confirm'PaymentMethodData, ?paymentMethodOptions: Confirm'PaymentMethodOptions, ?returnUrl: string, ?useStripeSdk: bool) =
+        static member New(intent: string, ?allowedPaymentMethodTypes: Confirm'AllowedPaymentMethodTypes list, ?confirmationToken: string, ?expand: string list, ?mandateData: Choice<Confirm'MandateDataSecretKey,string,Confirm'MandateDataClientKey>, ?paymentMethod: string, ?paymentMethodData: Confirm'PaymentMethodData, ?paymentMethodOptions: Confirm'PaymentMethodOptions, ?returnUrl: string, ?useStripeSdk: bool) =
             {
                 Intent = intent
+                AllowedPaymentMethodTypes = allowedPaymentMethodTypes
                 ConfirmationToken = confirmationToken
                 Expand = expand
                 MandateData = mandateData

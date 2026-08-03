@@ -6,15 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
-## [Unreleased]
+## [2.3.0] - 2026-08-03
+
+### Upgrade notes
+- `Event.Data.Object`, `Event.Data.PreviousAttributes`, and `next_action.use_stripe_sdk` (on `PaymentIntent`/`SetupIntent`) change type from `string` to `RawJson`. This is shipped as a **minor** release despite the type change because these fields previously could not deserialise at all — any real webhook payload or 3DS `next_action` threw `JsonException` — so no working code can depend on the old type. If you constructed these values manually (e.g. in tests), wrap the string in `RawJson`; to read them, use the new `Util.deserialiseRaw<'a>`
+- Pattern matches on `EventType` and `StripeError.ErrorType` need an `UnknownEnumValue` case (or a wildcard). Previously an enum value unknown to the library failed the whole response at deserialisation, so no match on such a value could ever run
 
 ### Changed
+- Regenerated against Stripe OpenAPI spec `2026-07-29.dahlia` (was `2026-06-24.dahlia`). Highlights:
+  - Financial Connections: new `FinancialConnectionsAuthorization` resource with status details, session limits and manual-entry options, plus account/authorization deactivation lifecycle event types (`financial_connections.account.upcoming_deactivation`, `*.expected_deactivation_date_updated`, and authorization equivalents)
+  - `PaymentIntent`/`SetupIntent`: `allowed_payment_method_types`; expanded payment-record payment method details across many payment methods
+  - `Topup`: `initiated_by` and US bank account payment method options
+  - Tax: US mass-transit parking tax and parking tax registration options; `ic_nif` tax ID type
 - **Lenient deserialisation for high-churn enums**: `EventType` and `StripeError.ErrorType` gained an `UnknownEnumValue of string` catch-all case. Stripe adds enum values without an API-version bump, and one unknown nested value fails the whole response, so webhook event types and error types added after this library version was generated now deserialise to the catch-all instead of throwing; the case round-trips to its raw string on serialisation. Pattern matches on these two unions need a case for `UnknownEnumValue` (or a wildcard). All other enums keep strict exhaustive matching; the allowlist is `enumsWithCatchAll` in the generator
 
 ### Fixed
 - **Form encoding of list parameters**: `Util.format` now recurses into list elements instead of calling `ToString()` on them, so `List<record>` and `List<union>` request fields serialise correctly. Previously e.g. `Checkout.Sessions.Create` with `line_items` sent the F# record representation (`line_items[0] = { PriceData = ... }`) and `payment_method_types` sent PascalCase case names; both were rejected by Stripe. They now emit `line_items[0][price_data][unit_amount]=500` and `payment_method_types[0]=card`
 - **Webhook `Event` deserialisation**: `Event.Data.Object` and `Event.Data.PreviousAttributes` (and `next_action.use_stripe_sdk` on `PaymentIntent`/`SetupIntent`) were typed `string`, so deserialising any real webhook payload (or a 3DS `next_action`) threw `JsonException`. These untyped-object fields are now `RawJson`, which preserves the JSON fragment verbatim; deserialise it with the new `Util.deserialiseRaw<'a>` (breaking: these fields change type from `string` to `RawJson`)
 - Generator: `--spec` omitted on the command line now resolves to the `StripeApiVersion` in `Directory.Build.props` for the model and request builders too (previously only `StripeIds.fs` used it; models/requests silently fell back to a hard-coded older spec)
+- Generator: boolean-valued `additionalProperties` (`additionalProperties: true`, meaning "any JSON") is now recognised as an untyped object and emitted as `RawJson`; previously it was conflated with schema-valued `additionalProperties` (free-form maps) and emitted as `Map<string, string list>`. The `2026-07-29.dahlia` spec is the first to use the boolean form (on exactly the webhook/`use_stripe_sdk` fields above)
 
 ### Added
 - `RawJson` type (`FunStripe` namespace) with System.Text.Json and Fable converters

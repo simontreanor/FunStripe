@@ -8,7 +8,7 @@ open Stripe.TaxId
 open Stripe.TaxRate
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module TaxAssociationsFind =
 
     type FindOptions =
@@ -127,6 +127,7 @@ module TaxCalculations =
         | HkBr
         | HrOib
         | HuTin
+        | IcNif
         | IdNpwp
         | IlVat
         | InGst
@@ -193,7 +194,7 @@ module TaxCalculations =
 
     type Create'CustomerDetailsTaxIds =
         {
-            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
+            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
             [<Config.Form>]
             Type: Create'CustomerDetailsTaxIdsType option
             /// Value of the tax ID.
@@ -382,7 +383,7 @@ module TaxCalculations =
             /// Shipping cost details to be used for the calculation.
             [<Config.Form>]
             ShippingCost: Create'ShippingCost option
-            /// Timestamp of date at which the tax rules and rates in effect applies for the calculation. Measured in seconds since the Unix epoch. Can be up to 48 hours in the past, and up to 48 hours in the future.
+            /// The calculation uses the tax rules and rates that are in effect at this timestamp. You can use a date up to 31 days in the past or up to 31 days in the future. If you use a future date, Stripe doesn't guarantee that the expected tax rules and rate being used match the actual rules and rate that will be in effect on that date. We deploy tax changes before their effective date, but not within a fixed window.
             [<Config.Form>]
             TaxDate: int option
         }
@@ -3221,6 +3222,32 @@ module TaxRegistrations =
                 Jurisdiction = jurisdiction
             }
 
+    type Create'CountryOptionsUsMassTransitParkingTax =
+        {
+            /// A jurisdiction code representing the [local jurisdiction](/tax/registering?type=mass_transit_parking_tax#registration-types).
+            [<Config.Form>]
+            Jurisdiction: string option
+        }
+
+    type Create'CountryOptionsUsMassTransitParkingTax with
+        static member New(?jurisdiction: string) =
+            {
+                Jurisdiction = jurisdiction
+            }
+
+    type Create'CountryOptionsUsParkingTax =
+        {
+            /// A jurisdiction code representing the [local jurisdiction](/tax/registering?type=parking_tax#registration-types).
+            [<Config.Form>]
+            Jurisdiction: string option
+        }
+
+    type Create'CountryOptionsUsParkingTax with
+        static member New(?jurisdiction: string) =
+            {
+                Jurisdiction = jurisdiction
+            }
+
     type Create'CountryOptionsUsStateSalesTaxElectionsType =
         | LocalUseTax
         | SimplifiedSellersUseTax
@@ -3259,6 +3286,8 @@ module TaxRegistrations =
     type Create'CountryOptionsUsType =
         | LocalAmusementTax
         | LocalLeaseTax
+        | MassTransitParkingTax
+        | ParkingTax
         | StateCommunicationsTax
         | StateRetailDeliveryFee
         | StateSalesTax
@@ -3271,6 +3300,12 @@ module TaxRegistrations =
             /// Options for the local lease tax registration.
             [<Config.Form>]
             LocalLeaseTax: Create'CountryOptionsUsLocalLeaseTax option
+            /// Options for the mass transit parking tax registration.
+            [<Config.Form>]
+            MassTransitParkingTax: Create'CountryOptionsUsMassTransitParkingTax option
+            /// Options for the parking tax registration.
+            [<Config.Form>]
+            ParkingTax: Create'CountryOptionsUsParkingTax option
             /// Two-letter US state code ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
             [<Config.Form>]
             State: string option
@@ -3283,10 +3318,12 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsUs with
-        static member New(?localAmusementTax: Create'CountryOptionsUsLocalAmusementTax, ?localLeaseTax: Create'CountryOptionsUsLocalLeaseTax, ?state: string, ?stateSalesTax: Create'CountryOptionsUsStateSalesTax, ?type': Create'CountryOptionsUsType) =
+        static member New(?localAmusementTax: Create'CountryOptionsUsLocalAmusementTax, ?localLeaseTax: Create'CountryOptionsUsLocalLeaseTax, ?massTransitParkingTax: Create'CountryOptionsUsMassTransitParkingTax, ?parkingTax: Create'CountryOptionsUsParkingTax, ?state: string, ?stateSalesTax: Create'CountryOptionsUsStateSalesTax, ?type': Create'CountryOptionsUsType) =
             {
                 LocalAmusementTax = localAmusementTax
                 LocalLeaseTax = localLeaseTax
+                MassTransitParkingTax = massTransitParkingTax
+                ParkingTax = parkingTax
                 State = state
                 StateSalesTax = stateSalesTax
                 Type = type'
@@ -4438,6 +4475,7 @@ module TaxIds =
         | HkBr
         | HrOib
         | HuTin
+        | IcNif
         | IdNpwp
         | IlVat
         | InGst
@@ -4510,7 +4548,7 @@ module TaxIds =
             /// The account or customer the tax ID belongs to. Defaults to `owner[type]=self`.
             [<Config.Form>]
             Owner: Create'Owner option
-            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
+            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
             [<Config.Form>]
             Type: Create'Type
             /// Value of the tax ID.
@@ -4622,6 +4660,8 @@ module TaxRates =
         | Igst
         | Jct
         | LeaseTax
+        | MassTransitParkingTax
+        | ParkingTax
         | Pst
         | Qst
         | RetailDeliveryFee
@@ -4707,6 +4747,8 @@ module TaxRates =
         | Igst
         | Jct
         | LeaseTax
+        | MassTransitParkingTax
+        | ParkingTax
         | Pst
         | Qst
         | RetailDeliveryFee

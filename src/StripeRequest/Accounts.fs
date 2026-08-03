@@ -7,7 +7,7 @@ open Stripe.LoginLink
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module Accounts =
 
     type ListOptions =
@@ -1418,6 +1418,39 @@ module Accounts =
                 Town = town
             }
 
+    type Create'CompanyAdministrativeAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'CompanyAdministrativeAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     type Create'CompanyDirectorshipDeclaration =
         {
             /// The Unix timestamp marking when the directorship declaration attestation was made.
@@ -1463,6 +1496,39 @@ module Accounts =
     type Create'CompanyOwnershipExemptionReason =
         | QualifiedEntityExceedsOwnershipThreshold
         | QualifiesAsFinancialInstitution
+
+    type Create'CompanyPrincipalPlaceOfBusiness =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'CompanyPrincipalPlaceOfBusiness with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     type Create'CompanyRegistrationDateRegistrationDateSpecs =
         {
@@ -1572,6 +1638,8 @@ module Accounts =
             /// The Kanji variation of the company's primary address (Japan only).
             [<Config.Form>]
             AddressKanji: Create'CompanyAddressKanji option
+            [<Config.Form>]
+            AdministrativeAddress: Create'CompanyAdministrativeAddress option
             /// Whether the company's directors have been provided. Set this Boolean to `true` after creating all the company's directors with [the Persons API](/api/persons) for accounts with a `relationship.director` requirement. This value is not automatically set to `true` after creating directors, so it needs to be updated to indicate all directors have been provided.
             [<Config.Form>]
             DirectorsProvided: bool option
@@ -1608,6 +1676,8 @@ module Accounts =
             /// The company's phone number (used for verification).
             [<Config.Form>]
             Phone: string option
+            [<Config.Form>]
+            PrincipalPlaceOfBusiness: Create'CompanyPrincipalPlaceOfBusiness option
             /// When the business was incorporated or registered.
             [<Config.Form>]
             RegistrationDate: Choice<Create'CompanyRegistrationDateRegistrationDateSpecs,string> option
@@ -1621,6 +1691,7 @@ module Accounts =
             [<Config.Form>]
             Structure: Create'CompanyStructure option
             /// The business ID number of the company, as appropriate for the company’s country. (Examples are an Employer ID Number in the U.S., a Business Number in Canada, or a Company Number in the UK.)
+            /// Changing this value requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             TaxId: string option
             /// The jurisdiction in which the `tax_id` is registered (Germany-based companies only).
@@ -1635,11 +1706,12 @@ module Accounts =
         }
 
     type Create'Company with
-        static member New(?address: Create'CompanyAddress, ?addressKana: Create'CompanyAddressKana, ?addressKanji: Create'CompanyAddressKanji, ?directorsProvided: bool, ?directorshipDeclaration: Create'CompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Create'CompanyOwnershipDeclaration, ?ownershipExemptionReason: Create'CompanyOwnershipExemptionReason, ?phone: string, ?registrationDate: Choice<Create'CompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Create'CompanyRepresentativeDeclaration, ?structure: Create'CompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Create'CompanyVerification) =
+        static member New(?address: Create'CompanyAddress, ?addressKana: Create'CompanyAddressKana, ?addressKanji: Create'CompanyAddressKanji, ?administrativeAddress: Create'CompanyAdministrativeAddress, ?directorsProvided: bool, ?directorshipDeclaration: Create'CompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Create'CompanyOwnershipDeclaration, ?ownershipExemptionReason: Create'CompanyOwnershipExemptionReason, ?phone: string, ?principalPlaceOfBusiness: Create'CompanyPrincipalPlaceOfBusiness, ?registrationDate: Choice<Create'CompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Create'CompanyRepresentativeDeclaration, ?structure: Create'CompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Create'CompanyVerification) =
             {
                 Address = address
                 AddressKana = addressKana
                 AddressKanji = addressKanji
+                AdministrativeAddress = administrativeAddress
                 DirectorsProvided = directorsProvided
                 DirectorshipDeclaration = directorshipDeclaration
                 ExecutivesProvided = executivesProvided
@@ -1652,6 +1724,7 @@ module Accounts =
                 OwnershipDeclaration = ownershipDeclaration
                 OwnershipExemptionReason = ownershipExemptionReason
                 Phone = phone
+                PrincipalPlaceOfBusiness = principalPlaceOfBusiness
                 RegistrationDate = registrationDate
                 RegistrationNumber = registrationNumber
                 RepresentativeDeclaration = representativeDeclaration
@@ -1834,36 +1907,6 @@ module Accounts =
                 Files = files
             }
 
-    type Create'DocumentsProofOfRegistrationSigner =
-        {
-            /// The token of the person signing the document, if applicable.
-            [<Config.Form>]
-            Person: string option
-        }
-
-    type Create'DocumentsProofOfRegistrationSigner with
-        static member New(?person: string) =
-            {
-                Person = person
-            }
-
-    type Create'DocumentsProofOfRegistration =
-        {
-            /// One or more document ids returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `account_requirement`.
-            [<Config.Form>]
-            Files: string list option
-            /// Information regarding the person signing the document if applicable.
-            [<Config.Form>]
-            Signer: Create'DocumentsProofOfRegistrationSigner option
-        }
-
-    type Create'DocumentsProofOfRegistration with
-        static member New(?files: string list, ?signer: Create'DocumentsProofOfRegistrationSigner) =
-            {
-                Files = files
-                Signer = signer
-            }
-
     type Create'DocumentsProofOfUltimateBeneficialOwnershipSigner =
         {
             /// The token of the person signing the document, if applicable.
@@ -1917,16 +1960,13 @@ module Accounts =
             /// One or more documents that demonstrate proof of address.
             [<Config.Form>]
             ProofOfAddress: Create'DocumentsProofOfAddress option
-            /// One or more documents showing the company’s proof of registration with the national business registry.
-            [<Config.Form>]
-            ProofOfRegistration: Create'DocumentsProofOfRegistration option
             /// One or more documents that demonstrate proof of ultimate beneficial ownership.
             [<Config.Form>]
             ProofOfUltimateBeneficialOwnership: Create'DocumentsProofOfUltimateBeneficialOwnership option
         }
 
     type Create'Documents with
-        static member New(?bankAccountOwnershipVerification: Create'DocumentsBankAccountOwnershipVerification, ?companyLicense: Create'DocumentsCompanyLicense, ?companyMemorandumOfAssociation: Create'DocumentsCompanyMemorandumOfAssociation, ?companyMinisterialDecree: Create'DocumentsCompanyMinisterialDecree, ?companyRegistrationVerification: Create'DocumentsCompanyRegistrationVerification, ?companyTaxIdVerification: Create'DocumentsCompanyTaxIdVerification, ?proofOfAddress: Create'DocumentsProofOfAddress, ?proofOfRegistration: Create'DocumentsProofOfRegistration, ?proofOfUltimateBeneficialOwnership: Create'DocumentsProofOfUltimateBeneficialOwnership) =
+        static member New(?bankAccountOwnershipVerification: Create'DocumentsBankAccountOwnershipVerification, ?companyLicense: Create'DocumentsCompanyLicense, ?companyMemorandumOfAssociation: Create'DocumentsCompanyMemorandumOfAssociation, ?companyMinisterialDecree: Create'DocumentsCompanyMinisterialDecree, ?companyRegistrationVerification: Create'DocumentsCompanyRegistrationVerification, ?companyTaxIdVerification: Create'DocumentsCompanyTaxIdVerification, ?proofOfAddress: Create'DocumentsProofOfAddress, ?proofOfUltimateBeneficialOwnership: Create'DocumentsProofOfUltimateBeneficialOwnership) =
             {
                 BankAccountOwnershipVerification = bankAccountOwnershipVerification
                 CompanyLicense = companyLicense
@@ -1935,7 +1975,6 @@ module Accounts =
                 CompanyRegistrationVerification = companyRegistrationVerification
                 CompanyTaxIdVerification = companyTaxIdVerification
                 ProofOfAddress = proofOfAddress
-                ProofOfRegistration = proofOfRegistration
                 ProofOfUltimateBeneficialOwnership = proofOfUltimateBeneficialOwnership
             }
 
@@ -4126,6 +4165,39 @@ module Accounts =
                 Town = town
             }
 
+    type Update'CompanyAdministrativeAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Update'CompanyAdministrativeAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     type Update'CompanyDirectorshipDeclaration =
         {
             /// The Unix timestamp marking when the directorship declaration attestation was made.
@@ -4171,6 +4243,39 @@ module Accounts =
     type Update'CompanyOwnershipExemptionReason =
         | QualifiedEntityExceedsOwnershipThreshold
         | QualifiesAsFinancialInstitution
+
+    type Update'CompanyPrincipalPlaceOfBusiness =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Update'CompanyPrincipalPlaceOfBusiness with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     type Update'CompanyRegistrationDateRegistrationDateSpecs =
         {
@@ -4280,6 +4385,8 @@ module Accounts =
             /// The Kanji variation of the company's primary address (Japan only).
             [<Config.Form>]
             AddressKanji: Update'CompanyAddressKanji option
+            [<Config.Form>]
+            AdministrativeAddress: Update'CompanyAdministrativeAddress option
             /// Whether the company's directors have been provided. Set this Boolean to `true` after creating all the company's directors with [the Persons API](/api/persons) for accounts with a `relationship.director` requirement. This value is not automatically set to `true` after creating directors, so it needs to be updated to indicate all directors have been provided.
             [<Config.Form>]
             DirectorsProvided: bool option
@@ -4317,6 +4424,8 @@ module Accounts =
             [<Config.Form>]
             Phone: string option
             [<Config.Form>]
+            PrincipalPlaceOfBusiness: Update'CompanyPrincipalPlaceOfBusiness option
+            [<Config.Form>]
             RegistrationDate: Choice<Update'CompanyRegistrationDateRegistrationDateSpecs,string> option
             /// The identification number given to a company when it is registered or incorporated, if distinct from the identification number used for filing taxes. (Examples are the CIN for companies and LLP IN for partnerships in India, and the Company Registration Number in Hong Kong).
             [<Config.Form>]
@@ -4328,6 +4437,7 @@ module Accounts =
             [<Config.Form>]
             Structure: Update'CompanyStructure option
             /// The business ID number of the company, as appropriate for the company’s country. (Examples are an Employer ID Number in the U.S., a Business Number in Canada, or a Company Number in the UK.)
+            /// Changing this value requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             TaxId: string option
             /// The jurisdiction in which the `tax_id` is registered (Germany-based companies only).
@@ -4342,11 +4452,12 @@ module Accounts =
         }
 
     type Update'Company with
-        static member New(?address: Update'CompanyAddress, ?addressKana: Update'CompanyAddressKana, ?addressKanji: Update'CompanyAddressKanji, ?directorsProvided: bool, ?directorshipDeclaration: Update'CompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Update'CompanyOwnershipDeclaration, ?ownershipExemptionReason: Update'CompanyOwnershipExemptionReason, ?phone: string, ?registrationDate: Choice<Update'CompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Update'CompanyRepresentativeDeclaration, ?structure: Update'CompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Update'CompanyVerification) =
+        static member New(?address: Update'CompanyAddress, ?addressKana: Update'CompanyAddressKana, ?addressKanji: Update'CompanyAddressKanji, ?administrativeAddress: Update'CompanyAdministrativeAddress, ?directorsProvided: bool, ?directorshipDeclaration: Update'CompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Update'CompanyOwnershipDeclaration, ?ownershipExemptionReason: Update'CompanyOwnershipExemptionReason, ?phone: string, ?principalPlaceOfBusiness: Update'CompanyPrincipalPlaceOfBusiness, ?registrationDate: Choice<Update'CompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Update'CompanyRepresentativeDeclaration, ?structure: Update'CompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Update'CompanyVerification) =
             {
                 Address = address
                 AddressKana = addressKana
                 AddressKanji = addressKanji
+                AdministrativeAddress = administrativeAddress
                 DirectorsProvided = directorsProvided
                 DirectorshipDeclaration = directorshipDeclaration
                 ExecutivesProvided = executivesProvided
@@ -4359,6 +4470,7 @@ module Accounts =
                 OwnershipDeclaration = ownershipDeclaration
                 OwnershipExemptionReason = ownershipExemptionReason
                 Phone = phone
+                PrincipalPlaceOfBusiness = principalPlaceOfBusiness
                 RegistrationDate = registrationDate
                 RegistrationNumber = registrationNumber
                 RepresentativeDeclaration = representativeDeclaration
@@ -5159,6 +5271,19 @@ module Accounts =
                 StatementDescriptor = statementDescriptor
             }
 
+    type Update'SettingsSepaDebitPayments =
+        {
+            /// The business creditor id for european payments.
+            [<Config.Form>]
+            CreditorId: string option
+        }
+
+    type Update'SettingsSepaDebitPayments with
+        static member New(?creditorId: string) =
+            {
+                CreditorId = creditorId
+            }
+
     type Update'SettingsTreasuryTosAcceptance =
         {
             /// The Unix timestamp marking when the account representative accepted the service agreement.
@@ -5216,13 +5341,16 @@ module Accounts =
             /// Settings specific to the account's payouts.
             [<Config.Form>]
             Payouts: Update'SettingsPayouts option
+            /// Settings specific to SEPA Direct Debit payments.
+            [<Config.Form>]
+            SepaDebitPayments: Update'SettingsSepaDebitPayments option
             /// Settings specific to the account's Treasury FinancialAccounts.
             [<Config.Form>]
             Treasury: Update'SettingsTreasury option
         }
 
     type Update'Settings with
-        static member New(?bacsDebitPayments: Update'SettingsBacsDebitPayments, ?branding: Update'SettingsBranding, ?cardIssuing: Update'SettingsCardIssuing, ?cardPayments: Update'SettingsCardPayments, ?invoices: Update'SettingsInvoices, ?payments: Update'SettingsPayments, ?payouts: Update'SettingsPayouts, ?treasury: Update'SettingsTreasury) =
+        static member New(?bacsDebitPayments: Update'SettingsBacsDebitPayments, ?branding: Update'SettingsBranding, ?cardIssuing: Update'SettingsCardIssuing, ?cardPayments: Update'SettingsCardPayments, ?invoices: Update'SettingsInvoices, ?payments: Update'SettingsPayments, ?payouts: Update'SettingsPayouts, ?sepaDebitPayments: Update'SettingsSepaDebitPayments, ?treasury: Update'SettingsTreasury) =
             {
                 BacsDebitPayments = bacsDebitPayments
                 Branding = branding
@@ -5231,6 +5359,7 @@ module Accounts =
                 Invoices = invoices
                 Payments = payments
                 Payouts = payouts
+                SepaDebitPayments = sepaDebitPayments
                 Treasury = treasury
             }
 
@@ -5345,7 +5474,7 @@ module Accounts =
 
     ///<p>With <a href="/docs/connect">Connect</a>, you can create Stripe accounts for your users.
     ///To do this, you’ll first need to <a href="https://dashboard.stripe.com/account/applications/settings">register your platform</a>.</p>
-    ///<p>If you’ve already collected information for your connected accounts, you <a href="/docs/connect/best-practices#onboarding">can prefill that information</a> when
+    ///<p>If you’ve already collected information for your connected accounts, you <a href="/connect/marketplace/tasks/create#prefill-account-information">can prefill that information</a> when
     ///creating the account. Connect Onboarding won’t ask for the prefilled information during account onboarding.
     ///You can prefill any information on the account.</p>
     let Create settings (options: CreateOptions) =
@@ -6246,9 +6375,11 @@ module AccountsPersons =
             [<Config.Form>]
             Gender: string option
             /// The person's ID number, as appropriate for their country. For example, a social security number in the U.S., social insurance number in Canada, etc. Instead of the number itself, you can also provide a [PII token provided by Stripe.js](https://docs.stripe.com/js/tokens/create_token?type=pii).
+            /// Changing this value for the account's representative requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             IdNumber: string option
             /// The person's secondary ID number, as appropriate for their country, will be used for enhanced verification checks. In Thailand, this would be the laser code found on the back of an ID card. Instead of the number itself, you can also provide a [PII token provided by Stripe.js](https://docs.stripe.com/js/tokens/create_token?type=pii).
+            /// Changing this value for the account's representative requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             IdNumberSecondary: string option
             /// The person's last name.
@@ -6285,6 +6416,7 @@ module AccountsPersons =
             [<Config.Form>]
             Relationship: Create'Relationship option
             /// The last four digits of the person's Social Security number (U.S. only).
+            /// Changing this value for the account's representative requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             SsnLast4: string option
             /// Demographic data related to the person.
@@ -6849,9 +6981,11 @@ module AccountsPersons =
             [<Config.Form>]
             Gender: string option
             /// The person's ID number, as appropriate for their country. For example, a social security number in the U.S., social insurance number in Canada, etc. Instead of the number itself, you can also provide a [PII token provided by Stripe.js](https://docs.stripe.com/js/tokens/create_token?type=pii).
+            /// Changing this value for the account's representative requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             IdNumber: string option
             /// The person's secondary ID number, as appropriate for their country, will be used for enhanced verification checks. In Thailand, this would be the laser code found on the back of an ID card. Instead of the number itself, you can also provide a [PII token provided by Stripe.js](https://docs.stripe.com/js/tokens/create_token?type=pii).
+            /// Changing this value for the account's representative requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             IdNumberSecondary: string option
             /// The person's last name.
@@ -6888,6 +7022,7 @@ module AccountsPersons =
             [<Config.Form>]
             Relationship: Update'Relationship option
             /// The last four digits of the person's Social Security number (U.S. only).
+            /// Changing this value for the account's representative requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             SsnLast4: string option
             /// Demographic data related to the person.
@@ -6945,7 +7080,7 @@ module AccountsPersons =
         $"/v1/accounts/{options.Account}/persons"
         |> RestApi.postAsync<_, Person> settings (Map.empty) options
 
-    ///<p>Deletes an existing person’s relationship to the account’s legal entity. Any person with a relationship for an account can be deleted through the API, except if the person is the <code>account_opener</code>. If your integration is using the <code>executive</code> parameter, you cannot delete the only verified <code>executive</code> on file.</p>
+    ///<p>Deletes an existing person’s relationship to the account’s legal entity. Any person with a relationship for an account can be deleted through the API, except if the person is the <code>representative</code>. If your integration is using the <code>executive</code> parameter, you cannot delete the only verified <code>executive</code> on file.</p>
     let Delete settings (options: DeleteOptions) =
         $"/v1/accounts/{options.Account}/persons/{options.Person}"
         |> RestApi.deleteAsync<DeletedPerson> settings (Map.empty)
@@ -6963,6 +7098,10 @@ module AccountsPersons =
 
 module AccountsReject =
 
+    type Reject'PayoutsAction =
+        | [<JsonPropertyName("none")>] None'
+        | Pause
+
     type RejectOptions =
         {
             [<Config.Path>]
@@ -6970,22 +7109,51 @@ module AccountsReject =
             /// Specifies which fields in the response should be expanded.
             [<Config.Form>]
             Expand: string list option
+            /// Whether to pause payouts on the account as part of the rejection. Defaults to `pause`. Use `none` to leave payouts enabled.
+            [<Config.Form>]
+            PayoutsAction: Reject'PayoutsAction option
             /// The reason for rejecting the account. Can be `fraud`, `terms_of_service`, or `other`.
             [<Config.Form>]
             Reason: string
         }
 
     type RejectOptions with
-        static member New(account: string, reason: string, ?expand: string list) =
+        static member New(account: string, reason: string, ?expand: string list, ?payoutsAction: Reject'PayoutsAction) =
             {
                 Account = account
                 Reason = reason
                 Expand = expand
+                PayoutsAction = payoutsAction
             }
 
     ///<p>With <a href="/connect">Connect</a>, you can reject accounts that you have flagged as suspicious.</p>
-    ///<p>Only accounts where your platform is liable for negative account balances, which includes Custom and Express accounts, can be rejected. Test-mode accounts can be rejected at any time. Live-mode accounts can only be rejected after all balances are zero.</p>
+    ///<p>Only accounts where your platform is liable for negative account balances, which includes Custom and Express accounts, can be rejected.</p>
     let Reject settings (options: RejectOptions) =
         $"/v1/accounts/{options.Account}/reject"
+        |> RestApi.postAsync<_, Account> settings (Map.empty) options
+
+module AccountsUnreject =
+
+    type UnrejectOptions =
+        {
+            [<Config.Path>]
+            Account: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+        }
+
+    type UnrejectOptions with
+        static member New(account: string, ?expand: string list) =
+            {
+                Account = account
+                Expand = expand
+            }
+
+    ///<p>With Connect, you can unreject accounts that you have previously rejected.</p>
+    ///<p>Only accounts that were rejected by your platform can be unrejected. This API cannot be used to unreject accounts that were rejected by Stripe.</p>
+    ///<p>Unreject will only enable charges and/or payouts if there are no other restrictions other than those placed by a previous rejection. If you have separately paused charges and/or payouts outside of rejection, those pauses will remain in place after unrejection.</p>
+    let Unreject settings (options: UnrejectOptions) =
+        $"/v1/accounts/{options.Account}/unreject"
         |> RestApi.postAsync<_, Account> settings (Map.empty) options
 

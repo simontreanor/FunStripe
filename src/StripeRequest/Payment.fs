@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.PaymentRecord
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module PaymentAttemptRecords =
 
     type ListOptions =
@@ -103,6 +103,104 @@ module PaymentIntents =
                 Limit = limit
                 StartingAfter = startingAfter
             }
+
+    type Create'AllowedPaymentMethodTypes =
+        | AcssDebit
+        | Affirm
+        | AfterpayClearpay
+        | Alipay
+        | Alma
+        | AmazonPay
+        | AuBecsDebit
+        | BacsDebit
+        | Bancontact
+        | Billie
+        | Bizum
+        | Blik
+        | BokuPromptpay
+        | Boleto
+        | CapchasePay
+        | Card
+        | Cashapp
+        | CheckScan
+        | ClickToPay
+        | Crypto
+        | CustomerBalance
+        | DemoPay
+        | Duitnow
+        | DummyAuthPush
+        | DummyPassthroughCard
+        | Edenred
+        | Eps
+        | Fpx
+        | Gcash
+        | Getbalance
+        | GiftCard
+        | Giropay
+        | Gopay
+        | Grabpay
+        | IdBankTransfer
+        | Ideal
+        | KakaoPay
+        | Klarna
+        | Knet
+        | Konbini
+        | KrCard
+        | KrMarket
+        | Kriya
+        | Link
+        | MbWay
+        | Mobilepay
+        | Momo
+        | Mondu
+        | Multibanco
+        | NaverPay
+        | Netbanking
+        | NgBank
+        | NgBankTransfer
+        | NgCard
+        | NgMarket
+        | NgUssd
+        | NgWallet
+        | NzBankAccount
+        | Octopus
+        | Oxxo
+        | [<JsonPropertyName("p24")>] P24
+        | PaperCheck
+        | PayByBank
+        | Payco
+        | Paynow
+        | Paypal
+        | Paypay
+        | Payto
+        | Pix
+        | Promptpay
+        | Qris
+        | Rechnung
+        | RevolutPay
+        | SamsungPay
+        | Satispay
+        | Scalapay
+        | SepaDebit
+        | Sequra
+        | ShopPay
+        | Shopeepay
+        | Sofort
+        | SouthKoreaMarket
+        | StripeBalance
+        | Sunbit
+        | Swish
+        | Tamara
+        | TestPay
+        | Truemoney
+        | Twint
+        | Upi
+        | UsBankAccount
+        | UsCashVoucher
+        | Vipps
+        | WechatPay
+        | Wero
+        | Zip
 
     type Create'AmountDetailsLineItemsPaymentMethodOptionsCard =
         {
@@ -728,14 +826,17 @@ module PaymentIntents =
         | BankMuamalat
         | BankOfChina
         | BankRakyat
+        | BnpParibas
         | Bsn
         | Cimb
+        | Citibank
         | DeutscheBank
         | HongLeongBank
         | Hsbc
         | Kfh
         | Maybank2e
         | Maybank2u
+        | MbsbBank
         | Ocbc
         | PbEnterprise
         | PublicBank
@@ -2848,6 +2949,8 @@ module PaymentIntents =
 
     type Create'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod = | Manual
 
+    type Create'PaymentMethodOptionsPaycoPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
     type Create'PaymentMethodOptionsPaycoPaymentMethodOptions =
         {
             /// Controls when the funds are captured from the customer's account.
@@ -2855,12 +2958,19 @@ module PaymentIntents =
             /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
             [<Config.Form>]
             CaptureMethod: Create'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Create'PaymentMethodOptionsPaycoPaymentMethodOptionsSetupFutureUsage option
         }
 
     type Create'PaymentMethodOptionsPaycoPaymentMethodOptions with
-        static member New(?captureMethod: Create'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod) =
+        static member New(?captureMethod: Create'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsPaycoPaymentMethodOptionsSetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsPaynowPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -3175,6 +3285,8 @@ module PaymentIntents =
 
     type Create'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod = | Manual
 
+    type Create'PaymentMethodOptionsSamsungPayPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
     type Create'PaymentMethodOptionsSamsungPayPaymentMethodOptions =
         {
             /// Controls when the funds are captured from the customer's account.
@@ -3182,12 +3294,19 @@ module PaymentIntents =
             /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
             [<Config.Form>]
             CaptureMethod: Create'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Create'PaymentMethodOptionsSamsungPayPaymentMethodOptionsSetupFutureUsage option
         }
 
     type Create'PaymentMethodOptionsSamsungPayPaymentMethodOptions with
-        static member New(?captureMethod: Create'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod) =
+        static member New(?captureMethod: Create'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsSamsungPayPaymentMethodOptionsSetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod = | Manual
@@ -3874,14 +3993,18 @@ module PaymentIntents =
 
     type Create'RadarOptions =
         {
+            /// The referrer URL of the current checkout session. You can use this to supply session-level referrer data when a Radar Session isn't available or doesn't contain a referrer.
+            [<Config.Form>]
+            Referrer: Choice<string,string> option
             /// A [Radar Session](https://docs.stripe.com/radar/radar-session) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
             [<Config.Form>]
             Session: string option
         }
 
     type Create'RadarOptions with
-        static member New(?session: string) =
+        static member New(?referrer: Choice<string,string>, ?session: string) =
             {
+                Referrer = referrer
                 Session = session
             }
 
@@ -4007,6 +4130,9 @@ module PaymentIntents =
 
     type CreateOptions =
         {
+            /// The list of payment method types allowed for use with this payment. Stripe automatically returns compatible payment methods from this list in the `payment_method_types` field of the response, based on the other PaymentIntent parameters, such as `currency`, `amount`, and `customer`.
+            [<Config.Form>]
+            AllowedPaymentMethodTypes: Create'AllowedPaymentMethodTypes list option
             /// Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://docs.stripe.com/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
             [<Config.Form>]
             Amount: int
@@ -4136,10 +4262,11 @@ module PaymentIntents =
         }
 
     type CreateOptions with
-        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?amountDetails: Create'AmountDetails, ?applicationFeeAmount: int, ?automaticPaymentMethods: Create'AutomaticPaymentMethods, ?captureMethod: Create'CaptureMethod, ?confirm: bool, ?confirmationMethod: Create'ConfirmationMethod, ?confirmationToken: string, ?customer: string, ?customerAccount: string, ?description: string, ?errorOnRequiresAction: bool, ?excludedPaymentMethodTypes: Create'ExcludedPaymentMethodTypes list, ?expand: string list, ?hooks: Create'Hooks, ?mandate: string, ?mandateData: Choice<Create'MandateDataSecretKey,string>, ?metadata: Map<string, string>, ?offSession: Choice<bool,Create'OffSession>, ?onBehalfOf: string, ?paymentDetails: Create'PaymentDetails, ?paymentMethod: string, ?paymentMethodConfiguration: string, ?paymentMethodData: Create'PaymentMethodData, ?paymentMethodOptions: Create'PaymentMethodOptions, ?paymentMethodTypes: string list, ?radarOptions: Create'RadarOptions, ?receiptEmail: string, ?returnUrl: string, ?setupFutureUsage: Create'SetupFutureUsage, ?shipping: Create'Shipping, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: Create'TransferData, ?transferGroup: string, ?useStripeSdk: bool) =
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?allowedPaymentMethodTypes: Create'AllowedPaymentMethodTypes list, ?amountDetails: Create'AmountDetails, ?applicationFeeAmount: int, ?automaticPaymentMethods: Create'AutomaticPaymentMethods, ?captureMethod: Create'CaptureMethod, ?confirm: bool, ?confirmationMethod: Create'ConfirmationMethod, ?confirmationToken: string, ?customer: string, ?customerAccount: string, ?description: string, ?errorOnRequiresAction: bool, ?excludedPaymentMethodTypes: Create'ExcludedPaymentMethodTypes list, ?expand: string list, ?hooks: Create'Hooks, ?mandate: string, ?mandateData: Choice<Create'MandateDataSecretKey,string>, ?metadata: Map<string, string>, ?offSession: Choice<bool,Create'OffSession>, ?onBehalfOf: string, ?paymentDetails: Create'PaymentDetails, ?paymentMethod: string, ?paymentMethodConfiguration: string, ?paymentMethodData: Create'PaymentMethodData, ?paymentMethodOptions: Create'PaymentMethodOptions, ?paymentMethodTypes: string list, ?radarOptions: Create'RadarOptions, ?receiptEmail: string, ?returnUrl: string, ?setupFutureUsage: Create'SetupFutureUsage, ?shipping: Create'Shipping, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: Create'TransferData, ?transferGroup: string, ?useStripeSdk: bool) =
             {
                 Amount = amount
                 Currency = currency
+                AllowedPaymentMethodTypes = allowedPaymentMethodTypes
                 AmountDetails = amountDetails
                 ApplicationFeeAmount = applicationFeeAmount
                 AutomaticPaymentMethods = automaticPaymentMethods
@@ -4196,6 +4323,104 @@ module PaymentIntents =
                 ClientSecret = clientSecret
                 Expand = expand
             }
+
+    type Update'AllowedPaymentMethodTypes =
+        | AcssDebit
+        | Affirm
+        | AfterpayClearpay
+        | Alipay
+        | Alma
+        | AmazonPay
+        | AuBecsDebit
+        | BacsDebit
+        | Bancontact
+        | Billie
+        | Bizum
+        | Blik
+        | BokuPromptpay
+        | Boleto
+        | CapchasePay
+        | Card
+        | Cashapp
+        | CheckScan
+        | ClickToPay
+        | Crypto
+        | CustomerBalance
+        | DemoPay
+        | Duitnow
+        | DummyAuthPush
+        | DummyPassthroughCard
+        | Edenred
+        | Eps
+        | Fpx
+        | Gcash
+        | Getbalance
+        | GiftCard
+        | Giropay
+        | Gopay
+        | Grabpay
+        | IdBankTransfer
+        | Ideal
+        | KakaoPay
+        | Klarna
+        | Knet
+        | Konbini
+        | KrCard
+        | KrMarket
+        | Kriya
+        | Link
+        | MbWay
+        | Mobilepay
+        | Momo
+        | Mondu
+        | Multibanco
+        | NaverPay
+        | Netbanking
+        | NgBank
+        | NgBankTransfer
+        | NgCard
+        | NgMarket
+        | NgUssd
+        | NgWallet
+        | NzBankAccount
+        | Octopus
+        | Oxxo
+        | [<JsonPropertyName("p24")>] P24
+        | PaperCheck
+        | PayByBank
+        | Payco
+        | Paynow
+        | Paypal
+        | Paypay
+        | Payto
+        | Pix
+        | Promptpay
+        | Qris
+        | Rechnung
+        | RevolutPay
+        | SamsungPay
+        | Satispay
+        | Scalapay
+        | SepaDebit
+        | Sequra
+        | ShopPay
+        | Shopeepay
+        | Sofort
+        | SouthKoreaMarket
+        | StripeBalance
+        | Sunbit
+        | Swish
+        | Tamara
+        | TestPay
+        | Truemoney
+        | Twint
+        | Upi
+        | UsBankAccount
+        | UsCashVoucher
+        | Vipps
+        | WechatPay
+        | Wero
+        | Zip
 
     type Update'AmountDetailsAmountDetailsLineItemsPaymentMethodOptionsCard =
         {
@@ -4732,14 +4957,17 @@ module PaymentIntents =
         | BankMuamalat
         | BankOfChina
         | BankRakyat
+        | BnpParibas
         | Bsn
         | Cimb
+        | Citibank
         | DeutscheBank
         | HongLeongBank
         | Hsbc
         | Kfh
         | Maybank2e
         | Maybank2u
+        | MbsbBank
         | Ocbc
         | PbEnterprise
         | PublicBank
@@ -6852,6 +7080,8 @@ module PaymentIntents =
 
     type Update'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod = | Manual
 
+    type Update'PaymentMethodOptionsPaycoPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
     type Update'PaymentMethodOptionsPaycoPaymentMethodOptions =
         {
             /// Controls when the funds are captured from the customer's account.
@@ -6859,12 +7089,19 @@ module PaymentIntents =
             /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
             [<Config.Form>]
             CaptureMethod: Update'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Update'PaymentMethodOptionsPaycoPaymentMethodOptionsSetupFutureUsage option
         }
 
     type Update'PaymentMethodOptionsPaycoPaymentMethodOptions with
-        static member New(?captureMethod: Update'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod) =
+        static member New(?captureMethod: Update'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Update'PaymentMethodOptionsPaycoPaymentMethodOptionsSetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Update'PaymentMethodOptionsPaynowPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -7179,6 +7416,8 @@ module PaymentIntents =
 
     type Update'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod = | Manual
 
+    type Update'PaymentMethodOptionsSamsungPayPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
     type Update'PaymentMethodOptionsSamsungPayPaymentMethodOptions =
         {
             /// Controls when the funds are captured from the customer's account.
@@ -7186,12 +7425,19 @@ module PaymentIntents =
             /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
             [<Config.Form>]
             CaptureMethod: Update'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Update'PaymentMethodOptionsSamsungPayPaymentMethodOptionsSetupFutureUsage option
         }
 
     type Update'PaymentMethodOptionsSamsungPayPaymentMethodOptions with
-        static member New(?captureMethod: Update'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod) =
+        static member New(?captureMethod: Update'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Update'PaymentMethodOptionsSamsungPayPaymentMethodOptionsSetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Update'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod = | Manual
@@ -7988,6 +8234,9 @@ module PaymentIntents =
         {
             [<Config.Path>]
             Intent: string
+            /// The list of payment method types allowed for use with this payment. Stripe automatically returns compatible payment methods from this list in the `payment_method_types` field of the response, based on the other PaymentIntent parameters, such as `currency`, `amount`, and `customer`.
+            [<Config.Form>]
+            AllowedPaymentMethodTypes: Update'AllowedPaymentMethodTypes list option
             /// Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://docs.stripe.com/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
             [<Config.Form>]
             Amount: int option
@@ -8077,9 +8326,10 @@ module PaymentIntents =
         }
 
     type UpdateOptions with
-        static member New(intent: string, ?amount: int, ?amountDetails: Choice<Update'AmountDetailsAmountDetails,string>, ?applicationFeeAmount: Choice<int,string>, ?captureMethod: Update'CaptureMethod, ?currency: IsoTypes.IsoCurrencyCode, ?customer: string, ?customerAccount: string, ?description: string, ?excludedPaymentMethodTypes: Choice<Update'ExcludedPaymentMethodTypes list,string>, ?expand: string list, ?hooks: Update'Hooks, ?metadata: Map<string, string>, ?paymentDetails: Choice<Update'PaymentDetailsPaymentDetails,string>, ?paymentMethod: string, ?paymentMethodConfiguration: string, ?paymentMethodData: Update'PaymentMethodData, ?paymentMethodOptions: Update'PaymentMethodOptions, ?paymentMethodTypes: string list, ?receiptEmail: Choice<string,string>, ?setupFutureUsage: Update'SetupFutureUsage, ?shipping: Choice<Update'ShippingOptionalFieldsShipping,string>, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: Update'TransferData, ?transferGroup: string) =
+        static member New(intent: string, ?allowedPaymentMethodTypes: Update'AllowedPaymentMethodTypes list, ?amount: int, ?amountDetails: Choice<Update'AmountDetailsAmountDetails,string>, ?applicationFeeAmount: Choice<int,string>, ?captureMethod: Update'CaptureMethod, ?currency: IsoTypes.IsoCurrencyCode, ?customer: string, ?customerAccount: string, ?description: string, ?excludedPaymentMethodTypes: Choice<Update'ExcludedPaymentMethodTypes list,string>, ?expand: string list, ?hooks: Update'Hooks, ?metadata: Map<string, string>, ?paymentDetails: Choice<Update'PaymentDetailsPaymentDetails,string>, ?paymentMethod: string, ?paymentMethodConfiguration: string, ?paymentMethodData: Update'PaymentMethodData, ?paymentMethodOptions: Update'PaymentMethodOptions, ?paymentMethodTypes: string list, ?receiptEmail: Choice<string,string>, ?setupFutureUsage: Update'SetupFutureUsage, ?shipping: Choice<Update'ShippingOptionalFieldsShipping,string>, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: Update'TransferData, ?transferGroup: string) =
             {
                 Intent = intent
+                AllowedPaymentMethodTypes = allowedPaymentMethodTypes
                 Amount = amount
                 AmountDetails = amountDetails
                 ApplicationFeeAmount = applicationFeeAmount
@@ -8648,6 +8898,104 @@ module PaymentIntentsCapture =
         |> RestApi.postAsync<_, PaymentIntent> settings (Map.empty) options
 
 module PaymentIntentsConfirm =
+
+    type Confirm'AllowedPaymentMethodTypes =
+        | AcssDebit
+        | Affirm
+        | AfterpayClearpay
+        | Alipay
+        | Alma
+        | AmazonPay
+        | AuBecsDebit
+        | BacsDebit
+        | Bancontact
+        | Billie
+        | Bizum
+        | Blik
+        | BokuPromptpay
+        | Boleto
+        | CapchasePay
+        | Card
+        | Cashapp
+        | CheckScan
+        | ClickToPay
+        | Crypto
+        | CustomerBalance
+        | DemoPay
+        | Duitnow
+        | DummyAuthPush
+        | DummyPassthroughCard
+        | Edenred
+        | Eps
+        | Fpx
+        | Gcash
+        | Getbalance
+        | GiftCard
+        | Giropay
+        | Gopay
+        | Grabpay
+        | IdBankTransfer
+        | Ideal
+        | KakaoPay
+        | Klarna
+        | Knet
+        | Konbini
+        | KrCard
+        | KrMarket
+        | Kriya
+        | Link
+        | MbWay
+        | Mobilepay
+        | Momo
+        | Mondu
+        | Multibanco
+        | NaverPay
+        | Netbanking
+        | NgBank
+        | NgBankTransfer
+        | NgCard
+        | NgMarket
+        | NgUssd
+        | NgWallet
+        | NzBankAccount
+        | Octopus
+        | Oxxo
+        | [<JsonPropertyName("p24")>] P24
+        | PaperCheck
+        | PayByBank
+        | Payco
+        | Paynow
+        | Paypal
+        | Paypay
+        | Payto
+        | Pix
+        | Promptpay
+        | Qris
+        | Rechnung
+        | RevolutPay
+        | SamsungPay
+        | Satispay
+        | Scalapay
+        | SepaDebit
+        | Sequra
+        | ShopPay
+        | Shopeepay
+        | Sofort
+        | SouthKoreaMarket
+        | StripeBalance
+        | Sunbit
+        | Swish
+        | Tamara
+        | TestPay
+        | Truemoney
+        | Twint
+        | Upi
+        | UsBankAccount
+        | UsCashVoucher
+        | Vipps
+        | WechatPay
+        | Wero
+        | Zip
 
     type Confirm'AmountDetailsAmountDetailsLineItemsPaymentMethodOptionsCard =
         {
@@ -9296,14 +9644,17 @@ module PaymentIntentsConfirm =
         | BankMuamalat
         | BankOfChina
         | BankRakyat
+        | BnpParibas
         | Bsn
         | Cimb
+        | Citibank
         | DeutscheBank
         | HongLeongBank
         | Hsbc
         | Kfh
         | Maybank2e
         | Maybank2u
+        | MbsbBank
         | Ocbc
         | PbEnterprise
         | PublicBank
@@ -11417,6 +11768,8 @@ module PaymentIntentsConfirm =
 
     type Confirm'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod = | Manual
 
+    type Confirm'PaymentMethodOptionsPaycoPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
     type Confirm'PaymentMethodOptionsPaycoPaymentMethodOptions =
         {
             /// Controls when the funds are captured from the customer's account.
@@ -11424,12 +11777,19 @@ module PaymentIntentsConfirm =
             /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
             [<Config.Form>]
             CaptureMethod: Confirm'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Confirm'PaymentMethodOptionsPaycoPaymentMethodOptionsSetupFutureUsage option
         }
 
     type Confirm'PaymentMethodOptionsPaycoPaymentMethodOptions with
-        static member New(?captureMethod: Confirm'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod) =
+        static member New(?captureMethod: Confirm'PaymentMethodOptionsPaycoPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Confirm'PaymentMethodOptionsPaycoPaymentMethodOptionsSetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Confirm'PaymentMethodOptionsPaynowPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -11744,6 +12104,8 @@ module PaymentIntentsConfirm =
 
     type Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod = | Manual
 
+    type Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
     type Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptions =
         {
             /// Controls when the funds are captured from the customer's account.
@@ -11751,12 +12113,19 @@ module PaymentIntentsConfirm =
             /// If `capture_method` is already set on the PaymentIntent, providing an empty value for this parameter unsets the stored value for this payment method type.
             [<Config.Form>]
             CaptureMethod: Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptionsSetupFutureUsage option
         }
 
     type Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptions with
-        static member New(?captureMethod: Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod) =
+        static member New(?captureMethod: Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: Confirm'PaymentMethodOptionsSamsungPayPaymentMethodOptionsSetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Confirm'PaymentMethodOptionsSatispayPaymentMethodOptionsCaptureMethod = | Manual
@@ -12443,14 +12812,18 @@ module PaymentIntentsConfirm =
 
     type Confirm'RadarOptions =
         {
+            /// The referrer URL of the current checkout session. You can use this to supply session-level referrer data when a Radar Session isn't available or doesn't contain a referrer.
+            [<Config.Form>]
+            Referrer: Choice<string,string> option
             /// A [Radar Session](https://docs.stripe.com/radar/radar-session) is a snapshot of the browser metadata and device details that help Radar make more accurate predictions on your payments.
             [<Config.Form>]
             Session: string option
         }
 
     type Confirm'RadarOptions with
-        static member New(?session: string) =
+        static member New(?referrer: Choice<string,string>, ?session: string) =
             {
+                Referrer = referrer
                 Session = session
             }
 
@@ -12524,6 +12897,9 @@ module PaymentIntentsConfirm =
         {
             [<Config.Path>]
             Intent: string
+            /// The list of payment method types allowed for use with this payment. Stripe automatically returns compatible payment methods from this list in the `payment_method_types` field of the response, based on the other PaymentIntent parameters, such as `currency`, `amount`, and `customer`.
+            [<Config.Form>]
+            AllowedPaymentMethodTypes: Confirm'AllowedPaymentMethodTypes list option
             /// Provides industry-specific information about the amount.
             [<Config.Form>]
             AmountDetails: Choice<Confirm'AmountDetailsAmountDetails,string> option
@@ -12572,7 +12948,7 @@ module PaymentIntentsConfirm =
             /// Payment method-specific configuration for this PaymentIntent.
             [<Config.Form>]
             PaymentMethodOptions: Confirm'PaymentMethodOptions option
-            /// The list of payment method types (for example, a card) that this PaymentIntent can use. Use `automatic_payment_methods` to manage payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods). A list of valid payment method types can be found [here](https://docs.stripe.com/api/payment_methods/object#payment_method_object-type).
+            /// The list of payment method types (for example, a card) that this PaymentIntent can use. If you don't provide this, Stripe will dynamically show relevant payment methods from your [payment method settings](https://dashboard.stripe.com/settings/payment_methods). A list of valid payment method types can be found [here](https://docs.stripe.com/api/payment_methods/object#payment_method_object-type).
             [<Config.Form>]
             PaymentMethodTypes: string list option
             /// Options to configure Radar. Learn more about [Radar Sessions](https://docs.stripe.com/radar/radar-session).
@@ -12602,9 +12978,10 @@ module PaymentIntentsConfirm =
         }
 
     type ConfirmOptions with
-        static member New(intent: string, ?amountDetails: Choice<Confirm'AmountDetailsAmountDetails,string>, ?amountToConfirm: int, ?captureMethod: Confirm'CaptureMethod, ?confirmationToken: string, ?errorOnRequiresAction: bool, ?excludedPaymentMethodTypes: Choice<Confirm'ExcludedPaymentMethodTypes list,string>, ?expand: string list, ?hooks: Confirm'Hooks, ?mandate: string, ?mandateData: Choice<Confirm'MandateDataSecretKey,string,Confirm'MandateDataClientKey>, ?offSession: Choice<bool,Confirm'OffSession>, ?paymentDetails: Choice<Confirm'PaymentDetailsPaymentDetails,string>, ?paymentMethod: string, ?paymentMethodData: Confirm'PaymentMethodData, ?paymentMethodOptions: Confirm'PaymentMethodOptions, ?paymentMethodTypes: string list, ?radarOptions: Confirm'RadarOptions, ?receiptEmail: Choice<string,string>, ?returnUrl: string, ?setupFutureUsage: Confirm'SetupFutureUsage, ?shipping: Choice<Confirm'ShippingOptionalFieldsShipping,string>, ?useStripeSdk: bool) =
+        static member New(intent: string, ?allowedPaymentMethodTypes: Confirm'AllowedPaymentMethodTypes list, ?amountDetails: Choice<Confirm'AmountDetailsAmountDetails,string>, ?amountToConfirm: int, ?captureMethod: Confirm'CaptureMethod, ?confirmationToken: string, ?errorOnRequiresAction: bool, ?excludedPaymentMethodTypes: Choice<Confirm'ExcludedPaymentMethodTypes list,string>, ?expand: string list, ?hooks: Confirm'Hooks, ?mandate: string, ?mandateData: Choice<Confirm'MandateDataSecretKey,string,Confirm'MandateDataClientKey>, ?offSession: Choice<bool,Confirm'OffSession>, ?paymentDetails: Choice<Confirm'PaymentDetailsPaymentDetails,string>, ?paymentMethod: string, ?paymentMethodData: Confirm'PaymentMethodData, ?paymentMethodOptions: Confirm'PaymentMethodOptions, ?paymentMethodTypes: string list, ?radarOptions: Confirm'RadarOptions, ?receiptEmail: Choice<string,string>, ?returnUrl: string, ?setupFutureUsage: Confirm'SetupFutureUsage, ?shipping: Choice<Confirm'ShippingOptionalFieldsShipping,string>, ?useStripeSdk: bool) =
             {
                 Intent = intent
+                AllowedPaymentMethodTypes = allowedPaymentMethodTypes
                 AmountDetails = amountDetails
                 AmountToConfirm = amountToConfirm
                 CaptureMethod = captureMethod
@@ -14670,6 +15047,56 @@ module PaymentLinks =
         | Auto
         | Required
 
+    type Update'ConsentCollectionPaymentMethodReuseAgreementPosition =
+        | Auto
+        | Hidden
+
+    type Update'ConsentCollectionPaymentMethodReuseAgreement =
+        {
+            /// Determines the position and visibility of the payment method reuse agreement in the UI. When set to `auto`, Stripe's
+            /// defaults will be used. When set to `hidden`, the payment method reuse agreement text will always be hidden in the UI.
+            [<Config.Form>]
+            Position: Update'ConsentCollectionPaymentMethodReuseAgreementPosition option
+        }
+
+    type Update'ConsentCollectionPaymentMethodReuseAgreement with
+        static member New(?position: Update'ConsentCollectionPaymentMethodReuseAgreementPosition) =
+            {
+                Position = position
+            }
+
+    type Update'ConsentCollectionPromotions =
+        | Auto
+        | [<JsonPropertyName("none")>] None'
+
+    type Update'ConsentCollectionTermsOfService =
+        | [<JsonPropertyName("none")>] None'
+        | Required
+
+    type Update'ConsentCollection =
+        {
+            /// Determines the display of payment method reuse agreement text in the UI. If set to `hidden`, it will hide legal text related to the reuse of a payment method.
+            [<Config.Form>]
+            PaymentMethodReuseAgreement: Update'ConsentCollectionPaymentMethodReuseAgreement option
+            /// If set to `auto`, enables the collection of customer consent for promotional communications. The Checkout
+            /// Session will determine whether to display an option to opt into promotional communication
+            /// from the merchant depending on the customer's locale. Only available to US merchants and US customers.
+            [<Config.Form>]
+            Promotions: Update'ConsentCollectionPromotions option
+            /// If set to `required`, it requires customers to check a terms of service checkbox before being able to pay.
+            /// There must be a valid terms of service URL set in your [Dashboard settings](https://dashboard.stripe.com/settings/public).
+            [<Config.Form>]
+            TermsOfService: Update'ConsentCollectionTermsOfService option
+        }
+
+    type Update'ConsentCollection with
+        static member New(?paymentMethodReuseAgreement: Update'ConsentCollectionPaymentMethodReuseAgreement, ?promotions: Update'ConsentCollectionPromotions, ?termsOfService: Update'ConsentCollectionTermsOfService) =
+            {
+                PaymentMethodReuseAgreement = paymentMethodReuseAgreement
+                Promotions = promotions
+                TermsOfService = termsOfService
+            }
+
     type Update'CustomFieldsDropdownOptions =
         {
             /// The label for the option, displayed to the customer. Up to 100 characters.
@@ -15138,6 +15565,10 @@ module PaymentLinks =
                 Quantity = quantity
             }
 
+    type Update'PaymentIntentDataSetupFutureUsage =
+        | OffSession
+        | OnSession
+
     type Update'PaymentIntentData =
         {
             /// An arbitrary string attached to the object. Often useful for displaying to users.
@@ -15146,6 +15577,14 @@ module PaymentLinks =
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that will declaratively set metadata on [Payment Intents](https://docs.stripe.com/api/payment_intents) generated from this payment link. Unlike object-level metadata, this field is declarative. Updates will clear prior values.
             [<Config.Form>]
             Metadata: Map<string, string> option
+            /// Indicates that you intend to [make future payments](https://docs.stripe.com/payments/payment-intents#future-usage) with the payment method collected by this Checkout Session.
+            /// When setting this to `on_session`, Checkout will show a notice to the customer that their payment details will be saved.
+            /// When setting this to `off_session`, Checkout will show a notice to the customer that their payment details will be saved and used for future payments.
+            /// If a Customer has been provided or Checkout creates a new Customer,Checkout will attach the payment method to the Customer.
+            /// If Checkout does not create a Customer, the payment method is not attached to a Customer. To reuse the payment method, you can retrieve it from the Checkout Session's PaymentIntent.
+            /// When processing card payments, Checkout also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as SCA.
+            [<Config.Form>]
+            SetupFutureUsage: Update'PaymentIntentDataSetupFutureUsage option
             /// Text that appears on the customer's statement as the statement descriptor for a non-card charge. This value overrides the account's default statement descriptor. For information about requirements, including the 22-character limit, see [the Statement Descriptor docs](https://docs.stripe.com/get-started/account/statement-descriptors).
             /// Setting this value for a card charge returns an error. For card charges, set the [statement_descriptor_suffix](https://docs.stripe.com/get-started/account/statement-descriptors#dynamic) instead.
             [<Config.Form>]
@@ -15159,10 +15598,11 @@ module PaymentLinks =
         }
 
     type Update'PaymentIntentData with
-        static member New(?description: Choice<string,string>, ?metadata: Map<string, string>, ?statementDescriptor: Choice<string,string>, ?statementDescriptorSuffix: Choice<string,string>, ?transferGroup: Choice<string,string>) =
+        static member New(?description: Choice<string,string>, ?metadata: Map<string, string>, ?setupFutureUsage: Update'PaymentIntentDataSetupFutureUsage, ?statementDescriptor: Choice<string,string>, ?statementDescriptorSuffix: Choice<string,string>, ?transferGroup: Choice<string,string>) =
             {
                 Description = description
                 Metadata = metadata
+                SetupFutureUsage = setupFutureUsage
                 StatementDescriptor = statementDescriptor
                 StatementDescriptorSuffix = statementDescriptorSuffix
                 TransferGroup = transferGroup
@@ -15559,6 +15999,19 @@ module PaymentLinks =
                 AllowedCountries = allowedCountries
             }
 
+    type Update'ShippingOptions =
+        {
+            /// The ID of the Shipping Rate to use for this shipping option.
+            [<Config.Form>]
+            ShippingRate: string option
+        }
+
+    type Update'ShippingOptions with
+        static member New(?shippingRate: string) =
+            {
+                ShippingRate = shippingRate
+            }
+
     type Update'SubmitType =
         | Auto
         | Book
@@ -15697,6 +16150,9 @@ module PaymentLinks =
             /// Configuration for collecting the customer's billing address. Defaults to `auto`.
             [<Config.Form>]
             BillingAddressCollection: Update'BillingAddressCollection option
+            /// Configure fields to gather active consent from customers.
+            [<Config.Form>]
+            ConsentCollection: Update'ConsentCollection option
             /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`.
             [<Config.Form>]
             CustomFields: Choice<Update'CustomFields list,string> option
@@ -15753,6 +16209,9 @@ module PaymentLinks =
             /// Configuration for collecting the customer's shipping address.
             [<Config.Form>]
             ShippingAddressCollection: Choice<Update'ShippingAddressCollectionShippingAddressCollectionParams,string> option
+            /// The shipping rate options to apply to [checkout sessions](https://docs.stripe.com/api/checkout/sessions) created by this payment link.
+            [<Config.Form>]
+            ShippingOptions: Choice<Update'ShippingOptions list,string> option
             /// Describes the type of transaction being performed in order to customize relevant text on the page, such as the submit button. Changing this value will also affect the hostname in the [url](https://docs.stripe.com/api/payment_links/payment_links/object#url) property (example: `donate.stripe.com`).
             [<Config.Form>]
             SubmitType: Update'SubmitType option
@@ -15765,7 +16224,7 @@ module PaymentLinks =
         }
 
     type UpdateOptions with
-        static member New(paymentLink: string, ?active: bool, ?afterCompletion: Update'AfterCompletion, ?allowPromotionCodes: bool, ?automaticTax: Update'AutomaticTax, ?billingAddressCollection: Update'BillingAddressCollection, ?customFields: Choice<Update'CustomFields list,string>, ?customText: Update'CustomText, ?customerCreation: Update'CustomerCreation, ?expand: string list, ?inactiveMessage: Choice<string,string>, ?invoiceCreation: Update'InvoiceCreation, ?lineItems: Update'LineItems list, ?metadata: Map<string, string>, ?nameCollection: Choice<Update'NameCollectionNameCollectionParams,string>, ?optionalItems: Choice<Update'OptionalItems list,string>, ?paymentIntentData: Update'PaymentIntentData, ?paymentMethodCollection: Update'PaymentMethodCollection, ?paymentMethodOptions: Choice<Update'PaymentMethodOptionsPaymentMethodOptionsUpdateParams,string>, ?paymentMethodTypes: Choice<Update'PaymentMethodTypes list,string>, ?phoneNumberCollection: Update'PhoneNumberCollection, ?restrictions: Choice<Update'RestrictionsRestrictionsParams,string>, ?shippingAddressCollection: Choice<Update'ShippingAddressCollectionShippingAddressCollectionParams,string>, ?submitType: Update'SubmitType, ?subscriptionData: Update'SubscriptionData, ?taxIdCollection: Update'TaxIdCollection) =
+        static member New(paymentLink: string, ?active: bool, ?afterCompletion: Update'AfterCompletion, ?allowPromotionCodes: bool, ?automaticTax: Update'AutomaticTax, ?billingAddressCollection: Update'BillingAddressCollection, ?consentCollection: Update'ConsentCollection, ?customFields: Choice<Update'CustomFields list,string>, ?customText: Update'CustomText, ?customerCreation: Update'CustomerCreation, ?expand: string list, ?inactiveMessage: Choice<string,string>, ?invoiceCreation: Update'InvoiceCreation, ?lineItems: Update'LineItems list, ?metadata: Map<string, string>, ?nameCollection: Choice<Update'NameCollectionNameCollectionParams,string>, ?optionalItems: Choice<Update'OptionalItems list,string>, ?paymentIntentData: Update'PaymentIntentData, ?paymentMethodCollection: Update'PaymentMethodCollection, ?paymentMethodOptions: Choice<Update'PaymentMethodOptionsPaymentMethodOptionsUpdateParams,string>, ?paymentMethodTypes: Choice<Update'PaymentMethodTypes list,string>, ?phoneNumberCollection: Update'PhoneNumberCollection, ?restrictions: Choice<Update'RestrictionsRestrictionsParams,string>, ?shippingAddressCollection: Choice<Update'ShippingAddressCollectionShippingAddressCollectionParams,string>, ?shippingOptions: Choice<Update'ShippingOptions list,string>, ?submitType: Update'SubmitType, ?subscriptionData: Update'SubscriptionData, ?taxIdCollection: Update'TaxIdCollection) =
             {
                 PaymentLink = paymentLink
                 Active = active
@@ -15773,6 +16232,7 @@ module PaymentLinks =
                 AllowPromotionCodes = allowPromotionCodes
                 AutomaticTax = automaticTax
                 BillingAddressCollection = billingAddressCollection
+                ConsentCollection = consentCollection
                 CustomFields = customFields
                 CustomText = customText
                 CustomerCreation = customerCreation
@@ -15790,6 +16250,7 @@ module PaymentLinks =
                 PhoneNumberCollection = phoneNumberCollection
                 Restrictions = restrictions
                 ShippingAddressCollection = shippingAddressCollection
+                ShippingOptions = shippingOptions
                 SubmitType = submitType
                 SubscriptionData = subscriptionData
                 TaxIdCollection = taxIdCollection
@@ -16160,14 +16621,17 @@ module PaymentMethods =
         | BankMuamalat
         | BankOfChina
         | BankRakyat
+        | BnpParibas
         | Bsn
         | Cimb
+        | Citibank
         | DeutscheBank
         | HongLeongBank
         | Hsbc
         | Kfh
         | Maybank2e
         | Maybank2u
+        | MbsbBank
         | Ocbc
         | PbEnterprise
         | PublicBank
@@ -17110,10 +17574,74 @@ module PaymentMethodsDetach =
                 Expand = expand
             }
 
-    ///<p>Detaches a PaymentMethod object from a Customer. After a PaymentMethod is detached, it can no longer be used for a payment or re-attached to a Customer.</p>
+    ///<p>Detaches a PaymentMethod object from a Customer. Detachment is permanent and irreversible — once detached, a PaymentMethod can no longer be used for payments or re-attached to a Customer.</p>
     let Detach settings (options: DetachOptions) =
         $"/v1/payment_methods/{options.PaymentMethod}/detach"
         |> RestApi.postAsync<_, PaymentMethod> settings (Map.empty) options
+
+module PaymentRecords =
+
+    type ListOptions =
+        {
+            /// Only return Payment Records that were created after this unix timestamp.
+            [<Config.Query>]
+            CreatedAfter: int option
+            /// Only return Payment Records that were created before this unix timestamp.
+            [<Config.Query>]
+            CreatedBefore: int option
+            /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+            [<Config.Query>]
+            EndingBefore: string option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+            [<Config.Query>]
+            Limit: int option
+            /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+            [<Config.Query>]
+            StartingAfter: string option
+        }
+
+    type ListOptions with
+        static member New(?createdAfter: int, ?createdBefore: int, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                CreatedAfter = createdAfter
+                CreatedBefore = createdBefore
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
+    type RetrieveOptions =
+        {
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            /// The ID of the Payment Record.
+            [<Config.Path>]
+            Id: string
+        }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
+    ///<p>List all the Payment Records for a given merchant.</p>
+    let List settings (options: ListOptions) =
+        let qs = [("created_after", options.CreatedAfter |> box); ("created_before", options.CreatedBefore |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+        $"/v1/payment_records"
+        |> RestApi.getAsync<StripeList<PaymentRecord>> settings qs
+
+    ///<p>Retrieves a Payment Record with the given ID</p>
+    let Retrieve settings (options: RetrieveOptions) =
+        let qs = [("expand", options.Expand |> box)] |> Map.ofList
+        $"/v1/payment_records/{options.Id}"
+        |> RestApi.getAsync<PaymentRecord> settings qs
 
 module PaymentRecordsReportPayment =
 
@@ -17448,31 +17976,6 @@ module PaymentRecordsReportPayment =
     let ReportPayment settings (options: ReportPaymentOptions) =
         $"/v1/payment_records/report_payment"
         |> RestApi.postAsync<_, PaymentRecord> settings (Map.empty) options
-
-module PaymentRecords =
-
-    type RetrieveOptions =
-        {
-            /// Specifies which fields in the response should be expanded.
-            [<Config.Query>]
-            Expand: string list option
-            /// The ID of the Payment Record.
-            [<Config.Path>]
-            Id: string
-        }
-
-    type RetrieveOptions with
-        static member New(id: string, ?expand: string list) =
-            {
-                Id = id
-                Expand = expand
-            }
-
-    ///<p>Retrieves a Payment Record with the given ID</p>
-    let Retrieve settings (options: RetrieveOptions) =
-        let qs = [("expand", options.Expand |> box)] |> Map.ofList
-        $"/v1/payment_records/{options.Id}"
-        |> RestApi.getAsync<PaymentRecord> settings qs
 
 module PaymentRecordsReportPaymentAttempt =
 

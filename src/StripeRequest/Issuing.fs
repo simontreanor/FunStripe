@@ -10,7 +10,7 @@ open Stripe.IssuingToken
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module IssuingAuthorizations =
 
     type ListOptions =
@@ -2857,6 +2857,9 @@ module IssuingCards =
             /// Address validation settings.
             [<Config.Form>]
             AddressValidation: Create'ShippingAddressValidation option
+            /// The name of the business at the shipping address, used on the shipping label to ensure delivery when the card is shipped to a cardholder's workplace. Allowed characters: `A-Z`, `a-z`, `0-9`, ` `, `.`, `-`. All other characters are stripped or ASCII-normalized when printed.
+            [<Config.Form>]
+            BusinessName: string option
             /// Customs information for the shipment.
             [<Config.Form>]
             Customs: Create'ShippingCustoms option
@@ -2878,10 +2881,11 @@ module IssuingCards =
         }
 
     type Create'Shipping with
-        static member New(?address: Create'ShippingAddress, ?addressValidation: Create'ShippingAddressValidation, ?customs: Create'ShippingCustoms, ?name: string, ?phoneNumber: string, ?requireSignature: bool, ?service: Create'ShippingService, ?type': Create'ShippingType) =
+        static member New(?address: Create'ShippingAddress, ?addressValidation: Create'ShippingAddressValidation, ?businessName: string, ?customs: Create'ShippingCustoms, ?name: string, ?phoneNumber: string, ?requireSignature: bool, ?service: Create'ShippingService, ?type': Create'ShippingType) =
             {
                 Address = address
                 AddressValidation = addressValidation
+                BusinessName = businessName
                 Customs = customs
                 Name = name
                 PhoneNumber = phoneNumber
@@ -4054,6 +4058,9 @@ module IssuingCards =
             /// Address validation settings.
             [<Config.Form>]
             AddressValidation: Update'ShippingAddressValidation option
+            /// The name of the business at the shipping address, used on the shipping label to ensure delivery when the card is shipped to a cardholder's workplace. Allowed characters: `A-Z`, `a-z`, `0-9`, ` `, `.`, `-`. All other characters are stripped or ASCII-normalized when printed.
+            [<Config.Form>]
+            BusinessName: string option
             /// Customs information for the shipment.
             [<Config.Form>]
             Customs: Update'ShippingCustoms option
@@ -4075,10 +4082,11 @@ module IssuingCards =
         }
 
     type Update'Shipping with
-        static member New(?address: Update'ShippingAddress, ?addressValidation: Update'ShippingAddressValidation, ?customs: Update'ShippingCustoms, ?name: string, ?phoneNumber: string, ?requireSignature: bool, ?service: Update'ShippingService, ?type': Update'ShippingType) =
+        static member New(?address: Update'ShippingAddress, ?addressValidation: Update'ShippingAddressValidation, ?businessName: string, ?customs: Update'ShippingCustoms, ?name: string, ?phoneNumber: string, ?requireSignature: bool, ?service: Update'ShippingService, ?type': Update'ShippingType) =
             {
                 Address = address
                 AddressValidation = addressValidation
+                BusinessName = businessName
                 Customs = customs
                 Name = name
                 PhoneNumber = phoneNumber

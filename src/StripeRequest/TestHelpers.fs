@@ -11,7 +11,7 @@ open Stripe.TestHelpers
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module TestHelpersConfirmationTokens =
 
     type Create'PaymentMethodDataAcssDebit =
@@ -205,14 +205,17 @@ module TestHelpersConfirmationTokens =
         | BankMuamalat
         | BankOfChina
         | BankRakyat
+        | BnpParibas
         | Bsn
         | Cimb
+        | Citibank
         | DeutscheBank
         | HongLeongBank
         | Hsbc
         | Kfh
         | Maybank2e
         | Maybank2u
+        | MbsbBank
         | Ocbc
         | PbEnterprise
         | PublicBank
@@ -1110,7 +1113,7 @@ module TestHelpersIssuingAuthorizations =
 
     type Create'FleetReportedBreakdownFuel =
         {
-            /// Gross fuel amount that should equal Fuel Volume multipled by Fuel Unit Cost, inclusive of taxes.
+            /// Gross fuel amount that should equal Fuel Volume multiplied by Fuel Unit Cost, inclusive of taxes.
             [<Config.Form>]
             GrossAmountDecimal: string option
         }
@@ -1931,7 +1934,7 @@ module TestHelpersIssuingAuthorizationsCapture =
 
     type Capture'PurchaseDetailsFleetReportedBreakdownFuel =
         {
-            /// Gross fuel amount that should equal Fuel Volume multipled by Fuel Unit Cost, inclusive of taxes.
+            /// Gross fuel amount that should equal Fuel Volume multiplied by Fuel Unit Cost, inclusive of taxes.
             [<Config.Form>]
             GrossAmountDecimal: string option
         }
@@ -2294,7 +2297,7 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
 
     type FinalizeAmount'FleetReportedBreakdownFuel =
         {
-            /// Gross fuel amount that should equal Fuel Volume multipled by Fuel Unit Cost, inclusive of taxes.
+            /// Gross fuel amount that should equal Fuel Volume multiplied by Fuel Unit Cost, inclusive of taxes.
             [<Config.Form>]
             GrossAmountDecimal: string option
         }
@@ -3153,7 +3156,7 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
 
     type CreateForceCapture'PurchaseDetailsFleetReportedBreakdownFuel =
         {
-            /// Gross fuel amount that should equal Fuel Volume multipled by Fuel Unit Cost, inclusive of taxes.
+            /// Gross fuel amount that should equal Fuel Volume multiplied by Fuel Unit Cost, inclusive of taxes.
             [<Config.Form>]
             GrossAmountDecimal: string option
         }
@@ -3839,7 +3842,7 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
 
     type CreateUnlinkedRefund'PurchaseDetailsFleetReportedBreakdownFuel =
         {
-            /// Gross fuel amount that should equal Fuel Volume multipled by Fuel Unit Cost, inclusive of taxes.
+            /// Gross fuel amount that should equal Fuel Volume multiplied by Fuel Unit Cost, inclusive of taxes.
             [<Config.Form>]
             GrossAmountDecimal: string option
         }

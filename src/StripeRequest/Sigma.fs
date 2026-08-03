@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Sigma
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module SigmaScheduledQueryRuns =
 
     type ListOptions =

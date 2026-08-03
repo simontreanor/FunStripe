@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PromotionCode
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module PromotionCodes =
 
     type ListOptions =
@@ -78,7 +78,7 @@ module PromotionCodes =
 
     type Create'Restrictions =
         {
-            /// Promotion codes defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
+            /// Promotion codes defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies). Each currency must be different from the `minimum_amount_currency` set on the promotion code.
             [<Config.Form>]
             CurrencyOptions: Map<string, string> option
             /// A Boolean indicating if the Promotion Code should only be redeemed for Customers without any successful payments or invoices
@@ -169,7 +169,7 @@ module PromotionCodes =
 
     type Update'Restrictions =
         {
-            /// Promotion codes defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
+            /// Promotion codes defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies). Each currency must be different from the `minimum_amount_currency` set on the promotion code.
             [<Config.Form>]
             CurrencyOptions: Map<string, string> option
         }

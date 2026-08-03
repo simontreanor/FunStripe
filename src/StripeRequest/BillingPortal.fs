@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.BillingPortal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module BillingPortalConfigurations =
 
     type ListOptions =
@@ -352,7 +352,7 @@ module BillingPortalConfigurations =
             /// The business information shown to customers in the portal.
             [<Config.Form>]
             BusinessProfile: Create'BusinessProfile option
-            /// The default URL to redirect customers to when they click on the portal's link to return to your website. This can be [overriden](https://docs.stripe.com/api/customer_portal/sessions/create#create_portal_session-return_url) when creating the session.
+            /// The default URL to redirect customers to when they click on the portal's link to return to your website. This can be [overridden](https://docs.stripe.com/api/customer_portal/sessions/create#create_portal_session-return_url) when creating the session.
             [<Config.Form>]
             DefaultReturnUrl: Choice<string,string> option
             /// Specifies which fields in the response should be expanded.
@@ -717,7 +717,7 @@ module BillingPortalConfigurations =
             /// The business information shown to customers in the portal.
             [<Config.Form>]
             BusinessProfile: Update'BusinessProfile option
-            /// The default URL to redirect customers to when they click on the portal's link to return to your website. This can be [overriden](https://docs.stripe.com/api/customer_portal/sessions/create#create_portal_session-return_url) when creating the session.
+            /// The default URL to redirect customers to when they click on the portal's link to return to your website. This can be [overridden](https://docs.stripe.com/api/customer_portal/sessions/create#create_portal_session-return_url) when creating the session.
             [<Config.Form>]
             DefaultReturnUrl: Choice<string,string> option
             /// Specifies which fields in the response should be expanded.

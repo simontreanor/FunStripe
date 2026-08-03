@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 type EventType =
     | [<JsonPropertyName("account.application.authorized")>] AccountApplicationAuthorized
     | [<JsonPropertyName("account.application.deauthorized")>] AccountApplicationDeauthorized
@@ -88,11 +88,16 @@ type EventType =
     | [<JsonPropertyName("financial_connections.account.created")>] FinancialConnectionsAccountCreated
     | [<JsonPropertyName("financial_connections.account.deactivated")>] FinancialConnectionsAccountDeactivated
     | [<JsonPropertyName("financial_connections.account.disconnected")>] FinancialConnectionsAccountDisconnected
+    | [<JsonPropertyName("financial_connections.account.expected_deactivation_date_updated")>] FinancialConnectionsAccountExpectedDeactivationDateUpdated
     | [<JsonPropertyName("financial_connections.account.reactivated")>] FinancialConnectionsAccountReactivated
     | [<JsonPropertyName("financial_connections.account.refreshed_balance")>] FinancialConnectionsAccountRefreshedBalance
     | [<JsonPropertyName("financial_connections.account.refreshed_ownership")>] FinancialConnectionsAccountRefreshedOwnership
     | [<JsonPropertyName("financial_connections.account.refreshed_transactions")>] FinancialConnectionsAccountRefreshedTransactions
+    | [<JsonPropertyName("financial_connections.account.supported_payment_method_types_updated")>] FinancialConnectionsAccountSupportedPaymentMethodTypesUpdated
     | [<JsonPropertyName("financial_connections.account.upcoming_account_number_expiry")>] FinancialConnectionsAccountUpcomingAccountNumberExpiry
+    | [<JsonPropertyName("financial_connections.account.upcoming_deactivation")>] FinancialConnectionsAccountUpcomingDeactivation
+    | [<JsonPropertyName("financial_connections.authorization.expected_deactivation_date_updated")>] FinancialConnectionsAuthorizationExpectedDeactivationDateUpdated
+    | [<JsonPropertyName("financial_connections.authorization.upcoming_deactivation")>] FinancialConnectionsAuthorizationUpcomingDeactivation
     | [<JsonPropertyName("identity.verification_session.canceled")>] IdentityVerificationSessionCanceled
     | [<JsonPropertyName("identity.verification_session.created")>] IdentityVerificationSessionCreated
     | [<JsonPropertyName("identity.verification_session.processing")>] IdentityVerificationSessionProcessing
