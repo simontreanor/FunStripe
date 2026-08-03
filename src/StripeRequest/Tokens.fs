@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module Tokens =
 
     type Create'AccountBusinessType =
@@ -121,6 +121,39 @@ module Tokens =
                 Town = town
             }
 
+    type Create'AccountCompanyAdministrativeAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'AccountCompanyAdministrativeAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     type Create'AccountCompanyDirectorshipDeclaration =
         {
             /// The Unix timestamp marking when the directorship declaration attestation was made.
@@ -166,6 +199,39 @@ module Tokens =
     type Create'AccountCompanyOwnershipExemptionReason =
         | QualifiedEntityExceedsOwnershipThreshold
         | QualifiesAsFinancialInstitution
+
+    type Create'AccountCompanyPrincipalPlaceOfBusiness =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'AccountCompanyPrincipalPlaceOfBusiness with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
 
     type Create'AccountCompanyRegistrationDateRegistrationDateSpecs =
         {
@@ -275,6 +341,8 @@ module Tokens =
             /// The Kanji variation of the company's primary address (Japan only).
             [<Config.Form>]
             AddressKanji: Create'AccountCompanyAddressKanji option
+            [<Config.Form>]
+            AdministrativeAddress: Create'AccountCompanyAdministrativeAddress option
             /// Whether the company's directors have been provided. Set this Boolean to `true` after creating all the company's directors with [the Persons API](/api/persons) for accounts with a `relationship.director` requirement. This value is not automatically set to `true` after creating directors, so it needs to be updated to indicate all directors have been provided.
             [<Config.Form>]
             DirectorsProvided: bool option
@@ -314,6 +382,8 @@ module Tokens =
             /// The company's phone number (used for verification).
             [<Config.Form>]
             Phone: string option
+            [<Config.Form>]
+            PrincipalPlaceOfBusiness: Create'AccountCompanyPrincipalPlaceOfBusiness option
             /// When the business was incorporated or registered.
             [<Config.Form>]
             RegistrationDate: Choice<Create'AccountCompanyRegistrationDateRegistrationDateSpecs,string> option
@@ -327,6 +397,7 @@ module Tokens =
             [<Config.Form>]
             Structure: Create'AccountCompanyStructure option
             /// The business ID number of the company, as appropriate for the company’s country. (Examples are an Employer ID Number in the U.S., a Business Number in Canada, or a Company Number in the UK.)
+            /// Changing this value requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             TaxId: string option
             /// The jurisdiction in which the `tax_id` is registered (Germany-based companies only).
@@ -341,11 +412,12 @@ module Tokens =
         }
 
     type Create'AccountCompany with
-        static member New(?address: Create'AccountCompanyAddress, ?addressKana: Create'AccountCompanyAddressKana, ?addressKanji: Create'AccountCompanyAddressKanji, ?directorsProvided: bool, ?directorshipDeclaration: Create'AccountCompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Create'AccountCompanyOwnershipDeclaration, ?ownershipDeclarationShownAndSigned: bool, ?ownershipExemptionReason: Create'AccountCompanyOwnershipExemptionReason, ?phone: string, ?registrationDate: Choice<Create'AccountCompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Create'AccountCompanyRepresentativeDeclaration, ?structure: Create'AccountCompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Create'AccountCompanyVerification) =
+        static member New(?address: Create'AccountCompanyAddress, ?addressKana: Create'AccountCompanyAddressKana, ?addressKanji: Create'AccountCompanyAddressKanji, ?administrativeAddress: Create'AccountCompanyAdministrativeAddress, ?directorsProvided: bool, ?directorshipDeclaration: Create'AccountCompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Create'AccountCompanyOwnershipDeclaration, ?ownershipDeclarationShownAndSigned: bool, ?ownershipExemptionReason: Create'AccountCompanyOwnershipExemptionReason, ?phone: string, ?principalPlaceOfBusiness: Create'AccountCompanyPrincipalPlaceOfBusiness, ?registrationDate: Choice<Create'AccountCompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Create'AccountCompanyRepresentativeDeclaration, ?structure: Create'AccountCompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Create'AccountCompanyVerification) =
             {
                 Address = address
                 AddressKana = addressKana
                 AddressKanji = addressKanji
+                AdministrativeAddress = administrativeAddress
                 DirectorsProvided = directorsProvided
                 DirectorshipDeclaration = directorshipDeclaration
                 ExecutivesProvided = executivesProvided
@@ -359,6 +431,7 @@ module Tokens =
                 OwnershipDeclarationShownAndSigned = ownershipDeclarationShownAndSigned
                 OwnershipExemptionReason = ownershipExemptionReason
                 Phone = phone
+                PrincipalPlaceOfBusiness = principalPlaceOfBusiness
                 RegistrationDate = registrationDate
                 RegistrationNumber = registrationNumber
                 RepresentativeDeclaration = representativeDeclaration
@@ -1363,9 +1436,11 @@ module Tokens =
             [<Config.Form>]
             Gender: string option
             /// The person's ID number, as appropriate for their country. For example, a social security number in the U.S., social insurance number in Canada, etc. Instead of the number itself, you can also provide a [PII token provided by Stripe.js](https://docs.stripe.com/js/tokens/create_token?type=pii).
+            /// Changing this value for the account's representative requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             IdNumber: string option
             /// The person's secondary ID number, as appropriate for their country, will be used for enhanced verification checks. In Thailand, this would be the laser code found on the back of an ID card. Instead of the number itself, you can also provide a [PII token provided by Stripe.js](https://docs.stripe.com/js/tokens/create_token?type=pii).
+            /// Changing this value for the account's representative requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             IdNumberSecondary: string option
             /// The person's last name.
@@ -1399,6 +1474,7 @@ module Tokens =
             [<Config.Form>]
             Relationship: Create'PersonRelationship option
             /// The last four digits of the person's Social Security number (U.S. only).
+            /// Changing this value for the account's representative requires that the account re-accept the [terms of service](/api/accounts/object#account_object-tos_acceptance).
             [<Config.Form>]
             SsnLast4: string option
             /// Demographic data related to the person.

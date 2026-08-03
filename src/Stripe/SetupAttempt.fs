@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 type SetupAttemptCustomer'AnyOf =
     | String of string
     | Customer of Customer
@@ -216,6 +216,7 @@ type ThreeDSecureDetailsElectronicCommerceIndicator =
 type ThreeDSecureDetailsResult =
     | AttemptAcknowledged
     | Authenticated
+    | DataShareOnly
     | Exempted
     | Failed
     | NotSupported

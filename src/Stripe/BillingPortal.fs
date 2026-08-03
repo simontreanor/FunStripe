@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Application
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 type BillingPortalConfigurationApplication'AnyOf =
     | String of string
     | Application of Application
@@ -293,7 +293,7 @@ type BillingPortalConfiguration =
         BusinessProfile: PortalBusinessProfile
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
-        /// The default URL to redirect customers to when they click on the portal's link to return to your website. This can be [overriden](https://docs.stripe.com/api/customer_portal/sessions/create#create_portal_session-return_url) when creating the session.
+        /// The default URL to redirect customers to when they click on the portal's link to return to your website. This can be [overridden](https://docs.stripe.com/api/customer_portal/sessions/create#create_portal_session-return_url) when creating the session.
         DefaultReturnUrl: string option
         Features: PortalFeatures
         /// Unique identifier for the object.

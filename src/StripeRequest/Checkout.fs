@@ -6,7 +6,7 @@ open Stripe.Checkout
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module CheckoutSessions =
 
     type ListOptions =
@@ -888,9 +888,6 @@ module CheckoutSessions =
             /// When set, provides configuration for this item’s quantity to be adjusted by the customer during Checkout.
             [<Config.Form>]
             AdjustableQuantity: Create'LineItemsAdjustableQuantity option
-            /// The [tax rates](https://docs.stripe.com/api/tax_rates) that will be applied to this line item depending on the customer's billing/shipping address. We currently support the following countries: US, GB, AU, and all countries in the EU. You can't set this parameter if `ui_mode` is `custom`.
-            [<Config.Form>]
-            DynamicTaxRates: string list option
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
@@ -909,10 +906,9 @@ module CheckoutSessions =
         }
 
     type Create'LineItems with
-        static member New(?adjustableQuantity: Create'LineItemsAdjustableQuantity, ?dynamicTaxRates: string list, ?metadata: Map<string, string>, ?price: string, ?priceData: Create'LineItemsPriceData, ?quantity: int, ?taxRates: string list) =
+        static member New(?adjustableQuantity: Create'LineItemsAdjustableQuantity, ?metadata: Map<string, string>, ?price: string, ?priceData: Create'LineItemsPriceData, ?quantity: int, ?taxRates: string list) =
             {
                 AdjustableQuantity = adjustableQuantity
-                DynamicTaxRates = dynamicTaxRates
                 Metadata = metadata
                 Price = price
                 PriceData = priceData
@@ -2229,17 +2225,26 @@ module CheckoutSessions =
 
     type Create'PaymentMethodOptionsPaycoCaptureMethod = | Manual
 
+    type Create'PaymentMethodOptionsPaycoSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
     type Create'PaymentMethodOptionsPayco =
         {
             /// Controls when the funds will be captured from the customer's account.
             [<Config.Form>]
             CaptureMethod: Create'PaymentMethodOptionsPaycoCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Create'PaymentMethodOptionsPaycoSetupFutureUsage option
         }
 
     type Create'PaymentMethodOptionsPayco with
-        static member New(?captureMethod: Create'PaymentMethodOptionsPaycoCaptureMethod) =
+        static member New(?captureMethod: Create'PaymentMethodOptionsPaycoCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsPaycoSetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsPaynowSetupFutureUsage = | [<JsonPropertyName("none")>] None'
@@ -2530,17 +2535,26 @@ module CheckoutSessions =
 
     type Create'PaymentMethodOptionsSamsungPayCaptureMethod = | Manual
 
+    type Create'PaymentMethodOptionsSamsungPaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
     type Create'PaymentMethodOptionsSamsungPay =
         {
             /// Controls when the funds will be captured from the customer's account.
             [<Config.Form>]
             CaptureMethod: Create'PaymentMethodOptionsSamsungPayCaptureMethod option
+            /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+            /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+            /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+            /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+            [<Config.Form>]
+            SetupFutureUsage: Create'PaymentMethodOptionsSamsungPaySetupFutureUsage option
         }
 
     type Create'PaymentMethodOptionsSamsungPay with
-        static member New(?captureMethod: Create'PaymentMethodOptionsSamsungPayCaptureMethod) =
+        static member New(?captureMethod: Create'PaymentMethodOptionsSamsungPayCaptureMethod, ?setupFutureUsage: Create'PaymentMethodOptionsSamsungPaySetupFutureUsage) =
             {
                 CaptureMethod = captureMethod
+                SetupFutureUsage = setupFutureUsage
             }
 
     type Create'PaymentMethodOptionsSatispayCaptureMethod = | Manual
@@ -3779,7 +3793,7 @@ module CheckoutSessions =
             /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account. To use an application fee percent, the request must be made on behalf of another account, using the `Stripe-Account` header or an OAuth key. For more information, see the application fees [documentation](https://stripe.com/docs/connect/subscriptions#collecting-fees-on-subscriptions).
             [<Config.Form>]
             ApplicationFeePercent: decimal option
-            /// A future timestamp to anchor the subscription's billing cycle for new subscriptions. You can't set this parameter if `ui_mode` is `elements`.
+            /// A future timestamp to anchor the subscription's billing cycle for new subscriptions.
             [<Config.Form>]
             BillingCycleAnchor: DateTime option
             /// Configures when the subscription schedule's billing cycle anchors to a specific day of the week or month.

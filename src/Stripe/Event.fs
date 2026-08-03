@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 type EventType =
     | [<JsonPropertyName("account.application.authorized")>] AccountApplicationAuthorized
     | [<JsonPropertyName("account.application.deauthorized")>] AccountApplicationDeauthorized
@@ -88,11 +88,16 @@ type EventType =
     | [<JsonPropertyName("financial_connections.account.created")>] FinancialConnectionsAccountCreated
     | [<JsonPropertyName("financial_connections.account.deactivated")>] FinancialConnectionsAccountDeactivated
     | [<JsonPropertyName("financial_connections.account.disconnected")>] FinancialConnectionsAccountDisconnected
+    | [<JsonPropertyName("financial_connections.account.expected_deactivation_date_updated")>] FinancialConnectionsAccountExpectedDeactivationDateUpdated
     | [<JsonPropertyName("financial_connections.account.reactivated")>] FinancialConnectionsAccountReactivated
     | [<JsonPropertyName("financial_connections.account.refreshed_balance")>] FinancialConnectionsAccountRefreshedBalance
     | [<JsonPropertyName("financial_connections.account.refreshed_ownership")>] FinancialConnectionsAccountRefreshedOwnership
     | [<JsonPropertyName("financial_connections.account.refreshed_transactions")>] FinancialConnectionsAccountRefreshedTransactions
+    | [<JsonPropertyName("financial_connections.account.supported_payment_method_types_updated")>] FinancialConnectionsAccountSupportedPaymentMethodTypesUpdated
     | [<JsonPropertyName("financial_connections.account.upcoming_account_number_expiry")>] FinancialConnectionsAccountUpcomingAccountNumberExpiry
+    | [<JsonPropertyName("financial_connections.account.upcoming_deactivation")>] FinancialConnectionsAccountUpcomingDeactivation
+    | [<JsonPropertyName("financial_connections.authorization.expected_deactivation_date_updated")>] FinancialConnectionsAuthorizationExpectedDeactivationDateUpdated
+    | [<JsonPropertyName("financial_connections.authorization.upcoming_deactivation")>] FinancialConnectionsAuthorizationUpcomingDeactivation
     | [<JsonPropertyName("identity.verification_session.canceled")>] IdentityVerificationSessionCanceled
     | [<JsonPropertyName("identity.verification_session.created")>] IdentityVerificationSessionCreated
     | [<JsonPropertyName("identity.verification_session.processing")>] IdentityVerificationSessionProcessing
@@ -270,13 +275,13 @@ type EventType =
 type NotificationEventData =
     {
         /// Object containing the API resource relevant to the event. For example, an `invoice.created` event will have a full [invoice object](https://api.stripe.com#invoice_object) as the value of the object key.
-        Object: string
+        Object: Map<string, string list>
         /// Object containing the names of the updated attributes and their values prior to the event (only included in events of type `*.updated`). If an array attribute has any updated elements, this object contains the entire array. In Stripe API versions 2017-04-06 or earlier, an updated array attribute in this object includes only the updated array elements.
-        PreviousAttributes: string option
+        PreviousAttributes: Map<string, string list> option
     }
 
 type NotificationEventData with
-    static member New(object: string, ?previousAttributes: string) =
+    static member New(object: Map<string, string list>, ?previousAttributes: Map<string, string list>) =
         {
             Object = object
             PreviousAttributes = previousAttributes

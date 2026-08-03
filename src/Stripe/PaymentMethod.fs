@@ -19,7 +19,7 @@ open Stripe.TaxId
 open Stripe.TaxRate
 open Stripe.TransferReversal
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 type AccountAnnualRevenue =
     {
         /// A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).
@@ -1683,6 +1683,7 @@ type SubscriptionsResourcePaymentSettingsPaymentMethodTypes =
     | AchDebit
     | AcssDebit
     | Affirm
+    | Alipay
     | AmazonPay
     | AuBecsDebit
     | BacsDebit
@@ -1704,6 +1705,7 @@ type SubscriptionsResourcePaymentSettingsPaymentMethodTypes =
     | Konbini
     | KrCard
     | Link
+    | MbWay
     | Multibanco
     | NaverPay
     | NzBankAccount
@@ -1997,7 +1999,7 @@ type ExternalAccountRequirements =
     {
         /// Fields that need to be resolved to keep the external account enabled. If not resolved by `current_deadline`, these fields will appear in `past_due` as well, and the account is disabled.
         CurrentlyDue: string list option
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        /// Fields that are `currently_due` and need to be collected again because validation or verification failed.
         Errors: AccountRequirementsError list option
         /// Fields that haven't been resolved by `current_deadline`. These fields need to be resolved to enable the external account.
         PastDue: string list option
@@ -2040,7 +2042,7 @@ type AccountFutureRequirements =
         CurrentlyDue: string list option
         /// This is typed as an enum for consistency with `requirements.disabled_reason`.
         DisabledReason: AccountFutureRequirementsDisabledReason option
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        /// Fields that are `currently_due` and need to be collected again because validation or verification failed.
         Errors: AccountRequirementsError list option
         /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well.
         EventuallyDue: string list option
@@ -2079,11 +2081,11 @@ type AccountRequirements =
         Alternatives: AccountRequirementsAlternative list option
         /// Date by which the fields in `currently_due` must be collected to keep the account enabled. These fields may disable the account sooner if the next threshold is reached before they are collected.
         CurrentDeadline: DateTime option
-        /// Fields that need to be resolved to keep the account enabled. If not resolved by `current_deadline`, these fields will appear in `past_due` as well, and the account is disabled.
+        /// Fields that need to be resolved to keep the account enabled. If not resolved by `current_deadline`, these fields will appear in `past_due` as well, and the account will be disabled.
         CurrentlyDue: string list option
         /// If the account is disabled, this enum describes why. [Learn more about handling verification issues](https://docs.stripe.com/connect/handling-api-verification).
         DisabledReason: AccountRequirementsDisabledReason option
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        /// Fields that are `currently_due` and need to be collected again because validation or verification failed.
         Errors: AccountRequirementsError list option
         /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well, and `current_deadline` becomes set.
         EventuallyDue: string list option
@@ -2458,6 +2460,7 @@ type LegalEntityCompany =
         AddressKana: LegalEntityJapanAddress option
         /// The Kanji variation of the company's primary address (Japan only).
         AddressKanji: LegalEntityJapanAddress option
+        AdministrativeAddress: Address option
         /// Whether the company's directors have been provided. This Boolean will be `true` if you've manually indicated that all directors are provided via [the `directors_provided` parameter](https://docs.stripe.com/api/accounts/update#update_account-company-directors_provided).
         DirectorsProvided: bool option
         /// This hash is used to attest that the director information provided to Stripe is both current and correct.
@@ -2482,6 +2485,7 @@ type LegalEntityCompany =
         OwnershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason option
         /// The company's phone number (used for verification).
         Phone: string option
+        PrincipalPlaceOfBusiness: Address option
         RegistrationDate: LegalEntityRegistrationDate option
         /// This hash is used to attest that the representative is authorized to act as the representative of their legal entity.
         RepresentativeDeclaration: LegalEntityRepresentativeDeclaration option
@@ -2590,7 +2594,7 @@ type PersonFutureRequirements =
         Alternatives: AccountRequirementsAlternative list option
         /// Fields that need to be resolved to keep the person's account enabled. If not resolved by the account's `future_requirements[current_deadline]`, these fields will transition to the main `requirements` hash, and may immediately become `past_due`, but the account may also be given a grace period depending on the account's enablement state prior to transition.
         CurrentlyDue: string list
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        /// Fields that are `currently_due` and need to be collected again because validation or verification failed.
         Errors: AccountRequirementsError list
         /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well, and the account's `future_requirements[current_deadline]` becomes set.
         EventuallyDue: string list
@@ -2631,7 +2635,7 @@ type PersonRequirements =
         Alternatives: AccountRequirementsAlternative list option
         /// Fields that need to be resolved to keep the person's account enabled. If not resolved by the account's `current_deadline`, these fields will appear in `past_due` as well, and the account is disabled.
         CurrentlyDue: string list
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        /// Fields that are `currently_due` and need to be collected again because validation or verification failed.
         Errors: AccountRequirementsError list
         /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well, and the account's `current_deadline` becomes set.
         EventuallyDue: string list
@@ -3253,7 +3257,7 @@ type AccountCapabilityFutureRequirements =
         CurrentlyDue: string list
         /// This is typed as an enum for consistency with `requirements.disabled_reason`, but it safe to assume `future_requirements.disabled_reason` is null because fields in `future_requirements` will never disable the account.
         DisabledReason: AccountCapabilityFutureRequirementsDisabledReason option
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        /// Fields that are `currently_due` and need to be collected again because validation or verification failed.
         Errors: AccountRequirementsError list
         /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well.
         EventuallyDue: string list
@@ -3285,7 +3289,7 @@ type AccountCapabilityRequirements =
         CurrentlyDue: string list
         /// Description of why the capability is disabled. [Learn more about handling verification issues](https://docs.stripe.com/connect/handling-api-verification).
         DisabledReason: AccountCapabilityRequirementsDisabledReason option
-        /// Details about validation and verification failures for `due` requirements that must be resolved.
+        /// Fields that are `currently_due` and need to be collected again because validation or verification failed.
         Errors: AccountRequirementsError list
         /// Fields you must collect when all thresholds are reached. As they become required, they appear in `currently_due` as well, and `current_deadline` becomes set.
         EventuallyDue: string list
@@ -3332,17 +3336,17 @@ type AlmaInstallments =
     }
 
 type PaymentMethodDetailsPassthroughCardBrand =
-    | Amex
-    | CartesBancaires
-    | Diners
-    | Discover
-    | EftposAu
-    | Jcb
-    | Link
-    | Mastercard
-    | Unionpay
-    | Visa
-    | Unknown
+    | [<JsonPropertyName("American Express")>] AmericanExpress
+    | [<JsonPropertyName("Cartes Bancaires")>] CartesBancaires
+    | [<JsonPropertyName("Diners Club")>] DinersClub
+    | [<JsonPropertyName("Discover")>] Discover
+    | [<JsonPropertyName("Eftpos Australia")>] EftposAustralia
+    | [<JsonPropertyName("Girocard")>] Girocard
+    | [<JsonPropertyName("JCB")>] JCB
+    | [<JsonPropertyName("MasterCard")>] MasterCard
+    | [<JsonPropertyName("UnionPay")>] UnionPay
+    | [<JsonPropertyName("Visa")>] Visa
+    | [<JsonPropertyName("Unknown")>] Unknown
 
 [<Struct>]
 type PaymentMethodDetailsPassthroughCardFunding =
@@ -3353,7 +3357,7 @@ type PaymentMethodDetailsPassthroughCardFunding =
 
 type PaymentMethodDetailsPassthroughCard =
     {
-        /// Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
+        /// Card brand. Can be `American Express`, `Cartes Bancaires`, `Diners Club`, `Discover`, `Eftpos Australia`, `Girocard`, `JCB`, `MasterCard`, `UnionPay`, `Visa`, or `Unknown`.
         Brand: PaymentMethodDetailsPassthroughCardBrand option
         /// Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
         Country: IsoTypes.IsoCountryCode option
@@ -3744,6 +3748,104 @@ type PaymentFlowsPaymentIntentPresentmentDetails =
         /// Currency presented to the customer during payment.
         PresentmentCurrency: IsoTypes.IsoCurrencyCode
     }
+
+type PaymentIntentAllowedPaymentMethodTypes =
+    | AcssDebit
+    | Affirm
+    | AfterpayClearpay
+    | Alipay
+    | Alma
+    | AmazonPay
+    | AuBecsDebit
+    | BacsDebit
+    | Bancontact
+    | Billie
+    | Bizum
+    | Blik
+    | BokuPromptpay
+    | Boleto
+    | CapchasePay
+    | Card
+    | Cashapp
+    | CheckScan
+    | ClickToPay
+    | Crypto
+    | CustomerBalance
+    | DemoPay
+    | Duitnow
+    | DummyAuthPush
+    | DummyPassthroughCard
+    | Edenred
+    | Eps
+    | Fpx
+    | Gcash
+    | Getbalance
+    | GiftCard
+    | Giropay
+    | Gopay
+    | Grabpay
+    | IdBankTransfer
+    | Ideal
+    | KakaoPay
+    | Klarna
+    | Knet
+    | Konbini
+    | KrCard
+    | KrMarket
+    | Kriya
+    | Link
+    | MbWay
+    | Mobilepay
+    | Momo
+    | Mondu
+    | Multibanco
+    | NaverPay
+    | Netbanking
+    | NgBank
+    | NgBankTransfer
+    | NgCard
+    | NgMarket
+    | NgUssd
+    | NgWallet
+    | NzBankAccount
+    | Octopus
+    | Oxxo
+    | [<JsonPropertyName("p24")>] P24
+    | PaperCheck
+    | PayByBank
+    | Payco
+    | Paynow
+    | Paypal
+    | Paypay
+    | Payto
+    | Pix
+    | Promptpay
+    | Qris
+    | Rechnung
+    | RevolutPay
+    | SamsungPay
+    | Satispay
+    | Scalapay
+    | SepaDebit
+    | Sequra
+    | ShopPay
+    | Shopeepay
+    | Sofort
+    | SouthKoreaMarket
+    | StripeBalance
+    | Sunbit
+    | Swish
+    | Tamara
+    | TestPay
+    | Truemoney
+    | Twint
+    | Upi
+    | UsBankAccount
+    | UsCashVoucher
+    | Vipps
+    | WechatPay
+    | Wero
+    | Zip
 
 type PaymentIntentCancellationReason =
     | Abandoned
@@ -4155,7 +4257,7 @@ type PaymentIntentNextAction =
         Type: PaymentIntentNextActionType
         UpiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode option
         /// When confirming a PaymentIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
-        UseStripeSdk: string option
+        UseStripeSdk: Map<string, string list> option
         VerifyWithMicrodeposits: PaymentIntentNextActionVerifyWithMicrodeposits option
         WechatPayDisplayQrCode: PaymentIntentNextActionWechatPayDisplayQrCode option
         WechatPayRedirectToAndroidApp: PaymentIntentNextActionWechatPayRedirectToAndroidApp option
@@ -4193,11 +4295,21 @@ type PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptions =
 type PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptions () = 
     ///Controls when the funds will be captured from the customer's account.
     member _.CaptureMethod = "manual"
+    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
+    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+    member _.SetupFutureUsage = "none"
 
 
 type PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptions () = 
     ///Controls when the funds will be captured from the customer's account.
     member _.CaptureMethod = "manual"
+    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
+    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+    member _.SetupFutureUsage = "none"
 
 
 [<Struct>]
@@ -5911,14 +6023,17 @@ type PaymentMethodFpxBank =
     | BankMuamalat
     | BankOfChina
     | BankRakyat
+    | BnpParibas
     | Bsn
     | Cimb
+    | Citibank
     | DeutscheBank
     | HongLeongBank
     | Hsbc
     | Kfh
     | Maybank2e
     | Maybank2u
+    | MbsbBank
     | Ocbc
     | PbEnterprise
     | PublicBank
@@ -5930,7 +6045,7 @@ type PaymentMethodFpx =
     {
         /// Account holder type, if provided. Can be one of `individual` or `company`.
         AccountHolderType: PaymentMethodFpxAccountHolderType option
-        /// The customer's bank, if provided. Can be one of `affin_bank`, `agrobank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, `pb_enterprise`, or `bank_of_china`.
+        /// The customer's bank, if provided. Can be one of `affin_bank`, `agrobank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bnp_paribas`, `bank_rakyat`, `bsn`, `cimb`, `citibank`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, `mbsb_bank`, `pb_enterprise`, or `bank_of_china`.
         Bank: PaymentMethodFpxBank
     }
 
@@ -6516,6 +6631,104 @@ type PaymentFlowsAutomaticPaymentMethodsSetupIntent =
         Enabled: bool option
     }
 
+type SetupIntentAllowedPaymentMethodTypes =
+    | AcssDebit
+    | Affirm
+    | AfterpayClearpay
+    | Alipay
+    | Alma
+    | AmazonPay
+    | AuBecsDebit
+    | BacsDebit
+    | Bancontact
+    | Billie
+    | Bizum
+    | Blik
+    | BokuPromptpay
+    | Boleto
+    | CapchasePay
+    | Card
+    | Cashapp
+    | CheckScan
+    | ClickToPay
+    | Crypto
+    | CustomerBalance
+    | DemoPay
+    | Duitnow
+    | DummyAuthPush
+    | DummyPassthroughCard
+    | Edenred
+    | Eps
+    | Fpx
+    | Gcash
+    | Getbalance
+    | GiftCard
+    | Giropay
+    | Gopay
+    | Grabpay
+    | IdBankTransfer
+    | Ideal
+    | KakaoPay
+    | Klarna
+    | Knet
+    | Konbini
+    | KrCard
+    | KrMarket
+    | Kriya
+    | Link
+    | MbWay
+    | Mobilepay
+    | Momo
+    | Mondu
+    | Multibanco
+    | NaverPay
+    | Netbanking
+    | NgBank
+    | NgBankTransfer
+    | NgCard
+    | NgMarket
+    | NgUssd
+    | NgWallet
+    | NzBankAccount
+    | Octopus
+    | Oxxo
+    | [<JsonPropertyName("p24")>] P24
+    | PaperCheck
+    | PayByBank
+    | Payco
+    | Paynow
+    | Paypal
+    | Paypay
+    | Payto
+    | Pix
+    | Promptpay
+    | Qris
+    | Rechnung
+    | RevolutPay
+    | SamsungPay
+    | Satispay
+    | Scalapay
+    | SepaDebit
+    | Sequra
+    | ShopPay
+    | Shopeepay
+    | Sofort
+    | SouthKoreaMarket
+    | StripeBalance
+    | Sunbit
+    | Swish
+    | Tamara
+    | TestPay
+    | Truemoney
+    | Twint
+    | Upi
+    | UsBankAccount
+    | UsCashVoucher
+    | Vipps
+    | WechatPay
+    | Wero
+    | Zip
+
 [<Struct>]
 type SetupIntentCancellationReason =
     | Abandoned
@@ -6642,7 +6855,7 @@ type SetupIntentNextAction =
         Type: SetupIntentNextActionType
         UpiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode option
         /// When confirming a SetupIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
-        UseStripeSdk: string option
+        UseStripeSdk: Map<string, string list> option
         VerifyWithMicrodeposits: SetupIntentNextActionVerifyWithMicrodeposits option
     }
 
@@ -6964,6 +7177,8 @@ type ApiErrors =
 /// Related guide: [Payment Intents API](https://docs.stripe.com/payments/payment-intents)
 and PaymentIntent =
     {
+        /// The list of payment method types allowed for use with this payment. Stripe automatically returns compatible payment methods from this list in the `payment_method_types` field of the response, based on the other PaymentIntent parameters, such as `currency`, `amount`, and `customer`.
+        AllowedPaymentMethodTypes: PaymentIntentAllowedPaymentMethodTypes list option
         /// Amount intended to be collected by this PaymentIntent. A positive integer representing how much to charge in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal) (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The minimum amount is $0.50 US or [equivalent in charge currency](https://docs.stripe.com/currencies#minimum-and-maximum-charge-amounts). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
         Amount: int
         /// Amount that can be captured from this PaymentIntent.
@@ -7080,6 +7295,8 @@ and PaymentIntent =
 /// Related guide: [Setup Intents API](https://docs.stripe.com/payments/setup-intents)
 and SetupIntent =
     {
+        /// The list of payment method types to allow for this SetupIntent. Stripe will only use methods in this list when determining the payment methods to offer.
+        AllowedPaymentMethodTypes: SetupIntentAllowedPaymentMethodTypes list option
         /// ID of the Connect application that created the SetupIntent.
         Application: StripeId<Markers.Application> option
         /// If present, the SetupIntent's payment method will be attached to the in-context Stripe Account.
@@ -7269,7 +7486,7 @@ type BalanceTransaction =
         Currency: IsoTypes.IsoCurrencyCode
         /// An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
-        /// If applicable, this transaction uses an exchange rate. If money converts from currency A to currency B, then the `amount` in currency A, multipled by the `exchange_rate`, equals the `amount` in currency B. For example, if you charge a customer 10.00 EUR, the PaymentIntent's `amount` is `1000` and `currency` is `eur`. If this converts to 12.34 USD in your Stripe account, the BalanceTransaction's `amount` is `1234`, its `currency` is `usd`, and the `exchange_rate` is `1.234`.
+        /// If applicable, this transaction uses an exchange rate. If money converts from currency A to currency B, then the `amount` in currency A, multiplied by the `exchange_rate`, equals the `amount` in currency B. For example, if you charge a customer 10.00 EUR, the PaymentIntent's `amount` is `1000` and `currency` is `eur`. If this converts to 12.34 USD in your Stripe account, the BalanceTransaction's `amount` is `1234`, its `currency` is `usd`, and the `exchange_rate` is `1.234`.
         ExchangeRate: decimal option
         /// Fees (in cents (or local equivalent)) paid for this transaction. Represented as a positive integer when assessed.
         Fee: int
@@ -7351,6 +7568,11 @@ type ChargeOutcome =
         /// Possible values are `authorized`, `manual_review`, `issuer_declined`, `blocked`, and `invalid`. See [understanding declines](https://docs.stripe.com/declines) and [Radar reviews](https://docs.stripe.com/radar/reviews) for details.
         Type: ChargeOutcomeType
     }
+
+type RefundCustomer'AnyOf =
+    | String of string
+    | Customer of Customer
+    | DeletedCustomer of DeletedCustomer
 
 type DestinationDetailsUnimplemented =
     { DestinationDetailsUnimplemented: string option }
@@ -7674,6 +7896,10 @@ type Refund =
         Created: DateTime
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
+        /// ID of the customer of this refund.
+        Customer: RefundCustomer'AnyOf option
+        /// ID of the account of this refund.
+        CustomerAccount: string option
         /// An arbitrary string attached to the object. You can use this for displaying to users (available on non-card refunds only).
         Description: string option
         DestinationDetails: RefundDestinationDetails option
@@ -7690,6 +7916,8 @@ type Refund =
         NextAction: RefundNextAction option
         /// ID of the PaymentIntent that's refunded.
         PaymentIntent: StripeId<Markers.PaymentIntent> option
+        /// ID of the payment method associated with this refund.
+        PaymentMethod: StripeId<Markers.PaymentMethod> option
         /// Provides the reason for why the refund is pending. Possible values are: `processing`, `insufficient_funds`, or `charge_pending`.
         PendingReason: RefundPendingReason option
         PresentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails option
@@ -7745,16 +7973,6 @@ type Level3 =
       ShippingAddressZip: string option
       ShippingAmount: int option
       ShippingFromZip: string option }
-
-type PaymentFlowsPrivatePaymentMethodsAlipayDetails =
-    {
-        /// Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same.
-        BuyerId: string option
-        /// Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same.
-        Fingerprint: string option
-        /// Transaction ID of this particular Alipay transaction.
-        TransactionId: string option
-    }
 
 type PaymentMethodDetailsAchCreditTransfer =
     {
@@ -7825,6 +8043,16 @@ type PaymentMethodDetailsAfterpayClearpay =
         OrderId: string option
         /// Order identifier shown to the merchant in Afterpay's online portal.
         Reference: string option
+    }
+
+type PaymentMethodDetailsAlipay =
+    {
+        /// Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same.
+        BuyerId: string option
+        /// Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same.
+        Fingerprint: string option
+        /// Transaction ID of this particular Alipay transaction.
+        TransactionId: string option
     }
 
 type PaymentMethodDetailsAlma =
@@ -8147,6 +8375,7 @@ type ThreeDSecureDetailsChargeExemptionIndicator =
 type ThreeDSecureDetailsChargeResult =
     | AttemptAcknowledged
     | Authenticated
+    | DataShareOnly
     | Exempted
     | Failed
     | NotSupported
@@ -8351,14 +8580,17 @@ type PaymentMethodDetailsFpxBank =
     | BankMuamalat
     | BankOfChina
     | BankRakyat
+    | BnpParibas
     | Bsn
     | Cimb
+    | Citibank
     | DeutscheBank
     | HongLeongBank
     | Hsbc
     | Kfh
     | Maybank2e
     | Maybank2u
+    | MbsbBank
     | Ocbc
     | PbEnterprise
     | PublicBank
@@ -8370,7 +8602,7 @@ type PaymentMethodDetailsFpx =
     {
         /// Account holder type, if provided. Can be one of `individual` or `company`.
         AccountHolderType: PaymentMethodDetailsFpxAccountHolderType option
-        /// The customer's bank. Can be one of `affin_bank`, `agrobank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, `pb_enterprise`, or `bank_of_china`.
+        /// The customer's bank. Can be one of `affin_bank`, `agrobank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bnp_paribas`, `bank_rakyat`, `bsn`, `cimb`, `citibank`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, `mbsb_bank`, `pb_enterprise`, or `bank_of_china`.
         Bank: PaymentMethodDetailsFpxBank
         /// Unique transaction id generated by FPX for every request from the merchant
         TransactionId: string option
@@ -9053,7 +9285,7 @@ type PaymentMethodDetails =
         AcssDebit: PaymentMethodDetailsAcssDebit option
         Affirm: PaymentMethodDetailsAffirm option
         AfterpayClearpay: PaymentMethodDetailsAfterpayClearpay option
-        Alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails option
+        Alipay: PaymentMethodDetailsAlipay option
         Alma: PaymentMethodDetailsAlma option
         AmazonPay: PaymentMethodDetailsAmazonPay option
         AuBecsDebit: PaymentMethodDetailsAuBecsDebit option
@@ -9613,12 +9845,28 @@ type DisputePaymentMethodDetailsCardCaseType =
     | Inquiry
     | Resolution
 
+type DisputePaymentMethodDetailsCardNetwork =
+    | Amex
+    | CartesBancaires
+    | Diners
+    | Discover
+    | EftposAu
+    | Interac
+    | Jcb
+    | Link
+    | Mastercard
+    | Unionpay
+    | Visa
+    | Unknown
+
 type DisputePaymentMethodDetailsCard =
     {
         /// Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
         Brand: DisputePaymentMethodDetailsCardBrand
         /// The type of dispute opened. Different case types may have varying fees and financial impact.
         CaseType: DisputePaymentMethodDetailsCardCaseType
+        /// Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `interac`, `jcb`, `link`, `mastercard`, `unionpay`, `visa`, or `unknown`.
+        Network: DisputePaymentMethodDetailsCardNetwork
         /// The card network's specific dispute reason code, which maps to one of Stripe's primary dispute categories to simplify response guidance. The [Network code map](https://stripe.com/docs/disputes/categories#network-code-map) lists all available dispute reason codes by network.
         NetworkReasonCode: string option
     }
@@ -9935,6 +10183,7 @@ type IssuingAuthorizationRequestReason =
     | NotAllowed
     | PinBlocked
     | SpendingControls
+    | StripeInternalError
     | SuspectedFraud
     | VerificationFailed
     | WebhookApproved
@@ -10114,7 +10363,7 @@ type IssuingTransactionFleetDataServiceType =
 
 type IssuingTransactionFleetFuelPriceData =
     {
-        /// Gross fuel amount that should equal Fuel Volume multipled by Fuel Unit Cost, inclusive of taxes.
+        /// Gross fuel amount that should equal Fuel Volume multiplied by Fuel Unit Cost, inclusive of taxes.
         GrossAmountDecimal: string option
     }
 
@@ -10728,6 +10977,22 @@ type Payout =
     }
 
 [<Struct>]
+type TopupInitiatedBy =
+    | Stripe
+    | User
+
+type TopupResourceUsBankAccount () = 
+    ///The US bank transfer network used for this top-up. The default is `ach`.
+    member _.Network = "ach"
+
+
+type TopupResourcePaymentMethodOptions =
+    {
+        /// If this top-up is to be used with a `us_bank_account` payment method, this sub-hash contains configuration for it.
+        UsBankAccount: TopupResourceUsBankAccount option
+    }
+
+[<Struct>]
 type TopupStatus =
     | Canceled
     | Failed
@@ -10759,10 +11024,16 @@ type Topup =
         FailureMessage: string option
         /// Unique identifier for the object.
         Id: string
+        /// Indicates whether the top-up was initiated by Stripe or by the user.
+        InitiatedBy: TopupInitiatedBy option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string>
+        /// The ID of a PaymentMethod representing the payment method used for the top-up. A PaymentMethod of type `us_bank_account` can be used.
+        PaymentMethod: StripeId<Markers.PaymentMethod> option
+        /// Payment-method-specific configuration for this top-up.
+        PaymentMethodOptions: TopupResourcePaymentMethodOptions option
         /// The source field is deprecated. It might not always be present in the API response.
         Source: Source option
         /// Extra information about a top-up. This will appear on your source's bank statement. It must contain at least one letter.
@@ -10903,6 +11174,34 @@ type BankConnectionsResourceAccountholder =
         Type: BankConnectionsResourceAccountholderType
     }
 
+[<Struct>]
+type BankConnectionsResourceAuthorizationStatusDetailsApiResourceActiveStatusDetailsAction =
+    | [<JsonPropertyName("none")>] None'
+    | RelinkRequired
+
+type BankConnectionsResourceAuthorizationStatusDetailsApiResourceActiveStatusDetails =
+    {
+        /// The action (if any) to proactively relink the Authorization.
+        Action: BankConnectionsResourceAuthorizationStatusDetailsApiResourceActiveStatusDetailsAction
+        /// When the Authorization is expected to become inactive, if applicable.
+        ExpectedDeactivationDate: DateTime
+    }
+
+[<Struct>]
+type BankConnectionsResourceAuthorizationStatusDetailsApiResourceInactiveStatusDetailsAction =
+    | [<JsonPropertyName("none")>] None'
+    | RelinkRequired
+
+type BankConnectionsResourceAuthorizationStatusDetailsApiResourceInactiveStatusDetails =
+    {
+        /// The action (if any) to relink the inactive Authorization.
+        Action: BankConnectionsResourceAuthorizationStatusDetailsApiResourceInactiveStatusDetailsAction
+    }
+
+type BankConnectionsResourceAuthorizationStatusDetails =
+    { Active: BankConnectionsResourceAuthorizationStatusDetailsApiResourceActiveStatusDetails option
+      Inactive: BankConnectionsResourceAuthorizationStatusDetailsApiResourceInactiveStatusDetails option }
+
 type BankConnectionsResourceBalanceApiResourceCashBalance =
     {
         /// The funds available to the account holder. Typically this is the current balance after subtracting any outbound pending transactions and adding any inbound pending transactions.
@@ -10962,12 +11261,37 @@ type BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories =
     | Mortgage
     | Savings
 
+[<Struct>]
+type BankConnectionsResourceLinkAccountSessionFiltersRequirePaymentMethodSupport =
+    | All
+    | AtLeastOne
+    | [<JsonPropertyName("none")>] None'
+
 type BankConnectionsResourceLinkAccountSessionFilters =
     {
         /// Restricts the Session to subcategories of accounts that can be linked. Valid subcategories are: `checking`, `savings`, `mortgage`, `line_of_credit`, `credit_card`.
         AccountSubcategories: BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories list option
         /// List of countries from which to filter accounts.
         Countries: string list option
+        /// Whether the Session should require that linked accounts support payments and retrieve account numbers before completion.
+        RequirePaymentMethodSupport: BankConnectionsResourceLinkAccountSessionFiltersRequirePaymentMethodSupport option
+    }
+
+type BankConnectionsResourceLinkAccountSessionLimits =
+    {
+        /// The number of accounts that can be linked in this Session.
+        Accounts: int
+    }
+
+[<Struct>]
+type BankConnectionsResourceLinkAccountSessionManualEntryMode =
+    | Automatic
+    | Disabled
+
+type BankConnectionsResourceLinkAccountSessionManualEntry =
+    {
+        /// Controls how manual entry of bank account details is presented to the user.
+        Mode: BankConnectionsResourceLinkAccountSessionManualEntryMode option
     }
 
 [<Struct>]
@@ -11629,6 +11953,8 @@ type ConnectEmbeddedDisputesListFeatures =
         DisputeManagement: bool
         /// Whether sending refunds is enabled. This is `true` by default.
         RefundManagement: bool
+        /// Whether to allow connected accounts to submit disputes using Smart Disputes. Defaults to the value of `dispute_management`.
+        SmartDisputesManagement: bool
     }
 
 type ConnectEmbeddedDisputesListConfig =
@@ -11735,6 +12061,8 @@ type ConnectEmbeddedPaymentDisputesFeatures =
         DisputeManagement: bool
         /// Whether sending refunds is enabled. This is `true` by default.
         RefundManagement: bool
+        /// Whether to allow connected accounts to submit disputes using Smart Disputes. Defaults to the value of `dispute_management`.
+        SmartDisputesManagement: bool
     }
 
 type ConnectEmbeddedPaymentDisputesConfig =
@@ -11754,6 +12082,8 @@ type ConnectEmbeddedPaymentsFeatures =
         DisputeManagement: bool
         /// Whether sending refunds is enabled. This is `true` by default.
         RefundManagement: bool
+        /// Whether to allow connected accounts to submit disputes using Smart Disputes. Defaults to the value of `dispute_management`.
+        SmartDisputesManagement: bool
     }
 
 type ConnectEmbeddedPaymentsConfigClaim =
@@ -12138,6 +12468,9 @@ type FinancialConnectionsAccountDeactivated = { Object: FinancialConnectionsAcco
 /// Occurs when a Financial Connections account is disconnected.
 type FinancialConnectionsAccountDisconnected = { Object: FinancialConnectionsAccount }
 
+/// Occurs when a Financial Connections account’s `expected_deactivation_date` changes.
+type FinancialConnectionsAccountExpectedDeactivationDateUpdated = { Object: FinancialConnectionsAccount }
+
 /// Describes an owner of an account.
 type FinancialConnectionsAccountOwner =
     {
@@ -12191,8 +12524,41 @@ type FinancialConnectionsAccountRefreshedOwnership = { Object: FinancialConnecti
 /// Occurs when an Account’s `transaction_refresh` status transitions from `pending` to either `succeeded` or `failed`.
 type FinancialConnectionsAccountRefreshedTransactions = { Object: FinancialConnectionsAccount }
 
+/// Occurs when the supported_payment_method_types array on a Financial Connections account changes.
+type FinancialConnectionsAccountSupportedPaymentMethodTypesUpdated = { Object: FinancialConnectionsAccount }
+
 /// Occurs when an Account’s tokenized account number is about to expire.
 type FinancialConnectionsAccountUpcomingAccountNumberExpiry = { Object: FinancialConnectionsAccount }
+
+/// Occurs when a Financial Connections account is about to become `inactive`.
+type FinancialConnectionsAccountUpcomingDeactivation = { Object: FinancialConnectionsAccount }
+
+[<Struct>]
+type FinancialConnectionsAuthorizationStatus =
+    | Active
+    | Inactive
+
+/// An Authorization represents the set of credentials used to connect a group of Financial Connections Accounts.
+type FinancialConnectionsAuthorization =
+    {
+        /// Unique identifier for the object.
+        Id: string
+        /// The name of the institution that this authorization belongs to.
+        InstitutionName: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The status of the connection to the Authorization.
+        Status: FinancialConnectionsAuthorizationStatus
+        StatusDetails: BankConnectionsResourceAuthorizationStatusDetails
+    }
+
+/// Occurs when a Financial Connections authorization’s `expected_deactivation_date` changes.
+type FinancialConnectionsAuthorizationExpectedDeactivationDateUpdated =
+    { Object: FinancialConnectionsAuthorization }
+
+/// Occurs when a Financial Connections authorization is about to become `inactive`.
+type FinancialConnectionsAuthorizationUpcomingDeactivation =
+    { Object: FinancialConnectionsAuthorization }
 
 /// The accounts that were collected as part of this Session.
 type FinancialConnectionsSessionAccounts =
@@ -12218,6 +12584,49 @@ type FinancialConnectionsSessionPrefetch =
     | Ownership
     | Transactions
 
+[<Struct>]
+type TokenType =
+    | Account
+    | BankAccount
+    | Card
+    | Pii
+
+/// Tokenization is the process Stripe uses to collect sensitive card or bank
+/// account details, or personally identifiable information (PII), directly from
+/// your customers in a secure manner. A token representing this information is
+/// returned to your server to use. Use our
+/// [recommended payments integrations](https://docs.stripe.com/payments) to perform this process
+/// on the client-side. This guarantees that no sensitive card data touches your server,
+/// and allows your integration to operate in a PCI-compliant way.
+/// If you can't use client-side tokenization, you can also create tokens using
+/// the API with either your publishable or secret API key. If
+/// your integration uses this method, you're responsible for any PCI compliance
+/// that it might require, and you must keep your secret API key safe. Unlike with
+/// client-side tokenization, your customer's information isn't sent directly to
+/// Stripe, so we can't determine how it's handled or stored.
+/// You can't store or use tokens more than once. To store card or bank account
+/// information for later use, create [Customer](https://docs.stripe.com/api#customers)
+/// objects or [External accounts](/api#external_accounts).
+/// [Radar](https://docs.stripe.com/radar), our integrated solution for automatic fraud protection,
+/// performs best with integrations that use client-side tokenization.
+type Token =
+    {
+        BankAccount: BankAccount option
+        Card: Card option
+        /// IP address of the client that generates the token.
+        ClientIp: string option
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Type of the token: `account`, `bank_account`, `card`, or `pii`.
+        Type: TokenType
+        /// Determines if you have already used this token (you can only use tokens once).
+        Used: bool
+    }
+
 /// A Financial Connections Session is the secure way to programmatically launch the client-side Stripe.js modal that lets your users link their accounts.
 type FinancialConnectionsSession =
     {
@@ -12225,13 +12634,16 @@ type FinancialConnectionsSession =
         AccountHolder: BankConnectionsResourceAccountholder option
         /// The accounts that were collected as part of this Session.
         Accounts: FinancialConnectionsSessionAccounts
+        BankAccountToken: Token option
         /// A value that will be passed to the client to launch the authentication flow.
         ClientSecret: string option
         Filters: BankConnectionsResourceLinkAccountSessionFilters option
         /// Unique identifier for the object.
         Id: string
+        Limits: BankConnectionsResourceLinkAccountSessionLimits option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
+        ManualEntry: BankConnectionsResourceLinkAccountSessionManualEntry option
         /// Permissions requested for accounts collected during this session.
         Permissions: FinancialConnectionsSessionPermissions list
         /// Data features requested to be retrieved upon account creation.
@@ -12514,6 +12926,7 @@ type InvoicesPaymentSettingsPaymentMethodTypes =
     | AchDebit
     | AcssDebit
     | Affirm
+    | Alipay
     | AmazonPay
     | AuBecsDebit
     | BacsDebit
@@ -12535,6 +12948,7 @@ type InvoicesPaymentSettingsPaymentMethodTypes =
     | Konbini
     | KrCard
     | Link
+    | MbWay
     | Multibanco
     | NaverPay
     | NzBankAccount
@@ -12661,6 +13075,7 @@ type InvoicesResourceInvoiceTaxIdType =
     | HkBr
     | HrOib
     | HuTin
+    | IcNif
     | IdNpwp
     | IlVat
     | InGst
@@ -12728,7 +13143,7 @@ type InvoicesResourceInvoiceTaxIdType =
 
 type InvoicesResourceInvoiceTaxId =
     {
-        /// The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `hr_oib`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `no_voec`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `pl_nip`, `it_cf`, `fo_vat`, `gi_tin`, `py_ruc`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `li_vat`, `lk_vat`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, `al_tin`, `bh_vat`, `kz_bin`, `ng_tin`, `om_vat`, `de_stn`, `ch_uid`, `tz_vat`, `uz_vat`, `uz_tin`, `md_vat`, `ma_vat`, `by_tin`, `ao_tin`, `bs_tin`, `bb_tin`, `cd_nif`, `mr_nif`, `me_pib`, `zw_tin`, `ba_tin`, `gn_nif`, `mk_vat`, `sr_fin`, `sn_ninea`, `am_tin`, `np_pan`, `tj_tin`, `ug_tin`, `zm_tin`, `kh_tin`, `aw_tin`, `az_tin`, `bd_bin`, `bj_ifu`, `et_tin`, `kg_tin`, `la_tin`, `cm_niu`, `cv_nif`, `bf_ifu`, or `unknown`
+        /// The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `hr_oib`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `no_voec`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `pl_nip`, `it_cf`, `fo_vat`, `gi_tin`, `py_ruc`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `li_vat`, `lk_vat`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, `al_tin`, `bh_vat`, `kz_bin`, `ng_tin`, `om_vat`, `de_stn`, `ch_uid`, `tz_vat`, `uz_vat`, `uz_tin`, `md_vat`, `ma_vat`, `by_tin`, `ao_tin`, `bs_tin`, `bb_tin`, `cd_nif`, `mr_nif`, `me_pib`, `zw_tin`, `ba_tin`, `gn_nif`, `mk_vat`, `sr_fin`, `sn_ninea`, `am_tin`, `np_pan`, `tj_tin`, `ug_tin`, `zm_tin`, `kh_tin`, `aw_tin`, `az_tin`, `bd_bin`, `bj_ifu`, `et_tin`, `kg_tin`, `la_tin`, `cm_niu`, `cv_nif`, `bf_ifu`, `ic_nif`, or `unknown`
         Type: InvoicesResourceInvoiceTaxIdType
         /// The value of the tax ID.
         Value: string option
@@ -13088,8 +13503,14 @@ type InvoiceSettingCheckoutRenderingOptions =
 
 type InvoiceSettingQuoteSetting =
     {
+        /// A list of up to 4 custom fields to be displayed on the invoice.
+        CustomFields: InvoiceSettingCustomField list option
         /// Number of days within which a customer must pay invoices generated by this quote. This value will be `null` for quotes where `collection_method=charge_automatically`.
         DaysUntilDue: int option
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string option
+        /// Footer to be displayed on the invoice.
+        Footer: string option
         Issuer: ConnectAccountReference
     }
 
@@ -13102,8 +13523,14 @@ type InvoiceSettingSubscriptionSchedulePhaseSetting =
     {
         /// The account tax IDs associated with this phase of the subscription schedule. Will be set on invoices generated by this phase of the subscription schedule.
         AccountTaxIds: InvoiceSettingSubscriptionSchedulePhaseSettingAccountTaxIds'AnyOf list option
+        /// A list of up to 4 custom fields to be displayed on the invoice.
+        CustomFields: InvoiceSettingCustomField list option
         /// Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
         DaysUntilDue: int option
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string option
+        /// Footer to be displayed on the invoice.
+        Footer: string option
         /// The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account.
         Issuer: ConnectAccountReference option
     }
@@ -13117,8 +13544,14 @@ type InvoiceSettingSubscriptionScheduleSetting =
     {
         /// The account tax IDs associated with the subscription schedule. Will be set on invoices generated by the subscription schedule.
         AccountTaxIds: InvoiceSettingSubscriptionScheduleSettingAccountTaxIds'AnyOf list option
+        /// A list of up to 4 custom fields to be displayed on the invoice.
+        CustomFields: InvoiceSettingCustomField list option
         /// Number of days within which a customer must pay invoices generated by this subscription schedule. This value will be `null` for subscription schedules where `billing=charge_automatically`.
         DaysUntilDue: int option
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string option
+        /// Footer to be displayed on the invoice.
+        Footer: string option
         Issuer: ConnectAccountReference
     }
 
@@ -13940,6 +14373,16 @@ type PaymentMethodDetailsPaymentRecordAfterpayClearpay =
         Reference: string option
     }
 
+type PaymentMethodDetailsPaymentRecordAlipay =
+    {
+        /// Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same.
+        BuyerId: string option
+        /// Uniquely identifies this particular Alipay account. You can use this attribute to check whether two Alipay accounts are the same.
+        Fingerprint: string option
+        /// Transaction ID of this particular Alipay transaction.
+        TransactionId: string option
+    }
+
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAlmaDetailsResourceInstallments =
     {
         /// The number of installments.
@@ -13954,17 +14397,17 @@ type PaymentMethodDetailsPaymentRecordAlma =
     }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardBrand =
-    | Amex
-    | CartesBancaires
-    | Diners
-    | Discover
-    | EftposAu
-    | Jcb
-    | Link
-    | Mastercard
-    | Unionpay
-    | Visa
-    | Unknown
+    | [<JsonPropertyName("American Express")>] AmericanExpress
+    | [<JsonPropertyName("Cartes Bancaires")>] CartesBancaires
+    | [<JsonPropertyName("Diners Club")>] DinersClub
+    | [<JsonPropertyName("Discover")>] Discover
+    | [<JsonPropertyName("Eftpos Australia")>] EftposAustralia
+    | [<JsonPropertyName("Girocard")>] Girocard
+    | [<JsonPropertyName("JCB")>] JCB
+    | [<JsonPropertyName("MasterCard")>] MasterCard
+    | [<JsonPropertyName("UnionPay")>] UnionPay
+    | [<JsonPropertyName("Visa")>] Visa
+    | [<JsonPropertyName("Unknown")>] Unknown
 
 [<Struct>]
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardFunding =
@@ -13975,7 +14418,7 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResour
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard =
     {
-        /// Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
+        /// Card brand. Can be `American Express`, `Cartes Bancaires`, `Diners Club`, `Discover`, `Eftpos Australia`, `Girocard`, `JCB`, `MasterCard`, `UnionPay`, `Visa`, or `Unknown`.
         Brand:
             PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCardBrand option
         /// Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
@@ -14001,6 +14444,36 @@ type PaymentMethodDetailsPaymentRecordAmazonPay =
         Funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding option
         /// The Amazon Pay transaction ID associated with this payment.
         TransactionId: string option
+    }
+
+type PaymentMethodDetailsPaymentRecordAuBecsDebit =
+    {
+        /// Bank-State-Branch number of the bank account.
+        BsbNumber: string option
+        /// Estimated date to debit the customer's bank account. A date string in YYYY-MM-DD format.
+        ExpectedDebitDate: string option
+        /// Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
+        Fingerprint: string option
+        /// Last four digits of the bank account number.
+        [<JsonPropertyName("last4")>]
+        Last4: string option
+        /// ID of the mandate used to make this payment.
+        Mandate: string option
+    }
+
+type PaymentMethodDetailsPaymentRecordBacsDebit =
+    {
+        /// Estimated date to debit the customer's bank account. A date string in YYYY-MM-DD format.
+        ExpectedDebitDate: string option
+        /// Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
+        Fingerprint: string option
+        /// Last four digits of the bank account number.
+        [<JsonPropertyName("last4")>]
+        Last4: string option
+        /// ID of the mandate used to make this payment.
+        Mandate: string option
+        /// Sort code of the bank account. (e.g., `10-20-30`)
+        SortCode: string option
     }
 
 [<Struct>]
@@ -14901,6 +15374,7 @@ type PaymentPagesCheckoutSessionTaxIdType =
     | HkBr
     | HrOib
     | HuTin
+    | IcNif
     | IdNpwp
     | IlVat
     | InGst
@@ -14968,7 +15442,7 @@ type PaymentPagesCheckoutSessionTaxIdType =
 
 type PaymentPagesCheckoutSessionTaxId =
     {
-        /// The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `hr_oib`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `no_voec`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `pl_nip`, `it_cf`, `fo_vat`, `gi_tin`, `py_ruc`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `li_vat`, `lk_vat`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, `al_tin`, `bh_vat`, `kz_bin`, `ng_tin`, `om_vat`, `de_stn`, `ch_uid`, `tz_vat`, `uz_vat`, `uz_tin`, `md_vat`, `ma_vat`, `by_tin`, `ao_tin`, `bs_tin`, `bb_tin`, `cd_nif`, `mr_nif`, `me_pib`, `zw_tin`, `ba_tin`, `gn_nif`, `mk_vat`, `sr_fin`, `sn_ninea`, `am_tin`, `np_pan`, `tj_tin`, `ug_tin`, `zm_tin`, `kh_tin`, `aw_tin`, `az_tin`, `bd_bin`, `bj_ifu`, `et_tin`, `kg_tin`, `la_tin`, `cm_niu`, `cv_nif`, `bf_ifu`, or `unknown`
+        /// The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `hr_oib`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `no_voec`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `pl_nip`, `it_cf`, `fo_vat`, `gi_tin`, `py_ruc`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `li_vat`, `lk_vat`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, `al_tin`, `bh_vat`, `kz_bin`, `ng_tin`, `om_vat`, `de_stn`, `ch_uid`, `tz_vat`, `uz_vat`, `uz_tin`, `md_vat`, `ma_vat`, `by_tin`, `ao_tin`, `bs_tin`, `bb_tin`, `cd_nif`, `mr_nif`, `me_pib`, `zw_tin`, `ba_tin`, `gn_nif`, `mk_vat`, `sr_fin`, `sn_ninea`, `am_tin`, `np_pan`, `tj_tin`, `ug_tin`, `zm_tin`, `kh_tin`, `aw_tin`, `az_tin`, `bd_bin`, `bj_ifu`, `et_tin`, `kg_tin`, `la_tin`, `cm_niu`, `cv_nif`, `bf_ifu`, `ic_nif`, or `unknown`
         Type: PaymentPagesCheckoutSessionTaxIdType
         /// The value of the tax ID.
         Value: string option
@@ -15595,6 +16069,7 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThr
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureResult =
     | AttemptAcknowledged
     | Authenticated
+    | DataShareOnly
     | Exempted
     | Failed
     | NotSupported
@@ -15740,11 +16215,11 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodDetails =
         AcssDebit: PaymentMethodDetailsPaymentRecordAcssDebit option
         Affirm: PaymentMethodDetailsPaymentRecordAffirm option
         AfterpayClearpay: PaymentMethodDetailsPaymentRecordAfterpayClearpay option
-        Alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails option
+        Alipay: PaymentMethodDetailsPaymentRecordAlipay option
         Alma: PaymentMethodDetailsPaymentRecordAlma option
         AmazonPay: PaymentMethodDetailsPaymentRecordAmazonPay option
-        AuBecsDebit: PaymentMethodDetailsAuBecsDebit option
-        BacsDebit: PaymentMethodDetailsBacsDebit option
+        AuBecsDebit: PaymentMethodDetailsPaymentRecordAuBecsDebit option
+        BacsDebit: PaymentMethodDetailsPaymentRecordBacsDebit option
         Bancontact: PaymentMethodDetailsPaymentRecordBancontact option
         Billie: PaymentMethodDetailsPaymentRecordBillie option
         /// The billing details associated with the method of payment.
@@ -15973,49 +16448,6 @@ type SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStart =
         Timestamp: DateTime option
         /// Select how to calculate the start of the invoice item period.
         Type: SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStartType
-    }
-
-[<Struct>]
-type TokenType =
-    | Account
-    | BankAccount
-    | Card
-    | Pii
-
-/// Tokenization is the process Stripe uses to collect sensitive card or bank
-/// account details, or personally identifiable information (PII), directly from
-/// your customers in a secure manner. A token representing this information is
-/// returned to your server to use. Use our
-/// [recommended payments integrations](https://docs.stripe.com/payments) to perform this process
-/// on the client-side. This guarantees that no sensitive card data touches your server,
-/// and allows your integration to operate in a PCI-compliant way.
-/// If you can't use client-side tokenization, you can also create tokens using
-/// the API with either your publishable or secret API key. If
-/// your integration uses this method, you're responsible for any PCI compliance
-/// that it might require, and you must keep your secret API key safe. Unlike with
-/// client-side tokenization, your customer's information isn't sent directly to
-/// Stripe, so we can't determine how it's handled or stored.
-/// You can't store or use tokens more than once. To store card or bank account
-/// information for later use, create [Customer](https://docs.stripe.com/api#customers)
-/// objects or [External accounts](/api#external_accounts).
-/// [Radar](https://docs.stripe.com/radar), our integrated solution for automatic fraud protection,
-/// performs best with integrations that use client-side tokenization.
-type Token =
-    {
-        BankAccount: BankAccount option
-        Card: Card option
-        /// IP address of the client that generates the token.
-        ClientIp: string option
-        /// Time at which the object was created. Measured in seconds since the Unix epoch.
-        Created: DateTime
-        /// Unique identifier for the object.
-        Id: string
-        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
-        Livemode: bool
-        /// Type of the token: `account`, `bank_account`, `card`, or `pii`.
-        Type: TokenType
-        /// Determines if you have already used this token (you can only use tokens once).
-        Used: bool
     }
 
 /// Occurs whenever a top-up is canceled.
@@ -17215,11 +17647,12 @@ type LegalEntityUboDeclaration with
         }
 
 type LegalEntityCompany with
-    static member New(?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?directorsProvided: bool, ?directorshipDeclaration: LegalEntityDirectorshipDeclaration option, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string option, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?ownershipDeclaration: LegalEntityUboDeclaration option, ?ownershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason, ?phone: string option, ?registrationDate: LegalEntityRegistrationDate, ?representativeDeclaration: LegalEntityRepresentativeDeclaration option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerification option) =
+    static member New(?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?administrativeAddress: Address, ?directorsProvided: bool, ?directorshipDeclaration: LegalEntityDirectorshipDeclaration option, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string option, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?ownershipDeclaration: LegalEntityUboDeclaration option, ?ownershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason, ?phone: string option, ?principalPlaceOfBusiness: Address, ?registrationDate: LegalEntityRegistrationDate, ?representativeDeclaration: LegalEntityRepresentativeDeclaration option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerification option) =
         {
             Address = address
             AddressKana = addressKana |> Option.flatten
             AddressKanji = addressKanji |> Option.flatten
+            AdministrativeAddress = administrativeAddress
             DirectorsProvided = directorsProvided
             DirectorshipDeclaration = directorshipDeclaration |> Option.flatten
             ExecutivesProvided = executivesProvided
@@ -17232,6 +17665,7 @@ type LegalEntityCompany with
             OwnershipDeclaration = ownershipDeclaration |> Option.flatten
             OwnershipExemptionReason = ownershipExemptionReason
             Phone = phone |> Option.flatten
+            PrincipalPlaceOfBusiness = principalPlaceOfBusiness
             RegistrationDate = registrationDate
             RepresentativeDeclaration = representativeDeclaration |> Option.flatten
             Structure = structure
@@ -18116,7 +18550,7 @@ type PaymentIntentNextActionWechatPayRedirectToIosApp with
         }
 
 type PaymentIntentNextAction with
-    static member New(``type``: PaymentIntentNextActionType, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?blikAuthorize: PaymentIntentNextActionBlikAuthorize, ?boletoDisplayDetails: PaymentIntentNextActionBoleto, ?cardAwaitNotification: PaymentIntentNextActionCardAwaitNotification, ?cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode, ?displayBankTransferInstructions: PaymentIntentNextActionDisplayBankTransferInstructions, ?klarnaDisplayQrCode: PaymentIntentNextActionKlarnaDisplayQrCode, ?konbiniDisplayDetails: PaymentIntentNextActionKonbini, ?multibancoDisplayDetails: PaymentIntentNextActionDisplayMultibancoDetails, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?paynowDisplayQrCode: PaymentIntentNextActionPaynowDisplayQrCode, ?pixDisplayQrCode: PaymentIntentNextActionPixDisplayQrCode, ?promptpayDisplayQrCode: PaymentIntentNextActionPromptpayDisplayQrCode, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?swishHandleRedirectOrDisplayQrCode: PaymentIntentNextActionSwishHandleRedirectOrDisplayQrCode, ?upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode, ?useStripeSdk: string, ?verifyWithMicrodeposits: PaymentIntentNextActionVerifyWithMicrodeposits, ?wechatPayDisplayQrCode: PaymentIntentNextActionWechatPayDisplayQrCode, ?wechatPayRedirectToAndroidApp: PaymentIntentNextActionWechatPayRedirectToAndroidApp, ?wechatPayRedirectToIosApp: PaymentIntentNextActionWechatPayRedirectToIosApp) =
+    static member New(``type``: PaymentIntentNextActionType, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?blikAuthorize: PaymentIntentNextActionBlikAuthorize, ?boletoDisplayDetails: PaymentIntentNextActionBoleto, ?cardAwaitNotification: PaymentIntentNextActionCardAwaitNotification, ?cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode, ?displayBankTransferInstructions: PaymentIntentNextActionDisplayBankTransferInstructions, ?klarnaDisplayQrCode: PaymentIntentNextActionKlarnaDisplayQrCode, ?konbiniDisplayDetails: PaymentIntentNextActionKonbini, ?multibancoDisplayDetails: PaymentIntentNextActionDisplayMultibancoDetails, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?paynowDisplayQrCode: PaymentIntentNextActionPaynowDisplayQrCode, ?pixDisplayQrCode: PaymentIntentNextActionPixDisplayQrCode, ?promptpayDisplayQrCode: PaymentIntentNextActionPromptpayDisplayQrCode, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?swishHandleRedirectOrDisplayQrCode: PaymentIntentNextActionSwishHandleRedirectOrDisplayQrCode, ?upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode, ?useStripeSdk: Map<string, string list>, ?verifyWithMicrodeposits: PaymentIntentNextActionVerifyWithMicrodeposits, ?wechatPayDisplayQrCode: PaymentIntentNextActionWechatPayDisplayQrCode, ?wechatPayRedirectToAndroidApp: PaymentIntentNextActionWechatPayRedirectToAndroidApp, ?wechatPayRedirectToIosApp: PaymentIntentNextActionWechatPayRedirectToIosApp) =
         {
             Type = ``type``
             AlipayHandleRedirect = alipayHandleRedirect
@@ -18166,9 +18600,21 @@ module PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
 
+    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
+    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+    let setupFutureUsage = "none"
+
 module PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptions =
     ///Controls when the funds will be captured from the customer's account.
     let captureMethod = "manual"
+
+    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
+    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+    let setupFutureUsage = "none"
 
 type PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit with
     static member New(intervalDescription: string option, paymentSchedule: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule option, transactionType: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option, ?customMandateUrl: string) =
@@ -19625,7 +20071,7 @@ type SetupIntentNextActionVerifyWithMicrodeposits with
         }
 
 type SetupIntentNextAction with
-    static member New(``type``: SetupIntentNextActionType, ?blikAuthorize: PaymentIntentNextActionBlikAuthorize, ?cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode, ?pixDisplayQrCode: SetupIntentNextActionPixDisplayQrCode, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode, ?useStripeSdk: string, ?verifyWithMicrodeposits: SetupIntentNextActionVerifyWithMicrodeposits) =
+    static member New(``type``: SetupIntentNextActionType, ?blikAuthorize: PaymentIntentNextActionBlikAuthorize, ?cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode, ?pixDisplayQrCode: SetupIntentNextActionPixDisplayQrCode, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode, ?useStripeSdk: Map<string, string list>, ?verifyWithMicrodeposits: SetupIntentNextActionVerifyWithMicrodeposits) =
         {
             Type = ``type``
             BlikAuthorize = blikAuthorize
@@ -19827,7 +20273,7 @@ type ApiErrors with
         }
 
 type PaymentIntent with
-    static member New(amount: int, amountCapturable: int, amountReceived: int, application: StripeId<Markers.Application> option, applicationFeeAmount: int option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsPaymentIntent option, canceledAt: DateTime option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: PaymentIntentCustomer'AnyOf option, customerAccount: string option, description: string option, excludedPaymentMethodTypes: PaymentIntentExcludedPaymentMethodTypes list option, id: string, lastPaymentError: ApiErrors option, latestCharge: StripeId<Markers.Charge> option, livemode: bool, managedPayments: SmorResourceManagedPayments option, metadata: Map<string, string>, nextAction: PaymentIntentNextAction option, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod> option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: PaymentIntentPaymentMethodOptions option, paymentMethodTypes: string list, processing: PaymentIntentProcessing option, receiptEmail: string option, review: StripeId<Markers.Review> option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: Shipping option, source: PaymentIntentSource'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferGroup: string option, ?amountDetails: PaymentFlowsAmountDetails, ?hooks: PaymentFlowsPaymentIntentAsyncWorkflows, ?paymentDetails: PaymentFlowsPaymentDetails, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?transferData: TransferData option) =
+    static member New(amount: int, amountCapturable: int, amountReceived: int, application: StripeId<Markers.Application> option, applicationFeeAmount: int option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsPaymentIntent option, canceledAt: DateTime option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: PaymentIntentCustomer'AnyOf option, customerAccount: string option, description: string option, excludedPaymentMethodTypes: PaymentIntentExcludedPaymentMethodTypes list option, id: string, lastPaymentError: ApiErrors option, latestCharge: StripeId<Markers.Charge> option, livemode: bool, managedPayments: SmorResourceManagedPayments option, metadata: Map<string, string>, nextAction: PaymentIntentNextAction option, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod> option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: PaymentIntentPaymentMethodOptions option, paymentMethodTypes: string list, processing: PaymentIntentProcessing option, receiptEmail: string option, review: StripeId<Markers.Review> option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: Shipping option, source: PaymentIntentSource'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferGroup: string option, ?allowedPaymentMethodTypes: PaymentIntentAllowedPaymentMethodTypes list option, ?amountDetails: PaymentFlowsAmountDetails, ?hooks: PaymentFlowsPaymentIntentAsyncWorkflows, ?paymentDetails: PaymentFlowsPaymentDetails, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?transferData: TransferData option) =
         {
             Amount = amount
             AmountCapturable = amountCapturable
@@ -19868,6 +20314,7 @@ type PaymentIntent with
             StatementDescriptorSuffix = statementDescriptorSuffix
             Status = status
             TransferGroup = transferGroup
+            AllowedPaymentMethodTypes = allowedPaymentMethodTypes |> Option.flatten
             AmountDetails = amountDetails
             Hooks = hooks
             PaymentDetails = paymentDetails
@@ -19880,7 +20327,7 @@ module PaymentIntent =
     let object = "payment_intent"
 
 type SetupIntent with
-    static member New(application: StripeId<Markers.Application> option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsSetupIntent option, cancellationReason: SetupIntentCancellationReason option, clientSecret: string option, created: DateTime, customer: SetupIntentCustomer'AnyOf option, description: string option, excludedPaymentMethodTypes: SetupIntentExcludedPaymentMethodTypes list option, id: string, lastSetupError: ApiErrors option, latestAttempt: StripeId<Markers.SetupAttempt> option, livemode: bool, mandate: StripeId<Markers.Mandate> option, metadata: Map<string, string> option, nextAction: SetupIntentNextAction option, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod> option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: SetupIntentPaymentMethodOptions option, paymentMethodTypes: string list, singleUseMandate: StripeId<Markers.Mandate> option, status: SetupIntentStatus, usage: string, ?attachToSelf: bool, ?customerAccount: string option, ?flowDirections: SetupIntentFlowDirections list option, ?managedPayments: SmorResourceManagedPayments option) =
+    static member New(application: StripeId<Markers.Application> option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsSetupIntent option, cancellationReason: SetupIntentCancellationReason option, clientSecret: string option, created: DateTime, customer: SetupIntentCustomer'AnyOf option, description: string option, excludedPaymentMethodTypes: SetupIntentExcludedPaymentMethodTypes list option, id: string, lastSetupError: ApiErrors option, latestAttempt: StripeId<Markers.SetupAttempt> option, livemode: bool, mandate: StripeId<Markers.Mandate> option, metadata: Map<string, string> option, nextAction: SetupIntentNextAction option, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod> option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: SetupIntentPaymentMethodOptions option, paymentMethodTypes: string list, singleUseMandate: StripeId<Markers.Mandate> option, status: SetupIntentStatus, usage: string, ?allowedPaymentMethodTypes: SetupIntentAllowedPaymentMethodTypes list option, ?attachToSelf: bool, ?customerAccount: string option, ?flowDirections: SetupIntentFlowDirections list option, ?managedPayments: SmorResourceManagedPayments option) =
         {
             Application = application
             AutomaticPaymentMethods = automaticPaymentMethods
@@ -19905,6 +20352,7 @@ type SetupIntent with
             SingleUseMandate = singleUseMandate
             Status = status
             Usage = usage
+            AllowedPaymentMethodTypes = allowedPaymentMethodTypes |> Option.flatten
             AttachToSelf = attachToSelf
             CustomerAccount = customerAccount |> Option.flatten
             FlowDirections = flowDirections |> Option.flatten
@@ -20158,16 +20606,19 @@ type RefundNextAction with
         }
 
 type Refund with
-    static member New(amount: int, balanceTransaction: StripeId<Markers.BalanceTransaction> option, charge: StripeId<Markers.Charge> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, id: string, metadata: Map<string, string> option, paymentIntent: StripeId<Markers.PaymentIntent> option, reason: RefundReason option, receiptNumber: string option, sourceTransferReversal: StripeId<Markers.TransferReversal> option, status: RefundStatus option, transferReversal: StripeId<Markers.TransferReversal> option, ?description: string, ?destinationDetails: RefundDestinationDetails, ?failureBalanceTransaction: StripeId<Markers.BalanceTransaction>, ?failureReason: RefundFailureReason, ?instructionsEmail: string, ?nextAction: RefundNextAction, ?pendingReason: RefundPendingReason, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails) =
+    static member New(amount: int, balanceTransaction: StripeId<Markers.BalanceTransaction> option, charge: StripeId<Markers.Charge> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: RefundCustomer'AnyOf option, customerAccount: string option, id: string, metadata: Map<string, string> option, paymentIntent: StripeId<Markers.PaymentIntent> option, paymentMethod: StripeId<Markers.PaymentMethod> option, reason: RefundReason option, receiptNumber: string option, sourceTransferReversal: StripeId<Markers.TransferReversal> option, status: RefundStatus option, transferReversal: StripeId<Markers.TransferReversal> option, ?description: string, ?destinationDetails: RefundDestinationDetails, ?failureBalanceTransaction: StripeId<Markers.BalanceTransaction>, ?failureReason: RefundFailureReason, ?instructionsEmail: string, ?nextAction: RefundNextAction, ?pendingReason: RefundPendingReason, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails) =
         {
             Amount = amount
             BalanceTransaction = balanceTransaction
             Charge = charge
             Created = created
             Currency = currency
+            Customer = customer
+            CustomerAccount = customerAccount
             Id = id
             Metadata = metadata
             PaymentIntent = paymentIntent
+            PaymentMethod = paymentMethod
             Reason = reason
             ReceiptNumber = receiptNumber
             SourceTransferReversal = sourceTransferReversal
@@ -20228,14 +20679,6 @@ type Level3 with
             ShippingFromZip = shippingFromZip
         }
 
-type PaymentFlowsPrivatePaymentMethodsAlipayDetails with
-    static member New(fingerprint: string option, transactionId: string option, ?buyerId: string) =
-        {
-            Fingerprint = fingerprint
-            TransactionId = transactionId
-            BuyerId = buyerId
-        }
-
 type PaymentMethodDetailsAchCreditTransfer with
     static member New(accountNumber: string option, bankName: string option, routingNumber: string option, swiftCode: string option) =
         {
@@ -20281,6 +20724,14 @@ type PaymentMethodDetailsAfterpayClearpay with
         {
             OrderId = orderId
             Reference = reference
+        }
+
+type PaymentMethodDetailsAlipay with
+    static member New(fingerprint: string option, transactionId: string option, ?buyerId: string) =
+        {
+            Fingerprint = fingerprint
+            TransactionId = transactionId
+            BuyerId = buyerId
         }
 
 type PaymentMethodDetailsAlma with
@@ -20930,7 +21381,7 @@ type PaymentMethodDetailsZip with
         }
 
 type PaymentMethodDetails with
-    static member New(``type``: string, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsAcssDebit, ?affirm: PaymentMethodDetailsAffirm, ?afterpayClearpay: PaymentMethodDetailsAfterpayClearpay, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails, ?alma: PaymentMethodDetailsAlma, ?amazonPay: PaymentMethodDetailsAmazonPay, ?auBecsDebit: PaymentMethodDetailsAuBecsDebit, ?bacsDebit: PaymentMethodDetailsBacsDebit, ?bancontact: PaymentMethodDetailsBancontact, ?billie: PaymentMethodDetailsBillie, ?bizum: PaymentMethodDetailsBizum, ?blik: PaymentMethodDetailsBlik, ?boleto: PaymentMethodDetailsBoleto, ?card: PaymentMethodDetailsCard, ?cardPresent: PaymentMethodDetailsCardPresent, ?cashapp: PaymentMethodDetailsCashapp, ?crypto: PaymentMethodDetailsCrypto, ?customerBalance: PaymentMethodDetailsCustomerBalance, ?eps: PaymentMethodDetailsEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?kakaoPay: PaymentMethodDetailsKakaoPay, ?klarna: PaymentMethodDetailsKlarna, ?konbini: PaymentMethodDetailsKonbini, ?krCard: PaymentMethodDetailsKrCard, ?link: PaymentMethodDetailsLink, ?mbWay: PaymentMethodDetailsMbWay, ?mobilepay: PaymentMethodDetailsMobilepay, ?multibanco: PaymentMethodDetailsMultibanco, ?naverPay: PaymentMethodDetailsNaverPay, ?nzBankAccount: PaymentMethodDetailsNzBankAccount, ?oxxo: PaymentMethodDetailsOxxo, ?p24: PaymentMethodDetailsP24, ?payByBank: PaymentMethodDetailsPayByBank, ?payco: PaymentMethodDetailsPayco, ?paynow: PaymentMethodDetailsPaynow, ?paypal: PaymentMethodDetailsPaypal, ?payto: PaymentMethodDetailsPayto, ?pix: PaymentMethodDetailsPix, ?promptpay: PaymentMethodDetailsPromptpay, ?revolutPay: PaymentMethodDetailsRevolutPay, ?samsungPay: PaymentMethodDetailsSamsungPay, ?satispay: PaymentMethodDetailsSatispay, ?scalapay: PaymentMethodDetailsScalapay, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsSepaDebit, ?sofort: PaymentMethodDetailsSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?sunbit: PaymentMethodDetailsSunbit, ?swish: PaymentMethodDetailsSwish, ?twint: PaymentMethodDetailsTwint, ?upi: PaymentMethodDetailsUpi, ?usBankAccount: PaymentMethodDetailsUsBankAccount, ?wechat: PaymentMethodDetailsWechat, ?wechatPay: PaymentMethodDetailsWechatPay, ?zip: PaymentMethodDetailsZip) =
+    static member New(``type``: string, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsAcssDebit, ?affirm: PaymentMethodDetailsAffirm, ?afterpayClearpay: PaymentMethodDetailsAfterpayClearpay, ?alipay: PaymentMethodDetailsAlipay, ?alma: PaymentMethodDetailsAlma, ?amazonPay: PaymentMethodDetailsAmazonPay, ?auBecsDebit: PaymentMethodDetailsAuBecsDebit, ?bacsDebit: PaymentMethodDetailsBacsDebit, ?bancontact: PaymentMethodDetailsBancontact, ?billie: PaymentMethodDetailsBillie, ?bizum: PaymentMethodDetailsBizum, ?blik: PaymentMethodDetailsBlik, ?boleto: PaymentMethodDetailsBoleto, ?card: PaymentMethodDetailsCard, ?cardPresent: PaymentMethodDetailsCardPresent, ?cashapp: PaymentMethodDetailsCashapp, ?crypto: PaymentMethodDetailsCrypto, ?customerBalance: PaymentMethodDetailsCustomerBalance, ?eps: PaymentMethodDetailsEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?kakaoPay: PaymentMethodDetailsKakaoPay, ?klarna: PaymentMethodDetailsKlarna, ?konbini: PaymentMethodDetailsKonbini, ?krCard: PaymentMethodDetailsKrCard, ?link: PaymentMethodDetailsLink, ?mbWay: PaymentMethodDetailsMbWay, ?mobilepay: PaymentMethodDetailsMobilepay, ?multibanco: PaymentMethodDetailsMultibanco, ?naverPay: PaymentMethodDetailsNaverPay, ?nzBankAccount: PaymentMethodDetailsNzBankAccount, ?oxxo: PaymentMethodDetailsOxxo, ?p24: PaymentMethodDetailsP24, ?payByBank: PaymentMethodDetailsPayByBank, ?payco: PaymentMethodDetailsPayco, ?paynow: PaymentMethodDetailsPaynow, ?paypal: PaymentMethodDetailsPaypal, ?payto: PaymentMethodDetailsPayto, ?pix: PaymentMethodDetailsPix, ?promptpay: PaymentMethodDetailsPromptpay, ?revolutPay: PaymentMethodDetailsRevolutPay, ?samsungPay: PaymentMethodDetailsSamsungPay, ?satispay: PaymentMethodDetailsSatispay, ?scalapay: PaymentMethodDetailsScalapay, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsSepaDebit, ?sofort: PaymentMethodDetailsSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?sunbit: PaymentMethodDetailsSunbit, ?swish: PaymentMethodDetailsSwish, ?twint: PaymentMethodDetailsTwint, ?upi: PaymentMethodDetailsUpi, ?usBankAccount: PaymentMethodDetailsUsBankAccount, ?wechat: PaymentMethodDetailsWechat, ?wechatPay: PaymentMethodDetailsWechatPay, ?zip: PaymentMethodDetailsZip) =
         {
             Type = ``type``
             AchCreditTransfer = achCreditTransfer
@@ -21296,10 +21747,11 @@ type DisputePaymentMethodDetailsAmazonPay with
         }
 
 type DisputePaymentMethodDetailsCard with
-    static member New(brand: DisputePaymentMethodDetailsCardBrand, caseType: DisputePaymentMethodDetailsCardCaseType, networkReasonCode: string option) =
+    static member New(brand: DisputePaymentMethodDetailsCardBrand, caseType: DisputePaymentMethodDetailsCardCaseType, network: DisputePaymentMethodDetailsCardNetwork, networkReasonCode: string option) =
         {
             Brand = brand
             CaseType = caseType
+            Network = network
             NetworkReasonCode = networkReasonCode
         }
 
@@ -21872,8 +22324,18 @@ module Payout =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "payout"
 
+module TopupResourceUsBankAccount =
+    ///The US bank transfer network used for this top-up. The default is `ach`.
+    let network = "ach"
+
+type TopupResourcePaymentMethodOptions with
+    static member New(usBankAccount: TopupResourceUsBankAccount option) =
+        {
+            UsBankAccount = usBankAccount
+        }
+
 type Topup with
-    static member New(amount: int, balanceTransaction: StripeId<Markers.BalanceTransaction> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, expectedAvailabilityDate: int option, failureCode: string option, failureMessage: string option, id: string, livemode: bool, metadata: Map<string, string>, source: Source option, statementDescriptor: string option, status: TopupStatus, transferGroup: string option) =
+    static member New(amount: int, balanceTransaction: StripeId<Markers.BalanceTransaction> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, description: string option, expectedAvailabilityDate: int option, failureCode: string option, failureMessage: string option, id: string, initiatedBy: TopupInitiatedBy option, livemode: bool, metadata: Map<string, string>, source: Source option, statementDescriptor: string option, status: TopupStatus, transferGroup: string option, ?paymentMethod: StripeId<Markers.PaymentMethod> option, ?paymentMethodOptions: TopupResourcePaymentMethodOptions option) =
         {
             Amount = amount
             BalanceTransaction = balanceTransaction
@@ -21884,12 +22346,15 @@ type Topup with
             FailureCode = failureCode
             FailureMessage = failureMessage
             Id = id
+            InitiatedBy = initiatedBy
             Livemode = livemode
             Metadata = metadata
             Source = source
             StatementDescriptor = statementDescriptor
             Status = status
             TransferGroup = transferGroup
+            PaymentMethod = paymentMethod |> Option.flatten
+            PaymentMethodOptions = paymentMethodOptions |> Option.flatten
         }
 
 module Topup =
@@ -21953,6 +22418,26 @@ type BankConnectionsResourceAccountholder with
             CustomerAccount = customerAccount
         }
 
+type BankConnectionsResourceAuthorizationStatusDetailsApiResourceActiveStatusDetails with
+    static member New(action: BankConnectionsResourceAuthorizationStatusDetailsApiResourceActiveStatusDetailsAction, expectedDeactivationDate: DateTime) =
+        {
+            Action = action
+            ExpectedDeactivationDate = expectedDeactivationDate
+        }
+
+type BankConnectionsResourceAuthorizationStatusDetailsApiResourceInactiveStatusDetails with
+    static member New(action: BankConnectionsResourceAuthorizationStatusDetailsApiResourceInactiveStatusDetailsAction) =
+        {
+            Action = action
+        }
+
+type BankConnectionsResourceAuthorizationStatusDetails with
+    static member New(?active: BankConnectionsResourceAuthorizationStatusDetailsApiResourceActiveStatusDetails, ?inactive: BankConnectionsResourceAuthorizationStatusDetailsApiResourceInactiveStatusDetails) =
+        {
+            Active = active
+            Inactive = inactive
+        }
+
 type BankConnectionsResourceBalanceApiResourceCashBalance with
     static member New(available: Map<string, string list> option) =
         {
@@ -21984,10 +22469,23 @@ type BankConnectionsResourceBalanceRefresh with
         }
 
 type BankConnectionsResourceLinkAccountSessionFilters with
-    static member New(accountSubcategories: BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories list option, countries: string list option) =
+    static member New(accountSubcategories: BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories list option, countries: string list option, ?requirePaymentMethodSupport: BankConnectionsResourceLinkAccountSessionFiltersRequirePaymentMethodSupport) =
         {
             AccountSubcategories = accountSubcategories
             Countries = countries
+            RequirePaymentMethodSupport = requirePaymentMethodSupport
+        }
+
+type BankConnectionsResourceLinkAccountSessionLimits with
+    static member New(accounts: int) =
+        {
+            Accounts = accounts
+        }
+
+type BankConnectionsResourceLinkAccountSessionManualEntry with
+    static member New(?mode: BankConnectionsResourceLinkAccountSessionManualEntryMode) =
+        {
+            Mode = mode
         }
 
 type BankConnectionsResourceOwnershipRefresh with
@@ -22588,12 +23086,13 @@ type ConnectEmbeddedBaseConfigClaim with
         }
 
 type ConnectEmbeddedDisputesListFeatures with
-    static member New(capturePayments: bool, destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool) =
+    static member New(capturePayments: bool, destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool, smartDisputesManagement: bool) =
         {
             CapturePayments = capturePayments
             DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
             DisputeManagement = disputeManagement
             RefundManagement = refundManagement
+            SmartDisputesManagement = smartDisputesManagement
         }
 
 type ConnectEmbeddedDisputesListConfig with
@@ -22681,11 +23180,12 @@ type ConnectEmbeddedIssuingCardsListConfigClaim with
         }
 
 type ConnectEmbeddedPaymentDisputesFeatures with
-    static member New(destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool) =
+    static member New(destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool, smartDisputesManagement: bool) =
         {
             DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
             DisputeManagement = disputeManagement
             RefundManagement = refundManagement
+            SmartDisputesManagement = smartDisputesManagement
         }
 
 type ConnectEmbeddedPaymentDisputesConfig with
@@ -22696,12 +23196,13 @@ type ConnectEmbeddedPaymentDisputesConfig with
         }
 
 type ConnectEmbeddedPaymentsFeatures with
-    static member New(capturePayments: bool, destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool) =
+    static member New(capturePayments: bool, destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool, smartDisputesManagement: bool) =
         {
             CapturePayments = capturePayments
             DestinationOnBehalfOfChargeManagement = destinationOnBehalfOfChargeManagement
             DisputeManagement = disputeManagement
             RefundManagement = refundManagement
+            SmartDisputesManagement = smartDisputesManagement
         }
 
 type ConnectEmbeddedPaymentsConfigClaim with
@@ -23053,6 +23554,12 @@ type FinancialConnectionsAccountDisconnected with
             Object = object
         }
 
+type FinancialConnectionsAccountExpectedDeactivationDateUpdated with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
 type FinancialConnectionsAccountOwner with
     static member New(email: string option, id: string, name: string, ownership: string, phone: string option, rawAddress: string option, refreshedAt: DateTime option) =
         {
@@ -23117,8 +23624,46 @@ type FinancialConnectionsAccountRefreshedTransactions with
             Object = object
         }
 
+type FinancialConnectionsAccountSupportedPaymentMethodTypesUpdated with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
 type FinancialConnectionsAccountUpcomingAccountNumberExpiry with
     static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAccountUpcomingDeactivation with
+    static member New(object: FinancialConnectionsAccount) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAuthorization with
+    static member New(id: string, institutionName: string, livemode: bool, status: FinancialConnectionsAuthorizationStatus, statusDetails: BankConnectionsResourceAuthorizationStatusDetails) =
+        {
+            Id = id
+            InstitutionName = institutionName
+            Livemode = livemode
+            Status = status
+            StatusDetails = statusDetails
+        }
+
+module FinancialConnectionsAuthorization =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "financial_connections.authorization"
+
+type FinancialConnectionsAuthorizationExpectedDeactivationDateUpdated with
+    static member New(object: FinancialConnectionsAuthorization) =
+        {
+            Object = object
+        }
+
+type FinancialConnectionsAuthorizationUpcomingDeactivation with
+    static member New(object: FinancialConnectionsAuthorization) =
         {
             Object = object
         }
@@ -23135,8 +23680,25 @@ module FinancialConnectionsSessionAccounts =
     ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     let object = "list"
 
+type Token with
+    static member New(clientIp: string option, created: DateTime, id: string, livemode: bool, ``type``: TokenType, used: bool, ?bankAccount: BankAccount, ?card: Card) =
+        {
+            ClientIp = clientIp
+            Created = created
+            Id = id
+            Livemode = livemode
+            Type = ``type``
+            Used = used
+            BankAccount = bankAccount
+            Card = card
+        }
+
+module Token =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "token"
+
 type FinancialConnectionsSession with
-    static member New(accountHolder: BankConnectionsResourceAccountholder option, accounts: FinancialConnectionsSessionAccounts, clientSecret: string option, id: string, livemode: bool, permissions: FinancialConnectionsSessionPermissions list, prefetch: FinancialConnectionsSessionPrefetch list option, ?filters: BankConnectionsResourceLinkAccountSessionFilters, ?returnUrl: string) =
+    static member New(accountHolder: BankConnectionsResourceAccountholder option, accounts: FinancialConnectionsSessionAccounts, clientSecret: string option, id: string, livemode: bool, permissions: FinancialConnectionsSessionPermissions list, prefetch: FinancialConnectionsSessionPrefetch list option, ?bankAccountToken: Token, ?filters: BankConnectionsResourceLinkAccountSessionFilters, ?limits: BankConnectionsResourceLinkAccountSessionLimits, ?manualEntry: BankConnectionsResourceLinkAccountSessionManualEntry, ?returnUrl: string) =
         {
             AccountHolder = accountHolder
             Accounts = accounts
@@ -23145,7 +23707,10 @@ type FinancialConnectionsSession with
             Livemode = livemode
             Permissions = permissions
             Prefetch = prefetch
+            BankAccountToken = bankAccountToken
             Filters = filters
+            Limits = limits
+            ManualEntry = manualEntry
             ReturnUrl = returnUrl
         }
 
@@ -23585,25 +24150,34 @@ type InvoiceSettingCheckoutRenderingOptions with
         }
 
 type InvoiceSettingQuoteSetting with
-    static member New(daysUntilDue: int option, issuer: ConnectAccountReference) =
+    static member New(customFields: InvoiceSettingCustomField list option, daysUntilDue: int option, description: string option, footer: string option, issuer: ConnectAccountReference) =
         {
+            CustomFields = customFields
             DaysUntilDue = daysUntilDue
+            Description = description
+            Footer = footer
             Issuer = issuer
         }
 
 type InvoiceSettingSubscriptionSchedulePhaseSetting with
-    static member New(accountTaxIds: InvoiceSettingSubscriptionSchedulePhaseSettingAccountTaxIds'AnyOf list option, daysUntilDue: int option, issuer: ConnectAccountReference option) =
+    static member New(accountTaxIds: InvoiceSettingSubscriptionSchedulePhaseSettingAccountTaxIds'AnyOf list option, customFields: InvoiceSettingCustomField list option, daysUntilDue: int option, description: string option, footer: string option, issuer: ConnectAccountReference option) =
         {
             AccountTaxIds = accountTaxIds
+            CustomFields = customFields
             DaysUntilDue = daysUntilDue
+            Description = description
+            Footer = footer
             Issuer = issuer
         }
 
 type InvoiceSettingSubscriptionScheduleSetting with
-    static member New(accountTaxIds: InvoiceSettingSubscriptionScheduleSettingAccountTaxIds'AnyOf list option, daysUntilDue: int option, issuer: ConnectAccountReference) =
+    static member New(accountTaxIds: InvoiceSettingSubscriptionScheduleSettingAccountTaxIds'AnyOf list option, customFields: InvoiceSettingCustomField list option, daysUntilDue: int option, description: string option, footer: string option, issuer: ConnectAccountReference) =
         {
             AccountTaxIds = accountTaxIds
+            CustomFields = customFields
             DaysUntilDue = daysUntilDue
+            Description = description
+            Footer = footer
             Issuer = issuer
         }
 
@@ -24136,6 +24710,14 @@ type PaymentMethodDetailsPaymentRecordAfterpayClearpay with
             Reference = reference
         }
 
+type PaymentMethodDetailsPaymentRecordAlipay with
+    static member New(fingerprint: string option, transactionId: string option, ?buyerId: string) =
+        {
+            Fingerprint = fingerprint
+            TransactionId = transactionId
+            BuyerId = buyerId
+        }
+
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAlmaDetailsResourceInstallments with
     static member New(count: int) =
         {
@@ -24175,6 +24757,26 @@ type PaymentMethodDetailsPaymentRecordAmazonPay with
         {
             TransactionId = transactionId
             Funding = funding
+        }
+
+type PaymentMethodDetailsPaymentRecordAuBecsDebit with
+    static member New(bsbNumber: string option, fingerprint: string option, last4: string option, ?expectedDebitDate: string, ?mandate: string) =
+        {
+            BsbNumber = bsbNumber
+            Fingerprint = fingerprint
+            Last4 = last4
+            ExpectedDebitDate = expectedDebitDate
+            Mandate = mandate
+        }
+
+type PaymentMethodDetailsPaymentRecordBacsDebit with
+    static member New(fingerprint: string option, last4: string option, mandate: string option, sortCode: string option, ?expectedDebitDate: string) =
+        {
+            Fingerprint = fingerprint
+            Last4 = last4
+            Mandate = mandate
+            SortCode = sortCode
+            ExpectedDebitDate = expectedDebitDate
         }
 
 type PaymentMethodDetailsPaymentRecordBancontact with
@@ -24998,7 +25600,7 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails with
         }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodDetails with
-    static member New(billingDetails: PaymentsPrimitivesPaymentRecordsResourceBillingDetails option, paymentMethod: string option, ``type``: string, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsPaymentRecordAcssDebit, ?affirm: PaymentMethodDetailsPaymentRecordAffirm, ?afterpayClearpay: PaymentMethodDetailsPaymentRecordAfterpayClearpay, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipayDetails, ?alma: PaymentMethodDetailsPaymentRecordAlma, ?amazonPay: PaymentMethodDetailsPaymentRecordAmazonPay, ?auBecsDebit: PaymentMethodDetailsAuBecsDebit, ?bacsDebit: PaymentMethodDetailsBacsDebit, ?bancontact: PaymentMethodDetailsPaymentRecordBancontact, ?billie: PaymentMethodDetailsPaymentRecordBillie, ?bizum: PaymentMethodDetailsPaymentRecordBizum, ?blik: PaymentMethodDetailsPaymentRecordBlik, ?boleto: PaymentMethodDetailsPaymentRecordBoleto, ?card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails, ?cardPresent: PaymentMethodDetailsCardPresent, ?cashapp: PaymentMethodDetailsPaymentRecordCashapp, ?crypto: PaymentMethodDetailsCrypto, ?custom: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails, ?customerBalance: PaymentMethodDetailsCustomerBalance, ?eps: PaymentMethodDetailsPaymentRecordEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsPaymentRecordGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsPaymentRecordIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?kakaoPay: PaymentMethodDetailsPaymentRecordKakaoPay, ?klarna: PaymentMethodDetailsPaymentRecordKlarna, ?konbini: PaymentMethodDetailsPaymentRecordKonbini, ?krCard: PaymentMethodDetailsKrCard, ?link: PaymentMethodDetailsPaymentRecordLink, ?mbWay: PaymentMethodDetailsPaymentRecordMbWay, ?mobilepay: PaymentMethodDetailsPaymentRecordMobilepay, ?multibanco: PaymentMethodDetailsPaymentRecordMultibanco, ?naverPay: PaymentMethodDetailsPaymentRecordNaverPay, ?nzBankAccount: PaymentMethodDetailsNzBankAccount, ?oxxo: PaymentMethodDetailsPaymentRecordOxxo, ?p24: PaymentMethodDetailsPaymentRecordP24, ?payByBank: PaymentMethodDetailsPaymentRecordPayByBank, ?payco: PaymentMethodDetailsPaymentRecordPayco, ?paynow: PaymentMethodDetailsPaymentRecordPaynow, ?paypal: PaymentMethodDetailsPaypal, ?payto: PaymentMethodDetailsPaymentRecordPayto, ?pix: PaymentMethodDetailsPaymentRecordPix, ?promptpay: PaymentMethodDetailsPaymentRecordPromptpay, ?revolutPay: PaymentMethodDetailsPaymentRecordRevolutPay, ?samsungPay: PaymentMethodDetailsPaymentRecordSamsungPay, ?satispay: PaymentMethodDetailsPaymentRecordSatispay, ?scalapay: PaymentMethodDetailsPaymentRecordScalapay, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsPaymentRecordSepaDebit, ?sofort: PaymentMethodDetailsPaymentRecordSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?sunbit: PaymentMethodDetailsPaymentRecordSunbit, ?swish: PaymentMethodDetailsPaymentRecordSwish, ?twint: PaymentMethodDetailsPaymentRecordTwint, ?upi: PaymentMethodDetailsPaymentRecordUpi, ?usBankAccount: PaymentMethodDetailsPaymentRecordUsBankAccount, ?wechat: PaymentMethodDetailsWechat, ?wechatPay: PaymentMethodDetailsPaymentRecordWechatPay, ?zip: PaymentMethodDetailsPaymentRecordZip) =
+    static member New(billingDetails: PaymentsPrimitivesPaymentRecordsResourceBillingDetails option, paymentMethod: string option, ``type``: string, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsPaymentRecordAcssDebit, ?affirm: PaymentMethodDetailsPaymentRecordAffirm, ?afterpayClearpay: PaymentMethodDetailsPaymentRecordAfterpayClearpay, ?alipay: PaymentMethodDetailsPaymentRecordAlipay, ?alma: PaymentMethodDetailsPaymentRecordAlma, ?amazonPay: PaymentMethodDetailsPaymentRecordAmazonPay, ?auBecsDebit: PaymentMethodDetailsPaymentRecordAuBecsDebit, ?bacsDebit: PaymentMethodDetailsPaymentRecordBacsDebit, ?bancontact: PaymentMethodDetailsPaymentRecordBancontact, ?billie: PaymentMethodDetailsPaymentRecordBillie, ?bizum: PaymentMethodDetailsPaymentRecordBizum, ?blik: PaymentMethodDetailsPaymentRecordBlik, ?boleto: PaymentMethodDetailsPaymentRecordBoleto, ?card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails, ?cardPresent: PaymentMethodDetailsCardPresent, ?cashapp: PaymentMethodDetailsPaymentRecordCashapp, ?crypto: PaymentMethodDetailsCrypto, ?custom: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails, ?customerBalance: PaymentMethodDetailsCustomerBalance, ?eps: PaymentMethodDetailsPaymentRecordEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsPaymentRecordGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsPaymentRecordIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?kakaoPay: PaymentMethodDetailsPaymentRecordKakaoPay, ?klarna: PaymentMethodDetailsPaymentRecordKlarna, ?konbini: PaymentMethodDetailsPaymentRecordKonbini, ?krCard: PaymentMethodDetailsKrCard, ?link: PaymentMethodDetailsPaymentRecordLink, ?mbWay: PaymentMethodDetailsPaymentRecordMbWay, ?mobilepay: PaymentMethodDetailsPaymentRecordMobilepay, ?multibanco: PaymentMethodDetailsPaymentRecordMultibanco, ?naverPay: PaymentMethodDetailsPaymentRecordNaverPay, ?nzBankAccount: PaymentMethodDetailsNzBankAccount, ?oxxo: PaymentMethodDetailsPaymentRecordOxxo, ?p24: PaymentMethodDetailsPaymentRecordP24, ?payByBank: PaymentMethodDetailsPaymentRecordPayByBank, ?payco: PaymentMethodDetailsPaymentRecordPayco, ?paynow: PaymentMethodDetailsPaymentRecordPaynow, ?paypal: PaymentMethodDetailsPaypal, ?payto: PaymentMethodDetailsPaymentRecordPayto, ?pix: PaymentMethodDetailsPaymentRecordPix, ?promptpay: PaymentMethodDetailsPaymentRecordPromptpay, ?revolutPay: PaymentMethodDetailsPaymentRecordRevolutPay, ?samsungPay: PaymentMethodDetailsPaymentRecordSamsungPay, ?satispay: PaymentMethodDetailsPaymentRecordSatispay, ?scalapay: PaymentMethodDetailsPaymentRecordScalapay, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsPaymentRecordSepaDebit, ?sofort: PaymentMethodDetailsPaymentRecordSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?sunbit: PaymentMethodDetailsPaymentRecordSunbit, ?swish: PaymentMethodDetailsPaymentRecordSwish, ?twint: PaymentMethodDetailsPaymentRecordTwint, ?upi: PaymentMethodDetailsPaymentRecordUpi, ?usBankAccount: PaymentMethodDetailsPaymentRecordUsBankAccount, ?wechat: PaymentMethodDetailsWechat, ?wechatPay: PaymentMethodDetailsPaymentRecordWechatPay, ?zip: PaymentMethodDetailsPaymentRecordZip) =
         {
             BillingDetails = billingDetails
             PaymentMethod = paymentMethod
@@ -25263,23 +25865,6 @@ type SubscriptionSchedulesResourceInvoiceItemPeriodResourcePeriodStart with
             Type = ``type``
             Timestamp = timestamp
         }
-
-type Token with
-    static member New(clientIp: string option, created: DateTime, id: string, livemode: bool, ``type``: TokenType, used: bool, ?bankAccount: BankAccount, ?card: Card) =
-        {
-            ClientIp = clientIp
-            Created = created
-            Id = id
-            Livemode = livemode
-            Type = ``type``
-            Used = used
-            BankAccount = bankAccount
-            Card = card
-        }
-
-module Token =
-    ///String representing the object's type. Objects of the same type share the same value.
-    let object = "token"
 
 type TopupCanceled with
     static member New(object: Topup) =

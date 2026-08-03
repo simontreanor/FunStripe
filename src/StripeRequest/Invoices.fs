@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module Invoices =
 
     type ListOptions =
@@ -609,6 +609,7 @@ module Invoices =
         | AchDebit
         | AcssDebit
         | Affirm
+        | Alipay
         | AmazonPay
         | AuBecsDebit
         | BacsDebit
@@ -630,6 +631,7 @@ module Invoices =
         | Konbini
         | KrCard
         | Link
+        | MbWay
         | Multibanco
         | NaverPay
         | NzBankAccount
@@ -1641,6 +1643,7 @@ module Invoices =
         | AchDebit
         | AcssDebit
         | Affirm
+        | Alipay
         | AmazonPay
         | AuBecsDebit
         | BacsDebit
@@ -1662,6 +1665,7 @@ module Invoices =
         | Konbini
         | KrCard
         | Link
+        | MbWay
         | Multibanco
         | NaverPay
         | NzBankAccount
@@ -2322,6 +2326,7 @@ module InvoicesCreatePreview =
         | HkBr
         | HrOib
         | HuTin
+        | IcNif
         | IdNpwp
         | IlVat
         | InGst
@@ -2388,7 +2393,7 @@ module InvoicesCreatePreview =
 
     type CreatePreview'CustomerDetailsTaxIds =
         {
-            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
+            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
             [<Config.Form>]
             Type: CreatePreview'CustomerDetailsTaxIdsType option
             /// Value of the tax ID.
@@ -3201,7 +3206,7 @@ module InvoicesCreatePreview =
             /// Controls whether the subscription schedule should create [prorations](https://docs.stripe.com/billing/subscriptions/prorations) when transitioning to this phase if there is a difference in billing configuration. It's different from the request-level [proration_behavior](https://docs.stripe.com/api/subscription_schedules/update#update_subscription_schedule-proration_behavior) parameter which controls what happens if the update request affects the billing configuration (item price, quantity, etc.) of the current phase.
             [<Config.Form>]
             ProrationBehavior: CreatePreview'ScheduleDetailsPhasesProrationBehavior option
-            /// The date at which this phase of the subscription schedule starts or `now`. Must be set on the first phase.
+            /// The date at which this phase of the subscription schedule starts or `now`. Must be set on the first phase. Prefer to specify `now` over an explicit timestamp when appropriate to avoid unexpected behavior due to request delays or clock skew resulting in the phase being slightly backdated or postdated.
             [<Config.Form>]
             StartDate: Choice<DateTime,CreatePreview'ScheduleDetailsPhasesStartDate> option
             /// The data with which to automatically create a Transfer for each of the associated subscription's invoices.
@@ -3210,7 +3215,7 @@ module InvoicesCreatePreview =
             /// If set to true the entire phase is counted as a trial and the customer will not be charged for any fees.
             [<Config.Form>]
             Trial: bool option
-            /// Sets the phase to trialing from the start date to this date. Must be before the phase end date, can not be combined with `trial`
+            /// Sets the phase to trialing from the start date to this date. Must be within the phase. When previewing an update, if combined with `trial=true`, it must match the phase end date.
             [<Config.Form>]
             TrialEnd: Choice<DateTime,CreatePreview'ScheduleDetailsPhasesTrialEnd> option
         }
@@ -3591,6 +3596,9 @@ module InvoicesCreatePreview =
             /// A list of up to 20 subscription items, each with an attached price.
             [<Config.Form>]
             Items: CreatePreview'SubscriptionDetailsItems list option
+            /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
+            [<Config.Form>]
+            Metadata: Map<string, string> option
             /// Determines how to handle [prorations](https://docs.stripe.com/billing/subscriptions/prorations) when the billing cycle changes (e.g., when switching plans, resetting `billing_cycle_anchor=now`, or starting a trial), or if an item's `quantity` changes. The default value is `create_prorations`.
             [<Config.Form>]
             ProrationBehavior: CreatePreview'SubscriptionDetailsProrationBehavior option
@@ -3609,7 +3617,7 @@ module InvoicesCreatePreview =
         }
 
     type CreatePreview'SubscriptionDetails with
-        static member New(?billingCycleAnchor: Choice<CreatePreview'SubscriptionDetailsBillingCycleAnchor,DateTime>, ?billingMode: CreatePreview'SubscriptionDetailsBillingMode, ?billingSchedules: Choice<CreatePreview'SubscriptionDetailsBillingSchedules list,string>, ?cancelAt: Choice<DateTime,string,CreatePreview'SubscriptionDetailsCancelAt>, ?cancelAtPeriodEnd: bool, ?cancelNow: bool, ?defaultTaxRates: Choice<string list,string>, ?items: CreatePreview'SubscriptionDetailsItems list, ?prorationBehavior: CreatePreview'SubscriptionDetailsProrationBehavior, ?prorationDate: DateTime, ?resumeAt: CreatePreview'SubscriptionDetailsResumeAt, ?startDate: DateTime, ?trialEnd: Choice<CreatePreview'SubscriptionDetailsTrialEnd,DateTime>) =
+        static member New(?billingCycleAnchor: Choice<CreatePreview'SubscriptionDetailsBillingCycleAnchor,DateTime>, ?billingMode: CreatePreview'SubscriptionDetailsBillingMode, ?billingSchedules: Choice<CreatePreview'SubscriptionDetailsBillingSchedules list,string>, ?cancelAt: Choice<DateTime,string,CreatePreview'SubscriptionDetailsCancelAt>, ?cancelAtPeriodEnd: bool, ?cancelNow: bool, ?defaultTaxRates: Choice<string list,string>, ?items: CreatePreview'SubscriptionDetailsItems list, ?metadata: Map<string, string>, ?prorationBehavior: CreatePreview'SubscriptionDetailsProrationBehavior, ?prorationDate: DateTime, ?resumeAt: CreatePreview'SubscriptionDetailsResumeAt, ?startDate: DateTime, ?trialEnd: Choice<CreatePreview'SubscriptionDetailsTrialEnd,DateTime>) =
             {
                 BillingCycleAnchor = billingCycleAnchor
                 BillingMode = billingMode
@@ -3619,6 +3627,7 @@ module InvoicesCreatePreview =
                 CancelNow = cancelNow
                 DefaultTaxRates = defaultTaxRates
                 Items = items
+                Metadata = metadata
                 ProrationBehavior = prorationBehavior
                 ProrationDate = prorationDate
                 ResumeAt = resumeAt
@@ -3880,6 +3889,8 @@ module InvoicesAddLines =
         | Igst
         | Jct
         | LeaseTax
+        | MassTransitParkingTax
+        | ParkingTax
         | Pst
         | Qst
         | RetailDeliveryFee
@@ -4298,6 +4309,8 @@ module InvoicesLines =
         | Igst
         | Jct
         | LeaseTax
+        | MassTransitParkingTax
+        | ParkingTax
         | Pst
         | Qst
         | RetailDeliveryFee
@@ -4764,6 +4777,8 @@ module InvoicesUpdateLines =
         | Igst
         | Jct
         | LeaseTax
+        | MassTransitParkingTax
+        | ParkingTax
         | Pst
         | Qst
         | RetailDeliveryFee

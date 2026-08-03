@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Radar
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 type ReviewClosedReason =
     | Acknowledged
     | Approved

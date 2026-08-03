@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 module Subscriptions =
 
     type ListOptions =
@@ -1139,6 +1139,7 @@ module Subscriptions =
         | AchDebit
         | AcssDebit
         | Affirm
+        | Alipay
         | AmazonPay
         | AuBecsDebit
         | BacsDebit
@@ -1160,6 +1161,7 @@ module Subscriptions =
         | Konbini
         | KrCard
         | Link
+        | MbWay
         | Multibanco
         | NaverPay
         | NzBankAccount
@@ -2570,6 +2572,7 @@ module Subscriptions =
         | AchDebit
         | AcssDebit
         | Affirm
+        | Alipay
         | AmazonPay
         | AuBecsDebit
         | BacsDebit
@@ -2591,6 +2594,7 @@ module Subscriptions =
         | Konbini
         | KrCard
         | Link
+        | MbWay
         | Multibanco
         | NaverPay
         | NzBankAccount
@@ -2741,7 +2745,7 @@ module Subscriptions =
             /// A timestamp at which the subscription should cancel. If set to a date before the current period ends, this will cause a proration if prorations have been enabled using `proration_behavior`. If set during a future period, this will always cause a proration for that period.
             [<Config.Form>]
             CancelAt: Choice<DateTime,string,Update'CancelAt> option
-            /// Indicate whether this subscription should cancel at the end of the current period (`current_period_end`). Defaults to `false`.
+            /// Indicate whether this subscription should cancel at the end of the current period (`current_period_end`).
             [<Config.Form>]
             CancelAtPeriodEnd: bool option
             /// Details about why this subscription was cancelled

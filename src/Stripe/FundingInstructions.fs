@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 type Address =
     {
         /// City, district, suburb, town, or village.
@@ -66,6 +66,7 @@ type FundingInstructionsBankTransferAbaRecord with
 type FundingInstructionsBankTransferFinancialAddressSupportedNetworks =
     | Ach
     | Bacs
+    | Chaps
     | DomesticWireUs
     | Fps
     | Sepa

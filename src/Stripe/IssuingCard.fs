@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.IssuingCardholder
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.2.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 type IssuingCardAuthorizationControlsAllowedCardPresences =
     | NotPresent
     | Present
@@ -1056,6 +1056,7 @@ type IssuingCardShippingAddressValidation with
 
 [<Struct>]
 type IssuingCardShippingCarrier =
+    | Correos
     | Dhl
     | Fedex
     | RoyalMail
@@ -1098,6 +1099,8 @@ type IssuingCardShipping =
         Address: Address
         /// Address validation details for the shipment.
         AddressValidation: IssuingCardShippingAddressValidation option
+        /// The name of the business at the shipping address, used on the shipping label to ensure delivery when the card is shipped to a cardholder's workplace.
+        BusinessName: string option
         /// The delivery company that shipped a card.
         Carrier: IssuingCardShippingCarrier option
         /// Additional information that may be required for clearing customs.
@@ -1123,10 +1126,11 @@ type IssuingCardShipping =
     }
 
 type IssuingCardShipping with
-    static member New(address: Address, addressValidation: IssuingCardShippingAddressValidation option, carrier: IssuingCardShippingCarrier option, customs: IssuingCardShippingCustoms option, eta: DateTime option, name: string, phoneNumber: string option, requireSignature: bool option, service: IssuingCardShippingService, status: IssuingCardShippingStatus option, trackingNumber: string option, trackingUrl: string option, ``type``: IssuingCardShippingType) =
+    static member New(address: Address, addressValidation: IssuingCardShippingAddressValidation option, businessName: string option, carrier: IssuingCardShippingCarrier option, customs: IssuingCardShippingCustoms option, eta: DateTime option, name: string, phoneNumber: string option, requireSignature: bool option, service: IssuingCardShippingService, status: IssuingCardShippingStatus option, trackingNumber: string option, trackingUrl: string option, ``type``: IssuingCardShippingType) =
         {
             Address = address
             AddressValidation = addressValidation
+            BusinessName = businessName
             Carrier = carrier
             Customs = customs
             Eta = eta
