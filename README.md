@@ -126,7 +126,7 @@ let handleWebhook (signingSecret: string) (signatureHeader: string) (rawBody: st
             Ok () // ignore event types you don't handle
 ```
 
-`Event.Data.Object` is a `RawJson` value that preserves the fragment exactly as Stripe sent it; `RawJson.Value` exposes the raw text if you need it.
+`Event.Data.Object` is a `RawJson` value that preserves the fragment exactly as Stripe sent it; `RawJson.Value` exposes the raw text if you need it. Event types added by Stripe after this library version was generated deserialise to `EventType.UnknownEnumValue "the.event.type"` rather than failing, so unrecognised events can be ignored or logged safely.
 
 ## Stripe API version
 

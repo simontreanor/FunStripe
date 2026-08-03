@@ -16,6 +16,8 @@ module StripeError =
     | IdempotencyError
     | InvalidRequestError
     | RateLimitError
+    ///Catch-all for error types added by Stripe after this library version was generated
+    | UnknownEnumValue of string
 
     ///Error response details
     type ErrorObject = {

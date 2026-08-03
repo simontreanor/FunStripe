@@ -266,6 +266,7 @@ type EventType =
     | [<JsonPropertyName("treasury.received_credit.failed")>] TreasuryReceivedCreditFailed
     | [<JsonPropertyName("treasury.received_credit.succeeded")>] TreasuryReceivedCreditSucceeded
     | [<JsonPropertyName("treasury.received_debit.created")>] TreasuryReceivedDebitCreated
+    | UnknownEnumValue of string
 
 type NotificationEventData =
     {

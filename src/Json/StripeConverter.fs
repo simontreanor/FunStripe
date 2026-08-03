@@ -150,17 +150,18 @@ module StripeConverter =
                     | Some uci -> FSharpValue.MakeUnion(uci, [||]) :?> 'T
                     | None -> failwith $"StripeUnionConverter: unknown case '{s}' for type {typeof<'T>.Name}"
                 else
-                    // Mixed union: find the case wrapping a string
-                    let stringCase =
-                        unionCases |> Array.tryFind (fun c ->
-                            c.GetFields().Length = 1 && c.GetFields().[0].PropertyType = typeof<string>)
-                    match stringCase with
-                    | Some uci -> FSharpValue.MakeUnion(uci, [| s :> obj |]) :?> 'T
+                    // Mixed union: prefer an exact no-field case name match (string enums with an
+                    // UnknownEnumValue catch-all land here), then fall back to the case wrapping
+                    // a string (expandable IDs, catch-alls).
+                    let matchedCase = unionCases |> Array.tryFind (fun c -> c.GetFields().Length = 0 && getUnionCaseName c = s)
+                    match matchedCase with
+                    | Some uci -> FSharpValue.MakeUnion(uci, [||]) :?> 'T
                     | None ->
-                        // Might still be a no-field case matching the string value
-                        let matchedCase = unionCases |> Array.tryFind (fun c -> c.GetFields().Length = 0 && getUnionCaseName c = s)
-                        match matchedCase with
-                        | Some uci -> FSharpValue.MakeUnion(uci, [||]) :?> 'T
+                        let stringCase =
+                            unionCases |> Array.tryFind (fun c ->
+                                c.GetFields().Length = 1 && c.GetFields().[0].PropertyType = typeof<string>)
+                        match stringCase with
+                        | Some uci -> FSharpValue.MakeUnion(uci, [| s :> obj |]) :?> 'T
                         | None -> failwith $"StripeUnionConverter: no string case in {typeof<'T>.Name} for value '{s}'"
 
             | JsonValueKind.Number ->

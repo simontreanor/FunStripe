@@ -8,6 +8,9 @@ Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the
 
 ## [Unreleased]
 
+### Changed
+- **Lenient deserialisation for high-churn enums**: `EventType` and `StripeError.ErrorType` gained an `UnknownEnumValue of string` catch-all case. Stripe adds enum values without an API-version bump, and one unknown nested value fails the whole response, so webhook event types and error types added after this library version was generated now deserialise to the catch-all instead of throwing; the case round-trips to its raw string on serialisation. Pattern matches on these two unions need a case for `UnknownEnumValue` (or a wildcard). All other enums keep strict exhaustive matching; the allowlist is `enumsWithCatchAll` in the generator
+
 ### Fixed
 - **Form encoding of list parameters**: `Util.format` now recurses into list elements instead of calling `ToString()` on them, so `List<record>` and `List<union>` request fields serialise correctly. Previously e.g. `Checkout.Sessions.Create` with `line_items` sent the F# record representation (`line_items[0] = { PriceData = ... }`) and `payment_method_types` sent PascalCase case names; both were rejected by Stripe. They now emit `line_items[0][price_data][unit_amount]=500` and `payment_method_types[0]=card`
 - **Webhook `Event` deserialisation**: `Event.Data.Object` and `Event.Data.PreviousAttributes` (and `next_action.use_stripe_sdk` on `PaymentIntent`/`SetupIntent`) were typed `string`, so deserialising any real webhook payload (or a 3DS `next_action`) threw `JsonException`. These untyped-object fields are now `RawJson`, which preserves the JSON fragment verbatim; deserialise it with the new `Util.deserialiseRaw<'a>` (breaking: these fields change type from `string` to `RawJson`)

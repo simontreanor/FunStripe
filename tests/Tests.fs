@@ -2035,3 +2035,49 @@ module Tests =
             Assert.That(session.Id, Is.EqualTo "cs_test_123")
             Assert.That(session.PaymentStatus, Is.EqualTo "paid")
 
+        [<Test>]
+        member _.``unknown event type deserialises to UnknownEnumValue``() =
+            let payload = eventPayload.Replace("checkout.session.completed", "some.newly.added_event")
+            let ev = Util.deserialise<Event> payload
+            Assert.That(ev.Type, Is.EqualTo (EventType.UnknownEnumValue "some.newly.added_event"))
+
+    [<TestFixture>]
+    type UnknownEnumValueTests () =
+
+        let opts = Json.StripeConverter.sharedOptions.Value
+
+        [<Test>]
+        member _.``known event type still deserialises to its named case``() =
+            let result = System.Text.Json.JsonSerializer.Deserialize<EventType>("\"checkout.session.completed\"", opts)
+            Assert.That(result, Is.EqualTo EventType.CheckoutSessionCompleted)
+
+        [<Test>]
+        member _.``unknown event type deserialises to the catch-all case``() =
+            let result = System.Text.Json.JsonSerializer.Deserialize<EventType>("\"some.newly.added_event\"", opts)
+            Assert.That(result, Is.EqualTo (EventType.UnknownEnumValue "some.newly.added_event"))
+
+        [<Test>]
+        member _.``catch-all case serialises back to its raw string``() =
+            let v = EventType.UnknownEnumValue "some.newly.added_event"
+            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"some.newly.added_event\"")
+
+        [<Test>]
+        member _.``unknown error type deserialises to the catch-all case``() =
+            let json = """{"error": {"message": "boom", "type": "brand_new_error"}}"""
+            let err = Util.deserialise<StripeError.ErrorResponse> json
+            Assert.That(err.StripeError.Type, Is.EqualTo (Some (StripeError.ErrorType.UnknownEnumValue "brand_new_error")))
+            Assert.That(err.StripeError.Message, Is.EqualTo (Some "boom"))
+
+        [<Test>]
+        member _.``known error type still deserialises to its named case``() =
+            let json = """{"error": {"message": "declined", "type": "card_error"}}"""
+            let err = Util.deserialise<StripeError.ErrorResponse> json
+            Assert.That(err.StripeError.Type, Is.EqualTo (Some StripeError.ErrorType.CardError))
+
+        [<Test>]
+        member _.``enums without the catch-all still reject unknown values``() =
+            let json = "\"brand_new_source\""
+            Assert.Throws<Exception>(fun () ->
+                System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.SourceType>(json, opts) |> ignore
+            ) |> ignore
+
