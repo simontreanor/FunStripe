@@ -181,13 +181,15 @@ module ModelParsing =
                     { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "Map<string, string>"; EnumValues = None; SubValues = None; StaticValue = None }
                 | _ ->
                     match so.AdditionalProperties with
-                    | Some _ ->
-                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "Map<string, string list>"; EnumValues = None; SubValues = None; StaticValue = None }
-                    | None ->
-                        // Untyped object (no title, no properties, no additionalProperties), e.g. a webhook
+                    | Some (JsonValue.Boolean _) | None ->
+                        // Untyped object (no title, no properties, and `additionalProperties` absent or
+                        // boolean — `additionalProperties: true` means "any JSON"), e.g. a webhook
                         // event's `data.object` or `next_action.use_stripe_sdk`. Preserve the fragment
                         // verbatim as RawJson so callers can deserialise it with Util.deserialiseRaw.
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "RawJson"; EnumValues = None; SubValues = None; StaticValue = None }
+                    | Some _ ->
+                        // Schema-valued `additionalProperties` is a free-form key/value map.
+                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "Map<string, string list>"; EnumValues = None; SubValues = None; StaticValue = None }
         | Some t when t = "int" ->
             match so.Format with
             | Some "unix-time" ->
