@@ -93,6 +93,9 @@ module internal FableCore =
             ]
         elif t = typeof<Guid> then
             Decode.string |> Decode.map (fun s -> Guid.Parse s :> obj)
+        elif t = typeof<FunStripe.RawJson> then
+            // Preserve the JSON fragment verbatim (e.g. a webhook event's `data.object`)
+            Decode.value |> Decode.map (fun v -> FunStripe.RawJson (Encode.toString 0 v) |> box)
         elif t = typeof<Uri> then
             Decode.string |> Decode.map (fun s -> Uri s :> obj)
         elif isListType t then

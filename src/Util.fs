@@ -49,10 +49,12 @@ module Util =
                 Seq.empty
             | _ when value'.GetType().IsGenericType && value'.GetType().GetGenericTypeDefinition() = typedefof<List<_>> ->
                 value'
-                |> unbox
+                |> unbox<System.Collections.IEnumerable>
+                |> Seq.cast<obj>
                 |> Seq.mapi (fun i o ->
-                    $"{key'}[{i |> string}]", (o |> string)
+                    format' $"{key'}[{i |> string}]" o
                 )
+                |> Seq.concat
             | _ when FSharpType.IsUnion (value'.GetType()) ->
                 match value'.GetType().Name with
                 | n when n.StartsWith "FSharpOption" || choiceRegex.IsMatch n ->
@@ -117,6 +119,10 @@ module Util =
     let deserialise<'a> (data: string) : 'a =
         System.Text.Json.JsonSerializer.Deserialize<'a>(data, Json.StripeConverter.sharedOptions.Value)
 #endif
+
+    ///Deserialise a raw JSON fragment (e.g. a webhook event's `data.object`) into a typed model
+    let deserialiseRaw<'a> (RawJson json) : 'a =
+        deserialise<'a> json
 
     ///Serialise F# record as form
     let serialiseForm<'a> (parameters:'a) =

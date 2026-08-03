@@ -1946,3 +1946,92 @@ module Tests =
         member _.``'t_ui_travel_germany' deserializes correctly``() =
             let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories>("\"t_ui_travel_germany\"", opts)
             Assert.That(result, Is.EqualTo Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories.TUiTravelGermany)
+
+    // =========================================================================
+    // O. Regression tests: list form-encoding, webhook events, unknown enums
+    // =========================================================================
+
+    ///Minimal projection of a checkout.session object, for deserialising a webhook
+    ///event's `data.object` fragment in tests
+    type MiniCheckoutSession = {
+        Id: string
+        PaymentStatus: string
+    }
+
+    [<TestFixture>]
+    type ListFormEncodingRegressionTests () =
+
+        [<Test>]
+        member _.``list of records produces nested indexed bracket keys``() =
+            let checkout =
+                StripeRequest.Checkout.CheckoutSessions.CreateOptions.New(
+                    lineItems = [
+                        StripeRequest.Checkout.CheckoutSessions.Create'LineItems.New(
+                            quantity = 2,
+                            priceData = StripeRequest.Checkout.CheckoutSessions.Create'LineItemsPriceData.New(
+                                currency = IsoCurrencyCode.USD,
+                                unitAmount = 500
+                            )
+                        )
+                    ],
+                    mode = StripeRequest.Checkout.CheckoutSessions.Create'Mode.Payment,
+                    successUrl = "https://example.com/success"
+                )
+            let pairs = checkout |> serialise |> Seq.toList
+            Assert.That(pairs |> List.exists (fun (k, v) -> k = "line_items[0][quantity]" && v = "2"), Is.True, "quantity")
+            Assert.That(pairs |> List.exists (fun (k, v) -> k = "line_items[0][price_data][currency]" && v = "usd"), Is.True, "currency")
+            Assert.That(pairs |> List.exists (fun (k, v) -> k = "line_items[0][price_data][unit_amount]" && v = "500"), Is.True, "unit_amount")
+            Assert.That(pairs |> List.exists (fun (k, v) -> k = "mode" && v = "payment"), Is.True, "mode")
+
+        [<Test>]
+        member _.``list of union values serialises snake-cased wire names``() =
+            let checkout =
+                StripeRequest.Checkout.CheckoutSessions.CreateOptions.New(
+                    paymentMethodTypes = [
+                        StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodTypes.Card
+                        StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodTypes.AcssDebit
+                    ]
+                )
+            let pairs = checkout |> serialise |> Seq.toList
+            Assert.That(pairs |> List.exists (fun (k, v) -> k = "payment_method_types[0]" && v = "card"), Is.True)
+            Assert.That(pairs |> List.exists (fun (k, v) -> k = "payment_method_types[1]" && v = "acss_debit"), Is.True)
+
+    [<TestFixture>]
+    type WebhookEventDeserializationTests () =
+
+        let eventPayload = """
+{
+  "id": "evt_123",
+  "object": "event",
+  "api_version": "2026-05-27.dahlia",
+  "created": 1751970000,
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": { "id": null, "idempotency_key": null },
+  "type": "checkout.session.completed",
+  "data": {
+    "object": {
+      "id": "cs_test_123",
+      "object": "checkout.session",
+      "amount_total": 500,
+      "currency": "usd",
+      "payment_status": "paid"
+    }
+  }
+}
+"""
+
+        [<Test>]
+        member _.``webhook event payload deserialises with raw data object``() =
+            let ev = Util.deserialise<Event> eventPayload
+            Assert.That(ev.Id, Is.EqualTo "evt_123")
+            Assert.That(ev.Type, Is.EqualTo EventType.CheckoutSessionCompleted)
+            Assert.That(ev.Data.Object.Value.Contains "cs_test_123", Is.True, "data.object should preserve the raw fragment")
+
+        [<Test>]
+        member _.``event data object deserialises into a typed model via deserialiseRaw``() =
+            let ev = Util.deserialise<Event> eventPayload
+            let session = ev.Data.Object |> Util.deserialiseRaw<MiniCheckoutSession>
+            Assert.That(session.Id, Is.EqualTo "cs_test_123")
+            Assert.That(session.PaymentStatus, Is.EqualTo "paid")
+

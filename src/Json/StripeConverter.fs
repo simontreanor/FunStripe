@@ -107,6 +107,25 @@ module StripeConverter =
             Activator.CreateInstance(converterType) :?> JsonConverter
 
     // ---------------------------------------------------------------------------
+    // RawJson converter: preserves an untyped JSON fragment verbatim
+    // ---------------------------------------------------------------------------
+
+    /// Reads any JSON value into RawJson as its raw text; writes the stored text back out.
+    /// Must be registered BEFORE StripeUnionConverterFactory so it wins over the generic
+    /// union converter (RawJson is itself a single-case DU).
+    type RawJsonConverter() =
+        inherit JsonConverter<FunStripe.RawJson>()
+
+        override _.Read(reader, _, _) =
+            use doc = JsonDocument.ParseValue(&reader)
+            FunStripe.RawJson (doc.RootElement.GetRawText())
+
+        override _.Write(writer, value, _) =
+            let (FunStripe.RawJson s) = value
+            use doc = JsonDocument.Parse(s)
+            doc.RootElement.WriteTo(writer)
+
+    // ---------------------------------------------------------------------------
     // Union converter: handles "object"-field discriminated unions
     // ---------------------------------------------------------------------------
 
@@ -241,6 +260,7 @@ module StripeConverter =
 
         override _.CanConvert(t) =
             FSharpType.IsUnion(t) &&
+            t <> typeof<FunStripe.RawJson> &&
             not (t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<option<_>>) &&
             not (t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<list<_>>) &&
             not (t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<FunStripe.StripeIds.StripeId<_>>)
@@ -268,6 +288,7 @@ module StripeConverter =
         opts.Converters.Insert(0, EpochDateTimeConverter())
         opts.Converters.Insert(0, StripeUnionConverterFactory())
         opts.Converters.Insert(0, StripeIdConverterFactory())
+        opts.Converters.Insert(0, RawJsonConverter())
         opts
 
     /// Lazily-created shared options instance.

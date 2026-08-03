@@ -4155,7 +4155,7 @@ type PaymentIntentNextAction =
         Type: PaymentIntentNextActionType
         UpiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode option
         /// When confirming a PaymentIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
-        UseStripeSdk: string option
+        UseStripeSdk: RawJson option
         VerifyWithMicrodeposits: PaymentIntentNextActionVerifyWithMicrodeposits option
         WechatPayDisplayQrCode: PaymentIntentNextActionWechatPayDisplayQrCode option
         WechatPayRedirectToAndroidApp: PaymentIntentNextActionWechatPayRedirectToAndroidApp option
@@ -6642,7 +6642,7 @@ type SetupIntentNextAction =
         Type: SetupIntentNextActionType
         UpiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode option
         /// When confirming a SetupIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
-        UseStripeSdk: string option
+        UseStripeSdk: RawJson option
         VerifyWithMicrodeposits: SetupIntentNextActionVerifyWithMicrodeposits option
     }
 
@@ -18116,7 +18116,7 @@ type PaymentIntentNextActionWechatPayRedirectToIosApp with
         }
 
 type PaymentIntentNextAction with
-    static member New(``type``: PaymentIntentNextActionType, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?blikAuthorize: PaymentIntentNextActionBlikAuthorize, ?boletoDisplayDetails: PaymentIntentNextActionBoleto, ?cardAwaitNotification: PaymentIntentNextActionCardAwaitNotification, ?cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode, ?displayBankTransferInstructions: PaymentIntentNextActionDisplayBankTransferInstructions, ?klarnaDisplayQrCode: PaymentIntentNextActionKlarnaDisplayQrCode, ?konbiniDisplayDetails: PaymentIntentNextActionKonbini, ?multibancoDisplayDetails: PaymentIntentNextActionDisplayMultibancoDetails, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?paynowDisplayQrCode: PaymentIntentNextActionPaynowDisplayQrCode, ?pixDisplayQrCode: PaymentIntentNextActionPixDisplayQrCode, ?promptpayDisplayQrCode: PaymentIntentNextActionPromptpayDisplayQrCode, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?swishHandleRedirectOrDisplayQrCode: PaymentIntentNextActionSwishHandleRedirectOrDisplayQrCode, ?upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode, ?useStripeSdk: string, ?verifyWithMicrodeposits: PaymentIntentNextActionVerifyWithMicrodeposits, ?wechatPayDisplayQrCode: PaymentIntentNextActionWechatPayDisplayQrCode, ?wechatPayRedirectToAndroidApp: PaymentIntentNextActionWechatPayRedirectToAndroidApp, ?wechatPayRedirectToIosApp: PaymentIntentNextActionWechatPayRedirectToIosApp) =
+    static member New(``type``: PaymentIntentNextActionType, ?alipayHandleRedirect: PaymentIntentNextActionAlipayHandleRedirect, ?blikAuthorize: PaymentIntentNextActionBlikAuthorize, ?boletoDisplayDetails: PaymentIntentNextActionBoleto, ?cardAwaitNotification: PaymentIntentNextActionCardAwaitNotification, ?cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode, ?displayBankTransferInstructions: PaymentIntentNextActionDisplayBankTransferInstructions, ?klarnaDisplayQrCode: PaymentIntentNextActionKlarnaDisplayQrCode, ?konbiniDisplayDetails: PaymentIntentNextActionKonbini, ?multibancoDisplayDetails: PaymentIntentNextActionDisplayMultibancoDetails, ?oxxoDisplayDetails: PaymentIntentNextActionDisplayOxxoDetails, ?paynowDisplayQrCode: PaymentIntentNextActionPaynowDisplayQrCode, ?pixDisplayQrCode: PaymentIntentNextActionPixDisplayQrCode, ?promptpayDisplayQrCode: PaymentIntentNextActionPromptpayDisplayQrCode, ?redirectToUrl: PaymentIntentNextActionRedirectToUrl, ?swishHandleRedirectOrDisplayQrCode: PaymentIntentNextActionSwishHandleRedirectOrDisplayQrCode, ?upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode, ?useStripeSdk: RawJson, ?verifyWithMicrodeposits: PaymentIntentNextActionVerifyWithMicrodeposits, ?wechatPayDisplayQrCode: PaymentIntentNextActionWechatPayDisplayQrCode, ?wechatPayRedirectToAndroidApp: PaymentIntentNextActionWechatPayRedirectToAndroidApp, ?wechatPayRedirectToIosApp: PaymentIntentNextActionWechatPayRedirectToIosApp) =
         {
             Type = ``type``
             AlipayHandleRedirect = alipayHandleRedirect
@@ -19625,7 +19625,7 @@ type SetupIntentNextActionVerifyWithMicrodeposits with
         }
 
 type SetupIntentNextAction with
-    static member New(``type``: SetupIntentNextActionType, ?blikAuthorize: PaymentIntentNextActionBlikAuthorize, ?cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode, ?pixDisplayQrCode: SetupIntentNextActionPixDisplayQrCode, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode, ?useStripeSdk: string, ?verifyWithMicrodeposits: SetupIntentNextActionVerifyWithMicrodeposits) =
+    static member New(``type``: SetupIntentNextActionType, ?blikAuthorize: PaymentIntentNextActionBlikAuthorize, ?cashappHandleRedirectOrDisplayQrCode: PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode, ?pixDisplayQrCode: SetupIntentNextActionPixDisplayQrCode, ?redirectToUrl: SetupIntentNextActionRedirectToUrl, ?upiHandleRedirectOrDisplayQrCode: PaymentIntentNextActionUpiHandleRedirectOrDisplayQrCode, ?useStripeSdk: RawJson, ?verifyWithMicrodeposits: SetupIntentNextActionVerifyWithMicrodeposits) =
         {
             Type = ``type``
             BlikAuthorize = blikAuthorize

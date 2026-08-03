@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [Unreleased]
+
+### Fixed
+- **Form encoding of list parameters**: `Util.format` now recurses into list elements instead of calling `ToString()` on them, so `List<record>` and `List<union>` request fields serialise correctly. Previously e.g. `Checkout.Sessions.Create` with `line_items` sent the F# record representation (`line_items[0] = { PriceData = ... }`) and `payment_method_types` sent PascalCase case names; both were rejected by Stripe. They now emit `line_items[0][price_data][unit_amount]=500` and `payment_method_types[0]=card`
+- **Webhook `Event` deserialisation**: `Event.Data.Object` and `Event.Data.PreviousAttributes` (and `next_action.use_stripe_sdk` on `PaymentIntent`/`SetupIntent`) were typed `string`, so deserialising any real webhook payload (or a 3DS `next_action`) threw `JsonException`. These untyped-object fields are now `RawJson`, which preserves the JSON fragment verbatim; deserialise it with the new `Util.deserialiseRaw<'a>` (breaking: these fields change type from `string` to `RawJson`)
+- Generator: `--spec` omitted on the command line now resolves to the `StripeApiVersion` in `Directory.Build.props` for the model and request builders too (previously only `StripeIds.fs` used it; models/requests silently fell back to a hard-coded older spec)
+
+### Added
+- `RawJson` type (`FunStripe` namespace) with System.Text.Json and Fable converters
+- `Util.deserialiseRaw<'a>`: deserialise a `RawJson` fragment (e.g. a webhook event's `data.object`) into a typed model
+
 ## [2.2.0] - 2026-07-06
 
 ### Changed

@@ -104,6 +104,30 @@ let! allCustomers =
 // allCustomers is Result<Customer list, ErrorResponse>
 ```
 
+## Webhooks
+
+To handle a Stripe webhook (e.g. to fulfil an order after `checkout.session.completed`), verify the signature with `WebhookSigning`, deserialise the payload into a typed `Event`, and extract the resource from the event's raw `data.object` fragment with `Util.deserialiseRaw`:
+
+```F#
+open FunStripe
+open Stripe.Event
+
+let handleWebhook (signingSecret: string) (signatureHeader: string) (rawBody: string) =
+    match WebhookSigning.verifyWithDefaultTolerance signingSecret rawBody signatureHeader with
+    | Error e -> Error $"Invalid signature: {e}"
+    | Ok () ->
+        let event = Util.deserialise<Event> rawBody
+        match event.Type with
+        | EventType.CheckoutSessionCompleted ->
+            let session = event.Data.Object |> Util.deserialiseRaw<Stripe.Checkout.CheckoutSession>
+            // fulfil the order for session.Id here
+            Ok ()
+        | _ ->
+            Ok () // ignore event types you don't handle
+```
+
+`Event.Data.Object` is a `RawJson` value that preserves the fragment exactly as Stripe sent it; `RawJson.Value` exposes the raw text if you need it.
+
 ## Stripe API version
 
 FunStripe targets a specific Stripe API date-version. The version this build was generated from is exposed as a constant:

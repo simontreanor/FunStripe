@@ -89,7 +89,7 @@ module ModelParsing =
     let enumRegex = @"`([\w "".]+)`(?:(?: \([^)]+\))?,? `([\w "".]+)`)*(?: \([^)]+\))?,? (?:and|or) (?:`([\w ""\.]+)`|null)\."
 
     ///Types that are non-Stripe types
-    let basicTypes = ["bool"; "decimal"; "DateTime"; "int"; "string"] |> Set.ofList
+    let basicTypes = ["bool"; "decimal"; "DateTime"; "int"; "string"; "RawJson"] |> Set.ofList
 
     ///Parses an enumeration from values specified in the description (where the enumeration is not specified explicitly in fields)
     let parseStringEnum desc =
@@ -184,7 +184,10 @@ module ModelParsing =
                     | Some _ ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "Map<string, string list>"; EnumValues = None; SubValues = None; StaticValue = None }
                     | None ->
-                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "string"; EnumValues = None; SubValues = None; StaticValue = None }
+                        // Untyped object (no title, no properties, no additionalProperties), e.g. a webhook
+                        // event's `data.object` or `next_action.use_stripe_sdk`. Preserve the fragment
+                        // verbatim as RawJson so callers can deserialise it with Util.deserialiseRaw.
+                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "RawJson"; EnumValues = None; SubValues = None; StaticValue = None }
         | Some t when t = "int" ->
             match so.Format with
             | Some "unix-time" ->
