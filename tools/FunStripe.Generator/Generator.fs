@@ -69,12 +69,12 @@ let main argv =
 
     printfn "Generating modular Stripe model files (Stripe/*.fs)..."
     let stripeModelDir = Path.Combine(outputDir', "Stripe")
-    let modelFiles = ModelBuilderModular.generateAllModuleFiles version' stripeModelDir specPath
+    let modelFiles = ModelBuilderModular.generateAllModuleFiles version' stripeModelDir (Some resolvedSpecPath)
     printfn "  Written %d model module files" modelFiles.Length
 
     printfn "Generating modular StripeRequest files (StripeRequest/*.fs)..."
     let stripeRequestDir = Path.Combine(outputDir', "StripeRequest")
-    let requestFiles = RequestBuilderAST.generateAllRequestFiles version' stripeRequestDir specPath
+    let requestFiles = RequestBuilderAST.generateAllRequestFiles version' stripeRequestDir (Some resolvedSpecPath)
     printfn "  Written %d request module files" requestFiles.Length
 
     0

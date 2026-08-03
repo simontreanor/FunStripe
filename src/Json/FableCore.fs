@@ -93,6 +93,9 @@ module internal FableCore =
             ]
         elif t = typeof<Guid> then
             Decode.string |> Decode.map (fun s -> Guid.Parse s :> obj)
+        elif t = typeof<FunStripe.RawJson> then
+            // Preserve the JSON fragment verbatim (e.g. a webhook event's `data.object`)
+            Decode.value |> Decode.map (fun v -> FunStripe.RawJson (Encode.toString 0 v) |> box)
         elif t = typeof<Uri> then
             Decode.string |> Decode.map (fun s -> Uri s :> obj)
         elif isListType t then
@@ -140,6 +143,15 @@ module internal FableCore =
         let unionCases = FSharpType.GetUnionCases t
         // Simple string enums: all cases have zero fields
         let isSimpleEnum = unionCases |> Array.forall (fun c -> c.GetFields().Length = 0)
+        // String enums with an `UnknownEnumValue of string` catch-all: all other cases have zero fields
+        let catchAllCase =
+            unionCases
+            |> Array.tryFind (fun c ->
+                c.Name = "UnknownEnumValue" &&
+                c.GetFields().Length = 1 && c.GetFields().[0].PropertyType = typeof<string>)
+        let isEnumWithCatchAll =
+            catchAllCase.IsSome &&
+            unionCases |> Array.forall (fun c -> c.GetFields().Length = 0 || c.Name = "UnknownEnumValue")
         if isSimpleEnum then
             Decode.string
             |> Decode.andThen (fun s ->
@@ -151,6 +163,15 @@ module internal FableCore =
                     Decode.succeed (FSharpValue.MakeUnion(uci, [||]))
                 | None ->
                     Decode.fail $"FableCore: unknown union case '{s}' for type '{t.Name}'")
+        elif isEnumWithCatchAll then
+            Decode.string
+            |> Decode.map (fun s ->
+                let matchedCase =
+                    unionCases
+                    |> Array.tryFind (fun c -> c.GetFields().Length = 0 && getUnionCaseName c = s)
+                match matchedCase with
+                | Some uci -> FSharpValue.MakeUnion(uci, [||])
+                | None -> FSharpValue.MakeUnion(catchAllCase.Value, [| box s |]))
         else
             // Complex union: try each case in order
             let caseDecoders =

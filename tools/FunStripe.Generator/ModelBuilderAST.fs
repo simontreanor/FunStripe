@@ -130,6 +130,13 @@ module ModelBuilderAST =
         let jsonFieldName = if Regex.IsMatch(v.Name, @"(?<!_)\d") then Some v.Name else None
         { DocLines = docLines; MemberName = v.Name |> pascalCasify; JsonFieldName = jsonFieldName; Value = v.StaticValue.Value }
 
+    /// Enums that get an `UnknownEnumValue of string` catch-all case appended. Stripe adds
+    /// enum values without an API-version bump, and one unknown nested value fails the whole
+    /// response, so high-churn enums deserialise leniently. Deliberately a narrow allowlist:
+    /// everywhere else exhaustive matching is kept so the compiler's missing-case warning
+    /// still signals when Stripe adds a value worth handling.
+    let enumsWithCatchAll = Set.ofList ["EventType"]
+
     /// Convert parsed type definitions into a flat list of TypeDefs.
     let flattenTypeDefinitions (typeDefinitions: (string * string * Value array) array) : TypeDef list =
         let result = ResizeArray<TypeDef>()
@@ -170,7 +177,12 @@ module ModelBuilderAST =
                         result.Add(PayloadEnum(enumName, cases))
                     else
                         let isStruct = cases.Length < 6
-                        result.Add(SimpleEnum(enumName, cases, isStruct))
+                        let cases' =
+                            if enumsWithCatchAll |> Set.contains enumName then
+                                cases @ [{ RawValue = "UnknownEnumValue of string"; CaseName = "UnknownEnumValue"; JsonUnionCaseValue = None; PayloadType = Some "string" }]
+                            else
+                                cases
+                        result.Add(SimpleEnum(enumName, cases', isStruct))
 
             // Process any sub-values recursively
             for v in values do
