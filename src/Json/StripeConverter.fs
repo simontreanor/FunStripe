@@ -232,7 +232,7 @@ module StripeConverter =
                                 try
                                     let innerValue = JsonSerializer.Deserialize(json, fields.[0].PropertyType, options)
                                     result <- Some (FSharpValue.MakeUnion(uci, [| innerValue |]) :?> 'T)
-                                with _ -> ()
+                                with :? JsonException -> ()
                     match result with
                     | Some v -> v
                     | None -> failwith $"StripeUnionConverter: could not deserialize {typeof<'T>.Name} from JSON object (no 'object' field)"

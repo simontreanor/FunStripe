@@ -211,16 +211,16 @@ module RestApi =
     ///Parse response from API and convert it to a `Result`
     let parseResponse<'a> (r: HttpResponse) =
         match r.StatusCode with
-        | sc when sc >= 200 && sc <= 299 ->
-            r.Body
-                |> function Text t -> t | Binary _ -> ""
-                |> Util.deserialise<'a>
-                |> Ok
-        | _ ->
+        | sc when sc < 200 || sc > 299 ->
             r.Body
             |> function Text t -> t | Binary _ -> ""
             |> Util.deserialise<StripeError.ErrorResponse>
             |> Error
+        | _ ->
+            r.Body
+                |> function Text t -> t | Binary _ -> ""
+                |> Util.deserialise<'a>
+                |> Ok
 
     ///Make a `GET` request (without form parameters in the body (default))
     let getAsync<'a> settings queryStringOptions (url: string) =
