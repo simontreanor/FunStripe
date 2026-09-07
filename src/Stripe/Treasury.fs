@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 type InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
     | Company
     | Individual
@@ -866,8 +866,8 @@ type TreasuryFinancialAccountsResourceStatusDetails with
             Closed = closed
         }
 
-/// Stripe Treasury provides users with a container for money called a FinancialAccount that is separate from their Payments balance.
-/// FinancialAccounts serve as the source and destination of Treasury’s money movement APIs.
+/// Stripe Treasury for Platforms provides users with a container for money called a FinancialAccount that is separate from their Payments balance.
+/// FinancialAccounts serve as the source and destination of Treasury for Platform’s money movement APIs.
 type TreasuryFinancialAccount =
     {
         /// The array of paths to active Features in the Features hash.

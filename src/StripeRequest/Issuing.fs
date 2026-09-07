@@ -10,7 +10,7 @@ open Stripe.IssuingToken
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module IssuingAuthorizations =
 
     type ListOptions =
@@ -296,7 +296,7 @@ module IssuingCardholders =
 
     type Create'IndividualCardIssuing =
         {
-            /// Information about cardholder acceptance of Celtic [Authorized User Terms](https://stripe.com/docs/issuing/cards#accept-authorized-user-terms). Required for cards backed by a Celtic program.
+            /// Information about cardholder acceptance of Celtic [Authorized User Terms](https://docs.stripe.com/issuing/compliance-us#issuing-terms). Required for cards backed by a Celtic program.
             [<Config.Form>]
             UserTermsAcceptance: Create'IndividualCardIssuingUserTermsAcceptance option
         }
@@ -1397,7 +1397,7 @@ module IssuingCardholders =
             /// The cardholder's phone number. This will be transformed to [E.164](https://en.wikipedia.org/wiki/E.164) if it is not provided in that format already. This is required for all cardholders who will be creating EU cards. See the [3D Secure documentation](https://docs.stripe.com/issuing/3d-secure#when-is-3d-secure-applied) for more details.
             [<Config.Form>]
             PhoneNumber: string option
-            /// The cardholder’s preferred locales (languages), ordered by preference. Locales can be `da`, `de`, `en`, `es`, `fr`, `it`, `pl`, or `sv`.
+            /// The cardholder’s preferred locales (languages), ordered by preference. Locales can be `de`, `en`, `es`, `fr`, or `it`.
             /// This changes the language of the [3D Secure flow](https://docs.stripe.com/issuing/3d-secure) and one-time password messages sent to the cardholder.
             [<Config.Form>]
             PreferredLocales: Create'PreferredLocales list option
@@ -1527,7 +1527,7 @@ module IssuingCardholders =
 
     type Update'IndividualCardIssuing =
         {
-            /// Information about cardholder acceptance of Celtic [Authorized User Terms](https://stripe.com/docs/issuing/cards#accept-authorized-user-terms). Required for cards backed by a Celtic program.
+            /// Information about cardholder acceptance of Celtic [Authorized User Terms](https://docs.stripe.com/issuing/compliance-us#issuing-terms). Required for cards backed by a Celtic program.
             [<Config.Form>]
             UserTermsAcceptance: Update'IndividualCardIssuingUserTermsAcceptance option
         }
@@ -2623,7 +2623,7 @@ module IssuingCardholders =
             /// The cardholder's phone number. This is required for all cardholders who will be creating EU cards. See the [3D Secure documentation](https://docs.stripe.com/issuing/3d-secure) for more details.
             [<Config.Form>]
             PhoneNumber: string option
-            /// The cardholder’s preferred locales (languages), ordered by preference. Locales can be `da`, `de`, `en`, `es`, `fr`, `it`, `pl`, or `sv`.
+            /// The cardholder’s preferred locales (languages), ordered by preference. Locales can be `de`, `en`, `es`, `fr`, or `it`.
             /// This changes the language of the [3D Secure flow](https://docs.stripe.com/issuing/3d-secure) and one-time password messages sent to the cardholder.
             [<Config.Form>]
             PreferredLocales: Update'PreferredLocales list option

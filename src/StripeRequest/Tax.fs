@@ -8,7 +8,7 @@ open Stripe.TaxId
 open Stripe.TaxRate
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module TaxAssociationsFind =
 
     type FindOptions =
@@ -374,7 +374,7 @@ module TaxCalculations =
             /// Specifies which fields in the response should be expanded.
             [<Config.Form>]
             Expand: string list option
-            /// A list of items the customer is purchasing.
+            /// A list of items the customer is purchasing. You can pass up to 100 line items, or 1,000 if your account has an increased limit.
             [<Config.Form>]
             LineItems: Create'LineItems list
             /// Details about the address from which the goods are being shipped.
@@ -620,6 +620,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsAtIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsAtIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsAtIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsAtIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsAtIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsAtStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -646,6 +663,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsAt =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsAtIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsAtStandard option
@@ -655,8 +675,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsAt with
-        static member New(?standard: Create'CountryOptionsAtStandard, ?type': Create'CountryOptionsAtType) =
+        static member New(?igic: Create'CountryOptionsAtIgic, ?standard: Create'CountryOptionsAtStandard, ?type': Create'CountryOptionsAtType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -856,6 +877,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsBeIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsBeIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsBeIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsBeIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsBeIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsBeStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -882,6 +920,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsBe =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsBeIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsBeStandard option
@@ -891,8 +932,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsBe with
-        static member New(?standard: Create'CountryOptionsBeStandard, ?type': Create'CountryOptionsBeType) =
+        static member New(?igic: Create'CountryOptionsBeIgic, ?standard: Create'CountryOptionsBeStandard, ?type': Create'CountryOptionsBeType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -933,6 +975,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsBgIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsBgIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsBgIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsBgIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsBgIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsBgStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -959,6 +1018,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsBg =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsBgIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsBgStandard option
@@ -968,8 +1030,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsBg with
-        static member New(?standard: Create'CountryOptionsBgStandard, ?type': Create'CountryOptionsBgType) =
+        static member New(?igic: Create'CountryOptionsBgIgic, ?standard: Create'CountryOptionsBgStandard, ?type': Create'CountryOptionsBgType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -1258,6 +1321,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsCyIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsCyIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsCyIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsCyIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsCyIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsCyStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -1284,6 +1364,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsCy =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsCyIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsCyStandard option
@@ -1293,10 +1376,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsCy with
-        static member New(?standard: Create'CountryOptionsCyStandard, ?type': Create'CountryOptionsCyType) =
+        static member New(?igic: Create'CountryOptionsCyIgic, ?standard: Create'CountryOptionsCyStandard, ?type': Create'CountryOptionsCyType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsCzIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsCzIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsCzIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsCzIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsCzIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsCzStandardPlaceOfSupplyScheme =
@@ -1325,6 +1426,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsCz =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsCzIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsCzStandard option
@@ -1334,10 +1438,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsCz with
-        static member New(?standard: Create'CountryOptionsCzStandard, ?type': Create'CountryOptionsCzType) =
+        static member New(?igic: Create'CountryOptionsCzIgic, ?standard: Create'CountryOptionsCzStandard, ?type': Create'CountryOptionsCzType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsDeIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsDeIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsDeIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsDeIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsDeIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsDeStandardPlaceOfSupplyScheme =
@@ -1366,6 +1488,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsDe =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsDeIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsDeStandard option
@@ -1375,10 +1500,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsDe with
-        static member New(?standard: Create'CountryOptionsDeStandard, ?type': Create'CountryOptionsDeType) =
+        static member New(?igic: Create'CountryOptionsDeIgic, ?standard: Create'CountryOptionsDeStandard, ?type': Create'CountryOptionsDeType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsDkIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsDkIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsDkIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsDkIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsDkIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsDkStandardPlaceOfSupplyScheme =
@@ -1407,6 +1550,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsDk =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsDkIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsDkStandard option
@@ -1416,8 +1562,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsDk with
-        static member New(?standard: Create'CountryOptionsDkStandard, ?type': Create'CountryOptionsDkType) =
+        static member New(?igic: Create'CountryOptionsDkIgic, ?standard: Create'CountryOptionsDkStandard, ?type': Create'CountryOptionsDkType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -1435,6 +1582,23 @@ module TaxRegistrations =
         static member New(?type': Create'CountryOptionsEcType) =
             {
                 Type = type'
+            }
+
+    type Create'CountryOptionsEeIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsEeIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsEeIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsEeIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsEeIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsEeStandardPlaceOfSupplyScheme =
@@ -1463,6 +1627,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsEe =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsEeIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsEeStandard option
@@ -1472,8 +1639,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsEe with
-        static member New(?standard: Create'CountryOptionsEeStandard, ?type': Create'CountryOptionsEeType) =
+        static member New(?igic: Create'CountryOptionsEeIgic, ?standard: Create'CountryOptionsEeStandard, ?type': Create'CountryOptionsEeType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -1491,6 +1659,23 @@ module TaxRegistrations =
         static member New(?type': Create'CountryOptionsEgType) =
             {
                 Type = type'
+            }
+
+    type Create'CountryOptionsEsIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsEsIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsEsIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsEsIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsEsIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsEsStandardPlaceOfSupplyScheme =
@@ -1519,6 +1704,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsEs =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsEsIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsEsStandard option
@@ -1528,8 +1716,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsEs with
-        static member New(?standard: Create'CountryOptionsEsStandard, ?type': Create'CountryOptionsEsType) =
+        static member New(?igic: Create'CountryOptionsEsIgic, ?standard: Create'CountryOptionsEsStandard, ?type': Create'CountryOptionsEsType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -1570,6 +1759,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsFiIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsFiIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsFiIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsFiIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsFiIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsFiStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -1596,6 +1802,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsFi =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsFiIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsFiStandard option
@@ -1605,10 +1814,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsFi with
-        static member New(?standard: Create'CountryOptionsFiStandard, ?type': Create'CountryOptionsFiType) =
+        static member New(?igic: Create'CountryOptionsFiIgic, ?standard: Create'CountryOptionsFiStandard, ?type': Create'CountryOptionsFiType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsFrIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsFrIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsFrIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsFrIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsFrIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsFrStandardPlaceOfSupplyScheme =
@@ -1637,6 +1864,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsFr =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsFrIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsFrStandard option
@@ -1646,8 +1876,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsFr with
-        static member New(?standard: Create'CountryOptionsFrStandard, ?type': Create'CountryOptionsFrType) =
+        static member New(?igic: Create'CountryOptionsFrIgic, ?standard: Create'CountryOptionsFrStandard, ?type': Create'CountryOptionsFrType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -1739,6 +1970,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsGrIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsGrIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsGrIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsGrIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsGrIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsGrStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -1765,6 +2013,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsGr =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsGrIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsGrStandard option
@@ -1774,10 +2025,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsGr with
-        static member New(?standard: Create'CountryOptionsGrStandard, ?type': Create'CountryOptionsGrType) =
+        static member New(?igic: Create'CountryOptionsGrIgic, ?standard: Create'CountryOptionsGrStandard, ?type': Create'CountryOptionsGrType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsHrIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsHrIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsHrIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsHrIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsHrIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsHrStandardPlaceOfSupplyScheme =
@@ -1806,6 +2075,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsHr =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsHrIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsHrStandard option
@@ -1815,10 +2087,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsHr with
-        static member New(?standard: Create'CountryOptionsHrStandard, ?type': Create'CountryOptionsHrType) =
+        static member New(?igic: Create'CountryOptionsHrIgic, ?standard: Create'CountryOptionsHrStandard, ?type': Create'CountryOptionsHrType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsHuIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsHuIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsHuIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsHuIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsHuIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsHuStandardPlaceOfSupplyScheme =
@@ -1847,6 +2137,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsHu =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsHuIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsHuStandard option
@@ -1856,8 +2149,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsHu with
-        static member New(?standard: Create'CountryOptionsHuStandard, ?type': Create'CountryOptionsHuType) =
+        static member New(?igic: Create'CountryOptionsHuIgic, ?standard: Create'CountryOptionsHuStandard, ?type': Create'CountryOptionsHuType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -1875,6 +2169,23 @@ module TaxRegistrations =
         static member New(?type': Create'CountryOptionsIdType) =
             {
                 Type = type'
+            }
+
+    type Create'CountryOptionsIeIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsIeIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsIeIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsIeIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsIeIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsIeStandardPlaceOfSupplyScheme =
@@ -1903,6 +2214,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsIe =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsIeIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsIeStandard option
@@ -1912,8 +2226,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsIe with
-        static member New(?standard: Create'CountryOptionsIeStandard, ?type': Create'CountryOptionsIeType) =
+        static member New(?igic: Create'CountryOptionsIeIgic, ?standard: Create'CountryOptionsIeStandard, ?type': Create'CountryOptionsIeType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -1969,6 +2284,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsItIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsItIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsItIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsItIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsItIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsItStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -1995,6 +2327,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsIt =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsItIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsItStandard option
@@ -2004,8 +2339,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsIt with
-        static member New(?standard: Create'CountryOptionsItStandard, ?type': Create'CountryOptionsItType) =
+        static member New(?igic: Create'CountryOptionsItIgic, ?standard: Create'CountryOptionsItStandard, ?type': Create'CountryOptionsItType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -2151,6 +2487,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsLtIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsLtIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsLtIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsLtIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsLtIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsLtStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -2177,6 +2530,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsLt =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsLtIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsLtStandard option
@@ -2186,10 +2542,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsLt with
-        static member New(?standard: Create'CountryOptionsLtStandard, ?type': Create'CountryOptionsLtType) =
+        static member New(?igic: Create'CountryOptionsLtIgic, ?standard: Create'CountryOptionsLtStandard, ?type': Create'CountryOptionsLtType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsLuIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsLuIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsLuIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsLuIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsLuIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsLuStandardPlaceOfSupplyScheme =
@@ -2218,6 +2592,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsLu =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsLuIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsLuStandard option
@@ -2227,10 +2604,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsLu with
-        static member New(?standard: Create'CountryOptionsLuStandard, ?type': Create'CountryOptionsLuType) =
+        static member New(?igic: Create'CountryOptionsLuIgic, ?standard: Create'CountryOptionsLuStandard, ?type': Create'CountryOptionsLuType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsLvIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsLvIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsLvIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsLvIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsLvIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsLvStandardPlaceOfSupplyScheme =
@@ -2259,6 +2654,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsLv =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsLvIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsLvStandard option
@@ -2268,8 +2666,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsLv with
-        static member New(?standard: Create'CountryOptionsLvStandard, ?type': Create'CountryOptionsLvType) =
+        static member New(?igic: Create'CountryOptionsLvIgic, ?standard: Create'CountryOptionsLvStandard, ?type': Create'CountryOptionsLvType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -2412,6 +2811,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsMtIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsMtIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsMtIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsMtIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsMtIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsMtStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -2438,6 +2854,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsMt =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsMtIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsMtStandard option
@@ -2447,8 +2866,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsMt with
-        static member New(?standard: Create'CountryOptionsMtStandard, ?type': Create'CountryOptionsMtType) =
+        static member New(?igic: Create'CountryOptionsMtIgic, ?standard: Create'CountryOptionsMtStandard, ?type': Create'CountryOptionsMtType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -2498,6 +2918,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsNlIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsNlIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsNlIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsNlIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsNlIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsNlStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -2524,6 +2961,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsNl =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsNlIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsNlStandard option
@@ -2533,8 +2973,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsNl with
-        static member New(?standard: Create'CountryOptionsNlStandard, ?type': Create'CountryOptionsNlType) =
+        static member New(?igic: Create'CountryOptionsNlIgic, ?standard: Create'CountryOptionsNlStandard, ?type': Create'CountryOptionsNlType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -2692,6 +3133,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsPlIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsPlIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsPlIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsPlIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsPlIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsPlStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -2718,6 +3176,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsPl =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsPlIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsPlStandard option
@@ -2727,10 +3188,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsPl with
-        static member New(?standard: Create'CountryOptionsPlStandard, ?type': Create'CountryOptionsPlType) =
+        static member New(?igic: Create'CountryOptionsPlIgic, ?standard: Create'CountryOptionsPlStandard, ?type': Create'CountryOptionsPlType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsPtIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsPtIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsPtIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsPtIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsPtIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsPtStandardPlaceOfSupplyScheme =
@@ -2759,6 +3238,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsPt =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsPtIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsPtStandard option
@@ -2768,10 +3250,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsPt with
-        static member New(?standard: Create'CountryOptionsPtStandard, ?type': Create'CountryOptionsPtType) =
+        static member New(?igic: Create'CountryOptionsPtIgic, ?standard: Create'CountryOptionsPtStandard, ?type': Create'CountryOptionsPtType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsRoIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsRoIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsRoIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsRoIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsRoIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsRoStandardPlaceOfSupplyScheme =
@@ -2800,6 +3300,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsRo =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsRoIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsRoStandard option
@@ -2809,8 +3312,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsRo with
-        static member New(?standard: Create'CountryOptionsRoStandard, ?type': Create'CountryOptionsRoType) =
+        static member New(?igic: Create'CountryOptionsRoIgic, ?standard: Create'CountryOptionsRoStandard, ?type': Create'CountryOptionsRoType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -2881,6 +3385,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsSeIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsSeIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsSeIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsSeIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsSeIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsSeStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -2907,6 +3428,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsSe =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsSeIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsSeStandard option
@@ -2916,8 +3440,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsSe with
-        static member New(?standard: Create'CountryOptionsSeStandard, ?type': Create'CountryOptionsSeType) =
+        static member New(?igic: Create'CountryOptionsSeIgic, ?standard: Create'CountryOptionsSeStandard, ?type': Create'CountryOptionsSeType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }
@@ -2958,6 +3483,23 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsSiIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsSiIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsSiIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsSiIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsSiIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
+            }
+
     type Create'CountryOptionsSiStandardPlaceOfSupplyScheme =
         | InboundGoods
         | SmallSeller
@@ -2984,6 +3526,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsSi =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsSiIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsSiStandard option
@@ -2993,10 +3538,28 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsSi with
-        static member New(?standard: Create'CountryOptionsSiStandard, ?type': Create'CountryOptionsSiType) =
+        static member New(?igic: Create'CountryOptionsSiIgic, ?standard: Create'CountryOptionsSiStandard, ?type': Create'CountryOptionsSiType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
+            }
+
+    type Create'CountryOptionsSkIgicPlaceOfSupplyScheme =
+        | InboundGoods
+        | Standard
+
+    type Create'CountryOptionsSkIgic =
+        {
+            /// Place of supply scheme used in an IGIC registration.
+            [<Config.Form>]
+            PlaceOfSupplyScheme: Create'CountryOptionsSkIgicPlaceOfSupplyScheme option
+        }
+
+    type Create'CountryOptionsSkIgic with
+        static member New(?placeOfSupplyScheme: Create'CountryOptionsSkIgicPlaceOfSupplyScheme) =
+            {
+                PlaceOfSupplyScheme = placeOfSupplyScheme
             }
 
     type Create'CountryOptionsSkStandardPlaceOfSupplyScheme =
@@ -3025,6 +3588,9 @@ module TaxRegistrations =
 
     type Create'CountryOptionsSk =
         {
+            /// Options for the IGIC registration.
+            [<Config.Form>]
+            Igic: Create'CountryOptionsSkIgic option
             /// Options for the standard registration.
             [<Config.Form>]
             Standard: Create'CountryOptionsSkStandard option
@@ -3034,8 +3600,9 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptionsSk with
-        static member New(?standard: Create'CountryOptionsSkStandard, ?type': Create'CountryOptionsSkType) =
+        static member New(?igic: Create'CountryOptionsSkIgic, ?standard: Create'CountryOptionsSkStandard, ?type': Create'CountryOptionsSkType) =
             {
+                Igic = igic
                 Standard = standard
                 Type = type'
             }

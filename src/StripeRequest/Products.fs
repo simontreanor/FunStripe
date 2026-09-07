@@ -6,7 +6,7 @@ open Stripe.Product
 open Stripe.ProductFeature
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module Products =
 
     type ListOptions =

@@ -6,7 +6,7 @@ open System
 open Stripe.PaymentMethod
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 type DeletedInvoiceitem =
     {
         /// Always true for a deleted object
@@ -30,6 +30,12 @@ type InvoiceitemCustomer'AnyOf =
     | String of string
     | Customer of Customer
     | DeletedCustomer of DeletedCustomer
+
+[<Struct>]
+type InvoiceitemFrozenFields =
+    | Discounts
+    | Pricing
+    | Quantity
 
 type ProrationDetails =
     {
@@ -70,6 +76,8 @@ type Invoiceitem =
         Discountable: bool
         /// The discounts which apply to the invoice item. Item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
         Discounts: StripeId<Markers.Discount> list option
+        /// Array of field names that can't be modified. Attempting to update a frozen field returns an error.
+        FrozenFields: InvoiceitemFrozenFields list option
         /// Unique identifier for the object.
         Id: string
         /// The ID of the invoice this invoice item belongs to.
@@ -99,7 +107,7 @@ type Invoiceitem =
     }
 
 type Invoiceitem with
-    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, customer: InvoiceitemCustomer'AnyOf, customerAccount: string option, date: DateTime, description: string option, discountable: bool, discounts: StripeId<Markers.Discount> list option, id: string, invoice: StripeId<Markers.Invoice> option, livemode: bool, metadata: Map<string, string> option, parent: BillingBillResourceInvoiceItemParentsInvoiceItemParent option, period: InvoiceLineItemPeriod, pricing: BillingBillResourceInvoicingPricingPricing option, proration: bool, quantity: int, quantityDecimal: string, taxRates: TaxRate list option, testClock: StripeId<Markers.TestHelpersTestClock> option, ?netAmount: int, ?prorationDetails: ProrationDetails) =
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, customer: InvoiceitemCustomer'AnyOf, customerAccount: string option, date: DateTime, description: string option, discountable: bool, discounts: StripeId<Markers.Discount> list option, id: string, invoice: StripeId<Markers.Invoice> option, livemode: bool, metadata: Map<string, string> option, parent: BillingBillResourceInvoiceItemParentsInvoiceItemParent option, period: InvoiceLineItemPeriod, pricing: BillingBillResourceInvoicingPricingPricing option, proration: bool, quantity: int, quantityDecimal: string, taxRates: TaxRate list option, testClock: StripeId<Markers.TestHelpersTestClock> option, ?frozenFields: InvoiceitemFrozenFields list, ?netAmount: int, ?prorationDetails: ProrationDetails) =
         {
             Amount = amount
             Currency = currency
@@ -121,6 +129,7 @@ type Invoiceitem with
             QuantityDecimal = quantityDecimal
             TaxRates = taxRates
             TestClock = testClock
+            FrozenFields = frozenFields
             NetAmount = netAmount
             ProrationDetails = prorationDetails
         }

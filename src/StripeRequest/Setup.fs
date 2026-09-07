@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.SetupAttempt
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module SetupAttempts =
 
     type ListOptions =
@@ -187,6 +187,7 @@ module SetupIntents =
         | Swish
         | Tamara
         | TestPay
+        | [<JsonPropertyName("touch_n_go")>] TouchNGo
         | Truemoney
         | Twint
         | Upi
@@ -2325,6 +2326,7 @@ module SetupIntents =
         | Swish
         | Tamara
         | TestPay
+        | [<JsonPropertyName("touch_n_go")>] TouchNGo
         | Truemoney
         | Twint
         | Upi
@@ -4367,6 +4369,7 @@ module SetupIntentsConfirm =
         | Swish
         | Tamara
         | TestPay
+        | [<JsonPropertyName("touch_n_go")>] TouchNGo
         | Truemoney
         | Twint
         | Upi

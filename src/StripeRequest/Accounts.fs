@@ -7,7 +7,7 @@ open Stripe.LoginLink
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module Accounts =
 
     type ListOptions =
@@ -1638,6 +1638,7 @@ module Accounts =
             /// The Kanji variation of the company's primary address (Japan only).
             [<Config.Form>]
             AddressKanji: Create'CompanyAddressKanji option
+            /// The location where the business is administered.
             [<Config.Form>]
             AdministrativeAddress: Create'CompanyAdministrativeAddress option
             /// Whether the company's directors have been provided. Set this Boolean to `true` after creating all the company's directors with [the Persons API](/api/persons) for accounts with a `relationship.director` requirement. This value is not automatically set to `true` after creating directors, so it needs to be updated to indicate all directors have been provided.
@@ -1676,6 +1677,7 @@ module Accounts =
             /// The company's phone number (used for verification).
             [<Config.Form>]
             Phone: string option
+            /// The primary location where the business conducts operations.
             [<Config.Form>]
             PrincipalPlaceOfBusiness: Create'CompanyPrincipalPlaceOfBusiness option
             /// When the business was incorporated or registered.
@@ -4385,6 +4387,7 @@ module Accounts =
             /// The Kanji variation of the company's primary address (Japan only).
             [<Config.Form>]
             AddressKanji: Update'CompanyAddressKanji option
+            /// The location where the business is administered.
             [<Config.Form>]
             AdministrativeAddress: Update'CompanyAdministrativeAddress option
             /// Whether the company's directors have been provided. Set this Boolean to `true` after creating all the company's directors with [the Persons API](/api/persons) for accounts with a `relationship.director` requirement. This value is not automatically set to `true` after creating directors, so it needs to be updated to indicate all directors have been provided.
@@ -4423,6 +4426,7 @@ module Accounts =
             /// The company's phone number (used for verification).
             [<Config.Form>]
             Phone: string option
+            /// The primary location where the business conducts operations.
             [<Config.Form>]
             PrincipalPlaceOfBusiness: Update'CompanyPrincipalPlaceOfBusiness option
             [<Config.Form>]

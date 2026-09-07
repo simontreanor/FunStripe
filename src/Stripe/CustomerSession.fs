@@ -4,8 +4,21 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
+/// This hash contains whether the active entitlements is enabled.
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+type CustomerSessionResourceComponentsResourceActiveEntitlements =
+    {
+        /// Whether the active entitlements is enabled.
+        Enabled: bool
+    }
+
+type CustomerSessionResourceComponentsResourceActiveEntitlements with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
+
 /// This hash contains whether the buy button is enabled.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
 type CustomerSessionResourceComponentsResourceBuyButton =
     {
         /// Whether the buy button is enabled.
@@ -13,6 +26,19 @@ type CustomerSessionResourceComponentsResourceBuyButton =
     }
 
 type CustomerSessionResourceComponentsResourceBuyButton with
+    static member New(enabled: bool) =
+        {
+            Enabled = enabled
+        }
+
+/// This hash contains whether the customer portal is enabled.
+type CustomerSessionResourceComponentsResourceCustomerPortal =
+    {
+        /// Whether the customer portal is enabled.
+        Enabled: bool
+    }
+
+type CustomerSessionResourceComponentsResourceCustomerPortal with
     static member New(enabled: bool) =
         {
             Enabled = enabled
@@ -235,16 +261,20 @@ type CustomerSessionResourceComponentsResourcePricingTable with
 
 /// Configuration for the components supported by this Customer Session.
 type CustomerSessionResourceComponents =
-    { BuyButton: CustomerSessionResourceComponentsResourceBuyButton
+    { ActiveEntitlements: CustomerSessionResourceComponentsResourceActiveEntitlements
+      BuyButton: CustomerSessionResourceComponentsResourceBuyButton
+      CustomerPortal: CustomerSessionResourceComponentsResourceCustomerPortal
       CustomerSheet: CustomerSessionResourceComponentsResourceCustomerSheet
       MobilePaymentElement: CustomerSessionResourceComponentsResourceMobilePaymentElement
       PaymentElement: CustomerSessionResourceComponentsResourcePaymentElement
       PricingTable: CustomerSessionResourceComponentsResourcePricingTable }
 
 type CustomerSessionResourceComponents with
-    static member New(buyButton: CustomerSessionResourceComponentsResourceBuyButton, customerSheet: CustomerSessionResourceComponentsResourceCustomerSheet, mobilePaymentElement: CustomerSessionResourceComponentsResourceMobilePaymentElement, paymentElement: CustomerSessionResourceComponentsResourcePaymentElement, pricingTable: CustomerSessionResourceComponentsResourcePricingTable) =
+    static member New(activeEntitlements: CustomerSessionResourceComponentsResourceActiveEntitlements, buyButton: CustomerSessionResourceComponentsResourceBuyButton, customerPortal: CustomerSessionResourceComponentsResourceCustomerPortal, customerSheet: CustomerSessionResourceComponentsResourceCustomerSheet, mobilePaymentElement: CustomerSessionResourceComponentsResourceMobilePaymentElement, paymentElement: CustomerSessionResourceComponentsResourcePaymentElement, pricingTable: CustomerSessionResourceComponentsResourcePricingTable) =
         {
+            ActiveEntitlements = activeEntitlements
             BuyButton = buyButton
+            CustomerPortal = customerPortal
             CustomerSheet = customerSheet
             MobilePaymentElement = mobilePaymentElement
             PaymentElement = paymentElement

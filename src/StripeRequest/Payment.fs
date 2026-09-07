@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.PaymentRecord
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module PaymentAttemptRecords =
 
     type ListOptions =
@@ -192,6 +192,7 @@ module PaymentIntents =
         | Swish
         | Tamara
         | TestPay
+        | [<JsonPropertyName("touch_n_go")>] TouchNGo
         | Truemoney
         | Twint
         | Upi
@@ -4412,6 +4413,7 @@ module PaymentIntents =
         | Swish
         | Tamara
         | TestPay
+        | [<JsonPropertyName("touch_n_go")>] TouchNGo
         | Truemoney
         | Twint
         | Upi
@@ -8987,6 +8989,7 @@ module PaymentIntentsConfirm =
         | Swish
         | Tamara
         | TestPay
+        | [<JsonPropertyName("touch_n_go")>] TouchNGo
         | Truemoney
         | Twint
         | Upi
@@ -13638,7 +13641,7 @@ module PaymentLinks =
 
     type Create'CustomFieldsDropdown =
         {
-            /// The value that pre-fills the field on the payment page.Must match a `value` in the `options` array.
+            /// The value that pre-fills the field on the payment page. Must match a `value` in the `options` array.
             [<Config.Form>]
             DefaultValue: string option
             /// The options available for the customer to select. Up to 200 options allowed.
@@ -15116,7 +15119,7 @@ module PaymentLinks =
 
     type Update'CustomFieldsDropdown =
         {
-            /// The value that pre-fills the field on the payment page.Must match a `value` in the `options` array.
+            /// The value that pre-fills the field on the payment page. Must match a `value` in the `options` array.
             [<Config.Form>]
             DefaultValue: string option
             /// The options available for the customer to select. Up to 200 options allowed.
@@ -16131,6 +16134,26 @@ module PaymentLinks =
                 Required = required
             }
 
+    type Update'TransferDataTransferDataUpdateParams =
+        {
+            /// The amount that will be transferred automatically when a charge succeeds.
+            [<Config.Form>]
+            Amount: Choice<int,string> option
+            /// If specified, successful charges will be attributed to the destination
+            /// account for tax reporting, and the funds from charges will be transferred
+            /// to the destination account. The ID of the resulting transfer will be
+            /// returned on the successful charge's `transfer` field.
+            [<Config.Form>]
+            Destination: string option
+        }
+
+    type Update'TransferDataTransferDataUpdateParams with
+        static member New(?amount: Choice<int,string>, ?destination: string) =
+            {
+                Amount = amount
+                Destination = destination
+            }
+
     type UpdateOptions =
         {
             [<Config.Path>]
@@ -16144,6 +16167,12 @@ module PaymentLinks =
             /// Enables user redeemable promotion codes.
             [<Config.Form>]
             AllowPromotionCodes: bool option
+            /// The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. Can only be applied when there are no line items with recurring prices.
+            [<Config.Form>]
+            ApplicationFeeAmount: Choice<int,string> option
+            /// A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice total that will be transferred to the application owner's Stripe account. There must be at least 1 line item with a recurring price to use this field.
+            [<Config.Form>]
+            ApplicationFeePercent: Choice<decimal,string> option
             /// Configuration for automatic tax collection.
             [<Config.Form>]
             AutomaticTax: Update'AutomaticTax option
@@ -16180,6 +16209,9 @@ module PaymentLinks =
             /// Controls settings applied for collecting the customer's name.
             [<Config.Form>]
             NameCollection: Choice<Update'NameCollectionNameCollectionParams,string> option
+            /// The account on behalf of which to charge.
+            [<Config.Form>]
+            OnBehalfOf: Choice<string,string> option
             /// A list of optional items the customer can add to their order at checkout. Use this parameter to pass one-time or recurring [Prices](https://docs.stripe.com/api/prices).
             /// There is a maximum of 10 optional items allowed on a payment link, and the existing limits on the number of line items allowed on a payment link apply to the combined number of line items and optional items.
             /// There is a maximum of 20 combined line items and optional items.
@@ -16221,15 +16253,20 @@ module PaymentLinks =
             /// Controls tax ID collection during checkout.
             [<Config.Form>]
             TaxIdCollection: Update'TaxIdCollection option
+            /// The account (if any) the payments will be attributed to for tax reporting, and where funds from each payment will be transferred to.
+            [<Config.Form>]
+            TransferData: Choice<Update'TransferDataTransferDataUpdateParams,string> option
         }
 
     type UpdateOptions with
-        static member New(paymentLink: string, ?active: bool, ?afterCompletion: Update'AfterCompletion, ?allowPromotionCodes: bool, ?automaticTax: Update'AutomaticTax, ?billingAddressCollection: Update'BillingAddressCollection, ?consentCollection: Update'ConsentCollection, ?customFields: Choice<Update'CustomFields list,string>, ?customText: Update'CustomText, ?customerCreation: Update'CustomerCreation, ?expand: string list, ?inactiveMessage: Choice<string,string>, ?invoiceCreation: Update'InvoiceCreation, ?lineItems: Update'LineItems list, ?metadata: Map<string, string>, ?nameCollection: Choice<Update'NameCollectionNameCollectionParams,string>, ?optionalItems: Choice<Update'OptionalItems list,string>, ?paymentIntentData: Update'PaymentIntentData, ?paymentMethodCollection: Update'PaymentMethodCollection, ?paymentMethodOptions: Choice<Update'PaymentMethodOptionsPaymentMethodOptionsUpdateParams,string>, ?paymentMethodTypes: Choice<Update'PaymentMethodTypes list,string>, ?phoneNumberCollection: Update'PhoneNumberCollection, ?restrictions: Choice<Update'RestrictionsRestrictionsParams,string>, ?shippingAddressCollection: Choice<Update'ShippingAddressCollectionShippingAddressCollectionParams,string>, ?shippingOptions: Choice<Update'ShippingOptions list,string>, ?submitType: Update'SubmitType, ?subscriptionData: Update'SubscriptionData, ?taxIdCollection: Update'TaxIdCollection) =
+        static member New(paymentLink: string, ?active: bool, ?afterCompletion: Update'AfterCompletion, ?allowPromotionCodes: bool, ?applicationFeeAmount: Choice<int,string>, ?applicationFeePercent: Choice<decimal,string>, ?automaticTax: Update'AutomaticTax, ?billingAddressCollection: Update'BillingAddressCollection, ?consentCollection: Update'ConsentCollection, ?customFields: Choice<Update'CustomFields list,string>, ?customText: Update'CustomText, ?customerCreation: Update'CustomerCreation, ?expand: string list, ?inactiveMessage: Choice<string,string>, ?invoiceCreation: Update'InvoiceCreation, ?lineItems: Update'LineItems list, ?metadata: Map<string, string>, ?nameCollection: Choice<Update'NameCollectionNameCollectionParams,string>, ?onBehalfOf: Choice<string,string>, ?optionalItems: Choice<Update'OptionalItems list,string>, ?paymentIntentData: Update'PaymentIntentData, ?paymentMethodCollection: Update'PaymentMethodCollection, ?paymentMethodOptions: Choice<Update'PaymentMethodOptionsPaymentMethodOptionsUpdateParams,string>, ?paymentMethodTypes: Choice<Update'PaymentMethodTypes list,string>, ?phoneNumberCollection: Update'PhoneNumberCollection, ?restrictions: Choice<Update'RestrictionsRestrictionsParams,string>, ?shippingAddressCollection: Choice<Update'ShippingAddressCollectionShippingAddressCollectionParams,string>, ?shippingOptions: Choice<Update'ShippingOptions list,string>, ?submitType: Update'SubmitType, ?subscriptionData: Update'SubscriptionData, ?taxIdCollection: Update'TaxIdCollection, ?transferData: Choice<Update'TransferDataTransferDataUpdateParams,string>) =
             {
                 PaymentLink = paymentLink
                 Active = active
                 AfterCompletion = afterCompletion
                 AllowPromotionCodes = allowPromotionCodes
+                ApplicationFeeAmount = applicationFeeAmount
+                ApplicationFeePercent = applicationFeePercent
                 AutomaticTax = automaticTax
                 BillingAddressCollection = billingAddressCollection
                 ConsentCollection = consentCollection
@@ -16242,6 +16279,7 @@ module PaymentLinks =
                 LineItems = lineItems
                 Metadata = metadata
                 NameCollection = nameCollection
+                OnBehalfOf = onBehalfOf
                 OptionalItems = optionalItems
                 PaymentIntentData = paymentIntentData
                 PaymentMethodCollection = paymentMethodCollection
@@ -16254,6 +16292,7 @@ module PaymentLinks =
                 SubmitType = submitType
                 SubscriptionData = subscriptionData
                 TaxIdCollection = taxIdCollection
+                TransferData = transferData
             }
 
     ///<p>Returns a list of your payment links.</p>

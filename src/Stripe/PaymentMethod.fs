@@ -19,7 +19,7 @@ open Stripe.TaxId
 open Stripe.TaxRate
 open Stripe.TransferReversal
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 type AccountAnnualRevenue =
     {
         /// A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).
@@ -1214,6 +1214,8 @@ type CancellationDetails =
         Comment: string option
         /// The customer submitted reason for why they canceled, if the subscription was canceled explicitly by the user.
         Feedback: CancellationDetailsFeedback option
+        /// Customized feedback options that provide deeper insight into why the subscription was canceled, if the subscription was canceled explicitly by the user.
+        FeedbackOption: StripeId<Markers.BillingFeedbackOption> option
         /// Why this subscription was canceled.
         Reason: CancellationDetailsReason option
     }
@@ -1577,6 +1579,9 @@ type InvoicePaymentMethodOptionsUsBankAccount =
         VerificationMethod: InvoicePaymentMethodOptionsUsBankAccountVerificationMethod option
     }
 
+type SubscriptionPaymentMethodOptionsBillie =
+    { SubscriptionPaymentMethodOptionsBillie: string option }
+
 [<Struct>]
 type InvoiceMandateOptionsCardAmountType =
     | Fixed
@@ -1660,6 +1665,8 @@ type SubscriptionsResourcePaymentMethodOptions =
         AcssDebit: InvoicePaymentMethodOptionsAcssDebit option
         /// This sub-hash contains details about the Bancontact payment method options to pass to invoices created by the subscription.
         Bancontact: InvoicePaymentMethodOptionsBancontact option
+        /// This sub-hash contains details about the Billie payment method options to pass to invoices created by the subscription.
+        Billie: SubscriptionPaymentMethodOptionsBillie option
         /// This sub-hash contains details about the Card payment method options to pass to invoices created by the subscription.
         Card: SubscriptionPaymentMethodOptionsCard option
         /// This sub-hash contains details about the Bank transfer payment method options to pass to invoices created by the subscription.
@@ -1688,6 +1695,7 @@ type SubscriptionsResourcePaymentSettingsPaymentMethodTypes =
     | AuBecsDebit
     | BacsDebit
     | Bancontact
+    | Billie
     | Boleto
     | Card
     | Cashapp
@@ -3329,12 +3337,6 @@ type AccountExternalAccountUpdated =
 /// Occurs whenever an account status or property has changed.
 type AccountUpdated = { Object: Account }
 
-type AlmaInstallments =
-    {
-        /// The number of installments.
-        Count: int
-    }
-
 type PaymentMethodDetailsPassthroughCardBrand =
     | [<JsonPropertyName("American Express")>] AmericanExpress
     | [<JsonPropertyName("Cartes Bancaires")>] CartesBancaires
@@ -3392,6 +3394,7 @@ type ApiErrorsCode =
     | ApiKeyExpired
     | ApplicationFeesNotAllowed
     | ApprovalRequired
+    | AuthenticationFailure
     | AuthenticationRequired
     | BalanceInsufficient
     | BalanceInvalidParameter
@@ -3404,6 +3407,7 @@ type ApiErrorsCode =
     | BankAccountVerificationFailed
     | BillingInvalidMandate
     | BitcoinUpgradeRequired
+    | CapabilityNotActive
     | CaptureChargeAuthorizationExpired
     | CaptureUnauthorizedPayment
     | CardDeclineRateLimitExceeded
@@ -3428,6 +3432,7 @@ type ApiErrorsCode =
     | DebitNotAuthorized
     | EmailInvalid
     | ExpiredCard
+    | ExpiredPaymentMethod
     | FailedTaxCalculation
     | FinancialAccountBalanceDoesNotSupportCurrency
     | FinancialAccountCapabilityNotEnabled
@@ -3446,6 +3451,7 @@ type ApiErrorsCode =
     | IncorrectAddress
     | IncorrectCvc
     | IncorrectNumber
+    | IncorrectPostalCode
     | IncorrectZip
     | IndiaRecurringPaymentMandateCanceled
     | InstantPayoutsConfigDisabled
@@ -3455,6 +3461,7 @@ type ApiErrorsCode =
     | InsufficientFunds
     | IntentInvalidState
     | IntentVerificationMethodMissing
+    | InvalidCanceledSubscriptionFields
     | InvalidCardType
     | InvalidCharacters
     | InvalidChargeAmount
@@ -3514,6 +3521,7 @@ type ApiErrorsCode =
     | PaymentMethodNotAvailable
     | PaymentMethodProviderDecline
     | PaymentMethodProviderTimeout
+    | PaymentMethodRestricted
     | PaymentMethodUnactivated
     | PaymentMethodUnexpectedState
     | PaymentMethodUnsupportedType
@@ -3837,6 +3845,7 @@ type PaymentIntentAllowedPaymentMethodTypes =
     | Swish
     | Tamara
     | TestPay
+    | [<JsonPropertyName("touch_n_go")>] TouchNGo
     | Truemoney
     | Twint
     | Upi
@@ -6719,6 +6728,7 @@ type SetupIntentAllowedPaymentMethodTypes =
     | Swish
     | Tamara
     | TestPay
+    | [<JsonPropertyName("touch_n_go")>] TouchNGo
     | Truemoney
     | Twint
     | Upi
@@ -8055,9 +8065,15 @@ type PaymentMethodDetailsAlipay =
         TransactionId: string option
     }
 
+type PaymentFlowsPrivatePaymentMethodsAlmaDetailsResourceInstallments =
+    {
+        /// The number of installments.
+        Count: int
+    }
+
 type PaymentMethodDetailsAlma =
     {
-        Installments: AlmaInstallments option
+        Installments: PaymentFlowsPrivatePaymentMethodsAlmaDetailsResourceInstallments option
         /// The Alma transaction ID associated with this payment.
         TransactionId: string option
     }
@@ -8300,7 +8316,10 @@ type PaymentMethodDetailsCardWalletGooglePay =
     { PaymentMethodDetailsCardWalletGooglePay: string option }
 
 type PaymentMethodDetailsCardWalletLink =
-    { PaymentMethodDetailsCardWalletLink: string option }
+    {
+        /// The [funding source group code](https://docs.stripe.com/payments/link/link-payment-methods) applied to this Link payment at confirmation time.
+        FundingSourceGroup: string option
+    }
 
 type PaymentMethodDetailsCardWalletMasterpass =
     {
@@ -8848,22 +8867,22 @@ type PaymentMethodDetailsKlarna =
     }
 
 [<Struct>]
-type PaymentMethodDetailsKonbiniStoreChain =
+type PaymentFlowsPrivatePaymentMethodsKonbiniDetailsResourceStoreChain =
     | Familymart
     | Lawson
     | Ministop
     | Seicomart
 
-type PaymentMethodDetailsKonbiniStore =
+type PaymentFlowsPrivatePaymentMethodsKonbiniDetailsResourceStore =
     {
         /// The name of the convenience store chain where the payment was completed.
-        Chain: PaymentMethodDetailsKonbiniStoreChain option
+        Chain: PaymentFlowsPrivatePaymentMethodsKonbiniDetailsResourceStoreChain option
     }
 
 type PaymentMethodDetailsKonbini =
     {
         /// If the payment succeeded, this contains the details of the convenience store where the payment was completed.
-        Store: PaymentMethodDetailsKonbiniStore option
+        Store: PaymentFlowsPrivatePaymentMethodsKonbiniDetailsResourceStore option
     }
 
 type PaymentMethodDetailsKrCardBrand =
@@ -8908,6 +8927,8 @@ type PaymentMethodDetailsLink =
         /// Two-letter ISO code representing the funding source country beneath the Link payment.
         /// You could use this attribute to get a sense of international fees.
         Country: IsoTypes.IsoCountryCode option
+        /// The [funding source group code](https://docs.stripe.com/payments/link/link-payment-methods) applied to this Link payment at confirmation time.
+        FundingSourceGroup: string option
     }
 
 type PaymentMethodDetailsMbWay =
@@ -9092,7 +9113,7 @@ type PaymentMethodDetailsPix =
         BankTransactionId: string option
         /// Uniquely identifies this particular Pix account. You can use this attribute to check whether two Pix accounts are the same.
         Fingerprint: string option
-        /// ID of the multi use Mandate generated by the PaymentIntent
+        /// ID of the multi use Mandate generated by the PaymentIntent or SetupIntent.
         Mandate: string option
     }
 
@@ -9217,7 +9238,7 @@ type PaymentMethodDetailsSwish =
 
 type PaymentMethodDetailsTwint =
     {
-        /// ID of the multi use Mandate generated by the PaymentIntent
+        /// ID of the multi use Mandate generated by the PaymentIntent or SetupIntent.
         Mandate: string option
     }
 
@@ -11273,6 +11294,8 @@ type BankConnectionsResourceLinkAccountSessionFilters =
         AccountSubcategories: BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories list option
         /// List of countries from which to filter accounts.
         Countries: string list option
+        /// Country from which to filter accounts.
+        Country: IsoTypes.IsoCountryCode option
         /// Whether the Session should require that linked accounts support payments and retrieve account numbers before completion.
         RequirePaymentMethodSupport: BankConnectionsResourceLinkAccountSessionFiltersRequirePaymentMethodSupport option
     }
@@ -11736,6 +11759,31 @@ type BillingCreditGrantCreated = { Object: BillingCreditGrant }
 type BillingCreditGrantUpdated = { Object: BillingCreditGrant }
 
 [<Struct>]
+type BillingFeedbackOptionStatus =
+    | Active
+    | Inactive
+
+type FeedbackOptionsStatusTransitions =
+    {
+        /// The time the feedback option was deactivated, if any. Measured in seconds since Unix epoch.
+        DeactivatedAt: DateTime option
+    }
+
+/// A resource for the feedback options model (for custom cancellation reasons)
+type BillingFeedbackOption =
+    {
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The feedback option's status.
+        Status: BillingFeedbackOptionStatus
+        StatusTransitions: FeedbackOptionsStatusTransitions
+    }
+
+[<Struct>]
 type BillingMeterEventTimeWindow =
     | Day
     | Hour
@@ -12072,6 +12120,19 @@ type ConnectEmbeddedPaymentDisputesConfig =
         Features: ConnectEmbeddedPaymentDisputesFeatures
     }
 
+type ConnectEmbeddedPaymentMethodSettingsFeatures =
+    {
+        /// Whether Stripe user authentication is disabled. This value can only be `true` for accounts where `controller.requirement_collection` is `application` for the account. This is `false` by default.
+        DisableStripeUserAuthentication: bool
+    }
+
+type ConnectEmbeddedPaymentMethodSettingsConfigClaim =
+    {
+        /// Whether the embedded component is enabled.
+        Enabled: bool
+        Features: ConnectEmbeddedPaymentMethodSettingsFeatures
+    }
+
 type ConnectEmbeddedPaymentsFeatures =
     {
         /// Whether to allow capturing and cancelling payment intents. This is `true` by default.
@@ -12129,6 +12190,7 @@ type ConnectEmbeddedAccountSessionCreateComponents =
       NotificationBanner: ConnectEmbeddedAccountConfigClaim
       PaymentDetails: ConnectEmbeddedPaymentsConfigClaim
       PaymentDisputes: ConnectEmbeddedPaymentDisputesConfig
+      PaymentMethodSettings: ConnectEmbeddedPaymentMethodSettingsConfigClaim
       Payments: ConnectEmbeddedPaymentsConfigClaim
       PayoutDetails: ConnectEmbeddedBaseConfigClaim
       PayoutReconciliationReport: ConnectEmbeddedBaseConfigClaim
@@ -12865,6 +12927,9 @@ type InvoiceThresholdReason =
         ItemReasons: InvoiceItemThresholdReason list
     }
 
+type InvoicePaymentMethodOptionsBillie =
+    { InvoicePaymentMethodOptionsBillie: string option }
+
 type InvoiceInstallmentsCard =
     {
         /// Whether Installments are enabled for this Invoice.
@@ -12903,6 +12968,8 @@ type InvoicesPaymentMethodOptions =
         AcssDebit: InvoicePaymentMethodOptionsAcssDebit option
         /// If paying by `bancontact`, this sub-hash contains details about the Bancontact payment method options to pass to the invoice’s PaymentIntent.
         Bancontact: InvoicePaymentMethodOptionsBancontact option
+        /// If paying by `billie`, this sub-hash contains details about the Billie payment method options to pass to the invoice’s PaymentIntent.
+        Billie: InvoicePaymentMethodOptionsBillie option
         /// If paying by `card`, this sub-hash contains details about the Card payment method options to pass to the invoice’s PaymentIntent.
         Card: InvoicePaymentMethodOptionsCard option
         /// If paying by `customer_balance`, this sub-hash contains details about the Bank transfer payment method options to pass to the invoice’s PaymentIntent.
@@ -12931,6 +12998,7 @@ type InvoicesPaymentSettingsPaymentMethodTypes =
     | AuBecsDebit
     | BacsDebit
     | Bancontact
+    | Billie
     | Boleto
     | Card
     | Cashapp
@@ -14754,6 +14822,25 @@ type PaymentMethodDetailsPaymentRecordNaverPay =
         TransactionId: string option
     }
 
+type PaymentMethodDetailsPaymentRecordNzBankAccount =
+    {
+        /// The name on the bank account. Only present if the account holder name is different from the name of the authorized signatory collected in the PaymentMethod's billing details.
+        AccountHolderName: string option
+        /// The numeric code for the bank account's bank.
+        BankCode: string
+        /// The name of the bank.
+        BankName: string
+        /// The numeric code for the bank account's bank branch.
+        BranchCode: string
+        /// Estimated date to debit the customer's bank account. A date string in YYYY-MM-DD format.
+        ExpectedDebitDate: string option
+        /// Last four digits of the bank account number.
+        [<JsonPropertyName("last4")>]
+        Last4: string
+        /// The suffix of the bank account number.
+        Suffix: string option
+    }
+
 type PaymentMethodDetailsPaymentRecordOxxo =
     {
         /// OXXO reference number
@@ -14836,7 +14923,7 @@ type PaymentMethodDetailsPaymentRecordPix =
     {
         /// Unique transaction id generated by BCB
         BankTransactionId: string option
-        /// ID of the multi use Mandate generated by the PaymentIntent
+        /// ID of the multi use Mandate generated by the PaymentIntent or SetupIntent.
         Mandate: string option
     }
 
@@ -14986,7 +15073,7 @@ type PaymentMethodDetailsPaymentRecordSwish =
 
 type PaymentMethodDetailsPaymentRecordTwint =
     {
-        /// ID of the multi use Mandate generated by the PaymentIntent
+        /// ID of the multi use Mandate generated by the PaymentIntent or SetupIntent.
         Mandate: string option
     }
 
@@ -15549,7 +15636,7 @@ type PaymentPagesCheckoutSessionPermissions =
     {
         /// Determines which entity is allowed to update the shipping details.
         /// Default is `client_only`. Stripe Checkout client will automatically update the shipping details. If set to `server_only`, only your server is allowed to update the shipping details.
-        /// When set to `server_only`, you must add the onShippingDetailsChange event handler when initializing the Stripe Checkout client and manually update the shipping details from your server using the Stripe API.
+        /// This parameter is only supported when `ui_mode=elements`.
         UpdateShippingDetails: PaymentPagesCheckoutSessionPermissionsUpdateShippingDetails option
     }
 
@@ -15893,10 +15980,19 @@ type PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictionsBrandsBlocke
     | Mastercard
     | Visa
 
+[<Struct>]
+type PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictionsFundingTypesBlocked =
+    | Credit
+    | Debit
+    | Prepaid
+
 type PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictions =
     {
         /// The card brands to block. If a customer enters or selects a card belonging to a blocked brand, they can't complete the payment.
         BrandsBlocked: PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictionsBrandsBlocked list option
+        /// Card funding types to block for this Checkout Session. Supported values are `credit`, `debit`, and `prepaid`.
+        FundingTypesBlocked:
+            PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictionsFundingTypesBlocked list option
     }
 
 /// A representation of a physical address.
@@ -16095,8 +16191,6 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThr
         /// For authenticated transactions: Indicates how the issuing bank authenticated the customer.
         AuthenticationFlow:
             PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureAuthenticationFlow option
-        /// The 3D Secure cryptogram, also known as the "authentication value" (AAV, CAVV or AEVV).
-        Cryptogram: string option
         /// The Electronic Commerce Indicator (ECI). A protocol-level field indicating what degree of authentication was performed.
         ElectronicCommerceIndicator:
             PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureElectronicCommerceIndicator option
@@ -16248,7 +16342,7 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodDetails =
         Mobilepay: PaymentMethodDetailsPaymentRecordMobilepay option
         Multibanco: PaymentMethodDetailsPaymentRecordMultibanco option
         NaverPay: PaymentMethodDetailsPaymentRecordNaverPay option
-        NzBankAccount: PaymentMethodDetailsNzBankAccount option
+        NzBankAccount: PaymentMethodDetailsPaymentRecordNzBankAccount option
         Oxxo: PaymentMethodDetailsPaymentRecordOxxo option
         [<JsonPropertyName("p24")>]
         P24: PaymentMethodDetailsPaymentRecordP24 option
@@ -17003,10 +17097,11 @@ module Source =
     let object = "source"
 
 type CancellationDetails with
-    static member New(comment: string option, feedback: CancellationDetailsFeedback option, reason: CancellationDetailsReason option) =
+    static member New(comment: string option, feedback: CancellationDetailsFeedback option, feedbackOption: StripeId<Markers.BillingFeedbackOption> option, reason: CancellationDetailsReason option) =
         {
             Comment = comment
             Feedback = feedback
+            FeedbackOption = feedbackOption
             Reason = reason
         }
 
@@ -17224,6 +17319,12 @@ type InvoicePaymentMethodOptionsUsBankAccount with
             VerificationMethod = verificationMethod
         }
 
+type SubscriptionPaymentMethodOptionsBillie with
+    static member New(?subscriptionPaymentMethodOptionsBillie: string option) =
+        {
+            SubscriptionPaymentMethodOptionsBillie = subscriptionPaymentMethodOptionsBillie |> Option.flatten
+        }
+
 type InvoiceMandateOptionsCard with
     static member New(amount: int option, amountType: InvoiceMandateOptionsCardAmountType option, description: string option) =
         {
@@ -17257,7 +17358,7 @@ type SubscriptionPaymentMethodOptionsPix with
         }
 
 type SubscriptionsResourcePaymentMethodOptions with
-    static member New(acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: SubscriptionPaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, payto: InvoicePaymentMethodOptionsPayto option, pix: SubscriptionPaymentMethodOptionsPix option, sepaDebit: InvoicePaymentMethodOptionsSepaDebit option, upi: InvoicePaymentMethodOptionsUpi option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option) =
+    static member New(acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: SubscriptionPaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, payto: InvoicePaymentMethodOptionsPayto option, pix: SubscriptionPaymentMethodOptionsPix option, sepaDebit: InvoicePaymentMethodOptionsSepaDebit option, upi: InvoicePaymentMethodOptionsUpi option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option, ?billie: SubscriptionPaymentMethodOptionsBillie option) =
         {
             AcssDebit = acssDebit
             Bancontact = bancontact
@@ -17269,6 +17370,7 @@ type SubscriptionsResourcePaymentMethodOptions with
             SepaDebit = sepaDebit
             Upi = upi
             UsBankAccount = usBankAccount
+            Billie = billie |> Option.flatten
         }
 
 type SubscriptionsResourcePaymentSettings with
@@ -18138,12 +18240,6 @@ type AccountUpdated with
     static member New(object: Account) =
         {
             Object = object
-        }
-
-type AlmaInstallments with
-    static member New(count: int) =
-        {
-            Count = count
         }
 
 type PaymentMethodDetailsPassthroughCard with
@@ -20273,8 +20369,9 @@ type ApiErrors with
         }
 
 type PaymentIntent with
-    static member New(amount: int, amountCapturable: int, amountReceived: int, application: StripeId<Markers.Application> option, applicationFeeAmount: int option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsPaymentIntent option, canceledAt: DateTime option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: PaymentIntentCustomer'AnyOf option, customerAccount: string option, description: string option, excludedPaymentMethodTypes: PaymentIntentExcludedPaymentMethodTypes list option, id: string, lastPaymentError: ApiErrors option, latestCharge: StripeId<Markers.Charge> option, livemode: bool, managedPayments: SmorResourceManagedPayments option, metadata: Map<string, string>, nextAction: PaymentIntentNextAction option, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod> option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: PaymentIntentPaymentMethodOptions option, paymentMethodTypes: string list, processing: PaymentIntentProcessing option, receiptEmail: string option, review: StripeId<Markers.Review> option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: Shipping option, source: PaymentIntentSource'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferGroup: string option, ?allowedPaymentMethodTypes: PaymentIntentAllowedPaymentMethodTypes list option, ?amountDetails: PaymentFlowsAmountDetails, ?hooks: PaymentFlowsPaymentIntentAsyncWorkflows, ?paymentDetails: PaymentFlowsPaymentDetails, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?transferData: TransferData option) =
+    static member New(allowedPaymentMethodTypes: PaymentIntentAllowedPaymentMethodTypes list option, amount: int, amountCapturable: int, amountReceived: int, application: StripeId<Markers.Application> option, applicationFeeAmount: int option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsPaymentIntent option, canceledAt: DateTime option, cancellationReason: PaymentIntentCancellationReason option, captureMethod: PaymentIntentCaptureMethod, clientSecret: string option, confirmationMethod: PaymentIntentConfirmationMethod, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: PaymentIntentCustomer'AnyOf option, customerAccount: string option, description: string option, excludedPaymentMethodTypes: PaymentIntentExcludedPaymentMethodTypes list option, id: string, lastPaymentError: ApiErrors option, latestCharge: StripeId<Markers.Charge> option, livemode: bool, managedPayments: SmorResourceManagedPayments option, metadata: Map<string, string>, nextAction: PaymentIntentNextAction option, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod> option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: PaymentIntentPaymentMethodOptions option, paymentMethodTypes: string list, processing: PaymentIntentProcessing option, receiptEmail: string option, review: StripeId<Markers.Review> option, setupFutureUsage: PaymentIntentSetupFutureUsage option, shipping: Shipping option, source: PaymentIntentSource'AnyOf option, statementDescriptor: string option, statementDescriptorSuffix: string option, status: PaymentIntentStatus, transferGroup: string option, ?amountDetails: PaymentFlowsAmountDetails, ?hooks: PaymentFlowsPaymentIntentAsyncWorkflows, ?paymentDetails: PaymentFlowsPaymentDetails, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?transferData: TransferData option) =
         {
+            AllowedPaymentMethodTypes = allowedPaymentMethodTypes
             Amount = amount
             AmountCapturable = amountCapturable
             AmountReceived = amountReceived
@@ -20314,7 +20411,6 @@ type PaymentIntent with
             StatementDescriptorSuffix = statementDescriptorSuffix
             Status = status
             TransferGroup = transferGroup
-            AllowedPaymentMethodTypes = allowedPaymentMethodTypes |> Option.flatten
             AmountDetails = amountDetails
             Hooks = hooks
             PaymentDetails = paymentDetails
@@ -20327,8 +20423,9 @@ module PaymentIntent =
     let object = "payment_intent"
 
 type SetupIntent with
-    static member New(application: StripeId<Markers.Application> option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsSetupIntent option, cancellationReason: SetupIntentCancellationReason option, clientSecret: string option, created: DateTime, customer: SetupIntentCustomer'AnyOf option, description: string option, excludedPaymentMethodTypes: SetupIntentExcludedPaymentMethodTypes list option, id: string, lastSetupError: ApiErrors option, latestAttempt: StripeId<Markers.SetupAttempt> option, livemode: bool, mandate: StripeId<Markers.Mandate> option, metadata: Map<string, string> option, nextAction: SetupIntentNextAction option, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod> option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: SetupIntentPaymentMethodOptions option, paymentMethodTypes: string list, singleUseMandate: StripeId<Markers.Mandate> option, status: SetupIntentStatus, usage: string, ?allowedPaymentMethodTypes: SetupIntentAllowedPaymentMethodTypes list option, ?attachToSelf: bool, ?customerAccount: string option, ?flowDirections: SetupIntentFlowDirections list option, ?managedPayments: SmorResourceManagedPayments option) =
+    static member New(allowedPaymentMethodTypes: SetupIntentAllowedPaymentMethodTypes list option, application: StripeId<Markers.Application> option, automaticPaymentMethods: PaymentFlowsAutomaticPaymentMethodsSetupIntent option, cancellationReason: SetupIntentCancellationReason option, clientSecret: string option, created: DateTime, customer: SetupIntentCustomer'AnyOf option, description: string option, excludedPaymentMethodTypes: SetupIntentExcludedPaymentMethodTypes list option, id: string, lastSetupError: ApiErrors option, latestAttempt: StripeId<Markers.SetupAttempt> option, livemode: bool, mandate: StripeId<Markers.Mandate> option, metadata: Map<string, string> option, nextAction: SetupIntentNextAction option, onBehalfOf: StripeId<Markers.Account> option, paymentMethod: StripeId<Markers.PaymentMethod> option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: SetupIntentPaymentMethodOptions option, paymentMethodTypes: string list, singleUseMandate: StripeId<Markers.Mandate> option, status: SetupIntentStatus, usage: string, ?attachToSelf: bool, ?customerAccount: string option, ?flowDirections: SetupIntentFlowDirections list option, ?managedPayments: SmorResourceManagedPayments option) =
         {
+            AllowedPaymentMethodTypes = allowedPaymentMethodTypes
             Application = application
             AutomaticPaymentMethods = automaticPaymentMethods
             CancellationReason = cancellationReason
@@ -20352,7 +20449,6 @@ type SetupIntent with
             SingleUseMandate = singleUseMandate
             Status = status
             Usage = usage
-            AllowedPaymentMethodTypes = allowedPaymentMethodTypes |> Option.flatten
             AttachToSelf = attachToSelf
             CustomerAccount = customerAccount |> Option.flatten
             FlowDirections = flowDirections |> Option.flatten
@@ -20734,8 +20830,14 @@ type PaymentMethodDetailsAlipay with
             BuyerId = buyerId
         }
 
+type PaymentFlowsPrivatePaymentMethodsAlmaDetailsResourceInstallments with
+    static member New(count: int) =
+        {
+            Count = count
+        }
+
 type PaymentMethodDetailsAlma with
-    static member New(transactionId: string option, ?installments: AlmaInstallments) =
+    static member New(transactionId: string option, ?installments: PaymentFlowsPrivatePaymentMethodsAlmaDetailsResourceInstallments) =
         {
             TransactionId = transactionId
             Installments = installments
@@ -20870,9 +20972,9 @@ type PaymentMethodDetailsCardWalletGooglePay with
         }
 
 type PaymentMethodDetailsCardWalletLink with
-    static member New(?paymentMethodDetailsCardWalletLink: string option) =
+    static member New(fundingSourceGroup: string option) =
         {
-            PaymentMethodDetailsCardWalletLink = paymentMethodDetailsCardWalletLink |> Option.flatten
+            FundingSourceGroup = fundingSourceGroup
         }
 
 type PaymentMethodDetailsCardWalletMasterpass with
@@ -21092,14 +21194,14 @@ type PaymentMethodDetailsKlarna with
             Reader = reader
         }
 
-type PaymentMethodDetailsKonbiniStore with
-    static member New(chain: PaymentMethodDetailsKonbiniStoreChain option) =
+type PaymentFlowsPrivatePaymentMethodsKonbiniDetailsResourceStore with
+    static member New(chain: PaymentFlowsPrivatePaymentMethodsKonbiniDetailsResourceStoreChain option) =
         {
             Chain = chain
         }
 
 type PaymentMethodDetailsKonbini with
-    static member New(store: PaymentMethodDetailsKonbiniStore option) =
+    static member New(store: PaymentFlowsPrivatePaymentMethodsKonbiniDetailsResourceStore option) =
         {
             Store = store
         }
@@ -21114,9 +21216,10 @@ type PaymentMethodDetailsKrCard with
         }
 
 type PaymentMethodDetailsLink with
-    static member New(country: IsoTypes.IsoCountryCode option) =
+    static member New(country: IsoTypes.IsoCountryCode option, ?fundingSourceGroup: string) =
         {
             Country = country
+            FundingSourceGroup = fundingSourceGroup
         }
 
 type PaymentMethodDetailsMbWay with
@@ -22469,10 +22572,11 @@ type BankConnectionsResourceBalanceRefresh with
         }
 
 type BankConnectionsResourceLinkAccountSessionFilters with
-    static member New(accountSubcategories: BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories list option, countries: string list option, ?requirePaymentMethodSupport: BankConnectionsResourceLinkAccountSessionFiltersRequirePaymentMethodSupport) =
+    static member New(accountSubcategories: BankConnectionsResourceLinkAccountSessionFiltersAccountSubcategories list option, countries: string list option, country: IsoTypes.IsoCountryCode option, ?requirePaymentMethodSupport: BankConnectionsResourceLinkAccountSessionFiltersRequirePaymentMethodSupport) =
         {
             AccountSubcategories = accountSubcategories
             Countries = countries
+            Country = country
             RequirePaymentMethodSupport = requirePaymentMethodSupport
         }
 
@@ -22843,6 +22947,26 @@ type BillingCreditGrantUpdated with
             Object = object
         }
 
+type FeedbackOptionsStatusTransitions with
+    static member New(deactivatedAt: DateTime option) =
+        {
+            DeactivatedAt = deactivatedAt
+        }
+
+type BillingFeedbackOption with
+    static member New(description: string, id: string, livemode: bool, status: BillingFeedbackOptionStatus, statusTransitions: FeedbackOptionsStatusTransitions) =
+        {
+            Description = description
+            Id = id
+            Livemode = livemode
+            Status = status
+            StatusTransitions = statusTransitions
+        }
+
+module BillingFeedbackOption =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "billing.feedback_option"
+
 type BillingMeterResourceAggregationSettings with
     static member New(formula: BillingMeterResourceAggregationSettingsFormula) =
         {
@@ -23195,6 +23319,19 @@ type ConnectEmbeddedPaymentDisputesConfig with
             Features = features
         }
 
+type ConnectEmbeddedPaymentMethodSettingsFeatures with
+    static member New(disableStripeUserAuthentication: bool) =
+        {
+            DisableStripeUserAuthentication = disableStripeUserAuthentication
+        }
+
+type ConnectEmbeddedPaymentMethodSettingsConfigClaim with
+    static member New(enabled: bool, features: ConnectEmbeddedPaymentMethodSettingsFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
 type ConnectEmbeddedPaymentsFeatures with
     static member New(capturePayments: bool, destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool, smartDisputesManagement: bool) =
         {
@@ -23230,7 +23367,7 @@ type ConnectEmbeddedPayoutsConfig with
         }
 
 type ConnectEmbeddedAccountSessionCreateComponents with
-    static member New(accountManagement: ConnectEmbeddedAccountConfigClaim, accountOnboarding: ConnectEmbeddedAccountConfigClaim, balanceReport: ConnectEmbeddedBaseConfigClaim, balances: ConnectEmbeddedPayoutsConfig, disputesList: ConnectEmbeddedDisputesListConfig, documents: ConnectEmbeddedBaseConfigClaim, financialAccount: ConnectEmbeddedFinancialAccountConfigClaim, financialAccountTransactions: ConnectEmbeddedFinancialAccountTransactionsConfigClaim, instantPayoutsPromotion: ConnectEmbeddedInstantPayoutsPromotionConfig, issuingCard: ConnectEmbeddedIssuingCardConfigClaim, issuingCardsList: ConnectEmbeddedIssuingCardsListConfigClaim, notificationBanner: ConnectEmbeddedAccountConfigClaim, paymentDetails: ConnectEmbeddedPaymentsConfigClaim, paymentDisputes: ConnectEmbeddedPaymentDisputesConfig, payments: ConnectEmbeddedPaymentsConfigClaim, payoutDetails: ConnectEmbeddedBaseConfigClaim, payoutReconciliationReport: ConnectEmbeddedBaseConfigClaim, payouts: ConnectEmbeddedPayoutsConfig, payoutsList: ConnectEmbeddedBaseConfigClaim, taxRegistrations: ConnectEmbeddedBaseConfigClaim, taxSettings: ConnectEmbeddedBaseConfigClaim) =
+    static member New(accountManagement: ConnectEmbeddedAccountConfigClaim, accountOnboarding: ConnectEmbeddedAccountConfigClaim, balanceReport: ConnectEmbeddedBaseConfigClaim, balances: ConnectEmbeddedPayoutsConfig, disputesList: ConnectEmbeddedDisputesListConfig, documents: ConnectEmbeddedBaseConfigClaim, financialAccount: ConnectEmbeddedFinancialAccountConfigClaim, financialAccountTransactions: ConnectEmbeddedFinancialAccountTransactionsConfigClaim, instantPayoutsPromotion: ConnectEmbeddedInstantPayoutsPromotionConfig, issuingCard: ConnectEmbeddedIssuingCardConfigClaim, issuingCardsList: ConnectEmbeddedIssuingCardsListConfigClaim, notificationBanner: ConnectEmbeddedAccountConfigClaim, paymentDetails: ConnectEmbeddedPaymentsConfigClaim, paymentDisputes: ConnectEmbeddedPaymentDisputesConfig, paymentMethodSettings: ConnectEmbeddedPaymentMethodSettingsConfigClaim, payments: ConnectEmbeddedPaymentsConfigClaim, payoutDetails: ConnectEmbeddedBaseConfigClaim, payoutReconciliationReport: ConnectEmbeddedBaseConfigClaim, payouts: ConnectEmbeddedPayoutsConfig, payoutsList: ConnectEmbeddedBaseConfigClaim, taxRegistrations: ConnectEmbeddedBaseConfigClaim, taxSettings: ConnectEmbeddedBaseConfigClaim) =
         {
             AccountManagement = accountManagement
             AccountOnboarding = accountOnboarding
@@ -23246,6 +23383,7 @@ type ConnectEmbeddedAccountSessionCreateComponents with
             NotificationBanner = notificationBanner
             PaymentDetails = paymentDetails
             PaymentDisputes = paymentDisputes
+            PaymentMethodSettings = paymentMethodSettings
             Payments = payments
             PayoutDetails = payoutDetails
             PayoutReconciliationReport = payoutReconciliationReport
@@ -23824,6 +23962,12 @@ type InvoiceThresholdReason with
             ItemReasons = itemReasons
         }
 
+type InvoicePaymentMethodOptionsBillie with
+    static member New(?invoicePaymentMethodOptionsBillie: string option) =
+        {
+            InvoicePaymentMethodOptionsBillie = invoicePaymentMethodOptionsBillie |> Option.flatten
+        }
+
 type InvoiceInstallmentsCard with
     static member New(enabled: bool option) =
         {
@@ -23845,7 +23989,7 @@ type InvoicePaymentMethodOptionsPix with
         }
 
 type InvoicesPaymentMethodOptions with
-    static member New(acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: InvoicePaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, payto: InvoicePaymentMethodOptionsPayto option, pix: InvoicePaymentMethodOptionsPix option, sepaDebit: InvoicePaymentMethodOptionsSepaDebit option, upi: InvoicePaymentMethodOptionsUpi option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option) =
+    static member New(acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: InvoicePaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, payto: InvoicePaymentMethodOptionsPayto option, pix: InvoicePaymentMethodOptionsPix option, sepaDebit: InvoicePaymentMethodOptionsSepaDebit option, upi: InvoicePaymentMethodOptionsUpi option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option, ?billie: InvoicePaymentMethodOptionsBillie option) =
         {
             AcssDebit = acssDebit
             Bancontact = bancontact
@@ -23857,6 +24001,7 @@ type InvoicesPaymentMethodOptions with
             SepaDebit = sepaDebit
             Upi = upi
             UsBankAccount = usBankAccount
+            Billie = billie |> Option.flatten
         }
 
 type InvoicesPaymentSettings with
@@ -24936,6 +25081,18 @@ type PaymentMethodDetailsPaymentRecordNaverPay with
             TransactionId = transactionId
         }
 
+type PaymentMethodDetailsPaymentRecordNzBankAccount with
+    static member New(accountHolderName: string option, bankCode: string, bankName: string, branchCode: string, last4: string, suffix: string option, ?expectedDebitDate: string) =
+        {
+            AccountHolderName = accountHolderName
+            BankCode = bankCode
+            BankName = bankName
+            BranchCode = branchCode
+            Last4 = last4
+            Suffix = suffix
+            ExpectedDebitDate = expectedDebitDate
+        }
+
 type PaymentMethodDetailsPaymentRecordOxxo with
     static member New(number: string option) =
         {
@@ -25459,9 +25616,10 @@ type PaymentPagesCheckoutSessionTotalDetails with
         }
 
 type PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictions with
-    static member New(?brandsBlocked: PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictionsBrandsBlocked list) =
+    static member New(?brandsBlocked: PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictionsBrandsBlocked list, ?fundingTypesBlocked: PaymentPagesPrivateCardPaymentMethodOptionsResourceRestrictionsFundingTypesBlocked list) =
         {
             BrandsBlocked = brandsBlocked
+            FundingTypesBlocked = fundingTypesBlocked
         }
 
 type PaymentsPrimitivesPaymentRecordsResourceAddress with
@@ -25532,10 +25690,9 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNet
         }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure with
-    static member New(authenticationFlow: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureAuthenticationFlow option, cryptogram: string option, electronicCommerceIndicator: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureElectronicCommerceIndicator option, exemptionIndicator: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureExemptionIndicator option, exemptionIndicatorApplied: bool option, result: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureResult option, resultReason: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureResultReason option, version: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureVersion option) =
+    static member New(authenticationFlow: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureAuthenticationFlow option, electronicCommerceIndicator: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureElectronicCommerceIndicator option, exemptionIndicator: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureExemptionIndicator option, exemptionIndicatorApplied: bool option, result: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureResult option, resultReason: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureResultReason option, version: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecureVersion option) =
         {
             AuthenticationFlow = authenticationFlow
-            Cryptogram = cryptogram
             ElectronicCommerceIndicator = electronicCommerceIndicator
             ExemptionIndicator = exemptionIndicator
             ExemptionIndicatorApplied = exemptionIndicatorApplied
@@ -25600,7 +25757,7 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails with
         }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodDetails with
-    static member New(billingDetails: PaymentsPrimitivesPaymentRecordsResourceBillingDetails option, paymentMethod: string option, ``type``: string, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsPaymentRecordAcssDebit, ?affirm: PaymentMethodDetailsPaymentRecordAffirm, ?afterpayClearpay: PaymentMethodDetailsPaymentRecordAfterpayClearpay, ?alipay: PaymentMethodDetailsPaymentRecordAlipay, ?alma: PaymentMethodDetailsPaymentRecordAlma, ?amazonPay: PaymentMethodDetailsPaymentRecordAmazonPay, ?auBecsDebit: PaymentMethodDetailsPaymentRecordAuBecsDebit, ?bacsDebit: PaymentMethodDetailsPaymentRecordBacsDebit, ?bancontact: PaymentMethodDetailsPaymentRecordBancontact, ?billie: PaymentMethodDetailsPaymentRecordBillie, ?bizum: PaymentMethodDetailsPaymentRecordBizum, ?blik: PaymentMethodDetailsPaymentRecordBlik, ?boleto: PaymentMethodDetailsPaymentRecordBoleto, ?card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails, ?cardPresent: PaymentMethodDetailsCardPresent, ?cashapp: PaymentMethodDetailsPaymentRecordCashapp, ?crypto: PaymentMethodDetailsCrypto, ?custom: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails, ?customerBalance: PaymentMethodDetailsCustomerBalance, ?eps: PaymentMethodDetailsPaymentRecordEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsPaymentRecordGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsPaymentRecordIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?kakaoPay: PaymentMethodDetailsPaymentRecordKakaoPay, ?klarna: PaymentMethodDetailsPaymentRecordKlarna, ?konbini: PaymentMethodDetailsPaymentRecordKonbini, ?krCard: PaymentMethodDetailsKrCard, ?link: PaymentMethodDetailsPaymentRecordLink, ?mbWay: PaymentMethodDetailsPaymentRecordMbWay, ?mobilepay: PaymentMethodDetailsPaymentRecordMobilepay, ?multibanco: PaymentMethodDetailsPaymentRecordMultibanco, ?naverPay: PaymentMethodDetailsPaymentRecordNaverPay, ?nzBankAccount: PaymentMethodDetailsNzBankAccount, ?oxxo: PaymentMethodDetailsPaymentRecordOxxo, ?p24: PaymentMethodDetailsPaymentRecordP24, ?payByBank: PaymentMethodDetailsPaymentRecordPayByBank, ?payco: PaymentMethodDetailsPaymentRecordPayco, ?paynow: PaymentMethodDetailsPaymentRecordPaynow, ?paypal: PaymentMethodDetailsPaypal, ?payto: PaymentMethodDetailsPaymentRecordPayto, ?pix: PaymentMethodDetailsPaymentRecordPix, ?promptpay: PaymentMethodDetailsPaymentRecordPromptpay, ?revolutPay: PaymentMethodDetailsPaymentRecordRevolutPay, ?samsungPay: PaymentMethodDetailsPaymentRecordSamsungPay, ?satispay: PaymentMethodDetailsPaymentRecordSatispay, ?scalapay: PaymentMethodDetailsPaymentRecordScalapay, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsPaymentRecordSepaDebit, ?sofort: PaymentMethodDetailsPaymentRecordSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?sunbit: PaymentMethodDetailsPaymentRecordSunbit, ?swish: PaymentMethodDetailsPaymentRecordSwish, ?twint: PaymentMethodDetailsPaymentRecordTwint, ?upi: PaymentMethodDetailsPaymentRecordUpi, ?usBankAccount: PaymentMethodDetailsPaymentRecordUsBankAccount, ?wechat: PaymentMethodDetailsWechat, ?wechatPay: PaymentMethodDetailsPaymentRecordWechatPay, ?zip: PaymentMethodDetailsPaymentRecordZip) =
+    static member New(billingDetails: PaymentsPrimitivesPaymentRecordsResourceBillingDetails option, paymentMethod: string option, ``type``: string, ?achCreditTransfer: PaymentMethodDetailsAchCreditTransfer, ?achDebit: PaymentMethodDetailsAchDebit, ?acssDebit: PaymentMethodDetailsPaymentRecordAcssDebit, ?affirm: PaymentMethodDetailsPaymentRecordAffirm, ?afterpayClearpay: PaymentMethodDetailsPaymentRecordAfterpayClearpay, ?alipay: PaymentMethodDetailsPaymentRecordAlipay, ?alma: PaymentMethodDetailsPaymentRecordAlma, ?amazonPay: PaymentMethodDetailsPaymentRecordAmazonPay, ?auBecsDebit: PaymentMethodDetailsPaymentRecordAuBecsDebit, ?bacsDebit: PaymentMethodDetailsPaymentRecordBacsDebit, ?bancontact: PaymentMethodDetailsPaymentRecordBancontact, ?billie: PaymentMethodDetailsPaymentRecordBillie, ?bizum: PaymentMethodDetailsPaymentRecordBizum, ?blik: PaymentMethodDetailsPaymentRecordBlik, ?boleto: PaymentMethodDetailsPaymentRecordBoleto, ?card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails, ?cardPresent: PaymentMethodDetailsCardPresent, ?cashapp: PaymentMethodDetailsPaymentRecordCashapp, ?crypto: PaymentMethodDetailsCrypto, ?custom: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails, ?customerBalance: PaymentMethodDetailsCustomerBalance, ?eps: PaymentMethodDetailsPaymentRecordEps, ?fpx: PaymentMethodDetailsFpx, ?giropay: PaymentMethodDetailsPaymentRecordGiropay, ?grabpay: PaymentMethodDetailsGrabpay, ?ideal: PaymentMethodDetailsPaymentRecordIdeal, ?interacPresent: PaymentMethodDetailsInteracPresent, ?kakaoPay: PaymentMethodDetailsPaymentRecordKakaoPay, ?klarna: PaymentMethodDetailsPaymentRecordKlarna, ?konbini: PaymentMethodDetailsPaymentRecordKonbini, ?krCard: PaymentMethodDetailsKrCard, ?link: PaymentMethodDetailsPaymentRecordLink, ?mbWay: PaymentMethodDetailsPaymentRecordMbWay, ?mobilepay: PaymentMethodDetailsPaymentRecordMobilepay, ?multibanco: PaymentMethodDetailsPaymentRecordMultibanco, ?naverPay: PaymentMethodDetailsPaymentRecordNaverPay, ?nzBankAccount: PaymentMethodDetailsPaymentRecordNzBankAccount, ?oxxo: PaymentMethodDetailsPaymentRecordOxxo, ?p24: PaymentMethodDetailsPaymentRecordP24, ?payByBank: PaymentMethodDetailsPaymentRecordPayByBank, ?payco: PaymentMethodDetailsPaymentRecordPayco, ?paynow: PaymentMethodDetailsPaymentRecordPaynow, ?paypal: PaymentMethodDetailsPaypal, ?payto: PaymentMethodDetailsPaymentRecordPayto, ?pix: PaymentMethodDetailsPaymentRecordPix, ?promptpay: PaymentMethodDetailsPaymentRecordPromptpay, ?revolutPay: PaymentMethodDetailsPaymentRecordRevolutPay, ?samsungPay: PaymentMethodDetailsPaymentRecordSamsungPay, ?satispay: PaymentMethodDetailsPaymentRecordSatispay, ?scalapay: PaymentMethodDetailsPaymentRecordScalapay, ?sepaCreditTransfer: PaymentMethodDetailsSepaCreditTransfer, ?sepaDebit: PaymentMethodDetailsPaymentRecordSepaDebit, ?sofort: PaymentMethodDetailsPaymentRecordSofort, ?stripeAccount: PaymentMethodDetailsStripeAccount, ?sunbit: PaymentMethodDetailsPaymentRecordSunbit, ?swish: PaymentMethodDetailsPaymentRecordSwish, ?twint: PaymentMethodDetailsPaymentRecordTwint, ?upi: PaymentMethodDetailsPaymentRecordUpi, ?usBankAccount: PaymentMethodDetailsPaymentRecordUsBankAccount, ?wechat: PaymentMethodDetailsWechat, ?wechatPay: PaymentMethodDetailsPaymentRecordWechatPay, ?zip: PaymentMethodDetailsPaymentRecordZip) =
         {
             BillingDetails = billingDetails
             PaymentMethod = paymentMethod

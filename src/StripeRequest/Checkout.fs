@@ -6,7 +6,7 @@ open Stripe.Checkout
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module CheckoutSessions =
 
     type ListOptions =
@@ -343,7 +343,7 @@ module CheckoutSessions =
 
     type Create'CustomFieldsDropdown =
         {
-            /// The value that pre-fills the field on the payment page.Must match a `value` in the `options` array.
+            /// The value that pre-fills the field on the payment page. Must match a `value` in the `options` array.
             [<Config.Form>]
             DefaultValue: string option
             /// The options available for the customer to select. Up to 200 options allowed.
@@ -1187,21 +1187,12 @@ module CheckoutSessions =
             /// Email address that the receipt for the resulting payment will be sent to. If `receipt_email` is specified for a payment in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
             [<Config.Form>]
             ReceiptEmail: string option
-            /// Indicates that you intend to [make future payments](https://docs.stripe.com/payments/payment-intents#future-usage) with the payment
-            /// method collected by this Checkout Session.
-            /// When setting this to `on_session`, Checkout will show a notice to the
-            /// customer that their payment details will be saved.
-            /// When setting this to `off_session`, Checkout will show a notice to the
-            /// customer that their payment details will be saved and used for future
-            /// payments.
-            /// If a Customer has been provided or Checkout creates a new Customer,
-            /// Checkout will attach the payment method to the Customer.
-            /// If Checkout does not create a Customer, the payment method is not attached
-            /// to a Customer. To reuse the payment method, you can retrieve it from the
-            /// Checkout Session's PaymentIntent.
-            /// When processing card payments, Checkout also uses `setup_future_usage`
-            /// to dynamically optimize your payment flow and comply with regional
-            /// legislation and network rules, such as SCA.
+            /// Indicates that you intend to [make future payments](https://docs.stripe.com/payments/payment-intents#future-usage) with the payment method collected by this Checkout Session.
+            /// When setting this to `on_session`, Checkout will show a notice to the customer that their payment details will be saved.
+            /// When setting this to `off_session`, Checkout will show a notice to the customer that their payment details will be saved and used for future payments.
+            /// If a Customer has been provided or Checkout creates a new Customer, Checkout will attach the payment method to the Customer.
+            /// If Checkout does not create a Customer, the payment method is not attached to a Customer. To reuse the payment method, you can retrieve it from the Checkout Session's PaymentIntent.
+            /// When processing card payments, Checkout also uses `setup_future_usage` to dynamically optimize your payment flow and comply with regional legislation and network rules, such as SCA.
             [<Config.Form>]
             SetupFutureUsage: Create'PaymentIntentDataSetupFutureUsage option
             /// Shipping information for this payment.
@@ -1624,17 +1615,26 @@ module CheckoutSessions =
         | Mastercard
         | Visa
 
+    type Create'PaymentMethodOptionsCardRestrictionsFundingTypesBlocked =
+        | Credit
+        | Debit
+        | Prepaid
+
     type Create'PaymentMethodOptionsCardRestrictions =
         {
             /// The card brands to block. If a customer enters or selects a card belonging to a blocked brand, they can't complete the payment.
             [<Config.Form>]
             BrandsBlocked: Create'PaymentMethodOptionsCardRestrictionsBrandsBlocked list option
+            /// Card funding types to block for this Checkout Session. Supported values are `credit`, `debit`, and `prepaid`.
+            [<Config.Form>]
+            FundingTypesBlocked: Create'PaymentMethodOptionsCardRestrictionsFundingTypesBlocked list option
         }
 
     type Create'PaymentMethodOptionsCardRestrictions with
-        static member New(?brandsBlocked: Create'PaymentMethodOptionsCardRestrictionsBrandsBlocked list) =
+        static member New(?brandsBlocked: Create'PaymentMethodOptionsCardRestrictionsBrandsBlocked list, ?fundingTypesBlocked: Create'PaymentMethodOptionsCardRestrictionsFundingTypesBlocked list) =
             {
                 BrandsBlocked = brandsBlocked
+                FundingTypesBlocked = fundingTypesBlocked
             }
 
     type Create'PaymentMethodOptionsCardSetupFutureUsage =
@@ -3119,7 +3119,7 @@ module CheckoutSessions =
         {
             /// Determines which entity is allowed to update the shipping details.
             /// Default is `client_only`. Stripe Checkout client will automatically update the shipping details. If set to `server_only`, only your server is allowed to update the shipping details.
-            /// When set to `server_only`, you must add the onShippingDetailsChange event handler when initializing the Stripe Checkout client and manually update the shipping details from your server using the Stripe API.
+            /// This parameter is only supported when `ui_mode=elements`.
             [<Config.Form>]
             UpdateShippingDetails: Create'PermissionsUpdateShippingDetails option
         }
