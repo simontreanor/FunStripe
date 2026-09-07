@@ -8,8 +8,24 @@ Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the
 
 ## [2.4.0] - 2026-09-07
 
+### Upgrade notes
+- Three payment-method-details types were renamed to track renamed schema titles in Stripe's spec: `AlmaInstallments` → `PaymentFlowsPrivatePaymentMethodsAlmaDetailsResourceInstallments`, `PaymentMethodDetailsKonbiniStore` → `PaymentFlowsPrivatePaymentMethodsKonbiniDetailsResourceStore`, `PaymentMethodDetailsKonbiniStoreChain` → `PaymentFlowsPrivatePaymentMethodsKonbiniDetailsResourceStoreChain`. Field names and shapes are unchanged, so only code that names these types explicitly needs updating
+
 ### Changed
-- Regenerated against Stripe OpenAPI spec `2026-08-26.dahlia` (was `2026-07-29.dahlia`)
+- Regenerated against Stripe OpenAPI spec `2026-08-26.dahlia` (was `2026-07-29.dahlia`). Highlights:
+  - **Billing feedback options**: new `BillingFeedbackOption` resource (`/v1/billing/feedback_options` — create, retrieve, update, list, and `deactivate`) with `status` and `status_transitions`. Portal cancellation-reason configuration takes a list of `feedback_options`, and subscription `cancellation_details` takes a `feedback_option` on cancel and update
+  - **Billing portal**: new `customer_update` flow type (`PortalFlowsFlowCustomerUpdate`)
+  - **Customer sessions**: `active_entitlements` and `customer_portal` components (the latter with `disable_stripe_user_authentication`)
+  - **Tax registrations**: `igic` country option (Canary Islands IGIC) with `place_of_supply_scheme` (`standard` / `inbound_goods`), available across the EU country options
+  - **Checkout**: Financial Connections payment method options (`filters.account_subcategories`, `permissions`, `prefetch`, `return_url`), and card `restrictions.funding_types_blocked` (`credit` / `debit` / `prepaid`)
+  - **Billie**: invoice and subscription payment method options (`InvoicePaymentMethodOptionsBillie`, `SubscriptionPaymentMethodOptionsBillie`)
+  - **Payment links**: `application_fee_amount`, `application_fee_percent`, `on_behalf_of` and `transfer_data` on update
+  - **Connect embedded components**: new `payment_method_settings` component (`ConnectEmbeddedPaymentMethodSettingsConfigClaim`)
+  - `Invoiceitem`: `frozen_fields` (`discounts`, `pricing`, `quantity`); `ConfirmationToken`: `metadata`
+  - `Terminal` location addresses now use a dedicated `AddressApiResourceTerminal` type
+  - Payment-record NZ bank account details gained their own `PaymentMethodDetailsPaymentRecordNzBankAccount` type (account holder name, bank/branch code, bank name, last4, suffix)
+  - `touch_n_go` added to the FPX bank enums on `PaymentIntent` and `SetupIntent`
+  - `2026-08-26.dahlia` added to the webhook endpoint API version enum
 
 ## [2.3.0] - 2026-08-03
 
