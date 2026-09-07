@@ -4,7 +4,10 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+/// Ephemeral keys give the SDKs (like Stripe's mobile SDKs and Issuing Elements) temporary, scoped access to a specific
+/// resource, such as a Customer, Issuing Card, or Identity VerificationSession, without exposing your secret API key.
+/// Related guides: [Using Issuing Elements](https://docs.stripe.com/issuing/elements).
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 type EphemeralKey =
     {
         /// Time at which the object was created. Measured in seconds since the Unix epoch.

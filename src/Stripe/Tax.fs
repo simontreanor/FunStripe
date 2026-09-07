@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted =
     {
         /// The [Tax Transaction](https://docs.stripe.com/api/tax/transaction/object)
@@ -789,17 +789,36 @@ type TaxProductRegistrationsResourceCountryOptionsEuropeType =
     | OssUnion
     | Standard
 
+[<Struct>]
+type TaxProductRegistrationsResourceCountryOptionsIgicPlaceOfSupplyScheme =
+    | InboundGoods
+    | Standard
+
+type TaxProductRegistrationsResourceCountryOptionsIgic =
+    {
+        /// Place of supply scheme used in an IGIC registration.
+        PlaceOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsIgicPlaceOfSupplyScheme
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsIgic with
+    static member New(placeOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsIgicPlaceOfSupplyScheme) =
+        {
+            PlaceOfSupplyScheme = placeOfSupplyScheme
+        }
+
 type TaxProductRegistrationsResourceCountryOptionsEurope =
     {
+        Igic: TaxProductRegistrationsResourceCountryOptionsIgic option
         Standard: TaxProductRegistrationsResourceCountryOptionsEuStandard option
         /// Type of registration in an EU country.
         Type: TaxProductRegistrationsResourceCountryOptionsEuropeType
     }
 
 type TaxProductRegistrationsResourceCountryOptionsEurope with
-    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsEuropeType, ?standard: TaxProductRegistrationsResourceCountryOptionsEuStandard) =
+    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsEuropeType, ?igic: TaxProductRegistrationsResourceCountryOptionsIgic, ?standard: TaxProductRegistrationsResourceCountryOptionsEuStandard) =
         {
             Type = ``type``
+            Igic = igic
             Standard = standard
         }
 

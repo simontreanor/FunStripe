@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Application
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 type BillingPortalConfigurationApplication'AnyOf =
     | String of string
     | Application of Application
@@ -104,14 +104,17 @@ type PortalSubscriptionCancellationReason =
     {
         /// Whether the feature is enabled.
         Enabled: bool
+        /// The IDs of custom feedback options configured for this cancellation reason.
+        FeedbackOptions: StripeId<Markers.BillingFeedbackOption> list option
         /// Which cancellation reasons will be given as options to the customer.
         Options: PortalSubscriptionCancellationReasonOptions list
     }
 
 type PortalSubscriptionCancellationReason with
-    static member New(enabled: bool, options: PortalSubscriptionCancellationReasonOptions list) =
+    static member New(enabled: bool, feedbackOptions: StripeId<Markers.BillingFeedbackOption> list option, options: PortalSubscriptionCancellationReasonOptions list) =
         {
             Enabled = enabled
+            FeedbackOptions = feedbackOptions
             Options = options
         }
 
@@ -448,6 +451,15 @@ type PortalFlowsFlowAfterCompletion with
             Type = ``type``
         }
 
+type PortalFlowsFlowCustomerUpdate =
+    { PortalFlowsFlowCustomerUpdate: string option }
+
+type PortalFlowsFlowCustomerUpdate with
+    static member New(?portalFlowsFlowCustomerUpdate: string option) =
+        {
+            PortalFlowsFlowCustomerUpdate = portalFlowsFlowCustomerUpdate |> Option.flatten
+        }
+
 type PortalFlowsCouponOffer =
     {
         /// The ID of the coupon to be offered.
@@ -556,6 +568,7 @@ type PortalFlowsFlowSubscriptionUpdateConfirm with
 
 [<Struct>]
 type PortalFlowsFlowType =
+    | CustomerUpdate
     | PaymentMethodUpdate
     | SubscriptionCancel
     | SubscriptionUpdate
@@ -564,6 +577,8 @@ type PortalFlowsFlowType =
 type PortalFlowsFlow =
     {
         AfterCompletion: PortalFlowsFlowAfterCompletion
+        /// Configuration when `flow.type=customer_update`.
+        CustomerUpdate: PortalFlowsFlowCustomerUpdate option
         /// Configuration when `flow.type=subscription_cancel`.
         SubscriptionCancel: PortalFlowsFlowSubscriptionCancel option
         /// Configuration when `flow.type=subscription_update`.
@@ -575,9 +590,10 @@ type PortalFlowsFlow =
     }
 
 type PortalFlowsFlow with
-    static member New(afterCompletion: PortalFlowsFlowAfterCompletion, subscriptionCancel: PortalFlowsFlowSubscriptionCancel option, subscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option, subscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option, ``type``: PortalFlowsFlowType) =
+    static member New(afterCompletion: PortalFlowsFlowAfterCompletion, customerUpdate: PortalFlowsFlowCustomerUpdate option, subscriptionCancel: PortalFlowsFlowSubscriptionCancel option, subscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option, subscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option, ``type``: PortalFlowsFlowType) =
         {
             AfterCompletion = afterCompletion
+            CustomerUpdate = customerUpdate
             SubscriptionCancel = subscriptionCancel
             SubscriptionUpdate = subscriptionUpdate
             SubscriptionUpdateConfirm = subscriptionUpdateConfirm

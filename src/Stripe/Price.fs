@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Product
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 type CurrencyOptionTaxBehavior =
     | Exclusive
     | Inclusive

@@ -3,10 +3,38 @@ namespace Stripe.Terminal
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+type AddressApiResourceTerminal =
+    {
+        /// City, district, suburb, town, or village.
+        City: string option
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        /// Address line 1, such as the street, PO Box, or company name.
+        [<JsonPropertyName("line1")>]
+        Line1: string option
+        /// Address line 2, such as the apartment, suite, unit, or building.
+        [<JsonPropertyName("line2")>]
+        Line2: string option
+        /// ZIP or postal code.
+        PostalCode: string option
+        /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        State: string option
+    }
+
+type AddressApiResourceTerminal with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+        {
+            City = city
+            Country = country
+            Line1 = line1
+            Line2 = line2
+            PostalCode = postalCode
+            State = state
+        }
+
 type DeletedTerminalConfiguration =
     {
         /// Always true for a deleted object
@@ -381,7 +409,7 @@ module TerminalConnectionToken =
 /// Related guide: [Fleet management](https://docs.stripe.com/terminal/fleet/locations)
 type TerminalLocation =
     {
-        Address: Address
+        Address: AddressApiResourceTerminal
         AddressKana: LegalEntityJapanAddress option
         AddressKanji: LegalEntityJapanAddress option
         /// The ID of a configuration that will be used to customize all readers in this location.
@@ -403,7 +431,7 @@ type TerminalLocation =
     }
 
 type TerminalLocation with
-    static member New(address: Address, displayName: string, id: string, livemode: bool, metadata: Map<string, string>, ?addressKana: LegalEntityJapanAddress, ?addressKanji: LegalEntityJapanAddress, ?configurationOverrides: string, ?displayNameKana: string, ?displayNameKanji: string, ?phone: string) =
+    static member New(address: AddressApiResourceTerminal, displayName: string, id: string, livemode: bool, metadata: Map<string, string>, ?addressKana: LegalEntityJapanAddress, ?addressKanji: LegalEntityJapanAddress, ?configurationOverrides: string, ?displayNameKana: string, ?displayNameKanji: string, ?phone: string) =
         {
             Address = address
             DisplayName = displayName

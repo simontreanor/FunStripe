@@ -13,7 +13,7 @@ open Stripe.SubscriptionItem
 open Stripe.SubscriptionSchedule
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module Account =
 
     type RetrieveOptions =
@@ -629,6 +629,36 @@ module AccountSessions =
                 Features = features
             }
 
+    type Create'ComponentsPaymentMethodSettingsFeatures =
+        {
+            /// Whether Stripe user authentication is disabled. This value can only be `true` for accounts where `controller.requirement_collection` is `application` for the account. This is `false` by default.
+            [<Config.Form>]
+            DisableStripeUserAuthentication: bool option
+        }
+
+    type Create'ComponentsPaymentMethodSettingsFeatures with
+        static member New(?disableStripeUserAuthentication: bool) =
+            {
+                DisableStripeUserAuthentication = disableStripeUserAuthentication
+            }
+
+    type Create'ComponentsPaymentMethodSettings =
+        {
+            /// Whether the embedded component is enabled.
+            [<Config.Form>]
+            Enabled: bool option
+            /// The list of features enabled in the embedded component.
+            [<Config.Form>]
+            Features: Create'ComponentsPaymentMethodSettingsFeatures option
+        }
+
+    type Create'ComponentsPaymentMethodSettings with
+        static member New(?enabled: bool, ?features: Create'ComponentsPaymentMethodSettingsFeatures) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     type Create'ComponentsPaymentsFeatures =
         {
             /// Whether to allow capturing and cancelling payment intents. This is `true` by default.
@@ -850,6 +880,9 @@ module AccountSessions =
             /// Configuration for the [payment disputes](/connect/supported-embedded-components/payment-disputes/) embedded component.
             [<Config.Form>]
             PaymentDisputes: Create'ComponentsPaymentDisputes option
+            /// Configuration for the [payment method settings](/connect/supported-embedded-components/payment-method-settings/) embedded component.
+            [<Config.Form>]
+            PaymentMethodSettings: Create'ComponentsPaymentMethodSettings option
             /// Configuration for the [payments](/connect/supported-embedded-components/payments/) embedded component.
             [<Config.Form>]
             Payments: Create'ComponentsPayments option
@@ -874,7 +907,7 @@ module AccountSessions =
         }
 
     type Create'Components with
-        static member New(?accountManagement: Create'ComponentsAccountManagement, ?accountOnboarding: Create'ComponentsAccountOnboarding, ?balanceReport: Create'ComponentsBalanceReport, ?balances: Create'ComponentsBalances, ?disputesList: Create'ComponentsDisputesList, ?documents: Create'ComponentsDocuments, ?financialAccount: Create'ComponentsFinancialAccount, ?financialAccountTransactions: Create'ComponentsFinancialAccountTransactions, ?instantPayoutsPromotion: Create'ComponentsInstantPayoutsPromotion, ?issuingCard: Create'ComponentsIssuingCard, ?issuingCardsList: Create'ComponentsIssuingCardsList, ?notificationBanner: Create'ComponentsNotificationBanner, ?paymentDetails: Create'ComponentsPaymentDetails, ?paymentDisputes: Create'ComponentsPaymentDisputes, ?payments: Create'ComponentsPayments, ?payoutDetails: Create'ComponentsPayoutDetails, ?payoutReconciliationReport: Create'ComponentsPayoutReconciliationReport, ?payouts: Create'ComponentsPayouts, ?payoutsList: Create'ComponentsPayoutsList, ?taxRegistrations: Create'ComponentsTaxRegistrations, ?taxSettings: Create'ComponentsTaxSettings) =
+        static member New(?accountManagement: Create'ComponentsAccountManagement, ?accountOnboarding: Create'ComponentsAccountOnboarding, ?balanceReport: Create'ComponentsBalanceReport, ?balances: Create'ComponentsBalances, ?disputesList: Create'ComponentsDisputesList, ?documents: Create'ComponentsDocuments, ?financialAccount: Create'ComponentsFinancialAccount, ?financialAccountTransactions: Create'ComponentsFinancialAccountTransactions, ?instantPayoutsPromotion: Create'ComponentsInstantPayoutsPromotion, ?issuingCard: Create'ComponentsIssuingCard, ?issuingCardsList: Create'ComponentsIssuingCardsList, ?notificationBanner: Create'ComponentsNotificationBanner, ?paymentDetails: Create'ComponentsPaymentDetails, ?paymentDisputes: Create'ComponentsPaymentDisputes, ?paymentMethodSettings: Create'ComponentsPaymentMethodSettings, ?payments: Create'ComponentsPayments, ?payoutDetails: Create'ComponentsPayoutDetails, ?payoutReconciliationReport: Create'ComponentsPayoutReconciliationReport, ?payouts: Create'ComponentsPayouts, ?payoutsList: Create'ComponentsPayoutsList, ?taxRegistrations: Create'ComponentsTaxRegistrations, ?taxSettings: Create'ComponentsTaxSettings) =
             {
                 AccountManagement = accountManagement
                 AccountOnboarding = accountOnboarding
@@ -890,6 +923,7 @@ module AccountSessions =
                 NotificationBanner = notificationBanner
                 PaymentDetails = paymentDetails
                 PaymentDisputes = paymentDisputes
+                PaymentMethodSettings = paymentMethodSettings
                 Payments = payments
                 PayoutDetails = payoutDetails
                 PayoutReconciliationReport = payoutReconciliationReport
@@ -1521,6 +1555,133 @@ module BillingCreditGrantsVoid =
         $"/v1/billing/credit_grants/{options.Id}/void"
         |> RestApi.postAsync<_, BillingCreditGrant> settings (Map.empty) options
 
+module BillingFeedbackOptions =
+
+    type ListOptions =
+        {
+            /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+            [<Config.Query>]
+            EndingBefore: string option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+            [<Config.Query>]
+            Limit: int option
+            /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+            [<Config.Query>]
+            StartingAfter: string option
+            /// Filter results to only include feedback options with the given status.
+            [<Config.Query>]
+            Status: string option
+        }
+
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
+    type CreateOptions =
+        {
+            [<Config.Form>]
+            Description: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+        }
+
+    type CreateOptions with
+        static member New(description: string, ?expand: string list) =
+            {
+                Description = description
+                Expand = expand
+            }
+
+    type RetrieveOptions =
+        {
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            [<Config.Path>]
+            Id: string
+        }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
+    type UpdateOptions =
+        {
+            [<Config.Path>]
+            Id: string
+            [<Config.Form>]
+            Description: string option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+        }
+
+    type UpdateOptions with
+        static member New(id: string, ?description: string, ?expand: string list) =
+            {
+                Id = id
+                Description = description
+                Expand = expand
+            }
+
+    ///<p>An API method for listing the feedback options model</p>
+    let List settings (options: ListOptions) =
+        let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
+        $"/v1/billing/feedback_options"
+        |> RestApi.getAsync<StripeList<BillingFeedbackOption>> settings qs
+
+    ///<p>Creates a new feedback option.</p>
+    let Create settings (options: CreateOptions) =
+        $"/v1/billing/feedback_options"
+        |> RestApi.postAsync<_, BillingFeedbackOption> settings (Map.empty) options
+
+    ///<p>Retrieves a feedback options object given an ID.</p>
+    let Retrieve settings (options: RetrieveOptions) =
+        let qs = [("expand", options.Expand |> box)] |> Map.ofList
+        $"/v1/billing/feedback_options/{options.Id}"
+        |> RestApi.getAsync<BillingFeedbackOption> settings qs
+
+    ///<p>Updates the description of an existing feedback option.</p>
+    let Update settings (options: UpdateOptions) =
+        $"/v1/billing/feedback_options/{options.Id}"
+        |> RestApi.postAsync<_, BillingFeedbackOption> settings (Map.empty) options
+
+module BillingFeedbackOptionsDeactivate =
+
+    type DeactivateOptions =
+        {
+            [<Config.Path>]
+            Id: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+        }
+
+    type DeactivateOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
+    ///<p>Deactivates a feedback option. Deactivated feedback options cannot be used in portal configurations.</p>
+    let Deactivate settings (options: DeactivateOptions) =
+        $"/v1/billing/feedback_options/{options.Id}/deactivate"
+        |> RestApi.postAsync<_, BillingFeedbackOption> settings (Map.empty) options
+
 module BillingMeterEventAdjustments =
 
     type Create'Cancel =
@@ -1885,6 +2046,19 @@ module BillingMetersReactivate =
 
 module CustomerSessions =
 
+    type Create'ComponentsActiveEntitlements =
+        {
+            /// Whether the active entitlements is enabled.
+            [<Config.Form>]
+            Enabled: bool option
+        }
+
+    type Create'ComponentsActiveEntitlements with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
+
     type Create'ComponentsBuyButton =
         {
             /// Whether the buy button is enabled.
@@ -1893,6 +2067,19 @@ module CustomerSessions =
         }
 
     type Create'ComponentsBuyButton with
+        static member New(?enabled: bool) =
+            {
+                Enabled = enabled
+            }
+
+    type Create'ComponentsCustomerPortal =
+        {
+            /// Whether the customer portal is enabled.
+            [<Config.Form>]
+            Enabled: bool option
+        }
+
+    type Create'ComponentsCustomerPortal with
         static member New(?enabled: bool) =
             {
                 Enabled = enabled
@@ -2109,9 +2296,15 @@ module CustomerSessions =
 
     type Create'Components =
         {
+            /// Configuration for active entitlements.
+            [<Config.Form>]
+            ActiveEntitlements: Create'ComponentsActiveEntitlements option
             /// Configuration for buy button.
             [<Config.Form>]
             BuyButton: Create'ComponentsBuyButton option
+            /// Configuration for customer portal.
+            [<Config.Form>]
+            CustomerPortal: Create'ComponentsCustomerPortal option
             /// Configuration for the customer sheet.
             [<Config.Form>]
             CustomerSheet: Create'ComponentsCustomerSheet option
@@ -2127,9 +2320,11 @@ module CustomerSessions =
         }
 
     type Create'Components with
-        static member New(?buyButton: Create'ComponentsBuyButton, ?customerSheet: Create'ComponentsCustomerSheet, ?mobilePaymentElement: Create'ComponentsMobilePaymentElement, ?paymentElement: Create'ComponentsPaymentElement, ?pricingTable: Create'ComponentsPricingTable) =
+        static member New(?activeEntitlements: Create'ComponentsActiveEntitlements, ?buyButton: Create'ComponentsBuyButton, ?customerPortal: Create'ComponentsCustomerPortal, ?customerSheet: Create'ComponentsCustomerSheet, ?mobilePaymentElement: Create'ComponentsMobilePaymentElement, ?paymentElement: Create'ComponentsPaymentElement, ?pricingTable: Create'ComponentsPricingTable) =
             {
+                ActiveEntitlements = activeEntitlements
                 BuyButton = buyButton
+                CustomerPortal = customerPortal
                 CustomerSheet = customerSheet
                 MobilePaymentElement = mobilePaymentElement
                 PaymentElement = paymentElement

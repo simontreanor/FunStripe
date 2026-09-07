@@ -1,6 +1,6 @@
 namespace FunStripe
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 [<AutoOpen>]
 module StripeIds =
 
@@ -26,7 +26,7 @@ module StripeIds =
             static member New (data: 'T list, hasMore: bool, url: string) =
                 { Data = data; HasMore = hasMore; Url = url }
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module Markers =
 
     // Phantom marker types — one per resource that appears as a single-target
@@ -39,6 +39,7 @@ module Markers =
     type BalanceTransactionSource = class end
     type BillingCreditBalanceTransaction = class end
     type BillingCreditGrant = class end
+    type BillingFeedbackOption = class end
     type BillingMeter = class end
     type BillingPortalConfiguration = class end
     type Charge = class end

@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 type ClimateOrderCancellationReason =
     | Expired
     | ProductUnavailable
@@ -146,7 +146,7 @@ type ClimateOrder =
         DeliveredAt: DateTime option
         /// Details about the delivery of carbon removal for this order.
         DeliveryDetails: ClimateRemovalsOrderDeliveries list
-        /// The year this order is expected to be delivered.
+        /// The year this order is expected to be delivered. If the year is in the past, the order is a spot purchase and will be delivered within 30 days of purchase.
         ExpectedDeliveryYear: int
         /// Unique identifier for the object.
         Id: string
@@ -247,7 +247,7 @@ type ClimateProduct =
         Created: DateTime
         /// Current prices for a metric ton of carbon removal in a currency's smallest unit.
         CurrentPricesPerMetricTon: Map<string, string list>
-        /// The year in which the carbon removal is expected to be delivered.
+        /// The year in which the carbon removal is expected to be delivered. If the year is in the past, this represents spot inventory with guaranteed delivery.
         DeliveryYear: int option
         /// Unique identifier for the object. For convenience, Climate product IDs are human-readable strings
         /// that start with `climsku_`. See [carbon removal inventory](https://stripe.com/docs/climate/orders/carbon-removal-inventory)

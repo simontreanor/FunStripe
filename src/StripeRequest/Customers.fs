@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.TaxId
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module Customers =
 
     type ListOptions =

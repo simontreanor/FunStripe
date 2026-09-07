@@ -6,7 +6,7 @@ open System
 open Stripe.Mandate
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 type CheckoutAcssDebitMandateOptionsDefaultFor =
     | Invoice
     | Subscription
@@ -458,6 +458,56 @@ module CheckoutEpsPaymentMethodOptions =
     ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
     ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
     let setupFutureUsage = "none"
+
+[<Struct>]
+type CheckoutFinancialConnectionsPaymentMethodOptionsFiltersAccountSubcategories =
+    | Checking
+    | Savings
+
+type CheckoutFinancialConnectionsPaymentMethodOptionsFilters =
+    {
+        /// The account subcategories to use to filter for possible accounts to link. Valid subcategories are `checking` and `savings`.
+        AccountSubcategories: CheckoutFinancialConnectionsPaymentMethodOptionsFiltersAccountSubcategories list option
+    }
+
+type CheckoutFinancialConnectionsPaymentMethodOptionsFilters with
+    static member New(?accountSubcategories: CheckoutFinancialConnectionsPaymentMethodOptionsFiltersAccountSubcategories list) =
+        {
+            AccountSubcategories = accountSubcategories
+        }
+
+[<Struct>]
+type CheckoutFinancialConnectionsPaymentMethodOptionsPermissions =
+    | Balances
+    | Ownership
+    | PaymentMethod
+    | Transactions
+
+[<Struct>]
+type CheckoutFinancialConnectionsPaymentMethodOptionsPrefetch =
+    | Balances
+    | Ownership
+    | Transactions
+
+type CheckoutFinancialConnectionsPaymentMethodOptions =
+    {
+        Filters: CheckoutFinancialConnectionsPaymentMethodOptionsFilters option
+        /// The list of permissions to request. The `payment_method` permission must be included.
+        Permissions: CheckoutFinancialConnectionsPaymentMethodOptionsPermissions list option
+        /// Data features requested to be retrieved upon account creation.
+        Prefetch: CheckoutFinancialConnectionsPaymentMethodOptionsPrefetch list option
+        /// For webview integrations only. Upon completing OAuth login in the native browser, the user will be redirected to this URL to return to your app.
+        ReturnUrl: string option
+    }
+
+type CheckoutFinancialConnectionsPaymentMethodOptions with
+    static member New(prefetch: CheckoutFinancialConnectionsPaymentMethodOptionsPrefetch list option, ?filters: CheckoutFinancialConnectionsPaymentMethodOptionsFilters, ?permissions: CheckoutFinancialConnectionsPaymentMethodOptionsPermissions list, ?returnUrl: string) =
+        {
+            Prefetch = prefetch
+            Filters = filters
+            Permissions = permissions
+            ReturnUrl = returnUrl
+        }
 
 type CheckoutFpxPaymentMethodOptions () = 
     ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -1165,7 +1215,7 @@ type CheckoutUsBankAccountPaymentMethodOptionsVerificationMethod =
 
 type CheckoutUsBankAccountPaymentMethodOptions =
     {
-        FinancialConnections: LinkedAccountOptionsCommon option
+        FinancialConnections: CheckoutFinancialConnectionsPaymentMethodOptions option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
         /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
         /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -1178,7 +1228,7 @@ type CheckoutUsBankAccountPaymentMethodOptions =
     }
 
 type CheckoutUsBankAccountPaymentMethodOptions with
-    static member New(?financialConnections: LinkedAccountOptionsCommon, ?setupFutureUsage: CheckoutUsBankAccountPaymentMethodOptionsSetupFutureUsage, ?targetDate: string, ?verificationMethod: CheckoutUsBankAccountPaymentMethodOptionsVerificationMethod) =
+    static member New(?financialConnections: CheckoutFinancialConnectionsPaymentMethodOptions, ?setupFutureUsage: CheckoutUsBankAccountPaymentMethodOptionsSetupFutureUsage, ?targetDate: string, ?verificationMethod: CheckoutUsBankAccountPaymentMethodOptionsVerificationMethod) =
         {
             FinancialConnections = financialConnections
             SetupFutureUsage = setupFutureUsage
@@ -1460,7 +1510,7 @@ type CheckoutSession =
         PaymentIntent: StripeId<Markers.PaymentIntent> option
         /// The ID of the Payment Link that created this Session.
         PaymentLink: StripeId<Markers.PaymentLink> option
-        /// Configure whether a Checkout Session should collect a payment method. Defaults to `always`.
+        /// Configure whether a Checkout Session should collect a payment method for sessions with mode `payment`. Defaults to `always`.
         PaymentMethodCollection: CheckoutSessionPaymentMethodCollection option
         /// Information about the payment method configuration used for this Checkout session if using dynamic payment methods.
         PaymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option

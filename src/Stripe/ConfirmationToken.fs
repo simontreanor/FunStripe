@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 type ConfirmationTokenSetupFutureUsage =
     | OffSession
     | OnSession
@@ -327,6 +327,8 @@ type ConfirmationToken =
         Livemode: bool
         /// Data used for generating a Mandate.
         MandateData: ConfirmationTokensResourceMandateData option
+        /// Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
         /// ID of the PaymentIntent that this ConfirmationToken was used to confirm, or null if this ConfirmationToken has not yet been used.
         PaymentIntent: string option
         /// Payment-method-specific configuration for this ConfirmationToken.
@@ -347,12 +349,13 @@ type ConfirmationToken =
     }
 
 type ConfirmationToken with
-    static member New(created: DateTime, expiresAt: DateTime option, id: string, livemode: bool, paymentIntent: string option, paymentMethodOptions: ConfirmationTokensResourcePaymentMethodOptions option, paymentMethodPreview: ConfirmationTokensResourcePaymentMethodPreview option, returnUrl: string option, setupFutureUsage: ConfirmationTokenSetupFutureUsage option, setupIntent: string option, shipping: ConfirmationTokensResourceShipping option, useStripeSdk: bool, ?mandateData: ConfirmationTokensResourceMandateData option) =
+    static member New(created: DateTime, expiresAt: DateTime option, id: string, livemode: bool, metadata: Map<string, string> option, paymentIntent: string option, paymentMethodOptions: ConfirmationTokensResourcePaymentMethodOptions option, paymentMethodPreview: ConfirmationTokensResourcePaymentMethodPreview option, returnUrl: string option, setupFutureUsage: ConfirmationTokenSetupFutureUsage option, setupIntent: string option, shipping: ConfirmationTokensResourceShipping option, useStripeSdk: bool, ?mandateData: ConfirmationTokensResourceMandateData option) =
         {
             Created = created
             ExpiresAt = expiresAt
             Id = id
             Livemode = livemode
+            Metadata = metadata
             PaymentIntent = paymentIntent
             PaymentMethodOptions = paymentMethodOptions
             PaymentMethodPreview = paymentMethodPreview

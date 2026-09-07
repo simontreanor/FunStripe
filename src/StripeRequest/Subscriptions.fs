@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
 module Subscriptions =
 
     type ListOptions =
@@ -410,7 +410,7 @@ module Subscriptions =
             /// Configure billing schedule differently for individual subscription items.
             [<Config.Form>]
             AppliesTo: Create'BillingSchedulesAppliesTo list option
-            /// The end date for the billing schedule.
+            /// The end date for the billing schedule. You must not set this earlier than current period end for every applicable subscription item.
             [<Config.Form>]
             BillUntil: Create'BillingSchedulesBillUntil option
             /// Specify a key for the billing schedule. Must be unique to this field, alphanumeric, and up to 200 characters. If not provided, a unique key will be generated.
@@ -1091,6 +1091,9 @@ module Subscriptions =
             [<Config.Form>]
             Bancontact:
                 Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string> option
+            /// This sub-hash contains details about the Billie payment method options to pass to the invoice’s PaymentIntent.
+            [<Config.Form>]
+            Billie: Choice<string,string> option
             /// This sub-hash contains details about the Card payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
             Card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string> option
@@ -1120,10 +1123,11 @@ module Subscriptions =
         }
 
     type Create'PaymentSettingsPaymentMethodOptions with
-        static member New(?acssDebit: Choice<Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<string,string>, ?card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Bancontact = bancontact
+                Billie = billie
                 Card = card
                 CustomerBalance = customerBalance
                 Konbini = konbini
@@ -1144,6 +1148,7 @@ module Subscriptions =
         | AuBecsDebit
         | BacsDebit
         | Bancontact
+        | Billie
         | Boleto
         | Card
         | Cashapp
@@ -1310,7 +1315,7 @@ module Subscriptions =
             /// Controls how prorations and invoices for subscriptions are calculated and orchestrated.
             [<Config.Form>]
             BillingMode: Create'BillingMode option
-            /// Sets the billing schedules for the subscription.
+            /// An array of billing schedules, which allow you to bill customers in advance for multiple service periods. Requires flexible billing mode and API version 2026-05-27.dahlia or later. Learn more about [prebilling](https://docs.stripe.com/billing/subscriptions/prebilling).
             [<Config.Form>]
             BillingSchedules: Create'BillingSchedules list option
             /// Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
@@ -1459,13 +1464,17 @@ module Subscriptions =
             /// The customer submitted reason for why they canceled, if the subscription was canceled explicitly by the user.
             [<Config.Form>]
             Feedback: Cancel'CancellationDetailsFeedback option
+            /// Customized feedback options that provide deeper insight into why the subscription was canceled, if the subscription was canceled explicitly by the user.
+            [<Config.Form>]
+            FeedbackOption: string option
         }
 
     type Cancel'CancellationDetails with
-        static member New(?comment: Choice<string,string>, ?feedback: Cancel'CancellationDetailsFeedback) =
+        static member New(?comment: Choice<string,string>, ?feedback: Cancel'CancellationDetailsFeedback, ?feedbackOption: string) =
             {
                 Comment = comment
                 Feedback = feedback
+                FeedbackOption = feedbackOption
             }
 
     type CancelOptions =
@@ -1782,7 +1791,7 @@ module Subscriptions =
             /// Configure billing schedule differently for individual subscription items.
             [<Config.Form>]
             AppliesTo: Update'BillingSchedulesAppliesTo list option
-            /// The end date for the billing schedule.
+            /// The end date for the billing schedule. You must not set this earlier than current period end for every applicable subscription item.
             [<Config.Form>]
             BillUntil: Update'BillingSchedulesBillUntil option
             /// Specify a key for the billing schedule. Must be unique to this field, alphanumeric, and up to 200 characters. If not provided, a unique key will be generated.
@@ -1838,13 +1847,17 @@ module Subscriptions =
             /// The customer submitted reason for why they canceled, if the subscription was canceled explicitly by the user.
             [<Config.Form>]
             Feedback: Update'CancellationDetailsFeedback option
+            /// Customized feedback options that provide deeper insight into why the subscription was canceled, if the subscription was canceled explicitly by the user.
+            [<Config.Form>]
+            FeedbackOption: string option
         }
 
     type Update'CancellationDetails with
-        static member New(?comment: Choice<string,string>, ?feedback: Update'CancellationDetailsFeedback) =
+        static member New(?comment: Choice<string,string>, ?feedback: Update'CancellationDetailsFeedback, ?feedbackOption: string) =
             {
                 Comment = comment
                 Feedback = feedback
+                FeedbackOption = feedbackOption
             }
 
     type Update'CollectionMethod =
@@ -2524,6 +2537,9 @@ module Subscriptions =
             [<Config.Form>]
             Bancontact:
                 Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string> option
+            /// This sub-hash contains details about the Billie payment method options to pass to the invoice’s PaymentIntent.
+            [<Config.Form>]
+            Billie: Choice<string,string> option
             /// This sub-hash contains details about the Card payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
             Card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string> option
@@ -2553,10 +2569,11 @@ module Subscriptions =
         }
 
     type Update'PaymentSettingsPaymentMethodOptions with
-        static member New(?acssDebit: Choice<Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<string,string>, ?card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Bancontact = bancontact
+                Billie = billie
                 Card = card
                 CustomerBalance = customerBalance
                 Konbini = konbini
@@ -2577,6 +2594,7 @@ module Subscriptions =
         | AuBecsDebit
         | BacsDebit
         | Bancontact
+        | Billie
         | Boleto
         | Card
         | Cashapp
@@ -2736,7 +2754,7 @@ module Subscriptions =
             /// Either `now` or `unchanged`. Setting the value to `now` resets the subscription's billing cycle anchor to the current time (in UTC). For more information, see the billing cycle [documentation](https://docs.stripe.com/billing/subscriptions/billing-cycle).
             [<Config.Form>]
             BillingCycleAnchor: Update'BillingCycleAnchor option
-            /// Sets the billing schedules for the subscription.
+            /// An array of billing schedules, which allow you to bill customers in advance for multiple service periods. Requires flexible billing mode and API version 2026-05-27.dahlia or later. Learn more about [prebilling](https://docs.stripe.com/billing/subscriptions/prebilling).
             [<Config.Form>]
             BillingSchedules: Choice<Update'BillingSchedules list,string> option
             /// Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
@@ -2892,7 +2910,7 @@ module Subscriptions =
     ///<p>Updates an existing subscription to match the specified parameters.
     ///When changing prices or quantities, we optionally prorate the price we charge next month to make up for any price changes.
     ///To preview how the proration is calculated, use the <a href="/docs/api/invoices/create_preview">create preview</a> endpoint.</p>
-    ///<p>By default, we prorate subscription changes. For example, if a customer signs up on May 1 for a <currency>100</currency> price, they’ll be billed <currency>100</currency> immediately. If on May 15 they switch to a <currency>200</currency> price, then on June 1 they’ll be billed <currency>250</currency> (<currency>200</currency> for a renewal of her subscription, plus a <currency>50</currency> prorating adjustment for half of the previous month’s <currency>100</currency> difference). Similarly, a downgrade generates a credit that is applied to the next invoice. We also prorate when you make quantity changes.</p>
+    ///<p>By default, we prorate subscription changes. For example, if a customer signs up on May 1 for a <currency>100</currency> price, they’ll be billed <currency>100</currency> immediately. If on May 15 they switch to a <currency>200</currency> price, then on June 1 they’ll be billed <currency>250</currency> (<currency>200</currency> for a renewal of her subscription, plus a <currency>50</currency> prorating adjustment for half of the previous month’s <currency>100</currency> difference). Similarly, a downgrade generates a credit that is applied to the next invoice. We also prorate when you make quantity changes. You can also <a href="/billing/scripts/stripe-authored/proration">use scripts to prorate your billing</a>. To learn more, see <a href="/billing/subscriptions/prorations">Prorations</a>.</p>
     ///<p>Switching prices does not normally change the billing date or generate an immediate charge unless:</p>
     ///<ul>
     ///<li>The billing interval is changed (for example, from monthly to yearly).</li>
