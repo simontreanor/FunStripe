@@ -891,12 +891,12 @@ module Quotes =
     ///<p>Returns a list of your quotes.</p>
     let List settings (options: ListOptions) =
         let qs = [("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("test_clock", options.TestClock |> box)] |> Map.ofList
-        $"/v1/quotes"
+        "/v1/quotes"
         |> RestApi.getAsync<StripeList<Quote>> settings qs
 
     ///<p>A quote models prices and services for a customer. Default options for <code>header</code>, <code>description</code>, <code>footer</code>, and <code>expires_at</code> can be set in the dashboard via the <a href="https://dashboard.stripe.com/settings/billing/quote">quote template</a>.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/quotes"
+        "/v1/quotes"
         |> RestApi.postAsync<_, Quote> settings (Map.empty) options
 
     ///<p>Retrieves the quote with the given ID.</p>

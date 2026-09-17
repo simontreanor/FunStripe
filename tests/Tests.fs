@@ -6,15 +6,21 @@ open IsoTypes
 open NUnit.Framework
 open Stripe.Event
 open Stripe.FundingInstructions
+open Stripe.IssuingCard
 open Stripe.PaymentMethod
 open Stripe.Price
 open Stripe.Product
 open StripeRequest.BillingPortal
+open StripeRequest.Checkout
 open StripeRequest.Customers
 open StripeRequest.Payment
+open StripeRequest.Prices
+open StripeRequest.Products
 open System
 open System.Security.Cryptography
 open System.Text
+open System.Text.Json
+open System.Threading.Tasks
 
 module Tests =
 
@@ -59,29 +65,29 @@ module Tests =
         [<Test>]
         member _.``test WithIdempotencyKey returns settings with key applied``() =
             let key = "per-request-idempotency-key"
-            let settingsWithKey = settings.WithIdempotencyKey(key)
+            let settingsWithKey = settings.WithIdempotencyKey key
             Assert.That(settingsWithKey.IdempotencyKey, Is.EqualTo (Some key))
 
         [<Test>]
         member _.``test WithIdempotencyKey does not mutate original settings``() =
             let key = "per-request-idempotency-key"
-            let _ = settings.WithIdempotencyKey(key)
+            let _ = settings.WithIdempotencyKey key
             Assert.That(settings.IdempotencyKey, Is.EqualTo None)
 
         [<Test>]
         member _.``test WithIdempotencyKey header is included in request headers``() =
             let key = "per-request-idempotency-key"
-            let settingsWithKey = settings.WithIdempotencyKey(key)
+            let settingsWithKey = settings.WithIdempotencyKey key
             let headers = RestApi.createHeader settingsWithKey
             Assert.That(headers |> List.exists (fun (name, value) -> name = "Idempotency-Key" && value = key), Is.True)
 
         [<Test>]
         member _.``test WithIdempotencyKey throws on empty key``() =
-            Assert.Throws<System.ArgumentException>(fun () -> settings.WithIdempotencyKey("") |> ignore) |> ignore
+            Assert.Throws<ArgumentException>(fun () -> settings.WithIdempotencyKey("") |> ignore) |> ignore
 
         [<Test>]
         member _.``test WithIdempotencyKey throws on whitespace key``() =
-            Assert.Throws<System.ArgumentException>(fun () -> settings.WithIdempotencyKey("   ") |> ignore) |> ignore
+            Assert.Throws<ArgumentException>(fun () -> settings.WithIdempotencyKey("   ") |> ignore) |> ignore
 
     [<TestFixture>]
     type PaymentMethodUnitTests () =
@@ -184,116 +190,126 @@ module Tests =
 
         [<Test>]
         member _.``test payment method creation``() =
-            let result =
-                asyncResult {
-                    let expected = defaultPaymentMethod
-                    let! actual = getNewPaymentMethod()
-                    return expected, actual
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok (exp, act) ->
-                Assert.Multiple(fun () ->
-                    Assert.That(exp.BillingDetails, Is.EqualTo act.BillingDetails)
-                    Assert.That(exp.Customer, Is.EqualTo act.Customer)
-                    Assert.That(exp.Livemode, Is.EqualTo act.Livemode)
-                    Assert.That(exp.Metadata, Is.EqualTo act.Metadata)
-                    Assert.That(exp.Type, Is.EqualTo act.Type)
-                )
-            | Error e ->
-                Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let expected = defaultPaymentMethod
+                        let! actual = getNewPaymentMethod()
+                        return expected, actual
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok (exp, act) ->
+                    Assert.Multiple(fun () ->
+                        Assert.That(exp.BillingDetails, Is.EqualTo act.BillingDetails)
+                        Assert.That(exp.Customer, Is.EqualTo act.Customer)
+                        Assert.That(exp.Livemode, Is.EqualTo act.Livemode)
+                        Assert.That(exp.Metadata, Is.EqualTo act.Metadata)
+                        Assert.That(exp.Type, Is.EqualTo act.Type)
+                    )
+                | Error e ->
+                    Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
+            } :> Task
 
         [<Test>]
         member _.``test payment method retrieval``() =
-            let result =
-                asyncResult {
-                    let! expected = getNewPaymentMethod()
-                    let! actual =
-                        let queryParameters = PaymentMethods.RetrieveOptions.New(paymentMethod = expected.Id, expand = [nameof(Customer) |> Util.snakeCase])
-                        PaymentMethods.Retrieve settings queryParameters
-                    return expected, actual
+            task {
+                let! result =
+                    asyncResult {
+                        let! expected = getNewPaymentMethod()
+                        let! actual =
+                            let queryParameters = PaymentMethods.RetrieveOptions.New(paymentMethod = expected.Id, expand = [nameof Customer |> Util.snakeCase])
+                            PaymentMethods.Retrieve settings queryParameters
+                        return expected, actual
 
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok (exp, act) ->
-                Assert.That(exp, Is.EqualTo act)
-            | Error e ->
-                Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok (exp, act) ->
+                    Assert.That(exp, Is.EqualTo act)
+                | Error e ->
+                    Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
+            } :> Task
 
         [<Test>]
         member _.``test payment method update``() =
-            let result =
-                asyncResult {
-                    let! expected = getNewPaymentMethod()
-                    let! newPM = attachCustomer expected.Id
-                    let! actual =
-                        let options =
-                            PaymentMethods.UpdateOptions.New(
-                                metadata = ([("OrderId", "6735")] |> Map.ofList),
-                                paymentMethod = newPM.Id
-                            )
-                        PaymentMethods.Update settings options
-                    return expected, newPM, actual
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok (exp, pm, act) ->
-                Assert.Multiple(fun () ->
-                    Assert.That((testCustomer.Value |> StripeId : StripeId<Markers.Customer>) |> Some, Is.EqualTo act.Customer)
-                    Assert.That(pm.Id, Is.EqualTo act.Id)
-                    Assert.That([("OrderId", "6735")] |> Map.ofList |> Some, Is.EqualTo act.Metadata)
-                )
-            | Error e ->
-                Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let! expected = getNewPaymentMethod()
+                        let! newPM = attachCustomer expected.Id
+                        let! actual =
+                            let options =
+                                PaymentMethods.UpdateOptions.New(
+                                    metadata = ([("OrderId", "6735")] |> Map.ofList),
+                                    paymentMethod = newPM.Id
+                                )
+                            PaymentMethods.Update settings options
+                        return expected, newPM, actual
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok (exp, pm, act) ->
+                    Assert.Multiple(fun () ->
+                        Assert.That((testCustomer.Value |> StripeId : StripeId<Markers.Customer>) |> Some, Is.EqualTo act.Customer)
+                        Assert.That(pm.Id, Is.EqualTo act.Id)
+                        Assert.That([("OrderId", "6735")] |> Map.ofList |> Some, Is.EqualTo act.Metadata)
+                    )
+                | Error e ->
+                    Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
+            } :> Task
 
         [<Test>]
         member _.``test attaching customer to payment method``() =
-            let result =
-                asyncResult {
-                    let! expected = getNewPaymentMethod()
-                    let! actual =
-                        let options =
-                            PaymentMethodsAttach.AttachOptions.New(
-                                customer = testCustomer.Value,
-                                paymentMethod = expected.Id
-                            )
-                        PaymentMethodsAttach.Attach settings options
-                    return expected, actual
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok (exp, act) ->
-                Assert.Multiple(fun () ->
-                    Assert.That((testCustomer.Value |> StripeId : StripeId<Markers.Customer>) |> Some, Is.EqualTo act.Customer)
-                    Assert.That(exp.Id, Is.EqualTo act.Id)
-                )
-            | Error e ->
-                Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let! expected = getNewPaymentMethod()
+                        let! actual =
+                            let options =
+                                PaymentMethodsAttach.AttachOptions.New(
+                                    customer = testCustomer.Value,
+                                    paymentMethod = expected.Id
+                                )
+                            PaymentMethodsAttach.Attach settings options
+                        return expected, actual
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok (exp, act) ->
+                    Assert.Multiple(fun () ->
+                        Assert.That((testCustomer.Value |> StripeId : StripeId<Markers.Customer>) |> Some, Is.EqualTo act.Customer)
+                        Assert.That(exp.Id, Is.EqualTo act.Id)
+                    )
+                | Error e ->
+                    Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
+            } :> Task
 
         [<Test>]
         member _.``test detaching customer from payment method``() =
-            let result =
-                asyncResult {
-                    let! expected = getNewPaymentMethod()
-                    let! newPM = attachCustomer expected.Id
-                    let! actual =
-                        let options =
-                            PaymentMethodsDetach.DetachOptions.New(
-                                paymentMethod = newPM.Id
-                            )
-                        PaymentMethodsDetach.Detach settings options
-                    return expected, actual
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok (exp, act) ->
-                Assert.Multiple(fun () ->
-                    Assert.That(None, Is.EqualTo act.Customer)
-                    Assert.That(exp.Id, Is.EqualTo act.Id)
-                )
-            | Error e ->
-                Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let! expected = getNewPaymentMethod()
+                        let! newPM = attachCustomer expected.Id
+                        let! actual =
+                            let options =
+                                PaymentMethodsDetach.DetachOptions.New(
+                                    paymentMethod = newPM.Id
+                                )
+                            PaymentMethodsDetach.Detach settings options
+                        return expected, actual
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok (exp, act) ->
+                    Assert.Multiple(fun () ->
+                        Assert.That(None, Is.EqualTo act.Customer)
+                        Assert.That(exp.Id, Is.EqualTo act.Id)
+                    )
+                | Error e ->
+                    Assert.That("<ErrorMessage>", Is.EqualTo e.StripeError.Message)
+            } :> Task
 
         [<Test>]
         member _.``test parsing customer object``() =
@@ -323,7 +339,7 @@ module Tests =
                             RenderingOptions = None
                         }
                     Livemode = false
-                    Metadata = Some (Map.empty)
+                    Metadata = Some Map.empty
                     Name = None
                     NextInvoiceSequence = Some 1
                     Phone = None
@@ -346,14 +362,14 @@ module Tests =
                                         brand = CardBrand.Visa,
                                         country = Some IsoCountryCode.US,
                                         customer = Some (CardCustomer'AnyOf.String "cus_IhzR2Msjq0lILS"),
-                                        cvcCheck = Some (CardCvcCheck.Pass),
+                                        cvcCheck = Some CardCvcCheck.Pass,
                                         dynamicLast4 =  None,
                                         expMonth = 10,
                                         expYear = 2027,
                                         fingerprint = Some "YfQddCBRsntX6npu",
                                         funding = CardFunding.Credit,
                                         last4 = "4242",
-                                        metadata = Some (Map.empty),
+                                        metadata = Some Map.empty,
                                         name =  None,
                                         regulatedStatus = None,
                                         tokenizationMethod =  None
@@ -370,7 +386,7 @@ module Tests =
                             Url = "/v1/customers/cus_IhzR2Msjq0lILS/subscriptions"
                         }
                     Tax = None
-                    TaxExempt = Some (CustomerTaxExempt.None')
+                    TaxExempt = Some CustomerTaxExempt.None'
                     TaxIds =
                         Some {
                             Data = []
@@ -471,15 +487,15 @@ module Tests =
 
         ///Build a valid Stripe-Signature header for the given timestamp
         let buildHeader (secret: string) (rawBody: string) (timestamp: int64) =
-            let signedPayload = sprintf "%d.%s" timestamp rawBody
+            let signedPayload = $"%d{timestamp}.%s{rawBody}"
             let keyBytes = Encoding.UTF8.GetBytes(secret)
             let payloadBytes = Encoding.UTF8.GetBytes(signedPayload)
             use hmac = new HMACSHA256(keyBytes)
             let sig' =
-                hmac.ComputeHash(payloadBytes)
-                |> Array.map (fun b -> b.ToString("x2"))
+                hmac.ComputeHash payloadBytes
+                |> Array.map (fun b -> b.ToString "x2")
                 |> String.concat ""
-            sprintf "t=%d,v1=%s" timestamp sig'
+            $"t=%d{timestamp},v1=%s{sig'}"
 
         [<Test>]
         member _.``valid signature returns Ok``() =
@@ -488,7 +504,7 @@ module Tests =
             let result = verifySignature secret rawBody header defaultTolerance
             match result with
             | Ok () -> Assert.Pass()
-            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+            | Error e -> Assert.Fail($"Expected Ok but got Error %A{e}")
 
         [<Test>]
         member _.``signature with multiple v1 entries accepts correct one``() =
@@ -499,19 +515,19 @@ module Tests =
             let result = verifySignature secret rawBody headerWithExtra defaultTolerance
             match result with
             | Ok () -> Assert.Pass()
-            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+            | Error e -> Assert.Fail($"Expected Ok but got Error %A{e}")
 
         [<Test>]
         member _.``signature with invalid v1 entry before valid one accepts correct one``() =
             let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
             let validHeader = buildHeader secret rawBody timestamp
             // Prepend a wrong v1 entry before the valid one (e.g. "t=...,v1=bad,v1=good")
-            let parts = validHeader.Split(',')
+            let parts = validHeader.Split ','
             let headerWithExtraFirst = sprintf "%s,v1=aabbccddeeff,%s" parts.[0] parts.[1]
             let result = verifySignature secret rawBody headerWithExtraFirst defaultTolerance
             match result with
             | Ok () -> Assert.Pass()
-            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+            | Error e -> Assert.Fail($"Expected Ok but got Error %A{e}")
 
         [<Test>]
         member _.``timestamp outside tolerance returns TimestampOutOfTolerance``() =
@@ -520,7 +536,7 @@ module Tests =
             let result = verifySignature secret rawBody header defaultTolerance
             match result with
             | Error (TimestampOutOfTolerance _) -> Assert.Pass()
-            | other -> Assert.Fail(sprintf "Expected TimestampOutOfTolerance but got %A" other)
+            | other -> Assert.Fail($"Expected TimestampOutOfTolerance but got %A{other}")
 
         [<Test>]
         member _.``future timestamp outside tolerance returns TimestampOutOfTolerance``() =
@@ -529,7 +545,7 @@ module Tests =
             let result = verifySignature secret rawBody header defaultTolerance
             match result with
             | Error (TimestampOutOfTolerance _) -> Assert.Pass()
-            | other -> Assert.Fail(sprintf "Expected TimestampOutOfTolerance but got %A" other)
+            | other -> Assert.Fail($"Expected TimestampOutOfTolerance but got %A{other}")
 
         [<Test>]
         member _.``wrong signature returns SignatureMismatch``() =
@@ -538,7 +554,7 @@ module Tests =
             let result = verifySignature secret rawBody header defaultTolerance
             match result with
             | Error (SignatureMismatch _) -> Assert.Pass()
-            | other -> Assert.Fail(sprintf "Expected SignatureMismatch but got %A" other)
+            | other -> Assert.Fail($"Expected SignatureMismatch but got %A{other}")
 
         [<Test>]
         member _.``missing timestamp returns InvalidHeader``() =
@@ -546,23 +562,23 @@ module Tests =
             let result = verifySignature secret rawBody header defaultTolerance
             match result with
             | Error (InvalidHeader _) -> Assert.Pass()
-            | other -> Assert.Fail(sprintf "Expected InvalidHeader but got %A" other)
+            | other -> Assert.Fail($"Expected InvalidHeader but got %A{other}")
 
         [<Test>]
         member _.``missing v1 signature returns InvalidHeader``() =
             let timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-            let header = sprintf "t=%d" timestamp
+            let header = $"t=%d{timestamp}"
             let result = verifySignature secret rawBody header defaultTolerance
             match result with
             | Error (InvalidHeader _) -> Assert.Pass()
-            | other -> Assert.Fail(sprintf "Expected InvalidHeader but got %A" other)
+            | other -> Assert.Fail($"Expected InvalidHeader but got %A{other}")
 
         [<Test>]
         member _.``malformed header returns InvalidHeader``() =
             let result = verifySignature secret rawBody "not-a-valid-header" defaultTolerance
             match result with
             | Error (InvalidHeader _) -> Assert.Pass()
-            | other -> Assert.Fail(sprintf "Expected InvalidHeader but got %A" other)
+            | other -> Assert.Fail($"Expected InvalidHeader but got %A{other}")
 
         [<Test>]
         member _.``test parsing customer object with expanded default_source``() =
@@ -580,14 +596,14 @@ module Tests =
                     brand = CardBrand.Visa,
                     country = Some IsoCountryCode.US,
                     customer = Some (CardCustomer'AnyOf.String "cus_IhzR2Msjq0lILS"),
-                    cvcCheck = Some (CardCvcCheck.Pass),
+                    cvcCheck = Some CardCvcCheck.Pass,
                     dynamicLast4 =  None,
                     expMonth = 10,
                     expYear = 2027,
                     fingerprint = Some "YfQddCBRsntX6npu",
                     funding = CardFunding.Credit,
                     last4 = "4242",
-                    metadata = Some (Map.empty),
+                    metadata = Some Map.empty,
                     name =  None,
                     regulatedStatus = None,
                     tokenizationMethod =  None
@@ -755,7 +771,7 @@ module Tests =
 
         [<Test>]
         member _.``bool field serialises to lowercase string``() =
-            let opts = StripeRequest.Products.Products.CreateOptions.New(name = "test", active = true)
+            let opts = Products.CreateOptions.New(name = "test", active = true)
             let pairs = serialise opts |> Seq.toList
             Assert.That(pairs |> List.exists (fun (k,v) -> k = "active" && v = "true"), Is.True)
 
@@ -790,7 +806,7 @@ module Tests =
         member _.``multiple options combine in a single query string``() =
             let qs = Customers.ListOptions.New(limit = 5, email = "a@b.com") |> querySerialise
             Assert.That(qs.StartsWith "?", Is.True)
-            Assert.That(qs.Contains "&", Is.True)
+            Assert.That(qs.Contains '&', Is.True)
             Assert.That(qs.Contains "limit=5", Is.True)
             Assert.That(qs.Contains "email=a%40b.com", Is.True)
 
@@ -899,44 +915,52 @@ module Tests =
 
         [<Test>]
         member _.``return wraps value in Ok``() =
-            let result = asyncResult { return 42 } |> Async.RunSynchronously
-            Assert.That(result, Is.EqualTo (Ok 42))
+            task {
+                let! result = asyncResult { return 42 } |> Async.StartImmediateAsTask
+                Assert.That(result, Is.EqualTo (Ok 42))
+            } :> Task
 
         [<Test>]
         member _.``chained let! both succeed returns final value``() =
-            let step1 = async { return Ok 10 }
-            let step2 x = async { return Ok (x + 5) }
-            let result =
-                asyncResult {
-                    let! a = step1
-                    let! b = step2 a
-                    return b
-                }
-                |> Async.RunSynchronously
-            Assert.That(result, Is.EqualTo (Ok 15))
+            task {
+                let step1 = async { return Ok 10 }
+                let step2 x = async { return Ok (x + 5) }
+                let! result =
+                    asyncResult {
+                        let! a = step1
+                        let! b = step2 a
+                        return b
+                    }
+                    |> Async.StartImmediateAsTask
+                Assert.That(result, Is.EqualTo (Ok 15))
+            } :> Task
 
         [<Test>]
         member _.``let! short-circuits on first Error``() =
-            let mutable secondEvaluated = false
-            let step1 : Async<Result<int, string>> = async { return Error "oops" }
-            let step2 _ =
-                secondEvaluated <- true
-                async { return Ok 99 }
-            let result =
-                asyncResult {
-                    let! a = step1
-                    let! b = step2 a
-                    return b
-                }
-                |> Async.RunSynchronously
-            Assert.That(result, Is.EqualTo (Error "oops" : Result<int, string>))
-            Assert.That(secondEvaluated, Is.False, "second step should not be evaluated")
+            task {
+                let mutable secondEvaluated = false
+                let step1 : Async<Result<int, string>> = async { return Error "oops" }
+                let step2 _ =
+                    secondEvaluated <- true
+                    async { return Ok 99 }
+                let! result =
+                    asyncResult {
+                        let! a = step1
+                        let! b = step2 a
+                        return b
+                    }
+                    |> Async.StartImmediateAsTask
+                Assert.That(result, Is.EqualTo (Error "oops" : Result<int, string>))
+                Assert.That(secondEvaluated, Is.False, "second step should not be evaluated")
+            } :> Task
 
         [<Test>]
         member _.``returnFrom passes through async result``() =
-            let inner : Async<Result<string, int>> = async { return Ok "hello" }
-            let result = asyncResult { return! inner } |> Async.RunSynchronously
-            Assert.That(result, Is.EqualTo (Ok "hello" : Result<string, int>))
+            task {
+                let inner : Async<Result<string, int>> = async { return Ok "hello" }
+                let! result = asyncResult { return! inner } |> Async.StartImmediateAsTask
+                Assert.That(result, Is.EqualTo (Ok "hello" : Result<string, int>))
+            } :> Task
 
         [<Test>]
         member _.``Zero returns Ok unit``() =
@@ -956,14 +980,14 @@ module Tests =
         [<Test>]
         member _.``integer epoch deserialises to correct UTC DateTime``() =
             let json = "1609929723"
-            let result = System.Text.Json.JsonSerializer.Deserialize<DateTime>(json, opts)
+            let result = JsonSerializer.Deserialize<DateTime>(json, opts)
             Assert.That(result, Is.EqualTo (DateTime(2021, 1, 6, 10, 42, 3, DateTimeKind.Utc)))
             Assert.That(result.Kind, Is.EqualTo DateTimeKind.Utc)
 
         [<Test>]
         member _.``ISO-8601 string deserialises to DateTime``() =
             let json = "\"2021-01-06T10:42:03Z\""
-            let result = System.Text.Json.JsonSerializer.Deserialize<DateTime>(json, opts)
+            let result = JsonSerializer.Deserialize<DateTime>(json, opts)
             Assert.That(result.Year, Is.EqualTo 2021)
             Assert.That(result.Month, Is.EqualTo 1)
             Assert.That(result.Day, Is.EqualTo 6)
@@ -974,7 +998,7 @@ module Tests =
         [<Test>]
         member _.``DateTime serialises to integer epoch``() =
             let dt = DateTime(2021, 1, 6, 10, 42, 3, DateTimeKind.Utc)
-            let json = System.Text.Json.JsonSerializer.Serialize(dt, opts)
+            let json = JsonSerializer.Serialize(dt, opts)
             Assert.That(json, Is.EqualTo "1609929723")
 
     // =========================================================================
@@ -989,14 +1013,14 @@ module Tests =
         [<Test>]
         member _.``plain string JSON deserialises to StripeId``() =
             let json = "\"cus_abc123\""
-            let result = System.Text.Json.JsonSerializer.Deserialize<StripeId<Markers.Customer>>(json, opts)
+            let result = JsonSerializer.Deserialize<StripeId<Markers.Customer>>(json, opts)
             let (StripeId s) = result
             Assert.That(s, Is.EqualTo "cus_abc123")
 
         [<Test>]
         member _.``expanded object JSON extracts id field``() =
             let json = """{"id":"cus_abc123","object":"customer","email":"test@example.com"}"""
-            let result = System.Text.Json.JsonSerializer.Deserialize<StripeId<Markers.Customer>>(json, opts)
+            let result = JsonSerializer.Deserialize<StripeId<Markers.Customer>>(json, opts)
             let (StripeId s) = result
             Assert.That(s, Is.EqualTo "cus_abc123")
 
@@ -1004,13 +1028,13 @@ module Tests =
         member _.``expanded object without id field throws``() =
             let json = """{"object":"customer","email":"test@example.com"}"""
             Assert.Throws<Exception>(fun () ->
-                System.Text.Json.JsonSerializer.Deserialize<StripeId<Markers.Customer>>(json, opts) |> ignore
+                JsonSerializer.Deserialize<StripeId<Markers.Customer>>(json, opts) |> ignore
             ) |> ignore
 
         [<Test>]
         member _.``StripeId serialises to plain string``() =
             let id : StripeId<Markers.Customer> = StripeId "cus_abc123"
-            let json = System.Text.Json.JsonSerializer.Serialize(id, opts)
+            let json = JsonSerializer.Serialize(id, opts)
             Assert.That(json, Is.EqualTo "\"cus_abc123\"")
 
     // =========================================================================
@@ -1025,14 +1049,14 @@ module Tests =
         [<Test>]
         member _.``string enum deserialises to correct DU case``() =
             let json = "\"visa\""
-            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.PaymentMethodCardBrand>(json, opts)
-            Assert.That(result, Is.EqualTo Stripe.PaymentMethod.PaymentMethodCardBrand.Visa)
+            let result = JsonSerializer.Deserialize<PaymentMethodCardBrand>(json, opts)
+            Assert.That(result, Is.EqualTo PaymentMethodCardBrand.Visa)
 
         [<Test>]
         member _.``unknown string enum throws``() =
             let json = "\"invalid_brand_xyz\""
             Assert.Throws<Exception>(fun () ->
-                System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.PaymentMethodCardBrand>(json, opts) |> ignore
+                JsonSerializer.Deserialize<PaymentMethodCardBrand>(json, opts) |> ignore
             ) |> ignore
 
         [<Test>]
@@ -1052,11 +1076,11 @@ module Tests =
                 "metadata": {},
                 "tokenization_method": null
             }"""
-            let result = System.Text.Json.JsonSerializer.Deserialize<PaymentSource>(json, opts)
+            let result = JsonSerializer.Deserialize<PaymentSource>(json, opts)
             match result with
             | PaymentSource.Card c ->
                 Assert.That(c.Id, Is.EqualTo "card_1abc")
-            | other -> Assert.Fail(sprintf "Expected Card, got %A" other)
+            | other -> Assert.Fail($"Expected Card, got %A{other}")
 
         [<Test>]
         member _.``nested union resolved via object field``() =
@@ -1089,13 +1113,13 @@ module Tests =
               "tax_exempt": "none",
               "tax_ids": { "object": "list", "data": [], "has_more": false, "url": "/v1/customers/cus_test/tax_ids" }
             }"""
-            let customer = Util.deserialise<Stripe.PaymentMethod.Customer> response
+            let customer = Util.deserialise<Customer> response
             Assert.That(customer.DefaultSource, Is.EqualTo (Some (StripeId "card_1I6ZSoGXSUku3vEhr04df95L" : StripeId<Markers.PaymentSource>)))
 
         [<Test>]
         member _.``simple string enum serialises to snake_case string``() =
-            let value = Stripe.PaymentMethod.PaymentMethodCardBrand.Visa
-            let json = System.Text.Json.JsonSerializer.Serialize(value, opts)
+            let value = PaymentMethodCardBrand.Visa
+            let json = JsonSerializer.Serialize(value, opts)
             Assert.That(json, Is.EqualTo "\"visa\"")
 
         [<Test>]
@@ -1115,7 +1139,7 @@ module Tests =
                 name = None, regulatedStatus = None, tokenizationMethod = None
             )
             let ps = PaymentSource.Card card
-            let json = System.Text.Json.JsonSerializer.Serialize(ps, opts)
+            let json = JsonSerializer.Serialize(ps, opts)
             Assert.That(json.Contains "\"last4\":\"4242\"", Is.True)
 
         [<Test>]
@@ -1123,11 +1147,11 @@ module Tests =
             // StripeList has no "object" discriminator to pick a case — use a simpler AnyOf union
             // We test using CardCustomer'AnyOf which can be a String case
             let json = "\"cus_IhzR2Msjq0lILS\""
-            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.CardCustomer'AnyOf>(json, opts)
+            let result = JsonSerializer.Deserialize<CardCustomer'AnyOf>(json, opts)
             match result with
-            | Stripe.PaymentMethod.CardCustomer'AnyOf.String s ->
+            | CardCustomer'AnyOf.String s ->
                 Assert.That(s, Is.EqualTo "cus_IhzR2Msjq0lILS")
-            | other -> Assert.Fail(sprintf "Expected String case, got %A" other)
+            | other -> Assert.Fail($"Expected String case, got %A{other}")
 
     // =========================================================================
     // I. StripeList deserialization
@@ -1148,7 +1172,7 @@ module Tests =
                 "has_more": false,
                 "url": "/v1/customers"
             }"""
-            let result = Util.deserialise<StripeList<Stripe.PaymentMethod.Customer>> json
+            let result = Util.deserialise<StripeList<Customer>> json
             Assert.That(result.Data.Length, Is.EqualTo 2)
             Assert.That(result.HasMore, Is.False)
             Assert.That(result.Url, Is.EqualTo "/v1/customers")
@@ -1156,14 +1180,14 @@ module Tests =
         [<Test>]
         member _.``deserialises empty list``() =
             let json = """{"object":"list","data":[],"has_more":false,"url":"/v1/customers"}"""
-            let result = Util.deserialise<StripeList<Stripe.PaymentMethod.Customer>> json
+            let result = Util.deserialise<StripeList<Customer>> json
             Assert.That(result.Data, Is.Empty)
             Assert.That(result.HasMore, Is.False)
 
         [<Test>]
         member _.``HasMore true is propagated``() =
             let json = """{"object":"list","data":[],"has_more":true,"url":"/v1/customers"}"""
-            let result = Util.deserialise<StripeList<Stripe.PaymentMethod.Customer>> json
+            let result = Util.deserialise<StripeList<Customer>> json
             Assert.That(result.HasMore, Is.True)
 
     // =========================================================================
@@ -1223,8 +1247,8 @@ module Tests =
 
         [<Test>]
         member _.``getUnionCaseFromString works on EventType with JsonPropertyName``() =
-            let result = Util.getUnionCaseFromString<Stripe.Event.EventType> "customer.created"
-            Assert.That(result, Is.EqualTo (Some Stripe.Event.EventType.CustomerCreated))
+            let result = Util.getUnionCaseFromString<EventType> "customer.created"
+            Assert.That(result, Is.EqualTo (Some EventType.CustomerCreated))
 
     // =========================================================================
     // Webhook signing additional tests
@@ -1237,15 +1261,15 @@ module Tests =
         let rawBody = """{"id":"evt_test","object":"event"}"""
 
         let buildHeader (sec: string) (body: string) (timestamp: int64) =
-            let signedPayload = sprintf "%d.%s" timestamp body
+            let signedPayload = $"%d{timestamp}.%s{body}"
             let keyBytes = Encoding.UTF8.GetBytes(sec)
             let payloadBytes = Encoding.UTF8.GetBytes(signedPayload)
             use hmac = new HMACSHA256(keyBytes)
             let sig' =
-                hmac.ComputeHash(payloadBytes)
-                |> Array.map (fun b -> b.ToString("x2"))
+                hmac.ComputeHash payloadBytes
+                |> Array.map (fun b -> b.ToString "x2")
                 |> String.concat ""
-            sprintf "t=%d,v1=%s" timestamp sig'
+            $"t=%d{timestamp},v1=%s{sig'}"
 
         [<Test>]
         member _.``zero tolerance rejects one-second-old signature``() =
@@ -1254,7 +1278,7 @@ module Tests =
             let result = verifySignature secret rawBody header 0
             match result with
             | Error (TimestampOutOfTolerance _) -> Assert.Pass()
-            | other -> Assert.Fail(sprintf "Expected TimestampOutOfTolerance but got %A" other)
+            | other -> Assert.Fail($"Expected TimestampOutOfTolerance but got %A{other}")
 
         [<Test>]
         member _.``large tolerance accepts old signature``() =
@@ -1263,7 +1287,7 @@ module Tests =
             let result = verifySignature secret rawBody header 600
             match result with
             | Ok () -> Assert.Pass()
-            | other -> Assert.Fail(sprintf "Expected Ok but got %A" other)
+            | other -> Assert.Fail($"Expected Ok but got %A{other}")
 
         [<Test>]
         member _.``empty raw body verifies correctly``() =
@@ -1272,7 +1296,7 @@ module Tests =
             let result = verifySignature secret "" header defaultTolerance
             match result with
             | Ok () -> Assert.Pass()
-            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+            | Error e -> Assert.Fail($"Expected Ok but got Error %A{e}")
 
         [<Test>]
         member _.``non-ASCII UTF-8 body verifies correctly``() =
@@ -1282,14 +1306,14 @@ module Tests =
             let result = verifySignature secret body header defaultTolerance
             match result with
             | Ok () -> Assert.Pass()
-            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+            | Error e -> Assert.Fail($"Expected Ok but got Error %A{e}")
 
         [<Test>]
         member _.``whitespace-only header returns InvalidHeader``() =
             let result = verifySignature secret rawBody "   " defaultTolerance
             match result with
             | Error (InvalidHeader _) -> Assert.Pass()
-            | other -> Assert.Fail(sprintf "Expected InvalidHeader but got %A" other)
+            | other -> Assert.Fail($"Expected InvalidHeader but got %A{other}")
 
         [<Test>]
         member _.``header with unknown v2 field still validates on v1``() =
@@ -1299,7 +1323,7 @@ module Tests =
             let result = verifySignature secret rawBody headerWithV2 defaultTolerance
             match result with
             | Ok () -> Assert.Pass()
-            | Error e -> Assert.Fail(sprintf "Expected Ok but got Error %A" e)
+            | Error e -> Assert.Fail($"Expected Ok but got Error %A{e}")
 
     // =========================================================================
     // M. Customer integration tests
@@ -1335,102 +1359,114 @@ module Tests =
 
         [<Test>]
         member _.``retrieve customer round-trips scalar fields``() =
-            let result =
-                asyncResult {
-                    let created = testCustomer.Value
-                    return!
-                        Customers.RetrieveOptions.New(customer = created.Id)
-                        |> Customers.Retrieve settings
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok retrieved ->
-                Assert.That(retrieved.Id, Is.EqualTo testCustomer.Value.Id)
-                Assert.That(retrieved.Name, Is.EqualTo testCustomer.Value.Name)
-                Assert.That(retrieved.Email, Is.EqualTo testCustomer.Value.Email)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let created = testCustomer.Value
+                        return!
+                            Customers.RetrieveOptions.New(customer = created.Id)
+                            |> Customers.Retrieve settings
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok retrieved ->
+                    Assert.That(retrieved.Id, Is.EqualTo testCustomer.Value.Id)
+                    Assert.That(retrieved.Name, Is.EqualTo testCustomer.Value.Name)
+                    Assert.That(retrieved.Email, Is.EqualTo testCustomer.Value.Email)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
         [<Test>]
         member _.``retrieve with expand default_source does not error when no source``() =
-            let result =
-                Customers.RetrieveOptions.New(
-                    customer = testCustomer.Value.Id,
-                    expand = ["default_source"]
-                )
-                |> Customers.Retrieve settings
-                |> Async.RunSynchronously
-            match result with
-            | Ok c ->
-                Assert.That(c.DefaultSource, Is.EqualTo None)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    Customers.RetrieveOptions.New(
+                        customer = testCustomer.Value.Id,
+                        expand = ["default_source"]
+                    )
+                    |> Customers.Retrieve settings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok c ->
+                    Assert.That(c.DefaultSource, Is.EqualTo None)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
         [<Test>]
         member _.``update customer metadata and re-retrieve``() =
-            let result =
-                asyncResult {
-                    let c = testCustomer.Value
-                    let! _ =
-                        Customers.UpdateOptions.New(
-                            customer = c.Id,
-                            metadata = (Map.ofList [("testKey", "testValue")])
-                        )
-                        |> Customers.Update settings
-                    return!
-                        Customers.RetrieveOptions.New(customer = c.Id)
-                        |> Customers.Retrieve settings
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok updated ->
-                Assert.That(updated.Metadata |> Option.map (Map.tryFind "testKey"),
-                    Is.EqualTo (Some (Some "testValue")))
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let c = testCustomer.Value
+                        let! _ =
+                            Customers.UpdateOptions.New(
+                                customer = c.Id,
+                                metadata = (Map.ofList [("testKey", "testValue")])
+                            )
+                            |> Customers.Update settings
+                        return!
+                            Customers.RetrieveOptions.New(customer = c.Id)
+                            |> Customers.Retrieve settings
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok updated ->
+                    Assert.That(updated.Metadata |> Option.map (Map.tryFind "testKey"),
+                        Is.EqualTo (Some (Some "testValue")))
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
         [<Test>]
         member _.``list customers with limit=1 returns at most one``() =
-            let result =
-                Customers.ListOptions.New(limit = 1)
-                |> Customers.List settings
-                |> Async.RunSynchronously
-            match result with
-            | Ok list ->
-                Assert.That(list.Data.Length, Is.LessThanOrEqualTo 1)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    Customers.ListOptions.New(limit = 1)
+                    |> Customers.List settings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok list ->
+                    Assert.That(list.Data.Length, Is.LessThanOrEqualTo 1)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
         [<Test>]
         member _.``delete customer sets Deleted to true``() =
             // Create a dedicated customer for deletion
-            let result =
-                asyncResult {
-                    let! c =
-                        Customers.CreateOptions.New(name = "FunStripe delete test customer")
-                        |> Customers.Create settings
-                    return!
-                        Customers.DeleteOptions.New(customer = c.Id)
-                        |> Customers.Delete settings
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok deleted -> Assert.That(deleted.Deleted, Is.True)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let! c =
+                            Customers.CreateOptions.New(name = "FunStripe delete test customer")
+                            |> Customers.Create settings
+                        return!
+                            Customers.DeleteOptions.New(customer = c.Id)
+                            |> Customers.Delete settings
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok deleted -> Assert.That(deleted.Deleted, Is.True)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
         [<Test>]
         member _.``retrieve deleted customer returns DeletedCustomer with Deleted=true``() =
             // Stripe returns HTTP 200 with {"deleted":true,...} for deleted customers,
             // which cannot deserialise into Customer. We verify the delete itself succeeds.
-            let result =
-                asyncResult {
-                    let! c =
-                        Customers.CreateOptions.New(name = "FunStripe delete-then-retrieve test")
-                        |> Customers.Create settings
-                    return!
-                        Customers.DeleteOptions.New(customer = c.Id)
-                        |> Customers.Delete settings
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok deleted -> Assert.That(deleted.Deleted, Is.True)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let! c =
+                            Customers.CreateOptions.New(name = "FunStripe delete-then-retrieve test")
+                            |> Customers.Create settings
+                        return!
+                            Customers.DeleteOptions.New(customer = c.Id)
+                            |> Customers.Delete settings
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok deleted -> Assert.That(deleted.Deleted, Is.True)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
     // =========================================================================
     // N. Pagination integration tests
@@ -1443,8 +1479,8 @@ module Tests =
         let testProduct =
             lazy (
                 let result =
-                    StripeRequest.Products.Products.CreateOptions.New(name = "FunStripe pagination test product")
-                    |> StripeRequest.Products.Products.Create settings
+                    Products.CreateOptions.New(name = "FunStripe pagination test product")
+                    |> Products.Create settings
                     |> Async.RunSynchronously
                 match result with
                 | Ok p -> p
@@ -1452,12 +1488,12 @@ module Tests =
             )
 
         let createPrice (amount: int) =
-            StripeRequest.Prices.Prices.CreateOptions.New(
+            Prices.CreateOptions.New(
                 currency = IsoTypes.IsoCurrencyCode.GBP,
                 unitAmount = amount,
                 product = testProduct.Value.Id
             )
-            |> StripeRequest.Prices.Prices.Create settings
+            |> Prices.Create settings
             |> Async.RunSynchronously
 
         let testPrices =
@@ -1475,105 +1511,115 @@ module Tests =
 
         [<Test>]
         member _.``list first page with limit=2 returns HasMore=true``() =
-            let _ = testPrices.Value  // ensure prices exist
-            let result =
-                StripeRequest.Prices.Prices.ListOptions.New(
-                    limit = 2,
-                    product = testProduct.Value.Id
-                )
-                |> StripeRequest.Prices.Prices.List settings
-                |> Async.RunSynchronously
-            match result with
-            | Ok page ->
-                Assert.That(page.Data.Length, Is.EqualTo 2)
-                Assert.That(page.HasMore, Is.True)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let _ = testPrices.Value  // ensure prices exist
+                let! result =
+                    Prices.ListOptions.New(
+                        limit = 2,
+                        product = testProduct.Value.Id
+                    )
+                    |> Prices.List settings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok page ->
+                    Assert.That(page.Data.Length, Is.EqualTo 2)
+                    Assert.That(page.HasMore, Is.True)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> System.Threading.Tasks.Task
 
         [<Test>]
         member _.``list second page using starting_after cursor returns remaining items``() =
-            let _ = testPrices.Value
-            let result =
-                asyncResult {
-                    let! page1 =
-                        StripeRequest.Prices.Prices.ListOptions.New(
-                            limit = 2,
-                            product = testProduct.Value.Id
-                        )
-                        |> StripeRequest.Prices.Prices.List settings
-                    let lastId = page1.Data |> List.last |> (fun p -> p.Id)
-                    return!
-                        StripeRequest.Prices.Prices.ListOptions.New(
-                            limit = 2,
-                            product = testProduct.Value.Id,
-                            startingAfter = lastId
-                        )
-                        |> StripeRequest.Prices.Prices.List settings
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok page2 ->
-                Assert.That(page2.Data.Length, Is.GreaterThanOrEqualTo 1)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let _ = testPrices.Value
+                let! result =
+                    asyncResult {
+                        let! page1 =
+                            Prices.ListOptions.New(
+                                limit = 2,
+                                product = testProduct.Value.Id
+                            )
+                            |> Prices.List settings
+                        let lastId = page1.Data |> List.last |> (fun p -> p.Id)
+                        return!
+                            Prices.ListOptions.New(
+                                limit = 2,
+                                product = testProduct.Value.Id,
+                                startingAfter = lastId
+                            )
+                            |> Prices.List settings
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok page2 ->
+                    Assert.That(page2.Data.Length, Is.GreaterThanOrEqualTo 1)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> System.Threading.Tasks.Task
 
         [<Test>]
         member _.``listAllAsync collects all pages into single list``() =
-            let _ = testPrices.Value
-            let result =
-                RestApi.listAllAsync
-                    StripeRequest.Prices.Prices.List
-                    (fun cursor (opts: StripeRequest.Prices.Prices.ListOptions) -> { opts with StartingAfter = Some cursor })
-                    (fun (p: Stripe.Price.Price) -> p.Id)
-                    settings
-                    (StripeRequest.Prices.Prices.ListOptions.New(limit = 2, product = testProduct.Value.Id))
-                |> Async.RunSynchronously
-            match result with
-            | Ok allPrices ->
-                Assert.That(allPrices.Length, Is.GreaterThanOrEqualTo 3)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let _ = testPrices.Value
+                let! result =
+                    RestApi.listAllAsync
+                        Prices.List
+                        (fun cursor (opts: Prices.ListOptions) -> { opts with StartingAfter = Some cursor })
+                        (fun (p: Price) -> p.Id)
+                        settings
+                        (Prices.ListOptions.New(limit = 2, product = testProduct.Value.Id))
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok allPrices ->
+                    Assert.That(allPrices.Length, Is.GreaterThanOrEqualTo 3)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> System.Threading.Tasks.Task
 
         [<Test>]
         member _.``listAllAsync returns empty list when no items match``() =
-            let result =
-                RestApi.listAllAsync
-                    StripeRequest.Prices.Prices.List
-                    (fun cursor (opts: StripeRequest.Prices.Prices.ListOptions) -> { opts with StartingAfter = Some cursor })
-                    (fun (p: Stripe.Price.Price) -> p.Id)
-                    settings
-                    (StripeRequest.Prices.Prices.ListOptions.New(product = "prod_nonexistent_funstripe_test"))
-                |> Async.RunSynchronously
-            match result with
-            | Ok [] -> Assert.Pass()
-            | Ok items -> Assert.Fail(sprintf "Expected empty list but got %d items" items.Length)
-            | Error _ -> Assert.Pass() // API may return error for invalid product ID — either is acceptable
+            task {
+                let! result =
+                    RestApi.listAllAsync
+                        Prices.List
+                        (fun cursor (opts: Prices.ListOptions) -> { opts with StartingAfter = Some cursor })
+                        (fun (p: Price) -> p.Id)
+                        settings
+                        (Prices.ListOptions.New(product = "prod_nonexistent_funstripe_test"))
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok [] -> Assert.Pass()
+                | Ok items -> Assert.Fail($"Expected empty list but got %d{items.Length} items")
+                | Error _ -> Assert.Pass() // API may return error for invalid product ID — either is acceptable
+            } :> System.Threading.Tasks.Task
 
         [<Test>]
         member _.``listAllAsync returns immediately when HasMore is false on first call``() =
             // Create a unique product with exactly 1 price — so limit=10 returns HasMore=false first call
-            let result =
-                asyncResult {
-                    let! singleProduct =
-                        StripeRequest.Products.Products.CreateOptions.New(name = "FunStripe single-price product")
-                        |> StripeRequest.Products.Products.Create settings
-                    let! _ =
-                        StripeRequest.Prices.Prices.CreateOptions.New(
-                            currency = IsoTypes.IsoCurrencyCode.GBP,
-                            unitAmount = 999,
-                            product = singleProduct.Id
-                        )
-                        |> StripeRequest.Prices.Prices.Create settings
-                    return!
-                        RestApi.listAllAsync
-                            StripeRequest.Prices.Prices.List
-                            (fun cursor (opts: StripeRequest.Prices.Prices.ListOptions) -> { opts with StartingAfter = Some cursor })
-                            (fun (p: Stripe.Price.Price) -> p.Id)
-                            settings
-                            (StripeRequest.Prices.Prices.ListOptions.New(limit = 10, product = singleProduct.Id))
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok prices ->
-                Assert.That(prices.Length, Is.EqualTo 1)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let! singleProduct =
+                            Products.CreateOptions.New(name = "FunStripe single-price product")
+                            |> Products.Create settings
+                        let! _ =
+                            Prices.CreateOptions.New(
+                                currency = IsoTypes.IsoCurrencyCode.GBP,
+                                unitAmount = 999,
+                                product = singleProduct.Id
+                            )
+                            |> Prices.Create settings
+                        return!
+                            RestApi.listAllAsync
+                                Prices.List
+                                (fun cursor (opts: Prices.ListOptions) -> { opts with StartingAfter = Some cursor })
+                                (fun (p: Price) -> p.Id)
+                                settings
+                                (Prices.ListOptions.New(limit = 10, product = singleProduct.Id))
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok prices ->
+                    Assert.That(prices.Length, Is.EqualTo 1)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> System.Threading.Tasks.Task
 
     // =========================================================================
     // O. Expand integration tests
@@ -1618,86 +1664,94 @@ module Tests =
 
         [<Test>]
         member _.``DefaultSource with expand is still resolved as StripeId via id field``() =
-            let c = testCustomerWithCard.Value
-            let result =
-                Customers.RetrieveOptions.New(
-                    customer = c.Id,
-                    expand = ["default_source"]
-                )
-                |> Customers.Retrieve settings
-                |> Async.RunSynchronously
-            match result with
-            | Ok expanded ->
-                // Even when expanded, StripeIdConverter extracts the id field
-                Assert.That(expanded.DefaultSource, Is.EqualTo c.DefaultSource)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let c = testCustomerWithCard.Value
+                let! result =
+                    Customers.RetrieveOptions.New(
+                        customer = c.Id,
+                        expand = ["default_source"]
+                    )
+                    |> Customers.Retrieve settings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok expanded ->
+                    // Even when expanded, StripeIdConverter extracts the id field
+                    Assert.That(expanded.DefaultSource, Is.EqualTo c.DefaultSource)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
         [<Test>]
         member _.``Sources expanded via expand param contains card in Data``() =
-            let c = testCustomerWithCard.Value
-            let result =
-                Customers.RetrieveOptions.New(
-                    customer = c.Id,
-                    expand = ["sources"]
-                )
-                |> Customers.Retrieve settings
-                |> Async.RunSynchronously
-            match result with
-            | Ok expanded ->
-                let sourcesData = expanded.Sources |> Option.map (fun s -> s.Data) |> Option.defaultValue []
-                Assert.That(sourcesData.Length, Is.GreaterThan 0, "Sources.Data should contain at least one card")
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let c = testCustomerWithCard.Value
+                let! result =
+                    Customers.RetrieveOptions.New(
+                        customer = c.Id,
+                        expand = ["sources"]
+                    )
+                    |> Customers.Retrieve settings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok expanded ->
+                    let sourcesData = expanded.Sources |> Option.map (fun s -> s.Data) |> Option.defaultValue []
+                    Assert.That(sourcesData.Length, Is.GreaterThan 0, "Sources.Data should contain at least one card")
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
         [<Test>]
         member _.``PaymentMethod Retrieve with expand customer populates Customer field``() =
-            let result =
-                asyncResult {
-                    let! pm =
-                        PaymentMethods.CreateOptions.New(
-                            card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
-                            type' = PaymentMethods.Create'Type.Card
-                        )
-                        |> PaymentMethods.Create settings
-                    let! customer =
-                        Customers.CreateOptions.New(name = "FunStripe expand PM test customer")
-                        |> Customers.Create settings
-                    let! attached =
-                        PaymentMethodsAttach.AttachOptions.New(
-                            customer = customer.Id,
-                            paymentMethod = pm.Id
-                        )
-                        |> PaymentMethodsAttach.Attach settings
-                    return!
-                        PaymentMethods.RetrieveOptions.New(
-                            paymentMethod = attached.Id,
-                            expand = [nameof(Customer) |> Util.snakeCase]
-                        )
-                        |> PaymentMethods.Retrieve settings
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok pm ->
-                // Customer field is populated (StripeId extracted from expanded object)
-                Assert.That(pm.Customer, Is.Not.EqualTo None)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let! pm =
+                            PaymentMethods.CreateOptions.New(
+                                card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
+                                type' = PaymentMethods.Create'Type.Card
+                            )
+                            |> PaymentMethods.Create settings
+                        let! customer =
+                            Customers.CreateOptions.New(name = "FunStripe expand PM test customer")
+                            |> Customers.Create settings
+                        let! attached =
+                            PaymentMethodsAttach.AttachOptions.New(
+                                customer = customer.Id,
+                                paymentMethod = pm.Id
+                            )
+                            |> PaymentMethodsAttach.Attach settings
+                        return!
+                            PaymentMethods.RetrieveOptions.New(
+                                paymentMethod = attached.Id,
+                                expand = [nameof Customer |> Util.snakeCase]
+                            )
+                            |> PaymentMethods.Retrieve settings
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok pm ->
+                    // Customer field is populated (StripeId extracted from expanded object)
+                    Assert.That(pm.Customer, Is.Not.EqualTo None)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
         [<Test>]
         member _.``multiple expand values work simultaneously``() =
             // Create a customer with a source and retrieve with both default_source and sources expanded
-            let c = testCustomerWithCard.Value
-            let result =
-                Customers.RetrieveOptions.New(
-                    customer = c.Id,
-                    expand = ["default_source"; "sources"]
-                )
-                |> Customers.Retrieve settings
-                |> Async.RunSynchronously
-            match result with
-            | Ok expanded ->
-                // Verify both expand paths are accepted without error and the response is valid.
-                // DefaultSource and Sources population depends on API version behaviour.
-                Assert.That(expanded.Id, Is.Not.Empty)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let c = testCustomerWithCard.Value
+                let! result =
+                    Customers.RetrieveOptions.New(
+                        customer = c.Id,
+                        expand = ["default_source"; "sources"]
+                    )
+                    |> Customers.Retrieve settings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok expanded ->
+                    // Verify both expand paths are accepted without error and the response is valid.
+                    // DefaultSource and Sources population depends on API version behaviour.
+                    Assert.That(expanded.Id, Is.Not.Empty)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
     // =========================================================================
     // P. Product and Price lifecycle integration tests
@@ -1709,8 +1763,8 @@ module Tests =
         let testProduct =
             lazy (
                 let result =
-                    StripeRequest.Products.Products.CreateOptions.New(name = "FunStripe lifecycle product")
-                    |> StripeRequest.Products.Products.Create settings
+                    Products.CreateOptions.New(name = "FunStripe lifecycle product")
+                    |> Products.Create settings
                     |> Async.RunSynchronously
                 match result with
                 | Ok p -> p
@@ -1728,76 +1782,84 @@ module Tests =
 
         [<Test>]
         member _.``create price for product round-trips fields``() =
-            let result =
-                StripeRequest.Prices.Prices.CreateOptions.New(
-                    currency = IsoTypes.IsoCurrencyCode.GBP,
-                    unitAmount = 1500,
-                    product = testProduct.Value.Id
-                )
-                |> StripeRequest.Prices.Prices.Create settings
-                |> Async.RunSynchronously
-            match result with
-            | Ok price ->
-                Assert.That(price.Currency, Is.EqualTo IsoTypes.IsoCurrencyCode.GBP)
-                Assert.That(price.UnitAmount, Is.EqualTo (Some 1500))
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    Prices.CreateOptions.New(
+                        currency = IsoTypes.IsoCurrencyCode.GBP,
+                        unitAmount = 1500,
+                        product = testProduct.Value.Id
+                    )
+                    |> Prices.Create settings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok price ->
+                    Assert.That(price.Currency, Is.EqualTo IsoTypes.IsoCurrencyCode.GBP)
+                    Assert.That(price.UnitAmount, Is.EqualTo (Some 1500))
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> System.Threading.Tasks.Task
 
         [<Test>]
         member _.``retrieve price round-trips by Id``() =
-            let result =
-                asyncResult {
-                    let! created =
-                        StripeRequest.Prices.Prices.CreateOptions.New(
-                            currency = IsoTypes.IsoCurrencyCode.GBP,
-                            unitAmount = 750,
-                            product = testProduct.Value.Id
-                        )
-                        |> StripeRequest.Prices.Prices.Create settings
-                    return!
-                        StripeRequest.Prices.Prices.RetrieveOptions.New(price = created.Id)
-                        |> StripeRequest.Prices.Prices.Retrieve settings
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok retrieved ->
-                Assert.That(retrieved.UnitAmount, Is.EqualTo (Some 750))
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let! created =
+                            Prices.CreateOptions.New(
+                                currency = IsoTypes.IsoCurrencyCode.GBP,
+                                unitAmount = 750,
+                                product = testProduct.Value.Id
+                            )
+                            |> Prices.Create settings
+                        return!
+                            Prices.RetrieveOptions.New(price = created.Id)
+                            |> Prices.Retrieve settings
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok retrieved ->
+                    Assert.That(retrieved.UnitAmount, Is.EqualTo (Some 750))
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> System.Threading.Tasks.Task
 
         [<Test>]
         member _.``list prices filtered by product returns only matching prices``() =
-            let result =
-                StripeRequest.Prices.Prices.ListOptions.New(product = testProduct.Value.Id)
-                |> StripeRequest.Prices.Prices.List settings
-                |> Async.RunSynchronously
-            match result with
-            | Ok list ->
-                Assert.That(list.Data.Length, Is.GreaterThan 0)
-                // Every returned price must belong to our product
-                for price in list.Data do
-                    match price.Product with
-                    | Stripe.Price.PriceProduct'AnyOf.String s ->
-                        Assert.That(s, Is.EqualTo testProduct.Value.Id)
-                    | Stripe.Price.PriceProduct'AnyOf.Product p ->
-                        Assert.That(p.Id, Is.EqualTo testProduct.Value.Id)
-                    | Stripe.Price.PriceProduct'AnyOf.DeletedProduct dp ->
-                        Assert.Fail(sprintf "Unexpected deleted product %s in results" dp.Id)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    Prices.ListOptions.New(product = testProduct.Value.Id)
+                    |> Prices.List settings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok list ->
+                    Assert.That(list.Data.Length, Is.GreaterThan 0)
+                    // Every returned price must belong to our product
+                    for price in list.Data do
+                        match price.Product with
+                        | PriceProduct'AnyOf.String s ->
+                            Assert.That(s, Is.EqualTo testProduct.Value.Id)
+                        | PriceProduct'AnyOf.Product p ->
+                            Assert.That(p.Id, Is.EqualTo testProduct.Value.Id)
+                        | PriceProduct'AnyOf.DeletedProduct dp ->
+                            Assert.Fail($"Unexpected deleted product %s{dp.Id} in results")
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> System.Threading.Tasks.Task
 
         [<Test>]
         member _.``delete product sets Deleted to true``() =
-            let result =
-                asyncResult {
-                    let! p =
-                        StripeRequest.Products.Products.CreateOptions.New(name = "FunStripe delete product test")
-                        |> StripeRequest.Products.Products.Create settings
-                    return!
-                        StripeRequest.Products.Products.DeleteOptions.New(id = p.Id)
-                        |> StripeRequest.Products.Products.Delete settings
-                }
-                |> Async.RunSynchronously
-            match result with
-            | Ok deleted -> Assert.That(deleted.Deleted, Is.True)
-            | Error e -> Assert.Fail(sprintf "Error: %A" e.StripeError.Message)
+            task {
+                let! result =
+                    asyncResult {
+                        let! p =
+                            Products.CreateOptions.New(name = "FunStripe delete product test")
+                            |> Products.Create settings
+                        return!
+                            Products.DeleteOptions.New(id = p.Id)
+                            |> Products.Delete settings
+                    }
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Ok deleted -> Assert.That(deleted.Deleted, Is.True)
+                | Error e -> Assert.Fail($"Error: %A{e.StripeError.Message}")
+            } :> Task
 
     // =========================================================================
     // Q. Error handling integration tests
@@ -1811,44 +1873,50 @@ module Tests =
 
         [<Test>]
         member _.``retrieve non-existent customer returns InvalidRequestError``() =
-            let result =
-                Customers.RetrieveOptions.New(customer = "cus_funstripe_nonexistent_test")
-                |> Customers.Retrieve settings
-                |> Async.RunSynchronously
-            match result with
-            | Error e ->
-                Assert.That(e.StripeError.Type, Is.EqualTo (Some StripeError.ErrorType.InvalidRequestError))
-                Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
-            | Ok _ -> Assert.Fail("Expected an error for non-existent customer")
+            task {
+                let! result =
+                    Customers.RetrieveOptions.New(customer = "cus_funstripe_nonexistent_test")
+                    |> Customers.Retrieve settings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Error e ->
+                    Assert.That(e.StripeError.Type, Is.EqualTo (Some StripeError.ErrorType.InvalidRequestError))
+                    Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
+                | Ok _ -> Assert.Fail("Expected an error for non-existent customer")
+            } :> Task
 
         [<Test>]
         member _.``invalid API key returns an error with a message``() =
             // Stripe may return AuthenticationError or InvalidRequestError depending on key format;
             // either way an error with a non-empty message is guaranteed.
-            let badSettings = RestApi.StripeApiSettings.New(apiKey = "sk_test_invalidkey_funstripe")
-            let result =
-                Customers.RetrieveOptions.New(customer = "cus_any")
-                |> Customers.Retrieve badSettings
-                |> Async.RunSynchronously
-            match result with
-            | Error e ->
-                Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
-            | Ok _ -> Assert.Fail("Expected an error for invalid API key")
+            task {
+                let badSettings = RestApi.StripeApiSettings.New(apiKey = "sk_test_invalidkey_funstripe")
+                let! result =
+                    Customers.RetrieveOptions.New(customer = "cus_any")
+                    |> Customers.Retrieve badSettings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Error e ->
+                    Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
+                | Ok _ -> Assert.Fail("Expected an error for invalid API key")
+            } :> Task
 
         [<Test>]
         member _.``invalid card token returns InvalidRequestError with card token param``() =
-            let result =
-                PaymentMethods.CreateOptions.New(
-                    card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_funstripe_invalid_token")),
-                    type' = PaymentMethods.Create'Type.Card
-                )
-                |> PaymentMethods.Create settings
-                |> Async.RunSynchronously
-            match result with
-            | Error e ->
-                Assert.That(e.StripeError.Type, Is.EqualTo (Some StripeError.ErrorType.InvalidRequestError))
-                Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
-            | Ok _ -> Assert.Fail("Expected an error for invalid card token")
+            task {
+                let! result =
+                    PaymentMethods.CreateOptions.New(
+                        card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_funstripe_invalid_token")),
+                        type' = PaymentMethods.Create'Type.Card
+                    )
+                    |> PaymentMethods.Create settings
+                    |> Async.StartImmediateAsTask
+                match result with
+                | Error e ->
+                    Assert.That(e.StripeError.Type, Is.EqualTo (Some StripeError.ErrorType.InvalidRequestError))
+                    Assert.That(e.StripeError.Message, Is.Not.EqualTo None)
+                | Ok _ -> Assert.Fail("Expected an error for invalid card token")
+            } :> Task
 
         [<Test>]
         member _.``all error responses include a non-empty message``() =
@@ -1885,67 +1953,67 @@ module Tests =
 
         [<Test>]
         member _.``'none_of_these_apply' serializes correctly``() =
-            let v = Stripe.PaymentMethod.AccountBusinessProfileMinorityOwnedBusinessDesignation.NoneOfTheseApply
-            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"none_of_these_apply\"")
+            let v = AccountBusinessProfileMinorityOwnedBusinessDesignation.NoneOfTheseApply
+            Assert.That(JsonSerializer.Serialize(v, opts), Is.EqualTo "\"none_of_these_apply\"")
 
         [<Test>]
         member _.``'none_of_these_apply' deserializes correctly``() =
-            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.AccountBusinessProfileMinorityOwnedBusinessDesignation>("\"none_of_these_apply\"", opts)
-            Assert.That(result, Is.EqualTo Stripe.PaymentMethod.AccountBusinessProfileMinorityOwnedBusinessDesignation.NoneOfTheseApply)
+            let result = JsonSerializer.Deserialize<AccountBusinessProfileMinorityOwnedBusinessDesignation>("\"none_of_these_apply\"", opts)
+            Assert.That(result, Is.EqualTo AccountBusinessProfileMinorityOwnedBusinessDesignation.NoneOfTheseApply)
 
         // ----- Bug 2: digit-suffix values -----
 
         [<Test>]
         member _.``'p24' serializes correctly``() =
-            let v = Stripe.PaymentMethod.SourceType.P24
-            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"p24\"")
+            let v = SourceType.P24
+            Assert.That(JsonSerializer.Serialize(v, opts), Is.EqualTo "\"p24\"")
 
         [<Test>]
         member _.``'p24' deserializes correctly``() =
-            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.SourceType>("\"p24\"", opts)
-            Assert.That(result, Is.EqualTo Stripe.PaymentMethod.SourceType.P24)
+            let result = JsonSerializer.Deserialize<SourceType>("\"p24\"", opts)
+            Assert.That(result, Is.EqualTo SourceType.P24)
 
         [<Test>]
         member _.``'etransfer_pocztowy24' serializes correctly``() =
-            let v = StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank.EtransferPocztowy24
-            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"etransfer_pocztowy24\"")
+            let v = PaymentIntents.Create'PaymentMethodDataP24Bank.EtransferPocztowy24
+            Assert.That(JsonSerializer.Serialize(v, opts), Is.EqualTo "\"etransfer_pocztowy24\"")
 
         [<Test>]
         member _.``'etransfer_pocztowy24' deserializes correctly``() =
-            let result = System.Text.Json.JsonSerializer.Deserialize<StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank>("\"etransfer_pocztowy24\"", opts)
-            Assert.That(result, Is.EqualTo StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank.EtransferPocztowy24)
+            let result = JsonSerializer.Deserialize<PaymentIntents.Create'PaymentMethodDataP24Bank>("\"etransfer_pocztowy24\"", opts)
+            Assert.That(result, Is.EqualTo PaymentIntents.Create'PaymentMethodDataP24Bank.EtransferPocztowy24)
 
         [<Test>]
         member _.``'santander_przelew24' serializes correctly``() =
-            let v = StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank.SantanderPrzelew24
-            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"santander_przelew24\"")
+            let v = PaymentIntents.Create'PaymentMethodDataP24Bank.SantanderPrzelew24
+            Assert.That(JsonSerializer.Serialize(v, opts), Is.EqualTo "\"santander_przelew24\"")
 
         [<Test>]
         member _.``'santander_przelew24' deserializes correctly``() =
-            let result = System.Text.Json.JsonSerializer.Deserialize<StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank>("\"santander_przelew24\"", opts)
-            Assert.That(result, Is.EqualTo StripeRequest.Payment.PaymentIntents.Create'PaymentMethodDataP24Bank.SantanderPrzelew24)
+            let result = JsonSerializer.Deserialize<PaymentIntents.Create'PaymentMethodDataP24Bank>("\"santander_przelew24\"", opts)
+            Assert.That(result, Is.EqualTo PaymentIntents.Create'PaymentMethodDataP24Bank.SantanderPrzelew24)
 
         // ----- Bug 3: single-letter-segment values -----
 
         [<Test>]
         member _.``'heating_plumbing_a_c' serializes correctly``() =
-            let v = Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories.HeatingPlumbingAC
-            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"heating_plumbing_a_c\"")
+            let v = IssuingCardAuthorizationControlsAllowedCategories.HeatingPlumbingAC
+            Assert.That(JsonSerializer.Serialize(v, opts), Is.EqualTo "\"heating_plumbing_a_c\"")
 
         [<Test>]
         member _.``'heating_plumbing_a_c' deserializes correctly``() =
-            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories>("\"heating_plumbing_a_c\"", opts)
-            Assert.That(result, Is.EqualTo Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories.HeatingPlumbingAC)
+            let result = JsonSerializer.Deserialize<IssuingCardAuthorizationControlsAllowedCategories>("\"heating_plumbing_a_c\"", opts)
+            Assert.That(result, Is.EqualTo IssuingCardAuthorizationControlsAllowedCategories.HeatingPlumbingAC)
 
         [<Test>]
         member _.``'t_ui_travel_germany' serializes correctly``() =
-            let v = Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories.TUiTravelGermany
-            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"t_ui_travel_germany\"")
+            let v = IssuingCardAuthorizationControlsAllowedCategories.TUiTravelGermany
+            Assert.That(JsonSerializer.Serialize(v, opts), Is.EqualTo "\"t_ui_travel_germany\"")
 
         [<Test>]
         member _.``'t_ui_travel_germany' deserializes correctly``() =
-            let result = System.Text.Json.JsonSerializer.Deserialize<Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories>("\"t_ui_travel_germany\"", opts)
-            Assert.That(result, Is.EqualTo Stripe.IssuingCard.IssuingCardAuthorizationControlsAllowedCategories.TUiTravelGermany)
+            let result = JsonSerializer.Deserialize<IssuingCardAuthorizationControlsAllowedCategories>("\"t_ui_travel_germany\"", opts)
+            Assert.That(result, Is.EqualTo IssuingCardAuthorizationControlsAllowedCategories.TUiTravelGermany)
 
     // =========================================================================
     // O. Regression tests: list form-encoding, webhook events, unknown enums
@@ -1964,17 +2032,17 @@ module Tests =
         [<Test>]
         member _.``list of records produces nested indexed bracket keys``() =
             let checkout =
-                StripeRequest.Checkout.CheckoutSessions.CreateOptions.New(
+                CheckoutSessions.CreateOptions.New(
                     lineItems = [
-                        StripeRequest.Checkout.CheckoutSessions.Create'LineItems.New(
+                        CheckoutSessions.Create'LineItems.New(
                             quantity = 2,
-                            priceData = StripeRequest.Checkout.CheckoutSessions.Create'LineItemsPriceData.New(
+                            priceData = CheckoutSessions.Create'LineItemsPriceData.New(
                                 currency = IsoCurrencyCode.USD,
                                 unitAmount = 500
                             )
                         )
                     ],
-                    mode = StripeRequest.Checkout.CheckoutSessions.Create'Mode.Payment,
+                    mode = CheckoutSessions.Create'Mode.Payment,
                     successUrl = "https://example.com/success"
                 )
             let pairs = checkout |> serialise |> Seq.toList
@@ -1986,10 +2054,10 @@ module Tests =
         [<Test>]
         member _.``list of union values serialises snake-cased wire names``() =
             let checkout =
-                StripeRequest.Checkout.CheckoutSessions.CreateOptions.New(
+                CheckoutSessions.CreateOptions.New(
                     paymentMethodTypes = [
-                        StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodTypes.Card
-                        StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodTypes.AcssDebit
+                        CheckoutSessions.Create'PaymentMethodTypes.Card
+                        CheckoutSessions.Create'PaymentMethodTypes.AcssDebit
                     ]
                 )
             let pairs = checkout |> serialise |> Seq.toList
@@ -2048,18 +2116,18 @@ module Tests =
 
         [<Test>]
         member _.``known event type still deserialises to its named case``() =
-            let result = System.Text.Json.JsonSerializer.Deserialize<EventType>("\"checkout.session.completed\"", opts)
+            let result = JsonSerializer.Deserialize<EventType>("\"checkout.session.completed\"", opts)
             Assert.That(result, Is.EqualTo EventType.CheckoutSessionCompleted)
 
         [<Test>]
         member _.``unknown event type deserialises to the catch-all case``() =
-            let result = System.Text.Json.JsonSerializer.Deserialize<EventType>("\"some.newly.added_event\"", opts)
+            let result = JsonSerializer.Deserialize<EventType>("\"some.newly.added_event\"", opts)
             Assert.That(result, Is.EqualTo (EventType.UnknownEnumValue "some.newly.added_event"))
 
         [<Test>]
         member _.``catch-all case serialises back to its raw string``() =
             let v = EventType.UnknownEnumValue "some.newly.added_event"
-            Assert.That(System.Text.Json.JsonSerializer.Serialize(v, opts), Is.EqualTo "\"some.newly.added_event\"")
+            Assert.That(JsonSerializer.Serialize(v, opts), Is.EqualTo "\"some.newly.added_event\"")
 
         [<Test>]
         member _.``unknown error type deserialises to the catch-all case``() =
@@ -2078,6 +2146,6 @@ module Tests =
         member _.``enums without the catch-all still reject unknown values``() =
             let json = "\"brand_new_source\""
             Assert.Throws<Exception>(fun () ->
-                System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.SourceType>(json, opts) |> ignore
+                JsonSerializer.Deserialize<SourceType>(json, opts) |> ignore
             ) |> ignore
 

@@ -160,12 +160,12 @@ module BalanceSettings =
     /// Related guide: <a href="/connect/authentication">Making API calls for connected accounts</a></p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
-        $"/v1/balance_settings"
+        "/v1/balance_settings"
         |> RestApi.getAsync<BalanceSettings> settings qs
 
     ///<p>Updates balance settings for a given connected account.
     /// Related guide: <a href="/connect/authentication">Making API calls for connected accounts</a></p>
     let Update settings (options: UpdateOptions) =
-        $"/v1/balance_settings"
+        "/v1/balance_settings"
         |> RestApi.postAsync<_, BalanceSettings> settings (Map.empty) options
 

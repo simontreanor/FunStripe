@@ -56,7 +56,7 @@ module PaymentAttemptRecords =
     ///<p>List all the Payment Attempt Records attached to the specified Payment Record.</p>
     let List settings (options: ListOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_record", options.PaymentRecord |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/payment_attempt_records"
+        "/v1/payment_attempt_records"
         |> RestApi.getAsync<StripeList<PaymentAttemptRecord>> settings qs
 
     ///<p>Retrieves a Payment Attempt Record with the given ID</p>
@@ -8362,7 +8362,7 @@ module PaymentIntents =
     ///<p>Returns a list of PaymentIntents.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/payment_intents"
+        "/v1/payment_intents"
         |> RestApi.getAsync<StripeList<PaymentIntent>> settings qs
 
     ///<p>Creates a PaymentIntent object.</p>
@@ -8374,7 +8374,7 @@ module PaymentIntents =
     ///available in the <a href="/docs/api/payment_intents/confirm">confirm API</a> when you supply
     ///<code>confirm=true</code>.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/payment_intents"
+        "/v1/payment_intents"
         |> RestApi.postAsync<_, PaymentIntent> settings (Map.empty) options
 
     ///<p>Retrieves the details of a PaymentIntent that has previously been created. </p>
@@ -8428,7 +8428,7 @@ module PaymentIntentsSearch =
     ///to an hour behind during outages. Search functionality is not available to merchants in India.</p>
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
-        $"/v1/payment_intents/search"
+        "/v1/payment_intents/search"
         |> RestApi.getAsync<StripeList<PaymentIntent>> settings qs
 
 module PaymentIntentsAmountDetailsLineItems =
@@ -16298,12 +16298,12 @@ module PaymentLinks =
     ///<p>Returns a list of your payment links.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/payment_links"
+        "/v1/payment_links"
         |> RestApi.getAsync<StripeList<PaymentLink>> settings qs
 
     ///<p>Creates a payment link.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/payment_links"
+        "/v1/payment_links"
         |> RestApi.postAsync<_, PaymentLink> settings (Map.empty) options
 
     ///<p>Retrieve a payment link.</p>
@@ -17534,13 +17534,13 @@ module PaymentMethods =
     ///<p>Returns a list of all PaymentMethods.</p>
     let List settings (options: ListOptions) =
         let qs = [("allow_redisplay", options.AllowRedisplay |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box)] |> Map.ofList
-        $"/v1/payment_methods"
+        "/v1/payment_methods"
         |> RestApi.getAsync<StripeList<PaymentMethod>> settings qs
 
     ///<p>Creates a PaymentMethod object. Read the <a href="/docs/stripe-js/reference#stripe-create-payment-method">Stripe.js reference</a> to learn how to create PaymentMethods via Stripe.js.</p>
     ///<p>Instead of creating a PaymentMethod directly, we recommend using the <a href="/docs/payments/accept-a-payment">PaymentIntents</a> API to accept a payment immediately or the <a href="/docs/payments/save-and-reuse">SetupIntent</a> API to collect payment method details ahead of a future payment.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/payment_methods"
+        "/v1/payment_methods"
         |> RestApi.postAsync<_, PaymentMethod> settings (Map.empty) options
 
     ///<p>Retrieves a PaymentMethod object attached to the StripeAccount. To retrieve a payment method attached to a Customer, you should use <a href="/docs/api/payment_methods/customer">Retrieve a Customer’s PaymentMethods</a></p>
@@ -17673,7 +17673,7 @@ module PaymentRecords =
     ///<p>List all the Payment Records for a given merchant.</p>
     let List settings (options: ListOptions) =
         let qs = [("created_after", options.CreatedAfter |> box); ("created_before", options.CreatedBefore |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/payment_records"
+        "/v1/payment_records"
         |> RestApi.getAsync<StripeList<PaymentRecord>> settings qs
 
     ///<p>Retrieves a Payment Record with the given ID</p>
@@ -18013,7 +18013,7 @@ module PaymentRecordsReportPayment =
     /// initialized and later report updates through the other report_* methods, or report Payment
     /// Records in a terminal state directly, through this method.</p>
     let ReportPayment settings (options: ReportPaymentOptions) =
-        $"/v1/payment_records/report_payment"
+        "/v1/payment_records/report_payment"
         |> RestApi.postAsync<_, PaymentRecord> settings (Map.empty) options
 
 module PaymentRecordsReportPaymentAttempt =

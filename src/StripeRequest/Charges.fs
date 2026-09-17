@@ -388,14 +388,14 @@ module Charges =
     ///<p>Returns a list of charges you’ve previously created. The charges are returned in sorted order, with the most recent charges appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_intent", options.PaymentIntent |> box); ("starting_after", options.StartingAfter |> box); ("transfer_group", options.TransferGroup |> box)] |> Map.ofList
-        $"/v1/charges"
+        "/v1/charges"
         |> RestApi.getAsync<StripeList<Charge>> settings qs
 
     ///<p>This method is no longer recommended—use the <a href="/docs/api/payment_intents">Payment Intents API</a>
     ///to initiate a new payment instead. Confirmation of the PaymentIntent creates the <code>Charge</code>
     ///object used to request payment.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/charges"
+        "/v1/charges"
         |> RestApi.postAsync<_, Charge> settings (Map.empty) options
 
     ///<p>Retrieves the details of a charge that has previously been created. Supply the unique charge ID that was returned from your previous request, and Stripe will return the corresponding charge information. The same information is returned when creating or refunding the charge.</p>
@@ -442,7 +442,7 @@ module ChargesSearch =
     ///to an hour behind during outages. Search functionality is not available to merchants in India.</p>
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
-        $"/v1/charges/search"
+        "/v1/charges/search"
         |> RestApi.getAsync<StripeList<Charge>> settings qs
 
 module ChargesCapture =

@@ -1013,7 +1013,7 @@ module TestHelpersConfirmationTokens =
 
     ///<p>Creates a test mode Confirmation Token server side for your integration tests.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/test_helpers/confirmation_tokens"
+        "/v1/test_helpers/confirmation_tokens"
         |> RestApi.postAsync<_, ConfirmationToken> settings (Map.empty) options
 
 module TestHelpersCustomersFundCashBalance =
@@ -1893,7 +1893,7 @@ module TestHelpersIssuingAuthorizations =
 
     ///<p>Create a test-mode authorization.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/test_helpers/issuing/authorizations"
+        "/v1/test_helpers/issuing/authorizations"
         |> RestApi.postAsync<_, IssuingAuthorization> settings (Map.empty) options
 
 module TestHelpersIssuingAuthorizationsCapture =
@@ -3460,7 +3460,7 @@ module TestHelpersIssuingTransactionsCreateForceCapture =
 
     ///<p>Allows the user to capture an arbitrary amount, also known as a forced capture.</p>
     let CreateForceCapture settings (options: CreateForceCaptureOptions) =
-        $"/v1/test_helpers/issuing/transactions/create_force_capture"
+        "/v1/test_helpers/issuing/transactions/create_force_capture"
         |> RestApi.postAsync<_, IssuingTransaction> settings (Map.empty) options
 
 module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
@@ -4146,7 +4146,7 @@ module TestHelpersIssuingTransactionsCreateUnlinkedRefund =
 
     ///<p>Allows the user to refund an arbitrary amount, also known as a unlinked refund.</p>
     let CreateUnlinkedRefund settings (options: CreateUnlinkedRefundOptions) =
-        $"/v1/test_helpers/issuing/transactions/create_unlinked_refund"
+        "/v1/test_helpers/issuing/transactions/create_unlinked_refund"
         |> RestApi.postAsync<_, IssuingTransaction> settings (Map.empty) options
 
 module TestHelpersIssuingTransactionsRefund =
@@ -4433,12 +4433,12 @@ module TestHelpersTestClocks =
     ///<p>Returns a list of your test clocks.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/test_helpers/test_clocks"
+        "/v1/test_helpers/test_clocks"
         |> RestApi.getAsync<StripeList<TestHelpersTestClock>> settings qs
 
     ///<p>Creates a new test clock that can be attached to new customers and quotes.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/test_helpers/test_clocks"
+        "/v1/test_helpers/test_clocks"
         |> RestApi.postAsync<_, TestHelpersTestClock> settings (Map.empty) options
 
     ///<p>Deletes a test clock.</p>
@@ -5033,7 +5033,7 @@ module TestHelpersTreasuryReceivedCredits =
 
     ///<p>Use this endpoint to simulate a test mode ReceivedCredit initiated by a third party. In live mode, you can’t directly create ReceivedCredits initiated by third parties.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/test_helpers/treasury/received_credits"
+        "/v1/test_helpers/treasury/received_credits"
         |> RestApi.postAsync<_, TreasuryReceivedCredit> settings (Map.empty) options
 
 module TestHelpersTreasuryReceivedDebits =
@@ -5119,6 +5119,6 @@ module TestHelpersTreasuryReceivedDebits =
 
     ///<p>Use this endpoint to simulate a test mode ReceivedDebit initiated by a third party. In live mode, you can’t directly create ReceivedDebits initiated by third parties.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/test_helpers/treasury/received_debits"
+        "/v1/test_helpers/treasury/received_debits"
         |> RestApi.postAsync<_, TreasuryReceivedDebit> settings (Map.empty) options
 

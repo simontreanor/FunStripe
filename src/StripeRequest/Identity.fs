@@ -68,7 +68,7 @@ module IdentityVerificationReports =
     ///<p>List all verification reports.</p>
     let List settings (options: ListOptions) =
         let qs = [("client_reference_id", options.ClientReferenceId |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box); ("verification_session", options.VerificationSession |> box)] |> Map.ofList
-        $"/v1/identity/verification_reports"
+        "/v1/identity/verification_reports"
         |> RestApi.getAsync<StripeList<IdentityVerificationReport>> settings qs
 
     ///<p>Retrieves an existing VerificationReport</p>
@@ -373,7 +373,7 @@ module IdentityVerificationSessions =
     ///<p>Returns a list of VerificationSessions</p>
     let List settings (options: ListOptions) =
         let qs = [("client_reference_id", options.ClientReferenceId |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("related_customer", options.RelatedCustomer |> box); ("related_customer_account", options.RelatedCustomerAccount |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/identity/verification_sessions"
+        "/v1/identity/verification_sessions"
         |> RestApi.getAsync<StripeList<IdentityVerificationSession>> settings qs
 
     ///<p>Creates a VerificationSession object.</p>
@@ -381,7 +381,7 @@ module IdentityVerificationSessions =
     ///<p>If your API key is in test mode, verification checks won’t actually process, though everything else will occur as if in live mode.</p>
     ///<p>Related guide: <a href="/docs/identity/verify-identity-documents">Verify your users’ identity documents</a></p>
     let Create settings (options: CreateOptions) =
-        $"/v1/identity/verification_sessions"
+        "/v1/identity/verification_sessions"
         |> RestApi.postAsync<_, IdentityVerificationSession> settings (Map.empty) options
 
     ///<p>Retrieves the details of a VerificationSession that was previously created.</p>

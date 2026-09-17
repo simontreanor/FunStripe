@@ -139,12 +139,12 @@ module Transfers =
     ///<p>Returns a list of existing transfers sent to connected accounts. The transfers are returned in sorted order, with the most recently created transfers appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("destination", options.Destination |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("transfer_group", options.TransferGroup |> box)] |> Map.ofList
-        $"/v1/transfers"
+        "/v1/transfers"
         |> RestApi.getAsync<StripeList<Transfer>> settings qs
 
     ///<p>To send funds from your Stripe account to a connected account, you create a new transfer object. Your <a href="#balance">Stripe balance</a> must be able to cover the transfer amount, or you’ll receive an “Insufficient Funds” error.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/transfers"
+        "/v1/transfers"
         |> RestApi.postAsync<_, Transfer> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing transfer. Supply the unique transfer ID from either a transfer creation request or the transfer list, and Stripe will return the corresponding transfer information.</p>

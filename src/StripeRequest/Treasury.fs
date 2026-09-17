@@ -85,12 +85,12 @@ module TreasuryCreditReversals =
     ///<p>Returns a list of CreditReversals.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("financial_account", options.FinancialAccount |> box); ("limit", options.Limit |> box); ("received_credit", options.ReceivedCredit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/treasury/credit_reversals"
+        "/v1/treasury/credit_reversals"
         |> RestApi.getAsync<StripeList<TreasuryCreditReversal>> settings qs
 
     ///<p>Reverses a ReceivedCredit and creates a CreditReversal object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/treasury/credit_reversals"
+        "/v1/treasury/credit_reversals"
         |> RestApi.postAsync<_, TreasuryCreditReversal> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing CreditReversal by passing the unique CreditReversal ID from either the CreditReversal creation request or CreditReversal list</p>
@@ -182,12 +182,12 @@ module TreasuryDebitReversals =
     ///<p>Returns a list of DebitReversals.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("financial_account", options.FinancialAccount |> box); ("limit", options.Limit |> box); ("received_debit", options.ReceivedDebit |> box); ("resolution", options.Resolution |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/treasury/debit_reversals"
+        "/v1/treasury/debit_reversals"
         |> RestApi.getAsync<StripeList<TreasuryDebitReversal>> settings qs
 
     ///<p>Reverses a ReceivedDebit and creates a DebitReversal object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/treasury/debit_reversals"
+        "/v1/treasury/debit_reversals"
         |> RestApi.postAsync<_, TreasuryDebitReversal> settings (Map.empty) options
 
     ///<p>Retrieves a DebitReversal object.</p>
@@ -822,12 +822,12 @@ module TreasuryFinancialAccounts =
     ///<p>Returns a list of FinancialAccounts.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/treasury/financial_accounts"
+        "/v1/treasury/financial_accounts"
         |> RestApi.getAsync<StripeList<TreasuryFinancialAccount>> settings qs
 
     ///<p>Creates a new FinancialAccount. Each connected account can have up to three FinancialAccounts by default.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/treasury/financial_accounts"
+        "/v1/treasury/financial_accounts"
         |> RestApi.postAsync<_, TreasuryFinancialAccount> settings (Map.empty) options
 
     ///<p>Retrieves the details of a FinancialAccount.</p>
@@ -1238,12 +1238,12 @@ module TreasuryInboundTransfers =
     ///<p>Returns a list of InboundTransfers sent from the specified FinancialAccount.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("financial_account", options.FinancialAccount |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/treasury/inbound_transfers"
+        "/v1/treasury/inbound_transfers"
         |> RestApi.getAsync<StripeList<TreasuryInboundTransfer>> settings qs
 
     ///<p>Creates an InboundTransfer.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/treasury/inbound_transfers"
+        "/v1/treasury/inbound_transfers"
         |> RestApi.postAsync<_, TreasuryInboundTransfer> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing InboundTransfer.</p>
@@ -1569,12 +1569,12 @@ module TreasuryOutboundPayments =
     ///<p>Returns a list of OutboundPayments sent from the specified FinancialAccount.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("financial_account", options.FinancialAccount |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/treasury/outbound_payments"
+        "/v1/treasury/outbound_payments"
         |> RestApi.getAsync<StripeList<TreasuryOutboundPayment>> settings qs
 
     ///<p>Creates an OutboundPayment.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/treasury/outbound_payments"
+        "/v1/treasury/outbound_payments"
         |> RestApi.postAsync<_, TreasuryOutboundPayment> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing OutboundPayment by passing the unique OutboundPayment ID from either the OutboundPayment creation request or OutboundPayment list.</p>
@@ -1758,12 +1758,12 @@ module TreasuryOutboundTransfers =
     ///<p>Returns a list of OutboundTransfers sent from the specified FinancialAccount.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("financial_account", options.FinancialAccount |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/treasury/outbound_transfers"
+        "/v1/treasury/outbound_transfers"
         |> RestApi.getAsync<StripeList<TreasuryOutboundTransfer>> settings qs
 
     ///<p>Creates an OutboundTransfer.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/treasury/outbound_transfers"
+        "/v1/treasury/outbound_transfers"
         |> RestApi.postAsync<_, TreasuryOutboundTransfer> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing OutboundTransfer by passing the unique OutboundTransfer ID from either the OutboundTransfer creation request or OutboundTransfer list.</p>
@@ -1853,7 +1853,7 @@ module TreasuryReceivedCredits =
     ///<p>Returns a list of ReceivedCredits.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("financial_account", options.FinancialAccount |> box); ("limit", options.Limit |> box); ("linked_flows", options.LinkedFlows |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/treasury/received_credits"
+        "/v1/treasury/received_credits"
         |> RestApi.getAsync<StripeList<TreasuryReceivedCredit>> settings qs
 
     ///<p>Retrieves the details of an existing ReceivedCredit by passing the unique ReceivedCredit ID from the ReceivedCredit list.</p>
@@ -1916,7 +1916,7 @@ module TreasuryReceivedDebits =
     ///<p>Returns a list of ReceivedDebits.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("financial_account", options.FinancialAccount |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/treasury/received_debits"
+        "/v1/treasury/received_debits"
         |> RestApi.getAsync<StripeList<TreasuryReceivedDebit>> settings qs
 
     ///<p>Retrieves the details of an existing ReceivedDebit by passing the unique ReceivedDebit ID from the ReceivedDebit list</p>
@@ -1990,7 +1990,7 @@ module TreasuryTransactionEntries =
     ///<p>Retrieves a list of TransactionEntry objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("effective_at", options.EffectiveAt |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("financial_account", options.FinancialAccount |> box); ("limit", options.Limit |> box); ("order_by", options.OrderBy |> box); ("starting_after", options.StartingAfter |> box); ("transaction", options.Transaction |> box)] |> Map.ofList
-        $"/v1/treasury/transaction_entries"
+        "/v1/treasury/transaction_entries"
         |> RestApi.getAsync<StripeList<TreasuryTransactionEntry>> settings qs
 
     ///<p>Retrieves a TransactionEntry object.</p>
@@ -2065,7 +2065,7 @@ module TreasuryTransactions =
     ///<p>Retrieves a list of Transaction objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("financial_account", options.FinancialAccount |> box); ("limit", options.Limit |> box); ("order_by", options.OrderBy |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("status_transitions", options.StatusTransitions |> box)] |> Map.ofList
-        $"/v1/treasury/transactions"
+        "/v1/treasury/transactions"
         |> RestApi.getAsync<StripeList<TreasuryTransaction>> settings qs
 
     ///<p>Retrieves the details of an existing Transaction.</p>

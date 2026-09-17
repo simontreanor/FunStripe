@@ -86,6 +86,7 @@ module ModelParsing =
             s
 
     ///Regular expression to match enumerations specified in the description
+    [<Literal>]
     let enumRegex = @"`([\w "".]+)`(?:(?: \([^)]+\))?,? `([\w "".]+)`)*(?: \([^)]+\))?,? (?:and|or) (?:`([\w ""\.]+)`|null)\."
 
     ///Types that are non-Stripe types
@@ -98,7 +99,7 @@ module ModelParsing =
             m.Groups.Cast<Group>()
             |> Seq.skip 1
             |> Seq.collect(fun g -> g.Captures.Cast<Capture>())
-            |> Seq.map(fun c -> c.Value.Trim('"'))
+            |> Seq.map(fun c -> c.Value.Trim '"')
             |> Some
         else
             None

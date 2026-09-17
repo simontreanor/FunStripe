@@ -32,7 +32,7 @@ module Account =
     ///<p>Retrieves the details of an account.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
-        $"/v1/account"
+        "/v1/account"
         |> RestApi.getAsync<Account> settings qs
 
 module AccountLinks =
@@ -110,7 +110,7 @@ module AccountLinks =
 
     ///<p>Creates an AccountLink object that includes a single-use Stripe URL that the platform can redirect their user to in order to take them through the Connect Onboarding flow.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/account_links"
+        "/v1/account_links"
         |> RestApi.postAsync<_, AccountLink> settings (Map.empty) options
 
 module AccountSessions =
@@ -956,7 +956,7 @@ module AccountSessions =
 
     ///<p>Creates a AccountSession object that includes a single-use token that the platform can use on their front-end to grant client-side API access.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/account_sessions"
+        "/v1/account_sessions"
         |> RestApi.postAsync<_, AccountSession> settings (Map.empty) options
 
 module BillingAlerts =
@@ -1086,12 +1086,12 @@ module BillingAlerts =
     ///<p>Lists billing active and inactive alerts</p>
     let List settings (options: ListOptions) =
         let qs = [("alert_type", options.AlertType |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("meter", options.Meter |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/billing/alerts"
+        "/v1/billing/alerts"
         |> RestApi.getAsync<StripeList<BillingAlert>> settings qs
 
     ///<p>Creates a billing alert</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/billing/alerts"
+        "/v1/billing/alerts"
         |> RestApi.postAsync<_, BillingAlert> settings (Map.empty) options
 
     ///<p>Retrieves a billing alert given an ID</p>
@@ -1199,7 +1199,7 @@ module BillingCreditBalanceSummary =
     ///<p>Retrieves the credit balance summary for a customer.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("expand", options.Expand |> box); ("filter", options.Filter |> box)] |> Map.ofList
-        $"/v1/billing/credit_balance_summary"
+        "/v1/billing/credit_balance_summary"
         |> RestApi.getAsync<BillingCreditBalanceSummary> settings qs
 
 module BillingCreditBalanceTransactions =
@@ -1261,7 +1261,7 @@ module BillingCreditBalanceTransactions =
     ///<p>Retrieve a list of credit balance transactions.</p>
     let List settings (options: ListOptions) =
         let qs = [("credit_grant", options.CreditGrant |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/billing/credit_balance_transactions"
+        "/v1/billing/credit_balance_transactions"
         |> RestApi.getAsync<StripeList<BillingCreditBalanceTransaction>> settings qs
 
     ///<p>Retrieves a credit balance transaction.</p>
@@ -1488,12 +1488,12 @@ module BillingCreditGrants =
     ///<p>Retrieve a list of credit grants.</p>
     let List settings (options: ListOptions) =
         let qs = [("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/billing/credit_grants"
+        "/v1/billing/credit_grants"
         |> RestApi.getAsync<StripeList<BillingCreditGrant>> settings qs
 
     ///<p>Creates a credit grant.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/billing/credit_grants"
+        "/v1/billing/credit_grants"
         |> RestApi.postAsync<_, BillingCreditGrant> settings (Map.empty) options
 
     ///<p>Retrieves a credit grant.</p>
@@ -1640,12 +1640,12 @@ module BillingFeedbackOptions =
     ///<p>An API method for listing the feedback options model</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/billing/feedback_options"
+        "/v1/billing/feedback_options"
         |> RestApi.getAsync<StripeList<BillingFeedbackOption>> settings qs
 
     ///<p>Creates a new feedback option.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/billing/feedback_options"
+        "/v1/billing/feedback_options"
         |> RestApi.postAsync<_, BillingFeedbackOption> settings (Map.empty) options
 
     ///<p>Retrieves a feedback options object given an ID.</p>
@@ -1726,7 +1726,7 @@ module BillingMeterEventAdjustments =
 
     ///<p>Creates a billing meter event adjustment.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/billing/meter_event_adjustments"
+        "/v1/billing/meter_event_adjustments"
         |> RestApi.postAsync<_, BillingMeterEventAdjustment> settings (Map.empty) options
 
 module BillingMeterEvents =
@@ -1762,7 +1762,7 @@ module BillingMeterEvents =
 
     ///<p>Creates a billing meter event.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/billing/meter_events"
+        "/v1/billing/meter_events"
         |> RestApi.postAsync<_, BillingMeterEvent> settings (Map.empty) options
 
 module BillingMeters =
@@ -1926,12 +1926,12 @@ module BillingMeters =
     ///<p>Retrieve a list of billing meters.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/billing/meters"
+        "/v1/billing/meters"
         |> RestApi.getAsync<StripeList<BillingMeter>> settings qs
 
     ///<p>Creates a billing meter.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/billing/meters"
+        "/v1/billing/meters"
         |> RestApi.postAsync<_, BillingMeter> settings (Map.empty) options
 
     ///<p>Retrieves a billing meter given an ID.</p>
@@ -2358,7 +2358,7 @@ module CustomerSessions =
 
     ///<p>Creates a Customer Session object that includes a single-use client secret that you can use on your front-end to grant client-side API access for certain customer resources.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/customer_sessions"
+        "/v1/customer_sessions"
         |> RestApi.postAsync<_, CustomerSession> settings (Map.empty) options
 
 module FinancialConnectionsAccounts =
@@ -2415,7 +2415,7 @@ module FinancialConnectionsAccounts =
     ///<p>Returns a list of Financial Connections <code>Account</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("account_holder", options.AccountHolder |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("session", options.Session |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/financial_connections/accounts"
+        "/v1/financial_connections/accounts"
         |> RestApi.getAsync<StripeList<FinancialConnectionsAccount>> settings qs
 
     ///<p>Retrieves the details of an Financial Connections <code>Account</code>.</p>
@@ -2742,7 +2742,7 @@ module FinancialConnectionsSessions =
 
     ///<p>To launch the Financial Connections authorization flow, create a <code>Session</code>. The session’s <code>client_secret</code> can be used to launch the flow using Stripe.js.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/financial_connections/sessions"
+        "/v1/financial_connections/sessions"
         |> RestApi.postAsync<_, FinancialConnectionsSession> settings (Map.empty) options
 
     ///<p>Retrieves the details of a Financial Connections <code>Session</code></p>
@@ -2809,7 +2809,7 @@ module FinancialConnectionsTransactions =
     ///<p>Returns a list of Financial Connections <code>Transaction</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("account", options.Account |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("transacted_at", options.TransactedAt |> box); ("transaction_refresh", options.TransactionRefresh |> box)] |> Map.ofList
-        $"/v1/financial_connections/transactions"
+        "/v1/financial_connections/transactions"
         |> RestApi.getAsync<StripeList<FinancialConnectionsTransaction>> settings qs
 
     ///<p>Retrieves the details of a Financial Connections <code>Transaction</code></p>
@@ -2880,7 +2880,7 @@ module InvoicePayments =
     ///<p>When retrieving an invoice, there is an includable payments property containing the first handful of those items. There is also a URL where you can retrieve the full (paginated) list of payments.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("invoice", options.Invoice |> box); ("limit", options.Limit |> box); ("payment", options.Payment |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/invoice_payments"
+        "/v1/invoice_payments"
         |> RestApi.getAsync<StripeList<InvoicePayment>> settings qs
 
     ///<p>Retrieves the invoice payment with the given ID.</p>
@@ -2941,7 +2941,7 @@ module InvoiceRenderingTemplates =
     ///<p>List all templates, ordered by creation date, with the most recently created template appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/invoice_rendering_templates"
+        "/v1/invoice_rendering_templates"
         |> RestApi.getAsync<StripeList<InvoiceRenderingTemplate>> settings qs
 
     ///<p>Retrieves an invoice rendering template with the given ID. It by default returns the latest version of the template. Optionally, specify a version to see previous versions.</p>
@@ -7295,12 +7295,12 @@ module PaymentMethodConfigurations =
     ///<p>List payment method configurations</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("application", options.Application |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/payment_method_configurations"
+        "/v1/payment_method_configurations"
         |> RestApi.getAsync<StripeList<PaymentMethodConfiguration>> settings qs
 
     ///<p>Creates a payment method configuration</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/payment_method_configurations"
+        "/v1/payment_method_configurations"
         |> RestApi.postAsync<_, PaymentMethodConfiguration> settings (Map.empty) options
 
     ///<p>Retrieve payment method configuration</p>
@@ -7409,12 +7409,12 @@ module PaymentMethodDomains =
     ///<p>Lists the details of existing payment method domains.</p>
     let List settings (options: ListOptions) =
         let qs = [("domain_name", options.DomainName |> box); ("enabled", options.Enabled |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/payment_method_domains"
+        "/v1/payment_method_domains"
         |> RestApi.getAsync<StripeList<PaymentMethodDomain>> settings qs
 
     ///<p>Creates a payment method domain.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/payment_method_domains"
+        "/v1/payment_method_domains"
         |> RestApi.postAsync<_, PaymentMethodDomain> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing payment method domain.</p>
@@ -7880,12 +7880,12 @@ module SubscriptionItems =
     ///<p>Returns a list of your subscription items for a given subscription.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("subscription", options.Subscription |> box)] |> Map.ofList
-        $"/v1/subscription_items"
+        "/v1/subscription_items"
         |> RestApi.getAsync<StripeList<SubscriptionItem>> settings qs
 
     ///<p>Adds a new item to an existing subscription. No existing items will be changed or replaced.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/subscription_items"
+        "/v1/subscription_items"
         |> RestApi.postAsync<_, SubscriptionItem> settings (Map.empty) options
 
     ///<p>Deletes an item from the subscription. Removing a subscription item from a subscription will not cancel the subscription.</p>
@@ -9696,12 +9696,12 @@ module SubscriptionSchedules =
     ///<p>Retrieves the list of your subscription schedules.</p>
     let List settings (options: ListOptions) =
         let qs = [("canceled_at", options.CanceledAt |> box); ("completed_at", options.CompletedAt |> box); ("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("released_at", options.ReleasedAt |> box); ("scheduled", options.Scheduled |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/subscription_schedules"
+        "/v1/subscription_schedules"
         |> RestApi.getAsync<StripeList<SubscriptionSchedule>> settings qs
 
     ///<p>Creates a new subscription schedule object. Each customer can have up to 500 active or scheduled subscriptions.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/subscription_schedules"
+        "/v1/subscription_schedules"
         |> RestApi.postAsync<_, SubscriptionSchedule> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing subscription schedule. You only need to supply the unique subscription schedule identifier that was returned upon subscription schedule creation.</p>

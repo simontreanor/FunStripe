@@ -5473,7 +5473,7 @@ module Accounts =
     ///<p>Returns a list of accounts connected to your platform via <a href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/accounts"
+        "/v1/accounts"
         |> RestApi.getAsync<StripeList<Account>> settings qs
 
     ///<p>With <a href="/docs/connect">Connect</a>, you can create Stripe accounts for your users.
@@ -5482,7 +5482,7 @@ module Accounts =
     ///creating the account. Connect Onboarding won’t ask for the prefilled information during account onboarding.
     ///You can prefill any information on the account.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/accounts"
+        "/v1/accounts"
         |> RestApi.postAsync<_, Account> settings (Map.empty) options
 
     ///<p>With <a href="/connect">Connect</a>, you can delete accounts you manage.</p>

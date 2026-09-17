@@ -800,12 +800,12 @@ module WebhookEndpoints =
     ///<p>Returns a list of your webhook endpoints.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/webhook_endpoints"
+        "/v1/webhook_endpoints"
         |> RestApi.getAsync<StripeList<WebhookEndpoint>> settings qs
 
     ///<p>A webhook endpoint must have a <code>url</code> and a list of <code>enabled_events</code>. You may optionally specify the Boolean <code>connect</code> parameter. If set to true, then a Connect webhook endpoint that notifies the specified <code>url</code> about events from all connected accounts is created; otherwise an account webhook endpoint that notifies the specified <code>url</code> only about events from your account is created. You can also create webhook endpoints in the <a href="https://dashboard.stripe.com/account/webhooks">webhooks settings</a> section of the Dashboard.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/webhook_endpoints"
+        "/v1/webhook_endpoints"
         |> RestApi.postAsync<_, WebhookEndpoint> settings (Map.empty) options
 
     ///<p>You can also delete webhook endpoints via the <a href="https://dashboard.stripe.com/account/webhooks">webhook endpoint management</a> page of the Stripe dashboard.</p>

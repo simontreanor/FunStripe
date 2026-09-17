@@ -301,7 +301,7 @@ module CreditNotes =
     ///<p>Returns a list of credit notes.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("invoice", options.Invoice |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/credit_notes"
+        "/v1/credit_notes"
         |> RestApi.getAsync<StripeList<CreditNote>> settings qs
 
     ///<p>Issue a credit note to adjust the amount of a finalized invoice. A credit note will first reduce the invoice’s <code>amount_remaining</code> (and <code>amount_due</code>), but not below zero.
@@ -316,7 +316,7 @@ module CreditNotes =
     ///<code>post_payment_credit_notes_amount</code>, or both, depending on the invoice’s <code>amount_remaining</code> at the time of credit note creation.</p>
     ///<p>For invoices that also have refunds created through the <a href="/docs/api/refunds">Refund API</a>, the credit note API subtracts those refund amounts from the maximum creditable amount. This prevents the combined credit notes and refunds from exceeding the invoice amount. If you use both, ensure the combined total does not exceed the invoice’s paid amount.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/credit_notes"
+        "/v1/credit_notes"
         |> RestApi.postAsync<_, CreditNote> settings (Map.empty) options
 
     ///<p>Retrieves the credit note object with the given identifier.</p>
@@ -400,7 +400,7 @@ module CreditNotesPreview =
     ///<p>Get a preview of a credit note without creating it.</p>
     let Preview settings (options: PreviewOptions) =
         let qs = [("amount", options.Amount |> box); ("credit_amount", options.CreditAmount |> box); ("effective_at", options.EffectiveAt |> box); ("email_type", options.EmailType |> box); ("expand", options.Expand |> box); ("invoice", options.Invoice |> box); ("lines", options.Lines |> box); ("memo", options.Memo |> box); ("metadata", options.Metadata |> box); ("out_of_band_amount", options.OutOfBandAmount |> box); ("reason", options.Reason |> box); ("refund_amount", options.RefundAmount |> box); ("refunds", options.Refunds |> box); ("shipping_cost", options.ShippingCost |> box)] |> Map.ofList
-        $"/v1/credit_notes/preview"
+        "/v1/credit_notes/preview"
         |> RestApi.getAsync<CreditNote> settings qs
 
 module CreditNotesPreviewLines =
@@ -485,7 +485,7 @@ module CreditNotesPreviewLines =
     ///<p>When retrieving a credit note preview, you’ll get a <strong>lines</strong> property containing the first handful of those items. This URL you can retrieve the full (paginated) list of line items.</p>
     let PreviewLines settings (options: PreviewLinesOptions) =
         let qs = [("amount", options.Amount |> box); ("credit_amount", options.CreditAmount |> box); ("effective_at", options.EffectiveAt |> box); ("email_type", options.EmailType |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("invoice", options.Invoice |> box); ("limit", options.Limit |> box); ("lines", options.Lines |> box); ("memo", options.Memo |> box); ("metadata", options.Metadata |> box); ("out_of_band_amount", options.OutOfBandAmount |> box); ("reason", options.Reason |> box); ("refund_amount", options.RefundAmount |> box); ("refunds", options.Refunds |> box); ("shipping_cost", options.ShippingCost |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/credit_notes/preview/lines"
+        "/v1/credit_notes/preview/lines"
         |> RestApi.getAsync<StripeList<CreditNoteLineItem>> settings qs
 
 module CreditNotesLines =

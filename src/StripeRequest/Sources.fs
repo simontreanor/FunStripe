@@ -767,7 +767,7 @@ module Sources =
 
     ///<p>Creates a new source object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/sources"
+        "/v1/sources"
         |> RestApi.postAsync<_, Source> settings (Map.empty) options
 
     ///<p>Retrieves an existing source object. Supply the unique source ID from a source creation request and Stripe will return the corresponding up-to-date source object information.</p>

@@ -61,7 +61,7 @@ module ApplicationFees =
     ///<p>Returns a list of application fees you’ve previously collected. The application fees are returned in sorted order, with the most recent fees appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("charge", options.Charge |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/application_fees"
+        "/v1/application_fees"
         |> RestApi.getAsync<StripeList<ApplicationFee>> settings qs
 
     ///<p>Retrieves the details of an application fee that your account has collected. The same information is returned when refunding the application fee.</p>

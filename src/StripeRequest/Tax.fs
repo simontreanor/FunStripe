@@ -31,7 +31,7 @@ module TaxAssociationsFind =
     ///<p>Finds a tax association object by PaymentIntent id.</p>
     let Find settings (options: FindOptions) =
         let qs = [("expand", options.Expand |> box); ("payment_intent", options.PaymentIntent |> box)] |> Map.ofList
-        $"/v1/tax/associations/find"
+        "/v1/tax/associations/find"
         |> RestApi.getAsync<TaxAssociation> settings qs
 
 module TaxCalculations =
@@ -419,7 +419,7 @@ module TaxCalculations =
 
     ///<p>Calculates tax based on the input and returns a Tax <code>Calculation</code> object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/tax/calculations"
+        "/v1/tax/calculations"
         |> RestApi.postAsync<_, TaxCalculation> settings (Map.empty) options
 
     ///<p>Retrieves a Tax <code>Calculation</code> object, if the calculation hasn’t expired.</p>
@@ -4538,12 +4538,12 @@ module TaxRegistrations =
     ///<p>Returns a list of Tax <code>Registration</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/tax/registrations"
+        "/v1/tax/registrations"
         |> RestApi.getAsync<StripeList<TaxRegistration>> settings qs
 
     ///<p>Creates a new Tax <code>Registration</code> object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/tax/registrations"
+        "/v1/tax/registrations"
         |> RestApi.postAsync<_, TaxRegistration> settings (Map.empty) options
 
     ///<p>Returns a Tax <code>Registration</code> object.</p>
@@ -4665,12 +4665,12 @@ module TaxSettings =
     ///<p>Retrieves Tax <code>Settings</code> for a merchant.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
-        $"/v1/tax/settings"
+        "/v1/tax/settings"
         |> RestApi.getAsync<TaxSettings> settings qs
 
     ///<p>Updates Tax <code>Settings</code> parameters used in tax calculations. All parameters are editable but none can be removed once set.</p>
     let Update settings (options: UpdateOptions) =
-        $"/v1/tax/settings"
+        "/v1/tax/settings"
         |> RestApi.postAsync<_, TaxSettings> settings (Map.empty) options
 
 module TaxTransactionsCreateFromCalculation =
@@ -4706,7 +4706,7 @@ module TaxTransactionsCreateFromCalculation =
 
     ///<p>Creates a Tax Transaction from a calculation, if that calculation hasn’t expired. Calculations expire after 90 days.</p>
     let CreateFromCalculation settings (options: CreateFromCalculationOptions) =
-        $"/v1/tax/transactions/create_from_calculation"
+        "/v1/tax/transactions/create_from_calculation"
         |> RestApi.postAsync<_, TaxTransaction> settings (Map.empty) options
 
 module TaxTransactionsCreateReversal =
@@ -4808,7 +4808,7 @@ module TaxTransactionsCreateReversal =
 
     ///<p>Partially or fully reverses a previously created <code>Transaction</code>.</p>
     let CreateReversal settings (options: CreateReversalOptions) =
-        $"/v1/tax/transactions/create_reversal"
+        "/v1/tax/transactions/create_reversal"
         |> RestApi.postAsync<_, TaxTransaction> settings (Map.empty) options
 
 module TaxTransactions =
@@ -4917,7 +4917,7 @@ module TaxCodes =
     ///<p>A list of <a href="https://stripe.com/docs/tax/tax-categories">all tax codes available</a> to add to Products in order to allow specific tax calculations.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/tax_codes"
+        "/v1/tax_codes"
         |> RestApi.getAsync<StripeList<TaxCode>> settings qs
 
     ///<p>Retrieves the details of an existing tax code. Supply the unique tax code ID and Stripe will return the corresponding tax code information.</p>
@@ -5161,12 +5161,12 @@ module TaxIds =
     ///<p>Returns a list of tax IDs.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("owner", options.Owner |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/tax_ids"
+        "/v1/tax_ids"
         |> RestApi.getAsync<StripeList<TaxId>> settings qs
 
     ///<p>Creates a new account or customer <code>tax_id</code> object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/tax_ids"
+        "/v1/tax_ids"
         |> RestApi.postAsync<_, TaxId> settings (Map.empty) options
 
     ///<p>Deletes an existing account or customer <code>tax_id</code> object.</p>
@@ -5375,12 +5375,12 @@ module TaxRates =
     ///<p>Returns a list of your tax rates. Tax rates are returned sorted by creation date, with the most recently created tax rates appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("inclusive", options.Inclusive |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/tax_rates"
+        "/v1/tax_rates"
         |> RestApi.getAsync<StripeList<TaxRate>> settings qs
 
     ///<p>Creates a new tax rate.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/tax_rates"
+        "/v1/tax_rates"
         |> RestApi.postAsync<_, TaxRate> settings (Map.empty) options
 
     ///<p>Retrieves a tax rate with the given ID</p>

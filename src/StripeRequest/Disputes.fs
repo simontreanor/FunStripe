@@ -434,7 +434,7 @@ module Disputes =
     ///<p>Returns a list of your disputes.</p>
     let List settings (options: ListOptions) =
         let qs = [("charge", options.Charge |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_intent", options.PaymentIntent |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/disputes"
+        "/v1/disputes"
         |> RestApi.getAsync<StripeList<Dispute>> settings qs
 
     ///<p>Retrieves the dispute with the given ID.</p>

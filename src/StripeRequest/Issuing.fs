@@ -93,7 +93,7 @@ module IssuingAuthorizations =
     ///<p>Returns a list of Issuing <code>Authorization</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("card", options.Card |> box); ("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/issuing/authorizations"
+        "/v1/issuing/authorizations"
         |> RestApi.getAsync<StripeList<IssuingAuthorization>> settings qs
 
     ///<p>Retrieves an Issuing <code>Authorization</code> object.</p>
@@ -2654,12 +2654,12 @@ module IssuingCardholders =
     ///<p>Returns a list of Issuing <code>Cardholder</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("email", options.Email |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("phone_number", options.PhoneNumber |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("type", options.Type |> box)] |> Map.ofList
-        $"/v1/issuing/cardholders"
+        "/v1/issuing/cardholders"
         |> RestApi.getAsync<StripeList<IssuingCardholder>> settings qs
 
     ///<p>Creates a new Issuing <code>Cardholder</code> object that can be issued cards.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/issuing/cardholders"
+        "/v1/issuing/cardholders"
         |> RestApi.postAsync<_, IssuingCardholder> settings (Map.empty) options
 
     ///<p>Retrieves an Issuing <code>Cardholder</code> object.</p>
@@ -5111,12 +5111,12 @@ module IssuingCards =
     ///<p>Returns a list of Issuing <code>Card</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("exp_month", options.ExpMonth |> box); ("exp_year", options.ExpYear |> box); ("expand", options.Expand |> box); ("last4", options.Last4 |> box); ("limit", options.Limit |> box); ("personalization_design", options.PersonalizationDesign |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("type", options.Type |> box)] |> Map.ofList
-        $"/v1/issuing/cards"
+        "/v1/issuing/cards"
         |> RestApi.getAsync<StripeList<IssuingCard>> settings qs
 
     ///<p>Creates an Issuing <code>Card</code> object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/issuing/cards"
+        "/v1/issuing/cards"
         |> RestApi.postAsync<_, IssuingCard> settings (Map.empty) options
 
     ///<p>Retrieves an Issuing <code>Card</code> object.</p>
@@ -5878,12 +5878,12 @@ module IssuingDisputes =
     ///<p>Returns a list of Issuing <code>Dispute</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("transaction", options.Transaction |> box)] |> Map.ofList
-        $"/v1/issuing/disputes"
+        "/v1/issuing/disputes"
         |> RestApi.getAsync<StripeList<IssuingDispute>> settings qs
 
     ///<p>Creates an Issuing <code>Dispute</code> object. Individual pieces of evidence within the <code>evidence</code> object are optional at this point. Stripe only validates that required evidence is present during submission. Refer to <a href="/docs/issuing/purchases/disputes#dispute-reasons-and-evidence">Dispute reasons and evidence</a> for more details about evidence requirements.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/issuing/disputes"
+        "/v1/issuing/disputes"
         |> RestApi.postAsync<_, IssuingDispute> settings (Map.empty) options
 
     ///<p>Retrieves an Issuing <code>Dispute</code> object.</p>
@@ -6151,12 +6151,12 @@ module IssuingPersonalizationDesigns =
     ///<p>Returns a list of personalization design objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("lookup_keys", options.LookupKeys |> box); ("preferences", options.Preferences |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/issuing/personalization_designs"
+        "/v1/issuing/personalization_designs"
         |> RestApi.getAsync<StripeList<IssuingPersonalizationDesign>> settings qs
 
     ///<p>Creates a personalization design object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/issuing/personalization_designs"
+        "/v1/issuing/personalization_designs"
         |> RestApi.postAsync<_, IssuingPersonalizationDesign> settings (Map.empty) options
 
     ///<p>Retrieves a personalization design object.</p>
@@ -6224,7 +6224,7 @@ module IssuingPhysicalBundles =
     ///<p>Returns a list of physical bundle objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("type", options.Type |> box)] |> Map.ofList
-        $"/v1/issuing/physical_bundles"
+        "/v1/issuing/physical_bundles"
         |> RestApi.getAsync<StripeList<IssuingPhysicalBundle>> settings qs
 
     ///<p>Retrieves a physical bundle object.</p>
@@ -6316,7 +6316,7 @@ module IssuingTokens =
     ///<p>Lists all Issuing <code>Token</code> objects for a given card.</p>
     let List settings (options: ListOptions) =
         let qs = [("card", options.Card |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/issuing/tokens"
+        "/v1/issuing/tokens"
         |> RestApi.getAsync<StripeList<IssuingToken>> settings qs
 
     ///<p>Retrieves an Issuing <code>Token</code> object.</p>
@@ -6412,7 +6412,7 @@ module IssuingTransactions =
     ///<p>Returns a list of Issuing <code>Transaction</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("card", options.Card |> box); ("cardholder", options.Cardholder |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box)] |> Map.ofList
-        $"/v1/issuing/transactions"
+        "/v1/issuing/transactions"
         |> RestApi.getAsync<StripeList<IssuingTransaction>> settings qs
 
     ///<p>Retrieves an Issuing <code>Transaction</code> object.</p>

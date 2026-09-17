@@ -81,12 +81,12 @@ module ApplePayDomains =
     ///<p>List apple pay domains.</p>
     let List settings (options: ListOptions) =
         let qs = [("domain_name", options.DomainName |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/apple_pay/domains"
+        "/v1/apple_pay/domains"
         |> RestApi.getAsync<StripeList<ApplePayDomain>> settings qs
 
     ///<p>Create an apple pay domain.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/apple_pay/domains"
+        "/v1/apple_pay/domains"
         |> RestApi.postAsync<_, ApplePayDomain> settings (Map.empty) options
 
     ///<p>Delete an apple pay domain.</p>

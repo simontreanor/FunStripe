@@ -223,7 +223,7 @@ module ModelBuilderModular =
                     |> Array.tryFind (fun (k, _) -> k = "$ref")
                     |> Option.bind (fun (_, v) ->
                         match v with
-                        | JsonValue.String s when s.StartsWith("#/components/schemas/") ->
+                        | JsonValue.String s when s.StartsWith "#/components/schemas/" ->
                             Some (s.Substring("#/components/schemas/".Length))
                         | _ -> None)
                     |> Option.toList |> Set.ofList
@@ -582,7 +582,7 @@ module ModelBuilderModular =
                     // Last resort: PascalCase first token heuristic
                     let tokens =
                         Regex.Replace(typeName, @"(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])", "_")
-                             .ToLowerInvariant().Split('_')
+                             .ToLowerInvariant().Split '_'
                     let rawModule = tokens |> Array.tryHead |> Option.defaultValue "misc"
                     moduleToMergedName |> Map.tryFind rawModule |> Option.defaultValue rawModule
 
@@ -686,7 +686,7 @@ module ModelBuilderModular =
 
     /// Escape an identifier with double backticks if it's an F# keyword.
     let private escapeKeyword (name: string) =
-        if fsharpKeywords.Contains(name) then $"``{name}``" else name
+        if fsharpKeywords.Contains name then $"``{name}``" else name
 
     /// Serialize a companion module as raw text with a return-type-annotated create function.
     let serializeCompanionModule (name: string) (members: MemberInfo list) (newParams: ParamInfo list) : string =
@@ -757,7 +757,7 @@ module ModelBuilderModular =
         | RecordType(name, descLines, fields, _members, _newParams, _isSimple) ->
             let record =
                 let r = Record(name) { for f in fields do buildFieldWidget f }
-                let r = if not descLines.IsEmpty then r.xmlDocs(descLines) else r
+                let r = if not descLines.IsEmpty then r.xmlDocs descLines else r
                 if isRecursive then r.toRecursive() else r
             Some(Choice2Of2 record)  // Record widget
 
@@ -871,19 +871,19 @@ module ModelBuilderModular =
                                 let u = Union(name) { for c in cases do buildUnionCaseWidget c }
                                 let u =
                                     match isStruct, isFirst with
-                                    | true, true -> u.attributes([Attribute("Struct"); generatedCodeAttrWidget])
+                                    | true, true -> u.attributes [Attribute("Struct"); generatedCodeAttrWidget]
                                     | true, false -> u.attribute(Attribute("Struct"))
-                                    | false, true -> u.attribute(generatedCodeAttrWidget)
+                                    | false, true -> u.attribute generatedCodeAttrWidget
                                     | false, false -> u
                                 if isRec then u.toRecursive() else u
                             | PayloadEnum(name, cases) ->
                                 let u = Union(name) { for c in cases do buildUnionCaseWidget c }
-                                let u = if isFirst then u.attribute(generatedCodeAttrWidget) else u
+                                let u = if isFirst then u.attribute generatedCodeAttrWidget else u
                                 if isRec then u.toRecursive() else u
                             | RecordType(name, descLines, fields, _, _, _) ->
                                 let r = Record(name) { for f in fields do buildFieldWidget f }
-                                let r = if not descLines.IsEmpty then r.xmlDocs(descLines) else r
-                                let r = if isFirst then r.attribute(generatedCodeAttrWidget) else r
+                                let r = if not descLines.IsEmpty then r.xmlDocs descLines else r
+                                let r = if isFirst then r.attribute generatedCodeAttrWidget else r
                                 if isRec then r.toRecursive() else r
                             | EmptyType _ -> ()  // Already handled above
                         } }
@@ -935,8 +935,8 @@ module ModelBuilderModular =
                     let typeSnippet =
                         let oak = Oak() { AnonymousModule() {
                             let r = Record(name) { for f in fields do buildFieldWidget f }
-                            let r = if not descLines.IsEmpty then r.xmlDocs(descLines) else r
-                            let r = if isFirst then r.attribute(generatedCodeAttrWidget) else r
+                            let r = if not descLines.IsEmpty then r.xmlDocs descLines else r
+                            let r = if isFirst then r.attribute generatedCodeAttrWidget else r
                             if isRec then r.toRecursive() else r
                         } }
                         Gen.mkOak oak |> Gen.run
@@ -961,9 +961,9 @@ module ModelBuilderModular =
                             let u = Union(name) { for c in cases do buildUnionCaseWidget c }
                             let u =
                                 match isStruct, isFirst with
-                                | true, true -> u.attributes([Attribute("Struct"); generatedCodeAttrWidget])
+                                | true, true -> u.attributes [Attribute("Struct"); generatedCodeAttrWidget]
                                 | true, false -> u.attribute(Attribute("Struct"))
-                                | false, true -> u.attribute(generatedCodeAttrWidget)
+                                | false, true -> u.attribute generatedCodeAttrWidget
                                 | false, false -> u
                             if isRec then u.toRecursive() else u
                         } }
@@ -975,7 +975,7 @@ module ModelBuilderModular =
                     let snippet =
                         let oak = Oak() { AnonymousModule() {
                             let u = Union(name) { for c in cases do buildUnionCaseWidget c }
-                            let u = if isFirst then u.attribute(generatedCodeAttrWidget) else u
+                            let u = if isFirst then u.attribute generatedCodeAttrWidget else u
                             if isRec then u.toRecursive() else u
                         } }
                         Gen.mkOak oak |> Gen.run
@@ -1024,7 +1024,7 @@ module ModelBuilderModular =
                 let fileName = $"{pascalName}.fs"
                 let filePath = Path.Combine(outputDir, fileName)
                 File.WriteAllText(filePath, content)
-                generatedFiles.Add(fileName)
+                generatedFiles.Add fileName
                 let typeCount = types.Length
                 let recCount = types |> List.filter (fun (_, isRec) -> isRec) |> List.length
                 printfn "  %-25s %4d types (%d recursive)" fileName typeCount recCount
@@ -1035,13 +1035,13 @@ module ModelBuilderModular =
         // import modular compilation order without manual upkeep.
         let propsPath = Path.Combine(outputDir, "Stripe.Modular.props")
         let propsLines = ResizeArray<string>()
-        propsLines.Add("<!-- Auto-generated by FunStripe.Generator. Do not edit. -->")
-        propsLines.Add("<Project>")
-        propsLines.Add("  <ItemGroup>")
+        propsLines.Add "<!-- Auto-generated by FunStripe.Generator. Do not edit. -->"
+        propsLines.Add "<Project>"
+        propsLines.Add "  <ItemGroup>"
         for f in generatedFiles do
-            propsLines.Add(sprintf "    <Compile Include=\"$(MSBuildThisFileDirectory)%s\" Link=\"Stripe/%s\" />" f f)
-        propsLines.Add("  </ItemGroup>")
-        propsLines.Add("</Project>")
+            propsLines.Add $"    <Compile Include=\"$(MSBuildThisFileDirectory)%s{f}\" Link=\"Stripe/%s{f}\" />"
+        propsLines.Add "  </ItemGroup>"
+        propsLines.Add "</Project>"
         File.WriteAllText(propsPath, String.concat "\n" propsLines + "\n")
         printfn "Emitted %s" propsPath
 

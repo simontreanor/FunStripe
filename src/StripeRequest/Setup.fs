@@ -48,7 +48,7 @@ module SetupAttempts =
     ///<p>Returns a list of SetupAttempts that associate with a provided SetupIntent.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("setup_intent", options.SetupIntent |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/setup_attempts"
+        "/v1/setup_attempts"
         |> RestApi.getAsync<StripeList<SetupAttempt>> settings qs
 
 module SetupIntents =
@@ -4223,14 +4223,14 @@ module SetupIntents =
     ///<p>Returns a list of SetupIntents.</p>
     let List settings (options: ListOptions) =
         let qs = [("attach_to_self", options.AttachToSelf |> box); ("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_method", options.PaymentMethod |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/setup_intents"
+        "/v1/setup_intents"
         |> RestApi.getAsync<StripeList<SetupIntent>> settings qs
 
     ///<p>Creates a SetupIntent object.</p>
     ///<p>After you create the SetupIntent, attach a payment method and <a href="/docs/api/setup_intents/confirm">confirm</a>
     ///it to collect any required permissions to charge the payment method later.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/setup_intents"
+        "/v1/setup_intents"
         |> RestApi.postAsync<_, SetupIntent> settings (Map.empty) options
 
     ///<p>Retrieves the details of a SetupIntent that has previously been created. </p>

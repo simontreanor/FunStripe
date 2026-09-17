@@ -381,12 +381,12 @@ module Prices =
     ///<p>Returns a list of your active prices, excluding <a href="/docs/products-prices/pricing-models#inline-pricing">inline prices</a>. For the list of inactive prices, set <code>active</code> to false.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("currency", options.Currency |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("lookup_keys", options.LookupKeys |> box); ("product", options.Product |> box); ("recurring", options.Recurring |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box)] |> Map.ofList
-        $"/v1/prices"
+        "/v1/prices"
         |> RestApi.getAsync<StripeList<Price>> settings qs
 
     ///<p>Creates a new <a href="https://docs.stripe.com/api/prices">Price</a> for an existing <a href="https://docs.stripe.com/api/products">Product</a>. The Price can be recurring or one-time.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/prices"
+        "/v1/prices"
         |> RestApi.postAsync<_, Price> settings (Map.empty) options
 
     ///<p>Retrieves the price with the given ID.</p>
@@ -433,6 +433,6 @@ module PricesSearch =
     ///to an hour behind during outages. Search functionality is not available to merchants in India.</p>
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
-        $"/v1/prices/search"
+        "/v1/prices/search"
         |> RestApi.getAsync<StripeList<Price>> settings qs
 

@@ -56,7 +56,7 @@ module Reviews =
     ///<p>Returns a list of <code>Review</code> objects that have <code>open</code> set to <code>true</code>. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/reviews"
+        "/v1/reviews"
         |> RestApi.getAsync<StripeList<Review>> settings qs
 
     ///<p>Retrieves a <code>Review</code> object.</p>

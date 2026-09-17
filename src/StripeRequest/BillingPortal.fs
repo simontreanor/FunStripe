@@ -762,12 +762,12 @@ module BillingPortalConfigurations =
     ///<p>Returns a list of configurations that describe the functionality of the customer portal.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("is_default", options.IsDefault |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/billing_portal/configurations"
+        "/v1/billing_portal/configurations"
         |> RestApi.getAsync<StripeList<BillingPortalConfiguration>> settings qs
 
     ///<p>Creates a configuration that describes the functionality and behavior of a PortalSession</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/billing_portal/configurations"
+        "/v1/billing_portal/configurations"
         |> RestApi.postAsync<_, BillingPortalConfiguration> settings (Map.empty) options
 
     ///<p>Retrieves a configuration that describes the functionality of the customer portal.</p>
@@ -1084,6 +1084,6 @@ module BillingPortalSessions =
 
     ///<p>Creates a session of the customer portal.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/billing_portal/sessions"
+        "/v1/billing_portal/sessions"
         |> RestApi.postAsync<_, BillingPortalSession> settings (Map.empty) options
 

@@ -130,12 +130,12 @@ module ForwardingRequests =
     ///<p>Lists all ForwardingRequest objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/forwarding/requests"
+        "/v1/forwarding/requests"
         |> RestApi.getAsync<StripeList<ForwardingRequest>> settings qs
 
     ///<p>Creates a ForwardingRequest object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/forwarding/requests"
+        "/v1/forwarding/requests"
         |> RestApi.postAsync<_, ForwardingRequest> settings (Map.empty) options
 
     ///<p>Retrieves a ForwardingRequest object.</p>

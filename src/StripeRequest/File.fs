@@ -115,12 +115,12 @@ module FileLinks =
     ///<p>Returns a list of file links.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("expired", options.Expired |> box); ("file", options.File |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/file_links"
+        "/v1/file_links"
         |> RestApi.getAsync<StripeList<FileLink>> settings qs
 
     ///<p>Creates a new file link object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/file_links"
+        "/v1/file_links"
         |> RestApi.postAsync<_, FileLink> settings (Map.empty) options
 
     ///<p>Retrieves the file link with the given ID.</p>

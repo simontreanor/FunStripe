@@ -758,12 +758,12 @@ module ReportingReportRuns =
     ///<p>Returns a list of Report Runs, with the most recent appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/reporting/report_runs"
+        "/v1/reporting/report_runs"
         |> RestApi.getAsync<StripeList<ReportingReportRun>> settings qs
 
     ///<p>Creates a new object and begin running the report. (Certain report types require a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/reporting/report_runs"
+        "/v1/reporting/report_runs"
         |> RestApi.postAsync<_, ReportingReportRun> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing Report Run.</p>
@@ -806,7 +806,7 @@ module ReportingReportTypes =
     ///<p>Returns a full list of Report Types.</p>
     let List settings (options: ListOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
-        $"/v1/reporting/report_types"
+        "/v1/reporting/report_types"
         |> RestApi.getAsync<StripeList<ReportingReportType>> settings qs
 
     ///<p>Retrieves the details of a Report Type. (Certain report types require a <a href="https://stripe.com/docs/keys#test-live-modes">live-mode API key</a>.)</p>

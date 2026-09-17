@@ -90,12 +90,12 @@ module AppsSecrets =
     ///<p>List all secrets stored on the given scope.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("scope", options.Scope |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/apps/secrets"
+        "/v1/apps/secrets"
         |> RestApi.getAsync<StripeList<AppsSecret>> settings qs
 
     ///<p>Create or replace a secret in the secret store.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/apps/secrets"
+        "/v1/apps/secrets"
         |> RestApi.postAsync<_, AppsSecret> settings (Map.empty) options
 
 module AppsSecretsDelete =
@@ -144,7 +144,7 @@ module AppsSecretsDelete =
 
     ///<p>Deletes a secret from the secret store by name and scope.</p>
     let DeleteWhere settings (options: DeleteWhereOptions) =
-        $"/v1/apps/secrets/delete"
+        "/v1/apps/secrets/delete"
         |> RestApi.postAsync<_, AppsSecret> settings (Map.empty) options
 
 module AppsSecretsFind =
@@ -173,6 +173,6 @@ module AppsSecretsFind =
     ///<p>Finds a secret in the secret store by name and scope.</p>
     let Find settings (options: FindOptions) =
         let qs = [("expand", options.Expand |> box); ("name", options.Name |> box); ("scope", options.Scope |> box)] |> Map.ofList
-        $"/v1/apps/secrets/find"
+        "/v1/apps/secrets/find"
         |> RestApi.getAsync<AppsSecret> settings qs
 

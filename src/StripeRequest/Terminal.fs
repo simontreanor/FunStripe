@@ -1805,12 +1805,12 @@ module TerminalConfigurations =
     ///<p>Returns a list of <code>Configuration</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("is_account_default", options.IsAccountDefault |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/terminal/configurations"
+        "/v1/terminal/configurations"
         |> RestApi.getAsync<StripeList<TerminalConfiguration>> settings qs
 
     ///<p>Creates a new <code>Configuration</code> object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/terminal/configurations"
+        "/v1/terminal/configurations"
         |> RestApi.postAsync<_, TerminalConfiguration> settings (Map.empty) options
 
     ///<p>Deletes a <code>Configuration</code> object.</p>
@@ -1850,7 +1850,7 @@ module TerminalConnectionTokens =
 
     ///<p>To connect to a reader the Stripe Terminal SDK needs to retrieve a short-lived connection token from Stripe, proxied through your server. On your backend, add an endpoint that creates and returns a connection token.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/terminal/connection_tokens"
+        "/v1/terminal/connection_tokens"
         |> RestApi.postAsync<_, TerminalConnectionToken> settings (Map.empty) options
 
 module TerminalLocations =
@@ -2224,13 +2224,13 @@ module TerminalLocations =
     ///<p>Returns a list of <code>Location</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/terminal/locations"
+        "/v1/terminal/locations"
         |> RestApi.getAsync<StripeList<TerminalLocation>> settings qs
 
     ///<p>Creates a new <code>Location</code> object.
     ///For further details, including which address fields are required in each country, see the <a href="/docs/terminal/fleet/locations">Manage locations</a> guide.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/terminal/locations"
+        "/v1/terminal/locations"
         |> RestApi.postAsync<_, TerminalLocation> settings (Map.empty) options
 
     ///<p>Deletes a <code>Location</code> object.</p>
@@ -2310,7 +2310,7 @@ module TerminalOnboardingLinks =
 
     ///<p>Creates a new <code>OnboardingLink</code> object that contains a redirect_url used for onboarding onto Tap to Pay on iPhone.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/terminal/onboarding_links"
+        "/v1/terminal/onboarding_links"
         |> RestApi.postAsync<_, TerminalOnboardingLink> settings (Map.empty) options
 
 module TerminalReaders =
@@ -2438,12 +2438,12 @@ module TerminalReaders =
     ///<p>Returns a list of <code>Reader</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("device_type", options.DeviceType |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("location", options.Location |> box); ("serial_number", options.SerialNumber |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/terminal/readers"
+        "/v1/terminal/readers"
         |> RestApi.getAsync<StripeList<TerminalReader>> settings qs
 
     ///<p>Creates a new <code>Reader</code> object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/terminal/readers"
+        "/v1/terminal/readers"
         |> RestApi.postAsync<_, TerminalReader> settings (Map.empty) options
 
     ///<p>Deletes a <code>Reader</code> object.</p>

@@ -159,12 +159,12 @@ module Topups =
     ///<p>Returns a list of top-ups.</p>
     let List settings (options: ListOptions) =
         let qs = [("amount", options.Amount |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/topups"
+        "/v1/topups"
         |> RestApi.getAsync<StripeList<Topup>> settings qs
 
     ///<p>Top up the balance of an account</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/topups"
+        "/v1/topups"
         |> RestApi.postAsync<_, Topup> settings (Map.empty) options
 
     ///<p>Retrieves the details of a top-up that has previously been created. Supply the unique top-up ID that was returned from your previous request, and Stripe will return the corresponding top-up information.</p>

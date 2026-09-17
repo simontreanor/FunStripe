@@ -278,8 +278,7 @@ module RestApi =
         // Accumulate pages as a list-of-lists (each prepend is O(1)), then concat once at the end (O(n total)).
         let rec loop (acc: 'item list list) (opts: 'options) =
             async {
-                let! result = listFunc settings opts
-                match result with
+                match! listFunc settings opts with
                 | Error e -> return Error e
                 | Ok page ->
                     let acc' = page.Data :: acc

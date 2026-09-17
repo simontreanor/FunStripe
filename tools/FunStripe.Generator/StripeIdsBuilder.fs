@@ -47,7 +47,7 @@ module StripeIdsBuilder =
                                     p |> Array.tryPick (fun (k, v) ->
                                         if k = "$ref" then
                                             match v with
-                                            | JsonValue.String s when s.StartsWith("#/components/schemas/") ->
+                                            | JsonValue.String s when s.StartsWith "#/components/schemas/" ->
                                                 Some (s.Substring("#/components/schemas/".Length))
                                             | _ -> None
                                         else None)
@@ -109,7 +109,7 @@ module StripeIdsBuilder =
         appendLine "            static member New (data: 'T list, hasMore: bool, url: string) ="
         appendLine "                { Data = data; HasMore = hasMore; Url = url }"
         appendLine ""
-        appendLine ("[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"" + version + "\")>]")
+        appendLine $"[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]"
         appendLine "module Markers ="
         appendLine ""
         appendLine "    // Phantom marker types — one per resource that appears as a single-target"

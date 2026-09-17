@@ -55,7 +55,7 @@ module EphemeralKeys =
 
     ///<p>Creates a short-lived API key for a given resource.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/ephemeral_keys"
+        "/v1/ephemeral_keys"
         |> RestApi.postAsync<_, EphemeralKey> settings (Map.empty) options
 
     ///<p>Invalidates a short-lived API key for a given resource.</p>

@@ -2109,12 +2109,12 @@ module Invoices =
     ///<p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("collection_method", options.CollectionMethod |> box); ("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("due_date", options.DueDate |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("subscription", options.Subscription |> box)] |> Map.ofList
-        $"/v1/invoices"
+        "/v1/invoices"
         |> RestApi.getAsync<StripeList<Invoice>> settings qs
 
     ///<p>This endpoint creates a draft invoice for a given customer. The invoice remains a draft until you <a href="/api/invoices/finalize">finalize</a> the invoice, which allows you to <a href="/api/invoices/pay">pay</a> or <a href="/api/invoices/send">send</a> the invoice to your customers.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/invoices"
+        "/v1/invoices"
         |> RestApi.postAsync<_, Invoice> settings (Map.empty) options
 
     ///<p>Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to delete invoices that are no longer in a draft state will fail; once an invoice has been finalized or if an invoice is for a subscription, it must be <a href="/api/invoices/void">voided</a>.</p>
@@ -3720,7 +3720,7 @@ module InvoicesCreatePreview =
     ///<p>Note that when you are viewing an upcoming invoice, you are simply viewing a preview – the invoice has not yet been created. As such, the upcoming invoice will not show up in invoice listing calls, and you cannot use the API to pay or edit the invoice. If you want to change the amount that your customer will be billed, you can add, remove, or update pending invoice items, or update the customer’s discount.</p>
     ///<p>Note: Currency conversion calculations use the latest exchange rates. Exchange rates may vary between the time of the preview and the time of the actual invoice creation. <a href="https://docs.stripe.com/currencies/conversions">Learn more</a></p>
     let CreatePreview settings (options: CreatePreviewOptions) =
-        $"/v1/invoices/create_preview"
+        "/v1/invoices/create_preview"
         |> RestApi.postAsync<_, Invoice> settings (Map.empty) options
 
 module InvoicesSearch =
@@ -3756,7 +3756,7 @@ module InvoicesSearch =
     ///to an hour behind during outages. Search functionality is not available to merchants in India.</p>
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
-        $"/v1/invoices/search"
+        "/v1/invoices/search"
         |> RestApi.getAsync<StripeList<Invoice>> settings qs
 
 module InvoicesAddLines =

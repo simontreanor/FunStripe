@@ -4603,12 +4603,12 @@ module CheckoutSessions =
     ///<p>Returns a list of Checkout Sessions.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("customer_details", options.CustomerDetails |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_intent", options.PaymentIntent |> box); ("payment_link", options.PaymentLink |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("subscription", options.Subscription |> box)] |> Map.ofList
-        $"/v1/checkout/sessions"
+        "/v1/checkout/sessions"
         |> RestApi.getAsync<StripeList<CheckoutSession>> settings qs
 
     ///<p>Creates a Checkout Session object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/checkout/sessions"
+        "/v1/checkout/sessions"
         |> RestApi.postAsync<_, CheckoutSession> settings (Map.empty) options
 
     ///<p>Retrieves a Checkout Session object.</p>

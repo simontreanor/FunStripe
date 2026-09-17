@@ -23,7 +23,7 @@ module WebhookSigning =
     ///Parse the Stripe-Signature header into a Unix timestamp and a list of v1 signatures.
     ///Returns the parsed components so callers can inspect or log suspicious headers.
     let parseHeader (header: string) =
-        let parts = header.Split(',')
+        let parts = header.Split ','
         let mutable timestamp: int64 option = None
         let mutable signatures: string list = []
         for part in parts do
@@ -47,8 +47,8 @@ module WebhookSigning =
         let keyBytes = Encoding.UTF8.GetBytes(secret)
         let payloadBytes = Encoding.UTF8.GetBytes(payload)
         use hmac = new HMACSHA256(keyBytes)
-        hmac.ComputeHash(payloadBytes)
-        |> Array.map (fun b -> b.ToString("x2"))
+        hmac.ComputeHash payloadBytes
+        |> Array.map (fun b -> b.ToString "x2")
         |> String.concat ""
 
     ///Constant-time comparison of two strings to prevent timing attacks
@@ -75,9 +75,9 @@ module WebhookSigning =
             let currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
             let age = abs (currentTime - timestamp)
             if age > int64 tolerance then
-                Error (TimestampOutOfTolerance (sprintf "Webhook timestamp is %d seconds old, which exceeds the tolerance of %d seconds" age tolerance))
+                Error (TimestampOutOfTolerance $"Webhook timestamp is %d{age} seconds old, which exceeds the tolerance of %d{tolerance} seconds")
             else
-                let signedPayload = sprintf "%d.%s" timestamp rawBody
+                let signedPayload = $"%d{timestamp}.%s{rawBody}"
                 let computedSig = computeSignature secret signedPayload
                 let isValid = signatures |> List.exists (constantTimeEquals computedSig)
                 if isValid then

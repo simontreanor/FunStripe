@@ -406,12 +406,12 @@ module Products =
     ///<p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("ids", options.Ids |> box); ("limit", options.Limit |> box); ("shippable", options.Shippable |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box); ("url", options.Url |> box)] |> Map.ofList
-        $"/v1/products"
+        "/v1/products"
         |> RestApi.getAsync<StripeList<Product>> settings qs
 
     ///<p>Creates a new product object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/products"
+        "/v1/products"
         |> RestApi.postAsync<_, Product> settings (Map.empty) options
 
     ///<p>Delete a product. Deleting a product is only possible if it has no prices associated with it. Additionally, deleting a product with <code>type=good</code> is only possible if it has no SKUs associated with it.</p>
@@ -463,7 +463,7 @@ module ProductsSearch =
     ///to an hour behind during outages. Search functionality is not available to merchants in India.</p>
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
-        $"/v1/products/search"
+        "/v1/products/search"
         |> RestApi.getAsync<StripeList<Product>> settings qs
 
 module ProductsFeatures =

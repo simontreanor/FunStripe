@@ -64,7 +64,7 @@ module RadarEarlyFraudWarnings =
     ///<p>Returns a list of early fraud warnings.</p>
     let List settings (options: ListOptions) =
         let qs = [("charge", options.Charge |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_intent", options.PaymentIntent |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/radar/early_fraud_warnings"
+        "/v1/radar/early_fraud_warnings"
         |> RestApi.getAsync<StripeList<RadarEarlyFraudWarning>> settings qs
 
     ///<p>Retrieves the details of an early fraud warning that has previously been created. </p>
@@ -361,7 +361,7 @@ module RadarPaymentEvaluations =
 
     ///<p>Request a Radar API fraud risk score from Stripe for a payment before sending it for external processor authorization.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/radar/payment_evaluations"
+        "/v1/radar/payment_evaluations"
         |> RestApi.postAsync<_, RadarPaymentEvaluation> settings (Map.empty) options
 
 module RadarValueListItems =
@@ -453,12 +453,12 @@ module RadarValueListItems =
     ///<p>Returns a list of <code>ValueListItem</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("value", options.Value |> box); ("value_list", options.ValueList |> box)] |> Map.ofList
-        $"/v1/radar/value_list_items"
+        "/v1/radar/value_list_items"
         |> RestApi.getAsync<StripeList<RadarValueListItem>> settings qs
 
     ///<p>Creates a new <code>ValueListItem</code> object, which is added to the specified parent value list.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/radar/value_list_items"
+        "/v1/radar/value_list_items"
         |> RestApi.postAsync<_, RadarValueListItem> settings (Map.empty) options
 
     ///<p>Deletes a <code>ValueListItem</code> object, removing it from its parent value list.</p>
@@ -611,12 +611,12 @@ module RadarValueLists =
     ///<p>Returns a list of <code>ValueList</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("alias", options.Alias |> box); ("contains", options.Contains |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/radar/value_lists"
+        "/v1/radar/value_lists"
         |> RestApi.getAsync<StripeList<RadarValueList>> settings qs
 
     ///<p>Creates a new <code>ValueList</code> object, which can then be referenced in rules.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/radar/value_lists"
+        "/v1/radar/value_lists"
         |> RestApi.postAsync<_, RadarValueList> settings (Map.empty) options
 
     ///<p>Deletes a <code>ValueList</code> object, also deleting any items contained within the value list. To be deleted, a value list must not be referenced in any rules.</p>

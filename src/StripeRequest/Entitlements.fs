@@ -57,7 +57,7 @@ module EntitlementsActiveEntitlements =
     ///<p>Retrieve a list of active entitlements for a customer</p>
     let List settings (options: ListOptions) =
         let qs = [("customer", options.Customer |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/entitlements/active_entitlements"
+        "/v1/entitlements/active_entitlements"
         |> RestApi.getAsync<StripeList<EntitlementsActiveEntitlement>> settings qs
 
     ///<p>Retrieve an active entitlement</p>
@@ -174,12 +174,12 @@ module EntitlementsFeatures =
     ///<p>Retrieve a list of features</p>
     let List settings (options: ListOptions) =
         let qs = [("archived", options.Archived |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("lookup_key", options.LookupKey |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/entitlements/features"
+        "/v1/entitlements/features"
         |> RestApi.getAsync<StripeList<EntitlementsFeature>> settings qs
 
     ///<p>Creates a feature</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/entitlements/features"
+        "/v1/entitlements/features"
         |> RestApi.postAsync<_, EntitlementsFeature> settings (Map.empty) options
 
     ///<p>Retrieves a feature</p>

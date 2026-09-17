@@ -52,7 +52,7 @@ module CountrySpecs =
     ///<p>Lists all Country Spec objects available in the API.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/country_specs"
+        "/v1/country_specs"
         |> RestApi.getAsync<StripeList<CountrySpec>> settings qs
 
     ///<p>Returns a Country Spec for a given Country code.</p>

@@ -12,7 +12,7 @@ module Util =
     ///Unwrap objects in discriminated-union fields into the underlying object
     let unwrap t (value: obj) =
         let _, fields = FSharpValue.GetUnionFields(value, t)
-        fields |> Seq.tryExactlyOne
+        fields |> Array.tryExactlyOne
 
     let spitNameRegex = Regex(@"(?<=[A-Z])(?=[A-Z][a-z])|(?<=[^A-Z])(?=[A-Z])|(?<=[A-Za-z])(?=[^A-Za-z])")
     let choiceRegex = Regex(@"Choice\d+Of\d+")

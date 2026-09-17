@@ -146,14 +146,14 @@ module Payouts =
     ///<p>Returns a list of existing payouts sent to third-party bank accounts or payouts that Stripe sent to you. The payouts return in sorted order, with the most recently created payouts appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("arrival_date", options.ArrivalDate |> box); ("created", options.Created |> box); ("destination", options.Destination |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
-        $"/v1/payouts"
+        "/v1/payouts"
         |> RestApi.getAsync<StripeList<Payout>> settings qs
 
     ///<p>To send funds to your own bank account, create a new payout object. Your <a href="#balance">Stripe balance</a> must cover the payout amount. If it doesn’t, you receive an “Insufficient Funds” error.</p>
     ///<p>If your API key is in test mode, money won’t actually be sent, though every other action occurs as if you’re in live mode.</p>
     ///<p>If you create a manual payout on a Stripe account that uses multiple payment source types, you need to specify the source type balance that the payout draws from. The <a href="/api/balances/object">balance object</a> details available and pending amounts by source type.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/payouts"
+        "/v1/payouts"
         |> RestApi.postAsync<_, Payout> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing payout. Supply the unique payout ID from either a payout creation request or the payout list. Stripe returns the corresponding payout information.</p>

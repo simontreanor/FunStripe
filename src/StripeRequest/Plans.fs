@@ -298,12 +298,12 @@ module Plans =
     ///<p>Returns a list of your plans.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("product", options.Product |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/plans"
+        "/v1/plans"
         |> RestApi.getAsync<StripeList<Plan>> settings qs
 
     ///<p>You can now model subscriptions more flexibly using the <a href="#prices">Prices API</a>. It replaces the Plans API and is backwards compatible to simplify your migration.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/plans"
+        "/v1/plans"
         |> RestApi.postAsync<_, Plan> settings (Map.empty) options
 
     ///<p>Deleting plans means new subscribers can’t be added. Existing subscribers aren’t affected.</p>

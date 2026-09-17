@@ -70,13 +70,13 @@ module RequestBuilderAST =
         | RequestEnum(name, _) -> name
         | RequestRecord(name, _, _) -> name
         | RequestFunction(name, _, _, _) -> name
-        | RequestModule(name) -> name
+        | RequestModule name -> name
 
     // --- parsing the spec into flat IR ---
 
     /// Parse a request enum case value using the same logic as ModelBuilderAST.parseEnumCase
     let parseRequestEnumCase (rawValue: string) : RequestEnumCaseInfo =
-        if Regex.IsMatch(rawValue, @"^\p{Lu}") || Regex.IsMatch(rawValue, @"^\d") || rawValue.Contains("-") || rawValue.Contains(" ") || rawValue.Contains(".") || Regex.IsMatch(rawValue, @"[a-zA-Z]\d+(?![a-z])") || Regex.IsMatch(rawValue, @"(^[a-zA-Z]_|_[a-zA-Z]_|_[a-zA-Z]$)") then
+        if Regex.IsMatch(rawValue, @"^\p{Lu}") || Regex.IsMatch(rawValue, @"^\d") || rawValue.Contains('-') || rawValue.Contains(' ') || rawValue.Contains('.') || Regex.IsMatch(rawValue, @"[a-zA-Z]\d+(?![a-z])") || Regex.IsMatch(rawValue, @"(^[a-zA-Z]_|_[a-zA-Z]_|_[a-zA-Z]$)") then
             let caseName = rawValue |> clean |> pascalCasify |> escapeNumeric
             { RawValue = rawValue; CaseName = caseName; JsonUnionCaseValue = Some rawValue }
         elif rawValue = "none" then
@@ -96,7 +96,7 @@ module RequestBuilderAST =
                     else
                         v.Description
                             .Replace("\n\n", "\n")
-                            .Split('\n')
+                            .Split '\n'
                             |> Array.map (fun s -> s.Trim())
                             |> Array.filter (fun s -> s.Length > 0)
                             |> Array.toList
@@ -119,22 +119,25 @@ module RequestBuilderAST =
     /// Recursively collect enums and sub-records from a Value tree,
     /// returning them as RequestTypeDefs that should precede the main options record.
     let rec collectNestedTypes (values: Value array) : RequestTypeDef list =
-        let result = ResizeArray<RequestTypeDef>()
-        for v in values do
-            // Collect enums
-            if v.EnumValues.IsSome then
-                let cases = v.EnumValues.Value |> List.map parseRequestEnumCase
-                result.Add(RequestEnum(v.Type, cases))
-            // Collect nested sub-records
-            if v.SubValues.IsSome then
-                let nested = collectNestedTypes v.SubValues.Value
-                for n in nested do result.Add(n)
-                let subName = v.Type
-                if not (subName.StartsWith "Choice<" || subName.EndsWith " list") then
-                    let (subFields, subParams) = buildRequestFieldsAndParams v.SubValues.Value
-                    result.Add(RequestRecord(subName, subFields, subParams))
-        result |> Seq.toList
+        let result: RequestTypeDef list =
+            [
+                for v in values do
+                    // Collect enums
+                    if v.EnumValues.IsSome then
+                        let cases = v.EnumValues.Value |> List.map parseRequestEnumCase
+                        RequestEnum(v.Type, cases)
+                    // Collect nested sub-records
+                    if v.SubValues.IsSome then
+                        let nested = collectNestedTypes v.SubValues.Value
+                        for n in nested do n
+                        let subName = v.Type
+                        if not (subName.StartsWith "Choice<" || subName.EndsWith " list") then
+                            let (subFields, subParams) = buildRequestFieldsAndParams v.SubValues.Value
+                            RequestRecord(subName, subFields, subParams)
+            ]
+        result
 
+    let private compiledRegex = Regex "/"
     /// Parse the Stripe OpenAPI spec `paths` section into a flat list of
     /// (moduleName * RequestTypeDef list) pairs — one entry per API module.
     let parseRequestFlat (filePath: string option) : (string * RequestTypeDef list) list =
@@ -159,8 +162,8 @@ module RequestBuilderAST =
                  |> Array.filter (fun (k, _) -> k = "x-stripeOperations")
                  |> Array.collect (fun (_, v) -> v.AsArray())
                  |> Array.filter (fun jv ->
-                    jv.TryGetProperty("method_on")
-                    |> function | Some p -> p.AsString() = "collection" || p.AsString() = "service" | _ -> false)
+                    jv.TryGetProperty "method_on"
+                    |> function | Some p -> p.AsString() = "collection" || p.AsString() = "service" | None -> false)
                  |> Array.map (fun jv ->
                     (jv.GetProperty("method_name").AsString(),
                      jv.GetProperty("operation").AsString(),
@@ -171,7 +174,7 @@ module RequestBuilderAST =
             |> Array.filter (fun (path, _) -> path.Contains("x-stripe") |> not)
             |> Array.map (fun (path, operations) ->
                 let pathRoot =
-                    Regex.Split(path, "/")
+                    compiledRegex.Split path
                     |> Array.mapi (fun i p ->
                         match (i, p) with
                         | 0, _ | 1, _ -> None
@@ -208,10 +211,10 @@ module RequestBuilderAST =
                             |> snd
                         let desc = operation.TryGetProperty("description") |> Option.map (fun v -> v.AsString()) |> Option.defaultValue ""
                         let form =
-                            operation.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded")
+                            operation.GetProperty("requestBody").GetProperty("content").TryGetProperty "application/x-www-form-urlencoded"
                             |> function
                                | Some f -> f
-                               | None -> operation.GetProperty("requestBody").GetProperty("content").GetProperty("multipart/form-data")
+                               | None -> operation.GetProperty("requestBody").GetProperty("content").GetProperty "multipart/form-data"
 
                         let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> failwith "No schema present"
                         let schemaObject = schema |> RequestParsing.getSchemaObject
@@ -219,38 +222,38 @@ module RequestBuilderAST =
                         let formParameters =
                             schemaObject.Properties.Properties
                             |> Array.map (fun (k, v) ->
-                                v |> parseValue $"{methodName}'" k (required.Contains(k)) false)
+                                v |> parseValue $"{methodName}'" k (required.Contains k) false)
                         let queryParameters =
-                            operation.TryGetProperty("parameters")
+                            operation.TryGetProperty "parameters"
                             |> function | Some jv -> jv.AsArray() | None -> [||]
                             |> parseQueryParameters
                         let options = formParameters |> Array.append queryParameters
-                        let responseContent = operation.GetProperty("responses").GetProperty("200").GetProperty("content")
-                        let tryJsonMimeType = responseContent.TryGetProperty("application/json")
+                        let responseContent = operation.GetProperty("responses").GetProperty("200").GetProperty "content"
+                        let tryJsonMimeType = responseContent.TryGetProperty "application/json"
                         let responseType =
                             match tryJsonMimeType with
                             | Some jsonMimeType ->
-                                let responseSchema = jsonMimeType.GetProperty("schema")
-                                match responseSchema.TryGetProperty("$ref") with
+                                let responseSchema = jsonMimeType.GetProperty "schema"
+                                match responseSchema.TryGetProperty "$ref" with
                                 | Some jv ->
                                     jv.AsString() |> parseRef |> pascalCasify
                                 | None ->
-                                    match responseSchema.TryGetProperty("anyOf") with
+                                    match responseSchema.TryGetProperty "anyOf" with
                                     | Some jv when jv.AsArray() |> Array.isEmpty |> not ->
                                         (jv.AsArray() |> Array.head).GetProperty("$ref").AsString()
                                         |> parseRef |> pascalCasify
                                     | _ ->
-                                        match responseSchema.TryGetProperty("properties") with
+                                        match responseSchema.TryGetProperty "properties" with
                                         | Some jv ->
                                             let listType = jv.GetProperty("data").GetProperty("items").GetProperty("$ref").AsString()
                                             $"{listType |> parseRef |> pascalCasify} list"
-                                        | _ ->
+                                        | None ->
                                             failwith $"Unhandled response type: {moduleName}"
-                            | _ ->
-                                let tryPdfMimeType = responseContent.TryGetProperty("application/pdf")
+                            | None ->
+                                let tryPdfMimeType = responseContent.TryGetProperty "application/pdf"
                                 match tryPdfMimeType with
                                 | Some _ -> "string"
-                                | _ -> failwith $"Unhandled mime type: {moduleName}"
+                                | None -> failwith $"Unhandled mime type: {moduleName}"
 
                         (methodName, verb, path, desc, options, responseType))
                 (moduleName, methods))
@@ -268,7 +271,7 @@ module RequestBuilderAST =
 
                 // Collect nested enums and sub-records first
                 let nestedTypes = collectNestedTypes options
-                for nt in nestedTypes do typeDefs.Add(nt)
+                typeDefs.AddRange nestedTypes
 
                 // Build the main options record if there are any options
                 if options |> Array.isEmpty |> not then
@@ -375,7 +378,7 @@ module RequestBuilderAST =
             | RequestFunction(_, _, _, call) ->
                 // Response type may be "TypeName" or "TypeName list"
                 let respType = call.ResponseType.Replace(" list", "").Trim()
-                result.Add(respType)
+                result.Add respType
             | _ -> ()
         result |> Set.ofSeq
 
@@ -422,7 +425,7 @@ module RequestBuilderAST =
 
     /// Escape an identifier with double backticks if it's an F# keyword
     let private escapeKeyword (name: string) =
-        if fsharpKeywords.Contains(name) then $"``{name}``" else name
+        if fsharpKeywords.Contains name then $"``{name}``" else name
 
     /// Serialize a request enum DU using Fabulous.AST
     let serializeRequestEnum (name: string) (cases: RequestEnumCaseInfo list) : string =
@@ -447,7 +450,7 @@ module RequestBuilderAST =
                     let field = Field(f.FieldName, LongIdent(f.FieldType))
                     let field =
                         if not f.DocLines.IsEmpty then
-                            field.xmlDocs(f.DocLines)
+                            field.xmlDocs f.DocLines
                         else field
                     let attrName =
                         match f.OptionAttribute with
@@ -523,7 +526,7 @@ module RequestBuilderAST =
 
     /// Convert a response type string: "TypeName list" -> "StripeList<TypeName>", others unchanged.
     let formatResponseType (responseType: string) =
-        if responseType.EndsWith(" list") then
+        if responseType.EndsWith " list" then
             let innerType = responseType.[..responseType.Length - 6]
             $"StripeList<{innerType}>"
         else
@@ -536,7 +539,7 @@ module RequestBuilderAST =
         // XML doc comment
         if not (String.IsNullOrWhiteSpace description) then
             let desc =
-                if description.Contains("<p>") then description
+                if description.Contains "<p>" then description
                 else $"<p>{description}</p>"
             let formatted = desc.Replace("\n\n", "\n").Replace("\n", "\n///")
             sb.AppendLine($"///{formatted}") |> ignore
@@ -628,7 +631,7 @@ module RequestBuilderAST =
                 | RequestEnum(name, cases) ->
                     let snippet = serializeRequestEnum name cases
                     let indented =
-                        snippet.Split('\n')
+                        snippet.Split '\n'
                         |> Array.map (fun line -> if line.Trim() = "" then "" else $"{indent}{line}")
                         |> String.concat "\n"
                     sb.AppendLine(indented) |> ignore
@@ -637,7 +640,7 @@ module RequestBuilderAST =
                 | RequestRecord(name, fields, createParams) ->
                     let snippet = serializeRequestRecord name fields
                     let indented =
-                        snippet.Split('\n')
+                        snippet.Split '\n'
                         |> Array.map (fun line -> if line.Trim() = "" then "" else $"{indent}{line}")
                         |> String.concat "\n"
                     sb.AppendLine(indented) |> ignore
@@ -647,7 +650,7 @@ module RequestBuilderAST =
                     if not createParams.IsEmpty then
                         let augSnippet = serializeRequestRecordNewMember name createParams
                         let augIndented =
-                            augSnippet.Split('\n')
+                            augSnippet.Split '\n'
                             |> Array.map (fun line -> if line.Trim() = "" then "" else $"{indent}{line}")
                             |> String.concat "\n"
                         sb.AppendLine(augIndented.TrimEnd()) |> ignore
@@ -662,7 +665,7 @@ module RequestBuilderAST =
                 let funcSnippet = serializeRequestFunction name desc optTypeName call
                 // Indent function body inside the module
                 let indented =
-                    funcSnippet.Split('\n')
+                    funcSnippet.Split '\n'
                     |> Array.map (fun line -> if line.Trim() = "" then "" else $"{indent}{line}")
                     |> String.concat "\n"
                 sb.AppendLine(indented) |> ignore
@@ -729,10 +732,10 @@ module RequestBuilderAST =
                 let fileName = $"{pascalName}.fs"
                 let filePath = Path.Combine(outputDir, fileName)
                 File.WriteAllText(filePath, content)
-                generatedFiles.Add(fileName)
+                generatedFiles.Add fileName
                 let typeCount =
                     allTypeDefs
-                    |> List.filter (function | RequestEnum _ | RequestRecord _ -> true | _ -> false)
+                    |> List.filter (function | RequestEnum _ | RequestRecord _ -> true | RequestFunction _ | RequestModule _ -> false)
                     |> List.length
                 let funcCount =
                     allTypeDefs
@@ -746,13 +749,13 @@ module RequestBuilderAST =
         // .fsproj files can import modular compilation order without manual upkeep.
         let propsPath = Path.Combine(outputDir, "StripeRequest.Modular.props")
         let propsLines = ResizeArray<string>()
-        propsLines.Add("<!-- Auto-generated by FunStripe.Generator. Do not edit. -->")
-        propsLines.Add("<Project>")
-        propsLines.Add("  <ItemGroup>")
+        propsLines.Add "<!-- Auto-generated by FunStripe.Generator. Do not edit. -->"
+        propsLines.Add "<Project>"
+        propsLines.Add "  <ItemGroup>"
         for f in generatedFiles do
-            propsLines.Add(sprintf "    <Compile Include=\"$(MSBuildThisFileDirectory)%s\" Link=\"StripeRequest/%s\" />" f f)
-        propsLines.Add("  </ItemGroup>")
-        propsLines.Add("</Project>")
+            propsLines.Add $"    <Compile Include=\"$(MSBuildThisFileDirectory)%s{f}\" Link=\"StripeRequest/%s{f}\" />"
+        propsLines.Add "  </ItemGroup>"
+        propsLines.Add "</Project>"
         File.WriteAllText(propsPath, String.concat "\n" propsLines + "\n")
         printfn "Emitted %s" propsPath
 

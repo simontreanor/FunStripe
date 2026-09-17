@@ -2882,7 +2882,7 @@ module Subscriptions =
     ///<p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
     let List settings (options: ListOptions) =
         let qs = [("automatic_tax", options.AutomaticTax |> box); ("collection_method", options.CollectionMethod |> box); ("created", options.Created |> box); ("current_period_end", options.CurrentPeriodEnd |> box); ("current_period_start", options.CurrentPeriodStart |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("plan", options.Plan |> box); ("price", options.Price |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("test_clock", options.TestClock |> box)] |> Map.ofList
-        $"/v1/subscriptions"
+        "/v1/subscriptions"
         |> RestApi.getAsync<StripeList<Subscription>> settings qs
 
     ///<p>Creates a new subscription on an existing customer. Each customer can have up to 500 active or scheduled subscriptions.</p>
@@ -2891,7 +2891,7 @@ module Subscriptions =
     ///<p>To start subscriptions where the first invoice always begins in a <code>draft</code> status, use <a href="/docs/billing/subscriptions/subscription-schedules#managing">subscription schedules</a> instead.
     ///Schedules provide the flexibility to model more complex billing configurations that change over time.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/subscriptions"
+        "/v1/subscriptions"
         |> RestApi.postAsync<_, Subscription> settings (Map.empty) options
 
     ///<p>Cancels a customer’s subscription immediately. The customer won’t be charged again for the subscription. After it’s canceled, the subscription is largely immutable. You can still update its <a href="/metadata">metadata</a> and <code>cancellation_details</code>.</p>
@@ -2958,7 +2958,7 @@ module SubscriptionsSearch =
     ///to an hour behind during outages. Search functionality is not available to merchants in India.</p>
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
-        $"/v1/subscriptions/search"
+        "/v1/subscriptions/search"
         |> RestApi.getAsync<StripeList<Subscription>> settings qs
 
 module SubscriptionsDiscount =

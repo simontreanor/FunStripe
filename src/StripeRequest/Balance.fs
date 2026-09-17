@@ -26,7 +26,7 @@ module Balance =
     /// For a sample request, see <a href="/docs/connect/account-balances#accounting-for-negative-balances">Accounting for negative balances</a>.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
-        $"/v1/balance"
+        "/v1/balance"
         |> RestApi.getAsync<Balance> settings qs
 
 module BalanceTransactions =
@@ -96,7 +96,7 @@ module BalanceTransactions =
     ///<p>The previous name of this endpoint was “Balance history,” and it used the path <code>/v1/balance/history</code>.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("currency", options.Currency |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payout", options.Payout |> box); ("source", options.Source |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box)] |> Map.ofList
-        $"/v1/balance_transactions"
+        "/v1/balance_transactions"
         |> RestApi.getAsync<StripeList<BalanceTransaction>> settings qs
 
     ///<p>Retrieves the balance transaction with the given ID.</p>

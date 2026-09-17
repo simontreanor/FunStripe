@@ -10,8 +10,7 @@ module AsyncResultCE =
 
         member _.Bind(x: AsyncResult<'a, 'e>, f: 'a -> AsyncResult<'b, 'e>) : AsyncResult<'b, 'e> =
             async {
-                let! xResult = x
-                match xResult with
+                match! x with
                 | Ok x ->
                     return! f x
                 | Error e ->

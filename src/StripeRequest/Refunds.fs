@@ -147,7 +147,7 @@ module Refunds =
     ///<p>Returns a list of all refunds you created. We return the refunds in sorted order, with the most recent refunds appearing first. The 10 most recent refunds are always available by default on the Charge object.</p>
     let List settings (options: ListOptions) =
         let qs = [("charge", options.Charge |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("payment_intent", options.PaymentIntent |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/refunds"
+        "/v1/refunds"
         |> RestApi.getAsync<StripeList<Refund>> settings qs
 
     ///<p>When you create a new refund, you must specify a Charge or a PaymentIntent object on which to create it.</p>
@@ -159,7 +159,7 @@ module Refunds =
     ///This method will raise an error when called on an already-refunded charge,
     ///or when trying to refund more money than is left on a charge.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/refunds"
+        "/v1/refunds"
         |> RestApi.postAsync<_, Refund> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing refund.</p>

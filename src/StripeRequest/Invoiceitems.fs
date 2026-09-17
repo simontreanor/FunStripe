@@ -423,12 +423,12 @@ module Invoiceitems =
     ///<p>Returns a list of your invoice items. Invoice items are returned sorted by creation date, with the most recently created invoice items appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("invoice", options.Invoice |> box); ("limit", options.Limit |> box); ("pending", options.Pending |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/invoiceitems"
+        "/v1/invoiceitems"
         |> RestApi.getAsync<StripeList<Invoiceitem>> settings qs
 
     ///<p>Creates an item to be added to a draft invoice (up to 250 items per invoice). If no invoice is specified, the item will be on the next invoice created for the customer specified.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/invoiceitems"
+        "/v1/invoiceitems"
         |> RestApi.postAsync<_, Invoiceitem> settings (Map.empty) options
 
     ///<p>Deletes an invoice item, removing it from an invoice. Deleting invoice items is only possible when they’re not attached to invoices, or if it’s attached to a draft invoice.</p>

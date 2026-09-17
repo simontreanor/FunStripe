@@ -52,7 +52,7 @@ module SigmaScheduledQueryRuns =
     ///<p>Returns a list of scheduled query runs.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/sigma/scheduled_query_runs"
+        "/v1/sigma/scheduled_query_runs"
         |> RestApi.getAsync<StripeList<ScheduledQueryRun>> settings qs
 
     ///<p>Retrieves the details of an scheduled query run.</p>

@@ -248,12 +248,12 @@ module ShippingRates =
     ///<p>Returns a list of your shipping rates.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("currency", options.Currency |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/shipping_rates"
+        "/v1/shipping_rates"
         |> RestApi.getAsync<StripeList<ShippingRate>> settings qs
 
     ///<p>Creates a new shipping rate object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/shipping_rates"
+        "/v1/shipping_rates"
         |> RestApi.postAsync<_, ShippingRate> settings (Map.empty) options
 
     ///<p>Returns the shipping rate object with the given ID.</p>

@@ -1592,7 +1592,7 @@ module Tokens =
     ///<p>Creates a single-use token that represents a bank account’s details.
     ///You can use this token with any v1 API method in place of a bank account dictionary. You can only use this token once. To do so, attach it to a <a href="#accounts">connected account</a> where <a href="/api/accounts/object#account_object-controller-requirement_collection">controller.requirement_collection</a> is <code>application</code>, which includes Custom accounts.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/tokens"
+        "/v1/tokens"
         |> RestApi.postAsync<_, Token> settings (Map.empty) options
 
     ///<p>Retrieves the token with the given ID.</p>

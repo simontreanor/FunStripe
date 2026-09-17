@@ -123,13 +123,13 @@ module Files =
     ///<p>Returns a list of the files that your account has access to. Stripe sorts and returns the files by their creation dates, placing the most recently created files at the top.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("purpose", options.Purpose |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/files"
+        "/v1/files"
         |> RestApi.getAsync<StripeList<File>> settings qs
 
     ///<p>To upload a file to Stripe, you need to send a request of type <code>multipart/form-data</code>. Include the file you want to upload in the request, and the parameters for creating a file.</p>
     ///<p>All of Stripe’s officially supported Client libraries support sending <code>multipart/form-data</code>.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/files"
+        "/v1/files"
         |> RestApi.postAsync<_, File> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing file object. After you supply a unique file ID, Stripe returns the corresponding file object. Learn how to <a href="/docs/file-upload#download-file-contents">access file contents</a>.</p>

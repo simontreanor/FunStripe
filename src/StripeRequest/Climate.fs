@@ -142,13 +142,13 @@ module ClimateOrders =
     ///most recently created orders appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/climate/orders"
+        "/v1/climate/orders"
         |> RestApi.getAsync<StripeList<ClimateOrder>> settings qs
 
     ///<p>Creates a Climate order object for a given Climate product. The order will be processed immediately
     ///after creation and payment will be deducted your Stripe balance.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/climate/orders"
+        "/v1/climate/orders"
         |> RestApi.postAsync<_, ClimateOrder> settings (Map.empty) options
 
     ///<p>Retrieves the details of a Climate order object with the given ID.</p>
@@ -235,7 +235,7 @@ module ClimateProducts =
     ///<p>Lists all available Climate product objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/climate/products"
+        "/v1/climate/products"
         |> RestApi.getAsync<StripeList<ClimateProduct>> settings qs
 
     ///<p>Retrieves the details of a Climate product with the given ID.</p>
@@ -290,7 +290,7 @@ module ClimateSuppliers =
     ///<p>Lists all available Climate supplier objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/climate/suppliers"
+        "/v1/climate/suppliers"
         |> RestApi.getAsync<StripeList<ClimateSupplier>> settings qs
 
     ///<p>Retrieves a Climate supplier object.</p>

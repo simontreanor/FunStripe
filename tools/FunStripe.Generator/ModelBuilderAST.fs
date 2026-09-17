@@ -91,13 +91,13 @@ module ModelBuilderAST =
 
     /// Parse an enum raw value into an EnumCaseInfo
     let parseEnumCase (rawValue: string) : EnumCaseInfo =
-        if rawValue.Contains(" of ") then
+        if rawValue.Contains " of " then
             // Payload case like "String of string"
             let parts = rawValue.Split([| " of " |], 2, StringSplitOptions.None)
             let caseName = parts.[0] |> pascalCasify
             let payloadType = parts.[1]
             { RawValue = rawValue; CaseName = caseName; JsonUnionCaseValue = None; PayloadType = Some payloadType }
-        elif Regex.IsMatch(rawValue, @"^\p{Lu}") || Regex.IsMatch(rawValue, @"^\d") || rawValue.Contains("-") || rawValue.Contains(" ") || rawValue.Contains(".") || Regex.IsMatch(rawValue, @"[a-zA-Z]\d+(?![a-z])") || Regex.IsMatch(rawValue, @"(^[a-zA-Z]_|_[a-zA-Z]_|_[a-zA-Z]$)") then
+        elif Regex.IsMatch(rawValue, @"^\p{Lu}") || Regex.IsMatch(rawValue, @"^\d") || rawValue.Contains('-') || rawValue.Contains(' ') || rawValue.Contains('.') || Regex.IsMatch(rawValue, @"[a-zA-Z]\d+(?![a-z])") || Regex.IsMatch(rawValue, @"(^[a-zA-Z]_|_[a-zA-Z]_|_[a-zA-Z]$)") then
             let caseName = rawValue |> clean |> pascalCasify |> escapeNumeric
             { RawValue = rawValue; CaseName = caseName; JsonUnionCaseValue = Some rawValue; PayloadType = None }
         elif rawValue = "none" then
@@ -315,7 +315,7 @@ module ModelBuilderAST =
         let mutable field = Field(f.FieldName, LongIdent(f.FieldType))
         // Apply XML docs
         if not f.DocLines.IsEmpty then
-            field <- field.xmlDocs(f.DocLines)
+            field <- field.xmlDocs f.DocLines
         // Only emit [<JsonPropertyName>] if SnakeCaseNamingPolicy would mangle embedded digits
         match f.JsonFieldName with
         | Some n ->
@@ -356,7 +356,7 @@ module ModelBuilderAST =
                         (key, schemaObject.Description,
                             schemaObject.Properties.Properties
                             |> Array.map(fun (k, v) ->
-                                v |> parseValue (key |> pascalCasify) k (requiredFields.Contains(k))
+                                v |> parseValue (key |> pascalCasify) k (requiredFields.Contains k)
                             )
                         )
                 match typeDefinition with

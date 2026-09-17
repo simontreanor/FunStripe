@@ -211,12 +211,12 @@ module PromotionCodes =
     ///<p>Returns a list of your promotion codes.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("code", options.Code |> box); ("coupon", options.Coupon |> box); ("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
-        $"/v1/promotion_codes"
+        "/v1/promotion_codes"
         |> RestApi.getAsync<StripeList<PromotionCode>> settings qs
 
     ///<p>A promotion code points to an underlying promotion. You can optionally restrict the code to a specific customer, redemption limit, and expiration date.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/promotion_codes"
+        "/v1/promotion_codes"
         |> RestApi.postAsync<_, PromotionCode> settings (Map.empty) options
 
     ///<p>Retrieves the promotion code with the given ID. In order to retrieve a promotion code by the customer-facing <code>code</code> use <a href="/docs/api/promotion_codes/list">list</a> with the desired <code>code</code>.</p>

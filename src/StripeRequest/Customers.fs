@@ -824,12 +824,12 @@ module Customers =
     ///<p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("email", options.Email |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("test_clock", options.TestClock |> box)] |> Map.ofList
-        $"/v1/customers"
+        "/v1/customers"
         |> RestApi.getAsync<StripeList<Customer>> settings qs
 
     ///<p>Creates a new customer object.</p>
     let Create settings (options: CreateOptions) =
-        $"/v1/customers"
+        "/v1/customers"
         |> RestApi.postAsync<_, Customer> settings (Map.empty) options
 
     ///<p>Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.</p>
@@ -882,7 +882,7 @@ module CustomersSearch =
     ///to an hour behind during outages. Search functionality is not available to merchants in India.</p>
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
-        $"/v1/customers/search"
+        "/v1/customers/search"
         |> RestApi.getAsync<StripeList<Customer>> settings qs
 
 module CustomersBalanceTransactions =

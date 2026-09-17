@@ -61,7 +61,7 @@ module StripeConverter =
 
         override _.Write(writer, value, _) =
             let epoch = int64((value.ToUniversalTime() - DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds)
-            writer.WriteNumberValue(epoch)
+            writer.WriteNumberValue epoch
 
     // ---------------------------------------------------------------------------
     // StripeId<'phantom> converter: reads/writes as a plain string
@@ -89,7 +89,7 @@ module StripeConverter =
 
         override _.Write(writer, value, _) =
             let (FunStripe.StripeIds.StripeId s) = value
-            writer.WriteStringValue(s)
+            writer.WriteStringValue s
 
     /// JsonConverterFactory that produces a StripeIdConverterInner<'phantom> for any
     /// instantiation of `StripeId<_>`. Must be registered BEFORE StripeUnionConverterFactory
@@ -103,7 +103,7 @@ module StripeConverter =
 
         override _.CreateConverter(t, _options) =
             let phantom = t.GetGenericArguments().[0]
-            let converterType = typedefof<StripeIdConverterInner<_>>.MakeGenericType(phantom)
+            let converterType = typedefof<StripeIdConverterInner<_>>.MakeGenericType phantom
             Activator.CreateInstance(converterType) :?> JsonConverter
 
     // ---------------------------------------------------------------------------
@@ -123,7 +123,7 @@ module StripeConverter =
         override _.Write(writer, value, _) =
             let (FunStripe.RawJson s) = value
             use doc = JsonDocument.Parse(s)
-            doc.RootElement.WriteTo(writer)
+            doc.RootElement.WriteTo writer
 
     // ---------------------------------------------------------------------------
     // Union converter: handles "object"-field discriminated unions
@@ -267,7 +267,7 @@ module StripeConverter =
             not (t.IsGenericType && t.GetGenericTypeDefinition() = typedefof<FunStripe.StripeIds.StripeId<_>>)
 
         override _.CreateConverter(t, _options) =
-            let converterType = typedefof<StripeUnionConverterInner<_>>.MakeGenericType(t)
+            let converterType = typedefof<StripeUnionConverterInner<_>>.MakeGenericType t
             Activator.CreateInstance(converterType) :?> JsonConverter
 
     // ---------------------------------------------------------------------------
