@@ -40,7 +40,7 @@ type ThreeDSecureAuthenticationReason =
 
 type ThreeDSecureAuthenticationStatus =
     | Canceled
-    | Error
+    | [<JsonPropertyName("error")>] Error'
     | Failed
     | RequiresChallenge
     | RequiresSubmission

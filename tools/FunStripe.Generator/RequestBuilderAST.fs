@@ -79,7 +79,7 @@ module RequestBuilderAST =
         if Regex.IsMatch(rawValue, @"^\p{Lu}") || Regex.IsMatch(rawValue, @"^\d") || rawValue.Contains("-") || rawValue.Contains(" ") || rawValue.Contains(".") || Regex.IsMatch(rawValue, @"[a-zA-Z]\d+(?![a-z])") || Regex.IsMatch(rawValue, @"(^[a-zA-Z]_|_[a-zA-Z]_|_[a-zA-Z]$)") then
             let caseName = rawValue |> clean |> pascalCasify |> escapeNumeric
             { RawValue = rawValue; CaseName = caseName; JsonUnionCaseValue = Some rawValue }
-        elif rawValue = "none" then
+        elif List.contains rawValue [ "none"; "some"; "ok"; "error" ] then // would shadow Option/Result cases
             { RawValue = rawValue; CaseName = $"{rawValue |> pascalCasify}'"; JsonUnionCaseValue = Some rawValue }
         else
             let caseName = rawValue |> clean |> pascalCasify

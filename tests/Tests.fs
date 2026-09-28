@@ -9,6 +9,7 @@ open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 open Stripe.Price
 open Stripe.Product
+open Stripe.ThreeDSecure
 open StripeRequest.BillingPortal
 open StripeRequest.Customers
 open StripeRequest.Payment
@@ -1987,14 +1988,14 @@ module Tests =
         member _.``list of union values serialises snake-cased wire names``() =
             let checkout =
                 StripeRequest.Checkout.CheckoutSessions.CreateOptions.New(
-                    paymentMethodTypes = [
-                        StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodTypes.Card
-                        StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodTypes.AcssDebit
+                    allowedPaymentMethodTypes = [
+                        StripeRequest.Checkout.CheckoutSessions.Create'AllowedPaymentMethodTypes.Card
+                        StripeRequest.Checkout.CheckoutSessions.Create'AllowedPaymentMethodTypes.AcssDebit
                     ]
                 )
             let pairs = checkout |> serialise |> Seq.toList
-            Assert.That(pairs |> List.exists (fun (k, v) -> k = "payment_method_types[0]" && v = "card"), Is.True)
-            Assert.That(pairs |> List.exists (fun (k, v) -> k = "payment_method_types[1]" && v = "acss_debit"), Is.True)
+            Assert.That(pairs |> List.exists (fun (k, v) -> k = "allowed_payment_method_types[0]" && v = "card"), Is.True)
+            Assert.That(pairs |> List.exists (fun (k, v) -> k = "allowed_payment_method_types[1]" && v = "acss_debit"), Is.True)
 
     [<TestFixture>]
     type WebhookEventDeserializationTests () =

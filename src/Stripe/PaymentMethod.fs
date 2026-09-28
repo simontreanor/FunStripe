@@ -16994,7 +16994,7 @@ type SubscriptionSchedulesResourcePauseSchedulePauseSettings =
 
 [<Struct>]
 type SubscriptionSchedulesResourcePauseSchedulePauseStatusType =
-    | Error
+    | [<JsonPropertyName("error")>] Error'
     | Scheduled
     | Succeeded
 
@@ -17050,7 +17050,7 @@ type SubscriptionSchedulesResourcePauseScheduleResumeSettings =
 
 [<Struct>]
 type SubscriptionSchedulesResourcePauseScheduleResumeStatusType =
-    | Error
+    | [<JsonPropertyName("error")>] Error'
     | Pending
     | RequiresAction
     | Scheduled
