@@ -41,6 +41,7 @@ Targets Stripe's new **endive** release train (`2026-09-30.endive`). Stripe uses
 
 ### Fixed
 - Generator: enum values `ok`, `error` and `some` are now emitted as `Ok'`, `Error'` and `Some'`, the same way `none` becomes `None'`. Endive is the first spec with an `error` enum value (3DS authentication status, subscription-schedule pause/resume status); a bare `Error` case shadowed `Result.Error` in any code that opened the namespace
+- Generator: deletes generated files in `src/Stripe/` and `src/StripeRequest/` that a run no longer emits (only files carrying the `GeneratedCode("FunStripe", …)` stamp). Removes the uncompiled leftovers `Stripe/SubscriptionItem.fs` and `Stripe/Transfer.fs`
 
 ## [2.4.0] - 2026-09-07
 
