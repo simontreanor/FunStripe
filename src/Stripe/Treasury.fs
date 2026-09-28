@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
     | Company
     | Individual

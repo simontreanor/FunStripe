@@ -5,7 +5,7 @@ open FunStripe
 open System
 
 /// This hash contains whether the active entitlements is enabled.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type CustomerSessionResourceComponentsResourceActiveEntitlements =
     {
         /// Whether the active entitlements is enabled.

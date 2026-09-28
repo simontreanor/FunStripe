@@ -88,11 +88,12 @@ truth. Never hard-code a version anywhere else:
 since MSBuild only auto-imports the nearest `Directory.Build.props`.
 
 Bump policy: new Stripe API spec version → **minor**; library fix/feature → patch; breaking
-library change → major. The spec-update workflow applies the minor bump automatically.
+library change → major. The spec-update workflow applies the minor bump automatically; bump
+to major by hand when the spec is breaking (e.g. a new Stripe release train, as with endive → 3.0.0).
 
 Release: ensure `FunStripeVersion` is set, regenerate if needed, expand `CHANGELOG.md`, commit
-as `release: X.Y.Z`, then push `v2/X.Y.Z` and `v2-fable/X.Y.Z` tags (the publish workflows take
-the package version from the tag). See `CONTRIBUTING.md` for the full process.
+as `release: X.Y.Z`, then push `vX/X.Y.Z` and `vX-fable/X.Y.Z` tags, where the prefix is the
+major version, e.g. `v3/3.0.0` (the publish workflows take the package version from the tag). See `CONTRIBUTING.md` for the full process.
 
 ## Conventions
 

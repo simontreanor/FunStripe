@@ -47,12 +47,14 @@ opens a PR. You normally just review that PR rather than bumping by hand.
 3. Commit as `release: X.Y.Z`.
 
 Publishing is triggered by pushing the release tags (handled by `publish-funstripe-core.yml`
-for `v2/*` and `publish-funstripe-core-fable.yml` for `v2-fable/*`):
+for `v<major>/*` and `publish-funstripe-core-fable.yml` for `v<major>-fable/*`). The prefix
+names the major version, e.g. `v3/3.0.0`; the workflows refuse a tag whose prefix doesn't
+match the version's major:
 
 ```powershell
-git tag v2/X.Y.Z
-git tag v2-fable/X.Y.Z
-git push origin main v2/X.Y.Z v2-fable/X.Y.Z
+git tag vX/X.Y.Z
+git tag vX-fable/X.Y.Z
+git push origin main vX/X.Y.Z vX-fable/X.Y.Z
 ```
 
 The publish workflows take the package version from the tag, so the tag is the ultimate

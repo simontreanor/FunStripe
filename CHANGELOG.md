@@ -6,10 +6,41 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
-## [2.5.0] - 2026-09-28
+## [3.0.0] - 2026-09-30
+
+Targets Stripe's new **endive** release train (`2026-09-30.endive`). Stripe uses a new train for breaking API changes, and several of them surface as breaking changes in FunStripe's types, so this is a major release.
+
+### Upgrade notes
+- **`payment_method_types` is removed** from Checkout Session create, PaymentIntent create/update/confirm and SetupIntent create/update. Use `allowedPaymentMethodTypes` instead (new on Checkout Session create; already present on PaymentIntent and SetupIntent). It acts as a filter on the payment methods Stripe computes dynamically, so a type you list is offered only if it is also eligible for the payment. The `payment_method_types` fields on the response models remain
+- `PaymentMethodDetailsCard.Mandate` (on `Charge.payment_method_details.card`) changes from `string option` to `StripeId<Markers.Mandate> option`, since Stripe now makes it an expandable `Mandate`
+- `ThreeDSecureUsage` and `ThreeDSecureDetailsCharge` (with their enum types) move from `Stripe.PaymentMethod` to the new `Stripe.ThreeDSecure` namespace. Add `open Stripe.ThreeDSecure` where you name them or build them as record literals
+- Removed by Stripe: the `igic` tax registration country option added in 2.4.0, `payto` on PaymentMethod update, `countries` on Financial Connections session filters (use the new singular `country`), and the `bulk_hold_expiry` reserve release reason (Stripe replaces it with `hold_expired`)
+- Type changes from Stripe:
+  - Account reject `reason` is now an enum
+  - `billing_cycle_anchor` on Subscription update/resume and on invoice preview `subscription_details` is now an object with a `type` field (`now` / `unchanged`), where it used to be a bare enum. In F#, write `BillingCycleAnchor = Some (Update'BillingCycleAnchor.New(type' = Update'BillingCycleAnchorType.Now))`
+  - `setup_future_usage` on Checkout Bancontact and PaymentIntent Blik options is now an enum (`none` / `off_session`) where it used to be a fixed `none`
+  - The Radar payment evaluation `fraudulent_payment.score` is nullable
+- Several response models gained required fields (e.g. `CheckoutSession.AllowedPaymentMethodTypes`, `PaymentIntent.PaymentRecord`, `Product.TaxDetails`, `SubscriptionItem.CurrentTrial`), which adds parameters to their generated `New(...)` constructors. This only affects code that constructs these models directly, typically in tests
+- Release tags now carry the major version: `v3/X.Y.Z` and `v3-fable/X.Y.Z` (previously `v2/…`). The publish workflows accept any `vN/` prefix and reject a tag whose prefix doesn't match the version's major
 
 ### Changed
-- Regenerated against Stripe OpenAPI spec `2026-09-30.endive` (was `2026-08-26.dahlia`)
+- Regenerated against Stripe OpenAPI spec `2026-09-30.endive` (was `2026-08-26.dahlia`). Highlights:
+  - **Standalone 3D Secure**: new `ThreeDSecure.Authentication` resource (`/v1/three_d_secure/authentications`: create, retrieve, list, `submit` and `cancel`)
+  - **Subscription pausing**: new `pause` endpoint on subscriptions, `pause_schedules` on subscription schedules, `status_details` on `Invoice` and `Subscription`, `payment_behavior` on resume, and `pause` on invoice preview `subscription_details`
+  - **Trial offers**: new `ProductCatalog.TrialOffer` resource (create, retrieve, update, list), with `current_trial` on subscription items and `billing_cycle_anchor` on the trial-end behaviour
+  - **Apps installs**: new `Apps.Install` resource (create, retrieve, update, list, `uninstall`) and `apps.install.*` event types
+  - **Tax**: new `Tax.Location` resource (create, retrieve, list); `performance_location` on calculation line items; `tax_details` on products and inline `product_data`; `requirements` on `TaxCode`; new US registration types (admissions, attendance, entertainment, gross receipts, hospitality, luxury, resort, tourism) and tax-rate types (`digital_excise_tax`, `utility_users_tax`)
+  - **New payment methods**: PayPay and SeQura across PaymentIntent, SetupIntent, Checkout, PaymentMethod and payment records; MoMo on payment records; Blik mandates and recurring payments (`blik` options on SetupIntent, Invoice and Subscription)
+  - **Billie**: `company_details` and `reference` on the Billie payment method options
+  - **Reserves**: `destination` on holds, plans and releases; `manual_release` on reserve plans
+  - `PaymentIntent`: `payment_record`; `card_present` and `interac_present` on `allowed_payment_method_types`
+  - `Charge` card details: `electronic_commerce_indicator`; `Mandate` card details: `india`
+  - `Invoiceitem`: `invoicing_rules`
+  - `rtp` network on Treasury financial accounts and received credits
+  - `2026-09-30.endive` added to the webhook endpoint API version enum
+
+### Fixed
+- Generator: enum values `ok`, `error` and `some` are now emitted as `Ok'`, `Error'` and `Some'`, the same way `none` becomes `None'`. Endive is the first spec with an `error` enum value (3DS authentication status, subscription-schedule pause/resume status); a bare `Error` case shadowed `Result.Error` in any code that opened the namespace
 
 ## [2.4.0] - 2026-09-07
 

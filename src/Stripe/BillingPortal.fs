@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Application
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type BillingPortalConfigurationApplication'AnyOf =
     | String of string
     | Application of Application

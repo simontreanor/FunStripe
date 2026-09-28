@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted =
     {
         /// The [Tax Transaction](https://docs.stripe.com/api/tax/transaction/object)

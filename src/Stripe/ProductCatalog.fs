@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Price
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type ProductCatalogImplEndpointsTrialOfferResourceRelativeDuration =
     {
         /// The number of iterations of the price's interval for this trial offer.

@@ -6,7 +6,7 @@ open Stripe.ApplicationFee
 open Stripe.FeeRefund
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 module ApplicationFees =
 
     type ListOptions =

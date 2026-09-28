@@ -9,7 +9,7 @@ open Stripe.Plan
 open Stripe.Price
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type SchedulesPhaseAutomaticTax =
     {
         /// Whether Stripe automatically computes tax on invoices created during this phase.
