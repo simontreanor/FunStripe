@@ -17,9 +17,9 @@ module Config =
         member _.Version = version
 
     /// The Stripe API date-version that this build of FunStripe was generated from.
-    /// When updating, also update the literal in AssemblyInfo.fs and <StripeApiVersion>
-    /// in /Directory.Build.props so all three stay in sync.
-    let DefaultStripeApiVersion = "2026-04-22.dahlia"
+    /// Emitted by the generator from the spec (`SpecInfo.ApiVersion` in StripeIds.fs).
+    [<Literal>]
+    let DefaultStripeApiVersion = SpecInfo.ApiVersion
 
     /// Defines the base URL for the Stripe API
     let StripeBaseUrl = "https://api.stripe.com"

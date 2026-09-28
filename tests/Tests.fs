@@ -855,8 +855,21 @@ module Tests =
             Assert.That(headers |> List.exists (fun (k,_) -> k = "Stripe-Version"), Is.False)
 
         [<Test>]
-        member _.``DefaultStripeApiVersion constant equals expected value``() =
-            Assert.That(Config.DefaultStripeApiVersion, Is.EqualTo "2026-04-22.dahlia")
+        member _.``DefaultStripeApiVersion matches StripeApiVersion in Directory.Build.props``() =
+            let props = System.IO.Path.Combine(__SOURCE_DIRECTORY__, "..", "Directory.Build.props")
+            let expected =
+                System.Xml.Linq.XDocument.Load(props).Descendants(System.Xml.Linq.XName.Get "StripeApiVersion")
+                |> Seq.exactlyOne
+                |> fun e -> e.Value.Trim()
+            Assert.That(Config.DefaultStripeApiVersion, Is.EqualTo expected)
+
+        [<Test>]
+        member _.``assembly StripeApiVersion attribute matches DefaultStripeApiVersion``() =
+            let attr =
+                typeof<Config.StripeApiVersionAttribute>.Assembly.GetCustomAttributes(typeof<Config.StripeApiVersionAttribute>, false)
+                |> Seq.cast<Config.StripeApiVersionAttribute>
+                |> Seq.exactlyOne
+            Assert.That(attr.Version, Is.EqualTo Config.DefaultStripeApiVersion)
 
     // =========================================================================
     // D. Util.snakeCase

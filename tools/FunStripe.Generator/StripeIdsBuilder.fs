@@ -11,6 +11,8 @@ open System.Text
 ///     single-target expandable reference in the spec. These markers carry no runtime
 ///     state; their only purpose is to preserve the relationship between an ID field
 ///     and its target resource at compile time.
+///   * `module SpecInfo` — the spec's `info.version` as a literal, so the hand-written
+///     `Config.DefaultStripeApiVersion` and assembly attribute can't drift from the spec.
 ///
 /// The file is emitted before `StripeModel.fs` and `Stripe/*.fs` in the project file
 /// because every generated record may reference `StripeId<Markers.X>` or `Markers.X`.
@@ -63,9 +65,7 @@ module StripeIdsBuilder =
 
     /// Collect every distinct PascalCase target schema referenced by an expandable anyOf
     /// anywhere in the spec. Sorted alphabetically for stable output.
-    let private collectMarkers (specPath: string) : string list =
-        let json = File.ReadAllText specPath
-        let root = JsonValue.Parse json
+    let private collectMarkers (root: JsonValue) : string list =
         let schemas = root?components?schemas
         match schemas with
         | JsonValue.Record props ->
@@ -78,7 +78,7 @@ module StripeIdsBuilder =
         | _ -> []
 
     /// Emit the F# source for `src/StripeIds.fs`.
-    let private emitSource (version: string) (markers: string list) : string =
+    let private emitSource (version: string) (apiVersion: string) (markers: string list) : string =
         let sb = StringBuilder()
         let appendLine (s: string) = sb.AppendLine(s : string) |> ignore
         appendLine "namespace FunStripe"
@@ -117,12 +117,21 @@ module StripeIdsBuilder =
         appendLine "    // no runtime cost; they exist solely to parameterise StripeId<'phantom>."
         for m in markers do
             appendLine $"    type {m} = class end"
+        appendLine ""
+        appendLine $"[<System.CodeDom.Compiler.GeneratedCode(\"FunStripe\", \"{version}\")>]"
+        appendLine "module SpecInfo ="
+        appendLine ""
+        appendLine "    /// The Stripe API date-version (the spec's `info.version`) this build was generated from."
+        appendLine "    [<Literal>]"
+        appendLine $"    let ApiVersion = \"{apiVersion}\""
         sb.ToString()
 
     /// Generate `src/StripeIds.fs` and return its full path.
     let generate (version: string) (outputDir: string) (specPath: string) : string =
-        let markers = collectMarkers specPath
-        let source = emitSource version markers
+        let root = File.ReadAllText specPath |> JsonValue.Parse
+        let apiVersion = (root?info?version).AsString()
+        let markers = collectMarkers root
+        let source = emitSource version apiVersion markers
         let path = Path.Combine(outputDir, "StripeIds.fs")
         let normalized = source.Replace("\r\n", "\n").Replace("\n", System.Environment.NewLine)
         File.WriteAllText(path, normalized)

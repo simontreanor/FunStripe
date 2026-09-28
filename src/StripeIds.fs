@@ -106,3 +106,10 @@ module Markers =
     type Transfer = class end
     type TransferReversal = class end
     type TreasuryTransaction = class end
+
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+module SpecInfo =
+
+    /// The Stripe API date-version (the spec's `info.version`) this build was generated from.
+    [<Literal>]
+    let ApiVersion = "2026-09-30.endive"

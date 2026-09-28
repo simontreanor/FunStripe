@@ -132,10 +132,10 @@ let handleWebhook (signingSecret: string) (signatureHeader: string) (rawBody: st
 FunStripe targets a specific Stripe API date-version. The version this build was generated from is exposed as a constant:
 
 ```F#
-Config.DefaultStripeApiVersion  // e.g. "2026-04-22.dahlia"
+Config.DefaultStripeApiVersion  // e.g. "2026-09-30.endive"
 ```
 
-It is also embedded as an assembly-level attribute (`Config.StripeApiVersionAttribute`) and in the NuGet package tags, giving downstream projects an auditable record of the API surface they are compiled against.
+The generator takes it from the spec's `info.version`, so it always matches the generated models. It is also embedded as an assembly-level attribute (`Config.StripeApiVersionAttribute`) and in the NuGet package tags, giving downstream projects an auditable record of the API surface they are compiled against.
 
 By default, FunStripe does **not** send a `Stripe-Version` request header, so Stripe uses the version pinned to your account. If you want every request to be explicitly tied to the library's target API version — useful when upgrading or for forward-compatibility testing — pass it through `StripeApiSettings`:
 
@@ -153,7 +153,7 @@ To test against a **newer** Stripe API version before upgrading the library, sup
 let settings =
     RestApi.StripeApiSettings.New(
         apiKey = Config.StripeTestApiKey,
-        stripeVersion = "2026-04-22.dahlia"   // override for forward-compatibility testing
+        stripeVersion = "2026-10-28.endive"   // override for forward-compatibility testing
     )
 ```
 
