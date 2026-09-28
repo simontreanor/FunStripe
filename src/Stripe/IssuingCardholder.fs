@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.FundingInstructions
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 type IssuingCardholderAddress = { Address: Address }
 
 type IssuingCardholderAddress with
@@ -1036,9 +1036,9 @@ type IssuingCardholderIndividualDob with
 
 type IssuingCardholderIdDocument =
     {
-        /// The back of a document returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
+        /// The back of a document returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `identity_document`.
         Back: StripeId<Markers.File> option
-        /// The front of a document returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
+        /// The front of a document returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `identity_document`.
         Front: StripeId<Markers.File> option
     }
 

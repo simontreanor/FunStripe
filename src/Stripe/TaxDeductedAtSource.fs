@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 type TaxDeductedAtSource =
     {
         /// Unique identifier for the object.

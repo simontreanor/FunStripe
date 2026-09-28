@@ -19,8 +19,8 @@
     opens a spec-update PR; for a manual release, edit them here and nowhere else.
   -->
   <PropertyGroup>
-    <FunStripeVersion>2.4.0</FunStripeVersion>
-    <StripeApiVersion>2026-08-26.dahlia</StripeApiVersion>
+    <FunStripeVersion>2.5.0</FunStripeVersion>
+    <StripeApiVersion>2026-09-30.endive</StripeApiVersion>
   </PropertyGroup>
 
 </Project>

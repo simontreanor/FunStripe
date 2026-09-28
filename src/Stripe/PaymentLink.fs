@@ -6,7 +6,7 @@ open System
 open Stripe.Application
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 type PaymentLinkApplication'AnyOf =
     | String of string
     | Application of Application
@@ -80,11 +80,13 @@ type PaymentLinkPaymentMethodTypes =
     | PayByBank
     | Paynow
     | Paypal
+    | Paypay
     | Payto
     | Pix
     | Promptpay
     | Satispay
     | SepaDebit
+    | Sequra
     | Sofort
     | Sunbit
     | Swish

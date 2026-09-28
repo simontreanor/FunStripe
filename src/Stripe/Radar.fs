@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 type DeletedRadarValueList =
     {
         /// Always true for a deleted object
@@ -73,7 +73,7 @@ type InsightsResourcesPaymentEvaluationAddress with
             State = state
         }
 
-/// Billing details attached to this payment evaluation.
+/// Billing details attached to the payment method.
 type InsightsResourcesPaymentEvaluationBillingDetails =
     {
         Address: InsightsResourcesPaymentEvaluationAddress
@@ -354,7 +354,7 @@ type InsightsResourcesPaymentEvaluationMoneyMovementCard with
 /// Money Movement details attached to this payment.
 type InsightsResourcesPaymentEvaluationMoneyMovementDetails =
     {
-        /// Describes card money movement details for the payment evaluation.
+        /// Describes card money movement details.
         Card: InsightsResourcesPaymentEvaluationMoneyMovementCard option
     }
 
@@ -365,7 +365,7 @@ type InsightsResourcesPaymentEvaluationMoneyMovementDetails with
         }
 
 module InsightsResourcesPaymentEvaluationMoneyMovementDetails =
-    ///Describes the type of money movement. Currently only `card` is supported.
+    ///Describes the type of money movement.
     let moneyMovementType = "card"
 
 [<Struct>]
@@ -373,6 +373,7 @@ type InsightsResourcesPaymentEvaluationOutcomeType =
     | Failed
     | MerchantBlocked
     | Rejected
+    | Rerouted
     | Succeeded
 
 [<Struct>]
@@ -597,12 +598,12 @@ type InsightsResourcesPaymentEvaluationSignalV2 =
         EvaluatedAt: DateTime
         /// Risk level of this signal, based on the score.
         RiskLevel: InsightsResourcesPaymentEvaluationSignalV2RiskLevel
-        /// Score for this signal. Possible values for evaluated payments are between 0 and 100. The value is returned with two decimal places and higher scores indicate a higher likelihood of the signal being true. A score of -1 is returned when a model evaluation was not performed, such as requests from incomplete integrations.
-        Score: decimal
+        /// Numeric score for this signal, returned with two decimal places. Possible values for evaluated payments are between 0 and 100, where higher scores indicate a higher likelihood of the signal being true.
+        Score: decimal option
     }
 
 type InsightsResourcesPaymentEvaluationSignalV2 with
-    static member New(evaluatedAt: DateTime, riskLevel: InsightsResourcesPaymentEvaluationSignalV2RiskLevel, score: decimal) =
+    static member New(evaluatedAt: DateTime, riskLevel: InsightsResourcesPaymentEvaluationSignalV2RiskLevel, score: decimal option) =
         {
             EvaluatedAt = evaluatedAt
             RiskLevel = riskLevel
@@ -611,11 +612,19 @@ type InsightsResourcesPaymentEvaluationSignalV2 with
 
 /// Collection of signals for this payment evaluation.
 type InsightsResourcesPaymentEvaluationSignals =
-    { FraudulentPayment: InsightsResourcesPaymentEvaluationSignalV2 }
+    {
+        /// The likelihood that this `PaymentEvaluation` results in an early fraud warning.
+        EarlyFraudWarning: InsightsResourcesPaymentEvaluationSignalV2 option
+        /// The likelihood that this `PaymentEvaluation` results in a dispute with reason code `fraudulent`.
+        FraudulentDispute: InsightsResourcesPaymentEvaluationSignalV2 option
+        FraudulentPayment: InsightsResourcesPaymentEvaluationSignalV2
+    }
 
 type InsightsResourcesPaymentEvaluationSignals with
-    static member New(fraudulentPayment: InsightsResourcesPaymentEvaluationSignalV2) =
+    static member New(earlyFraudWarning: InsightsResourcesPaymentEvaluationSignalV2 option, fraudulentDispute: InsightsResourcesPaymentEvaluationSignalV2 option, fraudulentPayment: InsightsResourcesPaymentEvaluationSignalV2) =
         {
+            EarlyFraudWarning = earlyFraudWarning
+            FraudulentDispute = fraudulentDispute
             FraudulentPayment = fraudulentPayment
         }
 

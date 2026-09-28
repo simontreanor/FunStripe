@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 module Invoices =
 
     type ListOptions =
@@ -240,6 +240,106 @@ module Invoices =
         static member New(?preferredLanguage: Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage) =
             {
                 PreferredLanguage = preferredLanguage
+            }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress
+        =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code.
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1 (for example, street, PO Box, or company name).
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2 (for example, apartment, suite, unit, or building).
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region.
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType
+        =
+        | ChEin
+        | DeHrb
+        | DkCvr
+        | EsCif
+        | FiTunnus
+        | FrSiren
+        | FrSiret
+        | ItRea
+        | NlKvk
+        | NoOrgNumber
+        | NoPno
+        | SeOrgNumber
+        | SePno
+        | UkCrn
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetails =
+        {
+            /// The address the company or entity is registered with.
+            [<Config.Form>]
+            RegisteredAddress:
+                Choice<Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress,string> option
+            /// Company or entity name.
+            [<Config.Form>]
+            RegisteredName: string option
+            /// The official registration number for the given registration type.
+            [<Config.Form>]
+            RegistrationNumber: string option
+            /// Type of registration the company or entity holds in their registered country.
+            [<Config.Form>]
+            RegistrationType:
+                Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType option
+            /// VAT ID number.
+            [<Config.Form>]
+            Vat: string option
+        }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetails with
+        static member New(?registeredAddress: Choice<Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress,string>, ?registeredName: string, ?registrationNumber: string, ?registrationType: Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType, ?vat: string) =
+            {
+                RegisteredAddress = registeredAddress
+                RegisteredName = registeredName
+                RegistrationNumber = registrationNumber
+                RegistrationType = registrationType
+                Vat = vat
+            }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptions =
+        {
+            /// Registration details about the buyer's organization.
+            [<Config.Form>]
+            CompanyDetails:
+                Choice<Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetails,string> option
+            /// An identifier or reference that this payment corresponds to.
+            [<Config.Form>]
+            Reference: string option
+        }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptions with
+        static member New(?companyDetails: Choice<Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetails,string>, ?reference: string) =
+            {
+                CompanyDetails = companyDetails
+                Reference = reference
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlanInterval =
@@ -563,7 +663,10 @@ module Invoices =
                 Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string> option
             /// If paying by `billie`, this sub-hash contains details about the Billie payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
-            Billie: Choice<string,string> option
+            Billie: Choice<Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptions,string> option
+            /// If paying by `blik`, this sub-hash contains details about the Blik payment method options to pass to the invoice’s PaymentIntent.
+            [<Config.Form>]
+            Blik: Choice<string,string> option
             /// If paying by `card`, this sub-hash contains details about the Card payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
             Card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions,string> option
@@ -593,11 +696,12 @@ module Invoices =
         }
 
     type Create'PaymentSettingsPaymentMethodOptions with
-        static member New(?acssDebit: Choice<Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<string,string>, ?card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions,string>, ?customerBalance: Choice<Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Create'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<Create'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptions,string>, ?blik: Choice<string,string>, ?card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions,string>, ?customerBalance: Choice<Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Create'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Bancontact = bancontact
                 Billie = billie
+                Blik = blik
                 Card = card
                 CustomerBalance = customerBalance
                 Konbini = konbini
@@ -619,6 +723,7 @@ module Invoices =
         | BacsDebit
         | Bancontact
         | Billie
+        | Blik
         | Boleto
         | Card
         | Cashapp
@@ -1034,7 +1139,7 @@ module Invoices =
             /// How to handle pending invoice items on invoice creation. Defaults to `exclude` if the parameter is omitted.
             [<Config.Form>]
             PendingInvoiceItemsBehavior: Create'PendingInvoiceItemsBehavior option
-            /// The rendering-related settings that control how the invoice is displayed on customer-facing surfaces such as PDF and Hosted Invoice Page.
+            /// The rendering-related settings that control how invoices render in customer-facing interfaces such as the PDF or hosted invoice page.
             [<Config.Form>]
             Rendering: Create'Rendering option
             /// Settings for the cost of shipping for this invoice.
@@ -1279,6 +1384,106 @@ module Invoices =
         static member New(?preferredLanguage: Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage) =
             {
                 PreferredLanguage = preferredLanguage
+            }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress
+        =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code.
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1 (for example, street, PO Box, or company name).
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2 (for example, apartment, suite, unit, or building).
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region.
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType
+        =
+        | ChEin
+        | DeHrb
+        | DkCvr
+        | EsCif
+        | FiTunnus
+        | FrSiren
+        | FrSiret
+        | ItRea
+        | NlKvk
+        | NoOrgNumber
+        | NoPno
+        | SeOrgNumber
+        | SePno
+        | UkCrn
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetails =
+        {
+            /// The address the company or entity is registered with.
+            [<Config.Form>]
+            RegisteredAddress:
+                Choice<Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress,string> option
+            /// Company or entity name.
+            [<Config.Form>]
+            RegisteredName: string option
+            /// The official registration number for the given registration type.
+            [<Config.Form>]
+            RegistrationNumber: string option
+            /// Type of registration the company or entity holds in their registered country.
+            [<Config.Form>]
+            RegistrationType:
+                Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType option
+            /// VAT ID number.
+            [<Config.Form>]
+            Vat: string option
+        }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetails with
+        static member New(?registeredAddress: Choice<Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress,string>, ?registeredName: string, ?registrationNumber: string, ?registrationType: Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType, ?vat: string) =
+            {
+                RegisteredAddress = registeredAddress
+                RegisteredName = registeredName
+                RegistrationNumber = registrationNumber
+                RegistrationType = registrationType
+                Vat = vat
+            }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptions =
+        {
+            /// Registration details about the buyer's organization.
+            [<Config.Form>]
+            CompanyDetails:
+                Choice<Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetails,string> option
+            /// An identifier or reference that this payment corresponds to.
+            [<Config.Form>]
+            Reference: string option
+        }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptions with
+        static member New(?companyDetails: Choice<Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptionsCompanyDetailsCompanyDetails,string>, ?reference: string) =
+            {
+                CompanyDetails = companyDetails
+                Reference = reference
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptionsInstallmentsPlanInstallmentPlanInterval =
@@ -1602,7 +1807,10 @@ module Invoices =
                 Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string> option
             /// If paying by `billie`, this sub-hash contains details about the Billie payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
-            Billie: Choice<string,string> option
+            Billie: Choice<Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptions,string> option
+            /// If paying by `blik`, this sub-hash contains details about the Blik payment method options to pass to the invoice’s PaymentIntent.
+            [<Config.Form>]
+            Blik: Choice<string,string> option
             /// If paying by `card`, this sub-hash contains details about the Card payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
             Card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions,string> option
@@ -1632,11 +1840,12 @@ module Invoices =
         }
 
     type Update'PaymentSettingsPaymentMethodOptions with
-        static member New(?acssDebit: Choice<Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<string,string>, ?card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions,string>, ?customerBalance: Choice<Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Update'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<Update'PaymentSettingsPaymentMethodOptionsBillieInvoicePaymentMethodOptions,string>, ?blik: Choice<string,string>, ?card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardInvoicePaymentMethodOptions,string>, ?customerBalance: Choice<Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Update'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Bancontact = bancontact
                 Billie = billie
+                Blik = blik
                 Card = card
                 CustomerBalance = customerBalance
                 Konbini = konbini
@@ -1658,6 +1867,7 @@ module Invoices =
         | BacsDebit
         | Bancontact
         | Billie
+        | Blik
         | Boleto
         | Card
         | Cashapp
@@ -2056,7 +2266,7 @@ module Invoices =
             /// Configuration settings for the PaymentIntent that is generated when the invoice is finalized.
             [<Config.Form>]
             PaymentSettings: Update'PaymentSettings option
-            /// The rendering-related settings that control how the invoice is displayed on customer-facing surfaces such as PDF and Hosted Invoice Page.
+            /// The rendering-related settings that control how invoices render in customer-facing interfaces such as the PDF or hosted invoice page.
             [<Config.Form>]
             Rendering: Update'Rendering option
             /// Settings for the cost of shipping for this invoice.
@@ -2129,7 +2339,8 @@ module Invoices =
         |> RestApi.getAsync<Invoice> settings qs
 
     ///<p>Draft invoices are fully editable. Once an invoice is <a href="/docs/billing/invoices/workflow#finalized">finalized</a>,
-    ///monetary values, as well as <code>collection_method</code>, become uneditable.</p>
+    ///you can no longer change most of its details, including monetary values and <code>collection_method</code>. For most invoices,
+    ///this also includes <code>description</code>.</p>
     ///<p>If you would like to stop the Stripe Billing engine from automatically finalizing, reattempting payments on,
     ///sending reminders for, or <a href="/docs/billing/invoices/reconciliation">automatically reconciling</a> invoices, pass
     ///<code>auto_advance=false</code>.</p>
@@ -3287,9 +3498,27 @@ module InvoicesCreatePreview =
                 ProrationBehavior = prorationBehavior
             }
 
-    type CreatePreview'SubscriptionDetailsBillingCycleAnchor =
+    type CreatePreview'SubscriptionDetailsBillingCycleAnchorType =
         | Now
+        | Timestamp
         | Unchanged
+
+    type CreatePreview'SubscriptionDetailsBillingCycleAnchor =
+        {
+            /// A timestamp to use as the subscription's billing cycle anchor. Only valid when `type` is `timestamp`.
+            [<Config.Form>]
+            Timestamp: DateTime option
+            /// Determines how the subscription's billing cycle anchor behaves for the invoice preview.
+            [<Config.Form>]
+            Type: CreatePreview'SubscriptionDetailsBillingCycleAnchorType option
+        }
+
+    type CreatePreview'SubscriptionDetailsBillingCycleAnchor with
+        static member New(?timestamp: DateTime, ?type': CreatePreview'SubscriptionDetailsBillingCycleAnchorType) =
+            {
+                Timestamp = timestamp
+                Type = type'
+            }
 
     type CreatePreview'SubscriptionDetailsBillingModeFlexibleProrationDiscounts =
         | Included
@@ -3435,6 +3664,19 @@ module InvoicesCreatePreview =
                 UsageGte = usageGte
             }
 
+    type CreatePreview'SubscriptionDetailsItemsCurrentTrial =
+        {
+            /// The ID of the trial offer to apply to the subscription item.
+            [<Config.Form>]
+            TrialOffer: string option
+        }
+
+    type CreatePreview'SubscriptionDetailsItemsCurrentTrial with
+        static member New(?trialOffer: string) =
+            {
+                TrialOffer = trialOffer
+            }
+
     type CreatePreview'SubscriptionDetailsItemsDiscounts =
         {
             /// ID of the coupon to create a new discount for.
@@ -3526,6 +3768,9 @@ module InvoicesCreatePreview =
             /// Delete all usage for a given subscription item. You must pass this when deleting a usage records subscription item. `clear_usage` has no effect if the plan has a billing meter attached.
             [<Config.Form>]
             ClearUsage: bool option
+            /// The trial offer to apply to this subscription item.
+            [<Config.Form>]
+            CurrentTrial: CreatePreview'SubscriptionDetailsItemsCurrentTrial option
             /// A flag that, if set to `true`, will delete the specified item.
             [<Config.Form>]
             Deleted: bool option
@@ -3541,10 +3786,10 @@ module InvoicesCreatePreview =
             /// Plan ID for this item, as a string.
             [<Config.Form>]
             Plan: string option
-            /// The ID of the price object. One of `price` or `price_data` is required. When changing a subscription item's price, `quantity` is set to 1 unless a `quantity` parameter is provided.
+            /// The ID of the price object. You can use either `price` or `price_data`, but not both, to set or change this item's price. If you're updating an existing item without changing its price, omit both. When changing a subscription item's price, `quantity` is set to 1 unless a `quantity` parameter is provided.
             [<Config.Form>]
             Price: string option
-            /// Data used to generate a new [Price](https://docs.stripe.com/api/prices) object inline. One of `price` or `price_data` is required.
+            /// Data used to generate a new [Price](https://docs.stripe.com/api/prices) object inline. You can use either `price` or `price_data`, but not both, to set or change this item's price. If you're updating an existing item without changing its price, omit both.
             [<Config.Form>]
             PriceData: CreatePreview'SubscriptionDetailsItemsPriceData option
             /// Quantity for this item.
@@ -3556,10 +3801,11 @@ module InvoicesCreatePreview =
         }
 
     type CreatePreview'SubscriptionDetailsItems with
-        static member New(?billingThresholds: Choice<CreatePreview'SubscriptionDetailsItemsBillingThresholdsItemBillingThresholds,string>, ?clearUsage: bool, ?deleted: bool, ?discounts: Choice<CreatePreview'SubscriptionDetailsItemsDiscounts list,string>, ?id: string, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: CreatePreview'SubscriptionDetailsItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+        static member New(?billingThresholds: Choice<CreatePreview'SubscriptionDetailsItemsBillingThresholdsItemBillingThresholds,string>, ?clearUsage: bool, ?currentTrial: CreatePreview'SubscriptionDetailsItemsCurrentTrial, ?deleted: bool, ?discounts: Choice<CreatePreview'SubscriptionDetailsItemsDiscounts list,string>, ?id: string, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: CreatePreview'SubscriptionDetailsItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
             {
                 BillingThresholds = billingThresholds
                 ClearUsage = clearUsage
+                CurrentTrial = currentTrial
                 Deleted = deleted
                 Discounts = discounts
                 Id = id
@@ -3569,6 +3815,85 @@ module InvoicesCreatePreview =
                 PriceData = priceData
                 Quantity = quantity
                 TaxRates = taxRates
+            }
+
+    type CreatePreview'SubscriptionDetailsPauseBillForOutstandingUsageThroughType =
+        | [<JsonPropertyName("none")>] None'
+        | Now
+
+    type CreatePreview'SubscriptionDetailsPauseBillForOutstandingUsageThrough =
+        {
+            /// When to bill metered usage in the current period.
+            [<Config.Form>]
+            Type: CreatePreview'SubscriptionDetailsPauseBillForOutstandingUsageThroughType option
+        }
+
+    type CreatePreview'SubscriptionDetailsPauseBillForOutstandingUsageThrough with
+        static member New(?type': CreatePreview'SubscriptionDetailsPauseBillForOutstandingUsageThroughType) =
+            {
+                Type = type'
+            }
+
+    type CreatePreview'SubscriptionDetailsPauseBillForUnusedTimeFromType =
+        | ItemCurrentPeriodStart
+        | [<JsonPropertyName("none")>] None'
+        | Now
+
+    type CreatePreview'SubscriptionDetailsPauseBillForUnusedTimeFrom =
+        {
+            /// When to credit for unused time.
+            [<Config.Form>]
+            Type: CreatePreview'SubscriptionDetailsPauseBillForUnusedTimeFromType option
+        }
+
+    type CreatePreview'SubscriptionDetailsPauseBillForUnusedTimeFrom with
+        static member New(?type': CreatePreview'SubscriptionDetailsPauseBillForUnusedTimeFromType) =
+            {
+                Type = type'
+            }
+
+    type CreatePreview'SubscriptionDetailsPauseBillFor =
+        {
+            /// Controls when to bill for metered usage in the current period. Defaults to `{ type: "now" }`.
+            [<Config.Form>]
+            OutstandingUsageThrough: CreatePreview'SubscriptionDetailsPauseBillForOutstandingUsageThrough option
+            /// Controls when to credit for unused time on licensed items. Defaults to `{ type: "now" }`.
+            [<Config.Form>]
+            UnusedTimeFrom: CreatePreview'SubscriptionDetailsPauseBillForUnusedTimeFrom option
+        }
+
+    type CreatePreview'SubscriptionDetailsPauseBillFor with
+        static member New(?outstandingUsageThrough: CreatePreview'SubscriptionDetailsPauseBillForOutstandingUsageThrough, ?unusedTimeFrom: CreatePreview'SubscriptionDetailsPauseBillForUnusedTimeFrom) =
+            {
+                OutstandingUsageThrough = outstandingUsageThrough
+                UnusedTimeFrom = unusedTimeFrom
+            }
+
+    type CreatePreview'SubscriptionDetailsPauseInvoicingBehavior =
+        | Invoice
+        | PendingInvoiceItem
+
+    type CreatePreview'SubscriptionDetailsPauseType = | Subscription
+
+    type CreatePreview'SubscriptionDetailsPause =
+        {
+            /// Controls what to bill for when pausing the subscription.
+            [<Config.Form>]
+            BillFor: CreatePreview'SubscriptionDetailsPauseBillFor option
+            /// Determines how to handle debits and credits when pausing. Defaults to `pending_invoice_item`.
+            [<Config.Form>]
+            InvoicingBehavior: CreatePreview'SubscriptionDetailsPauseInvoicingBehavior option
+            /// The type of pause to apply. Defaults to `subscription`.
+            [<Config.Form>]
+            Type: CreatePreview'SubscriptionDetailsPauseType option
+        }
+
+    type CreatePreview'SubscriptionDetailsPause with
+        static member New(?billFor: CreatePreview'SubscriptionDetailsPauseBillFor, ?invoicingBehavior: CreatePreview'SubscriptionDetailsPauseInvoicingBehavior, ?type': CreatePreview'SubscriptionDetailsPauseType) =
+            {
+                BillFor = billFor
+                InvoicingBehavior = invoicingBehavior
+                Type = type'
             }
 
     type CreatePreview'SubscriptionDetailsProrationBehavior =
@@ -3584,7 +3909,7 @@ module InvoicesCreatePreview =
         {
             /// For new subscriptions, a future timestamp to anchor the subscription's [billing cycle](https://docs.stripe.com/subscriptions/billing-cycle). This is used to determine the date of the first full invoice, and, for plans with `month` or `year` intervals, the day of the month for subsequent invoices. For existing subscriptions, the value can only be set to `now` or `unchanged`.
             [<Config.Form>]
-            BillingCycleAnchor: Choice<CreatePreview'SubscriptionDetailsBillingCycleAnchor,DateTime> option
+            BillingCycleAnchor: CreatePreview'SubscriptionDetailsBillingCycleAnchor option
             /// Controls how prorations and invoices for subscriptions are calculated and orchestrated.
             [<Config.Form>]
             BillingMode: CreatePreview'SubscriptionDetailsBillingMode option
@@ -3609,6 +3934,11 @@ module InvoicesCreatePreview =
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
+            /// Previews the invoice that would be generated when pausing the subscription. Passing an empty hash won't preview pausing and instead returns the next invoice.
+            /// To receive a preview invoice, set `invoicing_behavior` to `invoice`. A preview isn't available if the `bill_for` options produce no billable amounts.
+            /// `pending_invoice_item` never has a preview available because pausing wouldn't generate an invoice, and paused subscriptions don't generate invoices either.
+            [<Config.Form>]
+            Pause: CreatePreview'SubscriptionDetailsPause option
             /// Determines how to handle [prorations](https://docs.stripe.com/billing/subscriptions/prorations) when the billing cycle changes (e.g., when switching plans, resetting `billing_cycle_anchor=now`, or starting a trial), or if an item's `quantity` changes. The default value is `create_prorations`.
             [<Config.Form>]
             ProrationBehavior: CreatePreview'SubscriptionDetailsProrationBehavior option
@@ -3627,7 +3957,7 @@ module InvoicesCreatePreview =
         }
 
     type CreatePreview'SubscriptionDetails with
-        static member New(?billingCycleAnchor: Choice<CreatePreview'SubscriptionDetailsBillingCycleAnchor,DateTime>, ?billingMode: CreatePreview'SubscriptionDetailsBillingMode, ?billingSchedules: Choice<CreatePreview'SubscriptionDetailsBillingSchedules list,string>, ?cancelAt: Choice<DateTime,string,CreatePreview'SubscriptionDetailsCancelAt>, ?cancelAtPeriodEnd: bool, ?cancelNow: bool, ?defaultTaxRates: Choice<string list,string>, ?items: CreatePreview'SubscriptionDetailsItems list, ?metadata: Map<string, string>, ?prorationBehavior: CreatePreview'SubscriptionDetailsProrationBehavior, ?prorationDate: DateTime, ?resumeAt: CreatePreview'SubscriptionDetailsResumeAt, ?startDate: DateTime, ?trialEnd: Choice<CreatePreview'SubscriptionDetailsTrialEnd,DateTime>) =
+        static member New(?billingCycleAnchor: CreatePreview'SubscriptionDetailsBillingCycleAnchor, ?billingMode: CreatePreview'SubscriptionDetailsBillingMode, ?billingSchedules: Choice<CreatePreview'SubscriptionDetailsBillingSchedules list,string>, ?cancelAt: Choice<DateTime,string,CreatePreview'SubscriptionDetailsCancelAt>, ?cancelAtPeriodEnd: bool, ?cancelNow: bool, ?defaultTaxRates: Choice<string list,string>, ?items: CreatePreview'SubscriptionDetailsItems list, ?metadata: Map<string, string>, ?pause: CreatePreview'SubscriptionDetailsPause, ?prorationBehavior: CreatePreview'SubscriptionDetailsProrationBehavior, ?prorationDate: DateTime, ?resumeAt: CreatePreview'SubscriptionDetailsResumeAt, ?startDate: DateTime, ?trialEnd: Choice<CreatePreview'SubscriptionDetailsTrialEnd,DateTime>) =
             {
                 BillingCycleAnchor = billingCycleAnchor
                 BillingMode = billingMode
@@ -3638,6 +3968,7 @@ module InvoicesCreatePreview =
                 DefaultTaxRates = defaultTaxRates
                 Items = items
                 Metadata = metadata
+                Pause = pause
                 ProrationBehavior = prorationBehavior
                 ProrationDate = prorationDate
                 ResumeAt = resumeAt
@@ -3799,6 +4130,23 @@ module InvoicesAddLines =
                 Start = start
             }
 
+    type AddLines'LinesPriceDataProductDataTaxDetails =
+        {
+            /// A tax location ID. Depending on the [tax code](/tax/tax-for-tickets/reference/tax-location-performance), this is required, optional, or not supported.
+            [<Config.Form>]
+            PerformanceLocation: string option
+            /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
+            [<Config.Form>]
+            TaxCode: Choice<string,string> option
+        }
+
+    type AddLines'LinesPriceDataProductDataTaxDetails with
+        static member New(?performanceLocation: string, ?taxCode: Choice<string,string>) =
+            {
+                PerformanceLocation = performanceLocation
+                TaxCode = taxCode
+            }
+
     type AddLines'LinesPriceDataProductData =
         {
             /// The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
@@ -3816,19 +4164,23 @@ module InvoicesAddLines =
             /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
             [<Config.Form>]
             TaxCode: string option
+            /// Tax details for this product, including the [tax code](/tax/tax-codes) and an optional performance location.
+            [<Config.Form>]
+            TaxDetails: AddLines'LinesPriceDataProductDataTaxDetails option
             /// A label that represents units of this product. When set, this will be included in customers' receipts, invoices, Checkout, and the customer portal.
             [<Config.Form>]
             UnitLabel: string option
         }
 
     type AddLines'LinesPriceDataProductData with
-        static member New(?description: string, ?images: string list, ?metadata: Map<string, string>, ?name: string, ?taxCode: string, ?unitLabel: string) =
+        static member New(?description: string, ?images: string list, ?metadata: Map<string, string>, ?name: string, ?taxCode: string, ?taxDetails: AddLines'LinesPriceDataProductDataTaxDetails, ?unitLabel: string) =
             {
                 Description = description
                 Images = images
                 Metadata = metadata
                 Name = name
                 TaxCode = taxCode
+                TaxDetails = taxDetails
                 UnitLabel = unitLabel
             }
 
@@ -3894,6 +4246,7 @@ module InvoicesAddLines =
     type AddLines'LinesTaxAmountsTaxRateDataTaxType =
         | AmusementTax
         | CommunicationsTax
+        | DigitalExciseTax
         | Gst
         | Hst
         | Igst
@@ -3907,6 +4260,7 @@ module InvoicesAddLines =
         | Rst
         | SalesTax
         | ServiceTax
+        | UtilityUsersTax
         | Vat
 
     type AddLines'LinesTaxAmountsTaxRateData =
@@ -4219,6 +4573,23 @@ module InvoicesLines =
                 Start = start
             }
 
+    type Update'PriceDataProductDataTaxDetails =
+        {
+            /// A tax location ID. Depending on the [tax code](/tax/tax-for-tickets/reference/tax-location-performance), this is required, optional, or not supported.
+            [<Config.Form>]
+            PerformanceLocation: string option
+            /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
+            [<Config.Form>]
+            TaxCode: Choice<string,string> option
+        }
+
+    type Update'PriceDataProductDataTaxDetails with
+        static member New(?performanceLocation: string, ?taxCode: Choice<string,string>) =
+            {
+                PerformanceLocation = performanceLocation
+                TaxCode = taxCode
+            }
+
     type Update'PriceDataProductData =
         {
             /// The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
@@ -4236,19 +4607,23 @@ module InvoicesLines =
             /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
             [<Config.Form>]
             TaxCode: string option
+            /// Tax details for this product, including the [tax code](/tax/tax-codes) and an optional performance location.
+            [<Config.Form>]
+            TaxDetails: Update'PriceDataProductDataTaxDetails option
             /// A label that represents units of this product. When set, this will be included in customers' receipts, invoices, Checkout, and the customer portal.
             [<Config.Form>]
             UnitLabel: string option
         }
 
     type Update'PriceDataProductData with
-        static member New(?description: string, ?images: string list, ?metadata: Map<string, string>, ?name: string, ?taxCode: string, ?unitLabel: string) =
+        static member New(?description: string, ?images: string list, ?metadata: Map<string, string>, ?name: string, ?taxCode: string, ?taxDetails: Update'PriceDataProductDataTaxDetails, ?unitLabel: string) =
             {
                 Description = description
                 Images = images
                 Metadata = metadata
                 Name = name
                 TaxCode = taxCode
+                TaxDetails = taxDetails
                 UnitLabel = unitLabel
             }
 
@@ -4314,6 +4689,7 @@ module InvoicesLines =
     type Update'TaxAmountsTaxRateDataTaxType =
         | AmusementTax
         | CommunicationsTax
+        | DigitalExciseTax
         | Gst
         | Hst
         | Igst
@@ -4327,6 +4703,7 @@ module InvoicesLines =
         | Rst
         | SalesTax
         | ServiceTax
+        | UtilityUsersTax
         | Vat
 
     type Update'TaxAmountsTaxRateData =
@@ -4687,6 +5064,23 @@ module InvoicesUpdateLines =
                 Start = start
             }
 
+    type UpdateLines'LinesPriceDataProductDataTaxDetails =
+        {
+            /// A tax location ID. Depending on the [tax code](/tax/tax-for-tickets/reference/tax-location-performance), this is required, optional, or not supported.
+            [<Config.Form>]
+            PerformanceLocation: string option
+            /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
+            [<Config.Form>]
+            TaxCode: Choice<string,string> option
+        }
+
+    type UpdateLines'LinesPriceDataProductDataTaxDetails with
+        static member New(?performanceLocation: string, ?taxCode: Choice<string,string>) =
+            {
+                PerformanceLocation = performanceLocation
+                TaxCode = taxCode
+            }
+
     type UpdateLines'LinesPriceDataProductData =
         {
             /// The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
@@ -4704,19 +5098,23 @@ module InvoicesUpdateLines =
             /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
             [<Config.Form>]
             TaxCode: string option
+            /// Tax details for this product, including the [tax code](/tax/tax-codes) and an optional performance location.
+            [<Config.Form>]
+            TaxDetails: UpdateLines'LinesPriceDataProductDataTaxDetails option
             /// A label that represents units of this product. When set, this will be included in customers' receipts, invoices, Checkout, and the customer portal.
             [<Config.Form>]
             UnitLabel: string option
         }
 
     type UpdateLines'LinesPriceDataProductData with
-        static member New(?description: string, ?images: string list, ?metadata: Map<string, string>, ?name: string, ?taxCode: string, ?unitLabel: string) =
+        static member New(?description: string, ?images: string list, ?metadata: Map<string, string>, ?name: string, ?taxCode: string, ?taxDetails: UpdateLines'LinesPriceDataProductDataTaxDetails, ?unitLabel: string) =
             {
                 Description = description
                 Images = images
                 Metadata = metadata
                 Name = name
                 TaxCode = taxCode
+                TaxDetails = taxDetails
                 UnitLabel = unitLabel
             }
 
@@ -4782,6 +5180,7 @@ module InvoicesUpdateLines =
     type UpdateLines'LinesTaxAmountsTaxRateDataTaxType =
         | AmusementTax
         | CommunicationsTax
+        | DigitalExciseTax
         | Gst
         | Hst
         | Igst
@@ -4795,6 +5194,7 @@ module InvoicesUpdateLines =
         | Rst
         | SalesTax
         | ServiceTax
+        | UtilityUsersTax
         | Vat
 
     type UpdateLines'LinesTaxAmountsTaxRateData =

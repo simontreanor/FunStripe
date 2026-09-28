@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 type InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
     | Company
     | Individual
@@ -298,7 +298,7 @@ type TreasuryReceivedCreditsResourceStatusTransitions with
             PostedAt = postedAt
         }
 
-/// You can reverse some [ReceivedCredits](https://api.stripe.com#received_credits) depending on their network and source flow. Reversing a ReceivedCredit leads to the creation of a new object known as a CreditReversal.
+/// You can reverse some [ReceivedCredits](https://docs.stripe.com/api#received_credits) depending on their network and source flow. Reversing a ReceivedCredit leads to the creation of a new object known as a CreditReversal.
 type TreasuryCreditReversal =
     {
         /// Amount (in cents) transferred.
@@ -350,7 +350,7 @@ module TreasuryCreditReversal =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "treasury.credit_reversal"
 
-/// Occurs whenever an CreditReversal is submitted and created.
+/// Occurs whenever a CreditReversal is submitted and created.
 type TreasuryCreditReversalCreated = { Object: TreasuryCreditReversal }
 
 type TreasuryCreditReversalCreated with
@@ -359,7 +359,7 @@ type TreasuryCreditReversalCreated with
             Object = object
         }
 
-/// Occurs whenever an CreditReversal post is posted.
+/// Occurs whenever a CreditReversal post is posted.
 type TreasuryCreditReversalPosted = { Object: TreasuryCreditReversal }
 
 type TreasuryCreditReversalPosted with
@@ -403,7 +403,7 @@ type TreasuryReceivedDebitsResourceStatusTransitions with
             CompletedAt = completedAt
         }
 
-/// You can reverse some [ReceivedDebits](https://api.stripe.com#received_debits) depending on their network and source flow. Reversing a ReceivedDebit leads to the creation of a new object known as a DebitReversal.
+/// You can reverse some [ReceivedDebits](https://docs.stripe.com/api#received_debits) depending on their network and source flow. Reversing a ReceivedDebit leads to the creation of a new object known as a DebitReversal.
 type TreasuryDebitReversal =
     {
         /// Amount (in cents) transferred.
@@ -789,6 +789,7 @@ type TreasuryFinancialAccountsResourceAbaRecord with
 [<Struct>]
 type TreasuryFinancialAccountsResourceFinancialAddressSupportedNetworks =
     | Ach
+    | Rtp
     | UsDomesticWire
 
 /// FinancialAddresses contain identifying information that resolves to a FinancialAccount.
@@ -1019,7 +1020,7 @@ type TreasuryInboundTransfersResourceInboundTransferResourceStatusTransitions wi
             CanceledAt = canceledAt |> Option.flatten
         }
 
-/// Use [InboundTransfers](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/into/inbound-transfers) to add funds to your [FinancialAccount](https://api.stripe.com#financial_accounts) via a PaymentMethod that is owned by you. The funds will be transferred via an ACH debit.
+/// Use [InboundTransfers](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/into/inbound-transfers) to add funds to your [FinancialAccount](https://docs.stripe.com/api#financial_accounts) via a PaymentMethod that is owned by you. The funds will be transferred via an ACH debit.
 /// Related guide: [Moving money with Treasury using InboundTransfer objects](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/into/inbound-transfers)
 type TreasuryInboundTransfer =
     {
@@ -1033,7 +1034,7 @@ type TreasuryInboundTransfer =
         Currency: IsoTypes.IsoCurrencyCode
         /// An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
-        /// Details about this InboundTransfer's failure. Only set when status is `failed`.
+        /// Details about this InboundTransfer's failure. Will be set when `status=failed` or `returned=true`.
         FailureDetails: TreasuryInboundTransfersResourceFailureDetails option
         /// The FinancialAccount that received the funds.
         FinancialAccount: string
@@ -1247,7 +1248,7 @@ type TreasuryOutboundPaymentsResourceReturnedStatus with
             Transaction = transaction
         }
 
-/// Use [OutboundPayments](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-payments) to send funds to another party's external bank account or [FinancialAccount](https://api.stripe.com#financial_accounts). To send money to an account belonging to the same user, use an [OutboundTransfer](https://api.stripe.com#outbound_transfers).
+/// Use [OutboundPayments](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-payments) to send funds to another party's external bank account or [FinancialAccount](https://docs.stripe.com/api#financial_accounts). To send money to an account belonging to the same user, use an [OutboundTransfer](https://docs.stripe.com/api#outbound_transfers).
 /// Simulate OutboundPayment state changes with the `/v1/test_helpers/treasury/outbound_payments` endpoints. These methods can only be called on test mode objects.
 /// Related guide: [Moving money with Treasury using OutboundPayment objects](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-payments)
 type TreasuryOutboundPayment =
@@ -1495,7 +1496,7 @@ type TreasuryOutboundTransfersResourceStatusTransitions with
             ReturnedAt = returnedAt
         }
 
-/// Use [OutboundTransfers](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-transfers) to transfer funds from a [FinancialAccount](https://api.stripe.com#financial_accounts) to a PaymentMethod belonging to the same entity. To send funds to a different party, use [OutboundPayments](https://api.stripe.com#outbound_payments) instead. You can send funds over ACH rails or through a domestic wire transfer to a user's own external bank account.
+/// Use [OutboundTransfers](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-transfers) to transfer funds from a [FinancialAccount](https://docs.stripe.com/api#financial_accounts) to a PaymentMethod belonging to the same entity. To send funds to a different party, use [OutboundPayments](https://docs.stripe.com/api#outbound_payments) instead. You can send funds over ACH rails or through a domestic wire transfer to a user's own external bank account.
 /// Simulate OutboundTransfer state changes with the `/v1/test_helpers/treasury/outbound_transfers` endpoints. These methods can only be called on test mode objects.
 /// Related guide: [Moving money with Treasury using OutboundTransfer objects](https://docs.stripe.com/docs/treasury/moving-money/financial-accounts/out-of/outbound-transfers)
 type TreasuryOutboundTransfer =
@@ -1640,6 +1641,7 @@ type TreasuryReceivedCreditFailureCode =
 type TreasuryReceivedCreditNetwork =
     | Ach
     | Card
+    | Rtp
     | Stripe
     | UsDomesticWire
 
@@ -1680,9 +1682,9 @@ type TreasuryReceivedCreditsResourceLinkedFlows =
     {
         /// The CreditReversal created as a result of this ReceivedCredit being reversed.
         CreditReversal: string option
-        /// Set if the ReceivedCredit was created due to an [Issuing Authorization](https://api.stripe.com#issuing_authorizations) object.
+        /// Set if the ReceivedCredit was created due to an [Issuing Authorization](https://docs.stripe.com/api#issuing_authorizations) object.
         IssuingAuthorization: string option
-        /// Set if the ReceivedCredit is also viewable as an [Issuing transaction](https://api.stripe.com#issuing_transactions) object.
+        /// Set if the ReceivedCredit is also viewable as an [Issuing transaction](https://docs.stripe.com/api#issuing_transactions) object.
         IssuingTransaction: string option
         /// ID of the source flow. Set if `network` is `stripe` and the source flow is visible to the user. Examples of source flows include OutboundPayments, payouts, or CreditReversals.
         SourceFlow: string option
@@ -1757,7 +1759,7 @@ type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethod
     {
         BillingDetails: TreasurySharedResourceBillingDetails
         FinancialAccount: ReceivedPaymentMethodDetailsFinancialAccount option
-        /// Set when `type` is `issuing_card`. This is an [Issuing Card](https://api.stripe.com#issuing_cards) ID.
+        /// Set when `type` is `issuing_card`. This is an [Issuing Card](https://docs.stripe.com/api#issuing_cards) ID.
         IssuingCard: string option
         /// Polymorphic type matching the originating money movement's source. This can be an external account, a Stripe balance, or a FinancialAccount.
         Type: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType
@@ -1778,7 +1780,7 @@ module TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMeth
     ///Set when `type` is `balance`.
     let balance = "payments"
 
-/// ReceivedCredits represent funds sent to a [FinancialAccount](https://api.stripe.com#financial_accounts) (for example, via ACH or wire). These money movements are not initiated from the FinancialAccount.
+/// ReceivedCredits represent funds sent to a [FinancialAccount](https://docs.stripe.com/api#financial_accounts) (for example, via ACH or wire). These money movements are not initiated from the FinancialAccount.
 type TreasuryReceivedCredit =
     {
         /// Amount (in cents) transferred.
@@ -1888,13 +1890,13 @@ type TreasuryReceivedDebitsResourceLinkedFlows =
         DebitReversal: string option
         /// Set if the ReceivedDebit is associated with an InboundTransfer's return of funds.
         InboundTransfer: string option
-        /// Set if the ReceivedDebit was created due to an [Issuing Authorization](https://api.stripe.com#issuing_authorizations) object.
+        /// Set if the ReceivedDebit was created due to an [Issuing Authorization](https://docs.stripe.com/api#issuing_authorizations) object.
         IssuingAuthorization: string option
-        /// Set if the ReceivedDebit is also viewable as an [Issuing Dispute](https://api.stripe.com#issuing_disputes) object.
+        /// Set if the ReceivedDebit is also viewable as an [Issuing Dispute](https://docs.stripe.com/api#issuing_disputes) object.
         IssuingTransaction: string option
-        /// Set if the ReceivedDebit was created due to a [Payout](https://api.stripe.com#payouts) object.
+        /// Set if the ReceivedDebit was created due to a [Payout](https://docs.stripe.com/api#payouts) object.
         Payout: string option
-        /// Set if the ReceivedDebit was created due to a [Topup](https://api.stripe.com#topups) object.
+        /// Set if the ReceivedDebit was created due to a [Topup](https://docs.stripe.com/api#topups) object.
         Topup: string option
     }
 
@@ -1932,7 +1934,7 @@ type TreasuryReceivedDebitsResourceReversalDetails with
             RestrictedReason = restrictedReason
         }
 
-/// ReceivedDebits represent funds pulled from a [FinancialAccount](https://api.stripe.com#financial_accounts). These are not initiated from the FinancialAccount.
+/// ReceivedDebits represent funds pulled from a [FinancialAccount](https://docs.stripe.com/api#financial_accounts). These are not initiated from the FinancialAccount.
 type TreasuryReceivedDebit =
     {
         /// Amount (in cents) transferred.
@@ -2090,7 +2092,7 @@ type TreasuryTransactionsResourceFlowDetails with
             ReceivedDebit = receivedDebit
         }
 
-/// TransactionEntries represent individual units of money movements within a single [Transaction](https://api.stripe.com#transactions).
+/// TransactionEntries represent individual units of money movements within a single [Transaction](https://docs.stripe.com/api#transactions).
 type TreasuryTransactionEntry =
     {
         BalanceImpact: TreasuryTransactionsResourceBalanceImpact
@@ -2194,7 +2196,7 @@ type TreasuryTransactionsResourceAbstractTransactionResourceStatusTransitions wi
             VoidAt = voidAt
         }
 
-/// Transactions represent changes to a [FinancialAccount's](https://api.stripe.com#financial_accounts) balance.
+/// Transactions represent changes to a [FinancialAccount's](https://docs.stripe.com/api#financial_accounts) balance.
 type TreasuryTransaction =
     {
         /// Amount (in cents) transferred.

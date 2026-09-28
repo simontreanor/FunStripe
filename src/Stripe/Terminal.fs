@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 type AddressApiResourceTerminal =
     {
         /// City, district, suburb, town, or village.
@@ -1127,7 +1127,7 @@ type TerminalReader =
         Metadata: Map<string, string>
         /// Serial number of the reader.
         SerialNumber: string
-        /// The networking status of the reader. We do not recommend using this field in flows that may block taking payments.
+        /// The networking status of the reader. This value is `null` for mobile readers. We do not recommend using this field in flows that may block taking payments.
         Status: TerminalReaderStatus option
     }
 

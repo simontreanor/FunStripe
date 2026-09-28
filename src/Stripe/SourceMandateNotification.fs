@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 type SourceMandateNotificationAcssDebitData =
     {
         /// The statement descriptor associate with the debit.

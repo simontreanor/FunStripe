@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 type MandateMultiUse =
     {
         /// The amount of the payment on a multi use mandate.
@@ -119,6 +119,22 @@ type MandateBacsDebit with
             ServiceUserNumber = serviceUserNumber
             Url = url
         }
+
+type MandateBlik =
+    {
+        /// Date at which the mandate expires.
+        ExpiresAt: DateTime option
+    }
+
+type MandateBlik with
+    static member New(expiresAt: DateTime option) =
+        {
+            ExpiresAt = expiresAt
+        }
+
+module MandateBlik =
+    ///Type of the mandate.
+    let ``type`` = "off_session"
 
 type MandateCashapp = { MandateCashapp: string option }
 
@@ -366,6 +382,7 @@ type MandatePaymentMethodDetails =
         AmazonPay: MandateAmazonPay option
         AuBecsDebit: MandateAuBecsDebit option
         BacsDebit: MandateBacsDebit option
+        Blik: MandateBlik option
         Card: CardMandatePaymentMethodDetails option
         Cashapp: MandateCashapp option
         KakaoPay: MandateKakaoPay option
@@ -387,13 +404,14 @@ type MandatePaymentMethodDetails =
     }
 
 type MandatePaymentMethodDetails with
-    static member New(``type``: string, ?acssDebit: MandateAcssDebit, ?amazonPay: MandateAmazonPay, ?auBecsDebit: MandateAuBecsDebit, ?bacsDebit: MandateBacsDebit, ?card: CardMandatePaymentMethodDetails, ?cashapp: MandateCashapp, ?kakaoPay: MandateKakaoPay, ?klarna: MandateKlarna, ?krCard: MandateKrCard, ?link: MandateLink, ?naverPay: MandateNaverPay, ?nzBankAccount: MandateNzBankAccount, ?paypal: MandatePaypal, ?payto: MandatePayto, ?pix: MandatePix, ?revolutPay: MandateRevolutPay, ?sepaDebit: MandateSepaDebit, ?twint: MandateTwint, ?upi: MandateUpi, ?usBankAccount: MandateUsBankAccount) =
+    static member New(``type``: string, ?acssDebit: MandateAcssDebit, ?amazonPay: MandateAmazonPay, ?auBecsDebit: MandateAuBecsDebit, ?bacsDebit: MandateBacsDebit, ?blik: MandateBlik, ?card: CardMandatePaymentMethodDetails, ?cashapp: MandateCashapp, ?kakaoPay: MandateKakaoPay, ?klarna: MandateKlarna, ?krCard: MandateKrCard, ?link: MandateLink, ?naverPay: MandateNaverPay, ?nzBankAccount: MandateNzBankAccount, ?paypal: MandatePaypal, ?payto: MandatePayto, ?pix: MandatePix, ?revolutPay: MandateRevolutPay, ?sepaDebit: MandateSepaDebit, ?twint: MandateTwint, ?upi: MandateUpi, ?usBankAccount: MandateUsBankAccount) =
         {
             Type = ``type``
             AcssDebit = acssDebit
             AmazonPay = amazonPay
             AuBecsDebit = auBecsDebit
             BacsDebit = bacsDebit
+            Blik = blik
             Card = card
             Cashapp = cashapp
             KakaoPay = kakaoPay

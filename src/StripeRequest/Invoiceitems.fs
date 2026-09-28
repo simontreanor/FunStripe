@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Invoiceitem
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 module Invoiceitems =
 
     type ListOptions =
@@ -367,6 +367,9 @@ module Invoiceitems =
             /// Specifies which fields in the response should be expanded.
             [<Config.Form>]
             Expand: string list option
+            /// Pass an empty string to remove previously-defined invoicing rules. Setting invoicing rules is not supported.
+            [<Config.Form>]
+            InvoicingRules: string option
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
@@ -400,7 +403,7 @@ module Invoiceitems =
         }
 
     type UpdateOptions with
-        static member New(invoiceitem: string, ?amount: int, ?description: string, ?discountable: bool, ?discounts: Choice<Update'Discounts list,string>, ?expand: string list, ?metadata: Map<string, string>, ?period: Update'Period, ?priceData: Update'PriceData, ?pricing: Update'Pricing, ?quantity: int, ?quantityDecimal: string, ?taxBehavior: Update'TaxBehavior, ?taxCode: Choice<string,string>, ?taxRates: Choice<string list,string>, ?unitAmountDecimal: string) =
+        static member New(invoiceitem: string, ?amount: int, ?description: string, ?discountable: bool, ?discounts: Choice<Update'Discounts list,string>, ?expand: string list, ?invoicingRules: string, ?metadata: Map<string, string>, ?period: Update'Period, ?priceData: Update'PriceData, ?pricing: Update'Pricing, ?quantity: int, ?quantityDecimal: string, ?taxBehavior: Update'TaxBehavior, ?taxCode: Choice<string,string>, ?taxRates: Choice<string list,string>, ?unitAmountDecimal: string) =
             {
                 Invoiceitem = invoiceitem
                 Amount = amount
@@ -408,6 +411,7 @@ module Invoiceitems =
                 Discountable = discountable
                 Discounts = discounts
                 Expand = expand
+                InvoicingRules = invoicingRules
                 Metadata = metadata
                 Period = period
                 PriceData = priceData

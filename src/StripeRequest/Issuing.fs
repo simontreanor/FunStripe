@@ -10,7 +10,7 @@ open Stripe.IssuingToken
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 module IssuingAuthorizations =
 
     type ListOptions =
@@ -330,10 +330,10 @@ module IssuingCardholders =
 
     type Create'IndividualVerificationDocument =
         {
-            /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
+            /// The back of an ID returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `identity_document`.
             [<Config.Form>]
             Back: string option
-            /// The front of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
+            /// The front of an ID returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `identity_document`.
             [<Config.Form>]
             Front: string option
         }
@@ -1561,10 +1561,10 @@ module IssuingCardholders =
 
     type Update'IndividualVerificationDocument =
         {
-            /// The back of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
+            /// The back of an ID returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `identity_document`.
             [<Config.Form>]
             Back: string option
-            /// The front of an ID returned by a [file upload](https://api.stripe.com#create_file) with a `purpose` value of `identity_document`.
+            /// The front of an ID returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `identity_document`.
             [<Config.Form>]
             Front: string option
         }

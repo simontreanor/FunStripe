@@ -6,7 +6,7 @@ open System
 open Stripe.Mandate
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 type CheckoutAcssDebitMandateOptionsDefaultFor =
     | Invoice
     | Subscription
@@ -234,20 +234,25 @@ type CheckoutBacsDebitPaymentMethodOptions with
             TargetDate = targetDate
         }
 
-type CheckoutBancontactPaymentMethodOptions () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type CheckoutBancontactPaymentMethodOptionsSetupFutureUsage =
+    | [<JsonPropertyName("none")>] None'
+    | OffSession
 
+type CheckoutBancontactPaymentMethodOptions =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: CheckoutBancontactPaymentMethodOptionsSetupFutureUsage option
+    }
 
-module CheckoutBancontactPaymentMethodOptions =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type CheckoutBancontactPaymentMethodOptions with
+    static member New(?setupFutureUsage: CheckoutBancontactPaymentMethodOptionsSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type CheckoutBilliePaymentMethodOptions () = 
     ///Controls when the funds will be captured from the customer's account.
@@ -1015,6 +1020,15 @@ type CheckoutSepaDebitPaymentMethodOptions with
             TargetDate = targetDate
         }
 
+type CheckoutSequraPaymentMethodOptions () = 
+    ///Controls when the funds will be captured from the customer's account.
+    member _.CaptureMethod = "manual"
+
+
+module CheckoutSequraPaymentMethodOptions =
+    ///Controls when the funds will be captured from the customer's account.
+    let captureMethod = "manual"
+
 [<Struct>]
 type CheckoutSessionBillingAddressCollection =
     | Auto
@@ -1305,6 +1319,7 @@ type CheckoutSessionPaymentMethodOptions =
       Satispay: CheckoutSatispayPaymentMethodOptions option
       Scalapay: CheckoutScalapayPaymentMethodOptions option
       SepaDebit: CheckoutSepaDebitPaymentMethodOptions option
+      Sequra: CheckoutSequraPaymentMethodOptions option
       Sofort: CheckoutSofortPaymentMethodOptions option
       Sunbit: CheckoutSunbitPaymentMethodOptions option
       Swish: CheckoutSwishPaymentMethodOptions option
@@ -1314,7 +1329,7 @@ type CheckoutSessionPaymentMethodOptions =
       WechatPay: CheckoutWechatPayPaymentMethodOptions option }
 
 type CheckoutSessionPaymentMethodOptions with
-    static member New(?acssDebit: CheckoutAcssDebitPaymentMethodOptions, ?affirm: CheckoutAffirmPaymentMethodOptions, ?afterpayClearpay: CheckoutAfterpayClearpayPaymentMethodOptions, ?alipay: CheckoutAlipayPaymentMethodOptions, ?alma: CheckoutAlmaPaymentMethodOptions, ?amazonPay: CheckoutAmazonPayPaymentMethodOptions, ?auBecsDebit: CheckoutAuBecsDebitPaymentMethodOptions, ?bacsDebit: CheckoutBacsDebitPaymentMethodOptions, ?bancontact: CheckoutBancontactPaymentMethodOptions, ?billie: CheckoutBilliePaymentMethodOptions, ?boleto: CheckoutBoletoPaymentMethodOptions, ?card: CheckoutCardPaymentMethodOptions, ?cashapp: CheckoutCashappPaymentMethodOptions, ?customerBalance: CheckoutCustomerBalancePaymentMethodOptions, ?eps: CheckoutEpsPaymentMethodOptions, ?fpx: CheckoutFpxPaymentMethodOptions, ?giropay: CheckoutGiropayPaymentMethodOptions, ?grabpay: CheckoutGrabPayPaymentMethodOptions, ?ideal: CheckoutIdealPaymentMethodOptions, ?kakaoPay: CheckoutKakaoPayPaymentMethodOptions, ?klarna: CheckoutKlarnaPaymentMethodOptions, ?konbini: CheckoutKonbiniPaymentMethodOptions, ?krCard: CheckoutKrCardPaymentMethodOptions, ?link: CheckoutLinkPaymentMethodOptions, ?mobilepay: CheckoutMobilepayPaymentMethodOptions, ?multibanco: CheckoutMultibancoPaymentMethodOptions, ?naverPay: CheckoutNaverPayPaymentMethodOptions, ?oxxo: CheckoutOxxoPaymentMethodOptions, ?p24: CheckoutP24PaymentMethodOptions, ?payco: CheckoutPaycoPaymentMethodOptions, ?paynow: CheckoutPaynowPaymentMethodOptions, ?paypal: CheckoutPaypalPaymentMethodOptions, ?payto: CheckoutPaytoPaymentMethodOptions, ?pix: CheckoutPixPaymentMethodOptions, ?revolutPay: CheckoutRevolutPayPaymentMethodOptions, ?samsungPay: CheckoutSamsungPayPaymentMethodOptions, ?satispay: CheckoutSatispayPaymentMethodOptions, ?scalapay: CheckoutScalapayPaymentMethodOptions, ?sepaDebit: CheckoutSepaDebitPaymentMethodOptions, ?sofort: CheckoutSofortPaymentMethodOptions, ?sunbit: CheckoutSunbitPaymentMethodOptions, ?swish: CheckoutSwishPaymentMethodOptions, ?twint: CheckoutTwintPaymentMethodOptions, ?upi: CheckoutUpiPaymentMethodOptions, ?usBankAccount: CheckoutUsBankAccountPaymentMethodOptions, ?wechatPay: CheckoutWechatPayPaymentMethodOptions) =
+    static member New(?acssDebit: CheckoutAcssDebitPaymentMethodOptions, ?affirm: CheckoutAffirmPaymentMethodOptions, ?afterpayClearpay: CheckoutAfterpayClearpayPaymentMethodOptions, ?alipay: CheckoutAlipayPaymentMethodOptions, ?alma: CheckoutAlmaPaymentMethodOptions, ?amazonPay: CheckoutAmazonPayPaymentMethodOptions, ?auBecsDebit: CheckoutAuBecsDebitPaymentMethodOptions, ?bacsDebit: CheckoutBacsDebitPaymentMethodOptions, ?bancontact: CheckoutBancontactPaymentMethodOptions, ?billie: CheckoutBilliePaymentMethodOptions, ?boleto: CheckoutBoletoPaymentMethodOptions, ?card: CheckoutCardPaymentMethodOptions, ?cashapp: CheckoutCashappPaymentMethodOptions, ?customerBalance: CheckoutCustomerBalancePaymentMethodOptions, ?eps: CheckoutEpsPaymentMethodOptions, ?fpx: CheckoutFpxPaymentMethodOptions, ?giropay: CheckoutGiropayPaymentMethodOptions, ?grabpay: CheckoutGrabPayPaymentMethodOptions, ?ideal: CheckoutIdealPaymentMethodOptions, ?kakaoPay: CheckoutKakaoPayPaymentMethodOptions, ?klarna: CheckoutKlarnaPaymentMethodOptions, ?konbini: CheckoutKonbiniPaymentMethodOptions, ?krCard: CheckoutKrCardPaymentMethodOptions, ?link: CheckoutLinkPaymentMethodOptions, ?mobilepay: CheckoutMobilepayPaymentMethodOptions, ?multibanco: CheckoutMultibancoPaymentMethodOptions, ?naverPay: CheckoutNaverPayPaymentMethodOptions, ?oxxo: CheckoutOxxoPaymentMethodOptions, ?p24: CheckoutP24PaymentMethodOptions, ?payco: CheckoutPaycoPaymentMethodOptions, ?paynow: CheckoutPaynowPaymentMethodOptions, ?paypal: CheckoutPaypalPaymentMethodOptions, ?payto: CheckoutPaytoPaymentMethodOptions, ?pix: CheckoutPixPaymentMethodOptions, ?revolutPay: CheckoutRevolutPayPaymentMethodOptions, ?samsungPay: CheckoutSamsungPayPaymentMethodOptions, ?satispay: CheckoutSatispayPaymentMethodOptions, ?scalapay: CheckoutScalapayPaymentMethodOptions, ?sepaDebit: CheckoutSepaDebitPaymentMethodOptions, ?sequra: CheckoutSequraPaymentMethodOptions, ?sofort: CheckoutSofortPaymentMethodOptions, ?sunbit: CheckoutSunbitPaymentMethodOptions, ?swish: CheckoutSwishPaymentMethodOptions, ?twint: CheckoutTwintPaymentMethodOptions, ?upi: CheckoutUpiPaymentMethodOptions, ?usBankAccount: CheckoutUsBankAccountPaymentMethodOptions, ?wechatPay: CheckoutWechatPayPaymentMethodOptions) =
         {
             AcssDebit = acssDebit
             Affirm = affirm
@@ -1355,6 +1370,7 @@ type CheckoutSessionPaymentMethodOptions with
             Satispay = satispay
             Scalapay = scalapay
             SepaDebit = sepaDebit
+            Sequra = sequra
             Sofort = sofort
             Sunbit = sunbit
             Swish = swish
@@ -1425,6 +1441,8 @@ type CheckoutSession =
         AfterExpiration: PaymentPagesCheckoutSessionAfterExpiration option
         /// Enables user redeemable promotion codes.
         AllowPromotionCodes: bool option
+        /// A list of the types of payment methods (e.g., `card`) this Checkout Session can accept.
+        AllowedPaymentMethodTypes: string list option
         /// Total of all items before discounts or taxes are applied.
         AmountSubtotal: int option
         /// Total of all items after discounts and taxes are applied.
@@ -1567,11 +1585,12 @@ type CheckoutSession =
     }
 
 type CheckoutSession with
-    static member New(adaptivePricing: PaymentPagesCheckoutSessionAdaptivePricing option, afterExpiration: PaymentPagesCheckoutSessionAfterExpiration option, allowPromotionCodes: bool option, amountSubtotal: int option, amountTotal: int option, automaticTax: PaymentPagesCheckoutSessionAutomaticTax, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string option, clientReferenceId: string option, clientSecret: string option, collectedInformation: PaymentPagesCheckoutSessionCollectedInformation option, consent: PaymentPagesCheckoutSessionConsent option, consentCollection: PaymentPagesCheckoutSessionConsentCollection option, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, currencyConversion: PaymentPagesCheckoutSessionCurrencyConversion option, customFields: PaymentPagesCheckoutSessionCustomFields list, customText: PaymentPagesCheckoutSessionCustomText, customer: CheckoutSessionCustomer'AnyOf option, customerAccount: string option, customerCreation: CheckoutSessionCustomerCreation option, customerDetails: PaymentPagesCheckoutSessionCustomerDetails option, customerEmail: string option, discounts: PaymentPagesCheckoutSessionDiscount list option, expiresAt: DateTime, id: string, integrationIdentifier: string option, invoice: StripeId<Markers.Invoice> option, invoiceCreation: PaymentPagesCheckoutSessionInvoiceCreation option, livemode: bool, locale: CheckoutSessionLocale option, managedPayments: PaymentPagesCheckoutSessionManagedPayments option, metadata: Map<string, string> option, mode: CheckoutSessionMode, originContext: CheckoutSessionOriginContext option, paymentIntent: StripeId<Markers.PaymentIntent> option, paymentLink: StripeId<Markers.PaymentLink> option, paymentMethodCollection: CheckoutSessionPaymentMethodCollection option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: CheckoutSessionPaymentMethodOptions option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, permissions: PaymentPagesCheckoutSessionPermissions option, recoveredFrom: string option, savedPaymentMethodOptions: PaymentPagesCheckoutSessionSavedPaymentMethodOptions option, setupIntent: StripeId<Markers.SetupIntent> option, shippingAddressCollection: PaymentPagesCheckoutSessionShippingAddressCollection option, shippingCost: PaymentPagesCheckoutSessionShippingCost option, shippingOptions: PaymentPagesCheckoutSessionShippingOption list, status: CheckoutSessionStatus option, submitType: CheckoutSessionSubmitType option, subscription: StripeId<Markers.Subscription> option, successUrl: string option, totalDetails: PaymentPagesCheckoutSessionTotalDetails option, uiMode: CheckoutSessionUiMode option, url: string option, walletOptions: CheckoutSessionWalletOptions option, ?brandingSettings: PaymentPagesCheckoutSessionBrandingSettings, ?excludedPaymentMethodTypes: string list, ?lineItems: CheckoutSessionLineItems, ?nameCollection: PaymentPagesCheckoutSessionNameCollection, ?optionalItems: PaymentPagesCheckoutSessionOptionalItem list option, ?phoneNumberCollection: PaymentPagesCheckoutSessionPhoneNumberCollection, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?redirectOnCompletion: CheckoutSessionRedirectOnCompletion, ?returnUrl: string, ?taxIdCollection: PaymentPagesCheckoutSessionTaxIdCollection) =
+    static member New(adaptivePricing: PaymentPagesCheckoutSessionAdaptivePricing option, afterExpiration: PaymentPagesCheckoutSessionAfterExpiration option, allowPromotionCodes: bool option, allowedPaymentMethodTypes: string list option, amountSubtotal: int option, amountTotal: int option, automaticTax: PaymentPagesCheckoutSessionAutomaticTax, billingAddressCollection: CheckoutSessionBillingAddressCollection option, cancelUrl: string option, clientReferenceId: string option, clientSecret: string option, collectedInformation: PaymentPagesCheckoutSessionCollectedInformation option, consent: PaymentPagesCheckoutSessionConsent option, consentCollection: PaymentPagesCheckoutSessionConsentCollection option, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, currencyConversion: PaymentPagesCheckoutSessionCurrencyConversion option, customFields: PaymentPagesCheckoutSessionCustomFields list, customText: PaymentPagesCheckoutSessionCustomText, customer: CheckoutSessionCustomer'AnyOf option, customerAccount: string option, customerCreation: CheckoutSessionCustomerCreation option, customerDetails: PaymentPagesCheckoutSessionCustomerDetails option, customerEmail: string option, discounts: PaymentPagesCheckoutSessionDiscount list option, expiresAt: DateTime, id: string, integrationIdentifier: string option, invoice: StripeId<Markers.Invoice> option, invoiceCreation: PaymentPagesCheckoutSessionInvoiceCreation option, livemode: bool, locale: CheckoutSessionLocale option, managedPayments: PaymentPagesCheckoutSessionManagedPayments option, metadata: Map<string, string> option, mode: CheckoutSessionMode, originContext: CheckoutSessionOriginContext option, paymentIntent: StripeId<Markers.PaymentIntent> option, paymentLink: StripeId<Markers.PaymentLink> option, paymentMethodCollection: CheckoutSessionPaymentMethodCollection option, paymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option, paymentMethodOptions: CheckoutSessionPaymentMethodOptions option, paymentMethodTypes: string list, paymentStatus: CheckoutSessionPaymentStatus, permissions: PaymentPagesCheckoutSessionPermissions option, recoveredFrom: string option, savedPaymentMethodOptions: PaymentPagesCheckoutSessionSavedPaymentMethodOptions option, setupIntent: StripeId<Markers.SetupIntent> option, shippingAddressCollection: PaymentPagesCheckoutSessionShippingAddressCollection option, shippingCost: PaymentPagesCheckoutSessionShippingCost option, shippingOptions: PaymentPagesCheckoutSessionShippingOption list, status: CheckoutSessionStatus option, submitType: CheckoutSessionSubmitType option, subscription: StripeId<Markers.Subscription> option, successUrl: string option, totalDetails: PaymentPagesCheckoutSessionTotalDetails option, uiMode: CheckoutSessionUiMode option, url: string option, walletOptions: CheckoutSessionWalletOptions option, ?brandingSettings: PaymentPagesCheckoutSessionBrandingSettings, ?excludedPaymentMethodTypes: string list, ?lineItems: CheckoutSessionLineItems, ?nameCollection: PaymentPagesCheckoutSessionNameCollection, ?optionalItems: PaymentPagesCheckoutSessionOptionalItem list option, ?phoneNumberCollection: PaymentPagesCheckoutSessionPhoneNumberCollection, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails, ?redirectOnCompletion: CheckoutSessionRedirectOnCompletion, ?returnUrl: string, ?taxIdCollection: PaymentPagesCheckoutSessionTaxIdCollection) =
         {
             AdaptivePricing = adaptivePricing
             AfterExpiration = afterExpiration
             AllowPromotionCodes = allowPromotionCodes
+            AllowedPaymentMethodTypes = allowedPaymentMethodTypes
             AmountSubtotal = amountSubtotal
             AmountTotal = amountTotal
             AutomaticTax = automaticTax

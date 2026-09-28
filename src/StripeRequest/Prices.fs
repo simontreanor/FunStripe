@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Price
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 module Prices =
 
     type ListOptions =
@@ -90,6 +90,23 @@ module Prices =
                 Preset = preset
             }
 
+    type Create'ProductDataTaxDetails =
+        {
+            /// A tax location ID. Depending on the [tax code](/tax/tax-for-tickets/reference/tax-location-performance), this is required, optional, or not supported.
+            [<Config.Form>]
+            PerformanceLocation: string option
+            /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
+            [<Config.Form>]
+            TaxCode: Choice<string,string> option
+        }
+
+    type Create'ProductDataTaxDetails with
+        static member New(?performanceLocation: string, ?taxCode: Choice<string,string>) =
+            {
+                PerformanceLocation = performanceLocation
+                TaxCode = taxCode
+            }
+
     type Create'ProductData =
         {
             /// Whether the product is currently available for purchase. Defaults to `true`.
@@ -111,13 +128,16 @@ module Prices =
             /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
             [<Config.Form>]
             TaxCode: string option
+            /// Tax details for this product, including the [tax code](/tax/tax-codes) and an optional performance location.
+            [<Config.Form>]
+            TaxDetails: Create'ProductDataTaxDetails option
             /// A label that represents units of this product. When set, this will be included in customers' receipts, invoices, Checkout, and the customer portal.
             [<Config.Form>]
             UnitLabel: string option
         }
 
     type Create'ProductData with
-        static member New(?active: bool, ?id: string, ?metadata: Map<string, string>, ?name: string, ?statementDescriptor: string, ?taxCode: string, ?unitLabel: string) =
+        static member New(?active: bool, ?id: string, ?metadata: Map<string, string>, ?name: string, ?statementDescriptor: string, ?taxCode: string, ?taxDetails: Create'ProductDataTaxDetails, ?unitLabel: string) =
             {
                 Active = active
                 Id = id
@@ -125,6 +145,7 @@ module Prices =
                 Name = name
                 StatementDescriptor = statementDescriptor
                 TaxCode = taxCode
+                TaxDetails = taxDetails
                 UnitLabel = unitLabel
             }
 

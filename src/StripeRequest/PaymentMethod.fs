@@ -9,11 +9,10 @@ open Stripe.InvoiceRenderingTemplate
 open Stripe.PaymentMethod
 open Stripe.PaymentMethodConfiguration
 open Stripe.PaymentMethodDomain
-open Stripe.SubscriptionItem
 open Stripe.SubscriptionSchedule
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 module Account =
 
     type RetrieveOptions =
@@ -954,7 +953,7 @@ module AccountSessions =
                 Expand = expand
             }
 
-    ///<p>Creates a AccountSession object that includes a single-use token that the platform can use on their front-end to grant client-side API access.</p>
+    ///<p>Creates an AccountSession object that includes a single-use token that the platform can use on their front-end to grant client-side API access.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/account_sessions"
         |> RestApi.postAsync<_, AccountSession> settings (Map.empty) options
@@ -1588,6 +1587,7 @@ module BillingFeedbackOptions =
 
     type CreateOptions =
         {
+            /// The text of the feedback option, which customers see when canceling. Maximum 100 characters.
             [<Config.Form>]
             Description: string
             /// Specifies which fields in the response should be expanded.
@@ -1607,6 +1607,7 @@ module BillingFeedbackOptions =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// The ID of the feedback option to retrieve.
             [<Config.Path>]
             Id: string
         }
@@ -1620,8 +1621,10 @@ module BillingFeedbackOptions =
 
     type UpdateOptions =
         {
+            /// The ID of the feedback option to update.
             [<Config.Path>]
             Id: string
+            /// The text of the feedback option, which customers see when canceling. Maximum 100 characters.
             [<Config.Form>]
             Description: string option
             /// Specifies which fields in the response should be expanded.
@@ -1637,7 +1640,7 @@ module BillingFeedbackOptions =
                 Expand = expand
             }
 
-    ///<p>An API method for listing the feedback options model</p>
+    ///<p>Returns a list of your feedback options.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
         $"/v1/billing/feedback_options"
@@ -1648,7 +1651,7 @@ module BillingFeedbackOptions =
         $"/v1/billing/feedback_options"
         |> RestApi.postAsync<_, BillingFeedbackOption> settings (Map.empty) options
 
-    ///<p>Retrieves a feedback options object given an ID.</p>
+    ///<p>Retrieves a feedback option object given an ID.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/billing/feedback_options/{options.Id}"
@@ -1663,6 +1666,7 @@ module BillingFeedbackOptionsDeactivate =
 
     type DeactivateOptions =
         {
+            /// The ID of the feedback option to deactivate.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -2418,7 +2422,7 @@ module FinancialConnectionsAccounts =
         $"/v1/financial_connections/accounts"
         |> RestApi.getAsync<StripeList<FinancialConnectionsAccount>> settings qs
 
-    ///<p>Retrieves the details of an Financial Connections <code>Account</code>.</p>
+    ///<p>Retrieves the details of a Financial Connections <code>Account</code>.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/financial_connections/accounts/{options.Account}"
@@ -2625,19 +2629,19 @@ module FinancialConnectionsSessions =
             /// Restricts the Session to subcategories of accounts that can be linked. Valid subcategories are: `checking`, `savings`, `mortgage`, `line_of_credit`, `credit_card`.
             [<Config.Form>]
             AccountSubcategories: Create'FiltersAccountSubcategories list option
-            /// List of countries from which to collect accounts.
+            /// Country from which to collect accounts.
             [<Config.Form>]
-            Countries: string list option
+            Country: IsoTypes.IsoCountryCode option
             /// Whether the session should require payment method support and successful account number retrieval before completion.
             [<Config.Form>]
             RequirePaymentMethodSupport: Create'FiltersRequirePaymentMethodSupport option
         }
 
     type Create'Filters with
-        static member New(?accountSubcategories: Create'FiltersAccountSubcategories list, ?countries: string list, ?requirePaymentMethodSupport: Create'FiltersRequirePaymentMethodSupport) =
+        static member New(?accountSubcategories: Create'FiltersAccountSubcategories list, ?country: IsoTypes.IsoCountryCode, ?requirePaymentMethodSupport: Create'FiltersRequirePaymentMethodSupport) =
             {
                 AccountSubcategories = accountSubcategories
-                Countries = countries
+                Country = country
                 RequirePaymentMethodSupport = requirePaymentMethodSupport
             }
 
@@ -4395,6 +4399,37 @@ module PaymentMethodConfigurations =
                 DisplayPreference = displayPreference
             }
 
+    type Create'PaypayDisplayPreferencePreference =
+        | [<JsonPropertyName("none")>] None'
+        | Off
+        | On
+
+    type Create'PaypayDisplayPreference =
+        {
+            /// The account's preference for whether or not to display this payment method.
+            [<Config.Form>]
+            Preference: Create'PaypayDisplayPreferencePreference option
+        }
+
+    type Create'PaypayDisplayPreference with
+        static member New(?preference: Create'PaypayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
+    type Create'Paypay =
+        {
+            /// Whether or not the payment method should be displayed.
+            [<Config.Form>]
+            DisplayPreference: Create'PaypayDisplayPreference option
+        }
+
+    type Create'Paypay with
+        static member New(?displayPreference: Create'PaypayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
+
     type Create'PaytoDisplayPreferencePreference =
         | [<JsonPropertyName("none")>] None'
         | Off
@@ -4639,6 +4674,37 @@ module PaymentMethodConfigurations =
 
     type Create'SepaDebit with
         static member New(?displayPreference: Create'SepaDebitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
+
+    type Create'SequraDisplayPreferencePreference =
+        | [<JsonPropertyName("none")>] None'
+        | Off
+        | On
+
+    type Create'SequraDisplayPreference =
+        {
+            /// The account's preference for whether or not to display this payment method.
+            [<Config.Form>]
+            Preference: Create'SequraDisplayPreferencePreference option
+        }
+
+    type Create'SequraDisplayPreference with
+        static member New(?preference: Create'SequraDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
+    type Create'Sequra =
+        {
+            /// Whether or not the payment method should be displayed.
+            [<Config.Form>]
+            DisplayPreference: Create'SequraDisplayPreference option
+        }
+
+    type Create'Sequra with
+        static member New(?displayPreference: Create'SequraDisplayPreference) =
             {
                 DisplayPreference = displayPreference
             }
@@ -5034,6 +5100,9 @@ module PaymentMethodConfigurations =
             /// PayPal, a digital wallet popular with customers in Europe, allows your customers worldwide to pay using their PayPal account. Check this [page](https://docs.stripe.com/payments/paypal) for more details.
             [<Config.Form>]
             Paypal: Create'Paypal option
+            /// Customers can pay with PayPay online or using the PayPay app.
+            [<Config.Form>]
+            Paypay: Create'Paypay option
             /// PayTo is a [real-time](https://docs.stripe.com/payments/real-time) payment method that enables customers in Australia to pay by providing their bank account details. Customers must accept a mandate authorizing you to debit their account. Check this [page](https://docs.stripe.com/payments/payto) for more details.
             [<Config.Form>]
             Payto: Create'Payto option
@@ -5058,6 +5127,9 @@ module PaymentMethodConfigurations =
             /// The [Single Euro Payments Area (SEPA)](https://en.wikipedia.org/wiki/Single_Euro_Payments_Area) is an initiative of the European Union to simplify payments within and across member countries. SEPA established and enforced banking standards to allow for the direct debiting of every EUR-denominated bank account within the SEPA region, check this [page](https://docs.stripe.com/payments/sepa-debit) for more details.
             [<Config.Form>]
             SepaDebit: Create'SepaDebit option
+            /// SeQura is a [single-use](https://docs.stripe.com/payments/payment-methods#usage) payment method that offers customers payment terms ranging from 7-120 days. Customers are redirected from your website or app, authorize the payment with SeQura, then return to your website or app. You get [immediate notification](https://docs.stripe.com/payments/payment-methods#payment-notification) of whether the payment succeeded or failed.
+            [<Config.Form>]
+            Sequra: Create'Sequra option
             /// Stripe users in Europe and the United States can use the [Payment Intents API](https://stripe.com/docs/payments/payment-intents)—a single integration path for creating payments using any supported method—to accept [Sofort](https://www.sofort.com/) payments from customers. Check this [page](https://docs.stripe.com/payments/sofort) for more details.
             [<Config.Form>]
             Sofort: Create'Sofort option
@@ -5085,7 +5157,7 @@ module PaymentMethodConfigurations =
         }
 
     type CreateOptions with
-        static member New(?acssDebit: Create'AcssDebit, ?affirm: Create'Affirm, ?afterpayClearpay: Create'AfterpayClearpay, ?alipay: Create'Alipay, ?alma: Create'Alma, ?amazonPay: Create'AmazonPay, ?applePay: Create'ApplePay, ?applePayLater: Create'ApplePayLater, ?auBecsDebit: Create'AuBecsDebit, ?bacsDebit: Create'BacsDebit, ?bancontact: Create'Bancontact, ?billie: Create'Billie, ?bizum: Create'Bizum, ?blik: Create'Blik, ?boleto: Create'Boleto, ?card: Create'Card, ?cartesBancaires: Create'CartesBancaires, ?cashapp: Create'Cashapp, ?crypto: Create'Crypto, ?customerBalance: Create'CustomerBalance, ?eps: Create'Eps, ?expand: string list, ?fpx: Create'Fpx, ?frMealVoucherConecs: Create'FrMealVoucherConecs, ?giropay: Create'Giropay, ?googlePay: Create'GooglePay, ?grabpay: Create'Grabpay, ?ideal: Create'Ideal, ?jcb: Create'Jcb, ?kakaoPay: Create'KakaoPay, ?klarna: Create'Klarna, ?konbini: Create'Konbini, ?krCard: Create'KrCard, ?link: Create'Link, ?mbWay: Create'MbWay, ?mobilepay: Create'Mobilepay, ?multibanco: Create'Multibanco, ?name: string, ?naverPay: Create'NaverPay, ?nzBankAccount: Create'NzBankAccount, ?oxxo: Create'Oxxo, ?p24: Create'P24, ?parent: string, ?payByBank: Create'PayByBank, ?payco: Create'Payco, ?paynow: Create'Paynow, ?paypal: Create'Paypal, ?payto: Create'Payto, ?pix: Create'Pix, ?promptpay: Create'Promptpay, ?revolutPay: Create'RevolutPay, ?samsungPay: Create'SamsungPay, ?satispay: Create'Satispay, ?scalapay: Create'Scalapay, ?sepaDebit: Create'SepaDebit, ?sofort: Create'Sofort, ?sunbit: Create'Sunbit, ?swish: Create'Swish, ?twint: Create'Twint, ?upi: Create'Upi, ?usBankAccount: Create'UsBankAccount, ?wechatPay: Create'WechatPay, ?zip: Create'Zip) =
+        static member New(?acssDebit: Create'AcssDebit, ?affirm: Create'Affirm, ?afterpayClearpay: Create'AfterpayClearpay, ?alipay: Create'Alipay, ?alma: Create'Alma, ?amazonPay: Create'AmazonPay, ?applePay: Create'ApplePay, ?applePayLater: Create'ApplePayLater, ?auBecsDebit: Create'AuBecsDebit, ?bacsDebit: Create'BacsDebit, ?bancontact: Create'Bancontact, ?billie: Create'Billie, ?bizum: Create'Bizum, ?blik: Create'Blik, ?boleto: Create'Boleto, ?card: Create'Card, ?cartesBancaires: Create'CartesBancaires, ?cashapp: Create'Cashapp, ?crypto: Create'Crypto, ?customerBalance: Create'CustomerBalance, ?eps: Create'Eps, ?expand: string list, ?fpx: Create'Fpx, ?frMealVoucherConecs: Create'FrMealVoucherConecs, ?giropay: Create'Giropay, ?googlePay: Create'GooglePay, ?grabpay: Create'Grabpay, ?ideal: Create'Ideal, ?jcb: Create'Jcb, ?kakaoPay: Create'KakaoPay, ?klarna: Create'Klarna, ?konbini: Create'Konbini, ?krCard: Create'KrCard, ?link: Create'Link, ?mbWay: Create'MbWay, ?mobilepay: Create'Mobilepay, ?multibanco: Create'Multibanco, ?name: string, ?naverPay: Create'NaverPay, ?nzBankAccount: Create'NzBankAccount, ?oxxo: Create'Oxxo, ?p24: Create'P24, ?parent: string, ?payByBank: Create'PayByBank, ?payco: Create'Payco, ?paynow: Create'Paynow, ?paypal: Create'Paypal, ?paypay: Create'Paypay, ?payto: Create'Payto, ?pix: Create'Pix, ?promptpay: Create'Promptpay, ?revolutPay: Create'RevolutPay, ?samsungPay: Create'SamsungPay, ?satispay: Create'Satispay, ?scalapay: Create'Scalapay, ?sepaDebit: Create'SepaDebit, ?sequra: Create'Sequra, ?sofort: Create'Sofort, ?sunbit: Create'Sunbit, ?swish: Create'Swish, ?twint: Create'Twint, ?upi: Create'Upi, ?usBankAccount: Create'UsBankAccount, ?wechatPay: Create'WechatPay, ?zip: Create'Zip) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -5134,6 +5206,7 @@ module PaymentMethodConfigurations =
                 Payco = payco
                 Paynow = paynow
                 Paypal = paypal
+                Paypay = paypay
                 Payto = payto
                 Pix = pix
                 Promptpay = promptpay
@@ -5142,6 +5215,7 @@ module PaymentMethodConfigurations =
                 Satispay = satispay
                 Scalapay = scalapay
                 SepaDebit = sepaDebit
+                Sequra = sequra
                 Sofort = sofort
                 Sunbit = sunbit
                 Swish = swish
@@ -6532,6 +6606,37 @@ module PaymentMethodConfigurations =
                 DisplayPreference = displayPreference
             }
 
+    type Update'PaypayDisplayPreferencePreference =
+        | [<JsonPropertyName("none")>] None'
+        | Off
+        | On
+
+    type Update'PaypayDisplayPreference =
+        {
+            /// The account's preference for whether or not to display this payment method.
+            [<Config.Form>]
+            Preference: Update'PaypayDisplayPreferencePreference option
+        }
+
+    type Update'PaypayDisplayPreference with
+        static member New(?preference: Update'PaypayDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
+    type Update'Paypay =
+        {
+            /// Whether or not the payment method should be displayed.
+            [<Config.Form>]
+            DisplayPreference: Update'PaypayDisplayPreference option
+        }
+
+    type Update'Paypay with
+        static member New(?displayPreference: Update'PaypayDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
+
     type Update'PaytoDisplayPreferencePreference =
         | [<JsonPropertyName("none")>] None'
         | Off
@@ -6776,6 +6881,37 @@ module PaymentMethodConfigurations =
 
     type Update'SepaDebit with
         static member New(?displayPreference: Update'SepaDebitDisplayPreference) =
+            {
+                DisplayPreference = displayPreference
+            }
+
+    type Update'SequraDisplayPreferencePreference =
+        | [<JsonPropertyName("none")>] None'
+        | Off
+        | On
+
+    type Update'SequraDisplayPreference =
+        {
+            /// The account's preference for whether or not to display this payment method.
+            [<Config.Form>]
+            Preference: Update'SequraDisplayPreferencePreference option
+        }
+
+    type Update'SequraDisplayPreference with
+        static member New(?preference: Update'SequraDisplayPreferencePreference) =
+            {
+                Preference = preference
+            }
+
+    type Update'Sequra =
+        {
+            /// Whether or not the payment method should be displayed.
+            [<Config.Form>]
+            DisplayPreference: Update'SequraDisplayPreference option
+        }
+
+    type Update'Sequra with
+        static member New(?displayPreference: Update'SequraDisplayPreference) =
             {
                 DisplayPreference = displayPreference
             }
@@ -7173,6 +7309,9 @@ module PaymentMethodConfigurations =
             /// PayPal, a digital wallet popular with customers in Europe, allows your customers worldwide to pay using their PayPal account. Check this [page](https://docs.stripe.com/payments/paypal) for more details.
             [<Config.Form>]
             Paypal: Update'Paypal option
+            /// Customers can pay with PayPay online or using the PayPay app.
+            [<Config.Form>]
+            Paypay: Update'Paypay option
             /// PayTo is a [real-time](https://docs.stripe.com/payments/real-time) payment method that enables customers in Australia to pay by providing their bank account details. Customers must accept a mandate authorizing you to debit their account. Check this [page](https://docs.stripe.com/payments/payto) for more details.
             [<Config.Form>]
             Payto: Update'Payto option
@@ -7197,6 +7336,9 @@ module PaymentMethodConfigurations =
             /// The [Single Euro Payments Area (SEPA)](https://en.wikipedia.org/wiki/Single_Euro_Payments_Area) is an initiative of the European Union to simplify payments within and across member countries. SEPA established and enforced banking standards to allow for the direct debiting of every EUR-denominated bank account within the SEPA region, check this [page](https://docs.stripe.com/payments/sepa-debit) for more details.
             [<Config.Form>]
             SepaDebit: Update'SepaDebit option
+            /// SeQura is a [single-use](https://docs.stripe.com/payments/payment-methods#usage) payment method that offers customers payment terms ranging from 7-120 days. Customers are redirected from your website or app, authorize the payment with SeQura, then return to your website or app. You get [immediate notification](https://docs.stripe.com/payments/payment-methods#payment-notification) of whether the payment succeeded or failed.
+            [<Config.Form>]
+            Sequra: Update'Sequra option
             /// Stripe users in Europe and the United States can use the [Payment Intents API](https://stripe.com/docs/payments/payment-intents)—a single integration path for creating payments using any supported method—to accept [Sofort](https://www.sofort.com/) payments from customers. Check this [page](https://docs.stripe.com/payments/sofort) for more details.
             [<Config.Form>]
             Sofort: Update'Sofort option
@@ -7224,7 +7366,7 @@ module PaymentMethodConfigurations =
         }
 
     type UpdateOptions with
-        static member New(configuration: string, ?acssDebit: Update'AcssDebit, ?active: bool, ?affirm: Update'Affirm, ?afterpayClearpay: Update'AfterpayClearpay, ?alipay: Update'Alipay, ?alma: Update'Alma, ?amazonPay: Update'AmazonPay, ?applePay: Update'ApplePay, ?applePayLater: Update'ApplePayLater, ?auBecsDebit: Update'AuBecsDebit, ?bacsDebit: Update'BacsDebit, ?bancontact: Update'Bancontact, ?billie: Update'Billie, ?bizum: Update'Bizum, ?blik: Update'Blik, ?boleto: Update'Boleto, ?card: Update'Card, ?cartesBancaires: Update'CartesBancaires, ?cashapp: Update'Cashapp, ?crypto: Update'Crypto, ?customerBalance: Update'CustomerBalance, ?eps: Update'Eps, ?expand: string list, ?fpx: Update'Fpx, ?frMealVoucherConecs: Update'FrMealVoucherConecs, ?giropay: Update'Giropay, ?googlePay: Update'GooglePay, ?grabpay: Update'Grabpay, ?ideal: Update'Ideal, ?jcb: Update'Jcb, ?kakaoPay: Update'KakaoPay, ?klarna: Update'Klarna, ?konbini: Update'Konbini, ?krCard: Update'KrCard, ?link: Update'Link, ?mbWay: Update'MbWay, ?mobilepay: Update'Mobilepay, ?multibanco: Update'Multibanco, ?name: string, ?naverPay: Update'NaverPay, ?nzBankAccount: Update'NzBankAccount, ?oxxo: Update'Oxxo, ?p24: Update'P24, ?payByBank: Update'PayByBank, ?payco: Update'Payco, ?paynow: Update'Paynow, ?paypal: Update'Paypal, ?payto: Update'Payto, ?pix: Update'Pix, ?promptpay: Update'Promptpay, ?revolutPay: Update'RevolutPay, ?samsungPay: Update'SamsungPay, ?satispay: Update'Satispay, ?scalapay: Update'Scalapay, ?sepaDebit: Update'SepaDebit, ?sofort: Update'Sofort, ?sunbit: Update'Sunbit, ?swish: Update'Swish, ?twint: Update'Twint, ?upi: Update'Upi, ?usBankAccount: Update'UsBankAccount, ?wechatPay: Update'WechatPay, ?zip: Update'Zip) =
+        static member New(configuration: string, ?acssDebit: Update'AcssDebit, ?active: bool, ?affirm: Update'Affirm, ?afterpayClearpay: Update'AfterpayClearpay, ?alipay: Update'Alipay, ?alma: Update'Alma, ?amazonPay: Update'AmazonPay, ?applePay: Update'ApplePay, ?applePayLater: Update'ApplePayLater, ?auBecsDebit: Update'AuBecsDebit, ?bacsDebit: Update'BacsDebit, ?bancontact: Update'Bancontact, ?billie: Update'Billie, ?bizum: Update'Bizum, ?blik: Update'Blik, ?boleto: Update'Boleto, ?card: Update'Card, ?cartesBancaires: Update'CartesBancaires, ?cashapp: Update'Cashapp, ?crypto: Update'Crypto, ?customerBalance: Update'CustomerBalance, ?eps: Update'Eps, ?expand: string list, ?fpx: Update'Fpx, ?frMealVoucherConecs: Update'FrMealVoucherConecs, ?giropay: Update'Giropay, ?googlePay: Update'GooglePay, ?grabpay: Update'Grabpay, ?ideal: Update'Ideal, ?jcb: Update'Jcb, ?kakaoPay: Update'KakaoPay, ?klarna: Update'Klarna, ?konbini: Update'Konbini, ?krCard: Update'KrCard, ?link: Update'Link, ?mbWay: Update'MbWay, ?mobilepay: Update'Mobilepay, ?multibanco: Update'Multibanco, ?name: string, ?naverPay: Update'NaverPay, ?nzBankAccount: Update'NzBankAccount, ?oxxo: Update'Oxxo, ?p24: Update'P24, ?payByBank: Update'PayByBank, ?payco: Update'Payco, ?paynow: Update'Paynow, ?paypal: Update'Paypal, ?paypay: Update'Paypay, ?payto: Update'Payto, ?pix: Update'Pix, ?promptpay: Update'Promptpay, ?revolutPay: Update'RevolutPay, ?samsungPay: Update'SamsungPay, ?satispay: Update'Satispay, ?scalapay: Update'Scalapay, ?sepaDebit: Update'SepaDebit, ?sequra: Update'Sequra, ?sofort: Update'Sofort, ?sunbit: Update'Sunbit, ?swish: Update'Swish, ?twint: Update'Twint, ?upi: Update'Upi, ?usBankAccount: Update'UsBankAccount, ?wechatPay: Update'WechatPay, ?zip: Update'Zip) =
             {
                 Configuration = configuration
                 AcssDebit = acssDebit
@@ -7274,6 +7416,7 @@ module PaymentMethodConfigurations =
                 Payco = payco
                 Paynow = paynow
                 Paypal = paypal
+                Paypay = paypay
                 Payto = payto
                 Pix = pix
                 Promptpay = promptpay
@@ -7282,6 +7425,7 @@ module PaymentMethodConfigurations =
                 Satispay = satispay
                 Scalapay = scalapay
                 SepaDebit = sepaDebit
+                Sequra = sequra
                 Sofort = sofort
                 Sunbit = sunbit
                 Swish = swish
@@ -7498,6 +7642,19 @@ module SubscriptionItems =
                 UsageGte = usageGte
             }
 
+    type Create'CurrentTrial =
+        {
+            /// The ID of the trial offer to apply to the subscription item.
+            [<Config.Form>]
+            TrialOffer: string option
+        }
+
+    type Create'CurrentTrial with
+        static member New(?trialOffer: string) =
+            {
+                TrialOffer = trialOffer
+            }
+
     type Create'Discounts =
         {
             /// ID of the coupon to create a new discount for.
@@ -7596,6 +7753,9 @@ module SubscriptionItems =
             /// Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. Pass an empty string to remove previously-defined thresholds.
             [<Config.Form>]
             BillingThresholds: Choice<Create'BillingThresholdsItemBillingThresholds,string> option
+            /// The trial offer to apply to this subscription item.
+            [<Config.Form>]
+            CurrentTrial: Create'CurrentTrial option
             /// The coupons to redeem into discounts for the subscription item.
             [<Config.Form>]
             Discounts: Choice<Create'Discounts list,string> option
@@ -7635,10 +7795,11 @@ module SubscriptionItems =
         }
 
     type CreateOptions with
-        static member New(subscription: string, ?billingThresholds: Choice<Create'BillingThresholdsItemBillingThresholds,string>, ?discounts: Choice<Create'Discounts list,string>, ?expand: string list, ?metadata: Map<string, string>, ?paymentBehavior: Create'PaymentBehavior, ?plan: string, ?price: string, ?priceData: Create'PriceData, ?prorationBehavior: Create'ProrationBehavior, ?prorationDate: DateTime, ?quantity: int, ?taxRates: Choice<string list,string>) =
+        static member New(subscription: string, ?billingThresholds: Choice<Create'BillingThresholdsItemBillingThresholds,string>, ?currentTrial: Create'CurrentTrial, ?discounts: Choice<Create'Discounts list,string>, ?expand: string list, ?metadata: Map<string, string>, ?paymentBehavior: Create'PaymentBehavior, ?plan: string, ?price: string, ?priceData: Create'PriceData, ?prorationBehavior: Create'ProrationBehavior, ?prorationDate: DateTime, ?quantity: int, ?taxRates: Choice<string list,string>) =
             {
                 Subscription = subscription
                 BillingThresholds = billingThresholds
+                CurrentTrial = currentTrial
                 Discounts = discounts
                 Expand = expand
                 Metadata = metadata
@@ -7718,6 +7879,19 @@ module SubscriptionItems =
         static member New(?usageGte: int) =
             {
                 UsageGte = usageGte
+            }
+
+    type Update'CurrentTrial =
+        {
+            /// The ID of the trial offer to apply to the subscription item.
+            [<Config.Form>]
+            TrialOffer: string option
+        }
+
+    type Update'CurrentTrial with
+        static member New(?trialOffer: string) =
+            {
+                TrialOffer = trialOffer
             }
 
     type Update'Discounts =
@@ -7820,6 +7994,9 @@ module SubscriptionItems =
             /// Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. Pass an empty string to remove previously-defined thresholds.
             [<Config.Form>]
             BillingThresholds: Choice<Update'BillingThresholdsItemBillingThresholds,string> option
+            /// The trial offer to apply to this subscription item.
+            [<Config.Form>]
+            CurrentTrial: Update'CurrentTrial option
             /// The coupons to redeem into discounts for the subscription item.
             [<Config.Form>]
             Discounts: Choice<Update'Discounts list,string> option
@@ -7838,10 +8015,10 @@ module SubscriptionItems =
             /// The identifier of the new plan for this subscription item.
             [<Config.Form>]
             Plan: string option
-            /// The ID of the price object. One of `price` or `price_data` is required. When changing a subscription item's price, `quantity` is set to 1 unless a `quantity` parameter is provided.
+            /// The ID of the price object. You can use either `price` or `price_data`, but not both, to set or change this item's price. If you're updating an existing item without changing its price, omit both. When changing a subscription item's price, `quantity` is set to 1 unless a `quantity` parameter is provided.
             [<Config.Form>]
             Price: string option
-            /// Data used to generate a new [Price](https://docs.stripe.com/api/prices) object inline. One of `price` or `price_data` is required.
+            /// Data used to generate a new [Price](https://docs.stripe.com/api/prices) object inline. You can use either `price` or `price_data`, but not both, to set or change this item's price. If you're updating an existing item without changing its price, omit both.
             [<Config.Form>]
             PriceData: Update'PriceData option
             /// Determines how to handle [prorations](https://docs.stripe.com/billing/subscriptions/prorations) when the billing cycle changes (e.g., when switching plans, resetting `billing_cycle_anchor=now`, or starting a trial), or if an item's `quantity` changes. The default value is `create_prorations`.
@@ -7859,10 +8036,11 @@ module SubscriptionItems =
         }
 
     type UpdateOptions with
-        static member New(item: string, ?billingThresholds: Choice<Update'BillingThresholdsItemBillingThresholds,string>, ?discounts: Choice<Update'Discounts list,string>, ?expand: string list, ?metadata: Map<string, string>, ?offSession: bool, ?paymentBehavior: Update'PaymentBehavior, ?plan: string, ?price: string, ?priceData: Update'PriceData, ?prorationBehavior: Update'ProrationBehavior, ?prorationDate: DateTime, ?quantity: int, ?taxRates: Choice<string list,string>) =
+        static member New(item: string, ?billingThresholds: Choice<Update'BillingThresholdsItemBillingThresholds,string>, ?currentTrial: Update'CurrentTrial, ?discounts: Choice<Update'Discounts list,string>, ?expand: string list, ?metadata: Map<string, string>, ?offSession: bool, ?paymentBehavior: Update'PaymentBehavior, ?plan: string, ?price: string, ?priceData: Update'PriceData, ?prorationBehavior: Update'ProrationBehavior, ?prorationDate: DateTime, ?quantity: int, ?taxRates: Choice<string list,string>) =
             {
                 Item = item
                 BillingThresholds = billingThresholds
+                CurrentTrial = currentTrial
                 Discounts = discounts
                 Expand = expand
                 Metadata = metadata
@@ -8199,6 +8377,244 @@ module SubscriptionSchedules =
         | [<JsonPropertyName("none")>] None'
         | Release
         | Renew
+
+    type Create'PauseSchedulesPausePauseAtType =
+        | Now
+        | Timestamp
+
+    type Create'PauseSchedulesPausePauseAt =
+        {
+            /// The Unix timestamp at which to pause the subscription. Required when `type` is `timestamp`.
+            [<Config.Form>]
+            Timestamp: DateTime option
+            /// When to pause the subscription. Use `now` to pause immediately or `timestamp` to pause at a specific time.
+            [<Config.Form>]
+            Type: Create'PauseSchedulesPausePauseAtType option
+        }
+
+    type Create'PauseSchedulesPausePauseAt with
+        static member New(?timestamp: DateTime, ?type': Create'PauseSchedulesPausePauseAtType) =
+            {
+                Timestamp = timestamp
+                Type = type'
+            }
+
+    type Create'PauseSchedulesPauseSettingsBillForOutstandingUsageThroughType =
+        | [<JsonPropertyName("none")>] None'
+        | PauseAt
+
+    type Create'PauseSchedulesPauseSettingsBillForOutstandingUsageThrough =
+        {
+            /// Determines whether to collect metered usage accrued up to the pause date.
+            [<Config.Form>]
+            Type: Create'PauseSchedulesPauseSettingsBillForOutstandingUsageThroughType option
+        }
+
+    type Create'PauseSchedulesPauseSettingsBillForOutstandingUsageThrough with
+        static member New(?type': Create'PauseSchedulesPauseSettingsBillForOutstandingUsageThroughType) =
+            {
+                Type = type'
+            }
+
+    type Create'PauseSchedulesPauseSettingsBillForUnusedTimeFromType =
+        | ItemCurrentPeriodStart
+        | [<JsonPropertyName("none")>] None'
+        | PauseAt
+
+    type Create'PauseSchedulesPauseSettingsBillForUnusedTimeFrom =
+        {
+            /// Determines which point in the billing period unused time is credited from.
+            [<Config.Form>]
+            Type: Create'PauseSchedulesPauseSettingsBillForUnusedTimeFromType option
+        }
+
+    type Create'PauseSchedulesPauseSettingsBillForUnusedTimeFrom with
+        static member New(?type': Create'PauseSchedulesPauseSettingsBillForUnusedTimeFromType) =
+            {
+                Type = type'
+            }
+
+    type Create'PauseSchedulesPauseSettingsBillFor =
+        {
+            /// Controls whether to collect metered usage accrued up to the pause date.
+            [<Config.Form>]
+            OutstandingUsageThrough: Create'PauseSchedulesPauseSettingsBillForOutstandingUsageThrough option
+            /// Controls how unused time on subscription items is credited when pausing.
+            [<Config.Form>]
+            UnusedTimeFrom: Create'PauseSchedulesPauseSettingsBillForUnusedTimeFrom option
+        }
+
+    type Create'PauseSchedulesPauseSettingsBillFor with
+        static member New(?outstandingUsageThrough: Create'PauseSchedulesPauseSettingsBillForOutstandingUsageThrough, ?unusedTimeFrom: Create'PauseSchedulesPauseSettingsBillForUnusedTimeFrom) =
+            {
+                OutstandingUsageThrough = outstandingUsageThrough
+                UnusedTimeFrom = unusedTimeFrom
+            }
+
+    type Create'PauseSchedulesPauseSettingsInvoicingBehavior =
+        | Invoice
+        | PendingInvoiceItem
+
+    type Create'PauseSchedulesPauseSettingsType = | Subscription
+
+    type Create'PauseSchedulesPauseSettings =
+        {
+            /// Controls what to bill for when pausing the subscription.
+            [<Config.Form>]
+            BillFor: Create'PauseSchedulesPauseSettingsBillFor option
+            /// Determines whether to generate an invoice for outstanding amounts when pausing.
+            [<Config.Form>]
+            InvoicingBehavior: Create'PauseSchedulesPauseSettingsInvoicingBehavior option
+            /// The pause type. Currently only `subscription` is supported.
+            [<Config.Form>]
+            Type: Create'PauseSchedulesPauseSettingsType option
+        }
+
+    type Create'PauseSchedulesPauseSettings with
+        static member New(?billFor: Create'PauseSchedulesPauseSettingsBillFor, ?invoicingBehavior: Create'PauseSchedulesPauseSettingsInvoicingBehavior, ?type': Create'PauseSchedulesPauseSettingsType) =
+            {
+                BillFor = billFor
+                InvoicingBehavior = invoicingBehavior
+                Type = type'
+            }
+
+    type Create'PauseSchedulesPause =
+        {
+            /// When to pause the subscription.
+            [<Config.Form>]
+            PauseAt: Create'PauseSchedulesPausePauseAt option
+            /// Settings controlling billing behavior during the pause.
+            [<Config.Form>]
+            Settings: Create'PauseSchedulesPauseSettings option
+        }
+
+    type Create'PauseSchedulesPause with
+        static member New(?pauseAt: Create'PauseSchedulesPausePauseAt, ?settings: Create'PauseSchedulesPauseSettings) =
+            {
+                PauseAt = pauseAt
+                Settings = settings
+            }
+
+    type Create'PauseSchedulesResumeResumeAtDurationInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    type Create'PauseSchedulesResumeResumeAtDuration =
+        {
+            /// The time unit for the resume duration. One of `day`, `week`, `month`, or `year`.
+            [<Config.Form>]
+            Interval: Create'PauseSchedulesResumeResumeAtDurationInterval option
+            /// The number of intervals after which the subscription resumes.
+            [<Config.Form>]
+            IntervalCount: int option
+        }
+
+    type Create'PauseSchedulesResumeResumeAtDuration with
+        static member New(?interval: Create'PauseSchedulesResumeResumeAtDurationInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
+    type Create'PauseSchedulesResumeResumeAtType =
+        | Duration
+        | Now
+        | Timestamp
+
+    type Create'PauseSchedulesResumeResumeAt =
+        {
+            /// The duration after which to resume the subscription. Required when `type` is `duration`.
+            [<Config.Form>]
+            Duration: Create'PauseSchedulesResumeResumeAtDuration option
+            /// The Unix timestamp at which to resume the subscription. Required when `type` is `timestamp`.
+            [<Config.Form>]
+            Timestamp: DateTime option
+            /// When to resume the subscription. Use `now` to resume immediately, `duration` to resume after a set duration, or `timestamp` to resume at a specific time.
+            [<Config.Form>]
+            Type: Create'PauseSchedulesResumeResumeAtType option
+        }
+
+    type Create'PauseSchedulesResumeResumeAt with
+        static member New(?duration: Create'PauseSchedulesResumeResumeAtDuration, ?timestamp: DateTime, ?type': Create'PauseSchedulesResumeResumeAtType) =
+            {
+                Duration = duration
+                Timestamp = timestamp
+                Type = type'
+            }
+
+    type Create'PauseSchedulesResumeSettingsBillingCycleAnchor =
+        | ResumeAt
+        | Unchanged
+
+    type Create'PauseSchedulesResumeSettingsPaymentBehavior =
+        | ResumeOnPaymentAttempt
+        | ResumeOnPaymentSuccess
+
+    type Create'PauseSchedulesResumeSettingsProrationBehavior =
+        | AlwaysInvoice
+        | CreateProrations
+        | [<JsonPropertyName("none")>] None'
+
+    type Create'PauseSchedulesResumeSettings =
+        {
+            /// Controls the billing cycle anchor when the subscription resumes.
+            [<Config.Form>]
+            BillingCycleAnchor: Create'PauseSchedulesResumeSettingsBillingCycleAnchor option
+            /// Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. The default is `resume_on_payment_success`.
+            [<Config.Form>]
+            PaymentBehavior: Create'PauseSchedulesResumeSettingsPaymentBehavior option
+            /// Determines how to handle prorations when the subscription resumes. The default is `create_prorations`.
+            [<Config.Form>]
+            ProrationBehavior: Create'PauseSchedulesResumeSettingsProrationBehavior option
+        }
+
+    type Create'PauseSchedulesResumeSettings with
+        static member New(?billingCycleAnchor: Create'PauseSchedulesResumeSettingsBillingCycleAnchor, ?paymentBehavior: Create'PauseSchedulesResumeSettingsPaymentBehavior, ?prorationBehavior: Create'PauseSchedulesResumeSettingsProrationBehavior) =
+            {
+                BillingCycleAnchor = billingCycleAnchor
+                PaymentBehavior = paymentBehavior
+                ProrationBehavior = prorationBehavior
+            }
+
+    type Create'PauseSchedulesResume =
+        {
+            /// When to resume the subscription.
+            [<Config.Form>]
+            ResumeAt: Create'PauseSchedulesResumeResumeAt option
+            /// Settings controlling how the subscription resumes.
+            [<Config.Form>]
+            Settings: Create'PauseSchedulesResumeSettings option
+        }
+
+    type Create'PauseSchedulesResume with
+        static member New(?resumeAt: Create'PauseSchedulesResumeResumeAt, ?settings: Create'PauseSchedulesResumeSettings) =
+            {
+                ResumeAt = resumeAt
+                Settings = settings
+            }
+
+    type Create'PauseSchedules =
+        {
+            /// A unique identifier for this pause schedule entry.
+            [<Config.Form>]
+            Key: string option
+            /// Configuration for when and how the subscription pauses.
+            [<Config.Form>]
+            Pause: Create'PauseSchedulesPause option
+            /// Configuration for when and how the subscription resumes.
+            [<Config.Form>]
+            Resume: Create'PauseSchedulesResume option
+        }
+
+    type Create'PauseSchedules with
+        static member New(?key: string, ?pause: Create'PauseSchedulesPause, ?resume: Create'PauseSchedulesResume) =
+            {
+                Key = key
+                Pause = pause
+                Resume = resume
+            }
 
     type Create'PhasesAddInvoiceItemsDiscounts =
         {
@@ -8814,6 +9230,9 @@ module SubscriptionSchedules =
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
+            /// Configures the subscription's pause behavior and, optionally, its resume behavior. Only one entry is supported.
+            [<Config.Form>]
+            PauseSchedules: Create'PauseSchedules list option
             /// List representing phases of the subscription schedule. Each phase can be customized to have different durations, plans, and coupons. If there are multiple phases, the `end_date` of one phase will always equal the `start_date` of the next phase.
             [<Config.Form>]
             Phases: Create'Phases list option
@@ -8823,7 +9242,7 @@ module SubscriptionSchedules =
         }
 
     type CreateOptions with
-        static member New(?billingMode: Create'BillingMode, ?customer: string, ?customerAccount: string, ?defaultSettings: Create'DefaultSettings, ?endBehavior: Create'EndBehavior, ?expand: string list, ?fromSubscription: string, ?metadata: Map<string, string>, ?phases: Create'Phases list, ?startDate: Choice<DateTime,Create'StartDate>) =
+        static member New(?billingMode: Create'BillingMode, ?customer: string, ?customerAccount: string, ?defaultSettings: Create'DefaultSettings, ?endBehavior: Create'EndBehavior, ?expand: string list, ?fromSubscription: string, ?metadata: Map<string, string>, ?pauseSchedules: Create'PauseSchedules list, ?phases: Create'Phases list, ?startDate: Choice<DateTime,Create'StartDate>) =
             {
                 BillingMode = billingMode
                 Customer = customer
@@ -8833,6 +9252,7 @@ module SubscriptionSchedules =
                 Expand = expand
                 FromSubscription = fromSubscription
                 Metadata = metadata
+                PauseSchedules = pauseSchedules
                 Phases = phases
                 StartDate = startDate
             }
@@ -9055,6 +9475,244 @@ module SubscriptionSchedules =
         | [<JsonPropertyName("none")>] None'
         | Release
         | Renew
+
+    type Update'PauseSchedulesPausePauseAtType =
+        | Now
+        | Timestamp
+
+    type Update'PauseSchedulesPausePauseAt =
+        {
+            /// The Unix timestamp at which to pause the subscription. Required when `type` is `timestamp`.
+            [<Config.Form>]
+            Timestamp: DateTime option
+            /// When to pause the subscription. Use `now` to pause immediately or `timestamp` to pause at a specific time.
+            [<Config.Form>]
+            Type: Update'PauseSchedulesPausePauseAtType option
+        }
+
+    type Update'PauseSchedulesPausePauseAt with
+        static member New(?timestamp: DateTime, ?type': Update'PauseSchedulesPausePauseAtType) =
+            {
+                Timestamp = timestamp
+                Type = type'
+            }
+
+    type Update'PauseSchedulesPauseSettingsBillForOutstandingUsageThroughType =
+        | [<JsonPropertyName("none")>] None'
+        | PauseAt
+
+    type Update'PauseSchedulesPauseSettingsBillForOutstandingUsageThrough =
+        {
+            /// Determines whether to collect metered usage accrued up to the pause date.
+            [<Config.Form>]
+            Type: Update'PauseSchedulesPauseSettingsBillForOutstandingUsageThroughType option
+        }
+
+    type Update'PauseSchedulesPauseSettingsBillForOutstandingUsageThrough with
+        static member New(?type': Update'PauseSchedulesPauseSettingsBillForOutstandingUsageThroughType) =
+            {
+                Type = type'
+            }
+
+    type Update'PauseSchedulesPauseSettingsBillForUnusedTimeFromType =
+        | ItemCurrentPeriodStart
+        | [<JsonPropertyName("none")>] None'
+        | PauseAt
+
+    type Update'PauseSchedulesPauseSettingsBillForUnusedTimeFrom =
+        {
+            /// Determines which point in the billing period unused time is credited from.
+            [<Config.Form>]
+            Type: Update'PauseSchedulesPauseSettingsBillForUnusedTimeFromType option
+        }
+
+    type Update'PauseSchedulesPauseSettingsBillForUnusedTimeFrom with
+        static member New(?type': Update'PauseSchedulesPauseSettingsBillForUnusedTimeFromType) =
+            {
+                Type = type'
+            }
+
+    type Update'PauseSchedulesPauseSettingsBillFor =
+        {
+            /// Controls whether to collect metered usage accrued up to the pause date.
+            [<Config.Form>]
+            OutstandingUsageThrough: Update'PauseSchedulesPauseSettingsBillForOutstandingUsageThrough option
+            /// Controls how unused time on subscription items is credited when pausing.
+            [<Config.Form>]
+            UnusedTimeFrom: Update'PauseSchedulesPauseSettingsBillForUnusedTimeFrom option
+        }
+
+    type Update'PauseSchedulesPauseSettingsBillFor with
+        static member New(?outstandingUsageThrough: Update'PauseSchedulesPauseSettingsBillForOutstandingUsageThrough, ?unusedTimeFrom: Update'PauseSchedulesPauseSettingsBillForUnusedTimeFrom) =
+            {
+                OutstandingUsageThrough = outstandingUsageThrough
+                UnusedTimeFrom = unusedTimeFrom
+            }
+
+    type Update'PauseSchedulesPauseSettingsInvoicingBehavior =
+        | Invoice
+        | PendingInvoiceItem
+
+    type Update'PauseSchedulesPauseSettingsType = | Subscription
+
+    type Update'PauseSchedulesPauseSettings =
+        {
+            /// Controls what to bill for when pausing the subscription.
+            [<Config.Form>]
+            BillFor: Update'PauseSchedulesPauseSettingsBillFor option
+            /// Determines whether to generate an invoice for outstanding amounts when pausing.
+            [<Config.Form>]
+            InvoicingBehavior: Update'PauseSchedulesPauseSettingsInvoicingBehavior option
+            /// The pause type. Currently only `subscription` is supported.
+            [<Config.Form>]
+            Type: Update'PauseSchedulesPauseSettingsType option
+        }
+
+    type Update'PauseSchedulesPauseSettings with
+        static member New(?billFor: Update'PauseSchedulesPauseSettingsBillFor, ?invoicingBehavior: Update'PauseSchedulesPauseSettingsInvoicingBehavior, ?type': Update'PauseSchedulesPauseSettingsType) =
+            {
+                BillFor = billFor
+                InvoicingBehavior = invoicingBehavior
+                Type = type'
+            }
+
+    type Update'PauseSchedulesPause =
+        {
+            /// When to pause the subscription.
+            [<Config.Form>]
+            PauseAt: Update'PauseSchedulesPausePauseAt option
+            /// Settings controlling billing behavior during the pause.
+            [<Config.Form>]
+            Settings: Update'PauseSchedulesPauseSettings option
+        }
+
+    type Update'PauseSchedulesPause with
+        static member New(?pauseAt: Update'PauseSchedulesPausePauseAt, ?settings: Update'PauseSchedulesPauseSettings) =
+            {
+                PauseAt = pauseAt
+                Settings = settings
+            }
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDurationInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDuration =
+        {
+            /// The time unit for the resume duration. One of `day`, `week`, `month`, or `year`.
+            [<Config.Form>]
+            Interval: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDurationInterval option
+            /// The number of intervals after which the subscription resumes.
+            [<Config.Form>]
+            IntervalCount: int option
+        }
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDuration with
+        static member New(?interval: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDurationInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtType =
+        | Duration
+        | Now
+        | Timestamp
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAt =
+        {
+            /// The duration after which to resume the subscription. Required when `type` is `duration`.
+            [<Config.Form>]
+            Duration: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDuration option
+            /// The Unix timestamp at which to resume the subscription. Required when `type` is `timestamp`.
+            [<Config.Form>]
+            Timestamp: DateTime option
+            /// When to resume the subscription. Use `now` to resume immediately, `duration` to resume after a set duration, or `timestamp` to resume at a specific time.
+            [<Config.Form>]
+            Type: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtType option
+        }
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAt with
+        static member New(?duration: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDuration, ?timestamp: DateTime, ?type': Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtType) =
+            {
+                Duration = duration
+                Timestamp = timestamp
+                Type = type'
+            }
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsBillingCycleAnchor =
+        | ResumeAt
+        | Unchanged
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsPaymentBehavior =
+        | ResumeOnPaymentAttempt
+        | ResumeOnPaymentSuccess
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsProrationBehavior =
+        | AlwaysInvoice
+        | CreateProrations
+        | [<JsonPropertyName("none")>] None'
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettings =
+        {
+            /// Controls the billing cycle anchor when the subscription resumes.
+            [<Config.Form>]
+            BillingCycleAnchor: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsBillingCycleAnchor option
+            /// Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. The default is `resume_on_payment_success`.
+            [<Config.Form>]
+            PaymentBehavior: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsPaymentBehavior option
+            /// Determines how to handle prorations when the subscription resumes. The default is `create_prorations`.
+            [<Config.Form>]
+            ProrationBehavior: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsProrationBehavior option
+        }
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettings with
+        static member New(?billingCycleAnchor: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsBillingCycleAnchor, ?paymentBehavior: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsPaymentBehavior, ?prorationBehavior: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsProrationBehavior) =
+            {
+                BillingCycleAnchor = billingCycleAnchor
+                PaymentBehavior = paymentBehavior
+                ProrationBehavior = prorationBehavior
+            }
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParams =
+        {
+            /// When to resume the subscription.
+            [<Config.Form>]
+            ResumeAt: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAt option
+            /// Settings controlling how the subscription resumes.
+            [<Config.Form>]
+            Settings: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettings option
+        }
+
+    type Update'PauseSchedulesResumePauseScheduleUpdateResumeParams with
+        static member New(?resumeAt: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAt, ?settings: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettings) =
+            {
+                ResumeAt = resumeAt
+                Settings = settings
+            }
+
+    type Update'PauseSchedules =
+        {
+            /// A unique identifier for this pause schedule entry.
+            [<Config.Form>]
+            Key: string option
+            /// Configuration for when and how the subscription pauses.
+            [<Config.Form>]
+            Pause: Update'PauseSchedulesPause option
+            /// Configuration for when and how the subscription resumes.
+            [<Config.Form>]
+            Resume: Choice<Update'PauseSchedulesResumePauseScheduleUpdateResumeParams,string> option
+        }
+
+    type Update'PauseSchedules with
+        static member New(?key: string, ?pause: Update'PauseSchedulesPause, ?resume: Choice<Update'PauseSchedulesResumePauseScheduleUpdateResumeParams,string>) =
+            {
+                Key = key
+                Pause = pause
+                Resume = resume
+            }
 
     type Update'PhasesAddInvoiceItemsDiscounts =
         {
@@ -9673,6 +10331,9 @@ module SubscriptionSchedules =
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
+            /// Configures the subscription's pause behavior and, optionally, its resume behavior. Only one entry is supported. Include a key to update an existing entry. Omit to leave an existing pause schedule unchanged, or pass "" to clear it.
+            [<Config.Form>]
+            PauseSchedules: Choice<Update'PauseSchedules list,string> option
             /// List representing phases of the subscription schedule. Each phase can be customized to have different durations, plans, and coupons. If there are multiple phases, the `end_date` of one phase will always equal the `start_date` of the next phase. Note that past phases can be omitted.
             [<Config.Form>]
             Phases: Update'Phases list option
@@ -9682,13 +10343,14 @@ module SubscriptionSchedules =
         }
 
     type UpdateOptions with
-        static member New(schedule: string, ?defaultSettings: Update'DefaultSettings, ?endBehavior: Update'EndBehavior, ?expand: string list, ?metadata: Map<string, string>, ?phases: Update'Phases list, ?prorationBehavior: Update'ProrationBehavior) =
+        static member New(schedule: string, ?defaultSettings: Update'DefaultSettings, ?endBehavior: Update'EndBehavior, ?expand: string list, ?metadata: Map<string, string>, ?pauseSchedules: Choice<Update'PauseSchedules list,string>, ?phases: Update'Phases list, ?prorationBehavior: Update'ProrationBehavior) =
             {
                 Schedule = schedule
                 DefaultSettings = defaultSettings
                 EndBehavior = endBehavior
                 Expand = expand
                 Metadata = metadata
+                PauseSchedules = pauseSchedules
                 Phases = phases
                 ProrationBehavior = prorationBehavior
             }

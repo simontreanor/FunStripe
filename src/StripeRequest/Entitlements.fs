@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Entitlements
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 module EntitlementsActiveEntitlements =
 
     type ListOptions =

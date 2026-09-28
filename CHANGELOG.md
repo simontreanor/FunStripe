@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [2.5.0] - 2026-09-28
+
+### Changed
+- Regenerated against Stripe OpenAPI spec `2026-09-30.endive` (was `2026-08-26.dahlia`)
+
 ## [2.4.0] - 2026-09-07
 
 ### Upgrade notes

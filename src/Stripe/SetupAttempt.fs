@@ -4,8 +4,9 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 open Stripe.PaymentMethod
+open Stripe.ThreeDSecure
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 type SetupAttemptCustomer'AnyOf =
     | String of string
     | Customer of Customer
@@ -93,6 +94,18 @@ type SetupAttemptPaymentMethodDetailsBancontact with
             IbanLast4 = ibanLast4
             PreferredLanguage = preferredLanguage
             VerifiedName = verifiedName
+        }
+
+type SetupAttemptPaymentMethodDetailsBlik =
+    {
+        /// A unique and immutable identifier assigned by BLIK to every buyer.
+        BuyerId: string option
+    }
+
+type SetupAttemptPaymentMethodDetailsBlik with
+    static member New(?buyerId: string option) =
+        {
+            BuyerId = buyerId |> Option.flatten
         }
 
 type SetupAttemptPaymentMethodDetailsBoleto =
@@ -198,76 +211,6 @@ type SetupAttemptPaymentMethodDetailsCardWallet with
             Type = ``type``
             ApplePay = applePay
             GooglePay = googlePay
-        }
-
-[<Struct>]
-type ThreeDSecureDetailsAuthenticationFlow =
-    | Challenge
-    | Frictionless
-
-[<Struct>]
-type ThreeDSecureDetailsElectronicCommerceIndicator =
-    | [<JsonPropertyName("01")>] Numeric01
-    | [<JsonPropertyName("02")>] Numeric02
-    | [<JsonPropertyName("05")>] Numeric05
-    | [<JsonPropertyName("06")>] Numeric06
-    | [<JsonPropertyName("07")>] Numeric07
-
-type ThreeDSecureDetailsResult =
-    | AttemptAcknowledged
-    | Authenticated
-    | DataShareOnly
-    | Exempted
-    | Failed
-    | NotSupported
-    | ProcessingError
-
-type ThreeDSecureDetailsResultReason =
-    | Abandoned
-    | Bypassed
-    | Canceled
-    | CardNotEnrolled
-    | NetworkNotSupported
-    | ProtocolError
-    | Rejected
-
-[<Struct>]
-type ThreeDSecureDetailsVersion =
-    | [<JsonPropertyName("1.0.2")>] Numeric102
-    | [<JsonPropertyName("2.1.0")>] Numeric210
-    | [<JsonPropertyName("2.2.0")>] Numeric220
-    | [<JsonPropertyName("2.3.0")>] Numeric230
-    | [<JsonPropertyName("2.3.1")>] Numeric231
-
-type ThreeDSecureDetails =
-    {
-        /// For authenticated transactions: how the customer was authenticated by
-        /// the issuing bank.
-        AuthenticationFlow: ThreeDSecureDetailsAuthenticationFlow option
-        /// The Electronic Commerce Indicator (ECI). A protocol-level field
-        /// indicating what degree of authentication was performed.
-        ElectronicCommerceIndicator: ThreeDSecureDetailsElectronicCommerceIndicator option
-        /// Indicates the outcome of 3D Secure authentication.
-        Result: ThreeDSecureDetailsResult option
-        /// Additional information about why 3D Secure succeeded or failed based
-        /// on the `result`.
-        ResultReason: ThreeDSecureDetailsResultReason option
-        /// The 3D Secure 1 XID or 3D Secure 2 Directory Server Transaction ID
-        /// (dsTransId) for this payment.
-        TransactionId: string option
-        /// The version of 3D Secure that was used.
-        Version: ThreeDSecureDetailsVersion option
-    }
-
-type ThreeDSecureDetails with
-    static member New(authenticationFlow: ThreeDSecureDetailsAuthenticationFlow option, electronicCommerceIndicator: ThreeDSecureDetailsElectronicCommerceIndicator option, result: ThreeDSecureDetailsResult option, resultReason: ThreeDSecureDetailsResultReason option, transactionId: string option, version: ThreeDSecureDetailsVersion option) =
-        {
-            AuthenticationFlow = authenticationFlow
-            ElectronicCommerceIndicator = electronicCommerceIndicator
-            Result = result
-            ResultReason = resultReason
-            TransactionId = transactionId
-            Version = version
         }
 
 type SetupAttemptPaymentMethodDetailsCard =
@@ -606,6 +549,7 @@ type SetupAttemptPaymentMethodDetails =
         AuBecsDebit: SetupAttemptPaymentMethodDetailsAuBecsDebit option
         BacsDebit: SetupAttemptPaymentMethodDetailsBacsDebit option
         Bancontact: SetupAttemptPaymentMethodDetailsBancontact option
+        Blik: SetupAttemptPaymentMethodDetailsBlik option
         Boleto: SetupAttemptPaymentMethodDetailsBoleto option
         Card: SetupAttemptPaymentMethodDetailsCard option
         CardPresent: SetupAttemptPaymentMethodDetailsCardPresent option
@@ -632,7 +576,7 @@ type SetupAttemptPaymentMethodDetails =
     }
 
 type SetupAttemptPaymentMethodDetails with
-    static member New(``type``: string, ?acssDebit: SetupAttemptPaymentMethodDetailsAcssDebit, ?amazonPay: SetupAttemptPaymentMethodDetailsAmazonPay, ?auBecsDebit: SetupAttemptPaymentMethodDetailsAuBecsDebit, ?bacsDebit: SetupAttemptPaymentMethodDetailsBacsDebit, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?boleto: SetupAttemptPaymentMethodDetailsBoleto, ?card: SetupAttemptPaymentMethodDetailsCard, ?cardPresent: SetupAttemptPaymentMethodDetailsCardPresent, ?cashapp: SetupAttemptPaymentMethodDetailsCashapp, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?kakaoPay: SetupAttemptPaymentMethodDetailsKakaoPay, ?klarna: SetupAttemptPaymentMethodDetailsKlarna, ?krCard: SetupAttemptPaymentMethodDetailsKrCard, ?link: SetupAttemptPaymentMethodDetailsLink, ?naverPay: SetupAttemptPaymentMethodDetailsNaverPay, ?nzBankAccount: SetupAttemptPaymentMethodDetailsNzBankAccount, ?paypal: SetupAttemptPaymentMethodDetailsPaypal, ?payto: SetupAttemptPaymentMethodDetailsPayto, ?pix: SetupAttemptPaymentMethodDetailsPix, ?revolutPay: SetupAttemptPaymentMethodDetailsRevolutPay, ?satispay: PaymentFlowsPrivatePaymentMethodsSatispaySetupAttemptDetails, ?sepaDebit: SetupAttemptPaymentMethodDetailsSepaDebit, ?sofort: SetupAttemptPaymentMethodDetailsSofort, ?twint: SetupAttemptPaymentMethodDetailsTwint, ?upi: SetupAttemptPaymentMethodDetailsUpi, ?usBankAccount: SetupAttemptPaymentMethodDetailsUsBankAccount) =
+    static member New(``type``: string, ?acssDebit: SetupAttemptPaymentMethodDetailsAcssDebit, ?amazonPay: SetupAttemptPaymentMethodDetailsAmazonPay, ?auBecsDebit: SetupAttemptPaymentMethodDetailsAuBecsDebit, ?bacsDebit: SetupAttemptPaymentMethodDetailsBacsDebit, ?bancontact: SetupAttemptPaymentMethodDetailsBancontact, ?blik: SetupAttemptPaymentMethodDetailsBlik, ?boleto: SetupAttemptPaymentMethodDetailsBoleto, ?card: SetupAttemptPaymentMethodDetailsCard, ?cardPresent: SetupAttemptPaymentMethodDetailsCardPresent, ?cashapp: SetupAttemptPaymentMethodDetailsCashapp, ?ideal: SetupAttemptPaymentMethodDetailsIdeal, ?kakaoPay: SetupAttemptPaymentMethodDetailsKakaoPay, ?klarna: SetupAttemptPaymentMethodDetailsKlarna, ?krCard: SetupAttemptPaymentMethodDetailsKrCard, ?link: SetupAttemptPaymentMethodDetailsLink, ?naverPay: SetupAttemptPaymentMethodDetailsNaverPay, ?nzBankAccount: SetupAttemptPaymentMethodDetailsNzBankAccount, ?paypal: SetupAttemptPaymentMethodDetailsPaypal, ?payto: SetupAttemptPaymentMethodDetailsPayto, ?pix: SetupAttemptPaymentMethodDetailsPix, ?revolutPay: SetupAttemptPaymentMethodDetailsRevolutPay, ?satispay: PaymentFlowsPrivatePaymentMethodsSatispaySetupAttemptDetails, ?sepaDebit: SetupAttemptPaymentMethodDetailsSepaDebit, ?sofort: SetupAttemptPaymentMethodDetailsSofort, ?twint: SetupAttemptPaymentMethodDetailsTwint, ?upi: SetupAttemptPaymentMethodDetailsUpi, ?usBankAccount: SetupAttemptPaymentMethodDetailsUsBankAccount) =
         {
             Type = ``type``
             AcssDebit = acssDebit
@@ -640,6 +584,7 @@ type SetupAttemptPaymentMethodDetails with
             AuBecsDebit = auBecsDebit
             BacsDebit = bacsDebit
             Bancontact = bancontact
+            Blik = blik
             Boleto = boleto
             Card = card
             CardPresent = cardPresent

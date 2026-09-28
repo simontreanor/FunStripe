@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.WebhookEndpoint
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.5.0")>]
 module WebhookEndpoints =
 
     type ListOptions =
@@ -161,6 +161,7 @@ module WebhookEndpoints =
         | [<JsonPropertyName("2026-06-24.dahlia")>] Numeric20260624Dahlia
         | [<JsonPropertyName("2026-07-29.dahlia")>] Numeric20260729Dahlia
         | [<JsonPropertyName("2026-08-26.dahlia")>] Numeric20260826Dahlia
+        | [<JsonPropertyName("2026-09-30.endive")>] Numeric20260930Endive
 
     type Create'EnabledEvents =
         | Asterix
@@ -173,6 +174,9 @@ module WebhookEndpoints =
         | [<JsonPropertyName("application_fee.created")>] ApplicationFeeCreated
         | [<JsonPropertyName("application_fee.refund.updated")>] ApplicationFeeRefundUpdated
         | [<JsonPropertyName("application_fee.refunded")>] ApplicationFeeRefunded
+        | [<JsonPropertyName("apps.install.created")>] AppsInstallCreated
+        | [<JsonPropertyName("apps.install.deleted")>] AppsInstallDeleted
+        | [<JsonPropertyName("apps.install.updated")>] AppsInstallUpdated
         | [<JsonPropertyName("balance.available")>] BalanceAvailable
         | [<JsonPropertyName("balance_settings.updated")>] BalanceSettingsUpdated
         | [<JsonPropertyName("billing.alert.triggered")>] BillingAlertTriggered
@@ -504,6 +508,9 @@ module WebhookEndpoints =
         | [<JsonPropertyName("application_fee.created")>] ApplicationFeeCreated
         | [<JsonPropertyName("application_fee.refund.updated")>] ApplicationFeeRefundUpdated
         | [<JsonPropertyName("application_fee.refunded")>] ApplicationFeeRefunded
+        | [<JsonPropertyName("apps.install.created")>] AppsInstallCreated
+        | [<JsonPropertyName("apps.install.deleted")>] AppsInstallDeleted
+        | [<JsonPropertyName("apps.install.updated")>] AppsInstallUpdated
         | [<JsonPropertyName("balance.available")>] BalanceAvailable
         | [<JsonPropertyName("balance_settings.updated")>] BalanceSettingsUpdated
         | [<JsonPropertyName("billing.alert.triggered")>] BillingAlertTriggered
