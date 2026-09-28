@@ -2,13 +2,4 @@
   <!-- MSBuild only auto-imports the nearest Directory.Build.props, so chain up to the
        repo-root one to inherit the centralised FunStripeVersion / StripeApiVersion. -->
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
-
-  <!-- Both FunStripe.Core.fsproj and FunStripe.Core.Fable.fsproj live in this directory.
-       Without this, they share obj\project.assets.json and the last restore wins.
-       Setting MSBuildProjectExtensionsPath here (before Microsoft.Common.props is imported)
-       ensures NuGet writes its restore artefacts to a separate folder for the Fable project. -->
-  <PropertyGroup Condition="'$(MSBuildProjectFile)' == 'FunStripe.Core.Fable.fsproj'">
-    <MSBuildProjectExtensionsPath>$(MSBuildProjectDirectory)\obj\Fable\</MSBuildProjectExtensionsPath>
-    <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)\obj\Fable\</BaseIntermediateOutputPath>
-  </PropertyGroup>
 </Project>

@@ -4,7 +4,6 @@ Describe the big picture of your changes here to communicate to the maintainers 
 
 ## Product
 - [ ] FunStripe.Core
-- [ ] FunStripe.Core.Fable
 - [ ] FunStripe.Generator
 
 ## Types of changes

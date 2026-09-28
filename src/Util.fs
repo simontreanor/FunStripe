@@ -112,13 +112,8 @@ module Util =
         format' key value
 
     ///Convert JSON strings to F# objects
-#if FABLE_COMPILER
-    let deserialise<'a> (data: string) =
-        Json.FableCore.deserializeString typeof<'a> data :?> 'a
-#else
     let deserialise<'a> (data: string) : 'a =
         System.Text.Json.JsonSerializer.Deserialize<'a>(data, Json.StripeConverter.sharedOptions.Value)
-#endif
 
     ///Deserialise a raw JSON fragment (e.g. a webhook event's `data.object`) into a typed model
     let deserialiseRaw<'a> (RawJson json) : 'a =
@@ -133,12 +128,9 @@ module Util =
     //following functions are not required by the library but are useful utilities:
 
    ///Convert F# objects to JSON strings
-#if !FABLE_COMPILER
     let serialise (data: obj) =
         System.Text.Json.JsonSerializer.Serialize(data, Json.StripeConverter.sharedOptions.Value)
-#endif
-        
-#if !FABLE_COMPILER
+
     let getUnionCaseFromString<'a> (value: string) =
         typeof<'a>.UnderlyingSystemType.GetProperties()
         |> Array.map(fun pi ->
@@ -160,4 +152,3 @@ module Util =
         s
         |> Option.bind getUnionCaseFromString<'a>
         |> Option.defaultValue defaultValue
-#endif

@@ -11,8 +11,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Installation
 
-Get the latest version of FunStripe.Core from [NuGet](https://www.nuget.org/packages/FunStripe.Core/). For Fable/Node.js projects, use [FunStripe.Core.Fable](https://www.nuget.org/packages/FunStripe.Core.Fable/) instead.
-
+Get the latest version of FunStripe.Core from [NuGet](https://www.nuget.org/packages/FunStripe.Core/).
 ## Usage
 
 FunStripe types are organised into per-domain namespaces:
@@ -160,71 +159,13 @@ let settings =
 
 See [CHANGELOG.md](CHANGELOG.md) for the full FunStripe version → Stripe API version compatibility table.
 
-## Fable (Node.js) Support
+## Fable
 
-FunStripe.Core can be compiled to JavaScript via [Fable](https://fable.io) using the companion
-[FunStripe.Core.Fable](https://www.nuget.org/packages/FunStripe.Core.Fable/) package.  This targets **Node.js server-side** scripts written in F#.
-
-> [!WARNING]
-> **Do not use this package in browser applications.**
-> Calling the Stripe REST API directly from a browser requires embedding a Stripe API key in
-> the client, where it is trivially extractable from network traffic or the JS bundle.  A
-> *secret* key would expose your full Stripe account to anyone who inspects your app, and
-> even a *publishable* key would bypass Stripe's iframe sandbox, putting raw card data in
-> your own code and expanding your PCI compliance scope.
->
-> For browser-side card collection, use
-> [Stripe.js / Stripe Elements](https://stripe.com/docs/js) instead — it keeps all sensitive
-> data within Stripe's own iframe and never touches your server with raw card details.
-
-### Installation
-
-Reference the `FunStripe.Core.Fable` NuGet package from your Fable/Node.js project instead of
-`FunStripe.Core`.  `Fable.SimpleHttp` and `Thoth.Json` are pulled in automatically as
-transitive dependencies.
-
-### Usage
-
-The public API is identical to the regular .NET edition.  Your Stripe **secret key**
-(`sk_test_...` / `sk_live_...`) stays on the server, exactly as in the .NET version:
-
-```fsharp
-open FunStripe
-open FunStripe.RestApi
-open Stripe.PaymentMethod
-open StripeRequest.Payment
-
-// Secret key — server-side only, never expose this in a browser bundle.
-// Find yours at https://dashboard.stripe.com/apikeys
-let settings = StripeApiSettings.New(apiKey = "<your-secret-key>")
-
-let createPaymentMethod () =
-    asyncResult {
-        return!
-            PaymentMethods.CreateOptions.New(
-                card = Choice2Of2 (PaymentMethods.Create'CardTokenParams.New("tok_visa")),
-                type' = PaymentMethods.Create'Type.Card
-            )
-            |> PaymentMethods.Create settings
-    }
-```
-
-### Platform differences
-
-| Feature | .NET (`FunStripe.Core`) | Fable (`FunStripe.Core.Fable`) |
-|---------|------------------------|--------------------------------|
-| Target runtime | .NET (server) | Node.js (server) |
-| HTTP layer | `FSharp.Data` (`HttpClient`) | `Fable.SimpleHttp` (Node.js fetch) |
-| JSON parsing | `FSharp.Data.JsonValue` | `Thoth.Json` |
-| JSON serialisation (`Util.serialise`) | ✅ available | ❌ not available |
-| Code generation (`FunStripe.Generator`) | ✅ runs on .NET | ❌ not needed |
-
-### Code generation
-
-Code generation is .NET-only and intentionally excluded from the Fable package.
-Run the generator with `dotnet run` (see below) and commit the generated files
-under `src/Stripe/`, `src/StripeRequest/`, and `src/StripeIds.fs` into your
-repository.
+`FunStripe.Core.Fable` was discontinued in 3.0.0. It never transpiled with the Fable compiler (the
+shared source depends on System.Text.Json attributes and .NET reflection), and its HTTP layer
+required `XMLHttpRequest`, which Node.js doesn't provide. Existing 2.x versions stay on NuGet
+but are deprecated. For F# on Node.js, call Stripe's official `stripe` npm package through Fable
+interop.
 
 ## Modular file layout
 
@@ -234,7 +175,7 @@ repository.
 - `src/StripeRequest/{Domain}.fs` — request option records and call-site modules (e.g. `Payment.fs`, `Customers.fs`). Each file declares `namespace StripeRequest.{Domain}`.
 - `src/StripeIds.fs` — phantom-typed `StripeId<'phantom>` and `StripeList<'T>`, auto-opened so the wrappers are available everywhere without an explicit `open`.
 
-The two folders are wired into the project via auto-generated MSBuild props files (`src/Stripe/Stripe.Modular.props` and `src/StripeRequest/StripeRequest.Modular.props`), imported by both `FunStripe.Core.fsproj` and `FunStripe.Core.Fable.fsproj`. Compile order is determined by the generator from the schema dependency graph.
+The two folders are wired into the project via auto-generated MSBuild props files (`src/Stripe/Stripe.Modular.props` and `src/StripeRequest/StripeRequest.Modular.props`), imported by `FunStripe.Core.fsproj`. Compile order is determined by the generator from the schema dependency graph.
 
 ## Code Generation
 

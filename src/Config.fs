@@ -18,17 +18,13 @@ module Config =
 
     /// The Stripe API date-version that this build of FunStripe was generated from.
     /// When updating, also update the literal in AssemblyInfo.fs and <StripeApiVersion>
-    /// in both .fsproj files so all three stay in sync.
+    /// in /Directory.Build.props so all three stay in sync.
     let DefaultStripeApiVersion = "2026-04-22.dahlia"
 
     /// Defines the base URL for the Stripe API
     let StripeBaseUrl = "https://api.stripe.com"
 
-#if FABLE_COMPILER
-    let StripeTestApiKey = ""
-#else
     /// Reads the Stripe test API key from the STRIPE_TEST_API_KEY environment variable.
     /// Set this in your shell, a CI secret (e.g. GitHub Actions), or a local .env file.
     let StripeTestApiKey =
         Environment.GetEnvironmentVariable("STRIPE_TEST_API_KEY") |> Option.ofObj |> Option.defaultValue ""
-#endif

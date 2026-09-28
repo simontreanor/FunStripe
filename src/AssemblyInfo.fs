@@ -3,7 +3,7 @@
 //
 // IMPORTANT: When the target Stripe API version changes, update the string literal
 // below AND the `DefaultStripeApiVersion` constant in Config.fs AND the
-// <StripeApiVersion> property in both .fsproj files.
+// <StripeApiVersion> property in /Directory.Build.props.
 module FunStripe.AssemblyInfo
 
 [<assembly: FunStripe.Config.StripeApiVersionAttribute("2026-04-22.dahlia")>]

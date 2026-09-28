@@ -21,7 +21,8 @@ Targets Stripe's new **endive** release train (`2026-09-30.endive`). Stripe uses
   - `setup_future_usage` on Checkout Bancontact and PaymentIntent Blik options is now an enum (`none` / `off_session`) where it used to be a fixed `none`
   - The Radar payment evaluation `fraudulent_payment.score` is nullable
 - Several response models gained required fields (e.g. `CheckoutSession.AllowedPaymentMethodTypes`, `PaymentIntent.PaymentRecord`, `Product.TaxDetails`, `SubscriptionItem.CurrentTrial`), which adds parameters to their generated `New(...)` constructors. This only affects code that constructs these models directly, typically in tests
-- Release tags now carry the major version: `v3/X.Y.Z` and `v3-fable/X.Y.Z` (previously `v2/…`). The publish workflows accept any `vN/` prefix and reject a tag whose prefix doesn't match the version's major
+- **`FunStripe.Core.Fable` is discontinued**; there is no 3.x Fable package (see Removed below). Existing 2.x versions stay on NuGet, marked deprecated
+- Release tags now carry the major version: `v3/X.Y.Z` (previously `v2/…`). The publish workflow accepts any `vN/` prefix and rejects a tag whose prefix doesn't match the version's major
 
 ### Changed
 - Regenerated against Stripe OpenAPI spec `2026-09-30.endive` (was `2026-08-26.dahlia`). Highlights:
@@ -42,6 +43,9 @@ Targets Stripe's new **endive** release train (`2026-09-30.endive`). Stripe uses
 ### Fixed
 - Generator: enum values `ok`, `error` and `some` are now emitted as `Ok'`, `Error'` and `Some'`, the same way `none` becomes `None'`. Endive is the first spec with an `error` enum value (3DS authentication status, subscription-schedule pause/resume status); a bare `Error` case shadowed `Result.Error` in any code that opened the namespace
 - Generator: deletes generated files in `src/Stripe/` and `src/StripeRequest/` that a run no longer emits (only files carrying the `GeneratedCode("FunStripe", …)` stamp). Removes the uncompiled leftovers `Stripe/SubscriptionItem.fs` and `Stripe/Transfer.fs`
+
+### Removed
+- **`FunStripe.Core.Fable`** package, with its project, `Json/FableCore.fs`, the `FABLE_COMPILER` code paths and the `v2-fable/*` publish workflow. No 2.x release of it worked: running the Fable compiler on 2.0.0, 2.4.0 and 3.0.0 fails with over 4,000 errors, because the shared source depends on System.Text.Json's `JsonPropertyName` and on .NET reflection that Fable doesn't support. CI only built the project as .NET with `FABLE_COMPILER` defined, so the failure went unnoticed. Its HTTP layer, `Fable.SimpleHttp`, also depends on `XMLHttpRequest`, which Node.js (the package's only supported runtime) doesn't provide. For F# on Node.js, use Stripe's official `stripe` npm package through Fable interop
 
 ## [2.4.0] - 2026-09-07
 
