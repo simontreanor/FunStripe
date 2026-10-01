@@ -15248,7 +15248,7 @@ module PaymentLinks =
             /// Enable tax ID collection during checkout. Defaults to `false`.
             [<Config.Form>]
             Enabled: bool option
-            /// Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `custom`.
+            /// Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             Required: Create'TaxIdCollectionRequired option
         }
@@ -15306,10 +15306,10 @@ module PaymentLinks =
             /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies) and supported by each line item's price.
             [<Config.Form>]
             Currency: IsoTypes.IsoCurrencyCode option
-            /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`.
+            /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             CustomFields: Create'CustomFields list option
-            /// Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `custom`.
+            /// Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             CustomText: Create'CustomText option
             /// Configures whether [checkout sessions](https://docs.stripe.com/api/checkout/sessions) created by this payment link create a [Customer](https://docs.stripe.com/api/customers).
@@ -16606,7 +16606,7 @@ module PaymentLinks =
             /// Enable tax ID collection during checkout. Defaults to `false`.
             [<Config.Form>]
             Enabled: bool option
-            /// Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `custom`.
+            /// Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             Required: Update'TaxIdCollectionRequired option
         }
@@ -16666,10 +16666,10 @@ module PaymentLinks =
             /// Configure fields to gather active consent from customers.
             [<Config.Form>]
             ConsentCollection: Update'ConsentCollection option
-            /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`.
+            /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             CustomFields: Choice<Update'CustomFields list,string> option
-            /// Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `custom`.
+            /// Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             CustomText: Update'CustomText option
             /// Configures whether [checkout sessions](https://docs.stripe.com/api/checkout/sessions) created by this payment link create a [Customer](https://docs.stripe.com/api/customers).
@@ -18188,7 +18188,7 @@ module PaymentRecordsReportPayment =
             /// The customer who made the payment.
             [<Config.Form>]
             Customer: string option
-            /// The customer's phone number.
+            /// The customer's email address.
             [<Config.Form>]
             Email: string option
             /// The customer's name.
@@ -18870,7 +18870,7 @@ module PaymentRecordsReportPaymentAttemptInformational =
             /// The customer who made the payment.
             [<Config.Form>]
             Customer: string option
-            /// The customer's phone number.
+            /// The customer's email address.
             [<Config.Form>]
             Email: string option
             /// The customer's name.

@@ -55,7 +55,7 @@ module SigmaScheduledQueryRuns =
         $"/v1/sigma/scheduled_query_runs"
         |> RestApi.getAsync<StripeList<ScheduledQueryRun>> settings qs
 
-    ///<p>Retrieves the details of an scheduled query run.</p>
+    ///<p>Retrieves the details of a scheduled query run.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/sigma/scheduled_query_runs/{options.ScheduledQueryRun}"

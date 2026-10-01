@@ -4375,7 +4375,7 @@ module TaxSettings =
         $"/v1/tax/settings"
         |> RestApi.getAsync<TaxSettings> settings qs
 
-    ///<p>Updates Tax <code>Settings</code> parameters used in tax calculations. All parameters are editable but none can be removed once set.</p>
+    ///<p>Updates Tax <code>Settings</code> parameters used in tax calculations. All parameters are editable but none can be removed once set. Check the returned Tax <code>Settings</code> object and validate that its status is <code>active</code>.</p>
     let Update settings (options: UpdateOptions) =
         $"/v1/tax/settings"
         |> RestApi.postAsync<_, TaxSettings> settings (Map.empty) options

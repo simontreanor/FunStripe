@@ -65,7 +65,7 @@ module TerminalConfigurations =
 
     type Create'CellularCellular =
         {
-            /// Determines whether to allow the reader to connect to a cellular network. Defaults to false.
+            /// Determines whether to allow the reader to connect to a cellular network.
             [<Config.Form>]
             Enabled: bool option
         }
@@ -78,7 +78,7 @@ module TerminalConfigurations =
 
     type Create'OfflineOffline =
         {
-            /// Determines whether to allow transactions to be collected while reader is offline. Defaults to false.
+            /// Determines whether to allow transactions to be collected while reader is offline.
             [<Config.Form>]
             Enabled: bool option
         }
@@ -959,7 +959,7 @@ module TerminalConfigurations =
 
     type Update'CellularCellular =
         {
-            /// Determines whether to allow the reader to connect to a cellular network. Defaults to false.
+            /// Determines whether to allow the reader to connect to a cellular network.
             [<Config.Form>]
             Enabled: bool option
         }
@@ -972,7 +972,7 @@ module TerminalConfigurations =
 
     type Update'OfflineOffline =
         {
-            /// Determines whether to allow transactions to be collected while reader is offline. Defaults to false.
+            /// Determines whether to allow transactions to be collected while reader is offline.
             [<Config.Form>]
             Enabled: bool option
         }

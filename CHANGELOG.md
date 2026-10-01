@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
-## [3.0.0] - 2026-09-30
+## [3.0.0] - 2026-10-01
 
 Targets Stripe's new **endive** release train (`2026-09-30.endive`). Stripe uses a new train for breaking API changes, and several of them surface as breaking changes in FunStripe's types, so this is a major release.
 
@@ -27,7 +27,7 @@ Targets Stripe's new **endive** release train (`2026-09-30.endive`). Stripe uses
 ### Changed
 - Regenerated against Stripe OpenAPI spec `2026-09-30.endive` (was `2026-08-26.dahlia`). Highlights:
   - **Standalone 3D Secure**: new `ThreeDSecure.Authentication` resource (`/v1/three_d_secure/authentications`: create, retrieve, list, `submit` and `cancel`)
-  - **Subscription pausing**: new `pause` endpoint on subscriptions, `pause_schedules` on subscription schedules, `status_details` on `Invoice` and `Subscription`, `payment_behavior` on resume, and `pause` on invoice preview `subscription_details`
+  - **Subscription pausing**: new `pause` endpoint on subscriptions, `pause_schedules` on subscription schedules, `status_details` on `Invoice` and `Subscription` (paused-subscription reasons include `first_payment_failure` and `final_payment_failure`), `payment_behavior` on resume, and `pause` on invoice preview `subscription_details`
   - **Trial offers**: new `ProductCatalog.TrialOffer` resource (create, retrieve, update, list), with `current_trial` on subscription items and `billing_cycle_anchor` on the trial-end behaviour
   - **Apps installs**: new `Apps.Install` resource (create, retrieve, update, list, `uninstall`) and `apps.install.*` event types
   - **Tax**: new `Tax.Location` resource (create, retrieve, list); `performance_location` on calculation line items; `tax_details` on products and inline `product_data`; `requirements` on `TaxCode`; new US registration types (admissions, attendance, entertainment, gross receipts, hospitality, luxury, resort, tourism) and tax-rate types (`digital_excise_tax`, `utility_users_tax`)

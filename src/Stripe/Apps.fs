@@ -46,7 +46,7 @@ type AppsInstall =
         Account: string
         /// The ID of the app installed.
         App: string
-        /// Whether the installer must authorize pending permissions, content security policy entries, or endpoints. For private apps, `approval_required` stays `false`. Install a new version from the Dashboard to grant its permissions.
+        /// Whether the installer must authorize pending permissions, content security policy entries, or endpoints. For private apps, `approval_required` stays `false`; creating or reauthorizing the install through the API installs the newest completed upload and grants its permissions.
         ApprovalRequired: bool
         /// The authorization code for an oauth app install.
         AuthCode: string option

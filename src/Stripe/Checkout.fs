@@ -1472,7 +1472,7 @@ type CheckoutSession =
         Currency: IsoTypes.IsoCurrencyCode option
         /// Currency conversion details for [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing) sessions created before 2025-03-31.
         CurrencyConversion: PaymentPagesCheckoutSessionCurrencyConversion option
-        /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`.
+        /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `elements`.
         CustomFields: PaymentPagesCheckoutSessionCustomFields list
         CustomText: PaymentPagesCheckoutSessionCustomText
         /// The ID of the customer for this Session.

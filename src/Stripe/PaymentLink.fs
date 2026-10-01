@@ -127,7 +127,7 @@ type PaymentLink =
         ConsentCollection: PaymentLinksResourceConsentCollection option
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
-        /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`.
+        /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `elements`.
         CustomFields: PaymentLinksResourceCustomFields list
         CustomText: PaymentLinksResourceCustomText
         /// Configuration for Customer creation during checkout.

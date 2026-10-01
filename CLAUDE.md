@@ -78,7 +78,7 @@ the generator.
 The version is centralized in **`Directory.Build.props`** (repo root) — the single source of
 truth. Never hard-code a version anywhere else:
 
-- `FunStripeVersion` — NuGet package version. Both `.fsproj` files read `$(FunStripeVersion)`,
+- `FunStripeVersion` — NuGet package version. `FunStripe.Core.fsproj` reads `$(FunStripeVersion)`,
   and the generator reads it to stamp `GeneratedCode("FunStripe", "X.Y.Z")` attributes.
 - `StripeApiVersion` — the `spec/` file the generated code targets.
 

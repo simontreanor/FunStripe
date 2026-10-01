@@ -8405,7 +8405,7 @@ module SubscriptionSchedules =
 
     type Create'PauseSchedulesPauseSettingsBillForOutstandingUsageThrough =
         {
-            /// Determines whether to collect metered usage accrued up to the pause date.
+            /// Determines whether to collect metered usage accrued up to the pause date. When adding a pause schedule, defaults to `pause_at`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             Type: Create'PauseSchedulesPauseSettingsBillForOutstandingUsageThroughType option
         }
@@ -8423,7 +8423,7 @@ module SubscriptionSchedules =
 
     type Create'PauseSchedulesPauseSettingsBillForUnusedTimeFrom =
         {
-            /// Determines which point in the billing period unused time is credited from.
+            /// Determines which point in the billing period unused time is credited from. When adding a pause schedule, defaults to `pause_at`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             Type: Create'PauseSchedulesPauseSettingsBillForUnusedTimeFromType option
         }
@@ -8462,7 +8462,7 @@ module SubscriptionSchedules =
             /// Controls what to bill for when pausing the subscription.
             [<Config.Form>]
             BillFor: Create'PauseSchedulesPauseSettingsBillFor option
-            /// Determines whether to generate an invoice for outstanding amounts when pausing.
+            /// Determines whether to generate an invoice for outstanding amounts when pausing. When adding a pause schedule, defaults to `pending_invoice_item`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             InvoicingBehavior: Create'PauseSchedulesPauseSettingsInvoicingBehavior option
             /// The pause type. Currently only `subscription` is supported.
@@ -8559,13 +8559,13 @@ module SubscriptionSchedules =
 
     type Create'PauseSchedulesResumeSettings =
         {
-            /// Controls the billing cycle anchor when the subscription resumes.
+            /// Controls the billing cycle anchor when the subscription resumes. When adding a pause schedule, defaults to `resume_at`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             BillingCycleAnchor: Create'PauseSchedulesResumeSettingsBillingCycleAnchor option
-            /// Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. The default is `resume_on_payment_success`.
+            /// Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. When adding a pause schedule, defaults to `resume_on_payment_success`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             PaymentBehavior: Create'PauseSchedulesResumeSettingsPaymentBehavior option
-            /// Determines how to handle prorations when the subscription resumes. The default is `create_prorations`.
+            /// Determines how to handle prorations when the subscription resumes. When adding a pause schedule, defaults to `create_prorations`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             ProrationBehavior: Create'PauseSchedulesResumeSettingsProrationBehavior option
         }
@@ -9503,7 +9503,7 @@ module SubscriptionSchedules =
 
     type Update'PauseSchedulesPauseSettingsBillForOutstandingUsageThrough =
         {
-            /// Determines whether to collect metered usage accrued up to the pause date.
+            /// Determines whether to collect metered usage accrued up to the pause date. When adding a pause schedule, defaults to `pause_at`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             Type: Update'PauseSchedulesPauseSettingsBillForOutstandingUsageThroughType option
         }
@@ -9521,7 +9521,7 @@ module SubscriptionSchedules =
 
     type Update'PauseSchedulesPauseSettingsBillForUnusedTimeFrom =
         {
-            /// Determines which point in the billing period unused time is credited from.
+            /// Determines which point in the billing period unused time is credited from. When adding a pause schedule, defaults to `pause_at`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             Type: Update'PauseSchedulesPauseSettingsBillForUnusedTimeFromType option
         }
@@ -9560,7 +9560,7 @@ module SubscriptionSchedules =
             /// Controls what to bill for when pausing the subscription.
             [<Config.Form>]
             BillFor: Update'PauseSchedulesPauseSettingsBillFor option
-            /// Determines whether to generate an invoice for outstanding amounts when pausing.
+            /// Determines whether to generate an invoice for outstanding amounts when pausing. When adding a pause schedule, defaults to `pending_invoice_item`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             InvoicingBehavior: Update'PauseSchedulesPauseSettingsInvoicingBehavior option
             /// The pause type. Currently only `subscription` is supported.
@@ -9657,13 +9657,13 @@ module SubscriptionSchedules =
 
     type Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettings =
         {
-            /// Controls the billing cycle anchor when the subscription resumes.
+            /// Controls the billing cycle anchor when the subscription resumes. When adding a pause schedule, defaults to `resume_at`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             BillingCycleAnchor: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsBillingCycleAnchor option
-            /// Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. The default is `resume_on_payment_success`.
+            /// Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. When adding a pause schedule, defaults to `resume_on_payment_success`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             PaymentBehavior: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsPaymentBehavior option
-            /// Determines how to handle prorations when the subscription resumes. The default is `create_prorations`.
+            /// Determines how to handle prorations when the subscription resumes. When adding a pause schedule, defaults to `create_prorations`. On updates, the existing value is preserved if not provided.
             [<Config.Form>]
             ProrationBehavior: Update'PauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsProrationBehavior option
         }

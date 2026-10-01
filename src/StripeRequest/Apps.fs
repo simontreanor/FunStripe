@@ -134,7 +134,7 @@ module AppsInstalls =
         $"/v1/apps/installs"
         |> RestApi.getAsync<StripeList<AppsInstall>> settings qs
 
-    ///<p>Creates an app install. An account installs its own private app with its own key; public and testing installs are made from the Dashboard. An app developer or embedding platform acting on a connected account through <code>Stripe-Account</code> installs or reinstalls its app there. Creating an install for a private app that is already installed at the channel’s current version with nothing pending returns the existing install.</p>
+    ///<p>Creates an app install. An account installs its own private app with its own key; public and testing installs are made from the Dashboard. An app developer or embedding platform acting on a connected account through <code>Stripe-Account</code> installs or reinstalls its app there. For a private app, creating an install installs the newest completed upload; when that version is already installed with nothing pending, the existing install is returned.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/apps/installs"
         |> RestApi.postAsync<_, AppsInstall> settings (Map.empty) options
@@ -145,7 +145,7 @@ module AppsInstalls =
         $"/v1/apps/installs/{options.Id}"
         |> RestApi.getAsync<AppsInstall> settings qs
 
-    ///<p>Reauthorizes an app install. The installer grants the permissions, content security policy entries, and endpoints that the latest published version of the app requests. An account reauthorizes its own installs on any channel with its own key; app developers and embedding platforms reauthorize installs on connected accounts through <code>Stripe-Account</code>. For private apps, install a new version from the Dashboard to grant its permissions.</p>
+    ///<p>Reauthorizes an app install. The installer grants the permissions, content security policy entries, and endpoints that the version being installed requests. An account reauthorizes its own installs on any channel with its own key; app developers and embedding platforms reauthorize installs on connected accounts through <code>Stripe-Account</code>. For private apps, the version being installed is the newest completed upload.</p>
     let Update settings (options: UpdateOptions) =
         $"/v1/apps/installs/{options.Id}"
         |> RestApi.postAsync<_, AppsInstall> settings (Map.empty) options

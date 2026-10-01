@@ -1780,7 +1780,7 @@ module CheckoutSessions =
             /// We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://docs.stripe.com/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. If not provided, this value defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://docs.stripe.com/payments/3d-secure/authentication-flow#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
             [<Config.Form>]
             RequestThreeDSecure: Create'PaymentMethodOptionsCardRequestThreeDSecure option
-            /// Restrictions to apply to the card payment method. For example, you can block specific card brands. You can't set this parameter if `ui_mode` is `custom`.
+            /// Restrictions to apply to the card payment method. For example, you can block specific card brands. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             Restrictions: Create'PaymentMethodOptionsCardRestrictions option
             /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -3953,7 +3953,7 @@ module CheckoutSessions =
             /// Enable tax ID collection during checkout. Defaults to `false`.
             [<Config.Form>]
             Enabled: bool option
-            /// Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `custom`.
+            /// Describes whether a tax ID is required during checkout. Defaults to `never`. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             Required: Create'TaxIdCollectionRequired option
         }
@@ -4041,10 +4041,10 @@ module CheckoutSessions =
             /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). Required in `setup` mode when `payment_method_types` is not set.
             [<Config.Form>]
             Currency: IsoTypes.IsoCurrencyCode option
-            /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `custom`.
+            /// Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             CustomFields: Create'CustomFields list option
-            /// Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `custom`.
+            /// Display additional text for your customers using custom text. You can't set this parameter if `ui_mode` is `elements`.
             [<Config.Form>]
             CustomText: Create'CustomText option
             /// ID of an existing Customer, if one exists. In `payment` mode, the customer’s most recently saved card
@@ -4146,7 +4146,7 @@ module CheckoutSessions =
             /// Payment-method-specific configuration.
             [<Config.Form>]
             PaymentMethodOptions: Create'PaymentMethodOptions option
-            /// This property is used to set up permissions for various actions (e.g., update) on the CheckoutSession object. Can only be set when creating `embedded` or `custom` sessions.
+            /// This property is used to set up permissions for various actions (for example, update) on the CheckoutSession object. Can only be set when creating `embedded_page` or `elements` sessions.
             /// For specific permissions, please refer to their dedicated subsections, such as `permissions.update_shipping_details`.
             [<Config.Form>]
             Permissions: Create'Permissions option
@@ -4666,7 +4666,7 @@ module CheckoutSessions =
         {
             [<Config.Path>]
             Session: string
-            /// Information about the customer collected within the Checkout Session. Can only be set when updating `embedded` or `custom` sessions.
+            /// Information about the customer collected within the Checkout Session. Can only be set when updating `embedded_page` or `elements` sessions.
             [<Config.Form>]
             CollectedInformation: Update'CollectedInformation option
             /// Specifies which fields in the response should be expanded.
