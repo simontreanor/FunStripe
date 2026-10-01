@@ -29,76 +29,166 @@ jobs:
           echo "spec_version=$SPEC_VERSION" >> "$GITHUB_OUTPUT"
           echo "Latest stripe/openapi release: $TAG (spec version: $SPEC_VERSION)"
 
-      - name: Check if spec version is already tracked
+      # kind=new     — a spec version we don't have yet (minor release)
+      # kind=refresh — Stripe changed the spec we target in place, under the same
+      #                info.version (patch release, if the generated code changes)
+      # kind=none    — nothing to do
+      - name: Check spec against what we track
         id: check
+        env:
+          SPEC_VERSION: ${{ steps.stripe.outputs.spec_version }}
+          TAG: ${{ steps.stripe.outputs.tag }}
         run: |
-          SPEC_FILE="spec/stripe-openapi-${{ steps.stripe.outputs.spec_version }}.json"
-          if [ -f "$SPEC_FILE" ]; then
-            echo "Spec version ${{ steps.stripe.outputs.spec_version }} is already tracked — nothing to do."
-            echo "new=false" >> "$GITHUB_OUTPUT"
+          SPEC_FILE="spec/stripe-openapi-$SPEC_VERSION.json"
+          echo "spec_file=$SPEC_FILE" >> "$GITHUB_OUTPUT"
+          TARGET=$(grep -oP '(?<=<StripeApiVersion>)[^<]+' Directory.Build.props)
+          if [ ! -f "$SPEC_FILE" ]; then
+            echo "New spec version detected: $SPEC_VERSION"
+            echo "kind=new" >> "$GITHUB_OUTPUT"
+          elif [ "$SPEC_VERSION" != "$TARGET" ]; then
+            echo "::warning::Latest spec $SPEC_VERSION is tracked but isn't the targeted $TARGET — nothing to do."
+            echo "kind=none" >> "$GITHUB_OUTPUT"
           else
-            echo "New spec version detected: ${{ steps.stripe.outputs.spec_version }}"
-            echo "new=true" >> "$GITHUB_OUTPUT"
-            echo "spec_file=$SPEC_FILE" >> "$GITHUB_OUTPUT"
+            curl -fsSL "https://raw.githubusercontent.com/stripe/openapi/$TAG/openapi/spec3.sdk.json" \
+              -o "$RUNNER_TEMP/latest.json"
+            if cmp -s "$RUNNER_TEMP/latest.json" "$SPEC_FILE"; then
+              echo "Spec $SPEC_VERSION is up to date with $TAG — nothing to do."
+              echo "kind=none" >> "$GITHUB_OUTPUT"
+            else
+              echo "Spec $SPEC_VERSION was updated in place (now as of $TAG)."
+              echo "kind=refresh" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
-      - name: Download new spec
-        if: steps.check.outputs.new == 'true'
+      - name: Download spec
+        if: steps.check.outputs.kind != 'none'
         run: |
           curl -fsSL \
             "https://raw.githubusercontent.com/stripe/openapi/${{ steps.stripe.outputs.tag }}/openapi/spec3.sdk.json" \
             -o "${{ steps.check.outputs.spec_file }}"
           echo "Downloaded ${{ steps.check.outputs.spec_file }}"
 
+      - name: Setup .NET
+        if: steps.check.outputs.kind != 'none'
+        uses: actions/setup-dotnet@v5
+
+      # An in-place update often only touches descriptions. Regenerate at the current version
+      # and release only if something other than `///` doc comments changed.
+      - name: Decide whether to release
+        id: decide
+        if: steps.check.outputs.kind != 'none'
+        run: |
+          if [ "${{ steps.check.outputs.kind }}" = "new" ]; then
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          dotnet run --project tools/FunStripe.Generator \
+            -- --spec ${{ steps.check.outputs.spec_file }} --output src
+          CODE_CHANGES=$(git diff -U0 --ignore-cr-at-eol -- src \
+            | grep -E '^[-+]' | grep -vE '^(\+\+\+|---)' | grep -vE '^[-+][[:space:]]*///' || true)
+          if [ -n "$CODE_CHANGES" ]; then
+            echo "Generated code changed:"
+            echo "$CODE_CHANGES" | head -50
+            echo "proceed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Only doc comments changed — not worth a release."
+            echo "proceed=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Bump version and update metadata
-        if: steps.check.outputs.new == 'true'
+        if: steps.decide.outputs.proceed == 'true'
         id: bump
         env:
+          KIND: ${{ steps.check.outputs.kind }}
           SPEC_VERSION: ${{ steps.stripe.outputs.spec_version }}
+          TAG: ${{ steps.stripe.outputs.tag }}
         run: |
-          # A new Stripe API spec version => minor version bump (see Directory.Build.props).
-          # Updates the single source of truth and prepends a CHANGELOG entry. Done in Python
-          # to avoid sed/awk escaping pitfalls in unattended runs.
+          # New spec version => minor bump; in-place refresh of the same spec => patch bump
+          # (see Directory.Build.props). Updates the single source of truth, prepends a
+          # CHANGELOG entry and writes the PR body. Done in Python to avoid sed/awk escaping
+          # pitfalls in unattended runs.
           python3 - <<'PY'
           import os, re, datetime, pathlib
 
-          spec = os.environ["SPEC_VERSION"]
+          kind, spec, tag = os.environ["KIND"], os.environ["SPEC_VERSION"], os.environ["TAG"]
           props_path = pathlib.Path("Directory.Build.props")
-          props = props_path.read_text()
+          props = props_path.read_text(encoding="utf-8")
 
           current = re.search(r"<FunStripeVersion>([^<]+)</FunStripeVersion>", props).group(1)
           old_spec = re.search(r"<StripeApiVersion>([^<]+)</StripeApiVersion>", props).group(1)
-          major, minor, _patch = current.split(".")
-          nxt = f"{major}.{int(minor) + 1}.0"
+          major, minor, patch = current.split(".")
+          nxt = f"{major}.{int(minor) + 1}.0" if kind == "new" else f"{major}.{minor}.{int(patch) + 1}"
 
           props = re.sub(r"<FunStripeVersion>[^<]*</FunStripeVersion>",
                          f"<FunStripeVersion>{nxt}</FunStripeVersion>", props)
           props = re.sub(r"<StripeApiVersion>[^<]*</StripeApiVersion>",
                          f"<StripeApiVersion>{spec}</StripeApiVersion>", props)
-          props_path.write_text(props)
+          props_path.write_text(props, encoding="utf-8")
+
+          release_url = f"https://github.com/stripe/openapi/releases/tag/{tag}"
+          if kind == "new":
+              note = f"Regenerated against Stripe OpenAPI spec `{spec}` (was `{old_spec}`)"
+              title = f"Release {nxt} — Stripe OpenAPI spec {spec}"
+              branch = f"update/stripe-openapi-{spec}"
+              intro = (f"A new Stripe OpenAPI spec version has been detected: **`{spec}`**\n"
+                       f"(from [`stripe/openapi` {tag}]({release_url}))\n\n"
+                       f"A new spec version is treated as a **minor** release, so the version has already been\n"
+                       f"bumped to **`{nxt}`** (from `{old_spec}`'s release):")
+              bump_check = ("- [ ] Confirm the bump is right (use a **major** bump instead if the new spec is "
+                            "breaking; the tag prefix then becomes `v<major>/`)")
+          else:
+              note = f"Refreshed Stripe OpenAPI spec `{spec}`, which Stripe updated in place (now as of `stripe/openapi` {tag})"
+              title = f"Release {nxt} — refreshed Stripe OpenAPI spec {spec} ({tag})"
+              branch = f"update/stripe-openapi-{spec}-refresh"
+              intro = (f"Stripe updated the **`{spec}`** spec in place, without changing its version\n"
+                       f"(now as of [`stripe/openapi` {tag}]({release_url})), and the generated code changed.\n\n"
+                       f"An in-place refresh is treated as a **patch** release, so the version has already been\n"
+                       f"bumped to **`{nxt}`**:")
+              bump_check = ("- [ ] Confirm the bump is right (a refresh that removes or retypes anything "
+                            "needs a minor or major bump instead)")
 
           date = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d")
-          entry = (f"## [{nxt}] - {date}\n\n"
-                   f"### Changed\n"
-                   f"- Regenerated against Stripe OpenAPI spec `{spec}` (was `{old_spec}`)\n\n")
+          entry = f"## [{nxt}] - {date}\n\n### Changed\n- {note}\n\n"
           changelog = pathlib.Path("CHANGELOG.md")
-          text = changelog.read_text()
+          text = changelog.read_text(encoding="utf-8")
           idx = text.find("## [")  # insert above the most recent release heading
-          changelog.write_text(text[:idx] + entry + text[idx:])
+          changelog.write_text(text[:idx] + entry + text[idx:], encoding="utf-8")
 
-          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+          major_n = nxt.split(".")[0]
+          body = f"""{intro}
+
+          - `Directory.Build.props` — `FunStripeVersion` (and `StripeApiVersion`) updated
+          - `spec/` — `stripe-openapi-{spec}.json` downloaded from `stripe/openapi` {tag}
+          - `src/` — regenerated and stamped with `{nxt}`
+          - `CHANGELOG.md` — entry added (please flesh out the notes)
+
+          This PR was auto-generated by the **Check for new Stripe OpenAPI spec** workflow.
+
+          **Before merging, please:**
+          - [ ] Review the generated changes in `src/`
+          - [ ] Expand the `CHANGELOG.md` entry with anything notable in the spec changes
+          {bump_check}
+
+          **After merging, push the release tag:**
+          ```
+          git tag v{major_n}/{nxt}
+          git push origin v{major_n}/{nxt}
+          ```
+          """
+          body_path = pathlib.Path(os.environ["RUNNER_TEMP"]) / "pr-body.md"
+          body_path.write_text(body, encoding="utf-8")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
               out.write(f"next={nxt}\n")
-              out.write(f"major={nxt.split('.')[0]}\n")
-              out.write(f"old_spec={old_spec}\n")
-          print(f"Bumped FunStripe {current} -> {nxt}; spec {old_spec} -> {spec}")
+              out.write(f"title={title}\n")
+              out.write(f"subject={title.split(' — ', 1)[1]}\n")
+              out.write(f"branch={branch}\n")
+              out.write(f"body_path={body_path}\n")
+          print(f"Bumped FunStripe {current} -> {nxt} ({kind}); spec {old_spec} -> {spec} @ {tag}")
           PY
 
-      - name: Setup .NET
-        if: steps.check.outputs.new == 'true'
-        uses: actions/setup-dotnet@v5
-
       - name: Run generator
-        if: steps.check.outputs.new == 'true'
+        if: steps.decide.outputs.proceed == 'true'
         run: |
           dotnet run --project tools/FunStripe.Generator \
             -- --spec ${{ steps.check.outputs.spec_file }} \
@@ -106,34 +196,13 @@ jobs:
                --version ${{ steps.bump.outputs.next }}
 
       - name: Create pull request
-        if: steps.check.outputs.new == 'true'
+        if: steps.decide.outputs.proceed == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "release: ${{ steps.bump.outputs.next }} (Stripe OpenAPI spec ${{ steps.stripe.outputs.spec_version }})"
-          title: "Release ${{ steps.bump.outputs.next }} — Stripe OpenAPI spec ${{ steps.stripe.outputs.spec_version }}"
-          body: |
-            A new Stripe OpenAPI spec version has been detected: **`${{ steps.stripe.outputs.spec_version }}`**
-            (from [`stripe/openapi` ${{ steps.stripe.outputs.tag }}](https://github.com/stripe/openapi/releases/tag/${{ steps.stripe.outputs.tag }}))
-
-            This PR was auto-generated by the **Check for new Stripe OpenAPI spec** workflow.
-            A new spec version is treated as a **minor** release, so the version has already been
-            bumped to **`${{ steps.bump.outputs.next }}`** (from `${{ steps.bump.outputs.old_spec }}`'s release):
-
-            - `Directory.Build.props` — `FunStripeVersion` and `StripeApiVersion` updated
-            - `src/` — regenerated and stamped with `${{ steps.bump.outputs.next }}`
-            - `CHANGELOG.md` — entry added (please flesh out the notes)
-
-            **Before merging, please:**
-            - [ ] Review the generated changes in `src/`
-            - [ ] Expand the `CHANGELOG.md` entry with anything notable in the new spec
-            - [ ] Confirm the bump is right (use a **major** bump instead if the new spec is breaking; the tag prefix then becomes `v<major>/`)
-
-            **After merging, push the release tag:**
-            ```
-            git tag v${{ steps.bump.outputs.major }}/${{ steps.bump.outputs.next }}
-            git push origin v${{ steps.bump.outputs.major }}/${{ steps.bump.outputs.next }}
-            ```
-          branch: update/stripe-openapi-${{ steps.stripe.outputs.spec_version }}
+          commit-message: "release: ${{ steps.bump.outputs.next }} (${{ steps.bump.outputs.subject }})"
+          title: ${{ steps.bump.outputs.title }}
+          body-path: ${{ steps.bump.outputs.body_path }}
+          branch: ${{ steps.bump.outputs.branch }}
           delete-branch: true
           # Put the maintainer on the PR so GitHub emails a review request when it opens
           # (bot-authored PRs don't otherwise notify, even when watching the repo).

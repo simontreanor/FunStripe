@@ -31,6 +31,7 @@ Version-bump policy (semantic versioning):
 | Change | Bump | Example |
 | --- | --- | --- |
 | New Stripe API spec version | **minor** | `2.0.6` → `2.1.0` |
+| Stripe updates the current spec in place (same version) | patch | `3.0.0` → `3.0.1` |
 | New Stripe release train with breaking changes | major | `2.4.0` → `3.0.0` (endive) |
 | Library bug fix / feature | patch | `2.1.0` → `2.1.1` |
 | Breaking library API change | major | `2.1.0` → `3.0.0` |
@@ -38,6 +39,11 @@ Version-bump policy (semantic versioning):
 New-spec releases are produced automatically: the **Check for new Stripe OpenAPI spec**
 workflow bumps `Directory.Build.props`, regenerates `src/`, adds a `CHANGELOG.md` entry, and
 opens a PR. You normally just review that PR rather than bumping by hand.
+
+Stripe sometimes updates a spec in place without changing its version (e.g. `2026-09-30.endive`
+gained two enum values on release day). The same workflow compares the latest download with
+the file in `spec/`. When they differ it regenerates, and if any generated code changed (doc
+comments don't count) it opens a patch-release PR on `update/stripe-openapi-<version>-refresh`.
 
 ## Releases
 
