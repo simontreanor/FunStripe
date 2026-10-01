@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Mandate
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 module Mandates =
 
     type RetrieveOptions =

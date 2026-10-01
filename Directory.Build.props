@@ -4,9 +4,9 @@
     Single source of truth for version numbers, imported automatically by every
     project in the repository.
 
-      FunStripeVersion  - the NuGet package version, shared by FunStripe.Core and
-                          FunStripe.Core.Fable. Also stamped into generated files via
-                          the code generator and used to derive the v2/* release tags.
+      FunStripeVersion  - the FunStripe.Core NuGet package version. Also stamped into
+                          generated files via the code generator and used to derive the
+                          v<major>/* release tags.
       StripeApiVersion  - the Stripe OpenAPI spec version the generated code targets;
                           must match a file in spec/ named stripe-openapi-<version>.json.
 
@@ -19,8 +19,8 @@
     opens a spec-update PR; for a manual release, edit them here and nowhere else.
   -->
   <PropertyGroup>
-    <FunStripeVersion>2.4.0</FunStripeVersion>
-    <StripeApiVersion>2026-08-26.dahlia</StripeApiVersion>
+    <FunStripeVersion>3.0.0</FunStripeVersion>
+    <StripeApiVersion>2026-09-30.endive</StripeApiVersion>
   </PropertyGroup>
 
 </Project>

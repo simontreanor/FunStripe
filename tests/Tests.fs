@@ -9,6 +9,7 @@ open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 open Stripe.Price
 open Stripe.Product
+open Stripe.ThreeDSecure
 open StripeRequest.BillingPortal
 open StripeRequest.Customers
 open StripeRequest.Payment
@@ -854,8 +855,21 @@ module Tests =
             Assert.That(headers |> List.exists (fun (k,_) -> k = "Stripe-Version"), Is.False)
 
         [<Test>]
-        member _.``DefaultStripeApiVersion constant equals expected value``() =
-            Assert.That(Config.DefaultStripeApiVersion, Is.EqualTo "2026-04-22.dahlia")
+        member _.``DefaultStripeApiVersion matches StripeApiVersion in Directory.Build.props``() =
+            let props = System.IO.Path.Combine(__SOURCE_DIRECTORY__, "..", "Directory.Build.props")
+            let expected =
+                System.Xml.Linq.XDocument.Load(props).Descendants(System.Xml.Linq.XName.Get "StripeApiVersion")
+                |> Seq.exactlyOne
+                |> fun e -> e.Value.Trim()
+            Assert.That(Config.DefaultStripeApiVersion, Is.EqualTo expected)
+
+        [<Test>]
+        member _.``assembly StripeApiVersion attribute matches DefaultStripeApiVersion``() =
+            let attr =
+                typeof<Config.StripeApiVersionAttribute>.Assembly.GetCustomAttributes(typeof<Config.StripeApiVersionAttribute>, false)
+                |> Seq.cast<Config.StripeApiVersionAttribute>
+                |> Seq.exactlyOne
+            Assert.That(attr.Version, Is.EqualTo Config.DefaultStripeApiVersion)
 
     // =========================================================================
     // D. Util.snakeCase
@@ -1987,14 +2001,14 @@ module Tests =
         member _.``list of union values serialises snake-cased wire names``() =
             let checkout =
                 StripeRequest.Checkout.CheckoutSessions.CreateOptions.New(
-                    paymentMethodTypes = [
-                        StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodTypes.Card
-                        StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodTypes.AcssDebit
+                    allowedPaymentMethodTypes = [
+                        StripeRequest.Checkout.CheckoutSessions.Create'AllowedPaymentMethodTypes.Card
+                        StripeRequest.Checkout.CheckoutSessions.Create'AllowedPaymentMethodTypes.AcssDebit
                     ]
                 )
             let pairs = checkout |> serialise |> Seq.toList
-            Assert.That(pairs |> List.exists (fun (k, v) -> k = "payment_method_types[0]" && v = "card"), Is.True)
-            Assert.That(pairs |> List.exists (fun (k, v) -> k = "payment_method_types[1]" && v = "acss_debit"), Is.True)
+            Assert.That(pairs |> List.exists (fun (k, v) -> k = "allowed_payment_method_types[0]" && v = "card"), Is.True)
+            Assert.That(pairs |> List.exists (fun (k, v) -> k = "allowed_payment_method_types[1]" && v = "acss_debit"), Is.True)
 
     [<TestFixture>]
     type WebhookEventDeserializationTests () =

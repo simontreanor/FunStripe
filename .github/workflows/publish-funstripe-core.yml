@@ -3,7 +3,7 @@ name: Publish FunStripe.Core to NuGet
 on:
   push:
     tags:
-      - 'v2/*'
+      - 'v[0-9]+/*'   # v<major>/X.Y.Z, e.g. v3/3.0.0
   workflow_dispatch:
     inputs:
       version:
@@ -33,7 +33,13 @@ jobs:
           if [ -n "${{ github.event.inputs.version }}" ]; then
             echo "value=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
           else
-            echo "value=${GITHUB_REF_NAME#v2/}" >> "$GITHUB_OUTPUT"
+            version="${GITHUB_REF_NAME#*/}"
+            # The tag prefix names the major version; refuse a mismatch such as v2/3.0.0
+            if [ "${GITHUB_REF_NAME%%/*}" != "v${version%%.*}" ]; then
+              echo "::error::Tag $GITHUB_REF_NAME does not match major version of $version"
+              exit 1
+            fi
+            echo "value=$version" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build

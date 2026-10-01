@@ -4,10 +4,16 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type ReserveHoldCreatedBy =
     | Application
     | Stripe
+
+[<Struct>]
+type ReserveHoldDestination =
+    | Other
+    | RiskReserved
+    | SettlementReserved
 
 [<Struct>]
 type ReserveHoldReason =
@@ -63,6 +69,8 @@ type ReserveHold =
         CreatedBy: ReserveHoldCreatedBy
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
+        /// The balance destination to which the reserved funds are sent.
+        Destination: ReserveHoldDestination
         /// Unique identifier for the object.
         Id: string
         /// Whether there are any funds available to release on this ReserveHold. Note that if the ReserveHold is in the process of being released, this could be false, even though the funds haven't been fully released yet.
@@ -85,12 +93,13 @@ type ReserveHold =
     }
 
 type ReserveHold with
-    static member New(amount: int, created: DateTime, createdBy: ReserveHoldCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveHoldReason, releaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule, reservePlan: StripeId<Markers.ReservePlan> option, sourceCharge: StripeId<Markers.Charge> option, sourceType: ReserveHoldSourceType, ?amountReleasable: int, ?isReleasable: bool, ?metadata: Map<string, string>, ?releaseDetails: ReservesReserveHoldsResourcesReleaseDetail list) =
+    static member New(amount: int, created: DateTime, createdBy: ReserveHoldCreatedBy, currency: IsoTypes.IsoCurrencyCode, destination: ReserveHoldDestination, id: string, livemode: bool, reason: ReserveHoldReason, releaseSchedule: ReservesReserveHoldsResourcesReleaseSchedule, reservePlan: StripeId<Markers.ReservePlan> option, sourceCharge: StripeId<Markers.Charge> option, sourceType: ReserveHoldSourceType, ?amountReleasable: int, ?isReleasable: bool, ?metadata: Map<string, string>, ?releaseDetails: ReservesReserveHoldsResourcesReleaseDetail list) =
         {
             Amount = amount
             Created = created
             CreatedBy = createdBy
             Currency = currency
+            Destination = destination
             Id = id
             Livemode = livemode
             Reason = reason
@@ -132,14 +141,23 @@ type ReservePlanCreatedBy =
     | Stripe
 
 [<Struct>]
+type ReservePlanDestination =
+    | Other
+    | RiskReserved
+    | SettlementReserved
+
+[<Struct>]
 type ReservePlanStatus =
     | Active
     | Disabled
     | Expired
+    | Other
 
 [<Struct>]
 type ReservePlanType =
     | FixedRelease
+    | ManualRelease
+    | Other
     | RollingRelease
 
 type ReservesReservePlansResourcesFixedRelease =
@@ -155,6 +173,15 @@ type ReservesReservePlansResourcesFixedRelease with
         {
             ReleaseAfter = releaseAfter
             ScheduledRelease = scheduledRelease
+        }
+
+type ReservesReservePlansResourcesManualRelease =
+    { ReservesReservePlansResourcesManualRelease: string option }
+
+type ReservesReservePlansResourcesManualRelease with
+    static member New(?reservesReservePlansResourcesManualRelease: string option) =
+        {
+            ReservesReservePlansResourcesManualRelease = reservesReservePlansResourcesManualRelease |> Option.flatten
         }
 
 type ReservesReservePlansResourcesRollingRelease =
@@ -181,6 +208,8 @@ type ReservePlan =
         CreatedBy: ReservePlanCreatedBy
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies). An unset currency indicates that the plan applies to all currencies.
         Currency: IsoTypes.IsoCurrencyCode option
+        /// The balance destination to which the reserved funds are sent.
+        Destination: ReservePlanDestination
         /// Time at which the ReservePlan was disabled.
         DisabledAt: DateTime option
         FixedRelease: ReservesReservePlansResourcesFixedRelease option
@@ -188,6 +217,7 @@ type ReservePlan =
         Id: string
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
+        ManualRelease: ReservesReservePlansResourcesManualRelease option
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         /// The percent of each Charge to reserve.
@@ -200,11 +230,12 @@ type ReservePlan =
     }
 
 type ReservePlan with
-    static member New(created: DateTime, createdBy: ReservePlanCreatedBy, currency: IsoTypes.IsoCurrencyCode option, disabledAt: DateTime option, id: string, livemode: bool, percent: int, status: ReservePlanStatus, ``type``: ReservePlanType, ?fixedRelease: ReservesReservePlansResourcesFixedRelease, ?metadata: Map<string, string>, ?rollingRelease: ReservesReservePlansResourcesRollingRelease) =
+    static member New(created: DateTime, createdBy: ReservePlanCreatedBy, currency: IsoTypes.IsoCurrencyCode option, destination: ReservePlanDestination, disabledAt: DateTime option, id: string, livemode: bool, percent: int, status: ReservePlanStatus, ``type``: ReservePlanType, ?fixedRelease: ReservesReservePlansResourcesFixedRelease, ?manualRelease: ReservesReservePlansResourcesManualRelease, ?metadata: Map<string, string>, ?rollingRelease: ReservesReservePlansResourcesRollingRelease) =
         {
             Created = created
             CreatedBy = createdBy
             Currency = currency
+            Destination = destination
             DisabledAt = disabledAt
             Id = id
             Livemode = livemode
@@ -212,6 +243,7 @@ type ReservePlan with
             Status = status
             Type = ``type``
             FixedRelease = fixedRelease
+            ManualRelease = manualRelease
             Metadata = metadata
             RollingRelease = rollingRelease
         }
@@ -262,8 +294,13 @@ type ReserveReleaseCreatedBy =
     | Stripe
 
 [<Struct>]
+type ReserveReleaseDestination =
+    | Other
+    | Payments
+
+[<Struct>]
 type ReserveReleaseReason =
-    | BulkHoldExpiry
+    | HoldExpired
     | HoldReleasedEarly
     | HoldReversed
     | PlanDisabled
@@ -302,6 +339,8 @@ type ReserveRelease =
         CreatedBy: ReserveReleaseCreatedBy
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
+        /// The balance destination to which the released funds are sent.
+        Destination: ReserveReleaseDestination
         /// Unique identifier for the object.
         Id: string
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -320,12 +359,13 @@ type ReserveRelease =
     }
 
 type ReserveRelease with
-    static member New(amount: int, created: DateTime, createdBy: ReserveReleaseCreatedBy, currency: IsoTypes.IsoCurrencyCode, id: string, livemode: bool, reason: ReserveReleaseReason, releasedAt: DateTime, reserveHold: StripeId<Markers.ReserveHold> option, reservePlan: StripeId<Markers.ReservePlan> option, ?metadata: Map<string, string>, ?sourceTransaction: ReservesReserveReleasesResourcesSourceTransaction) =
+    static member New(amount: int, created: DateTime, createdBy: ReserveReleaseCreatedBy, currency: IsoTypes.IsoCurrencyCode, destination: ReserveReleaseDestination, id: string, livemode: bool, reason: ReserveReleaseReason, releasedAt: DateTime, reserveHold: StripeId<Markers.ReserveHold> option, reservePlan: StripeId<Markers.ReservePlan> option, ?metadata: Map<string, string>, ?sourceTransaction: ReservesReserveReleasesResourcesSourceTransaction) =
         {
             Amount = amount
             Created = created
             CreatedBy = createdBy
             Currency = currency
+            Destination = destination
             Id = id
             Livemode = livemode
             Reason = reason

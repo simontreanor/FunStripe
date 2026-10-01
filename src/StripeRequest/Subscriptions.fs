@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 module Subscriptions =
 
     type ListOptions =
@@ -553,6 +553,19 @@ module Subscriptions =
                 UsageGte = usageGte
             }
 
+    type Create'ItemsCurrentTrial =
+        {
+            /// The ID of the trial offer to apply to the subscription item.
+            [<Config.Form>]
+            TrialOffer: string option
+        }
+
+    type Create'ItemsCurrentTrial with
+        static member New(?trialOffer: string) =
+            {
+                TrialOffer = trialOffer
+            }
+
     type Create'ItemsDiscounts =
         {
             /// ID of the coupon to create a new discount for.
@@ -640,6 +653,9 @@ module Subscriptions =
             /// Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. Pass an empty string to remove previously-defined thresholds.
             [<Config.Form>]
             BillingThresholds: Choice<Create'ItemsBillingThresholdsItemBillingThresholds,string> option
+            /// The trial offer to apply to this subscription item.
+            [<Config.Form>]
+            CurrentTrial: Create'ItemsCurrentTrial option
             /// The coupons to redeem into discounts for the subscription item.
             [<Config.Form>]
             Discounts: Choice<Create'ItemsDiscounts list,string> option
@@ -664,9 +680,10 @@ module Subscriptions =
         }
 
     type Create'Items with
-        static member New(?billingThresholds: Choice<Create'ItemsBillingThresholdsItemBillingThresholds,string>, ?discounts: Choice<Create'ItemsDiscounts list,string>, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: Create'ItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+        static member New(?billingThresholds: Choice<Create'ItemsBillingThresholdsItemBillingThresholds,string>, ?currentTrial: Create'ItemsCurrentTrial, ?discounts: Choice<Create'ItemsDiscounts list,string>, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: Create'ItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
             {
                 BillingThresholds = billingThresholds
+                CurrentTrial = currentTrial
                 Discounts = discounts
                 Metadata = metadata
                 Plan = plan
@@ -742,6 +759,129 @@ module Subscriptions =
         static member New(?preferredLanguage: Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage) =
             {
                 PreferredLanguage = preferredLanguage
+            }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress
+        =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code.
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1 (for example, street, PO Box, or company name).
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2 (for example, apartment, suite, unit, or building).
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region.
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType
+        =
+        | ChEin
+        | DeHrb
+        | DkCvr
+        | EsCif
+        | FiTunnus
+        | FrSiren
+        | FrSiret
+        | ItRea
+        | NlKvk
+        | NoOrgNumber
+        | NoPno
+        | SeOrgNumber
+        | SePno
+        | UkCrn
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetails =
+        {
+            /// The address the company or entity is registered with.
+            [<Config.Form>]
+            RegisteredAddress:
+                Choice<Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress,string> option
+            /// Company or entity name.
+            [<Config.Form>]
+            RegisteredName: string option
+            /// The official registration number for the given registration type.
+            [<Config.Form>]
+            RegistrationNumber: string option
+            /// Type of registration the company or entity holds in their registered country.
+            [<Config.Form>]
+            RegistrationType:
+                Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType option
+            /// VAT ID number.
+            [<Config.Form>]
+            Vat: string option
+        }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetails with
+        static member New(?registeredAddress: Choice<Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress,string>, ?registeredName: string, ?registrationNumber: string, ?registrationType: Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType, ?vat: string) =
+            {
+                RegisteredAddress = registeredAddress
+                RegisteredName = registeredName
+                RegistrationNumber = registrationNumber
+                RegistrationType = registrationType
+                Vat = vat
+            }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions =
+        {
+            /// Registration details about the buyer's organization.
+            [<Config.Form>]
+            CompanyDetails:
+                Choice<Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetails,string> option
+        }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions with
+        static member New(?companyDetails: Choice<Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetails,string>) =
+            {
+                CompanyDetails = companyDetails
+            }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptionsMandateOptions =
+        {
+            /// Date when the mandate expires and no further payments will be charged. If not provided, the mandate will be set to be indefinite.
+            [<Config.Form>]
+            ExpiresAt: DateTime option
+        }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptionsMandateOptions with
+        static member New(?expiresAt: DateTime) =
+            {
+                ExpiresAt = expiresAt
+            }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions =
+        {
+            /// Configuration options for setting up a mandate
+            [<Config.Form>]
+            MandateOptions:
+                Create'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptionsMandateOptions option
+        }
+
+    type Create'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions with
+        static member New(?mandateOptions: Create'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptionsMandateOptions) =
+            {
+                MandateOptions = mandateOptions
             }
 
     type Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptionsAmountType =
@@ -1093,7 +1233,10 @@ module Subscriptions =
                 Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string> option
             /// This sub-hash contains details about the Billie payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
-            Billie: Choice<string,string> option
+            Billie: Choice<Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions,string> option
+            /// This sub-hash contains details about the Blik payment method options to pass to the invoice’s PaymentIntent.
+            [<Config.Form>]
+            Blik: Choice<Create'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions,string> option
             /// This sub-hash contains details about the Card payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
             Card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string> option
@@ -1123,11 +1266,12 @@ module Subscriptions =
         }
 
     type Create'PaymentSettingsPaymentMethodOptions with
-        static member New(?acssDebit: Choice<Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<string,string>, ?card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions,string>, ?blik: Choice<Create'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions,string>, ?card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Bancontact = bancontact
                 Billie = billie
+                Blik = blik
                 Card = card
                 CustomerBalance = customerBalance
                 Konbini = konbini
@@ -1149,6 +1293,7 @@ module Subscriptions =
         | BacsDebit
         | Bancontact
         | Billie
+        | Blik
         | Boleto
         | Card
         | Cashapp
@@ -1261,6 +1406,10 @@ module Subscriptions =
 
     type Create'TrialEnd = | Now
 
+    type Create'TrialSettingsEndBehaviorBillingCycleAnchor =
+        | Now
+        | Unchanged
+
     type Create'TrialSettingsEndBehaviorMissingPaymentMethod =
         | Cancel
         | CreateInvoice
@@ -1268,14 +1417,18 @@ module Subscriptions =
 
     type Create'TrialSettingsEndBehavior =
         {
+            /// Indicates how the subscription's billing cycle anchor is reset when a trial ends. Defaults to `now`.
+            [<Config.Form>]
+            BillingCycleAnchor: Create'TrialSettingsEndBehaviorBillingCycleAnchor option
             /// Indicates how the subscription should change when the trial ends if the user did not provide a payment method.
             [<Config.Form>]
             MissingPaymentMethod: Create'TrialSettingsEndBehaviorMissingPaymentMethod option
         }
 
     type Create'TrialSettingsEndBehavior with
-        static member New(?missingPaymentMethod: Create'TrialSettingsEndBehaviorMissingPaymentMethod) =
+        static member New(?billingCycleAnchor: Create'TrialSettingsEndBehaviorBillingCycleAnchor, ?missingPaymentMethod: Create'TrialSettingsEndBehaviorMissingPaymentMethod) =
             {
+                BillingCycleAnchor = billingCycleAnchor
                 MissingPaymentMethod = missingPaymentMethod
             }
 
@@ -1391,13 +1544,13 @@ module Subscriptions =
             /// If specified, the funds from the subscription's invoices will be transferred to the destination and the ID of the resulting transfers will be found on the resulting charges.
             [<Config.Form>]
             TransferData: Create'TransferData option
-            /// Unix timestamp representing the end of the trial period the customer will get before being charged for the first time. If set, trial_end will override the default trial period of the plan the customer is being subscribed to. The special value `now` can be provided to end the customer's trial immediately. Can be at most two years from `billing_cycle_anchor`. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more.
+            /// Unix timestamp representing the end of the trial period the customer will get before being charged for the first time. If set, trial_end will override the default trial period of the plan the customer is being subscribed to. The special value `now` can be provided to end the customer's trial immediately. Can be at most two years from `billing_cycle_anchor`. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials/free-trials) to learn more.
             [<Config.Form>]
             TrialEnd: Choice<Create'TrialEnd,DateTime> option
-            /// Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more.
+            /// Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials/free-trials) to learn more.
             [<Config.Form>]
             TrialFromPlan: bool option
-            /// Integer representing the number of trial period days before the customer is charged for the first time. This will always overwrite any trials that might apply via a subscribed plan. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more.
+            /// Integer representing the number of trial period days before the customer is charged for the first time. This will always overwrite any trials that might apply via a subscribed plan. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials/free-trials) to learn more.
             [<Config.Form>]
             TrialPeriodDays: int option
             /// Settings related to subscription trials.
@@ -1715,9 +1868,22 @@ module Subscriptions =
                 Liability = liability
             }
 
-    type Update'BillingCycleAnchor =
+    type Update'BillingCycleAnchorType =
         | Now
         | Unchanged
+
+    type Update'BillingCycleAnchor =
+        {
+            /// Determines how the billing cycle anchor changes when the subscription is updated.
+            [<Config.Form>]
+            Type: Update'BillingCycleAnchorType option
+        }
+
+    type Update'BillingCycleAnchor with
+        static member New(?type': Update'BillingCycleAnchorType) =
+            {
+                Type = type'
+            }
 
     type Update'BillingSchedulesAppliesToType = | Price
 
@@ -1965,6 +2131,19 @@ module Subscriptions =
                 UsageGte = usageGte
             }
 
+    type Update'ItemsCurrentTrial =
+        {
+            /// The ID of the trial offer to apply to the subscription item.
+            [<Config.Form>]
+            TrialOffer: string option
+        }
+
+    type Update'ItemsCurrentTrial with
+        static member New(?trialOffer: string) =
+            {
+                TrialOffer = trialOffer
+            }
+
     type Update'ItemsDiscounts =
         {
             /// ID of the coupon to create a new discount for.
@@ -2055,6 +2234,9 @@ module Subscriptions =
             /// Delete all usage for a given subscription item. You must pass this when deleting a usage records subscription item. `clear_usage` has no effect if the plan has a billing meter attached.
             [<Config.Form>]
             ClearUsage: bool option
+            /// The trial offer to apply to this subscription item.
+            [<Config.Form>]
+            CurrentTrial: Update'ItemsCurrentTrial option
             /// A flag that, if set to `true`, will delete the specified item.
             [<Config.Form>]
             Deleted: bool option
@@ -2070,10 +2252,10 @@ module Subscriptions =
             /// Plan ID for this item, as a string.
             [<Config.Form>]
             Plan: string option
-            /// The ID of the price object. One of `price` or `price_data` is required. When changing a subscription item's price, `quantity` is set to 1 unless a `quantity` parameter is provided.
+            /// The ID of the price object. You can use either `price` or `price_data`, but not both, to set or change this item's price. If you're updating an existing item without changing its price, omit both. When changing a subscription item's price, `quantity` is set to 1 unless a `quantity` parameter is provided.
             [<Config.Form>]
             Price: string option
-            /// Data used to generate a new [Price](https://docs.stripe.com/api/prices) object inline. One of `price` or `price_data` is required.
+            /// Data used to generate a new [Price](https://docs.stripe.com/api/prices) object inline. You can use either `price` or `price_data`, but not both, to set or change this item's price. If you're updating an existing item without changing its price, omit both.
             [<Config.Form>]
             PriceData: Update'ItemsPriceData option
             /// Quantity for this item.
@@ -2085,10 +2267,11 @@ module Subscriptions =
         }
 
     type Update'Items with
-        static member New(?billingThresholds: Choice<Update'ItemsBillingThresholdsItemBillingThresholds,string>, ?clearUsage: bool, ?deleted: bool, ?discounts: Choice<Update'ItemsDiscounts list,string>, ?id: string, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: Update'ItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
+        static member New(?billingThresholds: Choice<Update'ItemsBillingThresholdsItemBillingThresholds,string>, ?clearUsage: bool, ?currentTrial: Update'ItemsCurrentTrial, ?deleted: bool, ?discounts: Choice<Update'ItemsDiscounts list,string>, ?id: string, ?metadata: Map<string, string>, ?plan: string, ?price: string, ?priceData: Update'ItemsPriceData, ?quantity: int, ?taxRates: Choice<string list,string>) =
             {
                 BillingThresholds = billingThresholds
                 ClearUsage = clearUsage
+                CurrentTrial = currentTrial
                 Deleted = deleted
                 Discounts = discounts
                 Id = id
@@ -2188,6 +2371,129 @@ module Subscriptions =
         static member New(?preferredLanguage: Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptionsPreferredLanguage) =
             {
                 PreferredLanguage = preferredLanguage
+            }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress
+        =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code.
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1 (for example, street, PO Box, or company name).
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2 (for example, apartment, suite, unit, or building).
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region.
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType
+        =
+        | ChEin
+        | DeHrb
+        | DkCvr
+        | EsCif
+        | FiTunnus
+        | FrSiren
+        | FrSiret
+        | ItRea
+        | NlKvk
+        | NoOrgNumber
+        | NoPno
+        | SeOrgNumber
+        | SePno
+        | UkCrn
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetails =
+        {
+            /// The address the company or entity is registered with.
+            [<Config.Form>]
+            RegisteredAddress:
+                Choice<Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress,string> option
+            /// Company or entity name.
+            [<Config.Form>]
+            RegisteredName: string option
+            /// The official registration number for the given registration type.
+            [<Config.Form>]
+            RegistrationNumber: string option
+            /// Type of registration the company or entity holds in their registered country.
+            [<Config.Form>]
+            RegistrationType:
+                Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType option
+            /// VAT ID number.
+            [<Config.Form>]
+            Vat: string option
+        }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetails with
+        static member New(?registeredAddress: Choice<Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegisteredAddressRegisteredAddress,string>, ?registeredName: string, ?registrationNumber: string, ?registrationType: Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetailsRegistrationType, ?vat: string) =
+            {
+                RegisteredAddress = registeredAddress
+                RegisteredName = registeredName
+                RegistrationNumber = registrationNumber
+                RegistrationType = registrationType
+                Vat = vat
+            }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions =
+        {
+            /// Registration details about the buyer's organization.
+            [<Config.Form>]
+            CompanyDetails:
+                Choice<Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetails,string> option
+        }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions with
+        static member New(?companyDetails: Choice<Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptionsCompanyDetailsCompanyDetails,string>) =
+            {
+                CompanyDetails = companyDetails
+            }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptionsMandateOptions =
+        {
+            /// Date when the mandate expires and no further payments will be charged. If not provided, the mandate will be set to be indefinite.
+            [<Config.Form>]
+            ExpiresAt: DateTime option
+        }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptionsMandateOptions with
+        static member New(?expiresAt: DateTime) =
+            {
+                ExpiresAt = expiresAt
+            }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions =
+        {
+            /// Configuration options for setting up a mandate
+            [<Config.Form>]
+            MandateOptions:
+                Update'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptionsMandateOptions option
+        }
+
+    type Update'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions with
+        static member New(?mandateOptions: Update'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptionsMandateOptions) =
+            {
+                MandateOptions = mandateOptions
             }
 
     type Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptionsMandateOptionsAmountType =
@@ -2539,7 +2845,10 @@ module Subscriptions =
                 Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string> option
             /// This sub-hash contains details about the Billie payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
-            Billie: Choice<string,string> option
+            Billie: Choice<Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions,string> option
+            /// This sub-hash contains details about the Blik payment method options to pass to the invoice’s PaymentIntent.
+            [<Config.Form>]
+            Blik: Choice<Update'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions,string> option
             /// This sub-hash contains details about the Card payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
             Card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string> option
@@ -2569,11 +2878,12 @@ module Subscriptions =
         }
 
     type Update'PaymentSettingsPaymentMethodOptions with
-        static member New(?acssDebit: Choice<Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<string,string>, ?card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions,string>, ?blik: Choice<Update'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions,string>, ?card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Bancontact = bancontact
                 Billie = billie
+                Blik = blik
                 Card = card
                 CustomerBalance = customerBalance
                 Konbini = konbini
@@ -2595,6 +2905,7 @@ module Subscriptions =
         | BacsDebit
         | Bancontact
         | Billie
+        | Blik
         | Boleto
         | Card
         | Cashapp
@@ -2707,6 +3018,10 @@ module Subscriptions =
 
     type Update'TrialEnd = | Now
 
+    type Update'TrialSettingsEndBehaviorBillingCycleAnchor =
+        | Now
+        | Unchanged
+
     type Update'TrialSettingsEndBehaviorMissingPaymentMethod =
         | Cancel
         | CreateInvoice
@@ -2714,14 +3029,18 @@ module Subscriptions =
 
     type Update'TrialSettingsEndBehavior =
         {
+            /// Indicates how the subscription's billing cycle anchor is reset when a trial ends. Defaults to `now`.
+            [<Config.Form>]
+            BillingCycleAnchor: Update'TrialSettingsEndBehaviorBillingCycleAnchor option
             /// Indicates how the subscription should change when the trial ends if the user did not provide a payment method.
             [<Config.Form>]
             MissingPaymentMethod: Update'TrialSettingsEndBehaviorMissingPaymentMethod option
         }
 
     type Update'TrialSettingsEndBehavior with
-        static member New(?missingPaymentMethod: Update'TrialSettingsEndBehaviorMissingPaymentMethod) =
+        static member New(?billingCycleAnchor: Update'TrialSettingsEndBehaviorBillingCycleAnchor, ?missingPaymentMethod: Update'TrialSettingsEndBehaviorMissingPaymentMethod) =
             {
+                BillingCycleAnchor = billingCycleAnchor
                 MissingPaymentMethod = missingPaymentMethod
             }
 
@@ -2751,7 +3070,7 @@ module Subscriptions =
             /// Automatic tax settings for this subscription. We recommend you only include this parameter when the existing value is being changed.
             [<Config.Form>]
             AutomaticTax: Update'AutomaticTax option
-            /// Either `now` or `unchanged`. Setting the value to `now` resets the subscription's billing cycle anchor to the current time (in UTC). For more information, see the billing cycle [documentation](https://docs.stripe.com/billing/subscriptions/billing-cycle).
+            /// Controls how the subscription's billing cycle anchor changes. Set `type` to `now` to reset the billing cycle anchor to the current time (in UTC), or `unchanged` to preserve it. For more information, see the billing cycle [documentation](https://docs.stripe.com/billing/subscriptions/billing-cycle).
             [<Config.Form>]
             BillingCycleAnchor: Update'BillingCycleAnchor option
             /// An array of billing schedules, which allow you to bill customers in advance for multiple service periods. Requires flexible billing mode and API version 2026-05-27.dahlia or later. Learn more about [prebilling](https://docs.stripe.com/billing/subscriptions/prebilling).
@@ -2833,7 +3152,7 @@ module Subscriptions =
             /// Unix timestamp representing the end of the trial period the customer will get before being charged for the first time. This will always overwrite any trials that might apply via a subscribed plan. If set, `trial_end` will override the default trial period of the plan the customer is being subscribed to. The `billing_cycle_anchor` will be updated to the `trial_end` value. The special value `now` can be provided to end the customer's trial immediately. Can be at most two years from `billing_cycle_anchor`.
             [<Config.Form>]
             TrialEnd: Choice<Update'TrialEnd,DateTime> option
-            /// Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials) to learn more.
+            /// Indicates if a plan's `trial_period_days` should be applied to the subscription. Setting `trial_end` per subscription is preferred, and this defaults to `false`. Setting this flag to `true` together with `trial_end` is not allowed. See [Using trial periods on subscriptions](https://docs.stripe.com/billing/subscriptions/trials/free-trials) to learn more.
             [<Config.Form>]
             TrialFromPlan: bool option
             /// Settings related to subscription trials.
@@ -3041,11 +3360,121 @@ module SubscriptionsMigrate =
         $"/v1/subscriptions/{options.Subscription}/migrate"
         |> RestApi.postAsync<_, Subscription> settings (Map.empty) options
 
+module SubscriptionsPause =
+
+    type Pause'BillForOutstandingUsageThroughType =
+        | [<JsonPropertyName("none")>] None'
+        | Now
+
+    type Pause'BillForOutstandingUsageThrough =
+        {
+            /// When to bill metered usage in the current period.
+            [<Config.Form>]
+            Type: Pause'BillForOutstandingUsageThroughType option
+        }
+
+    type Pause'BillForOutstandingUsageThrough with
+        static member New(?type': Pause'BillForOutstandingUsageThroughType) =
+            {
+                Type = type'
+            }
+
+    type Pause'BillForUnusedTimeFromType =
+        | ItemCurrentPeriodStart
+        | [<JsonPropertyName("none")>] None'
+        | Now
+
+    type Pause'BillForUnusedTimeFrom =
+        {
+            /// When to credit for unused time.
+            [<Config.Form>]
+            Type: Pause'BillForUnusedTimeFromType option
+        }
+
+    type Pause'BillForUnusedTimeFrom with
+        static member New(?type': Pause'BillForUnusedTimeFromType) =
+            {
+                Type = type'
+            }
+
+    type Pause'BillFor =
+        {
+            /// Controls when to bill for metered usage in the current period. Defaults to `{ type: "now" }`.
+            [<Config.Form>]
+            OutstandingUsageThrough: Pause'BillForOutstandingUsageThrough option
+            /// Controls when to credit for unused time on licensed items. Defaults to `{ type: "now" }`.
+            [<Config.Form>]
+            UnusedTimeFrom: Pause'BillForUnusedTimeFrom option
+        }
+
+    type Pause'BillFor with
+        static member New(?outstandingUsageThrough: Pause'BillForOutstandingUsageThrough, ?unusedTimeFrom: Pause'BillForUnusedTimeFrom) =
+            {
+                OutstandingUsageThrough = outstandingUsageThrough
+                UnusedTimeFrom = unusedTimeFrom
+            }
+
+    type Pause'InvoicingBehavior =
+        | Invoice
+        | PendingInvoiceItem
+
+    type Pause'Type = | Subscription
+
+    type PauseOptions =
+        {
+            [<Config.Path>]
+            Subscription: string
+            /// Controls what to bill for when pausing the subscription.
+            [<Config.Form>]
+            BillFor: Pause'BillFor option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+            /// Determines how to handle debits and credits when pausing. Defaults to `pending_invoice_item`.
+            [<Config.Form>]
+            InvoicingBehavior: Pause'InvoicingBehavior option
+            /// The type of pause to apply. Defaults to `subscription`.
+            [<Config.Form>]
+            Type: Pause'Type option
+        }
+
+    type PauseOptions with
+        static member New(subscription: string, ?billFor: Pause'BillFor, ?expand: string list, ?invoicingBehavior: Pause'InvoicingBehavior, ?type': Pause'Type) =
+            {
+                Subscription = subscription
+                BillFor = billFor
+                Expand = expand
+                InvoicingBehavior = invoicingBehavior
+                Type = type'
+            }
+
+    ///<p>Pauses a subscription by transitioning it to the paused status. A paused subscription does not generate invoices and will not advance to new billing periods. The subscription can be resumed later using the resume endpoint. Cannot pause subscriptions with attached schedules.</p>
+    let Pause settings (options: PauseOptions) =
+        $"/v1/subscriptions/{options.Subscription}/pause"
+        |> RestApi.postAsync<_, Subscription> settings (Map.empty) options
+
 module SubscriptionsResume =
 
-    type Resume'BillingCycleAnchor =
+    type Resume'BillingCycleAnchorType =
         | Now
         | Unchanged
+
+    type Resume'BillingCycleAnchor =
+        {
+            /// Determines how the billing cycle anchor changes when the subscription resumes.
+            [<Config.Form>]
+            Type: Resume'BillingCycleAnchorType option
+        }
+
+    type Resume'BillingCycleAnchor with
+        static member New(?type': Resume'BillingCycleAnchorType) =
+            {
+                Type = type'
+            }
+
+    type Resume'PaymentBehavior =
+        | ResumeOnPaymentAttempt
+        | ResumeOnPaymentSuccess
 
     type Resume'ProrationBehavior =
         | AlwaysInvoice
@@ -3062,6 +3491,9 @@ module SubscriptionsResume =
             /// Specifies which fields in the response should be expanded.
             [<Config.Form>]
             Expand: string list option
+            /// Controls whether Stripe attempts payment on the resumption invoice in the resume request, and how payment on that invoice affects the subscription's status. The default is `resume_on_payment_attempt`.
+            [<Config.Form>]
+            PaymentBehavior: Resume'PaymentBehavior option
             /// Determines how to handle [prorations](https://docs.stripe.com/billing/subscriptions/prorations) resulting from the `billing_cycle_anchor` being `unchanged`. When the `billing_cycle_anchor` is set to `now` (default value), no prorations are generated. If no value is passed, the default is `create_prorations`.
             [<Config.Form>]
             ProrationBehavior: Resume'ProrationBehavior option
@@ -3071,11 +3503,12 @@ module SubscriptionsResume =
         }
 
     type ResumeOptions with
-        static member New(subscription: string, ?billingCycleAnchor: Resume'BillingCycleAnchor, ?expand: string list, ?prorationBehavior: Resume'ProrationBehavior, ?prorationDate: DateTime) =
+        static member New(subscription: string, ?billingCycleAnchor: Resume'BillingCycleAnchor, ?expand: string list, ?paymentBehavior: Resume'PaymentBehavior, ?prorationBehavior: Resume'ProrationBehavior, ?prorationDate: DateTime) =
             {
                 Subscription = subscription
                 BillingCycleAnchor = billingCycleAnchor
                 Expand = expand
+                PaymentBehavior = paymentBehavior
                 ProrationBehavior = prorationBehavior
                 ProrationDate = prorationDate
             }

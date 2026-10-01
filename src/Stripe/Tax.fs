@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted =
     {
         /// The [Tax Transaction](https://docs.stripe.com/api/tax/transaction/object)
@@ -127,6 +127,7 @@ type TaxProductResourceJurisdiction with
 type TaxProductResourceLineItemTaxBreakdownSourcing =
     | Destination
     | Origin
+    | Performance
 
 type TaxProductResourceLineItemTaxBreakdownTaxabilityReason =
     | CustomerExempt
@@ -146,21 +147,32 @@ type TaxProductResourceLineItemTaxBreakdownTaxabilityReason =
     | ZeroRated
 
 type TaxProductResourceLineItemTaxRateDetailsTaxType =
+    | AdmissionsTax
     | AmusementTax
+    | AttendanceTax
     | CommunicationsTax
+    | DigitalExciseTax
+    | EntertainmentTax
+    | GrossReceiptsTax
     | Gst
+    | HospitalityTax
     | Hst
     | Igst
     | Jct
     | LeaseTax
+    | LuxuryTax
     | MassTransitParkingTax
     | ParkingTax
     | Pst
     | Qst
+    | RecyclingFee
+    | ResortTax
     | RetailDeliveryFee
     | Rst
     | SalesTax
     | ServiceTax
+    | TourismTax
+    | UtilityUsersTax
     | Vat
 
 type TaxProductResourceLineItemTaxRateDetails =
@@ -207,6 +219,7 @@ type TaxProductResourceLineItemTaxBreakdown with
             TaxableAmount = taxableAmount
         }
 
+/// A Tax Calculation Line Item represents a single item in a tax calculation.
 type TaxCalculationLineItem =
     {
         /// The line item amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
@@ -219,6 +232,8 @@ type TaxCalculationLineItem =
         Livemode: bool
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
+        /// Indicates the line item represents a performance where the venue location might determine the tax, not the customer address. Leave empty if the tax code doesn't require a tax location. If you provide this value for tax codes with an `optional` location requirement, it overrides the customer address.
+        PerformanceLocation: string option
         /// The ID of an existing [Product](https://docs.stripe.com/api/products/object).
         Product: string option
         /// The number of units of the item being purchased. For reversals, this is the quantity reversed.
@@ -234,13 +249,14 @@ type TaxCalculationLineItem =
     }
 
 type TaxCalculationLineItem with
-    static member New(amount: int, amountTax: int, id: string, livemode: bool, metadata: Map<string, string> option, product: string option, quantity: int, reference: string, taxBehavior: TaxCalculationLineItemTaxBehavior, taxCode: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list option) =
+    static member New(amount: int, amountTax: int, id: string, livemode: bool, metadata: Map<string, string> option, performanceLocation: string option, product: string option, quantity: int, reference: string, taxBehavior: TaxCalculationLineItemTaxBehavior, taxCode: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list option) =
         {
             Amount = amount
             AmountTax = amountTax
             Id = id
             Livemode = livemode
             Metadata = metadata
+            PerformanceLocation = performanceLocation
             Product = product
             Quantity = quantity
             Reference = reference
@@ -507,21 +523,32 @@ type TaxProductResourceTaxRateDetailsRateType =
     | Percentage
 
 type TaxProductResourceTaxRateDetailsTaxType =
+    | AdmissionsTax
     | AmusementTax
+    | AttendanceTax
     | CommunicationsTax
+    | DigitalExciseTax
+    | EntertainmentTax
+    | GrossReceiptsTax
     | Gst
+    | HospitalityTax
     | Hst
     | Igst
     | Jct
     | LeaseTax
+    | LuxuryTax
     | MassTransitParkingTax
     | ParkingTax
     | Pst
     | Qst
+    | RecyclingFee
+    | ResortTax
     | RetailDeliveryFee
     | Rst
     | SalesTax
     | ServiceTax
+    | TourismTax
+    | UtilityUsersTax
     | Vat
 
 type TaxProductResourceTaxRateDetails =
@@ -693,6 +720,34 @@ type TaxIDsOwner with
             Customer = customer
         }
 
+/// Tax locations represent venues for services, tickets, or other product types.
+type TaxLocation =
+    {
+        Address: Address
+        /// A descriptive text providing additional context about the tax location. This can include information about the venue, types of events held, services available, or any relevant details for better identification (for example, "A spacious auditorium suitable for large concerts and events.").
+        Description: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+    }
+
+type TaxLocation with
+    static member New(address: Address, description: string option, id: string, livemode: bool) =
+        {
+            Address = address
+            Description = description
+            Id = id
+            Livemode = livemode
+        }
+
+module TaxLocation =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.location"
+
+    ///The type of tax location to be defined. Currently the only option is `performance`.
+    let ``type`` = "performance"
+
 type TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard =
     {
         /// Two-letter CA province code ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
@@ -789,36 +844,17 @@ type TaxProductRegistrationsResourceCountryOptionsEuropeType =
     | OssUnion
     | Standard
 
-[<Struct>]
-type TaxProductRegistrationsResourceCountryOptionsIgicPlaceOfSupplyScheme =
-    | InboundGoods
-    | Standard
-
-type TaxProductRegistrationsResourceCountryOptionsIgic =
-    {
-        /// Place of supply scheme used in an IGIC registration.
-        PlaceOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsIgicPlaceOfSupplyScheme
-    }
-
-type TaxProductRegistrationsResourceCountryOptionsIgic with
-    static member New(placeOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsIgicPlaceOfSupplyScheme) =
-        {
-            PlaceOfSupplyScheme = placeOfSupplyScheme
-        }
-
 type TaxProductRegistrationsResourceCountryOptionsEurope =
     {
-        Igic: TaxProductRegistrationsResourceCountryOptionsIgic option
         Standard: TaxProductRegistrationsResourceCountryOptionsEuStandard option
         /// Type of registration in an EU country.
         Type: TaxProductRegistrationsResourceCountryOptionsEuropeType
     }
 
 type TaxProductRegistrationsResourceCountryOptionsEurope with
-    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsEuropeType, ?igic: TaxProductRegistrationsResourceCountryOptionsIgic, ?standard: TaxProductRegistrationsResourceCountryOptionsEuStandard) =
+    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsEuropeType, ?standard: TaxProductRegistrationsResourceCountryOptionsEuStandard) =
         {
             Type = ``type``
-            Igic = igic
             Standard = standard
         }
 
@@ -831,6 +867,27 @@ module TaxProductRegistrationsResourceCountryOptionsSimplified =
     ///Type of registration in `country`.
     let ``type`` = "simplified"
 
+[<Struct>]
+type TaxProductRegistrationsResourceCountryOptionsSpainType =
+    | Ioss
+    | OssNonUnion
+    | OssUnion
+    | Standard
+
+type TaxProductRegistrationsResourceCountryOptionsSpain =
+    {
+        Standard: TaxProductRegistrationsResourceCountryOptionsEuStandard option
+        /// Type of registration in ES.
+        Type: TaxProductRegistrationsResourceCountryOptionsSpainType
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsSpain with
+    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsSpainType, ?standard: TaxProductRegistrationsResourceCountryOptionsEuStandard) =
+        {
+            Type = ``type``
+            Standard = standard
+        }
+
 type TaxProductRegistrationsResourceCountryOptionsThailand () = 
     ///Type of registration in `country`.
     member _.Type = "simplified"
@@ -841,13 +898,81 @@ module TaxProductRegistrationsResourceCountryOptionsThailand =
     let ``type`` = "simplified"
 
 type TaxProductRegistrationsResourceCountryOptionsUnitedStatesType =
+    | AdmissionsTax
+    | AttendanceTax
+    | EntertainmentTax
+    | GrossReceiptsTax
+    | HospitalityTax
     | LocalAmusementTax
     | LocalLeaseTax
+    | LuxuryTax
     | MassTransitParkingTax
     | ParkingTax
+    | ResortTax
     | StateCommunicationsTax
     | StateRetailDeliveryFee
     | StateSalesTax
+    | TourismTax
+
+type TaxProductRegistrationsResourceCountryOptionsUsAdmissionsTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=admissions_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsAdmissionsTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsAttendanceTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=attendance_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsAttendanceTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsEntertainmentTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=entertainment_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsEntertainmentTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsGrossReceiptsTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=gross_receipts_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsGrossReceiptsTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsHospitalityTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=hospitality_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsHospitalityTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
 
 type TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax =
     {
@@ -873,6 +998,18 @@ type TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax with
             Jurisdiction = jurisdiction
         }
 
+type TaxProductRegistrationsResourceCountryOptionsUsLuxuryTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=luxury_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsLuxuryTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
 type TaxProductRegistrationsResourceCountryOptionsUsMassTransitParkingTax =
     {
         /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=mass_transit_parking_tax#registration-types) representing the local jurisdiction.
@@ -892,6 +1029,18 @@ type TaxProductRegistrationsResourceCountryOptionsUsParkingTax =
     }
 
 type TaxProductRegistrationsResourceCountryOptionsUsParkingTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsResortTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=resort_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsResortTax with
     static member New(jurisdiction: string) =
         {
             Jurisdiction = jurisdiction
@@ -930,29 +1079,57 @@ type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax with
             Elections = elections
         }
 
+type TaxProductRegistrationsResourceCountryOptionsUsTourismTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=tourism_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsTourismTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
 type TaxProductRegistrationsResourceCountryOptionsUnitedStates =
     {
+        AdmissionsTax: TaxProductRegistrationsResourceCountryOptionsUsAdmissionsTax option
+        AttendanceTax: TaxProductRegistrationsResourceCountryOptionsUsAttendanceTax option
+        EntertainmentTax: TaxProductRegistrationsResourceCountryOptionsUsEntertainmentTax option
+        GrossReceiptsTax: TaxProductRegistrationsResourceCountryOptionsUsGrossReceiptsTax option
+        HospitalityTax: TaxProductRegistrationsResourceCountryOptionsUsHospitalityTax option
         LocalAmusementTax: TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax option
         LocalLeaseTax: TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax option
+        LuxuryTax: TaxProductRegistrationsResourceCountryOptionsUsLuxuryTax option
         MassTransitParkingTax: TaxProductRegistrationsResourceCountryOptionsUsMassTransitParkingTax option
         ParkingTax: TaxProductRegistrationsResourceCountryOptionsUsParkingTax option
+        ResortTax: TaxProductRegistrationsResourceCountryOptionsUsResortTax option
         /// Two-letter US state code ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
         State: string
         StateSalesTax: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax option
+        TourismTax: TaxProductRegistrationsResourceCountryOptionsUsTourismTax option
         /// Type of registration in the US.
         Type: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType
     }
 
 type TaxProductRegistrationsResourceCountryOptionsUnitedStates with
-    static member New(state: string, ``type``: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType, ?localAmusementTax: TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax, ?localLeaseTax: TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax, ?massTransitParkingTax: TaxProductRegistrationsResourceCountryOptionsUsMassTransitParkingTax, ?parkingTax: TaxProductRegistrationsResourceCountryOptionsUsParkingTax, ?stateSalesTax: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax) =
+    static member New(state: string, ``type``: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType, ?admissionsTax: TaxProductRegistrationsResourceCountryOptionsUsAdmissionsTax, ?attendanceTax: TaxProductRegistrationsResourceCountryOptionsUsAttendanceTax, ?entertainmentTax: TaxProductRegistrationsResourceCountryOptionsUsEntertainmentTax, ?grossReceiptsTax: TaxProductRegistrationsResourceCountryOptionsUsGrossReceiptsTax, ?hospitalityTax: TaxProductRegistrationsResourceCountryOptionsUsHospitalityTax, ?localAmusementTax: TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax, ?localLeaseTax: TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax, ?luxuryTax: TaxProductRegistrationsResourceCountryOptionsUsLuxuryTax, ?massTransitParkingTax: TaxProductRegistrationsResourceCountryOptionsUsMassTransitParkingTax, ?parkingTax: TaxProductRegistrationsResourceCountryOptionsUsParkingTax, ?resortTax: TaxProductRegistrationsResourceCountryOptionsUsResortTax, ?stateSalesTax: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax, ?tourismTax: TaxProductRegistrationsResourceCountryOptionsUsTourismTax) =
         {
             State = state
             Type = ``type``
+            AdmissionsTax = admissionsTax
+            AttendanceTax = attendanceTax
+            EntertainmentTax = entertainmentTax
+            GrossReceiptsTax = grossReceiptsTax
+            HospitalityTax = hospitalityTax
             LocalAmusementTax = localAmusementTax
             LocalLeaseTax = localLeaseTax
+            LuxuryTax = luxuryTax
             MassTransitParkingTax = massTransitParkingTax
             ParkingTax = parkingTax
+            ResortTax = resortTax
             StateSalesTax = stateSalesTax
+            TourismTax = tourismTax
         }
 
 type TaxProductRegistrationsResourceCountryOptions =
@@ -989,7 +1166,7 @@ type TaxProductRegistrationsResourceCountryOptions =
       Ec: TaxProductRegistrationsResourceCountryOptionsSimplified option
       Ee: TaxProductRegistrationsResourceCountryOptionsEurope option
       Eg: TaxProductRegistrationsResourceCountryOptionsSimplified option
-      Es: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Es: TaxProductRegistrationsResourceCountryOptionsSpain option
       Et: TaxProductRegistrationsResourceCountryOptionsDefault option
       Fi: TaxProductRegistrationsResourceCountryOptionsEurope option
       Fr: TaxProductRegistrationsResourceCountryOptionsEurope option
@@ -1059,7 +1236,7 @@ type TaxProductRegistrationsResourceCountryOptions =
       Zw: TaxProductRegistrationsResourceCountryOptionsDefault option }
 
 type TaxProductRegistrationsResourceCountryOptions with
-    static member New(?ae: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?al: TaxProductRegistrationsResourceCountryOptionsDefault, ?am: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ao: TaxProductRegistrationsResourceCountryOptionsDefault, ?at: TaxProductRegistrationsResourceCountryOptionsEurope, ?au: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?aw: TaxProductRegistrationsResourceCountryOptionsDefault, ?az: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ba: TaxProductRegistrationsResourceCountryOptionsDefault, ?bb: TaxProductRegistrationsResourceCountryOptionsDefault, ?bd: TaxProductRegistrationsResourceCountryOptionsDefault, ?be: TaxProductRegistrationsResourceCountryOptionsEurope, ?bf: TaxProductRegistrationsResourceCountryOptionsDefault, ?bg: TaxProductRegistrationsResourceCountryOptionsEurope, ?bh: TaxProductRegistrationsResourceCountryOptionsDefault, ?bj: TaxProductRegistrationsResourceCountryOptionsSimplified, ?bs: TaxProductRegistrationsResourceCountryOptionsDefault, ?by: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ca: TaxProductRegistrationsResourceCountryOptionsCanada, ?cd: TaxProductRegistrationsResourceCountryOptionsDefault, ?ch: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?cl: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cm: TaxProductRegistrationsResourceCountryOptionsSimplified, ?co: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cv: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cy: TaxProductRegistrationsResourceCountryOptionsEurope, ?cz: TaxProductRegistrationsResourceCountryOptionsEurope, ?de: TaxProductRegistrationsResourceCountryOptionsEurope, ?dk: TaxProductRegistrationsResourceCountryOptionsEurope, ?ec: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ee: TaxProductRegistrationsResourceCountryOptionsEurope, ?eg: TaxProductRegistrationsResourceCountryOptionsSimplified, ?es: TaxProductRegistrationsResourceCountryOptionsEurope, ?et: TaxProductRegistrationsResourceCountryOptionsDefault, ?fi: TaxProductRegistrationsResourceCountryOptionsEurope, ?fr: TaxProductRegistrationsResourceCountryOptionsEurope, ?gb: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?ge: TaxProductRegistrationsResourceCountryOptionsSimplified, ?gn: TaxProductRegistrationsResourceCountryOptionsDefault, ?gr: TaxProductRegistrationsResourceCountryOptionsEurope, ?hr: TaxProductRegistrationsResourceCountryOptionsEurope, ?hu: TaxProductRegistrationsResourceCountryOptionsEurope, ?id: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ie: TaxProductRegistrationsResourceCountryOptionsEurope, ?``in``: TaxProductRegistrationsResourceCountryOptionsSimplified, ?is: TaxProductRegistrationsResourceCountryOptionsDefault, ?it: TaxProductRegistrationsResourceCountryOptionsEurope, ?jp: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?ke: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kg: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kh: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?la: TaxProductRegistrationsResourceCountryOptionsSimplified, ?lk: TaxProductRegistrationsResourceCountryOptionsSimplified, ?lt: TaxProductRegistrationsResourceCountryOptionsEurope, ?lu: TaxProductRegistrationsResourceCountryOptionsEurope, ?lv: TaxProductRegistrationsResourceCountryOptionsEurope, ?ma: TaxProductRegistrationsResourceCountryOptionsSimplified, ?md: TaxProductRegistrationsResourceCountryOptionsSimplified, ?me: TaxProductRegistrationsResourceCountryOptionsDefault, ?mk: TaxProductRegistrationsResourceCountryOptionsDefault, ?mr: TaxProductRegistrationsResourceCountryOptionsDefault, ?mt: TaxProductRegistrationsResourceCountryOptionsEurope, ?mx: TaxProductRegistrationsResourceCountryOptionsSimplified, ?my: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ng: TaxProductRegistrationsResourceCountryOptionsSimplified, ?nl: TaxProductRegistrationsResourceCountryOptionsEurope, ?no: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?np: TaxProductRegistrationsResourceCountryOptionsSimplified, ?nz: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?om: TaxProductRegistrationsResourceCountryOptionsDefault, ?pe: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ph: TaxProductRegistrationsResourceCountryOptionsSimplified, ?pl: TaxProductRegistrationsResourceCountryOptionsEurope, ?pt: TaxProductRegistrationsResourceCountryOptionsEurope, ?ro: TaxProductRegistrationsResourceCountryOptionsEurope, ?rs: TaxProductRegistrationsResourceCountryOptionsDefault, ?ru: TaxProductRegistrationsResourceCountryOptionsSimplified, ?sa: TaxProductRegistrationsResourceCountryOptionsSimplified, ?se: TaxProductRegistrationsResourceCountryOptionsEurope, ?sg: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?si: TaxProductRegistrationsResourceCountryOptionsEurope, ?sk: TaxProductRegistrationsResourceCountryOptionsEurope, ?sn: TaxProductRegistrationsResourceCountryOptionsSimplified, ?sr: TaxProductRegistrationsResourceCountryOptionsDefault, ?th: TaxProductRegistrationsResourceCountryOptionsThailand, ?tj: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tw: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ua: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ug: TaxProductRegistrationsResourceCountryOptionsSimplified, ?us: TaxProductRegistrationsResourceCountryOptionsUnitedStates, ?uy: TaxProductRegistrationsResourceCountryOptionsDefault, ?uz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?vn: TaxProductRegistrationsResourceCountryOptionsSimplified, ?za: TaxProductRegistrationsResourceCountryOptionsDefault, ?zm: TaxProductRegistrationsResourceCountryOptionsSimplified, ?zw: TaxProductRegistrationsResourceCountryOptionsDefault) =
+    static member New(?ae: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?al: TaxProductRegistrationsResourceCountryOptionsDefault, ?am: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ao: TaxProductRegistrationsResourceCountryOptionsDefault, ?at: TaxProductRegistrationsResourceCountryOptionsEurope, ?au: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?aw: TaxProductRegistrationsResourceCountryOptionsDefault, ?az: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ba: TaxProductRegistrationsResourceCountryOptionsDefault, ?bb: TaxProductRegistrationsResourceCountryOptionsDefault, ?bd: TaxProductRegistrationsResourceCountryOptionsDefault, ?be: TaxProductRegistrationsResourceCountryOptionsEurope, ?bf: TaxProductRegistrationsResourceCountryOptionsDefault, ?bg: TaxProductRegistrationsResourceCountryOptionsEurope, ?bh: TaxProductRegistrationsResourceCountryOptionsDefault, ?bj: TaxProductRegistrationsResourceCountryOptionsSimplified, ?bs: TaxProductRegistrationsResourceCountryOptionsDefault, ?by: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ca: TaxProductRegistrationsResourceCountryOptionsCanada, ?cd: TaxProductRegistrationsResourceCountryOptionsDefault, ?ch: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?cl: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cm: TaxProductRegistrationsResourceCountryOptionsSimplified, ?co: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cv: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cy: TaxProductRegistrationsResourceCountryOptionsEurope, ?cz: TaxProductRegistrationsResourceCountryOptionsEurope, ?de: TaxProductRegistrationsResourceCountryOptionsEurope, ?dk: TaxProductRegistrationsResourceCountryOptionsEurope, ?ec: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ee: TaxProductRegistrationsResourceCountryOptionsEurope, ?eg: TaxProductRegistrationsResourceCountryOptionsSimplified, ?es: TaxProductRegistrationsResourceCountryOptionsSpain, ?et: TaxProductRegistrationsResourceCountryOptionsDefault, ?fi: TaxProductRegistrationsResourceCountryOptionsEurope, ?fr: TaxProductRegistrationsResourceCountryOptionsEurope, ?gb: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?ge: TaxProductRegistrationsResourceCountryOptionsSimplified, ?gn: TaxProductRegistrationsResourceCountryOptionsDefault, ?gr: TaxProductRegistrationsResourceCountryOptionsEurope, ?hr: TaxProductRegistrationsResourceCountryOptionsEurope, ?hu: TaxProductRegistrationsResourceCountryOptionsEurope, ?id: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ie: TaxProductRegistrationsResourceCountryOptionsEurope, ?``in``: TaxProductRegistrationsResourceCountryOptionsSimplified, ?is: TaxProductRegistrationsResourceCountryOptionsDefault, ?it: TaxProductRegistrationsResourceCountryOptionsEurope, ?jp: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?ke: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kg: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kh: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?la: TaxProductRegistrationsResourceCountryOptionsSimplified, ?lk: TaxProductRegistrationsResourceCountryOptionsSimplified, ?lt: TaxProductRegistrationsResourceCountryOptionsEurope, ?lu: TaxProductRegistrationsResourceCountryOptionsEurope, ?lv: TaxProductRegistrationsResourceCountryOptionsEurope, ?ma: TaxProductRegistrationsResourceCountryOptionsSimplified, ?md: TaxProductRegistrationsResourceCountryOptionsSimplified, ?me: TaxProductRegistrationsResourceCountryOptionsDefault, ?mk: TaxProductRegistrationsResourceCountryOptionsDefault, ?mr: TaxProductRegistrationsResourceCountryOptionsDefault, ?mt: TaxProductRegistrationsResourceCountryOptionsEurope, ?mx: TaxProductRegistrationsResourceCountryOptionsSimplified, ?my: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ng: TaxProductRegistrationsResourceCountryOptionsSimplified, ?nl: TaxProductRegistrationsResourceCountryOptionsEurope, ?no: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?np: TaxProductRegistrationsResourceCountryOptionsSimplified, ?nz: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?om: TaxProductRegistrationsResourceCountryOptionsDefault, ?pe: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ph: TaxProductRegistrationsResourceCountryOptionsSimplified, ?pl: TaxProductRegistrationsResourceCountryOptionsEurope, ?pt: TaxProductRegistrationsResourceCountryOptionsEurope, ?ro: TaxProductRegistrationsResourceCountryOptionsEurope, ?rs: TaxProductRegistrationsResourceCountryOptionsDefault, ?ru: TaxProductRegistrationsResourceCountryOptionsSimplified, ?sa: TaxProductRegistrationsResourceCountryOptionsSimplified, ?se: TaxProductRegistrationsResourceCountryOptionsEurope, ?sg: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?si: TaxProductRegistrationsResourceCountryOptionsEurope, ?sk: TaxProductRegistrationsResourceCountryOptionsEurope, ?sn: TaxProductRegistrationsResourceCountryOptionsSimplified, ?sr: TaxProductRegistrationsResourceCountryOptionsDefault, ?th: TaxProductRegistrationsResourceCountryOptionsThailand, ?tj: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tw: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ua: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ug: TaxProductRegistrationsResourceCountryOptionsSimplified, ?us: TaxProductRegistrationsResourceCountryOptionsUnitedStates, ?uy: TaxProductRegistrationsResourceCountryOptionsDefault, ?uz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?vn: TaxProductRegistrationsResourceCountryOptionsSimplified, ?za: TaxProductRegistrationsResourceCountryOptionsDefault, ?zm: TaxProductRegistrationsResourceCountryOptionsSimplified, ?zw: TaxProductRegistrationsResourceCountryOptionsDefault) =
         {
             Ae = ae
             Al = al
@@ -1291,6 +1468,22 @@ type TaxProductResourceTaxTransactionShippingCost with
             TaxBreakdown = taxBreakdown
         }
 
+/// Tax details contains information about the data that was used to calculate taxes.
+type TaxProductTaxDetailsResourceTaxDetails =
+    {
+        /// The ID of a tax location with type `performance`, representing where the performance takes place.
+        PerformanceLocation: string option
+        /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
+        TaxCode: string option
+    }
+
+type TaxProductTaxDetailsResourceTaxDetails with
+    static member New(performanceLocation: string option, taxCode: string option) =
+        {
+            PerformanceLocation = performanceLocation
+            TaxCode = taxCode
+        }
+
 [<Struct>]
 type TaxRegistrationStatus =
     | Active
@@ -1350,7 +1543,7 @@ type TaxSettings =
         HeadOffice: TaxProductResourceTaxSettingsHeadOffice option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
-        /// The status of the Tax `Settings`.
+        /// Whether these settings have the information Stripe Tax needs to calculate tax. It doesn't reflect whether your integration is ready to collect tax.
         Status: TaxSettingsStatus
         StatusDetails: TaxProductResourceTaxSettingsStatusDetails
     }
@@ -1388,6 +1581,7 @@ type TaxTransactionLineItemType =
     | Reversal
     | Transaction
 
+/// A Tax Transaction Line Item represents an individual item in a Tax Transaction.
 type TaxTransactionLineItem =
     {
         /// The line item amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.

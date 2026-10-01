@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type ClimateOrderCancellationReason =
     | Expired
     | ProductUnavailable

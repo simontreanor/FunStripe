@@ -6,7 +6,7 @@ open System
 open Stripe.PaymentMethod
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type DeletedInvoiceitem =
     {
         /// Always true for a deleted object
@@ -37,11 +37,20 @@ type InvoiceitemFrozenFields =
     | Pricing
     | Quantity
 
+type InvoicingRule () = 
+    ///The type of invoicing rule.
+    member _.Type = "defer_until_credited_items_resolved"
+
+
+module InvoicingRule =
+    ///The type of invoicing rule.
+    let ``type`` = "defer_until_credited_items_resolved"
+
 type ProrationDetails =
     {
         /// For a credit proration, links to the debit invoice line items or invoice item that the credit applies to.
         CreditedItems: InvoiceItemProrationCreditedItems option
-        /// Discount amounts applied when the proration was created.
+        /// Discount amounts applied when the proration was created. This field is only populated for prorations created from subscriptions with `billing_mode=flexible`.
         DiscountAmounts: DiscountsResourceDiscountAmount list
     }
 
@@ -82,6 +91,8 @@ type Invoiceitem =
         Id: string
         /// The ID of the invoice this invoice item belongs to.
         Invoice: StripeId<Markers.Invoice> option
+        /// The rules that control when this invoice item is eligible for invoicing. All rules must be satisfied for the item to be invoiced.
+        InvoicingRules: InvoicingRule list option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
@@ -107,7 +118,7 @@ type Invoiceitem =
     }
 
 type Invoiceitem with
-    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, customer: InvoiceitemCustomer'AnyOf, customerAccount: string option, date: DateTime, description: string option, discountable: bool, discounts: StripeId<Markers.Discount> list option, id: string, invoice: StripeId<Markers.Invoice> option, livemode: bool, metadata: Map<string, string> option, parent: BillingBillResourceInvoiceItemParentsInvoiceItemParent option, period: InvoiceLineItemPeriod, pricing: BillingBillResourceInvoicingPricingPricing option, proration: bool, quantity: int, quantityDecimal: string, taxRates: TaxRate list option, testClock: StripeId<Markers.TestHelpersTestClock> option, ?frozenFields: InvoiceitemFrozenFields list, ?netAmount: int, ?prorationDetails: ProrationDetails) =
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, customer: InvoiceitemCustomer'AnyOf, customerAccount: string option, date: DateTime, description: string option, discountable: bool, discounts: StripeId<Markers.Discount> list option, id: string, invoice: StripeId<Markers.Invoice> option, livemode: bool, metadata: Map<string, string> option, parent: BillingBillResourceInvoiceItemParentsInvoiceItemParent option, period: InvoiceLineItemPeriod, pricing: BillingBillResourceInvoicingPricingPricing option, proration: bool, quantity: int, quantityDecimal: string, taxRates: TaxRate list option, testClock: StripeId<Markers.TestHelpersTestClock> option, ?frozenFields: InvoiceitemFrozenFields list, ?invoicingRules: InvoicingRule list, ?netAmount: int, ?prorationDetails: ProrationDetails) =
         {
             Amount = amount
             Currency = currency
@@ -130,6 +141,7 @@ type Invoiceitem with
             TaxRates = taxRates
             TestClock = testClock
             FrozenFields = frozenFields
+            InvoicingRules = invoicingRules
             NetAmount = netAmount
             ProrationDetails = prorationDetails
         }

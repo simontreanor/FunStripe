@@ -11,7 +11,7 @@ open Stripe.TestHelpers
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 module TestHelpersConfirmationTokens =
 
     type Create'PaymentMethodDataAcssDebit =
@@ -505,6 +505,7 @@ module TestHelpersConfirmationTokens =
         | Payco
         | Paynow
         | Paypal
+        | Paypay
         | Payto
         | Pix
         | Promptpay
@@ -513,6 +514,7 @@ module TestHelpersConfirmationTokens =
         | Satispay
         | Scalapay
         | SepaDebit
+        | Sequra
         | Sofort
         | Sunbit
         | Swish
@@ -618,10 +620,10 @@ module TestHelpersConfirmationTokens =
             /// This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow. The field defaults to `unspecified`.
             [<Config.Form>]
             AllowRedisplay: Create'PaymentMethodDataAllowRedisplay option
-            /// If this is a Alma PaymentMethod, this hash contains details about the Alma payment method.
+            /// If this is an Alma PaymentMethod, this hash contains details about the Alma payment method.
             [<Config.Form>]
             Alma: string option
-            /// If this is a AmazonPay PaymentMethod, this hash contains details about the AmazonPay payment method.
+            /// If this is an AmazonPay PaymentMethod, this hash contains details about the AmazonPay payment method.
             [<Config.Form>]
             AmazonPay: string option
             /// If this is an `au_becs_debit` PaymentMethod, this hash contains details about the bank account.
@@ -726,6 +728,9 @@ module TestHelpersConfirmationTokens =
             /// If this is a `paypal` PaymentMethod, this hash contains details about the PayPal payment method.
             [<Config.Form>]
             Paypal: string option
+            /// If this is a `paypay` PaymentMethod, this hash contains details about the PayPay payment method.
+            [<Config.Form>]
+            Paypay: string option
             /// If this is a `payto` PaymentMethod, this hash contains details about the PayTo payment method.
             [<Config.Form>]
             Payto: Create'PaymentMethodDataPayto option
@@ -753,6 +758,9 @@ module TestHelpersConfirmationTokens =
             /// If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account.
             [<Config.Form>]
             SepaDebit: Create'PaymentMethodDataSepaDebit option
+            /// If this is a SeQura PaymentMethod, this hash contains details about the SeQura payment method.
+            [<Config.Form>]
+            Sequra: string option
             /// If this is a `sofort` PaymentMethod, this hash contains details about the SOFORT payment method.
             [<Config.Form>]
             Sofort: Create'PaymentMethodDataSofort option
@@ -783,7 +791,7 @@ module TestHelpersConfirmationTokens =
         }
 
     type Create'PaymentMethodData with
-        static member New(?acssDebit: Create'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Create'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Create'PaymentMethodDataAuBecsDebit, ?bacsDebit: Create'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Create'PaymentMethodDataBillingDetails, ?bizum: string, ?blik: string, ?boleto: Create'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Create'PaymentMethodDataEps, ?fpx: Create'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Create'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Create'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Create'PaymentMethodDataNaverPay, ?nzBankAccount: Create'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Create'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?payto: Create'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Create'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?scalapay: string, ?sepaDebit: Create'PaymentMethodDataSepaDebit, ?sofort: Create'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Create'PaymentMethodDataType, ?upi: Create'PaymentMethodDataUpi, ?usBankAccount: Create'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
+        static member New(?acssDebit: Create'PaymentMethodDataAcssDebit, ?affirm: string, ?afterpayClearpay: string, ?alipay: string, ?allowRedisplay: Create'PaymentMethodDataAllowRedisplay, ?alma: string, ?amazonPay: string, ?auBecsDebit: Create'PaymentMethodDataAuBecsDebit, ?bacsDebit: Create'PaymentMethodDataBacsDebit, ?bancontact: string, ?billie: string, ?billingDetails: Create'PaymentMethodDataBillingDetails, ?bizum: string, ?blik: string, ?boleto: Create'PaymentMethodDataBoleto, ?cashapp: string, ?crypto: string, ?customerBalance: string, ?eps: Create'PaymentMethodDataEps, ?fpx: Create'PaymentMethodDataFpx, ?giropay: string, ?grabpay: string, ?ideal: Create'PaymentMethodDataIdeal, ?interacPresent: string, ?kakaoPay: string, ?klarna: Create'PaymentMethodDataKlarna, ?konbini: string, ?krCard: string, ?link: string, ?mbWay: string, ?metadata: Map<string, string>, ?mobilepay: string, ?multibanco: string, ?naverPay: Create'PaymentMethodDataNaverPay, ?nzBankAccount: Create'PaymentMethodDataNzBankAccount, ?oxxo: string, ?p24: Create'PaymentMethodDataP24, ?payByBank: string, ?payco: string, ?paynow: string, ?paypal: string, ?paypay: string, ?payto: Create'PaymentMethodDataPayto, ?pix: string, ?promptpay: string, ?radarOptions: Create'PaymentMethodDataRadarOptions, ?revolutPay: string, ?samsungPay: string, ?satispay: string, ?scalapay: string, ?sepaDebit: Create'PaymentMethodDataSepaDebit, ?sequra: string, ?sofort: Create'PaymentMethodDataSofort, ?sunbit: string, ?swish: string, ?twint: string, ?type': Create'PaymentMethodDataType, ?upi: Create'PaymentMethodDataUpi, ?usBankAccount: Create'PaymentMethodDataUsBankAccount, ?wechatPay: string, ?zip: string) =
             {
                 AcssDebit = acssDebit
                 Affirm = affirm
@@ -826,6 +834,7 @@ module TestHelpersConfirmationTokens =
                 Payco = payco
                 Paynow = paynow
                 Paypal = paypal
+                Paypay = paypay
                 Payto = payto
                 Pix = pix
                 Promptpay = promptpay
@@ -835,6 +844,7 @@ module TestHelpersConfirmationTokens =
                 Satispay = satispay
                 Scalapay = scalapay
                 SepaDebit = sepaDebit
+                Sequra = sequra
                 Sofort = sofort
                 Sunbit = sunbit
                 Swish = swish
@@ -4992,6 +5002,7 @@ module TestHelpersTreasuryReceivedCredits =
 
     type Create'Network =
         | Ach
+        | Rtp
         | UsDomesticWire
 
     type CreateOptions =

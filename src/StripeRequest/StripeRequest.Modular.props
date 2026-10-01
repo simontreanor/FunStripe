@@ -3,6 +3,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Application.fs" Link="StripeRequest/Application.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Radar.fs" Link="StripeRequest/Radar.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ThreeDSecure.fs" Link="StripeRequest/ThreeDSecure.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Apps.fs" Link="StripeRequest/Apps.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Balance.fs" Link="StripeRequest/Balance.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)BalanceSettings.fs" Link="StripeRequest/BalanceSettings.fs" />
@@ -16,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)File.fs" Link="StripeRequest/File.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sigma.fs" Link="StripeRequest/Sigma.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reporting.fs" Link="StripeRequest/Reporting.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProductCatalog.fs" Link="StripeRequest/ProductCatalog.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)PaymentMethod.fs" Link="StripeRequest/PaymentMethod.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Treasury.fs" Link="StripeRequest/Treasury.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestHelpers.fs" Link="StripeRequest/TestHelpers.fs" />

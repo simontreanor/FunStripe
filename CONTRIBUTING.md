@@ -4,7 +4,7 @@ Thanks for contributing! Please read the relevant section below before opening a
 
 ## Branches
 
-All development happens on `main`. NuGet packages: `FunStripe.Core`, `FunStripe.Core.Fable`.
+All development happens on `main`. NuGet package: `FunStripe.Core` (`FunStripe.Core.Fable` was discontinued in 3.0.0).
 
 ## Workflow
 
@@ -18,11 +18,11 @@ All development happens on `main`. NuGet packages: `FunStripe.Core`, `FunStripe.
 The version lives in **one place**: `Directory.Build.props` at the repo root.
 
 ```xml
-<FunStripeVersion>2.1.0</FunStripeVersion>     <!-- NuGet package version, shared by both packages -->
-<StripeApiVersion>2026-05-27.dahlia</StripeApiVersion> <!-- spec/ file the generated code targets -->
+<FunStripeVersion>3.0.0</FunStripeVersion>     <!-- NuGet package version -->
+<StripeApiVersion>2026-09-30.endive</StripeApiVersion> <!-- spec/ file the generated code targets -->
 ```
 
-Both `.fsproj` files read `<Version>$(FunStripeVersion)</Version>` from it, and the code
+`FunStripe.Core.fsproj` reads `<Version>$(FunStripeVersion)</Version>` from it, and the code
 generator reads `FunStripeVersion` to stamp the `GeneratedCode("FunStripe", "X.Y.Z")`
 attributes. **Do not** hard-code the version anywhere else.
 
@@ -31,6 +31,7 @@ Version-bump policy (semantic versioning):
 | Change | Bump | Example |
 | --- | --- | --- |
 | New Stripe API spec version | **minor** | `2.0.6` → `2.1.0` |
+| New Stripe release train with breaking changes | major | `2.4.0` → `3.0.0` (endive) |
 | Library bug fix / feature | patch | `2.1.0` → `2.1.1` |
 | Breaking library API change | major | `2.1.0` → `3.0.0` |
 
@@ -46,14 +47,14 @@ opens a PR. You normally just review that PR rather than bumping by hand.
    picks up the version automatically — and add/expand the `CHANGELOG.md` entry.
 3. Commit as `release: X.Y.Z`.
 
-Publishing is triggered by pushing the release tags (handled by `publish-funstripe-core.yml`
-for `v2/*` and `publish-funstripe-core-fable.yml` for `v2-fable/*`):
+Publishing is triggered by pushing the release tag (handled by `publish-funstripe-core.yml`
+for `v<major>/*`). The prefix names the major version, e.g. `v3/3.0.0`; the workflow refuses
+a tag whose prefix doesn't match the version's major:
 
 ```powershell
-git tag v2/X.Y.Z
-git tag v2-fable/X.Y.Z
-git push origin main v2/X.Y.Z v2-fable/X.Y.Z
+git tag vX/X.Y.Z
+git push origin main vX/X.Y.Z
 ```
 
-The publish workflows take the package version from the tag, so the tag is the ultimate
+The publish workflow takes the package version from the tag, so the tag is the ultimate
 source of truth for what gets pushed to NuGet — keep it in sync with `FunStripeVersion`.

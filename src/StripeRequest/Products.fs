@@ -6,7 +6,7 @@ open Stripe.Product
 open Stripe.ProductFeature
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 module Products =
 
     type ListOptions =
@@ -23,7 +23,7 @@ module Products =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
-            /// Only return products with the given IDs. Cannot be used with [starting_after](https://api.stripe.com#list_products-starting_after) or [ending_before](https://api.stripe.com#list_products-ending_before).
+            /// Only return products with the given IDs. Cannot be used with [starting_after](https://docs.stripe.com/api#list_products-starting_after) or [ending_before](https://docs.stripe.com/api#list_products-ending_before).
             [<Config.Query>]
             Ids: string list option
             /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
@@ -190,6 +190,23 @@ module Products =
                 Width = width
             }
 
+    type Create'TaxDetails =
+        {
+            /// A tax location ID. Depending on the [tax code](/tax/tax-for-tickets/reference/tax-location-performance), this is required, optional, or not supported.
+            [<Config.Form>]
+            PerformanceLocation: string option
+            /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
+            [<Config.Form>]
+            TaxCode: Choice<string,string> option
+        }
+
+    type Create'TaxDetails with
+        static member New(?performanceLocation: string, ?taxCode: Choice<string,string>) =
+            {
+                PerformanceLocation = performanceLocation
+                TaxCode = taxCode
+            }
+
     type Create'Type =
         | Good
         | Service
@@ -237,6 +254,9 @@ module Products =
             /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
             [<Config.Form>]
             TaxCode: string option
+            /// Tax details for this product, including the [tax code](/tax/tax-codes) and an optional performance location.
+            [<Config.Form>]
+            TaxDetails: Create'TaxDetails option
             /// The type of the product. Defaults to `service` if not explicitly specified, enabling use of this product with Subscriptions and Plans. Set this parameter to `good` to use this product with Orders and SKUs. On API versions before `2018-02-05`, this field defaults to `good` for compatibility reasons.
             [<Config.Form>]
             Type: Create'Type option
@@ -249,7 +269,7 @@ module Products =
         }
 
     type CreateOptions with
-        static member New(name: string, ?active: bool, ?defaultPriceData: Create'DefaultPriceData, ?description: string, ?expand: string list, ?id: string, ?images: string list, ?marketingFeatures: Create'MarketingFeatures list, ?metadata: Map<string, string>, ?packageDimensions: Create'PackageDimensions, ?shippable: bool, ?statementDescriptor: string, ?taxCode: string, ?type': Create'Type, ?unitLabel: string, ?url: string) =
+        static member New(name: string, ?active: bool, ?defaultPriceData: Create'DefaultPriceData, ?description: string, ?expand: string list, ?id: string, ?images: string list, ?marketingFeatures: Create'MarketingFeatures list, ?metadata: Map<string, string>, ?packageDimensions: Create'PackageDimensions, ?shippable: bool, ?statementDescriptor: string, ?taxCode: string, ?taxDetails: Create'TaxDetails, ?type': Create'Type, ?unitLabel: string, ?url: string) =
             {
                 Name = name
                 Active = active
@@ -264,6 +284,7 @@ module Products =
                 Shippable = shippable
                 StatementDescriptor = statementDescriptor
                 TaxCode = taxCode
+                TaxDetails = taxDetails
                 Type = type'
                 UnitLabel = unitLabel
                 Url = url
@@ -333,6 +354,23 @@ module Products =
                 Width = width
             }
 
+    type Update'TaxDetailsTaxDetails =
+        {
+            /// A tax location ID. Depending on the [tax code](/tax/tax-for-tickets/reference/tax-location-performance), this is required, optional, or not supported.
+            [<Config.Form>]
+            PerformanceLocation: string option
+            /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
+            [<Config.Form>]
+            TaxCode: Choice<string,string> option
+        }
+
+    type Update'TaxDetailsTaxDetails with
+        static member New(?performanceLocation: string, ?taxCode: Choice<string,string>) =
+            {
+                PerformanceLocation = performanceLocation
+                TaxCode = taxCode
+            }
+
     type UpdateOptions =
         {
             [<Config.Path>]
@@ -375,6 +413,9 @@ module Products =
             /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
             [<Config.Form>]
             TaxCode: Choice<string,string> option
+            /// Tax details for this product, including the [tax code](/tax/tax-codes) and an optional performance location.
+            [<Config.Form>]
+            TaxDetails: Choice<Update'TaxDetailsTaxDetails,string> option
             /// A label that represents units of this product. When set, this will be included in customers' receipts, invoices, Checkout, and the customer portal. May only be set if `type=service`.
             [<Config.Form>]
             UnitLabel: Choice<string,string> option
@@ -384,7 +425,7 @@ module Products =
         }
 
     type UpdateOptions with
-        static member New(id: string, ?active: bool, ?defaultPrice: string, ?description: Choice<string,string>, ?expand: string list, ?images: Choice<string list,string>, ?marketingFeatures: Choice<Update'MarketingFeatures list,string>, ?metadata: Map<string, string>, ?name: string, ?packageDimensions: Choice<Update'PackageDimensionsPackageDimensionsSpecs,string>, ?shippable: bool, ?statementDescriptor: string, ?taxCode: Choice<string,string>, ?unitLabel: Choice<string,string>, ?url: Choice<string,string>) =
+        static member New(id: string, ?active: bool, ?defaultPrice: string, ?description: Choice<string,string>, ?expand: string list, ?images: Choice<string list,string>, ?marketingFeatures: Choice<Update'MarketingFeatures list,string>, ?metadata: Map<string, string>, ?name: string, ?packageDimensions: Choice<Update'PackageDimensionsPackageDimensionsSpecs,string>, ?shippable: bool, ?statementDescriptor: string, ?taxCode: Choice<string,string>, ?taxDetails: Choice<Update'TaxDetailsTaxDetails,string>, ?unitLabel: Choice<string,string>, ?url: Choice<string,string>) =
             {
                 Id = id
                 Active = active
@@ -399,6 +440,7 @@ module Products =
                 Shippable = shippable
                 StatementDescriptor = statementDescriptor
                 TaxCode = taxCode
+                TaxDetails = taxDetails
                 UnitLabel = unitLabel
                 Url = url
             }

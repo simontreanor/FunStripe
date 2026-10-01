@@ -4,7 +4,129 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+type AppServiceResourceInstallContentSecurityPolicy =
+    {
+        /// The URLs that the app can make network requests to.
+        ConnectSrc: string list
+        /// The URLs that the app can load images from.
+        ImageSrc: string list
+    }
+
+type AppServiceResourceInstallContentSecurityPolicy with
+    static member New(connectSrc: string list, imageSrc: string list) =
+        {
+            ConnectSrc = connectSrc
+            ImageSrc = imageSrc
+        }
+
+[<Struct>]
+type AppsInstallChannel =
+    | PrivateLive
+    | PrivateTest
+    | Public
+    | Review
+    | Testing
+
+[<Struct>]
+type AppsInstallStatus =
+    | InstallFailed
+    | Installed
+    | Installing
+    | UninstallFailed
+    | Uninstalling
+
+/// An app install represents a Stripe App that is installed on an account. It reports the permissions,
+/// content security policy entries, and endpoints that the installing account has authorized, along with any
+/// that the app's latest version requests but the account has not authorized yet. Use the Install API to
+/// install, reauthorize, and uninstall apps, and to check the state of existing installs.
+type AppsInstall =
+    {
+        /// The ID of the account that the app install belongs to.
+        Account: string
+        /// The ID of the app installed.
+        App: string
+        /// Whether the installer must authorize pending permissions, content security policy entries, or endpoints. For private apps, `approval_required` stays `false`; creating or reauthorizing the install through the API installs the newest completed upload and grants its permissions.
+        ApprovalRequired: bool
+        /// The authorization code for an oauth app install.
+        AuthCode: string option
+        /// The distribution channel associated with the app install.
+        Channel: AppsInstallChannel
+        ContentSecurityPolicyGranted: AppServiceResourceInstallContentSecurityPolicy
+        ContentSecurityPolicyPending: AppServiceResourceInstallContentSecurityPolicy
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// The ID of the embedding platform that created the install, if applicable.
+        CreatedBy: string option
+        /// The endpoint URLs authorized by the installer.
+        EndpointsGranted: string list
+        /// The endpoint URLs requested by the latest app version that the installer has not authorized.
+        EndpointsPending: string list
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The permissions authorized by the installer.
+        PermissionsGranted: string list
+        /// The permissions requested by the latest app version that the installer has not authorized.
+        PermissionsPending: string list
+        /// The status of the app install.
+        Status: AppsInstallStatus
+    }
+
+type AppsInstall with
+    static member New(account: string, app: string, approvalRequired: bool, authCode: string option, channel: AppsInstallChannel, contentSecurityPolicyGranted: AppServiceResourceInstallContentSecurityPolicy, contentSecurityPolicyPending: AppServiceResourceInstallContentSecurityPolicy, created: DateTime, createdBy: string option, endpointsGranted: string list, endpointsPending: string list, id: string, livemode: bool, permissionsGranted: string list, permissionsPending: string list, status: AppsInstallStatus) =
+        {
+            Account = account
+            App = app
+            ApprovalRequired = approvalRequired
+            AuthCode = authCode
+            Channel = channel
+            ContentSecurityPolicyGranted = contentSecurityPolicyGranted
+            ContentSecurityPolicyPending = contentSecurityPolicyPending
+            Created = created
+            CreatedBy = createdBy
+            EndpointsGranted = endpointsGranted
+            EndpointsPending = endpointsPending
+            Id = id
+            Livemode = livemode
+            PermissionsGranted = permissionsGranted
+            PermissionsPending = permissionsPending
+            Status = status
+        }
+
+module AppsInstall =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "apps.install"
+
+/// Occurs whenever a user installs a Stripe app. Sent to the app developer, embedding platform, and installing merchant.
+type AppsInstallCreated = { Object: AppsInstall }
+
+type AppsInstallCreated with
+    static member New(object: AppsInstall) =
+        {
+            Object = object
+        }
+
+/// Occurs whenever a user uninstalls a Stripe app. Sent to the app developer, embedding platform, and installing merchant.
+type AppsInstallDeleted = { Object: AppsInstall }
+
+type AppsInstallDeleted with
+    static member New(object: AppsInstall) =
+        {
+            Object = object
+        }
+
+/// Occurs whenever a user updates a Stripe app. Sent to the app developer, embedding platform, and installing merchant.
+type AppsInstallUpdated = { Object: AppsInstall }
+
+type AppsInstallUpdated with
+    static member New(object: AppsInstall) =
+        {
+            Object = object
+        }
+
+[<Struct>]
 type SecretServiceResourceScopeType =
     | Account
     | User

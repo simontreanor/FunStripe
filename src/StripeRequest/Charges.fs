@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 module Charges =
 
     type ListOptions =
@@ -172,7 +172,7 @@ module Charges =
             /// A fee in cents (or local equivalent) that will be applied to the charge and transferred to the application owner's Stripe account. The request must be made with an OAuth key or the `Stripe-Account` header in order to take an application fee. For more information, see the application fees [documentation](https://docs.stripe.com/connect/direct-charges#collect-fees).
             [<Config.Form>]
             ApplicationFeeAmount: int option
-            /// Whether to immediately capture the charge. Defaults to `true`. When `false`, the charge issues an authorization (or pre-authorization), and will need to be [captured](https://api.stripe.com#capture_charge) later. Uncaptured charges expire after a set number of days (7 by default). For more information, see the [authorizing charges and settling later](https://docs.stripe.com/charges/placing-a-hold) documentation.
+            /// Whether to immediately capture the charge. Defaults to `true`. When `false`, the charge issues an authorization (or pre-authorization), and will need to be [captured](https://docs.stripe.com/api#capture_charge) later. Uncaptured charges expire after a set number of days (7 by default). For more information, see the [authorizing charges and settling later](https://docs.stripe.com/charges/placing-a-hold) documentation.
             [<Config.Form>]
             Capture: bool option
             /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
@@ -391,9 +391,7 @@ module Charges =
         $"/v1/charges"
         |> RestApi.getAsync<StripeList<Charge>> settings qs
 
-    ///<p>This method is no longer recommended—use the <a href="/docs/api/payment_intents">Payment Intents API</a>
-    ///to initiate a new payment instead. Confirmation of the PaymentIntent creates the <code>Charge</code>
-    ///object used to request payment.</p>
+    ///<p>This method is deprecated and will be removed soon. If your integration uses it, you need to update it to use a different payment flow, such as <a href="/docs/payments/payment-intents">the Payment Intents API</a>.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/charges"
         |> RestApi.postAsync<_, Charge> settings (Map.empty) options
@@ -509,9 +507,7 @@ module ChargesCapture =
                 TransferGroup = transferGroup
             }
 
-    ///<p>Capture the payment of an existing, uncaptured charge that was created with the <code>capture</code> option set to false.</p>
-    ///<p>Uncaptured payments expire a set number of days after they are created (<a href="/docs/charges/placing-a-hold">7 by default</a>), after which they are marked as refunded and capture attempts will fail.</p>
-    ///<p>Don’t use this method to capture a PaymentIntent-initiated charge. Use <a href="/docs/api/payment_intents/capture">Capture a PaymentIntent</a>.</p>
+    ///<p>This method is deprecated and will be removed soon. If your integration uses it, you need to update it to use a different payment flow, such as <a href="/docs/payments/payment-intents">the Payment Intents API</a>.</p>
     let Capture settings (options: CaptureOptions) =
         $"/v1/charges/{options.Charge}/capture"
         |> RestApi.postAsync<_, Charge> settings (Map.empty) options

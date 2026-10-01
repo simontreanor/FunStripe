@@ -4,12 +4,10 @@ Guidance for Claude Code (and other AI assistants) working in this repository.
 
 ## What this is
 
-FunStripe is an F# client library for the [Stripe](https://stripe.com) API. It ships
-as two NuGet packages built from one shared source tree:
-
-- **`FunStripe.Core`** — the .NET library (`netstandard2.0;netstandard2.1`).
-- **`FunStripe.Core.Fable`** — the same code compiled for [Fable](https://fable.io)
-  (F# → JavaScript), so the client can run in the browser.
+FunStripe is an F# client library for the [Stripe](https://stripe.com) API, shipped as
+the **`FunStripe.Core`** NuGet package (`netstandard2.0;netstandard2.1`). A Fable package
+(`FunStripe.Core.Fable`) existed through 2.x but was dropped in 3.0.0: it never transpiled
+with the Fable compiler, and CI only ever built it as .NET.
 
 Most of the library's surface area is **generated** from Stripe's OpenAPI spec — see
 below. The hand-written code is the JSON layer, HTTP layer, config, and ISO types.
@@ -80,7 +78,7 @@ the generator.
 The version is centralized in **`Directory.Build.props`** (repo root) — the single source of
 truth. Never hard-code a version anywhere else:
 
-- `FunStripeVersion` — NuGet package version. Both `.fsproj` files read `$(FunStripeVersion)`,
+- `FunStripeVersion` — NuGet package version. `FunStripe.Core.fsproj` reads `$(FunStripeVersion)`,
   and the generator reads it to stamp `GeneratedCode("FunStripe", "X.Y.Z")` attributes.
 - `StripeApiVersion` — the `spec/` file the generated code targets.
 
@@ -88,15 +86,14 @@ truth. Never hard-code a version anywhere else:
 since MSBuild only auto-imports the nearest `Directory.Build.props`.
 
 Bump policy: new Stripe API spec version → **minor**; library fix/feature → patch; breaking
-library change → major. The spec-update workflow applies the minor bump automatically.
+library change → major. The spec-update workflow applies the minor bump automatically; bump
+to major by hand when the spec is breaking (e.g. a new Stripe release train, as with endive → 3.0.0).
 
 Release: ensure `FunStripeVersion` is set, regenerate if needed, expand `CHANGELOG.md`, commit
-as `release: X.Y.Z`, then push `v2/X.Y.Z` and `v2-fable/X.Y.Z` tags (the publish workflows take
-the package version from the tag). See `CONTRIBUTING.md` for the full process.
+as `release: X.Y.Z`, then push the `vX/X.Y.Z` tag, where the prefix is the major version, e.g.
+`v3/3.0.0` (the publish workflow takes the package version from the tag). See `CONTRIBUTING.md` for the full process.
 
 ## Conventions
 
 - Match the style of surrounding code (terse F#, pipelines, records).
-- Keep `FunStripe.Core` and the Fable build in sync — they share source, so changes must
-  compile under both `netstandard` and Fable.
 - Prefer editing the generator over editing generated output.

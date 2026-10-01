@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Radar
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 module RadarEarlyFraudWarnings =
 
     type ListOptions =
@@ -149,10 +149,10 @@ module RadarPaymentEvaluations =
 
     type Create'PaymentDetailsMoneyMovementDetails =
         {
-            /// Describes card money movement details for the payment evaluation.
+            /// Describes card money movement details.
             [<Config.Form>]
             Card: Create'PaymentDetailsMoneyMovementDetailsCard option
-            /// Describes the type of money movement. Currently only `card` is supported.
+            /// Describes the type of money movement.
             [<Config.Form>]
             MoneyMovementType: Create'PaymentDetailsMoneyMovementDetailsMoneyMovementType option
         }

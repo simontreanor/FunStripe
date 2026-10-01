@@ -11,7 +11,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)TransferReversal.fs" Link="Stripe/TransferReversal.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Radar.fs" Link="Stripe/Radar.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaxRate.fs" Link="Stripe/TaxRate.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Product.fs" Link="Stripe/Product.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ThreeDSecure.fs" Link="Stripe/ThreeDSecure.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)AccountLink.fs" Link="Stripe/AccountLink.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)ApplePayDomain.fs" Link="Stripe/ApplePayDomain.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Apps.fs" Link="Stripe/Apps.fs" />
@@ -44,16 +44,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)IssuingCardholder.fs" Link="Stripe/IssuingCardholder.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Review.fs" Link="Stripe/Review.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tax.fs" Link="Stripe/Tax.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Plan.fs" Link="Stripe/Plan.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Price.fs" Link="Stripe/Price.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProductFeature.fs" Link="Stripe/ProductFeature.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)File.fs" Link="Stripe/File.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)IssuingToken.fs" Link="Stripe/IssuingToken.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)IssuingCard.fs" Link="Stripe/IssuingCard.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Product.fs" Link="Stripe/Product.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)TaxId.fs" Link="Stripe/TaxId.fs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SubscriptionItem.fs" Link="Stripe/SubscriptionItem.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sigma.fs" Link="Stripe/Sigma.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reporting.fs" Link="Stripe/Reporting.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Plan.fs" Link="Stripe/Plan.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Price.fs" Link="Stripe/Price.fs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ProductCatalog.fs" Link="Stripe/ProductCatalog.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)PaymentMethod.fs" Link="Stripe/PaymentMethod.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)Treasury.fs" Link="Stripe/Treasury.fs" />
     <Compile Include="$(MSBuildThisFileDirectory)TestHelpers.fs" Link="Stripe/TestHelpers.fs" />

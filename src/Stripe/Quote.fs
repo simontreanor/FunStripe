@@ -6,7 +6,7 @@ open System
 open Stripe.Application
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type QuoteApplication'AnyOf =
     | String of string
     | Application of Application

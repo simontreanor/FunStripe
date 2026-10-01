@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type EventType =
     | [<JsonPropertyName("account.application.authorized")>] AccountApplicationAuthorized
     | [<JsonPropertyName("account.application.deauthorized")>] AccountApplicationDeauthorized
@@ -15,6 +15,9 @@ type EventType =
     | [<JsonPropertyName("application_fee.created")>] ApplicationFeeCreated
     | [<JsonPropertyName("application_fee.refund.updated")>] ApplicationFeeRefundUpdated
     | [<JsonPropertyName("application_fee.refunded")>] ApplicationFeeRefunded
+    | [<JsonPropertyName("apps.install.created")>] AppsInstallCreated
+    | [<JsonPropertyName("apps.install.deleted")>] AppsInstallDeleted
+    | [<JsonPropertyName("apps.install.updated")>] AppsInstallUpdated
     | [<JsonPropertyName("balance.available")>] BalanceAvailable
     | [<JsonPropertyName("balance_settings.updated")>] BalanceSettingsUpdated
     | [<JsonPropertyName("billing.alert.triggered")>] BillingAlertTriggered
@@ -275,7 +278,7 @@ type EventType =
 
 type NotificationEventData =
     {
-        /// Object containing the API resource relevant to the event. For example, an `invoice.created` event will have a full [invoice object](https://api.stripe.com#invoice_object) as the value of the object key.
+        /// Object containing the API resource relevant to the event. For example, an `invoice.created` event will have a full [invoice object](https://docs.stripe.com/api#invoice_object) as the value of the object key.
         Object: RawJson
         /// Object containing the names of the updated attributes and their values prior to the event (only included in events of type `*.updated`). If an array attribute has any updated elements, this object contains the entire array. In Stripe API versions 2017-04-06 or earlier, an updated array attribute in this object includes only the updated array elements.
         PreviousAttributes: RawJson option

@@ -1,6 +1,5 @@
 namespace FunStripe.Json
 
-#if !FABLE_COMPILER
 /// Custom JSON converters for Stripe's .NET path.
 /// Replaces the forked FSharp.Json Core.fs (~916 lines) with focused converters (~150 lines).
 module StripeConverter =
@@ -294,4 +293,3 @@ module StripeConverter =
 
     /// Lazily-created shared options instance.
     let sharedOptions = lazy createOptions()
-#endif

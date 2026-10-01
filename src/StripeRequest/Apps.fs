@@ -5,7 +5,174 @@ open System.Text.Json.Serialization
 open Stripe.Apps
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+module AppsInstalls =
+
+    type ListOptions =
+        {
+            /// Only return installs made by this account. Only useful to app developers and embedding platforms, whose lists span the accounts that installed their app.
+            [<Config.Query>]
+            Account: string option
+            /// Only return installs for the app specified by this app ID.
+            [<Config.Query>]
+            App: string option
+            /// Only return installs whose installer must authorize pending permissions, content security policy entries, or endpoints.
+            [<Config.Query>]
+            ApprovalRequired: bool option
+            /// Only return installs in the distribution channel specified by this channel name.
+            [<Config.Query>]
+            Channel: string option
+            /// Only return app installs that were created during the given date interval.
+            [<Config.Query>]
+            Created: int option
+            /// Only return installs created by the embedding platform specified by this account ID.
+            [<Config.Query>]
+            CreatedBy: string option
+            /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+            [<Config.Query>]
+            EndingBefore: string option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+            [<Config.Query>]
+            Limit: int option
+            /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+            [<Config.Query>]
+            StartingAfter: string option
+            /// Only return installs with the given status.
+            [<Config.Query>]
+            Status: string option
+        }
+
+    type ListOptions with
+        static member New(?account: string, ?app: string, ?approvalRequired: bool, ?channel: string, ?created: int, ?createdBy: string, ?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string, ?status: string) =
+            {
+                Account = account
+                App = app
+                ApprovalRequired = approvalRequired
+                Channel = channel
+                Created = created
+                CreatedBy = createdBy
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+                Status = status
+            }
+
+    type Create'Channel =
+        | PrivateLive
+        | PrivateTest
+        | Public
+        | Testing
+
+    type CreateOptions =
+        {
+            /// The ID of the app to install.
+            [<Config.Form>]
+            App: string
+            /// The distribution channel to install from. Defaults to `public`. A private app must be installed on `private_test` or `private_live`, matching the mode of the API key.
+            [<Config.Form>]
+            Channel: Create'Channel option
+            /// For OAuth apps, the PKCE code challenge used to issue the `auth_code` returned on the install. Must be 43 to 128 characters and contain only letters, numbers, `-`, `.`, `_`, and `~`. Only applies to installs made by the app developer or an embedding platform; ignored when an account installs its own private app.
+            [<Config.Form>]
+            CodeChallenge: string option
+            /// The method used to derive `code_challenge`. Required when `code_challenge` is provided, and must be `S256`.
+            [<Config.Form>]
+            CodeChallengeMethod: string option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+        }
+
+    type CreateOptions with
+        static member New(app: string, ?channel: Create'Channel, ?codeChallenge: string, ?codeChallengeMethod: string, ?expand: string list) =
+            {
+                App = app
+                Channel = channel
+                CodeChallenge = codeChallenge
+                CodeChallengeMethod = codeChallengeMethod
+                Expand = expand
+            }
+
+    type RetrieveOptions =
+        {
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            [<Config.Path>]
+            Id: string
+        }
+
+    type RetrieveOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
+    type UpdateOptions =
+        {
+            [<Config.Path>]
+            Id: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+        }
+
+    type UpdateOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
+    ///<p>Returns a list of app installs. An app developer or embedding platform filtering by its own app sees the installs across the accounts that installed it; other callers see the installs on their own account. The key selects the environment: a live key lists live installs, a sandbox API key lists the installs on that sandbox, and the key of an app’s managed sandbox filtering by <code>app</code> lists that app’s installs across every sandbox. For existing accounts that still use legacy test mode, a test mode key lists legacy test mode installs.</p>
+    let List settings (options: ListOptions) =
+        let qs = [("account", options.Account |> box); ("app", options.App |> box); ("approval_required", options.ApprovalRequired |> box); ("channel", options.Channel |> box); ("created", options.Created |> box); ("created_by", options.CreatedBy |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
+        $"/v1/apps/installs"
+        |> RestApi.getAsync<StripeList<AppsInstall>> settings qs
+
+    ///<p>Creates an app install. An account installs its own private app with its own key; public and testing installs are made from the Dashboard. An app developer or embedding platform acting on a connected account through <code>Stripe-Account</code> installs or reinstalls its app there. For a private app, creating an install installs the newest completed upload; when that version is already installed with nothing pending, the existing install is returned.</p>
+    let Create settings (options: CreateOptions) =
+        $"/v1/apps/installs"
+        |> RestApi.postAsync<_, AppsInstall> settings (Map.empty) options
+
+    ///<p>Retrieves an app install. The installing account, the app’s developer (with the keys of the account that owns the app or of the app’s managed sandbox), and the embedding platform that created the install can retrieve it.</p>
+    let Retrieve settings (options: RetrieveOptions) =
+        let qs = [("expand", options.Expand |> box)] |> Map.ofList
+        $"/v1/apps/installs/{options.Id}"
+        |> RestApi.getAsync<AppsInstall> settings qs
+
+    ///<p>Reauthorizes an app install. The installer grants the permissions, content security policy entries, and endpoints that the version being installed requests. An account reauthorizes its own installs on any channel with its own key; app developers and embedding platforms reauthorize installs on connected accounts through <code>Stripe-Account</code>. For private apps, the version being installed is the newest completed upload.</p>
+    let Update settings (options: UpdateOptions) =
+        $"/v1/apps/installs/{options.Id}"
+        |> RestApi.postAsync<_, AppsInstall> settings (Map.empty) options
+
+module AppsInstallsUninstall =
+
+    type UninstallOptions =
+        {
+            [<Config.Path>]
+            Id: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+        }
+
+    type UninstallOptions with
+        static member New(id: string, ?expand: string list) =
+            {
+                Id = id
+                Expand = expand
+            }
+
+    ///<p>Uninstalls an app from the account that installed it.</p>
+    let Uninstall settings (options: UninstallOptions) =
+        $"/v1/apps/installs/{options.Id}/uninstall"
+        |> RestApi.postAsync<_, AppsInstall> settings (Map.empty) options
+
 module AppsSecrets =
 
     type ListOptions =

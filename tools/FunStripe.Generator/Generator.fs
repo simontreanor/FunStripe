@@ -2,6 +2,7 @@ module FunStripe.Generator
 
 open FunStripe
 open System
+open System.Collections.Generic
 open System.IO
 open System.Xml.Linq
 
@@ -64,6 +65,16 @@ let main argv =
             | Some v -> Path.Combine(repoRoot, "spec", $"stripe-openapi-{v}.json")
             | None -> Path.Combine(repoRoot, "spec", "stripe-openapi-2026-04-22.dahlia.json"))
 
+    // Delete generated .fs files in `dir` that this run didn't write (e.g. a module the spec
+    // no longer produces). Only files carrying our GeneratedCode stamp are touched.
+    let removeStaleFiles dir (written: string list) =
+        let keep = HashSet<string>(written, StringComparer.OrdinalIgnoreCase)
+        for path in Directory.GetFiles(dir, "*.fs") do
+            let name = Path.GetFileName path
+            if not (keep.Contains name) && File.ReadAllText(path).Contains("GeneratedCode(\"FunStripe\"") then
+                File.Delete path
+                printfn "  Removed stale %s" name
+
     printfn "Generating StripeIds.fs..."
     StripeIdsBuilder.generate version' outputDir' resolvedSpecPath |> ignore
 
@@ -71,10 +82,12 @@ let main argv =
     let stripeModelDir = Path.Combine(outputDir', "Stripe")
     let modelFiles = ModelBuilderModular.generateAllModuleFiles version' stripeModelDir (Some resolvedSpecPath)
     printfn "  Written %d model module files" modelFiles.Length
+    removeStaleFiles stripeModelDir modelFiles
 
     printfn "Generating modular StripeRequest files (StripeRequest/*.fs)..."
     let stripeRequestDir = Path.Combine(outputDir', "StripeRequest")
     let requestFiles = RequestBuilderAST.generateAllRequestFiles version' stripeRequestDir (Some resolvedSpecPath)
     printfn "  Written %d request module files" requestFiles.Length
+    removeStaleFiles stripeRequestDir requestFiles
 
     0

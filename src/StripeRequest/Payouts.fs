@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 module Payouts =
 
     type ListOptions =
@@ -60,7 +60,7 @@ module Payouts =
 
     type CreateOptions =
         {
-            /// A positive integer in cents representing how much to payout.
+            /// A positive integer in cents representing how much to pay out.
             [<Config.Form>]
             Amount: int
             /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).

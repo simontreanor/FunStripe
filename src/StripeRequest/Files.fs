@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.File
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 module Files =
 
     type ListOptions =
@@ -87,7 +87,7 @@ module Files =
             /// A file to upload. Make sure that the specifications follow RFC 2388, which defines file transfers for the `multipart/form-data` protocol.
             [<Config.Form>]
             File: string
-            /// Optional parameters that automatically create a [file link](https://api.stripe.com#file_links) for the newly created file.
+            /// Optional parameters that automatically create a [file link](https://docs.stripe.com/api#file_links) for the newly created file.
             [<Config.Form>]
             FileLinkData: Create'FileLinkData option
             /// The [purpose](https://docs.stripe.com/file-upload#uploading-a-file) of the uploaded file.

@@ -6,6 +6,48 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [3.0.0] - 2026-10-01
+
+Targets Stripe's new **endive** release train (`2026-09-30.endive`). Stripe uses a new train for breaking API changes, and several of them surface as breaking changes in FunStripe's types, so this is a major release.
+
+### Upgrade notes
+- **`payment_method_types` is removed** from Checkout Session create, PaymentIntent create/update/confirm and SetupIntent create/update. Use `allowedPaymentMethodTypes` instead (new on Checkout Session create; already present on PaymentIntent and SetupIntent). It acts as a filter on the payment methods Stripe computes dynamically, so a type you list is offered only if it is also eligible for the payment. The `payment_method_types` fields on the response models remain
+- `PaymentMethodDetailsCard.Mandate` (on `Charge.payment_method_details.card`) changes from `string option` to `StripeId<Markers.Mandate> option`, since Stripe now makes it an expandable `Mandate`
+- `ThreeDSecureUsage` and `ThreeDSecureDetailsCharge` (with their enum types) move from `Stripe.PaymentMethod` to the new `Stripe.ThreeDSecure` namespace. Add `open Stripe.ThreeDSecure` where you name them or build them as record literals
+- Removed by Stripe: the `igic` tax registration country option added in 2.4.0, `payto` on PaymentMethod update, `countries` on Financial Connections session filters (use the new singular `country`), and the `bulk_hold_expiry` reserve release reason (Stripe replaces it with `hold_expired`)
+- Type changes from Stripe:
+  - Account reject `reason` is now an enum
+  - `billing_cycle_anchor` on Subscription update/resume and on invoice preview `subscription_details` is now an object with a `type` field (`now` / `unchanged`), where it used to be a bare enum. In F#, write `BillingCycleAnchor = Some (Update'BillingCycleAnchor.New(type' = Update'BillingCycleAnchorType.Now))`
+  - `setup_future_usage` on Checkout Bancontact and PaymentIntent Blik options is now an enum (`none` / `off_session`) where it used to be a fixed `none`
+  - The Radar payment evaluation `fraudulent_payment.score` is nullable
+- Several response models gained required fields (e.g. `CheckoutSession.AllowedPaymentMethodTypes`, `PaymentIntent.PaymentRecord`, `Product.TaxDetails`, `SubscriptionItem.CurrentTrial`), which adds parameters to their generated `New(...)` constructors. This only affects code that constructs these models directly, typically in tests
+- **`FunStripe.Core.Fable` is discontinued**; there is no 3.x Fable package (see Removed below). Existing 2.x versions stay on NuGet, marked deprecated
+- Release tags now carry the major version: `v3/X.Y.Z` (previously `v2/…`). The publish workflow accepts any `vN/` prefix and rejects a tag whose prefix doesn't match the version's major
+
+### Changed
+- Regenerated against Stripe OpenAPI spec `2026-09-30.endive` (was `2026-08-26.dahlia`). Highlights:
+  - **Standalone 3D Secure**: new `ThreeDSecure.Authentication` resource (`/v1/three_d_secure/authentications`: create, retrieve, list, `submit` and `cancel`)
+  - **Subscription pausing**: new `pause` endpoint on subscriptions, `pause_schedules` on subscription schedules, `status_details` on `Invoice` and `Subscription` (paused-subscription reasons include `first_payment_failure` and `final_payment_failure`), `payment_behavior` on resume, and `pause` on invoice preview `subscription_details`
+  - **Trial offers**: new `ProductCatalog.TrialOffer` resource (create, retrieve, update, list), with `current_trial` on subscription items and `billing_cycle_anchor` on the trial-end behaviour
+  - **Apps installs**: new `Apps.Install` resource (create, retrieve, update, list, `uninstall`) and `apps.install.*` event types
+  - **Tax**: new `Tax.Location` resource (create, retrieve, list); `performance_location` on calculation line items; `tax_details` on products and inline `product_data`; `requirements` on `TaxCode`; new US registration types (admissions, attendance, entertainment, gross receipts, hospitality, luxury, resort, tourism) and tax-rate types (`digital_excise_tax`, `utility_users_tax`)
+  - **New payment methods**: PayPay and SeQura across PaymentIntent, SetupIntent, Checkout, PaymentMethod and payment records; MoMo on payment records; Blik mandates and recurring payments (`blik` options on SetupIntent, Invoice and Subscription)
+  - **Billie**: `company_details` and `reference` on the Billie payment method options
+  - **Reserves**: `destination` on holds, plans and releases; `manual_release` on reserve plans
+  - `PaymentIntent`: `payment_record`; `card_present` and `interac_present` on `allowed_payment_method_types`
+  - `Charge` card details: `electronic_commerce_indicator`; `Mandate` card details: `india`
+  - `Invoiceitem`: `invoicing_rules`
+  - `rtp` network on Treasury financial accounts and received credits
+  - `2026-09-30.endive` added to the webhook endpoint API version enum
+
+### Fixed
+- Generator: enum values `ok`, `error` and `some` are now emitted as `Ok'`, `Error'` and `Some'`, the same way `none` becomes `None'`. Endive is the first spec with an `error` enum value (3DS authentication status, subscription-schedule pause/resume status); a bare `Error` case shadowed `Result.Error` in any code that opened the namespace
+- **`Config.DefaultStripeApiVersion` and the assembly `StripeApiVersion` attribute were stale**, stuck at `2026-04-22.dahlia` since 2.0 while the models moved on. Code that sent `DefaultStripeApiVersion` as the `Stripe-Version` header (as the README suggests) was pinning requests to an older API version than the models describe. Both now read `SpecInfo.ApiVersion`, a literal the generator emits into `StripeIds.fs` from the spec's `info.version`, so they can't drift again. `DefaultStripeApiVersion` is now a `[<Literal>]`
+- Generator: deletes generated files in `src/Stripe/` and `src/StripeRequest/` that a run no longer emits (only files carrying the `GeneratedCode("FunStripe", …)` stamp). Removes the uncompiled leftovers `Stripe/SubscriptionItem.fs` and `Stripe/Transfer.fs`
+
+### Removed
+- **`FunStripe.Core.Fable`** package, with its project, `Json/FableCore.fs`, the `FABLE_COMPILER` code paths and the `v2-fable/*` publish workflow. No 2.x release of it worked: running the Fable compiler on 2.0.0, 2.4.0 and 3.0.0 fails with over 4,000 errors, because the shared source depends on System.Text.Json's `JsonPropertyName` and on .NET reflection that Fable doesn't support. CI only built the project as .NET with `FABLE_COMPILER` defined, so the failure went unnoticed. Its HTTP layer, `Fable.SimpleHttp`, also depends on `XMLHttpRequest`, which Node.js (the package's only supported runtime) doesn't provide. For F# on Node.js, use Stripe's official `stripe` npm package through Fable interop
+
 ## [2.4.0] - 2026-09-07
 
 ### Upgrade notes

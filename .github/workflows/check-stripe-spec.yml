@@ -88,6 +88,7 @@ jobs:
 
           with open(os.environ["GITHUB_OUTPUT"], "a") as out:
               out.write(f"next={nxt}\n")
+              out.write(f"major={nxt.split('.')[0]}\n")
               out.write(f"old_spec={old_spec}\n")
           print(f"Bumped FunStripe {current} -> {nxt}; spec {old_spec} -> {spec}")
           PY
@@ -125,13 +126,12 @@ jobs:
             **Before merging, please:**
             - [ ] Review the generated changes in `src/`
             - [ ] Expand the `CHANGELOG.md` entry with anything notable in the new spec
-            - [ ] Confirm the bump is right (use a **major** bump instead if the new spec is breaking)
+            - [ ] Confirm the bump is right (use a **major** bump instead if the new spec is breaking; the tag prefix then becomes `v<major>/`)
 
-            **After merging, push the release tags:**
+            **After merging, push the release tag:**
             ```
-            git tag v2/${{ steps.bump.outputs.next }}
-            git tag v2-fable/${{ steps.bump.outputs.next }}
-            git push origin v2/${{ steps.bump.outputs.next }} v2-fable/${{ steps.bump.outputs.next }}
+            git tag v${{ steps.bump.outputs.major }}/${{ steps.bump.outputs.next }}
+            git push origin v${{ steps.bump.outputs.major }}/${{ steps.bump.outputs.next }}
             ```
           branch: update/stripe-openapi-${{ steps.stripe.outputs.spec_version }}
           delete-branch: true

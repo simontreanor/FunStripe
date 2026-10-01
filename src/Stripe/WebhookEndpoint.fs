@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type DeletedWebhookEndpoint =
     {
         /// Always true for a deleted object
@@ -36,7 +36,7 @@ type WebhookEndpointStatus =
 /// Related guide: [Setting up webhooks](https://docs.stripe.com/webhooks/configure)
 type WebhookEndpoint =
     {
-        /// The API version events are rendered as for this webhook endpoint.
+        /// The API version that events are rendered as for this webhook endpoint. You can't change this value after you create the endpoint.
         ApiVersion: string option
         /// The ID of the associated Connect application.
         Application: string option

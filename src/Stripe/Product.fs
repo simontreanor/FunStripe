@@ -3,8 +3,9 @@ namespace Stripe.Product
 open System.Text.Json.Serialization
 open FunStripe
 open System
+open Stripe.Tax
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "2.4.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
 type DeletedProduct =
     {
         /// Always true for a deleted object
@@ -64,7 +65,7 @@ type ProductType =
 
 /// Products describe the specific goods or services you offer to your customers.
 /// For example, you might offer a Standard and Premium version of your goods or service; each version would be a separate Product.
-/// They can be used in conjunction with [Prices](https://api.stripe.com#prices) to configure pricing in Payment Links, Checkout, and Subscriptions.
+/// They can be used in conjunction with [Prices](https://docs.stripe.com/api#prices) to configure pricing in Payment Links, Checkout, and Subscriptions.
 /// Related guides: [Set up a subscription](https://docs.stripe.com/billing/subscriptions/set-up-subscription),
 /// [share a Payment Link](https://docs.stripe.com/payment-links),
 /// [accept payments with Checkout](https://docs.stripe.com/payments/accept-a-payment#create-product-prices-upfront),
@@ -99,6 +100,8 @@ type Product =
         StatementDescriptor: string option
         /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
         TaxCode: StripeId<Markers.TaxCode> option
+        /// Tax details for this product, including the [tax code](/tax/tax-codes) and an optional performance location.
+        TaxDetails: TaxProductTaxDetailsResourceTaxDetails option
         /// The type of the product. The product is either of type `good`, which is eligible for use with Orders and SKUs, or `service`, which is eligible for use with Subscriptions and Plans.
         Type: ProductType
         /// A label that represents units of this product. When set, this will be included in customers' receipts, invoices, Checkout, and the customer portal.
@@ -110,7 +113,7 @@ type Product =
     }
 
 type Product with
-    static member New(active: bool, created: DateTime, description: string option, id: string, images: string list, livemode: bool, marketingFeatures: ProductMarketingFeature list, metadata: Map<string, string>, name: string, packageDimensions: PackageDimensions option, shippable: bool option, ``type``: ProductType, updated: DateTime, url: string option, ?defaultPrice: StripeId<Markers.Price> option, ?statementDescriptor: string option, ?taxCode: StripeId<Markers.TaxCode> option, ?unitLabel: string option) =
+    static member New(active: bool, created: DateTime, description: string option, id: string, images: string list, livemode: bool, marketingFeatures: ProductMarketingFeature list, metadata: Map<string, string>, name: string, packageDimensions: PackageDimensions option, shippable: bool option, taxDetails: TaxProductTaxDetailsResourceTaxDetails option, ``type``: ProductType, updated: DateTime, url: string option, ?defaultPrice: StripeId<Markers.Price> option, ?statementDescriptor: string option, ?taxCode: StripeId<Markers.TaxCode> option, ?unitLabel: string option) =
         {
             Active = active
             Created = created
@@ -123,6 +126,7 @@ type Product with
             Name = name
             PackageDimensions = packageDimensions
             Shippable = shippable
+            TaxDetails = taxDetails
             Type = ``type``
             Updated = updated
             Url = url
