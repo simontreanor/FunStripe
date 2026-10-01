@@ -68,7 +68,10 @@ the generator.
 
 - **`check-stripe-spec.yml`** (weekly + manual) — checks `stripe/openapi` for a newer spec
   version, downloads it, runs the generator, and opens a PR with the new spec + regenerated
-  `src/`. The PR body carries a human checklist (version bump, changelog, release tags).
+  `src/` (minor bump). It also catches Stripe updating the targeted spec *in place* under the
+  same `info.version`: it diffs the latest download against `spec/`, regenerates, and opens a
+  patch-bump PR only if something other than `///` doc comments changed. The PR body carries
+  a human checklist (version bump, changelog, release tag).
 - **`regenerate.yml`** (manual) — regenerate `src/` from a chosen spec/version and open a PR.
 - **`ci.yml`** — build + test on PR/push, plus a generator smoke-test that runs the generator
   end-to-end so generator regressions are caught in PR CI (not only in the weekly job).
