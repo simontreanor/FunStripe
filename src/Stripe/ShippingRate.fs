@@ -42,6 +42,27 @@ type ShippingRateDeliveryEstimate with
             Minimum = minimum
         }
 
+[<Struct>]
+type ShippingRateCurrencyOptionTaxBehavior =
+    | Exclusive
+    | Inclusive
+    | Unspecified
+
+type ShippingRateCurrencyOption =
+    {
+        /// A non-negative integer in cents representing how much to charge.
+        Amount: int
+        /// Specifies whether the rate is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`.
+        TaxBehavior: ShippingRateCurrencyOptionTaxBehavior
+    }
+
+type ShippingRateCurrencyOption with
+    static member New(amount: int, taxBehavior: ShippingRateCurrencyOptionTaxBehavior) =
+        {
+            Amount = amount
+            TaxBehavior = taxBehavior
+        }
+
 type ShippingRateFixedAmount =
     {
         /// A non-negative integer in cents representing how much to charge.
@@ -49,11 +70,11 @@ type ShippingRateFixedAmount =
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// Shipping rates defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
-        CurrencyOptions: Map<string, string list> option
+        CurrencyOptions: Map<string, ShippingRateCurrencyOption> option
     }
 
 type ShippingRateFixedAmount with
-    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, string list>) =
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?currencyOptions: Map<string, ShippingRateCurrencyOption>) =
         {
             Amount = amount
             Currency = currency
@@ -112,25 +133,4 @@ module ShippingRate =
 
     ///The type of calculation to use on the shipping rate.
     let ``type`` = "fixed_amount"
-
-[<Struct>]
-type ShippingRateCurrencyOptionTaxBehavior =
-    | Exclusive
-    | Inclusive
-    | Unspecified
-
-type ShippingRateCurrencyOption =
-    {
-        /// A non-negative integer in cents representing how much to charge.
-        Amount: int
-        /// Specifies whether the rate is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`.
-        TaxBehavior: ShippingRateCurrencyOptionTaxBehavior
-    }
-
-type ShippingRateCurrencyOption with
-    static member New(amount: int, taxBehavior: ShippingRateCurrencyOptionTaxBehavior) =
-        {
-            Amount = amount
-            TaxBehavior = taxBehavior
-        }
 

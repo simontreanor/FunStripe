@@ -239,6 +239,24 @@ type ClimateOrderProductSubstituted with
             Object = object
         }
 
+type ClimateRemovalsProductsPrice =
+    {
+        /// Fees for one metric ton of carbon removal in the currency's smallest unit.
+        AmountFees: int
+        /// Subtotal for one metric ton of carbon removal (excluding fees) in the currency's smallest unit.
+        AmountSubtotal: int
+        /// Total for one metric ton of carbon removal (including fees) in the currency's smallest unit.
+        AmountTotal: int
+    }
+
+type ClimateRemovalsProductsPrice with
+    static member New(amountFees: int, amountSubtotal: int, amountTotal: int) =
+        {
+            AmountFees = amountFees
+            AmountSubtotal = amountSubtotal
+            AmountTotal = amountTotal
+        }
+
 /// A Climate product represents a type of carbon removal unit available for reservation.
 /// You can retrieve it to see the current price and availability.
 type ClimateProduct =
@@ -246,7 +264,7 @@ type ClimateProduct =
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
         Created: DateTime
         /// Current prices for a metric ton of carbon removal in a currency's smallest unit.
-        CurrentPricesPerMetricTon: Map<string, string list>
+        CurrentPricesPerMetricTon: Map<string, ClimateRemovalsProductsPrice>
         /// The year in which the carbon removal is expected to be delivered. If the year is in the past, this represents spot inventory with guaranteed delivery.
         DeliveryYear: int option
         /// Unique identifier for the object. For convenience, Climate product IDs are human-readable strings
@@ -264,7 +282,7 @@ type ClimateProduct =
     }
 
 type ClimateProduct with
-    static member New(created: DateTime, currentPricesPerMetricTon: Map<string, string list>, deliveryYear: int option, id: string, livemode: bool, metricTonsAvailable: string, name: string, suppliers: ClimateSupplier list) =
+    static member New(created: DateTime, currentPricesPerMetricTon: Map<string, ClimateRemovalsProductsPrice>, deliveryYear: int option, id: string, livemode: bool, metricTonsAvailable: string, name: string, suppliers: ClimateSupplier list) =
         {
             Created = created
             CurrentPricesPerMetricTon = currentPricesPerMetricTon
@@ -296,23 +314,5 @@ type ClimateProductPricingUpdated with
     static member New(object: ClimateProduct) =
         {
             Object = object
-        }
-
-type ClimateRemovalsProductsPrice =
-    {
-        /// Fees for one metric ton of carbon removal in the currency's smallest unit.
-        AmountFees: int
-        /// Subtotal for one metric ton of carbon removal (excluding fees) in the currency's smallest unit.
-        AmountSubtotal: int
-        /// Total for one metric ton of carbon removal (including fees) in the currency's smallest unit.
-        AmountTotal: int
-    }
-
-type ClimateRemovalsProductsPrice with
-    static member New(amountFees: int, amountSubtotal: int, amountTotal: int) =
-        {
-            AmountFees = amountFees
-            AmountSubtotal = amountSubtotal
-            AmountTotal = amountTotal
         }
 

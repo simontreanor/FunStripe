@@ -2095,3 +2095,121 @@ module Tests =
                 System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.SourceType>(json, opts) |> ignore
             ) |> ignore
 
+
+    // =========================================================================
+    // Maps of typed values, map and currency query parameters, file uploads
+    // =========================================================================
+
+    [<TestFixture>]
+    type TypedMapUnitTests () =
+
+        [<Test>]
+        member _.``integer maps deserialise, e.g. a Financial Connections balance``() =
+            let json = """{
+                "id": "fca_1", "object": "financial_connections.account", "category": "cash", "created": 1790000000,
+                "institution_name": "StripeBank", "livemode": false, "status": "active", "subcategory": "checking",
+                "supported_payment_method_types": ["us_bank_account"],
+                "balance": { "as_of": 1790000000, "current": { "usd": 6000 }, "type": "cash", "cash": { "available": { "usd": 5000 } } }
+            }"""
+            let account = Util.deserialise<FinancialConnectionsAccount> json
+            let balance = account.Balance.Value
+            Assert.That((balance.Current = Map.ofList [ ("usd", 6000) ]), Is.True)
+            Assert.That((balance.Cash.Value.Available = Some (Map.ofList [ ("usd", 5000) ])), Is.True)
+
+        [<Test>]
+        member _.``maps of objects deserialise, e.g. the currency options of a price``() =
+            let json = """{
+                "id": "price_1", "object": "price", "active": true, "billing_scheme": "per_unit", "created": 1790000000,
+                "currency": "usd", "custom_unit_amount": null, "livemode": false, "lookup_key": null, "metadata": {},
+                "nickname": null, "product": "prod_1", "recurring": null, "tax_behavior": null, "tiers_mode": null,
+                "transform_quantity": null, "type": "one_time", "unit_amount": 1000, "unit_amount_decimal": "1000",
+                "currency_options": { "eur": { "custom_unit_amount": null, "tax_behavior": null, "unit_amount": 900, "unit_amount_decimal": "900" } }
+            }"""
+            let price = Util.deserialise<Price> json
+            Assert.That(price.CurrencyOptions.Value.["eur"].UnitAmount, Is.EqualTo (Some 900))
+
+    [<TestFixture>]
+    type QueryStringMapAndCurrencyUnitTests () =
+
+        [<Test>]
+        member _.``map option sends one bracketed parameter per entry``() =
+            let qs =
+                StripeRequest.PaymentMethod.FinancialConnectionsAccounts.ListOptions.New(accountHolder = Map.ofList [ "customer", "cus_1" ])
+                |> querySerialise
+            Assert.That(qs, Is.EqualTo "?account_holder%5Bcustomer%5D=cus_1")
+
+        [<Test>]
+        member _.``empty map is absent from the query string``() =
+            let qs =
+                StripeRequest.PaymentMethod.FinancialConnectionsAccounts.ListOptions.New(accountHolder = Map.empty)
+                |> querySerialise
+            Assert.That(qs, Is.EqualTo "")
+
+        [<Test>]
+        member _.``currency option is sent as its lower-case code``() =
+            let qs = StripeRequest.Prices.Prices.ListOptions.New(currency = IsoCurrencyCode.EUR) |> querySerialise
+            Assert.That(qs, Is.EqualTo "?currency=eur")
+
+    [<TestFixture>]
+    type FileUploadUnitTests () =
+
+        [<Test>]
+        member _.``uploads go to Stripe's files host for Stripe's API host, and to any other host itself``() =
+            let filesUrl (settings: RestApi.StripeApiSettings) = settings.EffectiveFilesBaseUrl
+            Assert.That(filesUrl (RestApi.StripeApiSettings.New(apiKey = "sk_test_x")), Is.EqualTo "https://files.stripe.com")
+            Assert.That(filesUrl (RestApi.StripeApiSettings.New(apiKey = "sk_test_x", baseUrl = Config.StripeBaseUrl)), Is.EqualTo "https://files.stripe.com")
+            Assert.That(filesUrl (RestApi.StripeApiSettings.New(apiKey = "sk_test_x", baseUrl = "http://localhost:12111")), Is.EqualTo "http://localhost:12111")
+            Assert.That(filesUrl { RestApi.StripeApiSettings.New(apiKey = "sk_test_x") with BaseUrl = "http://localhost:12111" }, Is.EqualTo "http://localhost:12111")
+            Assert.That(filesUrl (RestApi.StripeApiSettings.New(apiKey = "sk_test_x", filesBaseUrl = "http://localhost:12112")), Is.EqualTo "http://localhost:12112")
+
+        [<Test>]
+        member _.``the issuing_logo purpose is known in both directions``() =
+            let file = Util.deserialise<Stripe.File.File> """{ "id": "file_1", "object": "file", "created": 1790000000, "purpose": "issuing_logo", "size": 4, "expires_at": null, "filename": "logo.png", "title": null, "type": "png", "url": null }"""
+            Assert.That(file.Purpose, Is.EqualTo Stripe.File.FilePurpose.IssuingLogo)
+            let form = StripeRequest.Files.Files.CreateOptions.New(FileUpload.New("logo.png", [| 1uy |]), StripeRequest.Files.Files.Create'Purpose.IssuingLogo) |> serialise |> Map.ofSeq
+            Assert.That(form.["purpose"], Is.EqualTo "issuing_logo")
+
+        [<Test>]
+        member _.``Files.Create sends a multipart upload to the files host``() =
+            let port =
+                let probe = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Loopback, 0)
+                probe.Start()
+                let port = (probe.LocalEndpoint :?> System.Net.IPEndPoint).Port
+                probe.Stop()
+                port
+            use listener = new System.Net.HttpListener()
+            listener.Prefixes.Add $"http://localhost:{port}/"
+            listener.Start()
+            let received =
+                async {
+                    let! context = listener.GetContextAsync() |> Async.AwaitTask
+                    use reader = new IO.StreamReader(context.Request.InputStream)
+                    let body = reader.ReadToEnd()
+                    let response = Encoding.UTF8.GetBytes """{ "id": "file_1", "object": "file", "created": 1790000000, "purpose": "issuing_logo", "size": 4, "expires_at": null, "filename": "logo.png", "title": null, "type": "png", "url": null }"""
+                    context.Response.ContentType <- "application/json"
+                    context.Response.OutputStream.Write(response, 0, response.Length)
+                    context.Response.Close()
+                    return context.Request.Url.AbsolutePath, context.Request.ContentType, context.Request.Headers.["Authorization"], body
+                }
+                |> Async.StartAsTask
+
+            let uploadSettings = RestApi.StripeApiSettings.New(apiKey = "sk_test_upload", baseUrl = "http://unused.invalid", filesBaseUrl = $"http://localhost:{port}")
+            let result =
+                StripeRequest.Files.Files.CreateOptions.New(
+                    FileUpload.New("logo.png", Encoding.ASCII.GetBytes "PNG!", "image/png"),
+                    StripeRequest.Files.Files.Create'Purpose.IssuingLogo)
+                |> StripeRequest.Files.Files.Create uploadSettings
+                |> Async.RunSynchronously
+
+            let path, contentType, authorization, body = received.Result
+            Assert.That(path, Is.EqualTo "/v1/files")
+            Assert.That(contentType, Does.StartWith "multipart/form-data")
+            Assert.That(authorization, Does.StartWith "Basic ")
+            Assert.That(body, Does.Contain "name=\"purpose\"")
+            Assert.That(body, Does.Contain "issuing_logo")
+            Assert.That(body, Does.Contain "name=\"file\"; filename=\"logo.png\"")
+            Assert.That(body, Does.Contain "Content-Type: image/png")
+            Assert.That(body, Does.Contain "PNG!")
+            match result with
+            | Ok file -> Assert.That(file.Id, Is.EqualTo "file_1")
+            | Error e -> Assert.Fail $"Expected Ok, got {e.StripeError.Message}"

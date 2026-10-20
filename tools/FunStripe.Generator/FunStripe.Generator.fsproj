@@ -9,6 +9,7 @@
     <Tailcalls>true</Tailcalls>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="SpecPatches.fs" />
     <Compile Include="ModelParsing.fs" />
     <Compile Include="StripeIdsBuilder.fs" />
     <Compile Include="ModelBuilderAST.fs" />

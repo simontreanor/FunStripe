@@ -24,6 +24,9 @@ module Config =
     /// Defines the base URL for the Stripe API
     let StripeBaseUrl = "https://api.stripe.com"
 
+    /// Defines the base URL Stripe accepts file uploads on
+    let StripeFilesBaseUrl = "https://files.stripe.com"
+
     /// Reads the Stripe test API key from the STRIPE_TEST_API_KEY environment variable.
     /// Set this in your shell, a CI secret (e.g. GitHub Actions), or a local .env file.
     let StripeTestApiKey =

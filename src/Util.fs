@@ -100,6 +100,9 @@ module Util =
                 m
                 |> Map.toSeq 
                 |> Seq.map (fun (k, v) -> $"{key'}[{k}]", v)
+            | :? (byte array) ->
+                // Binary content (a file upload) has no url-encoded form; RestApi.postMultipartAsync sends it
+                Seq.empty
             | _ when (unbox value').GetType().IsClass ->
                 (unbox value').GetType().GetProperties()
                 |> Array.map (fun pi ->

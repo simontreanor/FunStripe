@@ -27,10 +27,22 @@ module PromotionCodesResourcePromotion =
     ///The type of promotion.
     let ``type`` = "coupon"
 
+type PromotionCodeCurrencyOption =
+    {
+        /// Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
+        MinimumAmount: int
+    }
+
+type PromotionCodeCurrencyOption with
+    static member New(minimumAmount: int) =
+        {
+            MinimumAmount = minimumAmount
+        }
+
 type PromotionCodesResourceRestrictions =
     {
         /// Promotion code restrictions defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
-        CurrencyOptions: Map<string, string list> option
+        CurrencyOptions: Map<string, PromotionCodeCurrencyOption> option
         /// A Boolean indicating if the Promotion Code should only be redeemed for Customers without any successful payments or invoices
         FirstTimeTransaction: bool
         /// Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
@@ -40,7 +52,7 @@ type PromotionCodesResourceRestrictions =
     }
 
 type PromotionCodesResourceRestrictions with
-    static member New(firstTimeTransaction: bool, minimumAmount: int option, minimumAmountCurrency: IsoTypes.IsoCurrencyCode option, ?currencyOptions: Map<string, string list>) =
+    static member New(firstTimeTransaction: bool, minimumAmount: int option, minimumAmountCurrency: IsoTypes.IsoCurrencyCode option, ?currencyOptions: Map<string, PromotionCodeCurrencyOption>) =
         {
             FirstTimeTransaction = firstTimeTransaction
             MinimumAmount = minimumAmount
@@ -109,18 +121,6 @@ type PromotionCodeCreated with
     static member New(object: PromotionCode) =
         {
             Object = object
-        }
-
-type PromotionCodeCurrencyOption =
-    {
-        /// Minimum amount required to redeem this Promotion Code into a Coupon (e.g., a purchase must be $100 or more to work).
-        MinimumAmount: int
-    }
-
-type PromotionCodeCurrencyOption with
-    static member New(minimumAmount: int) =
-        {
-            MinimumAmount = minimumAmount
         }
 
 /// Occurs whenever a promotion code is updated.

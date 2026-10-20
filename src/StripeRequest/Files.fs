@@ -78,6 +78,7 @@ module Files =
         | TerminalReaderSplashscreen
         | TerminalWifiCertificate
         | TerminalWifiPrivateKey
+        | IssuingLogo
 
     type CreateOptions =
         {
@@ -86,7 +87,7 @@ module Files =
             Expand: string list option
             /// A file to upload. Make sure that the specifications follow RFC 2388, which defines file transfers for the `multipart/form-data` protocol.
             [<Config.Form>]
-            File: string
+            File: FileUpload
             /// Optional parameters that automatically create a [file link](https://docs.stripe.com/api#file_links) for the newly created file.
             [<Config.Form>]
             FileLinkData: Create'FileLinkData option
@@ -96,7 +97,7 @@ module Files =
         }
 
     type CreateOptions with
-        static member New(file: string, purpose: Create'Purpose, ?expand: string list, ?fileLinkData: Create'FileLinkData) =
+        static member New(file: FileUpload, purpose: Create'Purpose, ?expand: string list, ?fileLinkData: Create'FileLinkData) =
             {
                 File = file
                 Purpose = purpose
@@ -130,7 +131,7 @@ module Files =
     ///<p>All of Stripe’s officially supported Client libraries support sending <code>multipart/form-data</code>.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/files"
-        |> RestApi.postAsync<_, File> settings (Map.empty) options
+        |> RestApi.postMultipartAsync<_, File> settings (Map.empty) options
 
     ///<p>Retrieves the details of an existing file object. After you supply a unique file ID, Stripe returns the corresponding file object. Learn how to <a href="/docs/file-upload#download-file-contents">access file contents</a>.</p>
     let Retrieve settings (options: RetrieveOptions) =

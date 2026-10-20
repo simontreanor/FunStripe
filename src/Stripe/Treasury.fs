@@ -745,15 +745,15 @@ type TreasuryFinancialAccountStatus =
 type TreasuryFinancialAccountsResourceBalance =
     {
         /// Funds the user can spend right now.
-        Cash: Map<string, string list>
+        Cash: Map<string, int>
         /// Funds not spendable yet, but will become available at a later time.
-        InboundPending: Map<string, string list>
+        InboundPending: Map<string, int>
         /// Funds in the account, but not spendable because they are being held for pending outbound flows.
-        OutboundPending: Map<string, string list>
+        OutboundPending: Map<string, int>
     }
 
 type TreasuryFinancialAccountsResourceBalance with
-    static member New(cash: Map<string, string list>, inboundPending: Map<string, string list>, outboundPending: Map<string, string list>) =
+    static member New(cash: Map<string, int>, inboundPending: Map<string, int>, outboundPending: Map<string, int>) =
         {
             Cash = cash
             InboundPending = inboundPending

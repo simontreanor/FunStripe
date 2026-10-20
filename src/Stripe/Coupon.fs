@@ -17,6 +17,18 @@ type CouponAppliesTo with
             Products = products
         }
 
+type CouponCurrencyOption =
+    {
+        /// Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.
+        AmountOff: int
+    }
+
+type CouponCurrencyOption with
+    static member New(amountOff: int) =
+        {
+            AmountOff = amountOff
+        }
+
 [<Struct>]
 type CouponDuration =
     | Forever
@@ -36,7 +48,7 @@ type Coupon =
         /// If `amount_off` has been set, the three-letter [ISO code for the currency](https://stripe.com/docs/currencies) of the amount to take off.
         Currency: IsoTypes.IsoCurrencyCode option
         /// Coupons defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
-        CurrencyOptions: Map<string, string list> option
+        CurrencyOptions: Map<string, CouponCurrencyOption> option
         /// One of `forever`, `once`, or `repeating`. Describes how long a customer who applies this coupon will get the discount.
         Duration: CouponDuration
         /// If `duration` is `repeating`, the number of months the coupon applies. Null if coupon `duration` is `forever` or `once`.
@@ -62,7 +74,7 @@ type Coupon =
     }
 
 type Coupon with
-    static member New(amountOff: int option, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, duration: CouponDuration, durationInMonths: int option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, name: string option, percentOff: decimal option, redeemBy: DateTime option, timesRedeemed: int, valid: bool, ?appliesTo: CouponAppliesTo, ?currencyOptions: Map<string, string list>) =
+    static member New(amountOff: int option, created: DateTime, currency: IsoTypes.IsoCurrencyCode option, duration: CouponDuration, durationInMonths: int option, id: string, livemode: bool, maxRedemptions: int option, metadata: Map<string, string> option, name: string option, percentOff: decimal option, redeemBy: DateTime option, timesRedeemed: int, valid: bool, ?appliesTo: CouponAppliesTo, ?currencyOptions: Map<string, CouponCurrencyOption>) =
         {
             AmountOff = amountOff
             Created = created
@@ -93,18 +105,6 @@ type CouponCreated with
     static member New(object: Coupon) =
         {
             Object = object
-        }
-
-type CouponCurrencyOption =
-    {
-        /// Amount (in the `currency` specified) that will be taken off the subtotal of any invoices for this customer.
-        AmountOff: int
-    }
-
-type CouponCurrencyOption with
-    static member New(amountOff: int) =
-        {
-            AmountOff = amountOff
         }
 
 /// Occurs whenever a coupon is deleted.

@@ -198,9 +198,13 @@ module ModelBuilderAST =
     // --- topological ordering to minimise recursive type groups ---
 
     /// Extract the core Stripe type name from a type string,
-    /// stripping 'option' and 'list' suffixes.
+    /// stripping 'option' and 'list' suffixes and the `Map<string, _>` around map values.
     let extractCoreType (s: string) =
-        s.Replace(" option", "").Replace(" list", "").Trim()
+        let s = s.Replace(" option", "").Replace(" list", "").Trim()
+        if s.StartsWith("Map<string, ") && s.EndsWith(">") then
+            s.Substring("Map<string, ".Length, s.Length - "Map<string, ".Length - 1).Trim()
+        else
+            s
 
     /// Get the set of Stripe type names that a TypeDef depends on.
     let getTypeDependencies (allNames: Set<string>) (td: TypeDef) : Set<string> =

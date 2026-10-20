@@ -57,10 +57,15 @@ Key generator modules:
 - `ModelParsing.fs` / `ModelBuilderModular.fs` / `ModelBuilderAST.fs` — emit `Stripe/` models.
 - `StripeIdsBuilder.fs` — emits `StripeIds.fs`.
 - `Generator.fs` — entry point (`--spec`, `--output`, `--version` args).
+- `SpecPatches.fs` — corrections applied to the spec before generation, where Stripe's spec
+  disagrees with its API (e.g. the missing `issuing_logo` file purpose). Each patch is a no-op
+  once the spec no longer needs it.
 
 Note on schema shapes: Stripe represents free-form maps as title-less `"type": "object"`
 schemas with `additionalProperties` (e.g. the various `*_by_currency` fields). The request
-parser maps these to `Map<string, string>`. New ones are detected generically via
+parser maps these to `Map<string, string>`; the model parser maps them to `Map<string, T>` with
+the value type of the `additionalProperties` schema (`int` balances, `CurrencyOption` records,
+...). New ones are detected generically via
 `additionalProperties` rather than by name, so a new spec adding such a field won't crash
 the generator.
 
