@@ -183,22 +183,22 @@ By cloning the source repository, you can regenerate the modular files using the
 
 ```sh
 dotnet run --project tools/FunStripe.Generator -- \
-  --spec spec/stripe-openapi-2026-04-22.dahlia.json \
+  --spec spec/stripe-openapi-2026-09-30.endive.json \
   --output src \
-  --version 2.0.0
+  --version 3.0.0
 ```
 
-All three arguments are optional and default to the values shown above. The generator emits:
+All three arguments are optional. The spec and version default to the `StripeApiVersion` and `FunStripeVersion` in `Directory.Build.props` (the values shown above for this release), and the output to `src`. The generator emits:
 
 - `src/StripeIds.fs`
 - `src/Stripe/{Domain}.fs` plus `src/Stripe/Stripe.Modular.props`
 - `src/StripeRequest/{Domain}.fs` plus `src/StripeRequest/StripeRequest.Modular.props`
 
-The `spec/` directory contains several historical Stripe OpenAPI specifications, with `stripe-openapi-2026-04-22.dahlia.json` used as the default. To regenerate against a different version, pass its path via `--spec`. To use a spec version not already included, download it from the link in the References section and place it in the `spec/` directory with the API version in the filename.
+The `spec/` directory contains several historical Stripe OpenAPI specifications. To regenerate against a different version, pass its path via `--spec`. To use a spec version not already included, download it from the link in the References section and place it in the `spec/` directory with the API version in the filename.
 
 A **Regenerate source files** GitHub Actions workflow (`.github/workflows/regenerate.yml`) is also provided. Trigger it manually from the Actions tab; it will run the generator and open a pull request if any files changed.
 
-The generator sources live under `tools/FunStripe.Generator/` (notably `ModelBuilderModular.fs`, `RequestBuilderAST.fs`, and `StripeIdsBuilder.fs`); customise emission by editing those files.
+The generator sources live under `tools/FunStripe.Generator/` (notably `ModelBuilderModular.fs`, `RequestBuilderAST.fs`, and `StripeIdsBuilder.fs`); customise emission by editing those files. Before generating, the generator corrects the places where Stripe's spec disagrees with its API (`SpecPatches.fs`); the spec files themselves stay unchanged.
 
 ## Comparison with Stripe.net
 
