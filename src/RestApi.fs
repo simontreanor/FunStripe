@@ -211,7 +211,8 @@ module RestApi =
         let isFileField (pi: System.Reflection.PropertyInfo) =
             pi.PropertyType = typeof<FileUpload> || pi.PropertyType = typeof<FileUpload option>
         // Part names quoted, as RFC 7578 has them and Stripe's own clients send them. An ASCII file
-        // name is quoted the same way; any other is left to .NET, which encodes it (filename*).
+        // name is quoted the same way, in filename only; any other is left to .NET, which encodes it
+        // in both filename and filename*.
         let quoted (s: string) = "\"" + s + "\""
         let isPlainAscii (s: string) = s |> Seq.forall (fun c -> c >= ' ' && c <= '~' && c <> '"' && c <> '\\')
         let mediaType (contentType: string) =
@@ -228,7 +229,12 @@ module RestApi =
                         let part = new System.Net.Http.ByteArrayContent(file.Content |> Option.ofObj |> Option.defaultValue [||])
                         part.Headers.ContentType <- mediaType file.ContentType
                         let fileName = if System.String.IsNullOrWhiteSpace file.FileName then "upload" else file.FileName
-                        content.Add(part, quoted (Util.snakeCase pi.Name), if isPlainAscii fileName then quoted fileName else fileName)
+                        // Add puts the same string in filename and filename*, so the quotes go on afterwards
+                        // (in filename*, they would become part of the name).
+                        content.Add(part, quoted (Util.snakeCase pi.Name), fileName)
+                        if isPlainAscii fileName then
+                            part.Headers.ContentDisposition.FileName <- quoted fileName
+                            part.Headers.ContentDisposition.FileNameStar <- null
                     | None -> ()
                 else
                     for key, value in Util.format pi data do

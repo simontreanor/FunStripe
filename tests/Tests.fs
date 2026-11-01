@@ -2169,8 +2169,8 @@ module Tests =
             let form = StripeRequest.Files.Files.CreateOptions.New(FileUpload.New("logo.png", [| 1uy |]), StripeRequest.Files.Files.Create'Purpose.IssuingLogo) |> serialise |> Map.ofSeq
             Assert.That(form.["purpose"], Is.EqualTo "issuing_logo")
 
-        [<Test>]
-        member _.``Files.Create sends a multipart upload to the files host``() =
+        /// Uploads a file named `fileName` to a local listener; returns what it received and the result.
+        member private _.UploadToListener(fileName: string) =
             let port =
                 let probe = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Loopback, 0)
                 probe.Start()
@@ -2196,20 +2196,33 @@ module Tests =
             let uploadSettings = RestApi.StripeApiSettings.New(apiKey = "sk_test_upload", baseUrl = "http://unused.invalid", filesBaseUrl = $"http://localhost:{port}")
             let result =
                 StripeRequest.Files.Files.CreateOptions.New(
-                    FileUpload.New("logo.png", Encoding.ASCII.GetBytes "PNG!", "image/png"),
+                    FileUpload.New(fileName, Encoding.ASCII.GetBytes "PNG!", "image/png"),
                     StripeRequest.Files.Files.Create'Purpose.IssuingLogo)
                 |> StripeRequest.Files.Files.Create uploadSettings
                 |> Async.RunSynchronously
 
             let path, contentType, authorization, body = received.Result
+            path, contentType, authorization, body, result
+
+        [<Test>]
+        member this.``Files.Create sends a multipart upload to the files host``() =
+            let path, contentType, authorization, body, result = this.UploadToListener "logo.png"
             Assert.That(path, Is.EqualTo "/v1/files")
             Assert.That(contentType, Does.StartWith "multipart/form-data")
             Assert.That(authorization, Does.StartWith "Basic ")
             Assert.That(body, Does.Contain "name=\"purpose\"")
             Assert.That(body, Does.Contain "issuing_logo")
             Assert.That(body, Does.Contain "name=\"file\"; filename=\"logo.png\"")
+            Assert.That(body, Does.Not.Contain "filename*")
             Assert.That(body, Does.Contain "Content-Type: image/png")
             Assert.That(body, Does.Contain "PNG!")
             match result with
             | Ok file -> Assert.That(file.Id, Is.EqualTo "file_1")
             | Error e -> Assert.Fail $"Expected Ok, got {e.StripeError.Message}"
+
+        [<Test>]
+        member this.``Files.Create encodes a file name that is not plain ASCII``() =
+            let _, _, _, body, result = this.UploadToListener "logö.png"
+            Assert.That(body, Does.Contain "filename*=utf-8''log%C3%B6.png")
+            Assert.That(body, Does.Not.Contain "%22")
+            Assert.That(Result.isOk result, Is.True)
