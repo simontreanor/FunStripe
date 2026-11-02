@@ -65,6 +65,12 @@ let main argv =
             | Some v -> Path.Combine(repoRoot, "spec", $"stripe-openapi-{v}.json")
             | None -> Path.Combine(repoRoot, "spec", "stripe-openapi-2026-04-22.dahlia.json"))
 
+    // The builders read a copy of the spec with SpecPatches applied, which correct the places
+    // where Stripe's spec disagrees with its API. The copy has a name of its own per run, so that
+    // runs at the same time cannot read each other's, and is deleted at the end.
+    let patchedSpecPath = Path.Combine(Path.GetTempPath(), $"funstripe-{Guid.NewGuid():N}-{Path.GetFileName resolvedSpecPath}")
+    File.WriteAllText(patchedSpecPath, File.ReadAllText resolvedSpecPath |> SpecPatches.apply)
+
     // Delete generated .fs files in `dir` that this run didn't write (e.g. a module the spec
     // no longer produces). Only files carrying our GeneratedCode stamp are touched.
     let removeStaleFiles dir (written: string list) =
@@ -75,19 +81,23 @@ let main argv =
                 File.Delete path
                 printfn "  Removed stale %s" name
 
-    printfn "Generating StripeIds.fs..."
-    StripeIdsBuilder.generate version' outputDir' resolvedSpecPath |> ignore
+    try
+        printfn "Generating StripeIds.fs..."
+        StripeIdsBuilder.generate version' outputDir' patchedSpecPath |> ignore
 
-    printfn "Generating modular Stripe model files (Stripe/*.fs)..."
-    let stripeModelDir = Path.Combine(outputDir', "Stripe")
-    let modelFiles = ModelBuilderModular.generateAllModuleFiles version' stripeModelDir (Some resolvedSpecPath)
-    printfn "  Written %d model module files" modelFiles.Length
-    removeStaleFiles stripeModelDir modelFiles
+        printfn "Generating modular Stripe model files (Stripe/*.fs)..."
+        let stripeModelDir = Path.Combine(outputDir', "Stripe")
+        let modelFiles = ModelBuilderModular.generateAllModuleFiles version' stripeModelDir (Some patchedSpecPath)
+        printfn "  Written %d model module files" modelFiles.Length
+        removeStaleFiles stripeModelDir modelFiles
 
-    printfn "Generating modular StripeRequest files (StripeRequest/*.fs)..."
-    let stripeRequestDir = Path.Combine(outputDir', "StripeRequest")
-    let requestFiles = RequestBuilderAST.generateAllRequestFiles version' stripeRequestDir (Some resolvedSpecPath)
-    printfn "  Written %d request module files" requestFiles.Length
-    removeStaleFiles stripeRequestDir requestFiles
+        printfn "Generating modular StripeRequest files (StripeRequest/*.fs)..."
+        let stripeRequestDir = Path.Combine(outputDir', "StripeRequest")
+        let requestFiles = RequestBuilderAST.generateAllRequestFiles version' stripeRequestDir (Some patchedSpecPath)
+        printfn "  Written %d request module files" requestFiles.Length
+        removeStaleFiles stripeRequestDir requestFiles
+
+    finally
+        File.Delete patchedSpecPath
 
     0

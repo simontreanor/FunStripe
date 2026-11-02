@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [Unreleased]
+
+### Fixed
+- **Maps with typed values deserialise.** Response fields whose spec schema is a map of integers, numbers, strings or objects were all generated as `Map<string, string list>`, so any response that carried one failed to deserialise. They now get the value type of the spec: `Map<string, int>` for the balances of Financial Connections accounts, customer cash balances, `invoice_credit_balance` and the balance settings by currency, `Map<string, CurrencyOption>` (and the coupon, promotion code and shipping rate equivalents) for `currency_options`, `Map<string, string>` for billing meter event payloads, `Map<string, decimal>` for exchange rates, and so on
+- **Map and currency query parameters are sent.** `RestApi.formatQueryString` dropped `Map<string, string>` and `IsoCurrencyCode` values, so filters such as `FinancialConnectionsAccounts.List(accountHolder = ...)` and `Prices.List(currency = ...)` were silently ignored. Maps are now sent as `key[entry]=value`, currencies as their lower-case code
+- **`Files.Create` uploads files.** It sent a url-encoded form to `api.stripe.com`; Stripe takes uploads as `multipart/form-data` on `files.stripe.com`. The generator now emits `RestApi.postMultipartAsync` for multipart endpoints, and the `file` parameter is a `FileUpload` (file name, content type, bytes) instead of a `string`
+- **The `issuing_logo` file purpose** (needed for the card logo of an Issuing personalization design) is in `Files.Create'Purpose` and `FilePurpose`. Stripe's spec leaves it out; the generator now applies a small set of spec corrections (`SpecPatches.fs`), each only while the spec still needs it
+- Form-encoding a record that holds binary content no longer overflows the stack
+
+### Upgrade notes
+- `StripeApiSettings` has a new `FilesBaseUrl: string option` field (and `filesBaseUrl` parameter on `New`). Uploads go to `EffectiveFilesBaseUrl`: `FilesBaseUrl` when set, otherwise `https://files.stripe.com` while `BaseUrl` is Stripe's API host and `BaseUrl` itself for any other host, so a mock or proxy serves uploads too. Code that builds the record with a record expression instead of `New` needs the field
+- The map fields above change type, and `Files.CreateOptions.File` changes from `string` to `FileUpload`. Before this release, responses with those maps could not be read and uploads did not work, so no working code depended on the old types
+
 ## [3.0.0] - 2026-10-01
 
 Targets Stripe's new **endive** release train (`2026-09-30.endive`). Stripe uses a new train for breaking API changes, and several of them surface as breaking changes in FunStripe's types, so this is a major release.

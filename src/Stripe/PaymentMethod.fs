@@ -674,7 +674,7 @@ type CustomerBalanceCustomerBalanceSettings =
 type CashBalance =
     {
         /// A hash of all cash balances available to this customer. You cannot delete a customer with any cash balances, even if the balance is 0. Amounts are represented in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
-        Available: Map<string, string list> option
+        Available: Map<string, int> option
         /// The ID of the customer whose cash balance this object represents.
         Customer: string
         /// The ID of an Account representing a customer whose cash balance this object represents.
@@ -3235,7 +3235,7 @@ and Customer =
         /// The customer's individual name.
         IndividualName: string option
         /// The current multi-currency balances, if any, that's stored on the customer. If positive in a currency, the customer has a credit to apply to their next invoice denominated in that currency. If negative, the customer has an amount owed that's added to their next invoice denominated in that currency. These balances don't apply to unpaid invoices. They solely track amounts that Stripe hasn't successfully applied to any invoice. Stripe only applies a balance in a specific currency to an invoice after that invoice (which is in the same currency) finalizes.
-        InvoiceCreditBalance: Map<string, string list> option
+        InvoiceCreditBalance: Map<string, int> option
         /// The prefix for the customer used to generate unique invoice numbers.
         InvoicePrefix: string option
         InvoiceSettings: InvoiceSettingCustomerSetting option
@@ -11511,7 +11511,7 @@ type BankConnectionsResourceBalanceApiResourceCashBalance =
         /// The funds available to the account holder. Typically this is the current balance after subtracting any outbound pending transactions and adding any inbound pending transactions.
         /// Each key is a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
         /// Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
-        Available: Map<string, string list> option
+        Available: Map<string, int> option
     }
 
 type BankConnectionsResourceBalanceApiResourceCreditBalance =
@@ -11519,7 +11519,7 @@ type BankConnectionsResourceBalanceApiResourceCreditBalance =
         /// The credit that has been used by the account holder.
         /// Each key is a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
         /// Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
-        Used: Map<string, string list> option
+        Used: Map<string, int> option
     }
 
 [<Struct>]
@@ -11536,7 +11536,7 @@ type BankConnectionsResourceBalance =
         /// The balances owed to (or by) the account holder, before subtracting any outbound pending transactions or adding any inbound pending transactions.
         /// Each key is a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase.
         /// Each value is a integer amount. A positive amount indicates money owed to the account holder. A negative amount indicates money owed by the account holder.
-        Current: Map<string, string list>
+        Current: Map<string, int>
         /// The `type` of the balance. An additional hash is included on the balance with a name matching this value.
         Type: BankConnectionsResourceBalanceType
     }
@@ -12151,7 +12151,7 @@ type BillingMeterEvent =
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
         /// The payload of the event. This contains the fields corresponding to a meter's `customer_mapping.event_payload_key` (default is `stripe_customer_id`) and `value_settings.event_payload_key` (default is `value`). Read more about the [payload](https://docs.stripe.com/billing/subscriptions/usage-based/meters/configure#meter-configuration-attributes).
-        Payload: Map<string, string list>
+        Payload: Map<string, string>
         /// The timestamp passed in when creating the event. Measured in seconds since the Unix epoch.
         Timestamp: DateTime
     }
@@ -17221,7 +17221,7 @@ type CustomerBalanceCustomerBalanceSettings with
         }
 
 type CashBalance with
-    static member New(available: Map<string, string list> option, customer: string, customerAccount: string option, livemode: bool, settings: CustomerBalanceCustomerBalanceSettings) =
+    static member New(available: Map<string, int> option, customer: string, customerAccount: string option, livemode: bool, settings: CustomerBalanceCustomerBalanceSettings) =
         {
             Available = available
             Customer = customer
@@ -18714,7 +18714,7 @@ module Card =
     let object = "card"
 
 type Customer with
-    static member New(created: DateTime, defaultSource: StripeId<Markers.PaymentSource> option, description: string option, email: string option, id: string, livemode: bool, shipping: Shipping option, ?address: Address option, ?balance: int, ?businessName: string, ?cashBalance: CashBalance option, ?currency: IsoTypes.IsoCurrencyCode option, ?customerAccount: string option, ?delinquent: bool option, ?discount: Discount option, ?individualName: string, ?invoiceCreditBalance: Map<string, string list>, ?invoicePrefix: string option, ?invoiceSettings: InvoiceSettingCustomerSetting, ?metadata: Map<string, string>, ?name: string option, ?nextInvoiceSequence: int, ?phone: string option, ?preferredLocales: string list option, ?sources: CustomerSources, ?subscriptions: CustomerSubscriptions, ?tax: CustomerTax, ?taxExempt: CustomerTaxExempt option, ?taxIds: CustomerTaxIds, ?testClock: StripeId<Markers.TestHelpersTestClock> option) =
+    static member New(created: DateTime, defaultSource: StripeId<Markers.PaymentSource> option, description: string option, email: string option, id: string, livemode: bool, shipping: Shipping option, ?address: Address option, ?balance: int, ?businessName: string, ?cashBalance: CashBalance option, ?currency: IsoTypes.IsoCurrencyCode option, ?customerAccount: string option, ?delinquent: bool option, ?discount: Discount option, ?individualName: string, ?invoiceCreditBalance: Map<string, int>, ?invoicePrefix: string option, ?invoiceSettings: InvoiceSettingCustomerSetting, ?metadata: Map<string, string>, ?name: string option, ?nextInvoiceSequence: int, ?phone: string option, ?preferredLocales: string list option, ?sources: CustomerSources, ?subscriptions: CustomerSubscriptions, ?tax: CustomerTax, ?taxExempt: CustomerTaxExempt option, ?taxIds: CustomerTaxIds, ?testClock: StripeId<Markers.TestHelpersTestClock> option) =
         {
             Created = created
             DefaultSource = defaultSource
@@ -23315,19 +23315,19 @@ type BankConnectionsResourceAuthorizationStatusDetails with
         }
 
 type BankConnectionsResourceBalanceApiResourceCashBalance with
-    static member New(available: Map<string, string list> option) =
+    static member New(available: Map<string, int> option) =
         {
             Available = available
         }
 
 type BankConnectionsResourceBalanceApiResourceCreditBalance with
-    static member New(used: Map<string, string list> option) =
+    static member New(used: Map<string, int> option) =
         {
             Used = used
         }
 
 type BankConnectionsResourceBalance with
-    static member New(asOf: DateTime, current: Map<string, string list>, ``type``: BankConnectionsResourceBalanceType, ?cash: BankConnectionsResourceBalanceApiResourceCashBalance, ?credit: BankConnectionsResourceBalanceApiResourceCreditBalance) =
+    static member New(asOf: DateTime, current: Map<string, int>, ``type``: BankConnectionsResourceBalanceType, ?cash: BankConnectionsResourceBalanceApiResourceCashBalance, ?credit: BankConnectionsResourceBalanceApiResourceCreditBalance) =
         {
             AsOf = asOf
             Current = current
@@ -23801,7 +23801,7 @@ type BillingMeterDeactivated with
         }
 
 type BillingMeterEvent with
-    static member New(created: DateTime, eventName: string, identifier: string, livemode: bool, payload: Map<string, string list>, timestamp: DateTime) =
+    static member New(created: DateTime, eventName: string, identifier: string, livemode: bool, payload: Map<string, string>, timestamp: DateTime) =
         {
             Created = created
             EventName = eventName

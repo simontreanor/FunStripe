@@ -187,9 +187,13 @@ module ModelParsing =
                         // event's `data.object` or `next_action.use_stripe_sdk`. Preserve the fragment
                         // verbatim as RawJson so callers can deserialise it with Util.deserialiseRaw.
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "RawJson"; EnumValues = None; SubValues = None; StaticValue = None }
-                    | Some _ ->
-                        // Schema-valued `additionalProperties` is a free-form key/value map.
-                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "Map<string, string list>"; EnumValues = None; SubValues = None; StaticValue = None }
+                    | Some valueSchema ->
+                        // Schema-valued `additionalProperties` is a key/value map whose values all have
+                        // that schema: integers for the balances by currency, a `$ref` for the
+                        // `currency_options` of prices and coupons, and so on. Like an array, the map
+                        // carries its value type as a sub-value.
+                        let sv = valueSchema |> parseValue prefix name false
+                        { Description = desc; Name = name; Nullable = nullable; Required = req; Type = $"Map<string, {sv.Type}>"; EnumValues = None; SubValues = Some [| sv |]; StaticValue = None }
         | Some t when t = "int" ->
             match so.Format with
             | Some "unix-time" ->

@@ -5,6 +5,29 @@ open FunStripe
 open System
 
 [<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+type BalanceSettingsResourceAutomaticTransferRuleType =
+    | TransferAll
+    | TransferUpToAmount
+
+type BalanceSettingsResourceAutomaticTransferRule =
+    {
+        /// The ID of the FinancialAccount that funds will be transferred to during automatic transfers.
+        PayoutMethod: string
+        /// The maximum amount in minor units to transfer to the FinancialAccount. Only applicable when `type` is `transfer_up_to_amount`.
+        TransferUpToAmount: int option
+        /// The type of automatic transfer rule.
+        Type: BalanceSettingsResourceAutomaticTransferRuleType
+    }
+
+type BalanceSettingsResourceAutomaticTransferRule with
+    static member New(payoutMethod: string, transferUpToAmount: int option, ``type``: BalanceSettingsResourceAutomaticTransferRuleType) =
+        {
+            PayoutMethod = payoutMethod
+            TransferUpToAmount = transferUpToAmount
+            Type = ``type``
+        }
+
+[<Struct>]
 type BalanceSettingsResourcePayoutScheduleInterval =
     | Daily
     | Manual
@@ -45,9 +68,9 @@ type BalanceSettingsResourcePayoutsStatus =
 type BalanceSettingsResourcePayouts =
     {
         /// Configures per-currency rules for automatically transferring funds from the payments balance to a FinancialAccount.
-        AutomaticTransferRulesByCurrency: Map<string, string list> option
+        AutomaticTransferRulesByCurrency: Map<string, BalanceSettingsResourceAutomaticTransferRule list> option
         /// The minimum balance amount to retain per currency after automatic payouts. Only funds that exceed these amounts are paid out. Learn more about the [minimum balances for automatic payouts](/payouts/minimum-balances-for-automatic-payouts).
-        MinimumBalanceByCurrency: Map<string, string list> option
+        MinimumBalanceByCurrency: Map<string, int> option
         /// Details on when funds from charges are available, and when they are paid out to an external account. See our [Setting Bank and Debit Card Payouts](https://docs.stripe.com/connect/bank-transfers#payout-information) documentation for details.
         Schedule: BalanceSettingsResourcePayoutSchedule option
         /// The text that appears on the bank account statement for payouts. If not set, this defaults to the platform's bank descriptor as set in the Dashboard.
@@ -57,7 +80,7 @@ type BalanceSettingsResourcePayouts =
     }
 
 type BalanceSettingsResourcePayouts with
-    static member New(automaticTransferRulesByCurrency: Map<string, string list> option, minimumBalanceByCurrency: Map<string, string list> option, schedule: BalanceSettingsResourcePayoutSchedule option, statementDescriptor: string option, status: BalanceSettingsResourcePayoutsStatus) =
+    static member New(automaticTransferRulesByCurrency: Map<string, BalanceSettingsResourceAutomaticTransferRule list> option, minimumBalanceByCurrency: Map<string, int> option, schedule: BalanceSettingsResourcePayoutSchedule option, statementDescriptor: string option, status: BalanceSettingsResourcePayoutsStatus) =
         {
             AutomaticTransferRulesByCurrency = automaticTransferRulesByCurrency
             MinimumBalanceByCurrency = minimumBalanceByCurrency
@@ -132,29 +155,6 @@ type BalanceSettings with
 module BalanceSettings =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "balance_settings"
-
-[<Struct>]
-type BalanceSettingsResourceAutomaticTransferRuleType =
-    | TransferAll
-    | TransferUpToAmount
-
-type BalanceSettingsResourceAutomaticTransferRule =
-    {
-        /// The ID of the FinancialAccount that funds will be transferred to during automatic transfers.
-        PayoutMethod: string
-        /// The maximum amount in minor units to transfer to the FinancialAccount. Only applicable when `type` is `transfer_up_to_amount`.
-        TransferUpToAmount: int option
-        /// The type of automatic transfer rule.
-        Type: BalanceSettingsResourceAutomaticTransferRuleType
-    }
-
-type BalanceSettingsResourceAutomaticTransferRule with
-    static member New(payoutMethod: string, transferUpToAmount: int option, ``type``: BalanceSettingsResourceAutomaticTransferRuleType) =
-        {
-            PayoutMethod = payoutMethod
-            TransferUpToAmount = transferUpToAmount
-            Type = ``type``
-        }
 
 /// Occurs whenever a balance settings status or property has changed.
 type BalanceSettingsUpdated = { Object: BalanceSettings }

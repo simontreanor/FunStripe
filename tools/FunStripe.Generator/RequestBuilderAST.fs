@@ -50,6 +50,8 @@ module RequestBuilderAST =
         Path: string
         ResponseType: string
         HasFormOptions: bool
+        /// The body is `multipart/form-data` (file uploads) instead of a url-encoded form
+        IsMultipart: bool
         HasQueryOptions: bool
         QueryFields: (string * string) list  // (rawName, pascalName)
     }
@@ -207,11 +209,11 @@ module RequestBuilderAST =
                             |> Array.find (fun (verb', _) -> verb' = verb)
                             |> snd
                         let desc = operation.TryGetProperty("description") |> Option.map (fun v -> v.AsString()) |> Option.defaultValue ""
-                        let form =
+                        let isMultipart, form =
                             operation.GetProperty("requestBody").GetProperty("content").TryGetProperty("application/x-www-form-urlencoded")
                             |> function
-                               | Some f -> f
-                               | None -> operation.GetProperty("requestBody").GetProperty("content").GetProperty("multipart/form-data")
+                               | Some f -> false, f
+                               | None -> true, operation.GetProperty("requestBody").GetProperty("content").GetProperty("multipart/form-data")
 
                         let schema = form.TryGetProperty("schema") |> function | Some jv -> jv | None -> failwith "No schema present"
                         let schemaObject = schema |> RequestParsing.getSchemaObject
@@ -252,7 +254,7 @@ module RequestBuilderAST =
                                 | Some _ -> "string"
                                 | _ -> failwith $"Unhandled mime type: {moduleName}"
 
-                        (methodName, verb, path, desc, options, responseType))
+                        (methodName, verb, path, desc, options, responseType, isMultipart))
                 (moduleName, methods))
 
         // Convert to flat IR
@@ -262,7 +264,7 @@ module RequestBuilderAST =
             // Module marker
             typeDefs.Add(RequestModule(moduleName))
 
-            for (methodName, verb, path, desc, options, responseType) in methods do
+            for (methodName, verb, path, desc, options, responseType, isMultipart) in methods do
                 let formOptions = options |> Array.filter (fun o -> o.OptionType = Form)
                 let queryOptions = options |> Array.filter (fun o -> o.OptionType = Query)
 
@@ -286,6 +288,7 @@ module RequestBuilderAST =
                     Path = path
                     ResponseType = responseType
                     HasFormOptions = formOptions.Any()
+                    IsMultipart = isMultipart
                     HasQueryOptions = queryOptions |> Array.isEmpty |> not
                     QueryFields = queryFields
                 }
@@ -575,6 +578,9 @@ module RequestBuilderAST =
             sb.Append($"    |> RestApi.getWithAsync<_, {responseTypeStr}> settings{queryArg} options") |> ignore
         | "get" ->
             sb.Append($"    |> RestApi.getAsync<{responseTypeStr}> settings{queryArg}") |> ignore
+        | "post" when call.IsMultipart ->
+            // File uploads go to Stripe's files host as multipart/form-data
+            sb.Append($"    |> RestApi.postMultipartAsync<_, {responseTypeStr}> settings{queryArg} options") |> ignore
         | "post" when not call.HasFormOptions ->
             sb.Append($"    |> RestApi.postWithoutAsync<{responseTypeStr}> settings{queryArg}") |> ignore
         | "post" ->

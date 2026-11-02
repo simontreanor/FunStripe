@@ -30,11 +30,11 @@ type ExchangeRate =
         /// Unique identifier for the object. Represented as the three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) in lowercase.
         Id: string
         /// Hash where the keys are supported currencies and the values are the exchange rate at which the base id currency converts to the key currency.
-        Rates: Map<string, string list>
+        Rates: Map<string, decimal>
     }
 
 type ExchangeRate with
-    static member New(id: string, rates: Map<string, string list>) =
+    static member New(id: string, rates: Map<string, decimal>) =
         {
             Id = id
             Rates = rates

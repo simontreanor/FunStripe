@@ -28,6 +28,7 @@ type FilePurpose =
     | TerminalReaderSplashscreen
     | TerminalWifiCertificate
     | TerminalWifiPrivateKey
+    | IssuingLogo
 
 /// This object represents files hosted on Stripe's servers. You can upload
 /// files with the [create file](https://docs.stripe.com/api#create_file) request

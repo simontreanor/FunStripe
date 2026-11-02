@@ -193,7 +193,7 @@ type Price =
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
         /// Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
-        CurrencyOptions: Map<string, string list> option
+        CurrencyOptions: Map<string, CurrencyOption> option
         /// When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
         CustomUnitAmount: CustomUnitAmount option
         /// Unique identifier for the object.
@@ -227,7 +227,7 @@ type Price =
     }
 
 type Price with
-    static member New(active: bool, billingScheme: PriceBillingScheme, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customUnitAmount: CustomUnitAmount option, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, product: PriceProduct'AnyOf, recurring: Recurring option, taxBehavior: PriceTaxBehavior option, tiersMode: PriceTiersMode option, transformQuantity: TransformQuantity option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?currencyOptions: Map<string, string list>, ?tiers: PriceTier list) =
+    static member New(active: bool, billingScheme: PriceBillingScheme, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customUnitAmount: CustomUnitAmount option, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, product: PriceProduct'AnyOf, recurring: Recurring option, taxBehavior: PriceTaxBehavior option, tiersMode: PriceTiersMode option, transformQuantity: TransformQuantity option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?currencyOptions: Map<string, CurrencyOption>, ?tiers: PriceTier list) =
         {
             Active = active
             BillingScheme = billingScheme

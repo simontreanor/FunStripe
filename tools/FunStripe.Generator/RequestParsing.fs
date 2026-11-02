@@ -163,6 +163,9 @@ module RequestParsing =
                     { Description = desc; Name = name; Required = req; Type = "string"; OptionType = Form; EnumValues = None; SubValues = None }
                 else
                     { Description = desc; Name = name; Required = req; Type = $"{prefix}{name'}"; OptionType = Form; EnumValues = Some ev; SubValues = None }
+            | None when so.Format = Some "binary" ->
+                // The content of a file upload (multipart/form-data), see `FunStripe.FileUpload`
+                { Description = desc; Name = name; Required = req; Type = "FileUpload"; OptionType = Form; EnumValues = None; SubValues = None }
             | None ->
                 match isoTypeName name with
                 | Some isoType ->
