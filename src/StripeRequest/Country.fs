@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.CountrySpec
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module CountrySpecs =
 
     type ListOptions =
@@ -35,6 +35,7 @@ module CountrySpecs =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Country: IsoTypes.IsoCountryCode
             /// Specifies which fields in the response should be expanded.

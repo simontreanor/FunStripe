@@ -6,7 +6,7 @@ open System
 open Stripe.Mandate
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type CheckoutAcssDebitMandateOptionsDefaultFor =
     | Invoice
     | Subscription
@@ -1083,6 +1083,7 @@ type CheckoutSessionLocale =
     | Fil
     | Fr
     | [<JsonPropertyName("fr-CA")>] FrCA
+    | [<JsonPropertyName("hi-IN")>] HiIN
     | Hr
     | Hu
     | Id
@@ -1528,7 +1529,7 @@ type CheckoutSession =
         PaymentIntent: StripeId<Markers.PaymentIntent> option
         /// The ID of the Payment Link that created this Session.
         PaymentLink: StripeId<Markers.PaymentLink> option
-        /// Configure whether a Checkout Session should collect a payment method for sessions with mode `payment`. Defaults to `always`.
+        /// Configure whether a Checkout Session should collect a payment method. Can only be set in `subscription` mode. Defaults to `always`.
         PaymentMethodCollection: CheckoutSessionPaymentMethodCollection option
         /// Information about the payment method configuration used for this Checkout session if using dynamic payment methods.
         PaymentMethodConfigurationDetails: PaymentMethodConfigBizPaymentMethodConfigurationDetails option

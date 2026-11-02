@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.IssuingCardholder
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type IssuingCardAuthorizationControlsAllowedCardPresences =
     | NotPresent
     | Present
@@ -1105,6 +1105,8 @@ type IssuingCardShipping =
         Carrier: IssuingCardShippingCarrier option
         /// Additional information that may be required for clearing customs.
         Customs: IssuingCardShippingCustoms option
+        /// The time the card was reported as delivered. Null for undelivered or untracked shipments, or if Stripe has not recorded a delivery time.
+        DeliveredAt: DateTime option
         /// A unix timestamp representing a best estimate of when the card will be delivered.
         Eta: DateTime option
         /// Recipient name.
@@ -1115,6 +1117,8 @@ type IssuingCardShipping =
         RequireSignature: bool option
         /// Shipment service, such as `standard` or `express`.
         Service: IssuingCardShippingService
+        /// The time the card was reported as shipped. Null if Stripe has not recorded a shipment time.
+        ShippedAt: DateTime option
         /// The delivery status of the card.
         Status: IssuingCardShippingStatus option
         /// A tracking number for a card shipment.
@@ -1126,7 +1130,7 @@ type IssuingCardShipping =
     }
 
 type IssuingCardShipping with
-    static member New(address: Address, addressValidation: IssuingCardShippingAddressValidation option, businessName: string option, carrier: IssuingCardShippingCarrier option, customs: IssuingCardShippingCustoms option, eta: DateTime option, name: string, phoneNumber: string option, requireSignature: bool option, service: IssuingCardShippingService, status: IssuingCardShippingStatus option, trackingNumber: string option, trackingUrl: string option, ``type``: IssuingCardShippingType) =
+    static member New(address: Address, addressValidation: IssuingCardShippingAddressValidation option, businessName: string option, carrier: IssuingCardShippingCarrier option, customs: IssuingCardShippingCustoms option, eta: DateTime option, name: string, phoneNumber: string option, requireSignature: bool option, service: IssuingCardShippingService, status: IssuingCardShippingStatus option, trackingNumber: string option, trackingUrl: string option, ``type``: IssuingCardShippingType, ?deliveredAt: DateTime option, ?shippedAt: DateTime option) =
         {
             Address = address
             AddressValidation = addressValidation
@@ -1142,6 +1146,8 @@ type IssuingCardShipping with
             TrackingNumber = trackingNumber
             TrackingUrl = trackingUrl
             Type = ``type``
+            DeliveredAt = deliveredAt |> Option.flatten
+            ShippedAt = shippedAt |> Option.flatten
         }
 
 [<Struct>]

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Topups =
 
     type ListOptions =
@@ -121,6 +121,7 @@ module Topups =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Topup: string
         }
@@ -134,6 +135,7 @@ module Topups =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Topup: string
             /// An arbitrary string attached to the object. Often useful for displaying to users.
@@ -182,6 +184,7 @@ module TopupsCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Topup: string
             /// Specifies which fields in the response should be expanded.

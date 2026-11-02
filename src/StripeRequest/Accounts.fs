@@ -7,7 +7,7 @@ open Stripe.LoginLink
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Accounts =
 
     type ListOptions =
@@ -1068,6 +1068,19 @@ module Accounts =
                 Requested = requested
             }
 
+    type Create'CapabilitiesWeroPayments =
+        {
+            /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
+            [<Config.Form>]
+            Requested: bool option
+        }
+
+    type Create'CapabilitiesWeroPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     type Create'CapabilitiesZipPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -1287,13 +1300,16 @@ module Accounts =
             /// The us_bank_transfer_payments capability.
             [<Config.Form>]
             UsBankTransferPayments: Create'CapabilitiesUsBankTransferPayments option
+            /// The wero_payments capability.
+            [<Config.Form>]
+            WeroPayments: Create'CapabilitiesWeroPayments option
             /// The zip_payments capability.
             [<Config.Form>]
             ZipPayments: Create'CapabilitiesZipPayments option
         }
 
     type Create'Capabilities with
-        static member New(?acssDebitPayments: Create'CapabilitiesAcssDebitPayments, ?affirmPayments: Create'CapabilitiesAffirmPayments, ?afterpayClearpayPayments: Create'CapabilitiesAfterpayClearpayPayments, ?almaPayments: Create'CapabilitiesAlmaPayments, ?amazonPayPayments: Create'CapabilitiesAmazonPayPayments, ?appDistribution: Create'CapabilitiesAppDistribution, ?auBecsDebitPayments: Create'CapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: Create'CapabilitiesBacsDebitPayments, ?bancontactPayments: Create'CapabilitiesBancontactPayments, ?bankTransferPayments: Create'CapabilitiesBankTransferPayments, ?billiePayments: Create'CapabilitiesBilliePayments, ?bizumPayments: Create'CapabilitiesBizumPayments, ?blikPayments: Create'CapabilitiesBlikPayments, ?blikRecurringPayments: Create'CapabilitiesBlikRecurringPayments, ?boletoPayments: Create'CapabilitiesBoletoPayments, ?cardIssuing: Create'CapabilitiesCardIssuing, ?cardPayments: Create'CapabilitiesCardPayments, ?cartesBancairesPayments: Create'CapabilitiesCartesBancairesPayments, ?cashappPayments: Create'CapabilitiesCashappPayments, ?cryptoPayments: Create'CapabilitiesCryptoPayments, ?epsPayments: Create'CapabilitiesEpsPayments, ?fpxPayments: Create'CapabilitiesFpxPayments, ?gbBankTransferPayments: Create'CapabilitiesGbBankTransferPayments, ?giropayPayments: Create'CapabilitiesGiropayPayments, ?grabpayPayments: Create'CapabilitiesGrabpayPayments, ?idealPayments: Create'CapabilitiesIdealPayments, ?indiaInternationalPayments: Create'CapabilitiesIndiaInternationalPayments, ?jcbPayments: Create'CapabilitiesJcbPayments, ?jpBankTransferPayments: Create'CapabilitiesJpBankTransferPayments, ?kakaoPayPayments: Create'CapabilitiesKakaoPayPayments, ?klarnaPayments: Create'CapabilitiesKlarnaPayments, ?konbiniPayments: Create'CapabilitiesKonbiniPayments, ?krCardPayments: Create'CapabilitiesKrCardPayments, ?legacyPayments: Create'CapabilitiesLegacyPayments, ?linkPayments: Create'CapabilitiesLinkPayments, ?mbWayPayments: Create'CapabilitiesMbWayPayments, ?mobilepayPayments: Create'CapabilitiesMobilepayPayments, ?multibancoPayments: Create'CapabilitiesMultibancoPayments, ?mxBankTransferPayments: Create'CapabilitiesMxBankTransferPayments, ?naverPayPayments: Create'CapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: Create'CapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: Create'CapabilitiesOxxoPayments, ?p24Payments: Create'CapabilitiesP24Payments, ?payByBankPayments: Create'CapabilitiesPayByBankPayments, ?paycoPayments: Create'CapabilitiesPaycoPayments, ?paynowPayments: Create'CapabilitiesPaynowPayments, ?paypayPayments: Create'CapabilitiesPaypayPayments, ?paytoPayments: Create'CapabilitiesPaytoPayments, ?pixPayments: Create'CapabilitiesPixPayments, ?promptpayPayments: Create'CapabilitiesPromptpayPayments, ?revolutPayPayments: Create'CapabilitiesRevolutPayPayments, ?samsungPayPayments: Create'CapabilitiesSamsungPayPayments, ?satispayPayments: Create'CapabilitiesSatispayPayments, ?scalapayPayments: Create'CapabilitiesScalapayPayments, ?sepaBankTransferPayments: Create'CapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: Create'CapabilitiesSepaDebitPayments, ?sequraPayments: Create'CapabilitiesSequraPayments, ?sofortPayments: Create'CapabilitiesSofortPayments, ?sunbitPayments: Create'CapabilitiesSunbitPayments, ?swishPayments: Create'CapabilitiesSwishPayments, ?taxReportingUs1099K: Create'CapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: Create'CapabilitiesTaxReportingUs1099Misc, ?transfers: Create'CapabilitiesTransfers, ?treasury: Create'CapabilitiesTreasury, ?twintPayments: Create'CapabilitiesTwintPayments, ?upiPayments: Create'CapabilitiesUpiPayments, ?usBankAccountAchPayments: Create'CapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: Create'CapabilitiesUsBankTransferPayments, ?zipPayments: Create'CapabilitiesZipPayments) =
+        static member New(?acssDebitPayments: Create'CapabilitiesAcssDebitPayments, ?affirmPayments: Create'CapabilitiesAffirmPayments, ?afterpayClearpayPayments: Create'CapabilitiesAfterpayClearpayPayments, ?almaPayments: Create'CapabilitiesAlmaPayments, ?amazonPayPayments: Create'CapabilitiesAmazonPayPayments, ?appDistribution: Create'CapabilitiesAppDistribution, ?auBecsDebitPayments: Create'CapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: Create'CapabilitiesBacsDebitPayments, ?bancontactPayments: Create'CapabilitiesBancontactPayments, ?bankTransferPayments: Create'CapabilitiesBankTransferPayments, ?billiePayments: Create'CapabilitiesBilliePayments, ?bizumPayments: Create'CapabilitiesBizumPayments, ?blikPayments: Create'CapabilitiesBlikPayments, ?blikRecurringPayments: Create'CapabilitiesBlikRecurringPayments, ?boletoPayments: Create'CapabilitiesBoletoPayments, ?cardIssuing: Create'CapabilitiesCardIssuing, ?cardPayments: Create'CapabilitiesCardPayments, ?cartesBancairesPayments: Create'CapabilitiesCartesBancairesPayments, ?cashappPayments: Create'CapabilitiesCashappPayments, ?cryptoPayments: Create'CapabilitiesCryptoPayments, ?epsPayments: Create'CapabilitiesEpsPayments, ?fpxPayments: Create'CapabilitiesFpxPayments, ?gbBankTransferPayments: Create'CapabilitiesGbBankTransferPayments, ?giropayPayments: Create'CapabilitiesGiropayPayments, ?grabpayPayments: Create'CapabilitiesGrabpayPayments, ?idealPayments: Create'CapabilitiesIdealPayments, ?indiaInternationalPayments: Create'CapabilitiesIndiaInternationalPayments, ?jcbPayments: Create'CapabilitiesJcbPayments, ?jpBankTransferPayments: Create'CapabilitiesJpBankTransferPayments, ?kakaoPayPayments: Create'CapabilitiesKakaoPayPayments, ?klarnaPayments: Create'CapabilitiesKlarnaPayments, ?konbiniPayments: Create'CapabilitiesKonbiniPayments, ?krCardPayments: Create'CapabilitiesKrCardPayments, ?legacyPayments: Create'CapabilitiesLegacyPayments, ?linkPayments: Create'CapabilitiesLinkPayments, ?mbWayPayments: Create'CapabilitiesMbWayPayments, ?mobilepayPayments: Create'CapabilitiesMobilepayPayments, ?multibancoPayments: Create'CapabilitiesMultibancoPayments, ?mxBankTransferPayments: Create'CapabilitiesMxBankTransferPayments, ?naverPayPayments: Create'CapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: Create'CapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: Create'CapabilitiesOxxoPayments, ?p24Payments: Create'CapabilitiesP24Payments, ?payByBankPayments: Create'CapabilitiesPayByBankPayments, ?paycoPayments: Create'CapabilitiesPaycoPayments, ?paynowPayments: Create'CapabilitiesPaynowPayments, ?paypayPayments: Create'CapabilitiesPaypayPayments, ?paytoPayments: Create'CapabilitiesPaytoPayments, ?pixPayments: Create'CapabilitiesPixPayments, ?promptpayPayments: Create'CapabilitiesPromptpayPayments, ?revolutPayPayments: Create'CapabilitiesRevolutPayPayments, ?samsungPayPayments: Create'CapabilitiesSamsungPayPayments, ?satispayPayments: Create'CapabilitiesSatispayPayments, ?scalapayPayments: Create'CapabilitiesScalapayPayments, ?sepaBankTransferPayments: Create'CapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: Create'CapabilitiesSepaDebitPayments, ?sequraPayments: Create'CapabilitiesSequraPayments, ?sofortPayments: Create'CapabilitiesSofortPayments, ?sunbitPayments: Create'CapabilitiesSunbitPayments, ?swishPayments: Create'CapabilitiesSwishPayments, ?taxReportingUs1099K: Create'CapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: Create'CapabilitiesTaxReportingUs1099Misc, ?transfers: Create'CapabilitiesTransfers, ?treasury: Create'CapabilitiesTreasury, ?twintPayments: Create'CapabilitiesTwintPayments, ?upiPayments: Create'CapabilitiesUpiPayments, ?usBankAccountAchPayments: Create'CapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: Create'CapabilitiesUsBankTransferPayments, ?weroPayments: Create'CapabilitiesWeroPayments, ?zipPayments: Create'CapabilitiesZipPayments) =
             {
                 AcssDebitPayments = acssDebitPayments
                 AffirmPayments = affirmPayments
@@ -1363,6 +1379,7 @@ module Accounts =
                 UpiPayments = upiPayments
                 UsBankAccountAchPayments = usBankAccountAchPayments
                 UsBankTransferPayments = usBankTransferPayments
+                WeroPayments = weroPayments
                 ZipPayments = zipPayments
             }
 
@@ -1552,6 +1569,39 @@ module Accounts =
         | QualifiedEntityExceedsOwnershipThreshold
         | QualifiesAsFinancialInstitution
 
+    type Create'CompanyPhysicalAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'CompanyPhysicalAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     type Create'CompanyPrincipalPlaceOfBusiness =
         {
             /// City, district, suburb, town, or village.
@@ -1732,6 +1782,9 @@ module Accounts =
             /// The company's phone number (used for verification).
             [<Config.Form>]
             Phone: string option
+            /// A location where the business has a meaningful physical operating presence.
+            [<Config.Form>]
+            PhysicalAddress: Create'CompanyPhysicalAddress option
             /// The primary location where the business conducts operations.
             [<Config.Form>]
             PrincipalPlaceOfBusiness: Create'CompanyPrincipalPlaceOfBusiness option
@@ -1763,7 +1816,7 @@ module Accounts =
         }
 
     type Create'Company with
-        static member New(?address: Create'CompanyAddress, ?addressKana: Create'CompanyAddressKana, ?addressKanji: Create'CompanyAddressKanji, ?administrativeAddress: Create'CompanyAdministrativeAddress, ?directorsProvided: bool, ?directorshipDeclaration: Create'CompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Create'CompanyOwnershipDeclaration, ?ownershipExemptionReason: Create'CompanyOwnershipExemptionReason, ?phone: string, ?principalPlaceOfBusiness: Create'CompanyPrincipalPlaceOfBusiness, ?registrationDate: Choice<Create'CompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Create'CompanyRepresentativeDeclaration, ?structure: Create'CompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Create'CompanyVerification) =
+        static member New(?address: Create'CompanyAddress, ?addressKana: Create'CompanyAddressKana, ?addressKanji: Create'CompanyAddressKanji, ?administrativeAddress: Create'CompanyAdministrativeAddress, ?directorsProvided: bool, ?directorshipDeclaration: Create'CompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Create'CompanyOwnershipDeclaration, ?ownershipExemptionReason: Create'CompanyOwnershipExemptionReason, ?phone: string, ?physicalAddress: Create'CompanyPhysicalAddress, ?principalPlaceOfBusiness: Create'CompanyPrincipalPlaceOfBusiness, ?registrationDate: Choice<Create'CompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Create'CompanyRepresentativeDeclaration, ?structure: Create'CompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Create'CompanyVerification) =
             {
                 Address = address
                 AddressKana = addressKana
@@ -1781,6 +1834,7 @@ module Accounts =
                 OwnershipDeclaration = ownershipDeclaration
                 OwnershipExemptionReason = ownershipExemptionReason
                 Phone = phone
+                PhysicalAddress = physicalAddress
                 PrincipalPlaceOfBusiness = principalPlaceOfBusiness
                 RegistrationDate = registrationDate
                 RegistrationNumber = registrationNumber
@@ -1798,7 +1852,7 @@ module Accounts =
 
     type Create'ControllerFees =
         {
-            /// A value indicating the responsible payer of Stripe fees on this account. Defaults to `account`. Learn more about [fee behavior on connected accounts](https://docs.stripe.com/connect/direct-charges-fee-payer-behavior).
+            /// Controls who pays Stripe fees for direct charges and other pricing-control-eligible Stripe products. Setting `controller.losses.payments=application` requires `controller.fees.payer=application`. For destination charges and separate charges and transfers, Stripe bills the platform regardless of this setting. Defaults to `account`. Learn more about [fee behavior on connected accounts](https://docs.stripe.com/connect/direct-charges-fee-payer-behavior), including application fees and pricing considerations.
             [<Config.Form>]
             Payer: Create'ControllerFeesPayer option
         }
@@ -1815,7 +1869,7 @@ module Accounts =
 
     type Create'ControllerLosses =
         {
-            /// A value indicating who is liable when this account can't pay back negative balances resulting from payments. Defaults to `stripe`.
+            /// Controls who is responsible for payment-related negative balances on this account. The platform remains liable for negative balances on its own account. To use Stripe negative balance liability, your integration must meet [Managed Risk requirements](https://docs.stripe.com/connect/risk-management/managed-risk). Defaults to `stripe`.
             [<Config.Form>]
             Payments: Create'ControllerLossesPayments option
         }
@@ -1964,6 +2018,19 @@ module Accounts =
                 Files = files
             }
 
+    type Create'DocumentsProofOfBusinessPresence =
+        {
+            /// One or more document ids returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]
+            Files: string list option
+        }
+
+    type Create'DocumentsProofOfBusinessPresence with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     type Create'DocumentsProofOfUltimateBeneficialOwnershipSigner =
         {
             /// The token of the person signing the document, if applicable.
@@ -2017,13 +2084,16 @@ module Accounts =
             /// One or more documents that demonstrate proof of address.
             [<Config.Form>]
             ProofOfAddress: Create'DocumentsProofOfAddress option
+            /// One or more documents that demonstrate proof of business presence.
+            [<Config.Form>]
+            ProofOfBusinessPresence: Create'DocumentsProofOfBusinessPresence option
             /// One or more documents that demonstrate proof of ultimate beneficial ownership.
             [<Config.Form>]
             ProofOfUltimateBeneficialOwnership: Create'DocumentsProofOfUltimateBeneficialOwnership option
         }
 
     type Create'Documents with
-        static member New(?bankAccountOwnershipVerification: Create'DocumentsBankAccountOwnershipVerification, ?companyLicense: Create'DocumentsCompanyLicense, ?companyMemorandumOfAssociation: Create'DocumentsCompanyMemorandumOfAssociation, ?companyMinisterialDecree: Create'DocumentsCompanyMinisterialDecree, ?companyRegistrationVerification: Create'DocumentsCompanyRegistrationVerification, ?companyTaxIdVerification: Create'DocumentsCompanyTaxIdVerification, ?proofOfAddress: Create'DocumentsProofOfAddress, ?proofOfUltimateBeneficialOwnership: Create'DocumentsProofOfUltimateBeneficialOwnership) =
+        static member New(?bankAccountOwnershipVerification: Create'DocumentsBankAccountOwnershipVerification, ?companyLicense: Create'DocumentsCompanyLicense, ?companyMemorandumOfAssociation: Create'DocumentsCompanyMemorandumOfAssociation, ?companyMinisterialDecree: Create'DocumentsCompanyMinisterialDecree, ?companyRegistrationVerification: Create'DocumentsCompanyRegistrationVerification, ?companyTaxIdVerification: Create'DocumentsCompanyTaxIdVerification, ?proofOfAddress: Create'DocumentsProofOfAddress, ?proofOfBusinessPresence: Create'DocumentsProofOfBusinessPresence, ?proofOfUltimateBeneficialOwnership: Create'DocumentsProofOfUltimateBeneficialOwnership) =
             {
                 BankAccountOwnershipVerification = bankAccountOwnershipVerification
                 CompanyLicense = companyLicense
@@ -2032,6 +2102,7 @@ module Accounts =
                 CompanyRegistrationVerification = companyRegistrationVerification
                 CompanyTaxIdVerification = companyTaxIdVerification
                 ProofOfAddress = proofOfAddress
+                ProofOfBusinessPresence = proofOfBusinessPresence
                 ProofOfUltimateBeneficialOwnership = proofOfUltimateBeneficialOwnership
             }
 
@@ -2859,7 +2930,7 @@ module Accounts =
             /// Information about the company or business. This field is available for any `business_type`. Once you create an [Account Link](/api/account_links) or [Account Session](/api/account_sessions), this property can only be updated for accounts where [controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts.
             [<Config.Form>]
             Company: Create'Company option
-            /// A hash of configuration describing the account controller's attributes.
+            /// Configures the account's Dashboard access, loss liability, requirements collection, and Stripe fee responsibility.
             [<Config.Form>]
             Controller: Create'Controller option
             /// The country in which the account holder resides, or in which the business is legally established. This should be an ISO 3166-1 alpha-2 country code. For example, if you are in the United States and the business for which you're creating an account is legally represented in Canada, you would use `CA` as the country for the account being created. Available countries include [Stripe's global markets](https://stripe.com/global) as well as countries where [cross-border payouts](https://stripe.com/docs/connect/cross-border-payouts) are supported.
@@ -2924,8 +2995,11 @@ module Accounts =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Account: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Account: string
+        }
 
     type DeleteOptions with
         static member New(account: string) =
@@ -2935,6 +3009,7 @@ module Accounts =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Specifies which fields in the response should be expanded.
@@ -3978,6 +4053,19 @@ module Accounts =
                 Requested = requested
             }
 
+    type Update'CapabilitiesWeroPayments =
+        {
+            /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
+            [<Config.Form>]
+            Requested: bool option
+        }
+
+    type Update'CapabilitiesWeroPayments with
+        static member New(?requested: bool) =
+            {
+                Requested = requested
+            }
+
     type Update'CapabilitiesZipPayments =
         {
             /// Passing true requests the capability for the account, if it is not already requested. A requested capability may not immediately become active. Any requirements to activate the capability are returned in the `requirements` arrays.
@@ -4197,13 +4285,16 @@ module Accounts =
             /// The us_bank_transfer_payments capability.
             [<Config.Form>]
             UsBankTransferPayments: Update'CapabilitiesUsBankTransferPayments option
+            /// The wero_payments capability.
+            [<Config.Form>]
+            WeroPayments: Update'CapabilitiesWeroPayments option
             /// The zip_payments capability.
             [<Config.Form>]
             ZipPayments: Update'CapabilitiesZipPayments option
         }
 
     type Update'Capabilities with
-        static member New(?acssDebitPayments: Update'CapabilitiesAcssDebitPayments, ?affirmPayments: Update'CapabilitiesAffirmPayments, ?afterpayClearpayPayments: Update'CapabilitiesAfterpayClearpayPayments, ?almaPayments: Update'CapabilitiesAlmaPayments, ?amazonPayPayments: Update'CapabilitiesAmazonPayPayments, ?appDistribution: Update'CapabilitiesAppDistribution, ?auBecsDebitPayments: Update'CapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: Update'CapabilitiesBacsDebitPayments, ?bancontactPayments: Update'CapabilitiesBancontactPayments, ?bankTransferPayments: Update'CapabilitiesBankTransferPayments, ?billiePayments: Update'CapabilitiesBilliePayments, ?bizumPayments: Update'CapabilitiesBizumPayments, ?blikPayments: Update'CapabilitiesBlikPayments, ?blikRecurringPayments: Update'CapabilitiesBlikRecurringPayments, ?boletoPayments: Update'CapabilitiesBoletoPayments, ?cardIssuing: Update'CapabilitiesCardIssuing, ?cardPayments: Update'CapabilitiesCardPayments, ?cartesBancairesPayments: Update'CapabilitiesCartesBancairesPayments, ?cashappPayments: Update'CapabilitiesCashappPayments, ?cryptoPayments: Update'CapabilitiesCryptoPayments, ?epsPayments: Update'CapabilitiesEpsPayments, ?fpxPayments: Update'CapabilitiesFpxPayments, ?gbBankTransferPayments: Update'CapabilitiesGbBankTransferPayments, ?giropayPayments: Update'CapabilitiesGiropayPayments, ?grabpayPayments: Update'CapabilitiesGrabpayPayments, ?idealPayments: Update'CapabilitiesIdealPayments, ?indiaInternationalPayments: Update'CapabilitiesIndiaInternationalPayments, ?jcbPayments: Update'CapabilitiesJcbPayments, ?jpBankTransferPayments: Update'CapabilitiesJpBankTransferPayments, ?kakaoPayPayments: Update'CapabilitiesKakaoPayPayments, ?klarnaPayments: Update'CapabilitiesKlarnaPayments, ?konbiniPayments: Update'CapabilitiesKonbiniPayments, ?krCardPayments: Update'CapabilitiesKrCardPayments, ?legacyPayments: Update'CapabilitiesLegacyPayments, ?linkPayments: Update'CapabilitiesLinkPayments, ?mbWayPayments: Update'CapabilitiesMbWayPayments, ?mobilepayPayments: Update'CapabilitiesMobilepayPayments, ?multibancoPayments: Update'CapabilitiesMultibancoPayments, ?mxBankTransferPayments: Update'CapabilitiesMxBankTransferPayments, ?naverPayPayments: Update'CapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: Update'CapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: Update'CapabilitiesOxxoPayments, ?p24Payments: Update'CapabilitiesP24Payments, ?payByBankPayments: Update'CapabilitiesPayByBankPayments, ?paycoPayments: Update'CapabilitiesPaycoPayments, ?paynowPayments: Update'CapabilitiesPaynowPayments, ?paypayPayments: Update'CapabilitiesPaypayPayments, ?paytoPayments: Update'CapabilitiesPaytoPayments, ?pixPayments: Update'CapabilitiesPixPayments, ?promptpayPayments: Update'CapabilitiesPromptpayPayments, ?revolutPayPayments: Update'CapabilitiesRevolutPayPayments, ?samsungPayPayments: Update'CapabilitiesSamsungPayPayments, ?satispayPayments: Update'CapabilitiesSatispayPayments, ?scalapayPayments: Update'CapabilitiesScalapayPayments, ?sepaBankTransferPayments: Update'CapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: Update'CapabilitiesSepaDebitPayments, ?sequraPayments: Update'CapabilitiesSequraPayments, ?sofortPayments: Update'CapabilitiesSofortPayments, ?sunbitPayments: Update'CapabilitiesSunbitPayments, ?swishPayments: Update'CapabilitiesSwishPayments, ?taxReportingUs1099K: Update'CapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: Update'CapabilitiesTaxReportingUs1099Misc, ?transfers: Update'CapabilitiesTransfers, ?treasury: Update'CapabilitiesTreasury, ?twintPayments: Update'CapabilitiesTwintPayments, ?upiPayments: Update'CapabilitiesUpiPayments, ?usBankAccountAchPayments: Update'CapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: Update'CapabilitiesUsBankTransferPayments, ?zipPayments: Update'CapabilitiesZipPayments) =
+        static member New(?acssDebitPayments: Update'CapabilitiesAcssDebitPayments, ?affirmPayments: Update'CapabilitiesAffirmPayments, ?afterpayClearpayPayments: Update'CapabilitiesAfterpayClearpayPayments, ?almaPayments: Update'CapabilitiesAlmaPayments, ?amazonPayPayments: Update'CapabilitiesAmazonPayPayments, ?appDistribution: Update'CapabilitiesAppDistribution, ?auBecsDebitPayments: Update'CapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: Update'CapabilitiesBacsDebitPayments, ?bancontactPayments: Update'CapabilitiesBancontactPayments, ?bankTransferPayments: Update'CapabilitiesBankTransferPayments, ?billiePayments: Update'CapabilitiesBilliePayments, ?bizumPayments: Update'CapabilitiesBizumPayments, ?blikPayments: Update'CapabilitiesBlikPayments, ?blikRecurringPayments: Update'CapabilitiesBlikRecurringPayments, ?boletoPayments: Update'CapabilitiesBoletoPayments, ?cardIssuing: Update'CapabilitiesCardIssuing, ?cardPayments: Update'CapabilitiesCardPayments, ?cartesBancairesPayments: Update'CapabilitiesCartesBancairesPayments, ?cashappPayments: Update'CapabilitiesCashappPayments, ?cryptoPayments: Update'CapabilitiesCryptoPayments, ?epsPayments: Update'CapabilitiesEpsPayments, ?fpxPayments: Update'CapabilitiesFpxPayments, ?gbBankTransferPayments: Update'CapabilitiesGbBankTransferPayments, ?giropayPayments: Update'CapabilitiesGiropayPayments, ?grabpayPayments: Update'CapabilitiesGrabpayPayments, ?idealPayments: Update'CapabilitiesIdealPayments, ?indiaInternationalPayments: Update'CapabilitiesIndiaInternationalPayments, ?jcbPayments: Update'CapabilitiesJcbPayments, ?jpBankTransferPayments: Update'CapabilitiesJpBankTransferPayments, ?kakaoPayPayments: Update'CapabilitiesKakaoPayPayments, ?klarnaPayments: Update'CapabilitiesKlarnaPayments, ?konbiniPayments: Update'CapabilitiesKonbiniPayments, ?krCardPayments: Update'CapabilitiesKrCardPayments, ?legacyPayments: Update'CapabilitiesLegacyPayments, ?linkPayments: Update'CapabilitiesLinkPayments, ?mbWayPayments: Update'CapabilitiesMbWayPayments, ?mobilepayPayments: Update'CapabilitiesMobilepayPayments, ?multibancoPayments: Update'CapabilitiesMultibancoPayments, ?mxBankTransferPayments: Update'CapabilitiesMxBankTransferPayments, ?naverPayPayments: Update'CapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: Update'CapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: Update'CapabilitiesOxxoPayments, ?p24Payments: Update'CapabilitiesP24Payments, ?payByBankPayments: Update'CapabilitiesPayByBankPayments, ?paycoPayments: Update'CapabilitiesPaycoPayments, ?paynowPayments: Update'CapabilitiesPaynowPayments, ?paypayPayments: Update'CapabilitiesPaypayPayments, ?paytoPayments: Update'CapabilitiesPaytoPayments, ?pixPayments: Update'CapabilitiesPixPayments, ?promptpayPayments: Update'CapabilitiesPromptpayPayments, ?revolutPayPayments: Update'CapabilitiesRevolutPayPayments, ?samsungPayPayments: Update'CapabilitiesSamsungPayPayments, ?satispayPayments: Update'CapabilitiesSatispayPayments, ?scalapayPayments: Update'CapabilitiesScalapayPayments, ?sepaBankTransferPayments: Update'CapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: Update'CapabilitiesSepaDebitPayments, ?sequraPayments: Update'CapabilitiesSequraPayments, ?sofortPayments: Update'CapabilitiesSofortPayments, ?sunbitPayments: Update'CapabilitiesSunbitPayments, ?swishPayments: Update'CapabilitiesSwishPayments, ?taxReportingUs1099K: Update'CapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: Update'CapabilitiesTaxReportingUs1099Misc, ?transfers: Update'CapabilitiesTransfers, ?treasury: Update'CapabilitiesTreasury, ?twintPayments: Update'CapabilitiesTwintPayments, ?upiPayments: Update'CapabilitiesUpiPayments, ?usBankAccountAchPayments: Update'CapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: Update'CapabilitiesUsBankTransferPayments, ?weroPayments: Update'CapabilitiesWeroPayments, ?zipPayments: Update'CapabilitiesZipPayments) =
             {
                 AcssDebitPayments = acssDebitPayments
                 AffirmPayments = affirmPayments
@@ -4273,6 +4364,7 @@ module Accounts =
                 UpiPayments = upiPayments
                 UsBankAccountAchPayments = usBankAccountAchPayments
                 UsBankTransferPayments = usBankTransferPayments
+                WeroPayments = weroPayments
                 ZipPayments = zipPayments
             }
 
@@ -4462,6 +4554,39 @@ module Accounts =
         | QualifiedEntityExceedsOwnershipThreshold
         | QualifiesAsFinancialInstitution
 
+    type Update'CompanyPhysicalAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Update'CompanyPhysicalAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     type Update'CompanyPrincipalPlaceOfBusiness =
         {
             /// City, district, suburb, town, or village.
@@ -4642,6 +4767,9 @@ module Accounts =
             /// The company's phone number (used for verification).
             [<Config.Form>]
             Phone: string option
+            /// A location where the business has a meaningful physical operating presence.
+            [<Config.Form>]
+            PhysicalAddress: Update'CompanyPhysicalAddress option
             /// The primary location where the business conducts operations.
             [<Config.Form>]
             PrincipalPlaceOfBusiness: Update'CompanyPrincipalPlaceOfBusiness option
@@ -4672,7 +4800,7 @@ module Accounts =
         }
 
     type Update'Company with
-        static member New(?address: Update'CompanyAddress, ?addressKana: Update'CompanyAddressKana, ?addressKanji: Update'CompanyAddressKanji, ?administrativeAddress: Update'CompanyAdministrativeAddress, ?directorsProvided: bool, ?directorshipDeclaration: Update'CompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Update'CompanyOwnershipDeclaration, ?ownershipExemptionReason: Update'CompanyOwnershipExemptionReason, ?phone: string, ?principalPlaceOfBusiness: Update'CompanyPrincipalPlaceOfBusiness, ?registrationDate: Choice<Update'CompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Update'CompanyRepresentativeDeclaration, ?structure: Update'CompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Update'CompanyVerification) =
+        static member New(?address: Update'CompanyAddress, ?addressKana: Update'CompanyAddressKana, ?addressKanji: Update'CompanyAddressKanji, ?administrativeAddress: Update'CompanyAdministrativeAddress, ?directorsProvided: bool, ?directorshipDeclaration: Update'CompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Update'CompanyOwnershipDeclaration, ?ownershipExemptionReason: Update'CompanyOwnershipExemptionReason, ?phone: string, ?physicalAddress: Update'CompanyPhysicalAddress, ?principalPlaceOfBusiness: Update'CompanyPrincipalPlaceOfBusiness, ?registrationDate: Choice<Update'CompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Update'CompanyRepresentativeDeclaration, ?structure: Update'CompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Update'CompanyVerification) =
             {
                 Address = address
                 AddressKana = addressKana
@@ -4690,6 +4818,7 @@ module Accounts =
                 OwnershipDeclaration = ownershipDeclaration
                 OwnershipExemptionReason = ownershipExemptionReason
                 Phone = phone
+                PhysicalAddress = physicalAddress
                 PrincipalPlaceOfBusiness = principalPlaceOfBusiness
                 RegistrationDate = registrationDate
                 RegistrationNumber = registrationNumber
@@ -4792,6 +4921,19 @@ module Accounts =
                 Files = files
             }
 
+    type Update'DocumentsProofOfBusinessPresence =
+        {
+            /// One or more document ids returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `account_requirement`.
+            [<Config.Form>]
+            Files: string list option
+        }
+
+    type Update'DocumentsProofOfBusinessPresence with
+        static member New(?files: string list) =
+            {
+                Files = files
+            }
+
     type Update'DocumentsProofOfRegistrationSigner =
         {
             /// The token of the person signing the document, if applicable.
@@ -4875,6 +5017,9 @@ module Accounts =
             /// One or more documents that demonstrate proof of address.
             [<Config.Form>]
             ProofOfAddress: Update'DocumentsProofOfAddress option
+            /// One or more documents that demonstrate proof of business presence.
+            [<Config.Form>]
+            ProofOfBusinessPresence: Update'DocumentsProofOfBusinessPresence option
             /// One or more documents showing the company’s proof of registration with the national business registry.
             [<Config.Form>]
             ProofOfRegistration: Update'DocumentsProofOfRegistration option
@@ -4884,7 +5029,7 @@ module Accounts =
         }
 
     type Update'Documents with
-        static member New(?bankAccountOwnershipVerification: Update'DocumentsBankAccountOwnershipVerification, ?companyLicense: Update'DocumentsCompanyLicense, ?companyMemorandumOfAssociation: Update'DocumentsCompanyMemorandumOfAssociation, ?companyMinisterialDecree: Update'DocumentsCompanyMinisterialDecree, ?companyRegistrationVerification: Update'DocumentsCompanyRegistrationVerification, ?companyTaxIdVerification: Update'DocumentsCompanyTaxIdVerification, ?proofOfAddress: Update'DocumentsProofOfAddress, ?proofOfRegistration: Update'DocumentsProofOfRegistration, ?proofOfUltimateBeneficialOwnership: Update'DocumentsProofOfUltimateBeneficialOwnership) =
+        static member New(?bankAccountOwnershipVerification: Update'DocumentsBankAccountOwnershipVerification, ?companyLicense: Update'DocumentsCompanyLicense, ?companyMemorandumOfAssociation: Update'DocumentsCompanyMemorandumOfAssociation, ?companyMinisterialDecree: Update'DocumentsCompanyMinisterialDecree, ?companyRegistrationVerification: Update'DocumentsCompanyRegistrationVerification, ?companyTaxIdVerification: Update'DocumentsCompanyTaxIdVerification, ?proofOfAddress: Update'DocumentsProofOfAddress, ?proofOfBusinessPresence: Update'DocumentsProofOfBusinessPresence, ?proofOfRegistration: Update'DocumentsProofOfRegistration, ?proofOfUltimateBeneficialOwnership: Update'DocumentsProofOfUltimateBeneficialOwnership) =
             {
                 BankAccountOwnershipVerification = bankAccountOwnershipVerification
                 CompanyLicense = companyLicense
@@ -4893,6 +5038,7 @@ module Accounts =
                 CompanyRegistrationVerification = companyRegistrationVerification
                 CompanyTaxIdVerification = companyTaxIdVerification
                 ProofOfAddress = proofOfAddress
+                ProofOfBusinessPresence = proofOfBusinessPresence
                 ProofOfRegistration = proofOfRegistration
                 ProofOfUltimateBeneficialOwnership = proofOfUltimateBeneficialOwnership
             }
@@ -5699,6 +5845,7 @@ module Accounts =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// An [account token](https://docs.stripe.com/api#create_account_token), used to securely provide details to the account.
@@ -5822,6 +5969,7 @@ module AccountsCapabilities =
 
     type CapabilitiesOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Specifies which fields in the response should be expanded.
@@ -5840,6 +5988,7 @@ module AccountsCapabilities =
         {
             [<Config.Path>]
             Account: string
+            /// Unique identifier for the object.
             [<Config.Path>]
             Capability: string
             /// Specifies which fields in the response should be expanded.
@@ -5859,6 +6008,7 @@ module AccountsCapabilities =
         {
             [<Config.Path>]
             Account: string
+            /// Unique identifier for the object.
             [<Config.Path>]
             Capability: string
             /// Specifies which fields in the response should be expanded.
@@ -6145,6 +6295,7 @@ module AccountsLoginLinks =
 
     type CreateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Specifies which fields in the response should be expanded.
@@ -6169,6 +6320,7 @@ module AccountsPersons =
 
     type PersonsOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
@@ -6642,6 +6794,7 @@ module AccountsPersons =
 
     type CreateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Details on the legal guardian's or authorizer's acceptance of the required Stripe agreements.
@@ -6772,10 +6925,13 @@ module AccountsPersons =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Account: string
-          [<Config.Path>]
-          Person: string }
+        {
+            [<Config.Path>]
+            Account: string
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Person: string
+        }
 
     type DeleteOptions with
         static member New(account: string, person: string) =
@@ -6791,6 +6947,7 @@ module AccountsPersons =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Person: string
         }
@@ -7246,8 +7403,10 @@ module AccountsPersons =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
+            /// Unique identifier for the object.
             [<Config.Path>]
             Person: string
             /// Details on the legal guardian's or authorizer's acceptance of the required Stripe agreements.
@@ -7422,6 +7581,7 @@ module AccountsReject =
 
     type RejectOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Specifies which fields in the response should be expanded.
@@ -7454,6 +7614,7 @@ module AccountsUnreject =
 
     type UnrejectOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Specifies which fields in the response should be expanded.

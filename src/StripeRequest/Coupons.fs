@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Coupon
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Coupons =
 
     type ListOptions =
@@ -117,8 +117,11 @@ module Coupons =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Coupon: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Coupon: string
+        }
 
     type DeleteOptions with
         static member New(coupon: string) =
@@ -128,6 +131,7 @@ module Coupons =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Coupon: string
             /// Specifies which fields in the response should be expanded.
@@ -144,6 +148,7 @@ module Coupons =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Coupon: string
             /// Coupons defined in each available currency option (only supported if the coupon is amount-based). Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).

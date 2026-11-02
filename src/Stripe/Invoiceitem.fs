@@ -6,7 +6,7 @@ open System
 open Stripe.PaymentMethod
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type DeletedInvoiceitem =
     {
         /// Always true for a deleted object
@@ -48,7 +48,7 @@ module InvoicingRule =
 
 type ProrationDetails =
     {
-        /// For a credit proration, links to the debit invoice line items or invoice item that the credit applies to.
+        /// For a credit proration, links to the debit that the credit applies to. The reference is to an invoice item if the debit was pending when the credit was created, and to invoice line items if the debit was already invoiced.
         CreditedItems: InvoiceItemProrationCreditedItems option
         /// Discount amounts applied when the proration was created. This field is only populated for prorations created from subscriptions with `billing_mode=flexible`.
         DiscountAmounts: DiscountsResourceDiscountAmount list

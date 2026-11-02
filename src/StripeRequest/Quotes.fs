@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.Quote
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Quotes =
 
     type ListOptions =
@@ -496,6 +496,7 @@ module Quotes =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Quote: string
         }
@@ -802,6 +803,7 @@ module Quotes =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Quote: string
             /// The amount of the application fee (if any) that will be requested to be applied to the payment and transferred to the application owner's Stripe account. There cannot be any line items with recurring prices when using this field.
@@ -914,6 +916,7 @@ module QuotesAccept =
 
     type AcceptOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Quote: string
             /// Specifies which fields in the response should be expanded.
@@ -937,6 +940,7 @@ module QuotesCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Quote: string
             /// Specifies which fields in the response should be expanded.
@@ -969,6 +973,7 @@ module QuotesComputedUpfrontLineItems =
             /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
             [<Config.Query>]
             Limit: int option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Quote: string
             /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
@@ -996,6 +1001,7 @@ module QuotesFinalize =
 
     type FinalizeQuoteOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Quote: string
             /// Specifies which fields in the response should be expanded.
@@ -1032,6 +1038,7 @@ module QuotesLineItems =
             /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
             [<Config.Query>]
             Limit: int option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Quote: string
             /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
@@ -1062,6 +1069,7 @@ module QuotesPdf =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Quote: string
         }

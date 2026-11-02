@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type ThreeDSecureAuthenticationDirectoryServer =
     | AmericanExpress
     | CartesBancaires
@@ -530,6 +530,69 @@ type ThreeDSecureAuthentication with
 module ThreeDSecureAuthentication =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "three_d_secure.authentication"
+
+/// Occurs when a 3DS Authentication's status transitions to 'canceled'
+type ThreeDSecureAuthenticationCanceled = { Object: ThreeDSecureAuthentication }
+
+type ThreeDSecureAuthenticationCanceled with
+    static member New(object: ThreeDSecureAuthentication) =
+        {
+            Object = object
+        }
+
+/// Occurs when a 3DS Authentication's 'challenge_url' was loaded.
+type ThreeDSecureAuthenticationChallengeStarted = { Object: ThreeDSecureAuthentication }
+
+type ThreeDSecureAuthenticationChallengeStarted with
+    static member New(object: ThreeDSecureAuthentication) =
+        {
+            Object = object
+        }
+
+/// Occurs when a 3DS Authentication's status transitions to 'error'
+type ThreeDSecureAuthenticationErrored = { Object: ThreeDSecureAuthentication }
+
+type ThreeDSecureAuthenticationErrored with
+    static member New(object: ThreeDSecureAuthentication) =
+        {
+            Object = object
+        }
+
+/// Occurs when a 3DS Authentication's status transitions to 'failed'
+type ThreeDSecureAuthenticationFailed = { Object: ThreeDSecureAuthentication }
+
+type ThreeDSecureAuthenticationFailed with
+    static member New(object: ThreeDSecureAuthentication) =
+        {
+            Object = object
+        }
+
+/// Occurs when a 3DS Authentication's status transitions to 'requires_challenge'
+type ThreeDSecureAuthenticationRequiresChallenge = { Object: ThreeDSecureAuthentication }
+
+type ThreeDSecureAuthenticationRequiresChallenge with
+    static member New(object: ThreeDSecureAuthentication) =
+        {
+            Object = object
+        }
+
+/// Occurs when a 3DS Authentication's status transitions to 'requires_submission'
+type ThreeDSecureAuthenticationRequiresSubmission = { Object: ThreeDSecureAuthentication }
+
+type ThreeDSecureAuthenticationRequiresSubmission with
+    static member New(object: ThreeDSecureAuthentication) =
+        {
+            Object = object
+        }
+
+/// Occurs when a 3DS Authentication's status transitions to 'succeeded'
+type ThreeDSecureAuthenticationSucceeded = { Object: ThreeDSecureAuthentication }
+
+type ThreeDSecureAuthenticationSucceeded with
+    static member New(object: ThreeDSecureAuthentication) =
+        {
+            Object = object
+        }
 
 [<Struct>]
 type ThreeDSecureDetailsAuthenticationFlow =

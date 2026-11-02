@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module TreasuryCreditReversals =
 
     type ListOptions =
@@ -68,6 +68,7 @@ module TreasuryCreditReversals =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             CreditReversal: string
             /// Specifies which fields in the response should be expanded.
@@ -165,6 +166,7 @@ module TreasuryDebitReversals =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             DebitReversal: string
             /// Specifies which fields in the response should be expanded.
@@ -508,6 +510,7 @@ module TreasuryFinancialAccounts =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             FinancialAccount: string
         }
@@ -785,6 +788,7 @@ module TreasuryFinancialAccounts =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             FinancialAccount: string
             /// Specifies which fields in the response should be expanded.
@@ -870,6 +874,7 @@ module TreasuryFinancialAccountsClose =
 
     type CloseOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             FinancialAccount: string
             /// Specifies which fields in the response should be expanded.
@@ -900,6 +905,7 @@ module TreasuryFinancialAccountsFeatures =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             FinancialAccount: string
         }
@@ -1090,6 +1096,7 @@ module TreasuryFinancialAccountsFeatures =
 
     type UpdateFeaturesOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             FinancialAccount: string
             /// Encodes the FinancialAccount's ability to be used with the Issuing product, including attaching cards to and drawing funds from the FinancialAccount.
@@ -1224,6 +1231,7 @@ module TreasuryInboundTransfers =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -1256,6 +1264,7 @@ module TreasuryInboundTransfersCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             InboundTransfer: string
             /// Specifies which fields in the response should be expanded.
@@ -1555,6 +1564,7 @@ module TreasuryOutboundPayments =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -1587,6 +1597,7 @@ module TreasuryOutboundPaymentsCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -1744,6 +1755,7 @@ module TreasuryOutboundTransfers =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             OutboundTransfer: string
         }
@@ -1776,6 +1788,7 @@ module TreasuryOutboundTransfersCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             OutboundTransfer: string
             /// Specifies which fields in the response should be expanded.
@@ -1839,6 +1852,7 @@ module TreasuryReceivedCredits =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -1902,6 +1916,7 @@ module TreasuryReceivedDebits =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -1976,6 +1991,7 @@ module TreasuryTransactionEntries =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -2051,6 +2067,7 @@ module TreasuryTransactions =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }

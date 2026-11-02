@@ -132,7 +132,7 @@ let handleWebhook (signingSecret: string) (signatureHeader: string) (rawBody: st
 FunStripe targets a specific Stripe API date-version. The version this build was generated from is exposed as a constant:
 
 ```F#
-Config.DefaultStripeApiVersion  // e.g. "2026-09-30.endive"
+Config.DefaultStripeApiVersion  // e.g. "2026-10-28.endive"
 ```
 
 The generator takes it from the spec's `info.version`, so it always matches the generated models. It is also embedded as an assembly-level attribute (`Config.StripeApiVersionAttribute`) and in the NuGet package tags, giving downstream projects an auditable record of the API surface they are compiled against.
@@ -183,9 +183,9 @@ By cloning the source repository, you can regenerate the modular files using the
 
 ```sh
 dotnet run --project tools/FunStripe.Generator -- \
-  --spec spec/stripe-openapi-2026-09-30.endive.json \
+  --spec spec/stripe-openapi-2026-10-28.endive.json \
   --output src \
-  --version 3.0.0
+  --version 3.1.0
 ```
 
 All three arguments are optional. The spec and version default to the `StripeApiVersion` and `FunStripeVersion` in `Directory.Build.props` (the values shown above for this release), and the output to `src`. The generator emits:

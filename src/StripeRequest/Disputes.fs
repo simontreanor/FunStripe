@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Disputes =
 
     type ListOptions =
@@ -47,6 +47,7 @@ module Disputes =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Dispute: string
             /// Specifies which fields in the response should be expanded.
@@ -59,6 +60,36 @@ module Disputes =
             {
                 Dispute = dispute
                 Expand = expand
+            }
+
+    type Update'EvidenceAppealAppealEvidenceParamsCardAppealEvidenceCardParams =
+        {
+            /// An explanation of the reason for filing the appeal.
+            [<Config.Form>]
+            ReasonForFiling: Choice<string,string> option
+            /// One or more document IDs returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `dispute_evidence` to support the appeal.
+            [<Config.Form>]
+            SupportingFiles: Choice<string list,string> option
+        }
+
+    type Update'EvidenceAppealAppealEvidenceParamsCardAppealEvidenceCardParams with
+        static member New(?reasonForFiling: Choice<string,string>, ?supportingFiles: Choice<string list,string>) =
+            {
+                ReasonForFiling = reasonForFiling
+                SupportingFiles = supportingFiles
+            }
+
+    type Update'EvidenceAppealAppealEvidenceParams =
+        {
+            /// Evidence for a card dispute appeal.
+            [<Config.Form>]
+            Card: Choice<Update'EvidenceAppealAppealEvidenceParamsCardAppealEvidenceCardParams,string> option
+        }
+
+    type Update'EvidenceAppealAppealEvidenceParams with
+        static member New(?card: Choice<Update'EvidenceAppealAppealEvidenceParamsCardAppealEvidenceCardParams,string>) =
+            {
+                Card = card
             }
 
     type Update'EvidenceEnhancedEvidenceEnhancedEvidenceMastercardCompliance =
@@ -287,6 +318,9 @@ module Disputes =
             /// Any server or activity logs showing proof that the customer accessed or downloaded the purchased digital product. This information should include IP addresses, corresponding timestamps, and any detailed recorded activity. Has a maximum character count of 20,000.
             [<Config.Form>]
             AccessActivityLog: string option
+            /// Evidence to submit when appealing a dispute.
+            [<Config.Form>]
+            Appeal: Choice<Update'EvidenceAppealAppealEvidenceParams,string> option
             /// The billing address provided by the customer.
             [<Config.Form>]
             BillingAddress: string option
@@ -371,9 +405,10 @@ module Disputes =
         }
 
     type Update'Evidence with
-        static member New(?accessActivityLog: string, ?billingAddress: string, ?cancellationPolicy: string, ?cancellationPolicyDisclosure: string, ?cancellationRebuttal: string, ?customerCommunication: string, ?customerEmailAddress: string, ?customerName: string, ?customerPurchaseIp: string, ?customerSignature: string, ?duplicateChargeDocumentation: string, ?duplicateChargeExplanation: string, ?duplicateChargeId: string, ?enhancedEvidence: Choice<Update'EvidenceEnhancedEvidenceEnhancedEvidence,string>, ?productDescription: string, ?receipt: string, ?refundPolicy: string, ?refundPolicyDisclosure: string, ?refundRefusalExplanation: string, ?serviceDate: string, ?serviceDocumentation: string, ?shippingAddress: string, ?shippingCarrier: string, ?shippingDate: string, ?shippingDocumentation: string, ?shippingTrackingNumber: string, ?uncategorizedFile: string, ?uncategorizedText: string) =
+        static member New(?accessActivityLog: string, ?appeal: Choice<Update'EvidenceAppealAppealEvidenceParams,string>, ?billingAddress: string, ?cancellationPolicy: string, ?cancellationPolicyDisclosure: string, ?cancellationRebuttal: string, ?customerCommunication: string, ?customerEmailAddress: string, ?customerName: string, ?customerPurchaseIp: string, ?customerSignature: string, ?duplicateChargeDocumentation: string, ?duplicateChargeExplanation: string, ?duplicateChargeId: string, ?enhancedEvidence: Choice<Update'EvidenceEnhancedEvidenceEnhancedEvidence,string>, ?productDescription: string, ?receipt: string, ?refundPolicy: string, ?refundPolicyDisclosure: string, ?refundRefusalExplanation: string, ?serviceDate: string, ?serviceDocumentation: string, ?shippingAddress: string, ?shippingCarrier: string, ?shippingDate: string, ?shippingDocumentation: string, ?shippingTrackingNumber: string, ?uncategorizedFile: string, ?uncategorizedText: string) =
             {
                 AccessActivityLog = accessActivityLog
+                Appeal = appeal
                 BillingAddress = billingAddress
                 CancellationPolicy = cancellationPolicy
                 CancellationPolicyDisclosure = cancellationPolicyDisclosure
@@ -403,8 +438,15 @@ module Disputes =
                 UncategorizedText = uncategorizedText
             }
 
+    type Update'IntendedSubmissionMethod =
+        | Manual
+        | PreferManual
+        | PreferSmartDisputes
+        | SmartDisputes
+
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Dispute: string
             /// Evidence to upload, to respond to a dispute. Updating any field in the hash will submit all fields in the hash for review. The combined character count of all fields is limited to 150,000.
@@ -413,6 +455,9 @@ module Disputes =
             /// Specifies which fields in the response should be expanded.
             [<Config.Form>]
             Expand: string list option
+            /// Intended submission method for the dispute.
+            [<Config.Form>]
+            IntendedSubmissionMethod: Update'IntendedSubmissionMethod option
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
@@ -422,11 +467,12 @@ module Disputes =
         }
 
     type UpdateOptions with
-        static member New(dispute: string, ?evidence: Update'Evidence, ?expand: string list, ?metadata: Map<string, string>, ?submit: bool) =
+        static member New(dispute: string, ?evidence: Update'Evidence, ?expand: string list, ?intendedSubmissionMethod: Update'IntendedSubmissionMethod, ?metadata: Map<string, string>, ?submit: bool) =
             {
                 Dispute = dispute
                 Evidence = evidence
                 Expand = expand
+                IntendedSubmissionMethod = intendedSubmissionMethod
                 Metadata = metadata
                 Submit = submit
             }
@@ -453,6 +499,7 @@ module DisputesClose =
 
     type CloseOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Dispute: string
             /// Specifies which fields in the response should be expanded.

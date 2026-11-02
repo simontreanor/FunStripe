@@ -6,7 +6,7 @@ open Stripe.ApplicationFee
 open Stripe.FeeRefund
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module ApplicationFees =
 
     type ListOptions =
@@ -47,6 +47,7 @@ module ApplicationFees =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -79,6 +80,7 @@ module ApplicationFeesRefunds =
             Expand: string list option
             [<Config.Path>]
             Fee: string
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -95,6 +97,7 @@ module ApplicationFeesRefunds =
         {
             [<Config.Path>]
             Fee: string
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -122,6 +125,7 @@ module ApplicationFeesRefunds =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
@@ -144,6 +148,7 @@ module ApplicationFeesRefunds =
 
     type CreateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// A positive integer, in _cents (or local equivalent)_, representing how much of this fee to refund. Can refund only up to the remaining unrefunded amount of the fee.

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.ApplePayDomain
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module ApplePayDomains =
 
     type ListOptions =

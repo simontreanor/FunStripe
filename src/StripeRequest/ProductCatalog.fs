@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.ProductCatalog
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module ProductCatalogTrialOffers =
 
     type ListOptions =
@@ -141,6 +141,7 @@ module ProductCatalogTrialOffers =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -154,6 +155,7 @@ module ProductCatalogTrialOffers =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Whether the trial offer can be used for new purchases.

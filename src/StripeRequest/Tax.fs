@@ -8,7 +8,7 @@ open Stripe.TaxId
 open Stripe.TaxRate
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module TaxAssociationsFind =
 
     type FindOptions =
@@ -81,7 +81,9 @@ module TaxCalculations =
         | AoTin
         | ArCuit
         | AuAbn
+        | AuAcn
         | AuArn
+        | AuWpn
         | AwTin
         | AzTin
         | BaTin
@@ -95,6 +97,7 @@ module TaxCalculations =
         | BrCnpj
         | BrCpf
         | BsTin
+        | BwVat
         | ByTin
         | CaBn
         | CaGstHst
@@ -105,12 +108,14 @@ module TaxCalculations =
         | CdNif
         | ChUid
         | ChVat
+        | CiVat
         | ClTin
         | CmNiu
         | CnTin
         | CoNit
         | CrTin
         | CvNif
+        | CzDic
         | DeStn
         | DoRcn
         | EcRuc
@@ -120,8 +125,12 @@ module TaxCalculations =
         | EuOssVat
         | EuVat
         | FoVat
+        | FrSiren
+        | FrSiret
+        | FrSpi
         | GbVat
         | GeVat
+        | GhTin
         | GiTin
         | GnNif
         | HkBr
@@ -131,6 +140,7 @@ module TaxCalculations =
         | IdNpwp
         | IlVat
         | InGst
+        | IsKt
         | IsVat
         | ItCf
         | JpCn
@@ -146,23 +156,28 @@ module TaxCalculations =
         | LiVat
         | LkVat
         | MaVat
+        | MdCf
         | MdVat
         | MePib
         | MkVat
         | MrNif
+        | MuVat
         | MxRfc
         | MyFrp
         | MyItn
         | MySst
+        | MzNuit
         | NgTin
         | NoVat
         | NoVoec
         | NpPan
+        | NzBn
         | NzGst
         | OmVat
         | PeRuc
         | PhTin
         | PlNip
+        | PtNif
         | PyRuc
         | RoTin
         | RsPib
@@ -172,12 +187,15 @@ module TaxCalculations =
         | SgGst
         | SgUen
         | SiTin
+        | SmCoe
         | SnNinea
         | SrFin
         | SvNit
         | ThVat
         | TjTin
         | TrTin
+        | TtBir
+        | TtVat
         | TwVat
         | TzVat
         | UaVat
@@ -194,7 +212,7 @@ module TaxCalculations =
 
     type Create'CustomerDetailsTaxIds =
         {
-            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
+            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_acn`, `au_arn`, `au_wpn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `bw_vat`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `ci_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `cz_dic`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `fr_siren`, `fr_siret`, `fr_spi`, `gb_vat`, `ge_vat`, `gh_tin`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_kt`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_cf`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mu_vat`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `mz_nuit`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_bn`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `pt_nif`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sm_coe`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tt_bir`, `tt_vat`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
             [<Config.Form>]
             Type: Create'CustomerDetailsTaxIdsType option
             /// Value of the tax ID.
@@ -407,6 +425,7 @@ module TaxCalculations =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Calculation: string
             /// Specifies which fields in the response should be expanded.
@@ -436,6 +455,7 @@ module TaxCalculationsLineItems =
 
     type ListLineItemsOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Calculation: string
             /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
@@ -564,6 +584,7 @@ module TaxLocations =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Location: string
         }
@@ -1191,6 +1212,21 @@ module TaxRegistrations =
                 Type = type'
             }
 
+    type Create'CountryOptionsBwType = | Simplified
+
+    type Create'CountryOptionsBw =
+        {
+            /// Type of registration to be created in `country`.
+            [<Config.Form>]
+            Type: Create'CountryOptionsBwType option
+        }
+
+    type Create'CountryOptionsBw with
+        static member New(?type': Create'CountryOptionsBwType) =
+            {
+                Type = type'
+            }
+
     type Create'CountryOptionsByType = | Simplified
 
     type Create'CountryOptionsBy =
@@ -1310,6 +1346,21 @@ module TaxRegistrations =
         static member New(?standard: Create'CountryOptionsChStandard, ?type': Create'CountryOptionsChType) =
             {
                 Standard = standard
+                Type = type'
+            }
+
+    type Create'CountryOptionsCiType = | Simplified
+
+    type Create'CountryOptionsCi =
+        {
+            /// Type of registration to be created in `country`.
+            [<Config.Form>]
+            Type: Create'CountryOptionsCiType option
+        }
+
+    type Create'CountryOptionsCi with
+        static member New(?type': Create'CountryOptionsCiType) =
+            {
                 Type = type'
             }
 
@@ -1829,6 +1880,21 @@ module TaxRegistrations =
 
     type Create'CountryOptionsGe with
         static member New(?type': Create'CountryOptionsGeType) =
+            {
+                Type = type'
+            }
+
+    type Create'CountryOptionsGhType = | Simplified
+
+    type Create'CountryOptionsGh =
+        {
+            /// Type of registration to be created in `country`.
+            [<Config.Form>]
+            Type: Create'CountryOptionsGhType option
+        }
+
+    type Create'CountryOptionsGh with
+        static member New(?type': Create'CountryOptionsGhType) =
             {
                 Type = type'
             }
@@ -2580,6 +2646,21 @@ module TaxRegistrations =
         static member New(?standard: Create'CountryOptionsMtStandard, ?type': Create'CountryOptionsMtType) =
             {
                 Standard = standard
+                Type = type'
+            }
+
+    type Create'CountryOptionsMuType = | Simplified
+
+    type Create'CountryOptionsMu =
+        {
+            /// Type of registration to be created in `country`.
+            [<Config.Form>]
+            Type: Create'CountryOptionsMuType option
+        }
+
+    type Create'CountryOptionsMu with
+        static member New(?type': Create'CountryOptionsMuType) =
+            {
                 Type = type'
             }
 
@@ -3476,7 +3557,7 @@ module TaxRegistrations =
 
     type Create'CountryOptionsUsStateSalesTaxElections =
         {
-            /// A [FIPS code](https://www.census.gov/library/reference/code-lists/ansi.html) representing the local jurisdiction. Supported FIPS codes are: `003` (Allegheny County) and `60000` (Philadelphia City).
+            /// A [FIPS code](https://www.census.gov/library/reference/code-lists/ansi.html) representing the local jurisdiction.
             [<Config.Form>]
             Jurisdiction: string option
             /// The type of the election for the state sales tax registration.
@@ -3520,6 +3601,7 @@ module TaxRegistrations =
     type Create'CountryOptionsUsType =
         | AdmissionsTax
         | AttendanceTax
+        | DigitalExciseTax
         | EntertainmentTax
         | GrossReceiptsTax
         | HospitalityTax
@@ -3533,6 +3615,20 @@ module TaxRegistrations =
         | StateRetailDeliveryFee
         | StateSalesTax
         | TourismTax
+        | UtilityUsersTax
+
+    type Create'CountryOptionsUsUtilityUsersTax =
+        {
+            /// A jurisdiction code representing the [local jurisdiction](/tax/registering?type=utility_users_tax#registration-types).
+            [<Config.Form>]
+            Jurisdiction: string option
+        }
+
+    type Create'CountryOptionsUsUtilityUsersTax with
+        static member New(?jurisdiction: string) =
+            {
+                Jurisdiction = jurisdiction
+            }
 
     type Create'CountryOptionsUs =
         {
@@ -3581,10 +3677,13 @@ module TaxRegistrations =
             /// Type of registration to be created in the US.
             [<Config.Form>]
             Type: Create'CountryOptionsUsType option
+            /// Options for the utility users tax registration.
+            [<Config.Form>]
+            UtilityUsersTax: Create'CountryOptionsUsUtilityUsersTax option
         }
 
     type Create'CountryOptionsUs with
-        static member New(?admissionsTax: Create'CountryOptionsUsAdmissionsTax, ?attendanceTax: Create'CountryOptionsUsAttendanceTax, ?entertainmentTax: Create'CountryOptionsUsEntertainmentTax, ?grossReceiptsTax: Create'CountryOptionsUsGrossReceiptsTax, ?hospitalityTax: Create'CountryOptionsUsHospitalityTax, ?localAmusementTax: Create'CountryOptionsUsLocalAmusementTax, ?localLeaseTax: Create'CountryOptionsUsLocalLeaseTax, ?luxuryTax: Create'CountryOptionsUsLuxuryTax, ?massTransitParkingTax: Create'CountryOptionsUsMassTransitParkingTax, ?parkingTax: Create'CountryOptionsUsParkingTax, ?resortTax: Create'CountryOptionsUsResortTax, ?state: string, ?stateSalesTax: Create'CountryOptionsUsStateSalesTax, ?tourismTax: Create'CountryOptionsUsTourismTax, ?type': Create'CountryOptionsUsType) =
+        static member New(?admissionsTax: Create'CountryOptionsUsAdmissionsTax, ?attendanceTax: Create'CountryOptionsUsAttendanceTax, ?entertainmentTax: Create'CountryOptionsUsEntertainmentTax, ?grossReceiptsTax: Create'CountryOptionsUsGrossReceiptsTax, ?hospitalityTax: Create'CountryOptionsUsHospitalityTax, ?localAmusementTax: Create'CountryOptionsUsLocalAmusementTax, ?localLeaseTax: Create'CountryOptionsUsLocalLeaseTax, ?luxuryTax: Create'CountryOptionsUsLuxuryTax, ?massTransitParkingTax: Create'CountryOptionsUsMassTransitParkingTax, ?parkingTax: Create'CountryOptionsUsParkingTax, ?resortTax: Create'CountryOptionsUsResortTax, ?state: string, ?stateSalesTax: Create'CountryOptionsUsStateSalesTax, ?tourismTax: Create'CountryOptionsUsTourismTax, ?type': Create'CountryOptionsUsType, ?utilityUsersTax: Create'CountryOptionsUsUtilityUsersTax) =
             {
                 AdmissionsTax = admissionsTax
                 AttendanceTax = attendanceTax
@@ -3601,6 +3700,7 @@ module TaxRegistrations =
                 StateSalesTax = stateSalesTax
                 TourismTax = tourismTax
                 Type = type'
+                UtilityUsersTax = utilityUsersTax
             }
 
     type Create'CountryOptionsUyStandardPlaceOfSupplyScheme =
@@ -3809,6 +3909,9 @@ module TaxRegistrations =
             /// Options for the registration in BS.
             [<Config.Form>]
             Bs: Create'CountryOptionsBs option
+            /// Options for the registration in BW.
+            [<Config.Form>]
+            Bw: Create'CountryOptionsBw option
             /// Options for the registration in BY.
             [<Config.Form>]
             By: Create'CountryOptionsBy option
@@ -3821,6 +3924,9 @@ module TaxRegistrations =
             /// Options for the registration in CH.
             [<Config.Form>]
             Ch: Create'CountryOptionsCh option
+            /// Options for the registration in CI.
+            [<Config.Form>]
+            Ci: Create'CountryOptionsCi option
             /// Options for the registration in CL.
             [<Config.Form>]
             Cl: Create'CountryOptionsCl option
@@ -3875,6 +3981,9 @@ module TaxRegistrations =
             /// Options for the registration in GE.
             [<Config.Form>]
             Ge: Create'CountryOptionsGe option
+            /// Options for the registration in GH.
+            [<Config.Form>]
+            Gh: Create'CountryOptionsGh option
             /// Options for the registration in GN.
             [<Config.Form>]
             Gn: Create'CountryOptionsGn option
@@ -3953,6 +4062,9 @@ module TaxRegistrations =
             /// Options for the registration in MT.
             [<Config.Form>]
             Mt: Create'CountryOptionsMt option
+            /// Options for the registration in MU.
+            [<Config.Form>]
+            Mu: Create'CountryOptionsMu option
             /// Options for the registration in MX.
             [<Config.Form>]
             Mx: Create'CountryOptionsMx option
@@ -4064,7 +4176,7 @@ module TaxRegistrations =
         }
 
     type Create'CountryOptions with
-        static member New(?ae: Create'CountryOptionsAe, ?al: Create'CountryOptionsAl, ?am: Create'CountryOptionsAm, ?ao: Create'CountryOptionsAo, ?at: Create'CountryOptionsAt, ?au: Create'CountryOptionsAu, ?aw: Create'CountryOptionsAw, ?az: Create'CountryOptionsAz, ?ba: Create'CountryOptionsBa, ?bb: Create'CountryOptionsBb, ?bd: Create'CountryOptionsBd, ?be: Create'CountryOptionsBe, ?bf: Create'CountryOptionsBf, ?bg: Create'CountryOptionsBg, ?bh: Create'CountryOptionsBh, ?bj: Create'CountryOptionsBj, ?bs: Create'CountryOptionsBs, ?by: Create'CountryOptionsBy, ?ca: Create'CountryOptionsCa, ?cd: Create'CountryOptionsCd, ?ch: Create'CountryOptionsCh, ?cl: Create'CountryOptionsCl, ?cm: Create'CountryOptionsCm, ?co: Create'CountryOptionsCo, ?cr: Create'CountryOptionsCr, ?cv: Create'CountryOptionsCv, ?cy: Create'CountryOptionsCy, ?cz: Create'CountryOptionsCz, ?de: Create'CountryOptionsDe, ?dk: Create'CountryOptionsDk, ?ec: Create'CountryOptionsEc, ?ee: Create'CountryOptionsEe, ?eg: Create'CountryOptionsEg, ?es: Create'CountryOptionsEs, ?et: Create'CountryOptionsEt, ?fi: Create'CountryOptionsFi, ?fr: Create'CountryOptionsFr, ?gb: Create'CountryOptionsGb, ?ge: Create'CountryOptionsGe, ?gn: Create'CountryOptionsGn, ?gr: Create'CountryOptionsGr, ?hr: Create'CountryOptionsHr, ?hu: Create'CountryOptionsHu, ?id: Create'CountryOptionsId, ?ie: Create'CountryOptionsIe, ?in': Create'CountryOptionsIn, ?is: Create'CountryOptionsIs, ?it: Create'CountryOptionsIt, ?jp: Create'CountryOptionsJp, ?ke: Create'CountryOptionsKe, ?kg: Create'CountryOptionsKg, ?kh: Create'CountryOptionsKh, ?kr: Create'CountryOptionsKr, ?kz: Create'CountryOptionsKz, ?la: Create'CountryOptionsLa, ?lk: Create'CountryOptionsLk, ?lt: Create'CountryOptionsLt, ?lu: Create'CountryOptionsLu, ?lv: Create'CountryOptionsLv, ?ma: Create'CountryOptionsMa, ?md: Create'CountryOptionsMd, ?me: Create'CountryOptionsMe, ?mk: Create'CountryOptionsMk, ?mr: Create'CountryOptionsMr, ?mt: Create'CountryOptionsMt, ?mx: Create'CountryOptionsMx, ?my: Create'CountryOptionsMy, ?ng: Create'CountryOptionsNg, ?nl: Create'CountryOptionsNl, ?no: Create'CountryOptionsNo, ?np: Create'CountryOptionsNp, ?nz: Create'CountryOptionsNz, ?om: Create'CountryOptionsOm, ?pe: Create'CountryOptionsPe, ?ph: Create'CountryOptionsPh, ?pl: Create'CountryOptionsPl, ?pt: Create'CountryOptionsPt, ?ro: Create'CountryOptionsRo, ?rs: Create'CountryOptionsRs, ?ru: Create'CountryOptionsRu, ?sa: Create'CountryOptionsSa, ?se: Create'CountryOptionsSe, ?sg: Create'CountryOptionsSg, ?si: Create'CountryOptionsSi, ?sk: Create'CountryOptionsSk, ?sn: Create'CountryOptionsSn, ?sr: Create'CountryOptionsSr, ?th: Create'CountryOptionsTh, ?tj: Create'CountryOptionsTj, ?tr: Create'CountryOptionsTr, ?tw: Create'CountryOptionsTw, ?tz: Create'CountryOptionsTz, ?ua: Create'CountryOptionsUa, ?ug: Create'CountryOptionsUg, ?us: Create'CountryOptionsUs, ?uy: Create'CountryOptionsUy, ?uz: Create'CountryOptionsUz, ?vn: Create'CountryOptionsVn, ?za: Create'CountryOptionsZa, ?zm: Create'CountryOptionsZm, ?zw: Create'CountryOptionsZw) =
+        static member New(?ae: Create'CountryOptionsAe, ?al: Create'CountryOptionsAl, ?am: Create'CountryOptionsAm, ?ao: Create'CountryOptionsAo, ?at: Create'CountryOptionsAt, ?au: Create'CountryOptionsAu, ?aw: Create'CountryOptionsAw, ?az: Create'CountryOptionsAz, ?ba: Create'CountryOptionsBa, ?bb: Create'CountryOptionsBb, ?bd: Create'CountryOptionsBd, ?be: Create'CountryOptionsBe, ?bf: Create'CountryOptionsBf, ?bg: Create'CountryOptionsBg, ?bh: Create'CountryOptionsBh, ?bj: Create'CountryOptionsBj, ?bs: Create'CountryOptionsBs, ?bw: Create'CountryOptionsBw, ?by: Create'CountryOptionsBy, ?ca: Create'CountryOptionsCa, ?cd: Create'CountryOptionsCd, ?ch: Create'CountryOptionsCh, ?ci: Create'CountryOptionsCi, ?cl: Create'CountryOptionsCl, ?cm: Create'CountryOptionsCm, ?co: Create'CountryOptionsCo, ?cr: Create'CountryOptionsCr, ?cv: Create'CountryOptionsCv, ?cy: Create'CountryOptionsCy, ?cz: Create'CountryOptionsCz, ?de: Create'CountryOptionsDe, ?dk: Create'CountryOptionsDk, ?ec: Create'CountryOptionsEc, ?ee: Create'CountryOptionsEe, ?eg: Create'CountryOptionsEg, ?es: Create'CountryOptionsEs, ?et: Create'CountryOptionsEt, ?fi: Create'CountryOptionsFi, ?fr: Create'CountryOptionsFr, ?gb: Create'CountryOptionsGb, ?ge: Create'CountryOptionsGe, ?gh: Create'CountryOptionsGh, ?gn: Create'CountryOptionsGn, ?gr: Create'CountryOptionsGr, ?hr: Create'CountryOptionsHr, ?hu: Create'CountryOptionsHu, ?id: Create'CountryOptionsId, ?ie: Create'CountryOptionsIe, ?in': Create'CountryOptionsIn, ?is: Create'CountryOptionsIs, ?it: Create'CountryOptionsIt, ?jp: Create'CountryOptionsJp, ?ke: Create'CountryOptionsKe, ?kg: Create'CountryOptionsKg, ?kh: Create'CountryOptionsKh, ?kr: Create'CountryOptionsKr, ?kz: Create'CountryOptionsKz, ?la: Create'CountryOptionsLa, ?lk: Create'CountryOptionsLk, ?lt: Create'CountryOptionsLt, ?lu: Create'CountryOptionsLu, ?lv: Create'CountryOptionsLv, ?ma: Create'CountryOptionsMa, ?md: Create'CountryOptionsMd, ?me: Create'CountryOptionsMe, ?mk: Create'CountryOptionsMk, ?mr: Create'CountryOptionsMr, ?mt: Create'CountryOptionsMt, ?mu: Create'CountryOptionsMu, ?mx: Create'CountryOptionsMx, ?my: Create'CountryOptionsMy, ?ng: Create'CountryOptionsNg, ?nl: Create'CountryOptionsNl, ?no: Create'CountryOptionsNo, ?np: Create'CountryOptionsNp, ?nz: Create'CountryOptionsNz, ?om: Create'CountryOptionsOm, ?pe: Create'CountryOptionsPe, ?ph: Create'CountryOptionsPh, ?pl: Create'CountryOptionsPl, ?pt: Create'CountryOptionsPt, ?ro: Create'CountryOptionsRo, ?rs: Create'CountryOptionsRs, ?ru: Create'CountryOptionsRu, ?sa: Create'CountryOptionsSa, ?se: Create'CountryOptionsSe, ?sg: Create'CountryOptionsSg, ?si: Create'CountryOptionsSi, ?sk: Create'CountryOptionsSk, ?sn: Create'CountryOptionsSn, ?sr: Create'CountryOptionsSr, ?th: Create'CountryOptionsTh, ?tj: Create'CountryOptionsTj, ?tr: Create'CountryOptionsTr, ?tw: Create'CountryOptionsTw, ?tz: Create'CountryOptionsTz, ?ua: Create'CountryOptionsUa, ?ug: Create'CountryOptionsUg, ?us: Create'CountryOptionsUs, ?uy: Create'CountryOptionsUy, ?uz: Create'CountryOptionsUz, ?vn: Create'CountryOptionsVn, ?za: Create'CountryOptionsZa, ?zm: Create'CountryOptionsZm, ?zw: Create'CountryOptionsZw) =
             {
                 Ae = ae
                 Al = al
@@ -4083,10 +4195,12 @@ module TaxRegistrations =
                 Bh = bh
                 Bj = bj
                 Bs = bs
+                Bw = bw
                 By = by
                 Ca = ca
                 Cd = cd
                 Ch = ch
+                Ci = ci
                 Cl = cl
                 Cm = cm
                 Co = co
@@ -4105,6 +4219,7 @@ module TaxRegistrations =
                 Fr = fr
                 Gb = gb
                 Ge = ge
+                Gh = gh
                 Gn = gn
                 Gr = gr
                 Hr = hr
@@ -4131,6 +4246,7 @@ module TaxRegistrations =
                 Mk = mk
                 Mr = mr
                 Mt = mt
+                Mu = mu
                 Mx = mx
                 My = my
                 Ng = ng
@@ -4203,6 +4319,7 @@ module TaxRegistrations =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -4220,6 +4337,7 @@ module TaxRegistrations =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Time at which the registration becomes active. It can be either `now` to indicate the current time, or a timestamp measured in seconds since the Unix epoch.
@@ -4525,6 +4643,7 @@ module TaxTransactions =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transaction: string
         }
@@ -4558,6 +4677,7 @@ module TaxTransactionsLineItems =
             /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
             [<Config.Query>]
             StartingAfter: string option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transaction: string
         }
@@ -4610,6 +4730,7 @@ module TaxCodes =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -4703,7 +4824,9 @@ module TaxIds =
         | AoTin
         | ArCuit
         | AuAbn
+        | AuAcn
         | AuArn
+        | AuWpn
         | AwTin
         | AzTin
         | BaTin
@@ -4717,6 +4840,7 @@ module TaxIds =
         | BrCnpj
         | BrCpf
         | BsTin
+        | BwVat
         | ByTin
         | CaBn
         | CaGstHst
@@ -4727,12 +4851,14 @@ module TaxIds =
         | CdNif
         | ChUid
         | ChVat
+        | CiVat
         | ClTin
         | CmNiu
         | CnTin
         | CoNit
         | CrTin
         | CvNif
+        | CzDic
         | DeStn
         | DoRcn
         | EcRuc
@@ -4742,8 +4868,12 @@ module TaxIds =
         | EuOssVat
         | EuVat
         | FoVat
+        | FrSiren
+        | FrSiret
+        | FrSpi
         | GbVat
         | GeVat
+        | GhTin
         | GiTin
         | GnNif
         | HkBr
@@ -4753,6 +4883,7 @@ module TaxIds =
         | IdNpwp
         | IlVat
         | InGst
+        | IsKt
         | IsVat
         | ItCf
         | JpCn
@@ -4768,23 +4899,28 @@ module TaxIds =
         | LiVat
         | LkVat
         | MaVat
+        | MdCf
         | MdVat
         | MePib
         | MkVat
         | MrNif
+        | MuVat
         | MxRfc
         | MyFrp
         | MyItn
         | MySst
+        | MzNuit
         | NgTin
         | NoVat
         | NoVoec
         | NpPan
+        | NzBn
         | NzGst
         | OmVat
         | PeRuc
         | PhTin
         | PlNip
+        | PtNif
         | PyRuc
         | RoTin
         | RsPib
@@ -4794,12 +4930,15 @@ module TaxIds =
         | SgGst
         | SgUen
         | SiTin
+        | SmCoe
         | SnNinea
         | SrFin
         | SvNit
         | ThVat
         | TjTin
         | TrTin
+        | TtBir
+        | TtVat
         | TwVat
         | TzVat
         | UaVat
@@ -4822,7 +4961,7 @@ module TaxIds =
             /// The account or customer the tax ID belongs to. Defaults to `owner[type]=self`.
             [<Config.Form>]
             Owner: Create'Owner option
-            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
+            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_acn`, `au_arn`, `au_wpn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `bw_vat`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `ci_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `cz_dic`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `fr_siren`, `fr_siret`, `fr_spi`, `gb_vat`, `ge_vat`, `gh_tin`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_kt`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_cf`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mu_vat`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `mz_nuit`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_bn`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `pt_nif`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sm_coe`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tt_bir`, `tt_vat`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
             [<Config.Form>]
             Type: Create'Type
             /// Value of the tax ID.
@@ -4840,8 +4979,11 @@ module TaxIds =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Id: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Id: string
+        }
 
     type DeleteOptions with
         static member New(id: string) =
@@ -4854,6 +4996,7 @@ module TaxIds =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -4927,22 +5070,32 @@ module TaxRates =
             }
 
     type Create'TaxType =
+        | AdmissionsTax
         | AmusementTax
+        | AttendanceTax
         | CommunicationsTax
         | DigitalExciseTax
+        | EntertainmentTax
+        | GetFund
+        | GrossReceiptsTax
         | Gst
+        | HospitalityTax
         | Hst
         | Igst
         | Jct
         | LeaseTax
+        | LuxuryTax
         | MassTransitParkingTax
+        | Nhil
         | ParkingTax
         | Pst
         | Qst
+        | ResortTax
         | RetailDeliveryFee
         | Rst
         | SalesTax
         | ServiceTax
+        | TourismTax
         | UtilityUsersTax
         | Vat
 
@@ -5004,6 +5157,7 @@ module TaxRates =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             TaxRate: string
         }
@@ -5016,27 +5170,38 @@ module TaxRates =
             }
 
     type Update'TaxType =
+        | AdmissionsTax
         | AmusementTax
+        | AttendanceTax
         | CommunicationsTax
         | DigitalExciseTax
+        | EntertainmentTax
+        | GetFund
+        | GrossReceiptsTax
         | Gst
+        | HospitalityTax
         | Hst
         | Igst
         | Jct
         | LeaseTax
+        | LuxuryTax
         | MassTransitParkingTax
+        | Nhil
         | ParkingTax
         | Pst
         | Qst
+        | ResortTax
         | RetailDeliveryFee
         | Rst
         | SalesTax
         | ServiceTax
+        | TourismTax
         | UtilityUsersTax
         | Vat
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             TaxRate: string
             /// Flag determining whether the tax rate is active or inactive (archived). Inactive tax rates cannot be used with new applications or Checkout Sessions, but will still work for subscriptions and invoices that already have it set.

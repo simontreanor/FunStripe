@@ -12,7 +12,7 @@ open Stripe.PaymentMethodDomain
 open Stripe.SubscriptionSchedule
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Account =
 
     type RetrieveOptions =
@@ -801,6 +801,23 @@ module AccountSessions =
                 Features = features
             }
 
+    type Create'ComponentsReportingChart =
+        {
+            /// Whether the embedded component is enabled.
+            [<Config.Form>]
+            Enabled: bool option
+            /// An empty list, because this embedded component has no features.
+            [<Config.Form>]
+            Features: string option
+        }
+
+    type Create'ComponentsReportingChart with
+        static member New(?enabled: bool, ?features: string) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
     type Create'ComponentsTaxRegistrations =
         {
             /// Whether the embedded component is enabled.
@@ -829,6 +846,40 @@ module AccountSessions =
         }
 
     type Create'ComponentsTaxSettings with
+        static member New(?enabled: bool, ?features: string) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
+    type Create'ComponentsTerminalHardwareOrders =
+        {
+            /// Whether the embedded component is enabled.
+            [<Config.Form>]
+            Enabled: bool option
+            /// An empty list, because this embedded component has no features.
+            [<Config.Form>]
+            Features: string option
+        }
+
+    type Create'ComponentsTerminalHardwareOrders with
+        static member New(?enabled: bool, ?features: string) =
+            {
+                Enabled = enabled
+                Features = features
+            }
+
+    type Create'ComponentsTerminalHardwareShop =
+        {
+            /// Whether the embedded component is enabled.
+            [<Config.Form>]
+            Enabled: bool option
+            /// An empty list, because this embedded component has no features.
+            [<Config.Form>]
+            Features: string option
+        }
+
+    type Create'ComponentsTerminalHardwareShop with
         static member New(?enabled: bool, ?features: string) =
             {
                 Enabled = enabled
@@ -897,16 +948,25 @@ module AccountSessions =
             /// Configuration for the [payouts list](/connect/supported-embedded-components/payouts-list/) embedded component.
             [<Config.Form>]
             PayoutsList: Create'ComponentsPayoutsList option
+            /// Configuration for the [reporting chart](/connect/supported-embedded-components/reporting-chart/) embedded component.
+            [<Config.Form>]
+            ReportingChart: Create'ComponentsReportingChart option
             /// Configuration for the [tax registrations](/connect/supported-embedded-components/tax-registrations/) embedded component.
             [<Config.Form>]
             TaxRegistrations: Create'ComponentsTaxRegistrations option
             /// Configuration for the [tax settings](/connect/supported-embedded-components/tax-settings/) embedded component.
             [<Config.Form>]
             TaxSettings: Create'ComponentsTaxSettings option
+            /// Configuration for the [Terminal hardware orders](/connect/supported-embedded-components/terminal-hardware-orders/) embedded component.
+            [<Config.Form>]
+            TerminalHardwareOrders: Create'ComponentsTerminalHardwareOrders option
+            /// Configuration for the [Terminal hardware shop](/connect/supported-embedded-components/terminal-hardware-shop/) embedded component.
+            [<Config.Form>]
+            TerminalHardwareShop: Create'ComponentsTerminalHardwareShop option
         }
 
     type Create'Components with
-        static member New(?accountManagement: Create'ComponentsAccountManagement, ?accountOnboarding: Create'ComponentsAccountOnboarding, ?balanceReport: Create'ComponentsBalanceReport, ?balances: Create'ComponentsBalances, ?disputesList: Create'ComponentsDisputesList, ?documents: Create'ComponentsDocuments, ?financialAccount: Create'ComponentsFinancialAccount, ?financialAccountTransactions: Create'ComponentsFinancialAccountTransactions, ?instantPayoutsPromotion: Create'ComponentsInstantPayoutsPromotion, ?issuingCard: Create'ComponentsIssuingCard, ?issuingCardsList: Create'ComponentsIssuingCardsList, ?notificationBanner: Create'ComponentsNotificationBanner, ?paymentDetails: Create'ComponentsPaymentDetails, ?paymentDisputes: Create'ComponentsPaymentDisputes, ?paymentMethodSettings: Create'ComponentsPaymentMethodSettings, ?payments: Create'ComponentsPayments, ?payoutDetails: Create'ComponentsPayoutDetails, ?payoutReconciliationReport: Create'ComponentsPayoutReconciliationReport, ?payouts: Create'ComponentsPayouts, ?payoutsList: Create'ComponentsPayoutsList, ?taxRegistrations: Create'ComponentsTaxRegistrations, ?taxSettings: Create'ComponentsTaxSettings) =
+        static member New(?accountManagement: Create'ComponentsAccountManagement, ?accountOnboarding: Create'ComponentsAccountOnboarding, ?balanceReport: Create'ComponentsBalanceReport, ?balances: Create'ComponentsBalances, ?disputesList: Create'ComponentsDisputesList, ?documents: Create'ComponentsDocuments, ?financialAccount: Create'ComponentsFinancialAccount, ?financialAccountTransactions: Create'ComponentsFinancialAccountTransactions, ?instantPayoutsPromotion: Create'ComponentsInstantPayoutsPromotion, ?issuingCard: Create'ComponentsIssuingCard, ?issuingCardsList: Create'ComponentsIssuingCardsList, ?notificationBanner: Create'ComponentsNotificationBanner, ?paymentDetails: Create'ComponentsPaymentDetails, ?paymentDisputes: Create'ComponentsPaymentDisputes, ?paymentMethodSettings: Create'ComponentsPaymentMethodSettings, ?payments: Create'ComponentsPayments, ?payoutDetails: Create'ComponentsPayoutDetails, ?payoutReconciliationReport: Create'ComponentsPayoutReconciliationReport, ?payouts: Create'ComponentsPayouts, ?payoutsList: Create'ComponentsPayoutsList, ?reportingChart: Create'ComponentsReportingChart, ?taxRegistrations: Create'ComponentsTaxRegistrations, ?taxSettings: Create'ComponentsTaxSettings, ?terminalHardwareOrders: Create'ComponentsTerminalHardwareOrders, ?terminalHardwareShop: Create'ComponentsTerminalHardwareShop) =
             {
                 AccountManagement = accountManagement
                 AccountOnboarding = accountOnboarding
@@ -928,8 +988,11 @@ module AccountSessions =
                 PayoutReconciliationReport = payoutReconciliationReport
                 Payouts = payouts
                 PayoutsList = payoutsList
+                ReportingChart = reportingChart
                 TaxRegistrations = taxRegistrations
                 TaxSettings = taxSettings
+                TerminalHardwareOrders = terminalHardwareOrders
+                TerminalHardwareShop = terminalHardwareShop
             }
 
     type CreateOptions =
@@ -1071,6 +1134,7 @@ module BillingAlerts =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -1103,6 +1167,7 @@ module BillingAlertsActivate =
 
     type ActivateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -1126,6 +1191,7 @@ module BillingAlertsArchive =
 
     type ArchiveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -1149,6 +1215,7 @@ module BillingAlertsDeactivate =
 
     type DeactivateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -1896,6 +1963,7 @@ module BillingMeters =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }
@@ -1909,6 +1977,7 @@ module BillingMeters =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// The meter’s name. Not visible to the customer.
@@ -1953,6 +2022,7 @@ module BillingMetersDeactivate =
 
     type DeactivateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -2029,6 +2099,7 @@ module BillingMetersReactivate =
 
     type ReactivateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -2402,6 +2473,7 @@ module FinancialConnectionsAccounts =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Specifies which fields in the response should be expanded.
@@ -2432,6 +2504,7 @@ module FinancialConnectionsAccountsDisconnect =
 
     type DisconnectOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Specifies which fields in the response should be expanded.
@@ -2455,6 +2528,7 @@ module FinancialConnectionsAccountsOwners =
 
     type ListOwnersOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
@@ -2500,6 +2574,7 @@ module FinancialConnectionsAccountsRefresh =
 
     type RefreshOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Specifies which fields in the response should be expanded.
@@ -2529,6 +2604,7 @@ module FinancialConnectionsAccountsSubscribe =
 
     type SubscribeOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Specifies which fields in the response should be expanded.
@@ -2558,6 +2634,7 @@ module FinancialConnectionsAccountsUnsubscribe =
 
     type UnsubscribeOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Account: string
             /// Specifies which fields in the response should be expanded.
@@ -2733,6 +2810,7 @@ module FinancialConnectionsSessions =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Session: string
         }
@@ -2799,6 +2877,7 @@ module FinancialConnectionsTransactions =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transaction: string
         }
@@ -2870,6 +2949,7 @@ module InvoicePayments =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             InvoicePayment: string
         }
@@ -2928,6 +3008,7 @@ module InvoiceRenderingTemplates =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Template: string
             [<Config.Query>]
@@ -2958,6 +3039,7 @@ module InvoiceRenderingTemplatesArchive =
 
     type ArchiveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Template: string
             /// Specifies which fields in the response should be expanded.
@@ -2981,6 +3063,7 @@ module InvoiceRenderingTemplatesUnarchive =
 
     type UnarchiveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Template: string
             /// Specifies which fields in the response should be expanded.
@@ -5228,6 +5311,7 @@ module PaymentMethodConfigurations =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Configuration: string
             /// Specifies which fields in the response should be expanded.
@@ -7166,6 +7250,7 @@ module PaymentMethodConfigurations =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Configuration: string
             /// Canadian pre-authorized debit payments, check this [page](https://docs.stripe.com/payments/acss-debit) for more details like country availability.
@@ -7519,6 +7604,7 @@ module PaymentMethodDomains =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentMethodDomain: string
         }
@@ -7532,6 +7618,7 @@ module PaymentMethodDomains =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentMethodDomain: string
             /// Whether this payment method domain is enabled. If the domain is not enabled, payment methods that require a payment method domain will not appear in Elements or Embedded Checkout.
@@ -7576,6 +7663,7 @@ module PaymentMethodDomainsValidate =
 
     type ValidateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentMethodDomain: string
             /// Specifies which fields in the response should be expanded.
@@ -7826,6 +7914,7 @@ module SubscriptionItems =
 
     type DeleteOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Item: string
             /// Delete all usage for the given subscription item. Allowed only when the current plan's `usage_type` is `metered`.
@@ -7857,6 +7946,7 @@ module SubscriptionItems =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Item: string
         }
@@ -7989,6 +8079,7 @@ module SubscriptionItems =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Item: string
             /// Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. Pass an empty string to remove previously-defined thresholds.
@@ -9262,6 +9353,7 @@ module SubscriptionSchedules =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Schedule: string
         }
@@ -10331,7 +10423,7 @@ module SubscriptionSchedules =
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
-            /// Configures the subscription's pause behavior and, optionally, its resume behavior. Only one entry is supported. Include a key to update an existing entry. Omit to leave an existing pause schedule unchanged, or pass "" to clear it.
+            /// The subscription's pause behavior and optional resume behavior. You can provide one entry. Include its `key` to update an existing pause schedule. Omit `pause_schedules` to leave the existing schedule unchanged, or pass an empty string (`""`) to clear it.
             [<Config.Form>]
             PauseSchedules: Choice<Update'PauseSchedules list,string> option
             /// List representing phases of the subscription schedule. Each phase can be customized to have different durations, plans, and coupons. If there are multiple phases, the `end_date` of one phase will always equal the `start_date` of the next phase. Note that past phases can be omitted.
@@ -10381,6 +10473,7 @@ module SubscriptionSchedulesCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Schedule: string
             /// Specifies which fields in the response should be expanded.
@@ -10412,6 +10505,7 @@ module SubscriptionSchedulesRelease =
 
     type ReleaseOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Schedule: string
             /// Specifies which fields in the response should be expanded.

@@ -20,7 +20,7 @@ open Stripe.TaxRate
 open Stripe.ThreeDSecure
 open Stripe.TransferReversal
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type AccountAnnualRevenue =
     {
         /// A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).
@@ -492,6 +492,12 @@ type AccountCapabilitiesUsBankTransferPayments =
     | Pending
 
 [<Struct>]
+type AccountCapabilitiesWeroPayments =
+    | Active
+    | Inactive
+    | Pending
+
+[<Struct>]
 type AccountCapabilitiesZipPayments =
     | Active
     | Inactive
@@ -638,6 +644,8 @@ type AccountCapabilities =
         UsBankAccountAchPayments: AccountCapabilitiesUsBankAccountAchPayments option
         /// The status of the US customer_balance payments (USD currency) capability of the account, or whether the account can directly process US customer_balance charges.
         UsBankTransferPayments: AccountCapabilitiesUsBankTransferPayments option
+        /// The status of the Wero capability of the account, or whether the account can directly process Wero payments.
+        WeroPayments: AccountCapabilitiesWeroPayments option
         /// The status of the Zip capability of the account, or whether the account can directly process Zip charges.
         ZipPayments: AccountCapabilitiesZipPayments option
     }
@@ -1156,9 +1164,7 @@ type SourceUsage =
 /// represent a customer's payment instrument, and can be used with the Stripe API
 /// just like a `Card` object: once chargeable, they can be charged, or can be
 /// attached to customers.
-/// Stripe doesn't recommend using the deprecated [Sources API](https://docs.stripe.com/api/sources).
-/// We recommend that you adopt the [PaymentMethods API](https://docs.stripe.com/api/payment_methods).
-/// This newer API provides access to our latest features and payment method types.
+/// This API is deprecated. Use the [PaymentMethods API](https://docs.stripe.com/api/payment_methods) instead.
 /// Related guides: [Sources API](https://docs.stripe.com/sources) and [Sources & Customers](https://docs.stripe.com/sources/customers).
 type Source =
     {
@@ -1300,9 +1306,14 @@ type SubscriptionItemBillingThresholds =
 
 /// The current trial attached to the subscription item.
 type SubscriptionsTrialsResourceCurrentTrial =
-    { EndDate: DateTime
-      StartDate: DateTime
-      TrialOffer: string }
+    {
+        /// The time the current trial ends.
+        EndDate: DateTime
+        /// The time the current trial started.
+        StartDate: DateTime
+        /// The Trial Offer ID applied to the subscription item.
+        TrialOffer: string
+    }
 
 /// Subscription items allow you to create customer subscriptions with more than
 /// one plan, making it easy to represent complex billing relationships.
@@ -1591,9 +1602,6 @@ type InvoiceMandateOptionsPayto =
 type InvoicePaymentMethodOptionsPayto =
     { MandateOptions: InvoiceMandateOptionsPayto option }
 
-type InvoicePaymentMethodOptionsSepaDebit =
-    { InvoicePaymentMethodOptionsSepaDebit: string option }
-
 [<Struct>]
 type InvoicePaymentMethodOptionsMandateOptionsUpiAmountType =
     | Fixed
@@ -1792,10 +1800,13 @@ type SubscriptionPaymentMethodOptionsMandateOptionsPix =
 
 type SubscriptionPaymentMethodOptionsPix =
     {
-        /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
+        /// The number of seconds after PaymentIntent confirmation when the Pix expires (between 60 and 1209600, inclusive). If unspecified, defaults to 14400 seconds (4 hours).
         ExpiresAfterSeconds: int option
         MandateOptions: SubscriptionPaymentMethodOptionsMandateOptionsPix option
     }
+
+type SubscriptionPaymentMethodOptionsSepaDebit =
+    { SubscriptionPaymentMethodOptionsSepaDebit: string option }
 
 type SubscriptionsResourcePaymentMethodOptions =
     {
@@ -1818,7 +1829,7 @@ type SubscriptionsResourcePaymentMethodOptions =
         /// This sub-hash contains details about the Pix payment method options to pass to invoices created by the subscription.
         Pix: SubscriptionPaymentMethodOptionsPix option
         /// This sub-hash contains details about the SEPA Direct Debit payment method options to pass to invoices created by the subscription.
-        SepaDebit: InvoicePaymentMethodOptionsSepaDebit option
+        SepaDebit: SubscriptionPaymentMethodOptionsSepaDebit option
         /// This sub-hash contains details about the UPI payment method options to pass to invoices created by the subscription.
         Upi: InvoicePaymentMethodOptionsUpi option
         /// This sub-hash contains details about the ACH direct debit payment method options to pass to invoices created by the subscription.
@@ -1870,6 +1881,7 @@ type SubscriptionsResourcePaymentSettingsPaymentMethodTypes =
     | Satispay
     | SepaCreditTransfer
     | SepaDebit
+    | Sequra
     | Sofort
     | Swish
     | Twint
@@ -2717,6 +2729,7 @@ type LegalEntityCompany =
         OwnershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason option
         /// The company's phone number (used for verification).
         Phone: string option
+        PhysicalAddress: Address option
         PrincipalPlaceOfBusiness: Address option
         RegistrationDate: LegalEntityRegistrationDate option
         /// This hash is used to attest that the representative is authorized to act as the representative of their legal entity.
@@ -3119,9 +3132,11 @@ and BankAccountCustomer'AnyOf =
 /// You can store multiple cards on a customer in order to charge the customer
 /// later. You can also store multiple debit cards on a recipient in order to
 /// transfer to those cards later.
+/// This API is deprecated. Use the [PaymentMethods API](https://docs.stripe.com/api/payment_methods) instead.
 /// Related guide: [Card payments with Sources](https://docs.stripe.com/sources/cards)
 and Card =
     {
+        /// The account this card belongs to. Only applicable on Accounts (not customers or recipients) This property is only available when returned as an [External Account](/api/external_account_cards/object) where [controller.is_controller](/api/accounts/object#account_object-controller-is_controller) is `true`.
         Account: StripeId<Markers.Account> option
         /// City/District/Suburb/Town/Village.
         AddressCity: string option
@@ -3418,7 +3433,7 @@ and Subscription =
         /// Possible values are `incomplete`, `incomplete_expired`, `trialing`, `active`, `past_due`, `canceled`, `unpaid`, or `paused`.
         /// For `collection_method=charge_automatically` a subscription moves into `incomplete` if the initial payment attempt fails. A subscription in this status can only have metadata and default_source updated. Once the first invoice is paid, the subscription moves into an `active` status. If the first invoice is not paid within 23 hours, the subscription transitions to `incomplete_expired`. This is a terminal status, the open invoice will be voided and no further invoices will be generated.
         /// A subscription that is currently in a trial period is `trialing` and moves to `active` when the trial period is over.
-        /// A subscription can only enter a `paused` status [when a trial ends without a payment method](https://docs.stripe.com/billing/subscriptions/trials/free-trials#create-free-trials-without-payment). A `paused` subscription doesn't generate invoices and can be resumed after your customer adds their payment method. The `paused` status is different from [pausing collection](https://docs.stripe.com/billing/subscriptions/pause-payment), which still generates invoices and leaves the subscription's status unchanged.
+        /// A subscription can enter a `paused` status in several ways, including [when a trial ends without a payment method](https://docs.stripe.com/billing/subscriptions/trials/free-trials#create-free-trials-without-payment) or when you pause it using the [pause endpoint](https://docs.stripe.com/api/subscriptions/pause). A `paused` subscription doesn't advance to a new billing period or generate invoices until it resumes. The `paused` status is different from [pausing collection](https://docs.stripe.com/billing/subscriptions/pause-payment), which still generates invoices and leaves the subscription's status unchanged.
         /// If subscription `collection_method=charge_automatically`, it becomes `past_due` when payment is required but cannot be paid (due to failed payment or awaiting additional user actions). Once Stripe has exhausted all payment retry attempts, the subscription will become `canceled` or `unpaid` (depending on your subscriptions settings).
         /// If subscription `collection_method=send_invoice` it becomes `past_due` when its invoice is not paid by the due date, and `canceled` or `unpaid` if it is still not paid by an additional deadline after that. Note that when a subscription has a status of `unpaid`, no subsequent invoices will be attempted (invoices will be created, but then immediately automatically closed). After receiving updated payment information from a customer, you may choose to reopen and pay their closed invoices.
         Status: SubscriptionStatus
@@ -3787,11 +3802,13 @@ type ApiErrorsCode =
     | ShippingCalculationFailed
     | SiretInvalid
     | SkuInactive
+    | SmartDisputesNotAvailable
     | StateUnsupported
     | StatusTransitionInvalid
     | StorerCapabilityMissing
     | StorerCapabilityNotActive
     | StripeTaxInactive
+    | SubscriptionUpdateTrialAfterBillingCycleAnchor
     | TaxIdInvalid
     | TaxIdProhibited
     | TaxesCalculationFailed
@@ -3803,6 +3820,8 @@ type ApiErrorsCode =
     | TerminalReaderOffline
     | TerminalReaderTimeout
     | TestmodeChargesOnly
+    | [<JsonPropertyName("three_d_secure_authentication_not_supported")>] ThreeDSecureAuthenticationNotSupported
+    | [<JsonPropertyName("three_d_secure_authentication_upstream_error")>] ThreeDSecureAuthenticationUpstreamError
     | TlsVersionUnsupported
     | TokenAlreadyUsed
     | TokenCardNetworkInvalid
@@ -4711,10 +4730,22 @@ type PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure =
     | Challenge
 
 [<Struct>]
+type PaymentIntentPaymentMethodOptionsCardSetupCredentialUsage =
+    | Installment
+    | Recurring
+    | Unscheduled
+
+[<Struct>]
 type PaymentIntentPaymentMethodOptionsCardSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
     | OffSession
     | OnSession
+
+[<Struct>]
+type PaymentIntentPaymentMethodOptionsCardStoredCredentialUsage =
+    | Installment
+    | Recurring
+    | Unscheduled
 
 [<Struct>]
 type PaymentMethodDetailsCardInstallmentsPlanType =
@@ -4796,6 +4827,8 @@ type PaymentIntentPaymentMethodOptionsCard =
         RequestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option
         /// When enabled, using a card that is attached to a customer will require the CVC to be provided again (i.e. using the cvc_token parameter).
         RequireCvcRecollection: bool option
+        /// Set to indicate the future transaction type usage for the card being set up.
+        SetupCredentialUsage: PaymentIntentPaymentMethodOptionsCardSetupCredentialUsage option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
         /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
         /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -4805,6 +4838,8 @@ type PaymentIntentPaymentMethodOptionsCard =
         StatementDescriptorSuffixKana: string option
         /// Provides information about a card payment that customers see on their statements. Concatenated with the Kanji prefix (shortened Kanji descriptor) or Kanji statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 17 characters. On card statements, the *concatenation* of both prefix and suffix (including separators) will appear truncated to 17 characters.
         StatementDescriptorSuffixKanji: string option
+        /// Selected usage to indicate the transaction type of the off-session payment.
+        StoredCredentialUsage: PaymentIntentPaymentMethodOptionsCardStoredCredentialUsage option
     }
 
 type PaymentIntentPaymentMethodOptionsEps () = 
@@ -5462,9 +5497,9 @@ type PaymentMethodOptionsPix =
     {
         /// Determines if the amount includes the IOF tax.
         AmountIncludesIof: PaymentMethodOptionsPixAmountIncludesIof option
-        /// The number of seconds (between 10 and 1209600) after which Pix payment will expire.
+        /// The number of seconds after PaymentIntent confirmation when the Pix expires (between 60 and 1209600, inclusive). If neither expiration option is supplied, defaults to 14400 seconds (4 hours). Mutually exclusive with `expires_at`.
         ExpiresAfterSeconds: int option
-        /// The timestamp at which the Pix expires.
+        /// The absolute Unix timestamp at which the Pix expires. When supplied as an input, it must be between 60 and 1209600 seconds from the current time at validation, inclusive. If neither expiration option is supplied, the Pix expires 14400 seconds (4 hours) after PaymentIntent confirmation. Mutually exclusive with `expires_after_seconds`.
         ExpiresAt: int option
         MandateOptions: PaymentMethodOptionsMandateOptionsPix option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -7324,6 +7359,12 @@ type SetupIntentPaymentMethodOptionsCardRequestThreeDSecure =
     | Automatic
     | Challenge
 
+[<Struct>]
+type SetupIntentPaymentMethodOptionsCardSetupCredentialUsage =
+    | Installment
+    | Recurring
+    | Unscheduled
+
 type SetupIntentPaymentMethodOptionsCard =
     {
         /// Configuration options for setting up an eMandate for cards issued in India.
@@ -7332,6 +7373,8 @@ type SetupIntentPaymentMethodOptionsCard =
         Network: SetupIntentPaymentMethodOptionsCardNetwork option
         /// We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://docs.stripe.com/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. If not provided, this value defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://docs.stripe.com/payments/3d-secure/authentication-flow#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
         RequestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure option
+        /// Set to indicate the future transaction type usage for the card being set up.
+        SetupCredentialUsage: SetupIntentPaymentMethodOptionsCardSetupCredentialUsage option
     }
 
 type SetupIntentPaymentMethodOptionsCardPresent =
@@ -7909,7 +7952,7 @@ type ChargeOutcome =
         /// Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are between 0 and 100. For non-card payments, card-based payments predating the public assignment of risk scores, or in the event of an error during evaluation, this field will not be present. This field is only available with Radar for Fraud Teams.
         RiskScore: int option
         /// The ID of the Radar rule that matched the payment, if applicable.
-        Rule: StripeId<Markers.Rule> option
+        Rule: StripeId<Markers.RadarRule> option
         /// A human-readable description of the outcome type and reason, designed for you (the recipient of the payment), not your customer.
         SellerMessage: string option
         /// Possible values are `authorized`, `manual_review`, `issuer_declined`, `blocked`, and `invalid`. See [understanding declines](https://docs.stripe.com/declines) and [Radar reviews](https://docs.stripe.com/radar/reviews) for details.
@@ -7923,6 +7966,20 @@ type RefundCustomer'AnyOf =
 
 type DestinationDetailsUnimplemented =
     { DestinationDetailsUnimplemented: string option }
+
+[<Struct>]
+type RefundDestinationDetailsAfterpayClearpayReferenceStatus =
+    | Pending
+    | Available
+    | Unavailable
+
+type RefundDestinationDetailsAfterpayClearpay =
+    {
+        /// The reference assigned to the refund.
+        Reference: string option
+        /// Status of the reference on the refund. This can be `pending`, `available` or `unavailable`.
+        ReferenceStatus: RefundDestinationDetailsAfterpayClearpayReferenceStatus option
+    }
 
 [<Struct>]
 type RefundDestinationDetailsBlikReferenceStatus =
@@ -8027,6 +8084,20 @@ type RefundDestinationDetailsJpBankTransfer =
     }
 
 [<Struct>]
+type RefundDestinationDetailsKlarnaReferenceStatus =
+    | Pending
+    | Available
+    | Unavailable
+
+type RefundDestinationDetailsKlarna =
+    {
+        /// The reference assigned to the refund.
+        Reference: string option
+        /// Status of the reference on the refund. This can be `pending`, `available` or `unavailable`.
+        ReferenceStatus: RefundDestinationDetailsKlarnaReferenceStatus option
+    }
+
+[<Struct>]
 type RefundDestinationDetailsMbWayReferenceStatus =
     | Pending
     | Available
@@ -8082,10 +8153,20 @@ type RefundDestinationDetailsP24 =
         ReferenceStatus: RefundDestinationDetailsP24ReferenceStatus option
     }
 
+[<Struct>]
+type RefundDestinationDetailsPaypalReferenceStatus =
+    | Pending
+    | Available
+    | Unavailable
+
 type RefundDestinationDetailsPaypal =
     {
         /// For refunds declined by the network, a decline code provided by the network which indicates the reason the refund failed.
         NetworkDeclineCode: string option
+        /// The reference assigned to the refund.
+        Reference: string option
+        /// Status of the reference on the refund. This can be `pending`, `available` or `unavailable`.
+        ReferenceStatus: RefundDestinationDetailsPaypalReferenceStatus option
     }
 
 [<Struct>]
@@ -8135,7 +8216,7 @@ type RefundDestinationDetailsUsBankTransfer =
 type RefundDestinationDetails =
     {
         Affirm: DestinationDetailsUnimplemented option
-        AfterpayClearpay: DestinationDetailsUnimplemented option
+        AfterpayClearpay: RefundDestinationDetailsAfterpayClearpay option
         Alipay: DestinationDetailsUnimplemented option
         Alma: DestinationDetailsUnimplemented option
         AmazonPay: DestinationDetailsUnimplemented option
@@ -8152,7 +8233,7 @@ type RefundDestinationDetails =
         Giropay: DestinationDetailsUnimplemented option
         Grabpay: DestinationDetailsUnimplemented option
         JpBankTransfer: RefundDestinationDetailsJpBankTransfer option
-        Klarna: DestinationDetailsUnimplemented option
+        Klarna: RefundDestinationDetailsKlarna option
         MbWay: RefundDestinationDetailsMbWay option
         Multibanco: RefundDestinationDetailsMultibanco option
         MxBankTransfer: RefundDestinationDetailsMxBankTransfer option
@@ -8643,6 +8724,18 @@ type PaymentMethodDetailsCardRegulatedStatus =
     | Regulated
     | Unregulated
 
+[<Struct>]
+type PaymentMethodDetailsCardSetupCredentialUsage =
+    | Installment
+    | Recurring
+    | Unscheduled
+
+[<Struct>]
+type PaymentMethodDetailsCardStoredCredentialUsage =
+    | Installment
+    | Recurring
+    | Unscheduled
+
 type PaymentMethodDetailsCardWalletAmexExpressCheckout =
     { PaymentMethodDetailsCardWalletAmexExpressCheckout: string option }
 
@@ -8766,6 +8859,10 @@ type PaymentMethodDetailsCard =
             PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesOvercaptureOvercapture option
         /// Status of a card based on the card issuer.
         RegulatedStatus: PaymentMethodDetailsCardRegulatedStatus option
+        /// The payment_method_options.card.setup_credential_usage value that was passed when setup_future_usage was present at confirmation, one of `recurring`, `unscheduled`, or `installment`
+        SetupCredentialUsage: PaymentMethodDetailsCardSetupCredentialUsage option
+        /// The payment_method_options.card.stored_credential_usage value that was passed for an off session, merchant-initiated transaction.
+        StoredCredentialUsage: PaymentMethodDetailsCardStoredCredentialUsage option
         /// Populated if this transaction used 3D Secure authentication.
         ThreeDSecure: ThreeDSecureDetailsCharge option
         /// Transaction Link ID (TLID) is a unique identifier for a transaction. This is used by some card networks, such as Mastercard, for transaction linking, in addition to Network Transaction IDs. This value will be present if it is returned by the financial network in the authorization response, and null otherwise.
@@ -8793,6 +8890,7 @@ type PaymentMethodDetailsCryptoNetwork =
     | Tempo
 
 type PaymentMethodDetailsCryptoTokenCurrency =
+    | Ousd
     | PhantomCash
     | Usdc
     | Usdg
@@ -9800,6 +9898,8 @@ type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResou
     =
     | Ach
     | DomesticWireUs
+    | Fednow
+    | Rtp
     | Swift
 
 type CustomerBalanceResourceCashBalanceTransactionResourceFundedTransactionResourceBankTransferResourceUsBankTransfer =
@@ -9906,6 +10006,16 @@ type DisputeEnhancedEligibilityTypes =
     | VisaCompellingEvidence3
     | VisaCompliance
 
+type DisputeAppealCard =
+    {
+        /// The reason for filing the appeal.
+        ReasonForFiling: string option
+        /// One or more document IDs returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `dispute_evidence` to support the appeal.
+        SupportingFiles: string list option
+    }
+
+type DisputeAppeal = { Card: DisputeAppealCard option }
+
 type DisputeEnhancedEvidenceMastercardCompliance =
     {
         /// A field acknowledging the fee incurred when countering a Mastercard compliance dispute. If this field is set to true, evidence can be submitted for the compliance dispute.
@@ -9998,6 +10108,8 @@ type DisputeEvidence =
     {
         /// Any server or activity logs showing proof that the customer accessed or downloaded the purchased digital product. This information should include IP addresses, corresponding timestamps, and any detailed recorded activity.
         AccessActivityLog: string option
+        /// Appeal evidence submitted during the appeal stage.
+        Appeal: DisputeAppeal option
         /// The billing address provided by the customer.
         BillingAddress: string option
         /// (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Your subscription cancellation policy, as shown to the customer.
@@ -10102,6 +10214,12 @@ type DisputeEnhancedEligibility =
       VisaCompellingEvidence3: DisputeEnhancedEligibilityVisaCompellingEvidence3 option
       VisaCompliance: DisputeEnhancedEligibilityVisaCompliance option }
 
+[<Struct>]
+type DisputeEvidenceDetailsSubmissionMethod =
+    | Manual
+    | NotSubmitted
+    | SmartDisputes
+
 type DisputeEvidenceDetails =
     {
         /// Date by which evidence must be submitted in order to successfully challenge dispute. Will be 0 if the customer's bank or credit card company doesn't allow a response for this particular dispute.
@@ -10113,7 +10231,16 @@ type DisputeEvidenceDetails =
         PastDue: bool
         /// The number of times evidence has been submitted. Typically, you may only submit evidence once.
         SubmissionCount: int
+        /// Whether the dispute was submitted manually, with Smart Disputes, or not submitted.
+        SubmissionMethod: DisputeEvidenceDetailsSubmissionMethod
     }
+
+[<Struct>]
+type DisputeIntendedSubmissionMethod =
+    | Manual
+    | PreferManual
+    | PreferSmartDisputes
+    | SmartDisputes
 
 [<Struct>]
 type DisputePaymentMethodDetailsAmazonPayDisputeType =
@@ -10224,6 +10351,8 @@ type DisputeReason =
     | Unrecognized
 
 type DisputeStatus =
+    | AppealNeedsResponse
+    | AppealUnderReview
     | Lost
     | NeedsResponse
     | Prevented
@@ -10255,6 +10384,8 @@ type Dispute =
         EvidenceDetails: DisputeEvidenceDetails
         /// Unique identifier for the object.
         Id: string
+        /// Intended submission method for the dispute.
+        IntendedSubmissionMethod: DisputeIntendedSubmissionMethod option
         /// If true, it's still possible to refund the disputed payment. After the payment has been fully refunded, no further funds are withdrawn from your Stripe account as a result of this dispute.
         IsChargeRefundable: bool
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
@@ -10268,7 +10399,7 @@ type Dispute =
         PaymentMethodDetails: DisputePaymentMethodDetails option
         /// Reason given by cardholder for dispute. Possible values are `bank_cannot_process`, `check_returned`, `credit_not_processed`, `customer_initiated`, `debit_not_authorized`, `duplicate`, `fraudulent`, `general`, `incorrect_account_details`, `insufficient_funds`, `noncompliant`, `product_not_received`, `product_unacceptable`, `subscription_canceled`, or `unrecognized`. Learn more about [dispute reasons](https://docs.stripe.com/disputes/categories).
         Reason: DisputeReason
-        /// The current status of a dispute. Possible values include:`warning_needs_response`, `warning_under_review`, `warning_closed`, `needs_response`, `under_review`, `won`, `lost`, or `prevented`.
+        /// The current status of a dispute. Possible values include:`warning_needs_response`, `warning_under_review`, `warning_closed`, `needs_response`, `under_review`, `appeal_needs_response`, `appeal_under_review`, `won`, `lost`, or `prevented`.
         Status: DisputeStatus
     }
 
@@ -11246,7 +11377,7 @@ type Payout =
         Destination: PayoutDestination'AnyOf option
         /// If the payout fails or cancels, this is the ID of the balance transaction that reverses the initial balance transaction and returns the funds from the failed payout back in your balance.
         FailureBalanceTransaction: StripeId<Markers.BalanceTransaction> option
-        /// Error code that provides a reason for a payout failure, if available. View our [list of failure codes](https://docs.stripe.com/api#payout_failures).
+        /// Error code that provides a reason for a payout failure, if available.
         FailureCode: string option
         /// Message that provides the reason for a payout failure, if available.
         FailureMessage: string option
@@ -12283,6 +12414,13 @@ type ConnectEmbeddedAccountConfigClaim =
 type ConnectEmbeddedBaseFeatures =
     { ConnectEmbeddedBaseFeatures: string option }
 
+type ConnectEmbeddedBaseConfig =
+    {
+        /// Whether the embedded component is enabled.
+        Enabled: bool
+        Features: ConnectEmbeddedBaseFeatures
+    }
+
 type ConnectEmbeddedBaseConfigClaim =
     {
         /// Whether the embedded component is enabled.
@@ -12495,8 +12633,11 @@ type ConnectEmbeddedAccountSessionCreateComponents =
       PayoutReconciliationReport: ConnectEmbeddedBaseConfigClaim
       Payouts: ConnectEmbeddedPayoutsConfig
       PayoutsList: ConnectEmbeddedBaseConfigClaim
+      ReportingChart: ConnectEmbeddedBaseConfig
       TaxRegistrations: ConnectEmbeddedBaseConfigClaim
-      TaxSettings: ConnectEmbeddedBaseConfigClaim }
+      TaxSettings: ConnectEmbeddedBaseConfigClaim
+      TerminalHardwareOrders: ConnectEmbeddedBaseConfig
+      TerminalHardwareShop: ConnectEmbeddedBaseConfig }
 
 type CreditNotesPaymentRecordRefund =
     {
@@ -12797,7 +12938,7 @@ type FinancialConnectionsAccount =
         Last4: string option
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
-        /// The most recent information about the account's owners.
+        /// The ID of the [Financial Connections Account Ownership](https://docs.stripe.com/api/financial_connections/ownership) object associated with this account.
         Ownership: StripeId<Markers.FinancialConnectionsAccountOwnership> option
         /// The state of the most recent attempt to refresh the account owners.
         OwnershipRefresh: BankConnectionsResourceOwnershipRefresh option
@@ -13319,9 +13460,12 @@ type InvoicePaymentMethodOptionsPix =
     {
         /// Determines if the amount includes the IOF tax.
         AmountIncludesIof: InvoicePaymentMethodOptionsPixAmountIncludesIof option
-        /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
+        /// The number of seconds after PaymentIntent confirmation when the Pix expires (between 60 and 1209600, inclusive). If unspecified, defaults to 14400 seconds (4 hours).
         ExpiresAfterSeconds: int option
     }
+
+type InvoicePaymentMethodOptionsSepaDebit =
+    { InvoicePaymentMethodOptionsSepaDebit: string option }
 
 type InvoicesPaymentMethodOptions =
     {
@@ -13396,6 +13540,7 @@ type InvoicesPaymentSettingsPaymentMethodTypes =
     | Satispay
     | SepaCreditTransfer
     | SepaDebit
+    | Sequra
     | Sofort
     | Swish
     | Twint
@@ -13461,7 +13606,9 @@ type InvoicesResourceInvoiceTaxIdType =
     | AoTin
     | ArCuit
     | AuAbn
+    | AuAcn
     | AuArn
+    | AuWpn
     | AwTin
     | AzTin
     | BaTin
@@ -13475,6 +13622,7 @@ type InvoicesResourceInvoiceTaxIdType =
     | BrCnpj
     | BrCpf
     | BsTin
+    | BwVat
     | ByTin
     | CaBn
     | CaGstHst
@@ -13485,12 +13633,14 @@ type InvoicesResourceInvoiceTaxIdType =
     | CdNif
     | ChUid
     | ChVat
+    | CiVat
     | ClTin
     | CmNiu
     | CnTin
     | CoNit
     | CrTin
     | CvNif
+    | CzDic
     | DeStn
     | DoRcn
     | EcRuc
@@ -13500,8 +13650,12 @@ type InvoicesResourceInvoiceTaxIdType =
     | EuOssVat
     | EuVat
     | FoVat
+    | FrSiren
+    | FrSiret
+    | FrSpi
     | GbVat
     | GeVat
+    | GhTin
     | GiTin
     | GnNif
     | HkBr
@@ -13511,6 +13665,7 @@ type InvoicesResourceInvoiceTaxIdType =
     | IdNpwp
     | IlVat
     | InGst
+    | IsKt
     | IsVat
     | ItCf
     | JpCn
@@ -13526,23 +13681,28 @@ type InvoicesResourceInvoiceTaxIdType =
     | LiVat
     | LkVat
     | MaVat
+    | MdCf
     | MdVat
     | MePib
     | MkVat
     | MrNif
+    | MuVat
     | MxRfc
     | MyFrp
     | MyItn
     | MySst
+    | MzNuit
     | NgTin
     | NoVat
     | NoVoec
     | NpPan
+    | NzBn
     | NzGst
     | OmVat
     | PeRuc
     | PhTin
     | PlNip
+    | PtNif
     | PyRuc
     | RoTin
     | RsPib
@@ -13552,12 +13712,15 @@ type InvoicesResourceInvoiceTaxIdType =
     | SgGst
     | SgUen
     | SiTin
+    | SmCoe
     | SnNinea
     | SrFin
     | SvNit
     | ThVat
     | TjTin
     | TrTin
+    | TtBir
+    | TtVat
     | TwVat
     | TzVat
     | UaVat
@@ -13575,7 +13738,7 @@ type InvoicesResourceInvoiceTaxIdType =
 
 type InvoicesResourceInvoiceTaxId =
     {
-        /// The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `hr_oib`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `no_voec`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `pl_nip`, `it_cf`, `fo_vat`, `gi_tin`, `py_ruc`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `li_vat`, `lk_vat`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, `al_tin`, `bh_vat`, `kz_bin`, `ng_tin`, `om_vat`, `de_stn`, `ch_uid`, `tz_vat`, `uz_vat`, `uz_tin`, `md_vat`, `ma_vat`, `by_tin`, `ao_tin`, `bs_tin`, `bb_tin`, `cd_nif`, `mr_nif`, `me_pib`, `zw_tin`, `ba_tin`, `gn_nif`, `mk_vat`, `sr_fin`, `sn_ninea`, `am_tin`, `np_pan`, `tj_tin`, `ug_tin`, `zm_tin`, `kh_tin`, `aw_tin`, `az_tin`, `bd_bin`, `bj_ifu`, `et_tin`, `kg_tin`, `la_tin`, `cm_niu`, `cv_nif`, `bf_ifu`, `ic_nif`, or `unknown`
+        /// The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `hr_oib`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `no_voec`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `pl_nip`, `it_cf`, `fo_vat`, `gi_tin`, `py_ruc`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `li_vat`, `lk_vat`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, `al_tin`, `bh_vat`, `kz_bin`, `ng_tin`, `om_vat`, `de_stn`, `ch_uid`, `tz_vat`, `uz_vat`, `uz_tin`, `md_vat`, `ma_vat`, `by_tin`, `ao_tin`, `bs_tin`, `bb_tin`, `cd_nif`, `mr_nif`, `me_pib`, `zw_tin`, `ba_tin`, `gn_nif`, `mk_vat`, `sr_fin`, `sn_ninea`, `am_tin`, `np_pan`, `tj_tin`, `ug_tin`, `zm_tin`, `kh_tin`, `aw_tin`, `az_tin`, `bd_bin`, `au_acn`, `nz_bn`, `pt_nif`, `cz_dic`, `fr_siret`, `fr_siren`, `fr_spi`, `sm_coe`, `tt_vat`, `tt_bir`, `mu_vat`, `mz_nuit`, `au_wpn`, `md_cf`, `is_kt`, `bj_ifu`, `et_tin`, `kg_tin`, `la_tin`, `cm_niu`, `cv_nif`, `bf_ifu`, `ic_nif`, `gh_tin`, `bw_vat`, `ci_vat`, or `unknown`
         Type: InvoicesResourceInvoiceTaxIdType
         /// The value of the tax ID.
         Value: string option
@@ -14697,7 +14860,23 @@ type PaymentLinksResourceShippingOption =
         ShippingRate: StripeId<Markers.ShippingRate>
     }
 
-type PaymentLinksResourceSubscriptionDataInvoiceSettings = { Issuer: ConnectAccountReference }
+type PaymentLinksResourceSubscriptionDataInvoiceSettingsAccountTaxIds'AnyOf =
+    | String of string
+    | TaxId of TaxId
+    | DeletedTaxId of DeletedTaxId
+
+type PaymentLinksResourceSubscriptionDataInvoiceSettings =
+    {
+        /// The account tax IDs associated with the subscription. Will be set on invoices generated by the subscription.
+        AccountTaxIds: PaymentLinksResourceSubscriptionDataInvoiceSettingsAccountTaxIds'AnyOf list option
+        /// A list of up to 4 custom fields to be displayed on the invoice.
+        CustomFields: InvoiceSettingCustomField list option
+        /// An arbitrary string attached to the object. Often useful for displaying to users.
+        Description: string option
+        /// Footer to be displayed on the invoice.
+        Footer: string option
+        Issuer: ConnectAccountReference
+    }
 
 [<Struct>]
 type SubscriptionsTrialsResourceEndBehaviorMissingPaymentMethod =
@@ -15816,7 +15995,9 @@ type PaymentPagesCheckoutSessionTaxIdType =
     | AoTin
     | ArCuit
     | AuAbn
+    | AuAcn
     | AuArn
+    | AuWpn
     | AwTin
     | AzTin
     | BaTin
@@ -15830,6 +16011,7 @@ type PaymentPagesCheckoutSessionTaxIdType =
     | BrCnpj
     | BrCpf
     | BsTin
+    | BwVat
     | ByTin
     | CaBn
     | CaGstHst
@@ -15840,12 +16022,14 @@ type PaymentPagesCheckoutSessionTaxIdType =
     | CdNif
     | ChUid
     | ChVat
+    | CiVat
     | ClTin
     | CmNiu
     | CnTin
     | CoNit
     | CrTin
     | CvNif
+    | CzDic
     | DeStn
     | DoRcn
     | EcRuc
@@ -15855,8 +16039,12 @@ type PaymentPagesCheckoutSessionTaxIdType =
     | EuOssVat
     | EuVat
     | FoVat
+    | FrSiren
+    | FrSiret
+    | FrSpi
     | GbVat
     | GeVat
+    | GhTin
     | GiTin
     | GnNif
     | HkBr
@@ -15866,6 +16054,7 @@ type PaymentPagesCheckoutSessionTaxIdType =
     | IdNpwp
     | IlVat
     | InGst
+    | IsKt
     | IsVat
     | ItCf
     | JpCn
@@ -15881,23 +16070,28 @@ type PaymentPagesCheckoutSessionTaxIdType =
     | LiVat
     | LkVat
     | MaVat
+    | MdCf
     | MdVat
     | MePib
     | MkVat
     | MrNif
+    | MuVat
     | MxRfc
     | MyFrp
     | MyItn
     | MySst
+    | MzNuit
     | NgTin
     | NoVat
     | NoVoec
     | NpPan
+    | NzBn
     | NzGst
     | OmVat
     | PeRuc
     | PhTin
     | PlNip
+    | PtNif
     | PyRuc
     | RoTin
     | RsPib
@@ -15907,12 +16101,15 @@ type PaymentPagesCheckoutSessionTaxIdType =
     | SgGst
     | SgUen
     | SiTin
+    | SmCoe
     | SnNinea
     | SrFin
     | SvNit
     | ThVat
     | TjTin
     | TrTin
+    | TtBir
+    | TtVat
     | TwVat
     | TzVat
     | UaVat
@@ -15930,7 +16127,7 @@ type PaymentPagesCheckoutSessionTaxIdType =
 
 type PaymentPagesCheckoutSessionTaxId =
     {
-        /// The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `hr_oib`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `no_voec`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `pl_nip`, `it_cf`, `fo_vat`, `gi_tin`, `py_ruc`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `li_vat`, `lk_vat`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, `al_tin`, `bh_vat`, `kz_bin`, `ng_tin`, `om_vat`, `de_stn`, `ch_uid`, `tz_vat`, `uz_vat`, `uz_tin`, `md_vat`, `ma_vat`, `by_tin`, `ao_tin`, `bs_tin`, `bb_tin`, `cd_nif`, `mr_nif`, `me_pib`, `zw_tin`, `ba_tin`, `gn_nif`, `mk_vat`, `sr_fin`, `sn_ninea`, `am_tin`, `np_pan`, `tj_tin`, `ug_tin`, `zm_tin`, `kh_tin`, `aw_tin`, `az_tin`, `bd_bin`, `bj_ifu`, `et_tin`, `kg_tin`, `la_tin`, `cm_niu`, `cv_nif`, `bf_ifu`, `ic_nif`, or `unknown`
+        /// The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `hr_oib`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `no_voec`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `pl_nip`, `it_cf`, `fo_vat`, `gi_tin`, `py_ruc`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `li_vat`, `lk_vat`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, `al_tin`, `bh_vat`, `kz_bin`, `ng_tin`, `om_vat`, `de_stn`, `ch_uid`, `tz_vat`, `uz_vat`, `uz_tin`, `md_vat`, `ma_vat`, `by_tin`, `ao_tin`, `bs_tin`, `bb_tin`, `cd_nif`, `mr_nif`, `me_pib`, `zw_tin`, `ba_tin`, `gn_nif`, `mk_vat`, `sr_fin`, `sn_ninea`, `am_tin`, `np_pan`, `tj_tin`, `ug_tin`, `zm_tin`, `kh_tin`, `aw_tin`, `az_tin`, `bd_bin`, `au_acn`, `nz_bn`, `pt_nif`, `cz_dic`, `fr_siret`, `fr_siren`, `fr_spi`, `sm_coe`, `tt_vat`, `tt_bir`, `mu_vat`, `mz_nuit`, `au_wpn`, `md_cf`, `is_kt`, `bj_ifu`, `et_tin`, `kg_tin`, `la_tin`, `cm_niu`, `cv_nif`, `bf_ifu`, `ic_nif`, `gh_tin`, `bw_vat`, `ci_vat`, or `unknown`
         Type: PaymentPagesCheckoutSessionTaxIdType
         /// The value of the tax ID.
         Value: string option
@@ -16647,6 +16844,12 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWal
         Type: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWalletType
     }
 
+[<Struct>]
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage =
+    | Installment
+    | Recurring
+    | Unscheduled
+
 /// Details of the card used for this payment attempt.
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails =
     {
@@ -16692,6 +16895,9 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails =
         NetworkToken: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken option
         /// This is used by the financial networks to identify a transaction. Visa calls this the Transaction ID, Mastercard calls this the Trace ID, and American Express calls this the Acquirer Reference Data. This value will be present if it is returned by the financial network in the authorization response, and null otherwise.
         NetworkTransactionId: string option
+        /// The transaction type that was passed for an off-session, Merchant-Initiated transaction, one of `recurring` or `unscheduled`.
+        StoredCredentialUsage:
+            PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage option
         /// Populated if this transaction used 3D Secure authentication.
         ThreeDSecure: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure option
         /// If this Card is part of a card wallet, this contains the details of the card wallet.
@@ -17140,7 +17346,7 @@ type AccountBusinessProfile with
         }
 
 type AccountCapabilities with
-    static member New(?acssDebitPayments: AccountCapabilitiesAcssDebitPayments, ?affirmPayments: AccountCapabilitiesAffirmPayments, ?afterpayClearpayPayments: AccountCapabilitiesAfterpayClearpayPayments, ?almaPayments: AccountCapabilitiesAlmaPayments, ?amazonPayPayments: AccountCapabilitiesAmazonPayPayments, ?appDistribution: AccountCapabilitiesAppDistribution, ?auBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: AccountCapabilitiesBacsDebitPayments, ?bancontactPayments: AccountCapabilitiesBancontactPayments, ?bankTransferPayments: AccountCapabilitiesBankTransferPayments, ?billiePayments: AccountCapabilitiesBilliePayments, ?bizumPayments: AccountCapabilitiesBizumPayments, ?blikPayments: AccountCapabilitiesBlikPayments, ?blikRecurringPayments: AccountCapabilitiesBlikRecurringPayments, ?boletoPayments: AccountCapabilitiesBoletoPayments, ?cardIssuing: AccountCapabilitiesCardIssuing, ?cardPayments: AccountCapabilitiesCardPayments, ?cartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments, ?cashappPayments: AccountCapabilitiesCashappPayments, ?cryptoPayments: AccountCapabilitiesCryptoPayments, ?epsPayments: AccountCapabilitiesEpsPayments, ?fpxPayments: AccountCapabilitiesFpxPayments, ?gbBankTransferPayments: AccountCapabilitiesGbBankTransferPayments, ?giropayPayments: AccountCapabilitiesGiropayPayments, ?grabpayPayments: AccountCapabilitiesGrabpayPayments, ?idealPayments: AccountCapabilitiesIdealPayments, ?indiaInternationalPayments: AccountCapabilitiesIndiaInternationalPayments, ?jcbPayments: AccountCapabilitiesJcbPayments, ?jpBankTransferPayments: AccountCapabilitiesJpBankTransferPayments, ?kakaoPayPayments: AccountCapabilitiesKakaoPayPayments, ?klarnaPayments: AccountCapabilitiesKlarnaPayments, ?konbiniPayments: AccountCapabilitiesKonbiniPayments, ?krCardPayments: AccountCapabilitiesKrCardPayments, ?legacyPayments: AccountCapabilitiesLegacyPayments, ?linkPayments: AccountCapabilitiesLinkPayments, ?mbWayPayments: AccountCapabilitiesMbWayPayments, ?mobilepayPayments: AccountCapabilitiesMobilepayPayments, ?multibancoPayments: AccountCapabilitiesMultibancoPayments, ?mxBankTransferPayments: AccountCapabilitiesMxBankTransferPayments, ?naverPayPayments: AccountCapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: AccountCapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: AccountCapabilitiesOxxoPayments, ?p24Payments: AccountCapabilitiesP24Payments, ?payByBankPayments: AccountCapabilitiesPayByBankPayments, ?paycoPayments: AccountCapabilitiesPaycoPayments, ?paynowPayments: AccountCapabilitiesPaynowPayments, ?paypayPayments: AccountCapabilitiesPaypayPayments, ?paytoPayments: AccountCapabilitiesPaytoPayments, ?pixPayments: AccountCapabilitiesPixPayments, ?promptpayPayments: AccountCapabilitiesPromptpayPayments, ?revolutPayPayments: AccountCapabilitiesRevolutPayPayments, ?samsungPayPayments: AccountCapabilitiesSamsungPayPayments, ?satispayPayments: AccountCapabilitiesSatispayPayments, ?scalapayPayments: AccountCapabilitiesScalapayPayments, ?sepaBankTransferPayments: AccountCapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: AccountCapabilitiesSepaDebitPayments, ?sequraPayments: AccountCapabilitiesSequraPayments, ?sofortPayments: AccountCapabilitiesSofortPayments, ?sunbitPayments: AccountCapabilitiesSunbitPayments, ?swishPayments: AccountCapabilitiesSwishPayments, ?taxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc, ?transfers: AccountCapabilitiesTransfers, ?treasury: AccountCapabilitiesTreasury, ?twintPayments: AccountCapabilitiesTwintPayments, ?upiPayments: AccountCapabilitiesUpiPayments, ?usBankAccountAchPayments: AccountCapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: AccountCapabilitiesUsBankTransferPayments, ?zipPayments: AccountCapabilitiesZipPayments) =
+    static member New(?acssDebitPayments: AccountCapabilitiesAcssDebitPayments, ?affirmPayments: AccountCapabilitiesAffirmPayments, ?afterpayClearpayPayments: AccountCapabilitiesAfterpayClearpayPayments, ?almaPayments: AccountCapabilitiesAlmaPayments, ?amazonPayPayments: AccountCapabilitiesAmazonPayPayments, ?appDistribution: AccountCapabilitiesAppDistribution, ?auBecsDebitPayments: AccountCapabilitiesAuBecsDebitPayments, ?bacsDebitPayments: AccountCapabilitiesBacsDebitPayments, ?bancontactPayments: AccountCapabilitiesBancontactPayments, ?bankTransferPayments: AccountCapabilitiesBankTransferPayments, ?billiePayments: AccountCapabilitiesBilliePayments, ?bizumPayments: AccountCapabilitiesBizumPayments, ?blikPayments: AccountCapabilitiesBlikPayments, ?blikRecurringPayments: AccountCapabilitiesBlikRecurringPayments, ?boletoPayments: AccountCapabilitiesBoletoPayments, ?cardIssuing: AccountCapabilitiesCardIssuing, ?cardPayments: AccountCapabilitiesCardPayments, ?cartesBancairesPayments: AccountCapabilitiesCartesBancairesPayments, ?cashappPayments: AccountCapabilitiesCashappPayments, ?cryptoPayments: AccountCapabilitiesCryptoPayments, ?epsPayments: AccountCapabilitiesEpsPayments, ?fpxPayments: AccountCapabilitiesFpxPayments, ?gbBankTransferPayments: AccountCapabilitiesGbBankTransferPayments, ?giropayPayments: AccountCapabilitiesGiropayPayments, ?grabpayPayments: AccountCapabilitiesGrabpayPayments, ?idealPayments: AccountCapabilitiesIdealPayments, ?indiaInternationalPayments: AccountCapabilitiesIndiaInternationalPayments, ?jcbPayments: AccountCapabilitiesJcbPayments, ?jpBankTransferPayments: AccountCapabilitiesJpBankTransferPayments, ?kakaoPayPayments: AccountCapabilitiesKakaoPayPayments, ?klarnaPayments: AccountCapabilitiesKlarnaPayments, ?konbiniPayments: AccountCapabilitiesKonbiniPayments, ?krCardPayments: AccountCapabilitiesKrCardPayments, ?legacyPayments: AccountCapabilitiesLegacyPayments, ?linkPayments: AccountCapabilitiesLinkPayments, ?mbWayPayments: AccountCapabilitiesMbWayPayments, ?mobilepayPayments: AccountCapabilitiesMobilepayPayments, ?multibancoPayments: AccountCapabilitiesMultibancoPayments, ?mxBankTransferPayments: AccountCapabilitiesMxBankTransferPayments, ?naverPayPayments: AccountCapabilitiesNaverPayPayments, ?nzBankAccountBecsDebitPayments: AccountCapabilitiesNzBankAccountBecsDebitPayments, ?oxxoPayments: AccountCapabilitiesOxxoPayments, ?p24Payments: AccountCapabilitiesP24Payments, ?payByBankPayments: AccountCapabilitiesPayByBankPayments, ?paycoPayments: AccountCapabilitiesPaycoPayments, ?paynowPayments: AccountCapabilitiesPaynowPayments, ?paypayPayments: AccountCapabilitiesPaypayPayments, ?paytoPayments: AccountCapabilitiesPaytoPayments, ?pixPayments: AccountCapabilitiesPixPayments, ?promptpayPayments: AccountCapabilitiesPromptpayPayments, ?revolutPayPayments: AccountCapabilitiesRevolutPayPayments, ?samsungPayPayments: AccountCapabilitiesSamsungPayPayments, ?satispayPayments: AccountCapabilitiesSatispayPayments, ?scalapayPayments: AccountCapabilitiesScalapayPayments, ?sepaBankTransferPayments: AccountCapabilitiesSepaBankTransferPayments, ?sepaDebitPayments: AccountCapabilitiesSepaDebitPayments, ?sequraPayments: AccountCapabilitiesSequraPayments, ?sofortPayments: AccountCapabilitiesSofortPayments, ?sunbitPayments: AccountCapabilitiesSunbitPayments, ?swishPayments: AccountCapabilitiesSwishPayments, ?taxReportingUs1099K: AccountCapabilitiesTaxReportingUs1099K, ?taxReportingUs1099Misc: AccountCapabilitiesTaxReportingUs1099Misc, ?transfers: AccountCapabilitiesTransfers, ?treasury: AccountCapabilitiesTreasury, ?twintPayments: AccountCapabilitiesTwintPayments, ?upiPayments: AccountCapabilitiesUpiPayments, ?usBankAccountAchPayments: AccountCapabilitiesUsBankAccountAchPayments, ?usBankTransferPayments: AccountCapabilitiesUsBankTransferPayments, ?weroPayments: AccountCapabilitiesWeroPayments, ?zipPayments: AccountCapabilitiesZipPayments) =
         {
             AcssDebitPayments = acssDebitPayments
             AffirmPayments = affirmPayments
@@ -17210,6 +17416,7 @@ type AccountCapabilities with
             UpiPayments = upiPayments
             UsBankAccountAchPayments = usBankAccountAchPayments
             UsBankTransferPayments = usBankTransferPayments
+            WeroPayments = weroPayments
             ZipPayments = zipPayments
         }
 
@@ -17868,12 +18075,6 @@ type InvoicePaymentMethodOptionsPayto with
             MandateOptions = mandateOptions
         }
 
-type InvoicePaymentMethodOptionsSepaDebit with
-    static member New(?invoicePaymentMethodOptionsSepaDebit: string option) =
-        {
-            InvoicePaymentMethodOptionsSepaDebit = invoicePaymentMethodOptionsSepaDebit |> Option.flatten
-        }
-
 type InvoicePaymentMethodOptionsMandateOptionsUpi with
     static member New(amount: int option, amountType: InvoicePaymentMethodOptionsMandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
         {
@@ -17981,8 +18182,14 @@ type SubscriptionPaymentMethodOptionsPix with
             MandateOptions = mandateOptions
         }
 
+type SubscriptionPaymentMethodOptionsSepaDebit with
+    static member New(?subscriptionPaymentMethodOptionsSepaDebit: string option) =
+        {
+            SubscriptionPaymentMethodOptionsSepaDebit = subscriptionPaymentMethodOptionsSepaDebit |> Option.flatten
+        }
+
 type SubscriptionsResourcePaymentMethodOptions with
-    static member New(acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: SubscriptionPaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, payto: InvoicePaymentMethodOptionsPayto option, pix: SubscriptionPaymentMethodOptionsPix option, sepaDebit: InvoicePaymentMethodOptionsSepaDebit option, upi: InvoicePaymentMethodOptionsUpi option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option, ?billie: SubscriptionPaymentMethodOptionsBillie option, ?blik: SubscriptionPaymentMethodOptionsBlik option) =
+    static member New(acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: SubscriptionPaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, payto: InvoicePaymentMethodOptionsPayto option, pix: SubscriptionPaymentMethodOptionsPix option, sepaDebit: SubscriptionPaymentMethodOptionsSepaDebit option, upi: InvoicePaymentMethodOptionsUpi option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option, ?billie: SubscriptionPaymentMethodOptionsBillie option, ?blik: SubscriptionPaymentMethodOptionsBlik option) =
         {
             AcssDebit = acssDebit
             Bancontact = bancontact
@@ -18435,7 +18642,7 @@ type LegalEntityUboDeclaration with
         }
 
 type LegalEntityCompany with
-    static member New(?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?administrativeAddress: Address, ?directorsProvided: bool, ?directorshipDeclaration: LegalEntityDirectorshipDeclaration option, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string option, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?ownershipDeclaration: LegalEntityUboDeclaration option, ?ownershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason, ?phone: string option, ?principalPlaceOfBusiness: Address, ?registrationDate: LegalEntityRegistrationDate, ?representativeDeclaration: LegalEntityRepresentativeDeclaration option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerification option) =
+    static member New(?address: Address, ?addressKana: LegalEntityJapanAddress option, ?addressKanji: LegalEntityJapanAddress option, ?administrativeAddress: Address, ?directorsProvided: bool, ?directorshipDeclaration: LegalEntityDirectorshipDeclaration option, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string option, ?nameKana: string option, ?nameKanji: string option, ?ownersProvided: bool, ?ownershipDeclaration: LegalEntityUboDeclaration option, ?ownershipExemptionReason: LegalEntityCompanyOwnershipExemptionReason, ?phone: string option, ?physicalAddress: Address, ?principalPlaceOfBusiness: Address, ?registrationDate: LegalEntityRegistrationDate, ?representativeDeclaration: LegalEntityRepresentativeDeclaration option, ?structure: LegalEntityCompanyStructure, ?taxIdProvided: bool, ?taxIdRegistrar: string, ?vatIdProvided: bool, ?verification: LegalEntityCompanyVerification option) =
         {
             Address = address
             AddressKana = addressKana |> Option.flatten
@@ -18453,6 +18660,7 @@ type LegalEntityCompany with
             OwnershipDeclaration = ownershipDeclaration |> Option.flatten
             OwnershipExemptionReason = ownershipExemptionReason
             Phone = phone |> Option.flatten
+            PhysicalAddress = physicalAddress
             PrincipalPlaceOfBusiness = principalPlaceOfBusiness
             RegistrationDate = registrationDate
             RepresentativeDeclaration = representativeDeclaration |> Option.flatten
@@ -19492,7 +19700,7 @@ type PaymentMethodOptionsCardMandateOptions with
         }
 
 type PaymentIntentPaymentMethodOptionsCard with
-    static member New(installments: PaymentMethodOptionsCardInstallments option, mandateOptions: PaymentMethodOptionsCardMandateOptions option, network: PaymentIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option, ?requestExtendedAuthorization: PaymentIntentPaymentMethodOptionsCardRequestExtendedAuthorization, ?requestIncrementalAuthorization: PaymentIntentPaymentMethodOptionsCardRequestIncrementalAuthorization, ?requestMulticapture: PaymentIntentPaymentMethodOptionsCardRequestMulticapture, ?requestOvercapture: PaymentIntentPaymentMethodOptionsCardRequestOvercapture, ?requireCvcRecollection: bool, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsCardSetupFutureUsage, ?statementDescriptorSuffixKana: string, ?statementDescriptorSuffixKanji: string) =
+    static member New(installments: PaymentMethodOptionsCardInstallments option, mandateOptions: PaymentMethodOptionsCardMandateOptions option, network: PaymentIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option, ?requestExtendedAuthorization: PaymentIntentPaymentMethodOptionsCardRequestExtendedAuthorization, ?requestIncrementalAuthorization: PaymentIntentPaymentMethodOptionsCardRequestIncrementalAuthorization, ?requestMulticapture: PaymentIntentPaymentMethodOptionsCardRequestMulticapture, ?requestOvercapture: PaymentIntentPaymentMethodOptionsCardRequestOvercapture, ?requireCvcRecollection: bool, ?setupCredentialUsage: PaymentIntentPaymentMethodOptionsCardSetupCredentialUsage, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsCardSetupFutureUsage, ?statementDescriptorSuffixKana: string, ?statementDescriptorSuffixKanji: string, ?storedCredentialUsage: PaymentIntentPaymentMethodOptionsCardStoredCredentialUsage) =
         {
             Installments = installments
             MandateOptions = mandateOptions
@@ -19503,9 +19711,11 @@ type PaymentIntentPaymentMethodOptionsCard with
             RequestMulticapture = requestMulticapture
             RequestOvercapture = requestOvercapture
             RequireCvcRecollection = requireCvcRecollection
+            SetupCredentialUsage = setupCredentialUsage
             SetupFutureUsage = setupFutureUsage
             StatementDescriptorSuffixKana = statementDescriptorSuffixKana
             StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
+            StoredCredentialUsage = storedCredentialUsage
         }
 
 module PaymentIntentPaymentMethodOptionsCard =
@@ -21006,11 +21216,12 @@ type SetupIntentPaymentMethodOptionsCardMandateOptions with
         }
 
 type SetupIntentPaymentMethodOptionsCard with
-    static member New(mandateOptions: SetupIntentPaymentMethodOptionsCardMandateOptions option, network: SetupIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure option) =
+    static member New(mandateOptions: SetupIntentPaymentMethodOptionsCardMandateOptions option, network: SetupIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: SetupIntentPaymentMethodOptionsCardRequestThreeDSecure option, ?setupCredentialUsage: SetupIntentPaymentMethodOptionsCardSetupCredentialUsage) =
         {
             MandateOptions = mandateOptions
             Network = network
             RequestThreeDSecure = requestThreeDSecure
+            SetupCredentialUsage = setupCredentialUsage
         }
 
 type SetupIntentPaymentMethodOptionsCardPresent with
@@ -21282,7 +21493,7 @@ type ChargeFraudDetails with
         }
 
 type ChargeOutcome with
-    static member New(adviceCode: ChargeOutcomeAdviceCode option, networkAdviceCode: string option, networkDeclineCode: string option, networkStatus: ChargeOutcomeNetworkStatus option, reason: string option, sellerMessage: string option, ``type``: ChargeOutcomeType, ?riskLevel: string, ?riskScore: int, ?rule: StripeId<Markers.Rule>) =
+    static member New(adviceCode: ChargeOutcomeAdviceCode option, networkAdviceCode: string option, networkDeclineCode: string option, networkStatus: ChargeOutcomeNetworkStatus option, reason: string option, sellerMessage: string option, ``type``: ChargeOutcomeType, ?riskLevel: string, ?riskScore: int, ?rule: StripeId<Markers.RadarRule>) =
         {
             AdviceCode = adviceCode
             NetworkAdviceCode = networkAdviceCode
@@ -21300,6 +21511,13 @@ type DestinationDetailsUnimplemented with
     static member New(?destinationDetailsUnimplemented: string option) =
         {
             DestinationDetailsUnimplemented = destinationDetailsUnimplemented |> Option.flatten
+        }
+
+type RefundDestinationDetailsAfterpayClearpay with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsAfterpayClearpayReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
         }
 
 type RefundDestinationDetailsBlik with
@@ -21353,6 +21571,13 @@ type RefundDestinationDetailsJpBankTransfer with
             ReferenceStatus = referenceStatus
         }
 
+type RefundDestinationDetailsKlarna with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsKlarnaReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
 type RefundDestinationDetailsMbWay with
     static member New(reference: string option, referenceStatus: RefundDestinationDetailsMbWayReferenceStatus option) =
         {
@@ -21382,9 +21607,11 @@ type RefundDestinationDetailsP24 with
         }
 
 type RefundDestinationDetailsPaypal with
-    static member New(networkDeclineCode: string option) =
+    static member New(networkDeclineCode: string option, reference: string option, referenceStatus: RefundDestinationDetailsPaypalReferenceStatus option) =
         {
             NetworkDeclineCode = networkDeclineCode
+            Reference = reference
+            ReferenceStatus = referenceStatus
         }
 
 type RefundDestinationDetailsSwish with
@@ -21410,7 +21637,7 @@ type RefundDestinationDetailsUsBankTransfer with
         }
 
 type RefundDestinationDetails with
-    static member New(``type``: string, ?affirm: DestinationDetailsUnimplemented, ?afterpayClearpay: DestinationDetailsUnimplemented, ?alipay: DestinationDetailsUnimplemented, ?alma: DestinationDetailsUnimplemented, ?amazonPay: DestinationDetailsUnimplemented, ?auBankTransfer: DestinationDetailsUnimplemented, ?blik: RefundDestinationDetailsBlik, ?brBankTransfer: RefundDestinationDetailsBrBankTransfer, ?card: RefundDestinationDetailsCard, ?cashapp: DestinationDetailsUnimplemented, ?crypto: RefundDestinationDetailsCrypto, ?customerCashBalance: DestinationDetailsUnimplemented, ?eps: DestinationDetailsUnimplemented, ?euBankTransfer: RefundDestinationDetailsEuBankTransfer, ?gbBankTransfer: RefundDestinationDetailsGbBankTransfer, ?giropay: DestinationDetailsUnimplemented, ?grabpay: DestinationDetailsUnimplemented, ?jpBankTransfer: RefundDestinationDetailsJpBankTransfer, ?klarna: DestinationDetailsUnimplemented, ?mbWay: RefundDestinationDetailsMbWay, ?multibanco: RefundDestinationDetailsMultibanco, ?mxBankTransfer: RefundDestinationDetailsMxBankTransfer, ?nzBankTransfer: DestinationDetailsUnimplemented, ?p24: RefundDestinationDetailsP24, ?paynow: DestinationDetailsUnimplemented, ?paypal: RefundDestinationDetailsPaypal, ?pix: DestinationDetailsUnimplemented, ?revolut: DestinationDetailsUnimplemented, ?scalapay: DestinationDetailsUnimplemented, ?sofort: DestinationDetailsUnimplemented, ?swish: RefundDestinationDetailsSwish, ?thBankTransfer: RefundDestinationDetailsThBankTransfer, ?twint: DestinationDetailsUnimplemented, ?usBankTransfer: RefundDestinationDetailsUsBankTransfer, ?wechatPay: DestinationDetailsUnimplemented, ?zip: DestinationDetailsUnimplemented) =
+    static member New(``type``: string, ?affirm: DestinationDetailsUnimplemented, ?afterpayClearpay: RefundDestinationDetailsAfterpayClearpay, ?alipay: DestinationDetailsUnimplemented, ?alma: DestinationDetailsUnimplemented, ?amazonPay: DestinationDetailsUnimplemented, ?auBankTransfer: DestinationDetailsUnimplemented, ?blik: RefundDestinationDetailsBlik, ?brBankTransfer: RefundDestinationDetailsBrBankTransfer, ?card: RefundDestinationDetailsCard, ?cashapp: DestinationDetailsUnimplemented, ?crypto: RefundDestinationDetailsCrypto, ?customerCashBalance: DestinationDetailsUnimplemented, ?eps: DestinationDetailsUnimplemented, ?euBankTransfer: RefundDestinationDetailsEuBankTransfer, ?gbBankTransfer: RefundDestinationDetailsGbBankTransfer, ?giropay: DestinationDetailsUnimplemented, ?grabpay: DestinationDetailsUnimplemented, ?jpBankTransfer: RefundDestinationDetailsJpBankTransfer, ?klarna: RefundDestinationDetailsKlarna, ?mbWay: RefundDestinationDetailsMbWay, ?multibanco: RefundDestinationDetailsMultibanco, ?mxBankTransfer: RefundDestinationDetailsMxBankTransfer, ?nzBankTransfer: DestinationDetailsUnimplemented, ?p24: RefundDestinationDetailsP24, ?paynow: DestinationDetailsUnimplemented, ?paypal: RefundDestinationDetailsPaypal, ?pix: DestinationDetailsUnimplemented, ?revolut: DestinationDetailsUnimplemented, ?scalapay: DestinationDetailsUnimplemented, ?sofort: DestinationDetailsUnimplemented, ?swish: RefundDestinationDetailsSwish, ?thBankTransfer: RefundDestinationDetailsThBankTransfer, ?twint: DestinationDetailsUnimplemented, ?usBankTransfer: RefundDestinationDetailsUsBankTransfer, ?wechatPay: DestinationDetailsUnimplemented, ?zip: DestinationDetailsUnimplemented) =
         {
             Type = ``type``
             Affirm = affirm
@@ -21787,7 +22014,7 @@ type PaymentMethodDetailsCardWallet with
         }
 
 type PaymentMethodDetailsCard with
-    static member New(amountAuthorized: int option, authorizationCode: string option, brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecks option, country: IsoTypes.IsoCountryCode option, electronicCommerceIndicator: string option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallments option, last4: string option, mandate: StripeId<Markers.Mandate> option, network: PaymentMethodDetailsCardNetwork option, networkTransactionId: string option, regulatedStatus: PaymentMethodDetailsCardRegulatedStatus option, threeDSecure: ThreeDSecureDetailsCharge option, transactionLinkId: string option, wallet: PaymentMethodDetailsCardWallet option, ?captureBefore: DateTime, ?description: string option, ?extendedAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorization, ?fingerprint: string option, ?iin: string option, ?incrementalAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesIncrementalAuthorizationIncrementalAuthorization, ?issuer: string option, ?moto: bool option, ?multicapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceMulticapture, ?networkToken: PaymentMethodDetailsCardNetworkToken option, ?overcapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesOvercaptureOvercapture) =
+    static member New(amountAuthorized: int option, authorizationCode: string option, brand: PaymentMethodDetailsCardBrand option, checks: PaymentMethodDetailsCardChecks option, country: IsoTypes.IsoCountryCode option, electronicCommerceIndicator: string option, expMonth: int, expYear: int, funding: PaymentMethodDetailsCardFunding option, installments: PaymentMethodDetailsCardInstallments option, last4: string option, mandate: StripeId<Markers.Mandate> option, network: PaymentMethodDetailsCardNetwork option, networkTransactionId: string option, regulatedStatus: PaymentMethodDetailsCardRegulatedStatus option, threeDSecure: ThreeDSecureDetailsCharge option, transactionLinkId: string option, wallet: PaymentMethodDetailsCardWallet option, ?captureBefore: DateTime, ?description: string option, ?extendedAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesExtendedAuthorizationExtendedAuthorization, ?fingerprint: string option, ?iin: string option, ?incrementalAuthorization: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesIncrementalAuthorizationIncrementalAuthorization, ?issuer: string option, ?moto: bool option, ?multicapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceMulticapture, ?networkToken: PaymentMethodDetailsCardNetworkToken option, ?overcapture: PaymentFlowsPrivatePaymentMethodsCardDetailsApiResourceEnterpriseFeaturesOvercaptureOvercapture, ?setupCredentialUsage: PaymentMethodDetailsCardSetupCredentialUsage, ?storedCredentialUsage: PaymentMethodDetailsCardStoredCredentialUsage) =
         {
             AmountAuthorized = amountAuthorized
             AuthorizationCode = authorizationCode
@@ -21818,6 +22045,8 @@ type PaymentMethodDetailsCard with
             Multicapture = multicapture
             NetworkToken = networkToken |> Option.flatten
             Overcapture = overcapture
+            SetupCredentialUsage = setupCredentialUsage
+            StoredCredentialUsage = storedCredentialUsage
         }
 
 type PaymentMethodDetailsCashapp with
@@ -22482,6 +22711,19 @@ module CustomerCashBalanceTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "customer_cash_balance_transaction"
 
+type DisputeAppealCard with
+    static member New(?reasonForFiling: string, ?supportingFiles: string list) =
+        {
+            ReasonForFiling = reasonForFiling
+            SupportingFiles = supportingFiles
+        }
+
+type DisputeAppeal with
+    static member New(?card: DisputeAppealCard) =
+        {
+            Card = card
+        }
+
 type DisputeEnhancedEvidenceMastercardCompliance with
     static member New(feeAcknowledged: bool) =
         {
@@ -22547,7 +22789,7 @@ type DisputeEnhancedEvidence with
         }
 
 type DisputeEvidence with
-    static member New(accessActivityLog: string option, billingAddress: string option, cancellationPolicy: StripeId<Markers.File> option, cancellationPolicyDisclosure: string option, cancellationRebuttal: string option, customerCommunication: StripeId<Markers.File> option, customerEmailAddress: string option, customerName: string option, customerPurchaseIp: string option, customerSignature: StripeId<Markers.File> option, duplicateChargeDocumentation: StripeId<Markers.File> option, duplicateChargeExplanation: string option, duplicateChargeId: string option, enhancedEvidence: DisputeEnhancedEvidence, productDescription: string option, receipt: StripeId<Markers.File> option, refundPolicy: StripeId<Markers.File> option, refundPolicyDisclosure: string option, refundRefusalExplanation: string option, serviceDate: string option, serviceDocumentation: StripeId<Markers.File> option, shippingAddress: string option, shippingCarrier: string option, shippingDate: string option, shippingDocumentation: StripeId<Markers.File> option, shippingTrackingNumber: string option, uncategorizedFile: StripeId<Markers.File> option, uncategorizedText: string option) =
+    static member New(accessActivityLog: string option, billingAddress: string option, cancellationPolicy: StripeId<Markers.File> option, cancellationPolicyDisclosure: string option, cancellationRebuttal: string option, customerCommunication: StripeId<Markers.File> option, customerEmailAddress: string option, customerName: string option, customerPurchaseIp: string option, customerSignature: StripeId<Markers.File> option, duplicateChargeDocumentation: StripeId<Markers.File> option, duplicateChargeExplanation: string option, duplicateChargeId: string option, enhancedEvidence: DisputeEnhancedEvidence, productDescription: string option, receipt: StripeId<Markers.File> option, refundPolicy: StripeId<Markers.File> option, refundPolicyDisclosure: string option, refundRefusalExplanation: string option, serviceDate: string option, serviceDocumentation: StripeId<Markers.File> option, shippingAddress: string option, shippingCarrier: string option, shippingDate: string option, shippingDocumentation: StripeId<Markers.File> option, shippingTrackingNumber: string option, uncategorizedFile: StripeId<Markers.File> option, uncategorizedText: string option, ?appeal: DisputeAppeal option) =
         {
             AccessActivityLog = accessActivityLog
             BillingAddress = billingAddress
@@ -22577,6 +22819,7 @@ type DisputeEvidence with
             ShippingTrackingNumber = shippingTrackingNumber
             UncategorizedFile = uncategorizedFile
             UncategorizedText = uncategorizedText
+            Appeal = appeal |> Option.flatten
         }
 
 type DisputeEnhancedEligibilityMastercardCompliance with
@@ -22607,13 +22850,14 @@ type DisputeEnhancedEligibility with
         }
 
 type DisputeEvidenceDetails with
-    static member New(dueBy: DateTime option, enhancedEligibility: DisputeEnhancedEligibility, hasEvidence: bool, pastDue: bool, submissionCount: int) =
+    static member New(dueBy: DateTime option, enhancedEligibility: DisputeEnhancedEligibility, hasEvidence: bool, pastDue: bool, submissionCount: int, submissionMethod: DisputeEvidenceDetailsSubmissionMethod) =
         {
             DueBy = dueBy
             EnhancedEligibility = enhancedEligibility
             HasEvidence = hasEvidence
             PastDue = pastDue
             SubmissionCount = submissionCount
+            SubmissionMethod = submissionMethod
         }
 
 type DisputePaymentMethodDetailsAmazonPay with
@@ -22656,7 +22900,7 @@ type DisputePaymentMethodDetails with
         }
 
 type Dispute with
-    static member New(amount: int, balanceTransactions: BalanceTransaction list, charge: StripeId<Markers.Charge>, created: DateTime, currency: IsoTypes.IsoCurrencyCode, enhancedEligibilityTypes: DisputeEnhancedEligibilityTypes list, evidence: DisputeEvidence, evidenceDetails: DisputeEvidenceDetails, id: string, isChargeRefundable: bool, livemode: bool, metadata: Map<string, string>, paymentIntent: StripeId<Markers.PaymentIntent> option, reason: DisputeReason, status: DisputeStatus, ?networkReasonCode: string option, ?paymentMethodDetails: DisputePaymentMethodDetails) =
+    static member New(amount: int, balanceTransactions: BalanceTransaction list, charge: StripeId<Markers.Charge>, created: DateTime, currency: IsoTypes.IsoCurrencyCode, enhancedEligibilityTypes: DisputeEnhancedEligibilityTypes list, evidence: DisputeEvidence, evidenceDetails: DisputeEvidenceDetails, id: string, intendedSubmissionMethod: DisputeIntendedSubmissionMethod option, isChargeRefundable: bool, livemode: bool, metadata: Map<string, string>, paymentIntent: StripeId<Markers.PaymentIntent> option, reason: DisputeReason, status: DisputeStatus, ?networkReasonCode: string option, ?paymentMethodDetails: DisputePaymentMethodDetails) =
         {
             Amount = amount
             BalanceTransactions = balanceTransactions
@@ -22667,6 +22911,7 @@ type Dispute with
             Evidence = evidence
             EvidenceDetails = evidenceDetails
             Id = id
+            IntendedSubmissionMethod = intendedSubmissionMethod
             IsChargeRefundable = isChargeRefundable
             Livemode = livemode
             Metadata = metadata
@@ -23980,6 +24225,13 @@ type ConnectEmbeddedBaseFeatures with
             ConnectEmbeddedBaseFeatures = connectEmbeddedBaseFeatures |> Option.flatten
         }
 
+type ConnectEmbeddedBaseConfig with
+    static member New(enabled: bool, features: ConnectEmbeddedBaseFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
 type ConnectEmbeddedBaseConfigClaim with
     static member New(enabled: bool, features: ConnectEmbeddedBaseFeatures) =
         {
@@ -24145,7 +24397,7 @@ type ConnectEmbeddedPayoutsConfig with
         }
 
 type ConnectEmbeddedAccountSessionCreateComponents with
-    static member New(accountManagement: ConnectEmbeddedAccountConfigClaim, accountOnboarding: ConnectEmbeddedAccountConfigClaim, balanceReport: ConnectEmbeddedBaseConfigClaim, balances: ConnectEmbeddedPayoutsConfig, disputesList: ConnectEmbeddedDisputesListConfig, documents: ConnectEmbeddedBaseConfigClaim, financialAccount: ConnectEmbeddedFinancialAccountConfigClaim, financialAccountTransactions: ConnectEmbeddedFinancialAccountTransactionsConfigClaim, instantPayoutsPromotion: ConnectEmbeddedInstantPayoutsPromotionConfig, issuingCard: ConnectEmbeddedIssuingCardConfigClaim, issuingCardsList: ConnectEmbeddedIssuingCardsListConfigClaim, notificationBanner: ConnectEmbeddedAccountConfigClaim, paymentDetails: ConnectEmbeddedPaymentsConfigClaim, paymentDisputes: ConnectEmbeddedPaymentDisputesConfig, paymentMethodSettings: ConnectEmbeddedPaymentMethodSettingsConfigClaim, payments: ConnectEmbeddedPaymentsConfigClaim, payoutDetails: ConnectEmbeddedBaseConfigClaim, payoutReconciliationReport: ConnectEmbeddedBaseConfigClaim, payouts: ConnectEmbeddedPayoutsConfig, payoutsList: ConnectEmbeddedBaseConfigClaim, taxRegistrations: ConnectEmbeddedBaseConfigClaim, taxSettings: ConnectEmbeddedBaseConfigClaim) =
+    static member New(accountManagement: ConnectEmbeddedAccountConfigClaim, accountOnboarding: ConnectEmbeddedAccountConfigClaim, balanceReport: ConnectEmbeddedBaseConfigClaim, balances: ConnectEmbeddedPayoutsConfig, disputesList: ConnectEmbeddedDisputesListConfig, documents: ConnectEmbeddedBaseConfigClaim, financialAccount: ConnectEmbeddedFinancialAccountConfigClaim, financialAccountTransactions: ConnectEmbeddedFinancialAccountTransactionsConfigClaim, instantPayoutsPromotion: ConnectEmbeddedInstantPayoutsPromotionConfig, issuingCard: ConnectEmbeddedIssuingCardConfigClaim, issuingCardsList: ConnectEmbeddedIssuingCardsListConfigClaim, notificationBanner: ConnectEmbeddedAccountConfigClaim, paymentDetails: ConnectEmbeddedPaymentsConfigClaim, paymentDisputes: ConnectEmbeddedPaymentDisputesConfig, paymentMethodSettings: ConnectEmbeddedPaymentMethodSettingsConfigClaim, payments: ConnectEmbeddedPaymentsConfigClaim, payoutDetails: ConnectEmbeddedBaseConfigClaim, payoutReconciliationReport: ConnectEmbeddedBaseConfigClaim, payouts: ConnectEmbeddedPayoutsConfig, payoutsList: ConnectEmbeddedBaseConfigClaim, reportingChart: ConnectEmbeddedBaseConfig, taxRegistrations: ConnectEmbeddedBaseConfigClaim, taxSettings: ConnectEmbeddedBaseConfigClaim, terminalHardwareOrders: ConnectEmbeddedBaseConfig, terminalHardwareShop: ConnectEmbeddedBaseConfig) =
         {
             AccountManagement = accountManagement
             AccountOnboarding = accountOnboarding
@@ -24167,8 +24419,11 @@ type ConnectEmbeddedAccountSessionCreateComponents with
             PayoutReconciliationReport = payoutReconciliationReport
             Payouts = payouts
             PayoutsList = payoutsList
+            ReportingChart = reportingChart
             TaxRegistrations = taxRegistrations
             TaxSettings = taxSettings
+            TerminalHardwareOrders = terminalHardwareOrders
+            TerminalHardwareShop = terminalHardwareShop
         }
 
 type CreditNotesPaymentRecordRefund with
@@ -24803,6 +25058,12 @@ type InvoicePaymentMethodOptionsPix with
         {
             AmountIncludesIof = amountIncludesIof
             ExpiresAfterSeconds = expiresAfterSeconds
+        }
+
+type InvoicePaymentMethodOptionsSepaDebit with
+    static member New(?invoicePaymentMethodOptionsSepaDebit: string option) =
+        {
+            InvoicePaymentMethodOptionsSepaDebit = invoicePaymentMethodOptionsSepaDebit |> Option.flatten
         }
 
 type InvoicesPaymentMethodOptions with
@@ -25585,8 +25846,12 @@ type PaymentLinksResourceShippingOption with
         }
 
 type PaymentLinksResourceSubscriptionDataInvoiceSettings with
-    static member New(issuer: ConnectAccountReference) =
+    static member New(accountTaxIds: PaymentLinksResourceSubscriptionDataInvoiceSettingsAccountTaxIds'AnyOf list option, customFields: InvoiceSettingCustomField list option, description: string option, footer: string option, issuer: ConnectAccountReference) =
         {
+            AccountTaxIds = accountTaxIds
+            CustomFields = customFields
+            Description = description
+            Footer = footer
             Issuer = issuer
         }
 
@@ -26581,7 +26846,7 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWal
         }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails with
-    static member New(authorizationCode: string option, brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsBrand option, checks: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsFunding option, installments: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments option, last4: string option, network: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsNetwork option, networkAdviceCode: string option, networkDeclineCode: string option, networkTransactionId: string option, threeDSecure: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure option, wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option, ?captureBefore: DateTime, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool option, ?networkToken: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken option) =
+    static member New(authorizationCode: string option, brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsBrand option, checks: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsFunding option, installments: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments option, last4: string option, network: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsNetwork option, networkAdviceCode: string option, networkDeclineCode: string option, networkTransactionId: string option, threeDSecure: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure option, wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option, ?captureBefore: DateTime, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool option, ?networkToken: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken option, ?storedCredentialUsage: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage option) =
         {
             AuthorizationCode = authorizationCode
             Brand = brand
@@ -26605,6 +26870,7 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails with
             Issuer = issuer |> Option.flatten
             Moto = moto |> Option.flatten
             NetworkToken = networkToken |> Option.flatten
+            StoredCredentialUsage = storedCredentialUsage |> Option.flatten
         }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails with

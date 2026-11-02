@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type AddressApiResourceTerminal =
     {
         /// City, district, suburb, town, or village.
@@ -80,6 +80,7 @@ type DeletedTerminalReaderDeviceType =
     | MobilePhoneReader
     | [<JsonPropertyName("simulated_stripe_s700")>] SimulatedStripeS700
     | [<JsonPropertyName("simulated_stripe_s710")>] SimulatedStripeS710
+    | [<JsonPropertyName("simulated_stripe_t600")>] SimulatedStripeT600
     | [<JsonPropertyName("simulated_verifone_m425")>] SimulatedVerifoneM425
     | [<JsonPropertyName("simulated_verifone_p630")>] SimulatedVerifoneP630
     | [<JsonPropertyName("simulated_verifone_ux700")>] SimulatedVerifoneUx700
@@ -88,6 +89,7 @@ type DeletedTerminalReaderDeviceType =
     | [<JsonPropertyName("stripe_m2")>] StripeM2
     | [<JsonPropertyName("stripe_s700")>] StripeS700
     | [<JsonPropertyName("stripe_s710")>] StripeS710
+    | [<JsonPropertyName("stripe_t600")>] StripeT600
     | [<JsonPropertyName("verifone_P400")>] VerifoneP400
     | [<JsonPropertyName("verifone_m425")>] VerifoneM425
     | [<JsonPropertyName("verifone_p630")>] VerifoneP630
@@ -153,6 +155,18 @@ type TerminalConfigurationConfigurationResourceOfflineConfig with
     static member New(enabled: bool option) =
         {
             Enabled = enabled
+        }
+
+type TerminalConfigurationConfigurationResourceReaderSecurityConfig =
+    {
+        /// Passcode used to access a reader's admin menu.
+        AdminMenuPasscode: string
+    }
+
+type TerminalConfigurationConfigurationResourceReaderSecurityConfig with
+    static member New(adminMenuPasscode: string) =
+        {
+            AdminMenuPasscode = adminMenuPasscode
         }
 
 type TerminalConfigurationConfigurationResourceRebootWindow =
@@ -338,11 +352,14 @@ type TerminalConfiguration =
         /// String indicating the name of the Configuration object, set by the user
         Name: string option
         Offline: TerminalConfigurationConfigurationResourceOfflineConfig option
+        ReaderSecurity: TerminalConfigurationConfigurationResourceReaderSecurityConfig option
         RebootWindow: TerminalConfigurationConfigurationResourceRebootWindow option
         [<JsonPropertyName("stripe_s700")>]
         StripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
         [<JsonPropertyName("stripe_s710")>]
         StripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
+        [<JsonPropertyName("stripe_t600")>]
+        StripeT600: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
         Tipping: TerminalConfigurationConfigurationResourceTipping option
         [<JsonPropertyName("verifone_m425")>]
         VerifoneM425: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig option
@@ -358,7 +375,7 @@ type TerminalConfiguration =
     }
 
 type TerminalConfiguration with
-    static member New(id: string, isAccountDefault: bool option, livemode: bool, name: string option, ?bbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?bbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?cellular: TerminalConfigurationConfigurationResourceCellularConfig, ?offline: TerminalConfigurationConfigurationResourceOfflineConfig, ?rebootWindow: TerminalConfigurationConfigurationResourceRebootWindow, ?stripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?stripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?tipping: TerminalConfigurationConfigurationResourceTipping, ?verifoneM425: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneP630: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneUx700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneV660p: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?wifi: TerminalConfigurationConfigurationResourceWifiConfig) =
+    static member New(id: string, isAccountDefault: bool option, livemode: bool, name: string option, ?bbposWisepad3: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?bbposWiseposE: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?cellular: TerminalConfigurationConfigurationResourceCellularConfig, ?offline: TerminalConfigurationConfigurationResourceOfflineConfig, ?readerSecurity: TerminalConfigurationConfigurationResourceReaderSecurityConfig, ?rebootWindow: TerminalConfigurationConfigurationResourceRebootWindow, ?stripeS700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?stripeS710: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?stripeT600: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?tipping: TerminalConfigurationConfigurationResourceTipping, ?verifoneM425: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneP400: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneP630: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneUx700: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?verifoneV660p: TerminalConfigurationConfigurationResourceDeviceTypeSpecificConfig, ?wifi: TerminalConfigurationConfigurationResourceWifiConfig) =
         {
             Id = id
             IsAccountDefault = isAccountDefault
@@ -368,9 +385,11 @@ type TerminalConfiguration with
             BbposWiseposE = bbposWiseposE
             Cellular = cellular
             Offline = offline
+            ReaderSecurity = readerSecurity
             RebootWindow = rebootWindow
             StripeS700 = stripeS700
             StripeS710 = stripeS710
+            StripeT600 = stripeT600
             Tipping = tipping
             VerifoneM425 = verifoneM425
             VerifoneP400 = verifoneP400
@@ -510,6 +529,7 @@ type TerminalReaderDeviceType =
     | MobilePhoneReader
     | [<JsonPropertyName("simulated_stripe_s700")>] SimulatedStripeS700
     | [<JsonPropertyName("simulated_stripe_s710")>] SimulatedStripeS710
+    | [<JsonPropertyName("simulated_stripe_t600")>] SimulatedStripeT600
     | [<JsonPropertyName("simulated_verifone_m425")>] SimulatedVerifoneM425
     | [<JsonPropertyName("simulated_verifone_p630")>] SimulatedVerifoneP630
     | [<JsonPropertyName("simulated_verifone_ux700")>] SimulatedVerifoneUx700
@@ -518,6 +538,7 @@ type TerminalReaderDeviceType =
     | [<JsonPropertyName("stripe_m2")>] StripeM2
     | [<JsonPropertyName("stripe_s700")>] StripeS700
     | [<JsonPropertyName("stripe_s710")>] StripeS710
+    | [<JsonPropertyName("stripe_t600")>] StripeT600
     | [<JsonPropertyName("verifone_P400")>] VerifoneP400
     | [<JsonPropertyName("verifone_m425")>] VerifoneM425
     | [<JsonPropertyName("verifone_p630")>] VerifoneP630

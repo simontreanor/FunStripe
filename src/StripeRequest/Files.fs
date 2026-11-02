@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.File
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Files =
 
     type ListOptions =
@@ -110,6 +110,7 @@ module Files =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             File: string
         }

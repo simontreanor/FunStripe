@@ -10,7 +10,7 @@ open Stripe.IssuingToken
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module IssuingAuthorizations =
 
     type ListOptions =
@@ -56,6 +56,7 @@ module IssuingAuthorizations =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authorization: string
             /// Specifies which fields in the response should be expanded.
@@ -72,6 +73,7 @@ module IssuingAuthorizations =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authorization: string
             /// Specifies which fields in the response should be expanded.
@@ -111,6 +113,7 @@ module IssuingAuthorizationsApprove =
 
     type ApproveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authorization: string
             /// If the authorization's `pending_request.is_amount_controllable` property is `true`, you may provide this value to control how much to hold for the authorization. Must be positive (use [`decline`](https://docs.stripe.com/api/issuing/authorizations/decline) to decline an authorization request).
@@ -143,6 +146,7 @@ module IssuingAuthorizationsDecline =
 
     type DeclineOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authorization: string
             /// Specifies which fields in the response should be expanded.
@@ -1431,6 +1435,7 @@ module IssuingCardholders =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Cardholder: string
             /// Specifies which fields in the response should be expanded.
@@ -2600,6 +2605,7 @@ module IssuingCardholders =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Cardholder: string
             /// The cardholder's billing address.
@@ -3946,6 +3952,7 @@ module IssuingCards =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Card: string
             /// Specifies which fields in the response should be expanded.
@@ -5067,6 +5074,7 @@ module IssuingCards =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Card: string
             /// Reason why the `status` of this card is `canceled`.
@@ -5075,6 +5083,9 @@ module IssuingCards =
             /// Specifies which fields in the response should be expanded.
             [<Config.Form>]
             Expand: string list option
+            /// The new financial account ID the card will be associated with. This field allows a card to be reassigned to a different financial account.
+            [<Config.Form>]
+            FinancialAccount: string option
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
@@ -5095,11 +5106,12 @@ module IssuingCards =
         }
 
     type UpdateOptions with
-        static member New(card: string, ?cancellationReason: Update'CancellationReason, ?expand: string list, ?metadata: Map<string, string>, ?personalizationDesign: string, ?pin: Update'Pin, ?shipping: Update'Shipping, ?spendingControls: Update'SpendingControls, ?status: Update'Status) =
+        static member New(card: string, ?cancellationReason: Update'CancellationReason, ?expand: string list, ?financialAccount: string, ?metadata: Map<string, string>, ?personalizationDesign: string, ?pin: Update'Pin, ?shipping: Update'Shipping, ?spendingControls: Update'SpendingControls, ?status: Update'Status) =
             {
                 Card = card
                 CancellationReason = cancellationReason
                 Expand = expand
+                FinancialAccount = financialAccount
                 Metadata = metadata
                 PersonalizationDesign = personalizationDesign
                 Pin = pin
@@ -5525,6 +5537,7 @@ module IssuingDisputes =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Dispute: string
             /// Specifies which fields in the response should be expanded.
@@ -5849,6 +5862,7 @@ module IssuingDisputes =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Dispute: string
             /// The dispute amount in the card's currency and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
@@ -5901,6 +5915,7 @@ module IssuingDisputesSubmit =
 
     type SubmitOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Dispute: string
             /// Specifies which fields in the response should be expanded.
@@ -6051,6 +6066,7 @@ module IssuingPersonalizationDesigns =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             PersonalizationDesign: string
         }
@@ -6102,6 +6118,7 @@ module IssuingPersonalizationDesigns =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PersonalizationDesign: string
             /// The file for the card logo, for use with physical bundles that support card logos. Must have a `purpose` value of `issuing_logo`.
@@ -6210,6 +6227,7 @@ module IssuingPhysicalBundles =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             PhysicalBundle: string
         }
@@ -6277,6 +6295,7 @@ module IssuingTokens =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Token: string
         }
@@ -6295,6 +6314,7 @@ module IssuingTokens =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Token: string
             /// Specifies which fields in the response should be expanded.
@@ -6378,6 +6398,7 @@ module IssuingTransactions =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transaction: string
         }
@@ -6391,6 +6412,7 @@ module IssuingTransactions =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transaction: string
             /// Specifies which fields in the response should be expanded.

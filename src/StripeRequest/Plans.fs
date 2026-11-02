@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Plan
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Plans =
 
     type ListOptions =
@@ -255,8 +255,11 @@ module Plans =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Plan: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Plan: string
+        }
 
     type DeleteOptions with
         static member New(plan: string) =
@@ -269,6 +272,7 @@ module Plans =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Plan: string
         }
@@ -282,6 +286,7 @@ module Plans =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Plan: string
             /// Whether the plan is currently available for new subscriptions.

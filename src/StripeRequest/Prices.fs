@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Price
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Prices =
 
     type ListOptions =
@@ -339,6 +339,7 @@ module Prices =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Price: string
         }
@@ -357,6 +358,7 @@ module Prices =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Price: string
             /// Whether the price can be used for new purchases. Defaults to `true`.

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Reporting
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module ReportingReportRuns =
 
     type ListOptions =
@@ -744,6 +744,7 @@ module ReportingReportRuns =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             ReportRun: string
         }
@@ -792,6 +793,7 @@ module ReportingReportTypes =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             ReportType: string
         }

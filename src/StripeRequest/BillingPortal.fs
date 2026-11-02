@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.BillingPortal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module BillingPortalConfigurations =
 
     type ListOptions =
@@ -182,6 +182,67 @@ module BillingPortalConfigurations =
                 ProrationBehavior = prorationBehavior
             }
 
+    type Create'FeaturesSubscriptionPauseDurationIntervalOptionsInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    type Create'FeaturesSubscriptionPauseDurationIntervalOptions =
+        {
+            /// Specifies the pause duration unit. Either `day`, `week`, `month`, or `year`.
+            [<Config.Form>]
+            Interval: Create'FeaturesSubscriptionPauseDurationIntervalOptionsInterval option
+            /// The number of intervals in the pause duration. Defaults to 1. The maximum duration is three years.
+            [<Config.Form>]
+            IntervalCount: int option
+        }
+
+    type Create'FeaturesSubscriptionPauseDurationIntervalOptions with
+        static member New(?interval: Create'FeaturesSubscriptionPauseDurationIntervalOptionsInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
+    type Create'FeaturesSubscriptionPauseDurationType =
+        | Indefinite
+        | IntervalOptions
+
+    type Create'FeaturesSubscriptionPauseDuration =
+        {
+            /// The preset pause durations customers can choose from. Required when `type` is `interval_options`.
+            [<Config.Form>]
+            IntervalOptions: Choice<Create'FeaturesSubscriptionPauseDurationIntervalOptions list,string> option
+            /// Whether subscriptions can be paused indefinitely or for a preset duration.
+            [<Config.Form>]
+            Type: Create'FeaturesSubscriptionPauseDurationType option
+        }
+
+    type Create'FeaturesSubscriptionPauseDuration with
+        static member New(?intervalOptions: Choice<Create'FeaturesSubscriptionPauseDurationIntervalOptions list,string>, ?type': Create'FeaturesSubscriptionPauseDurationType) =
+            {
+                IntervalOptions = intervalOptions
+                Type = type'
+            }
+
+    type Create'FeaturesSubscriptionPause =
+        {
+            /// Controls how long a subscription can be paused. Defaults to `interval_options` with a single one-month option.
+            [<Config.Form>]
+            Duration: Create'FeaturesSubscriptionPauseDuration option
+            /// Whether the feature is enabled. Customers can only pause subscriptions in the [redesigned customer portal](/customer-management).
+            [<Config.Form>]
+            Enabled: bool option
+        }
+
+    type Create'FeaturesSubscriptionPause with
+        static member New(?duration: Create'FeaturesSubscriptionPauseDuration, ?enabled: bool) =
+            {
+                Duration = duration
+                Enabled = enabled
+            }
+
     type Create'FeaturesSubscriptionUpdateBillingCycleAnchor =
         | Now
         | Unchanged
@@ -323,18 +384,22 @@ module BillingPortalConfigurations =
             /// Information about canceling subscriptions in the portal.
             [<Config.Form>]
             SubscriptionCancel: Create'FeaturesSubscriptionCancel option
+            /// Information about pausing subscriptions in the portal.
+            [<Config.Form>]
+            SubscriptionPause: Create'FeaturesSubscriptionPause option
             /// Information about updating subscriptions in the portal.
             [<Config.Form>]
             SubscriptionUpdate: Create'FeaturesSubscriptionUpdate option
         }
 
     type Create'Features with
-        static member New(?customerUpdate: Create'FeaturesCustomerUpdate, ?invoiceHistory: Create'FeaturesInvoiceHistory, ?paymentMethodUpdate: Create'FeaturesPaymentMethodUpdate, ?subscriptionCancel: Create'FeaturesSubscriptionCancel, ?subscriptionUpdate: Create'FeaturesSubscriptionUpdate) =
+        static member New(?customerUpdate: Create'FeaturesCustomerUpdate, ?invoiceHistory: Create'FeaturesInvoiceHistory, ?paymentMethodUpdate: Create'FeaturesPaymentMethodUpdate, ?subscriptionCancel: Create'FeaturesSubscriptionCancel, ?subscriptionPause: Create'FeaturesSubscriptionPause, ?subscriptionUpdate: Create'FeaturesSubscriptionUpdate) =
             {
                 CustomerUpdate = customerUpdate
                 InvoiceHistory = invoiceHistory
                 PaymentMethodUpdate = paymentMethodUpdate
                 SubscriptionCancel = subscriptionCancel
+                SubscriptionPause = subscriptionPause
                 SubscriptionUpdate = subscriptionUpdate
             }
 
@@ -390,6 +455,7 @@ module BillingPortalConfigurations =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Configuration: string
             /// Specifies which fields in the response should be expanded.
@@ -545,6 +611,67 @@ module BillingPortalConfigurations =
                 ProrationBehavior = prorationBehavior
             }
 
+    type Update'FeaturesSubscriptionPauseDurationIntervalOptionsInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    type Update'FeaturesSubscriptionPauseDurationIntervalOptions =
+        {
+            /// Specifies the pause duration unit. Either `day`, `week`, `month`, or `year`.
+            [<Config.Form>]
+            Interval: Update'FeaturesSubscriptionPauseDurationIntervalOptionsInterval option
+            /// The number of intervals in the pause duration. Defaults to 1. The maximum duration is three years.
+            [<Config.Form>]
+            IntervalCount: int option
+        }
+
+    type Update'FeaturesSubscriptionPauseDurationIntervalOptions with
+        static member New(?interval: Update'FeaturesSubscriptionPauseDurationIntervalOptionsInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
+    type Update'FeaturesSubscriptionPauseDurationType =
+        | Indefinite
+        | IntervalOptions
+
+    type Update'FeaturesSubscriptionPauseDuration =
+        {
+            /// The preset pause durations customers can choose from. Required when `type` is `interval_options`.
+            [<Config.Form>]
+            IntervalOptions: Choice<Update'FeaturesSubscriptionPauseDurationIntervalOptions list,string> option
+            /// Whether subscriptions can be paused indefinitely or for a preset duration.
+            [<Config.Form>]
+            Type: Update'FeaturesSubscriptionPauseDurationType option
+        }
+
+    type Update'FeaturesSubscriptionPauseDuration with
+        static member New(?intervalOptions: Choice<Update'FeaturesSubscriptionPauseDurationIntervalOptions list,string>, ?type': Update'FeaturesSubscriptionPauseDurationType) =
+            {
+                IntervalOptions = intervalOptions
+                Type = type'
+            }
+
+    type Update'FeaturesSubscriptionPause =
+        {
+            /// Controls how long a subscription can be paused. Defaults to `interval_options` with a single one-month option.
+            [<Config.Form>]
+            Duration: Update'FeaturesSubscriptionPauseDuration option
+            /// Whether the feature is enabled. Customers can only pause subscriptions in the [redesigned customer portal](/customer-management).
+            [<Config.Form>]
+            Enabled: bool option
+        }
+
+    type Update'FeaturesSubscriptionPause with
+        static member New(?duration: Update'FeaturesSubscriptionPauseDuration, ?enabled: bool) =
+            {
+                Duration = duration
+                Enabled = enabled
+            }
+
     type Update'FeaturesSubscriptionUpdateBillingCycleAnchor =
         | Now
         | Unchanged
@@ -686,18 +813,22 @@ module BillingPortalConfigurations =
             /// Information about canceling subscriptions in the portal.
             [<Config.Form>]
             SubscriptionCancel: Update'FeaturesSubscriptionCancel option
+            /// Information about pausing subscriptions in the portal.
+            [<Config.Form>]
+            SubscriptionPause: Update'FeaturesSubscriptionPause option
             /// Information about updating subscriptions in the portal.
             [<Config.Form>]
             SubscriptionUpdate: Update'FeaturesSubscriptionUpdate option
         }
 
     type Update'Features with
-        static member New(?customerUpdate: Update'FeaturesCustomerUpdate, ?invoiceHistory: Update'FeaturesInvoiceHistory, ?paymentMethodUpdate: Update'FeaturesPaymentMethodUpdate, ?subscriptionCancel: Update'FeaturesSubscriptionCancel, ?subscriptionUpdate: Update'FeaturesSubscriptionUpdate) =
+        static member New(?customerUpdate: Update'FeaturesCustomerUpdate, ?invoiceHistory: Update'FeaturesInvoiceHistory, ?paymentMethodUpdate: Update'FeaturesPaymentMethodUpdate, ?subscriptionCancel: Update'FeaturesSubscriptionCancel, ?subscriptionPause: Update'FeaturesSubscriptionPause, ?subscriptionUpdate: Update'FeaturesSubscriptionUpdate) =
             {
                 CustomerUpdate = customerUpdate
                 InvoiceHistory = invoiceHistory
                 PaymentMethodUpdate = paymentMethodUpdate
                 SubscriptionCancel = subscriptionCancel
+                SubscriptionPause = subscriptionPause
                 SubscriptionUpdate = subscriptionUpdate
             }
 
@@ -717,6 +848,7 @@ module BillingPortalConfigurations =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Configuration: string
             /// Whether the configuration is active and can be used to create portal sessions.
@@ -782,6 +914,38 @@ module BillingPortalConfigurations =
         |> RestApi.postAsync<_, BillingPortalConfiguration> settings (Map.empty) options
 
 module BillingPortalSessions =
+
+    type Create'AfterExpirationCustomerLogin =
+        {
+            /// The Unix timestamp after which the customer can no longer recover this session. Leave unset to allow recovery without a deadline.
+            [<Config.Form>]
+            ExpiresAt: DateTime option
+        }
+
+    type Create'AfterExpirationCustomerLogin with
+        static member New(?expiresAt: DateTime) =
+            {
+                ExpiresAt = expiresAt
+            }
+
+    type Create'AfterExpirationType = | CustomerLogin
+
+    type Create'AfterExpiration =
+        {
+            /// Configuration for authenticating the customer after the session expires.
+            [<Config.Form>]
+            CustomerLogin: Create'AfterExpirationCustomerLogin option
+            /// The behavior to apply when the session expires.
+            [<Config.Form>]
+            Type: Create'AfterExpirationType option
+        }
+
+    type Create'AfterExpiration with
+        static member New(?customerLogin: Create'AfterExpirationCustomerLogin, ?type': Create'AfterExpirationType) =
+            {
+                CustomerLogin = customerLogin
+                Type = type'
+            }
 
     type Create'FlowDataAfterCompletionHostedConfirmation =
         {
@@ -884,6 +1048,19 @@ module BillingPortalSessions =
                 Subscription = subscription
             }
 
+    type Create'FlowDataSubscriptionPause =
+        {
+            /// The ID of the subscription to be paused.
+            [<Config.Form>]
+            Subscription: string option
+        }
+
+    type Create'FlowDataSubscriptionPause with
+        static member New(?subscription: string) =
+            {
+                Subscription = subscription
+            }
+
     type Create'FlowDataSubscriptionUpdate =
         {
             /// The ID of the subscription to be updated.
@@ -960,6 +1137,7 @@ module BillingPortalSessions =
         | CustomerUpdate
         | PaymentMethodUpdate
         | SubscriptionCancel
+        | SubscriptionPause
         | SubscriptionUpdate
         | SubscriptionUpdateConfirm
 
@@ -971,6 +1149,9 @@ module BillingPortalSessions =
             /// Configuration when `flow_data.type=subscription_cancel`.
             [<Config.Form>]
             SubscriptionCancel: Create'FlowDataSubscriptionCancel option
+            /// Configuration when `flow_data.type=subscription_pause`.
+            [<Config.Form>]
+            SubscriptionPause: Create'FlowDataSubscriptionPause option
             /// Configuration when `flow_data.type=subscription_update`.
             [<Config.Form>]
             SubscriptionUpdate: Create'FlowDataSubscriptionUpdate option
@@ -983,10 +1164,11 @@ module BillingPortalSessions =
         }
 
     type Create'FlowData with
-        static member New(?afterCompletion: Create'FlowDataAfterCompletion, ?subscriptionCancel: Create'FlowDataSubscriptionCancel, ?subscriptionUpdate: Create'FlowDataSubscriptionUpdate, ?subscriptionUpdateConfirm: Create'FlowDataSubscriptionUpdateConfirm, ?type': Create'FlowDataType) =
+        static member New(?afterCompletion: Create'FlowDataAfterCompletion, ?subscriptionCancel: Create'FlowDataSubscriptionCancel, ?subscriptionPause: Create'FlowDataSubscriptionPause, ?subscriptionUpdate: Create'FlowDataSubscriptionUpdate, ?subscriptionUpdateConfirm: Create'FlowDataSubscriptionUpdateConfirm, ?type': Create'FlowDataType) =
             {
                 AfterCompletion = afterCompletion
                 SubscriptionCancel = subscriptionCancel
+                SubscriptionPause = subscriptionPause
                 SubscriptionUpdate = subscriptionUpdate
                 SubscriptionUpdateConfirm = subscriptionUpdateConfirm
                 Type = type'
@@ -1043,6 +1225,9 @@ module BillingPortalSessions =
 
     type CreateOptions =
         {
+            /// Behavior after the portal session expires.
+            [<Config.Form>]
+            AfterExpiration: Create'AfterExpiration option
             /// The ID of an existing [configuration](https://docs.stripe.com/api/customer_portal/configurations) to use for this session, describing its functionality and features. If not specified, the session uses the default configuration.
             [<Config.Form>]
             Configuration: string option
@@ -1070,8 +1255,9 @@ module BillingPortalSessions =
         }
 
     type CreateOptions with
-        static member New(?configuration: string, ?customer: string, ?customerAccount: string, ?expand: string list, ?flowData: Create'FlowData, ?locale: Create'Locale, ?onBehalfOf: string, ?returnUrl: string) =
+        static member New(?afterExpiration: Create'AfterExpiration, ?configuration: string, ?customer: string, ?customerAccount: string, ?expand: string list, ?flowData: Create'FlowData, ?locale: Create'Locale, ?onBehalfOf: string, ?returnUrl: string) =
             {
+                AfterExpiration = afterExpiration
                 Configuration = configuration
                 Customer = customer
                 CustomerAccount = customerAccount

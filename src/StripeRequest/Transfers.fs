@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.TransferReversal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Transfers =
 
     type ListOptions =
@@ -101,6 +101,7 @@ module Transfers =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transfer: string
         }
@@ -114,6 +115,7 @@ module Transfers =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transfer: string
             /// An arbitrary string attached to the object. Often useful for displaying to users.
@@ -169,6 +171,7 @@ module TransfersReversals =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
@@ -191,6 +194,7 @@ module TransfersReversals =
 
     type CreateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// A positive integer in cents (or local equivalent) representing how much of this transfer to reverse. Can only reverse up to the unreversed amount remaining of the transfer. Partial transfer reversals are only allowed for transfers to Stripe Accounts. Defaults to the entire transfer amount.
@@ -226,6 +230,7 @@ module TransfersReversals =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             [<Config.Path>]
@@ -242,6 +247,7 @@ module TransfersReversals =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             [<Config.Path>]

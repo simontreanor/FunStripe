@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Charges =
 
     type ListOptions =
@@ -198,7 +198,7 @@ module Charges =
             /// Options to configure Radar. See [Radar Session](https://docs.stripe.com/radar/radar-session) for more information.
             [<Config.Form>]
             RadarOptions: Create'RadarOptions option
-            /// The email address to which this charge's [receipt](https://docs.stripe.com/dashboard/receipts) will be sent. The receipt will not be sent until the charge is paid, and no receipts will be sent for test mode charges. If this charge is for a [Customer](https://docs.stripe.com/api/customers/object), the email address specified here will override the customer's email address. If `receipt_email` is specified for a charge in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
+            /// The email address to which this charge's [receipt](https://docs.stripe.com/dashboard/receipts) will be sent. The receipt will not be sent until the charge is paid, and receipts are only sent for payments in live mode. If this charge is for a [Customer](https://docs.stripe.com/api/customers/object), the email address specified here will override the customer's email address. If `receipt_email` is specified for a charge in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
             [<Config.Form>]
             ReceiptEmail: string option
             /// Shipping information for the charge. Helps prevent fraud on charges for physical goods.
@@ -248,6 +248,7 @@ module Charges =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Charge: string
             /// Specifies which fields in the response should be expanded.
@@ -460,6 +461,7 @@ module ChargesCapture =
 
     type CaptureOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Charge: string
             /// The amount to capture, which must be less than or equal to the original amount.
@@ -474,7 +476,7 @@ module ChargesCapture =
             /// Specifies which fields in the response should be expanded.
             [<Config.Form>]
             Expand: string list option
-            /// The email address to send this charge's receipt to. This will override the previously-specified email address for this charge, if one was set. Receipts will not be sent in test mode.
+            /// The email address to send this charge's receipt to. This will override the previously-specified email address for this charge, if one was set. Receipts are only sent for payments in live mode.
             [<Config.Form>]
             ReceiptEmail: string option
             /// For a non-card charge, text that appears on the customer's statement as the statement descriptor. This value overrides the account's default statement descriptor. For information about requirements, including the 22-character limit, see [the Statement Descriptor docs](https://docs.stripe.com/get-started/account/statement-descriptors).
@@ -516,6 +518,7 @@ module ChargesRefunds =
 
     type ListOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Charge: string
             /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.

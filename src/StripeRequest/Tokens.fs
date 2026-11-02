@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Tokens =
 
     type Create'AccountBusinessType =
@@ -200,6 +200,39 @@ module Tokens =
         | QualifiedEntityExceedsOwnershipThreshold
         | QualifiesAsFinancialInstitution
 
+    type Create'AccountCompanyPhysicalAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'AccountCompanyPhysicalAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
     type Create'AccountCompanyPrincipalPlaceOfBusiness =
         {
             /// City, district, suburb, town, or village.
@@ -383,6 +416,9 @@ module Tokens =
             /// The company's phone number (used for verification).
             [<Config.Form>]
             Phone: string option
+            /// A location where the business has a meaningful physical operating presence.
+            [<Config.Form>]
+            PhysicalAddress: Create'AccountCompanyPhysicalAddress option
             /// The primary location where the business conducts operations.
             [<Config.Form>]
             PrincipalPlaceOfBusiness: Create'AccountCompanyPrincipalPlaceOfBusiness option
@@ -414,7 +450,7 @@ module Tokens =
         }
 
     type Create'AccountCompany with
-        static member New(?address: Create'AccountCompanyAddress, ?addressKana: Create'AccountCompanyAddressKana, ?addressKanji: Create'AccountCompanyAddressKanji, ?administrativeAddress: Create'AccountCompanyAdministrativeAddress, ?directorsProvided: bool, ?directorshipDeclaration: Create'AccountCompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Create'AccountCompanyOwnershipDeclaration, ?ownershipDeclarationShownAndSigned: bool, ?ownershipExemptionReason: Create'AccountCompanyOwnershipExemptionReason, ?phone: string, ?principalPlaceOfBusiness: Create'AccountCompanyPrincipalPlaceOfBusiness, ?registrationDate: Choice<Create'AccountCompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Create'AccountCompanyRepresentativeDeclaration, ?structure: Create'AccountCompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Create'AccountCompanyVerification) =
+        static member New(?address: Create'AccountCompanyAddress, ?addressKana: Create'AccountCompanyAddressKana, ?addressKanji: Create'AccountCompanyAddressKanji, ?administrativeAddress: Create'AccountCompanyAdministrativeAddress, ?directorsProvided: bool, ?directorshipDeclaration: Create'AccountCompanyDirectorshipDeclaration, ?executivesProvided: bool, ?exportLicenseId: string, ?exportPurposeCode: string, ?name: string, ?nameKana: string, ?nameKanji: string, ?ownersProvided: bool, ?ownershipDeclaration: Create'AccountCompanyOwnershipDeclaration, ?ownershipDeclarationShownAndSigned: bool, ?ownershipExemptionReason: Create'AccountCompanyOwnershipExemptionReason, ?phone: string, ?physicalAddress: Create'AccountCompanyPhysicalAddress, ?principalPlaceOfBusiness: Create'AccountCompanyPrincipalPlaceOfBusiness, ?registrationDate: Choice<Create'AccountCompanyRegistrationDateRegistrationDateSpecs,string>, ?registrationNumber: string, ?representativeDeclaration: Create'AccountCompanyRepresentativeDeclaration, ?structure: Create'AccountCompanyStructure, ?taxId: string, ?taxIdRegistrar: string, ?vatId: string, ?verification: Create'AccountCompanyVerification) =
             {
                 Address = address
                 AddressKana = addressKana
@@ -433,6 +469,7 @@ module Tokens =
                 OwnershipDeclarationShownAndSigned = ownershipDeclarationShownAndSigned
                 OwnershipExemptionReason = ownershipExemptionReason
                 Phone = phone
+                PhysicalAddress = physicalAddress
                 PrincipalPlaceOfBusiness = principalPlaceOfBusiness
                 RegistrationDate = registrationDate
                 RegistrationNumber = registrationNumber
@@ -1578,6 +1615,7 @@ module Tokens =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Token: string
         }
