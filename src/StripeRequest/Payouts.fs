@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Payouts =
 
     type ListOptions =
@@ -112,6 +112,7 @@ module Payouts =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Payout: string
         }
@@ -125,6 +126,7 @@ module Payouts =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Payout: string
             /// Specifies which fields in the response should be expanded.
@@ -171,6 +173,7 @@ module PayoutsCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Payout: string
             /// Specifies which fields in the response should be expanded.
@@ -194,6 +197,7 @@ module PayoutsReverse =
 
     type ReverseOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Payout: string
             /// Specifies which fields in the response should be expanded.

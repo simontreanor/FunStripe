@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Terminal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module TerminalConfigurations =
 
     type ListOptions =
@@ -89,6 +89,19 @@ module TerminalConfigurations =
                 Enabled = enabled
             }
 
+    type Create'ReaderSecurityReaderSecurity =
+        {
+            /// Passcode used to access a reader's admin menu.
+            [<Config.Form>]
+            AdminMenuPasscode: Choice<string,string> option
+        }
+
+    type Create'ReaderSecurityReaderSecurity with
+        static member New(?adminMenuPasscode: Choice<string,string>) =
+            {
+                AdminMenuPasscode = adminMenuPasscode
+            }
+
     type Create'RebootWindow =
         {
             /// Integer between 0 to 23 that represents the end hour of the reboot time window. The value must be different than the start_hour.
@@ -127,6 +140,19 @@ module TerminalConfigurations =
         }
 
     type Create'StripeS710 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
+    type Create'StripeT600 =
+        {
+            /// A File ID representing an image you want to display on the reader.
+            [<Config.Form>]
+            Splashscreen: Choice<string,string> option
+        }
+
+    type Create'StripeT600 with
         static member New(?splashscreen: Choice<string,string>) =
             {
                 Splashscreen = splashscreen
@@ -852,6 +878,9 @@ module TerminalConfigurations =
             /// Configurations for collecting transactions offline.
             [<Config.Form>]
             Offline: Choice<Create'OfflineOffline,string> option
+            /// Configurations for reader security settings.
+            [<Config.Form>]
+            ReaderSecurity: Choice<Create'ReaderSecurityReaderSecurity,string> option
             /// Reboot time settings for readers. that support customized reboot time configuration.
             [<Config.Form>]
             RebootWindow: Create'RebootWindow option
@@ -861,6 +890,9 @@ module TerminalConfigurations =
             /// An object containing device type specific settings for Stripe S710 readers.
             [<Config.Form>]
             StripeS710: Create'StripeS710 option
+            /// An object containing device type specific settings for Stripe T600 readers.
+            [<Config.Form>]
+            StripeT600: Create'StripeT600 option
             /// Tipping configurations for readers that support on-reader tips.
             [<Config.Form>]
             Tipping: Choice<Create'TippingTipping,string> option
@@ -885,7 +917,7 @@ module TerminalConfigurations =
         }
 
     type CreateOptions with
-        static member New(?bbposWisepad3: Create'BbposWisepad3, ?bbposWiseposE: Create'BbposWiseposE, ?cellular: Choice<Create'CellularCellular,string>, ?expand: string list, ?name: string, ?offline: Choice<Create'OfflineOffline,string>, ?rebootWindow: Create'RebootWindow, ?stripeS700: Create'StripeS700, ?stripeS710: Create'StripeS710, ?tipping: Choice<Create'TippingTipping,string>, ?verifoneM425: Create'VerifoneM425, ?verifoneP400: Create'VerifoneP400, ?verifoneP630: Create'VerifoneP630, ?verifoneUx700: Create'VerifoneUx700, ?verifoneV660p: Create'VerifoneV660p, ?wifi: Choice<Create'WifiWifi,string>) =
+        static member New(?bbposWisepad3: Create'BbposWisepad3, ?bbposWiseposE: Create'BbposWiseposE, ?cellular: Choice<Create'CellularCellular,string>, ?expand: string list, ?name: string, ?offline: Choice<Create'OfflineOffline,string>, ?readerSecurity: Choice<Create'ReaderSecurityReaderSecurity,string>, ?rebootWindow: Create'RebootWindow, ?stripeS700: Create'StripeS700, ?stripeS710: Create'StripeS710, ?stripeT600: Create'StripeT600, ?tipping: Choice<Create'TippingTipping,string>, ?verifoneM425: Create'VerifoneM425, ?verifoneP400: Create'VerifoneP400, ?verifoneP630: Create'VerifoneP630, ?verifoneUx700: Create'VerifoneUx700, ?verifoneV660p: Create'VerifoneV660p, ?wifi: Choice<Create'WifiWifi,string>) =
             {
                 BbposWisepad3 = bbposWisepad3
                 BbposWiseposE = bbposWiseposE
@@ -893,9 +925,11 @@ module TerminalConfigurations =
                 Expand = expand
                 Name = name
                 Offline = offline
+                ReaderSecurity = readerSecurity
                 RebootWindow = rebootWindow
                 StripeS700 = stripeS700
                 StripeS710 = stripeS710
+                StripeT600 = stripeT600
                 Tipping = tipping
                 VerifoneM425 = verifoneM425
                 VerifoneP400 = verifoneP400
@@ -906,8 +940,11 @@ module TerminalConfigurations =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Configuration: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Configuration: string
+        }
 
     type DeleteOptions with
         static member New(configuration: string) =
@@ -917,6 +954,7 @@ module TerminalConfigurations =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Configuration: string
             /// Specifies which fields in the response should be expanded.
@@ -983,6 +1021,19 @@ module TerminalConfigurations =
                 Enabled = enabled
             }
 
+    type Update'ReaderSecurityReaderSecurity =
+        {
+            /// Passcode used to access a reader's admin menu.
+            [<Config.Form>]
+            AdminMenuPasscode: Choice<string,string> option
+        }
+
+    type Update'ReaderSecurityReaderSecurity with
+        static member New(?adminMenuPasscode: Choice<string,string>) =
+            {
+                AdminMenuPasscode = adminMenuPasscode
+            }
+
     type Update'RebootWindowRebootWindow =
         {
             /// Integer between 0 to 23 that represents the end hour of the reboot time window. The value must be different than the start_hour.
@@ -1021,6 +1072,19 @@ module TerminalConfigurations =
         }
 
     type Update'StripeS710StripeS710 with
+        static member New(?splashscreen: Choice<string,string>) =
+            {
+                Splashscreen = splashscreen
+            }
+
+    type Update'StripeT600StripeT600 =
+        {
+            /// A File ID representing an image you want to display on the reader.
+            [<Config.Form>]
+            Splashscreen: Choice<string,string> option
+        }
+
+    type Update'StripeT600StripeT600 with
         static member New(?splashscreen: Choice<string,string>) =
             {
                 Splashscreen = splashscreen
@@ -1728,6 +1792,7 @@ module TerminalConfigurations =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Configuration: string
             /// An object containing device type specific settings for BBPOS WisePad 3 readers.
@@ -1748,6 +1813,9 @@ module TerminalConfigurations =
             /// Configurations for collecting transactions offline.
             [<Config.Form>]
             Offline: Choice<Update'OfflineOffline,string> option
+            /// Configurations for reader security settings.
+            [<Config.Form>]
+            ReaderSecurity: Choice<Update'ReaderSecurityReaderSecurity,string> option
             /// Reboot time settings for readers. that support customized reboot time configuration.
             [<Config.Form>]
             RebootWindow: Choice<Update'RebootWindowRebootWindow,string> option
@@ -1757,6 +1825,9 @@ module TerminalConfigurations =
             /// An object containing device type specific settings for Stripe S710 readers.
             [<Config.Form>]
             StripeS710: Choice<Update'StripeS710StripeS710,string> option
+            /// An object containing device type specific settings for Stripe T600 readers.
+            [<Config.Form>]
+            StripeT600: Choice<Update'StripeT600StripeT600,string> option
             /// Tipping configurations for readers that support on-reader tips.
             [<Config.Form>]
             Tipping: Choice<Update'TippingTipping,string> option
@@ -1781,7 +1852,7 @@ module TerminalConfigurations =
         }
 
     type UpdateOptions with
-        static member New(configuration: string, ?bbposWisepad3: Choice<Update'BbposWisepad3BbposWisePad3,string>, ?bbposWiseposE: Choice<Update'BbposWiseposEBbposWisePose,string>, ?cellular: Choice<Update'CellularCellular,string>, ?expand: string list, ?name: string, ?offline: Choice<Update'OfflineOffline,string>, ?rebootWindow: Choice<Update'RebootWindowRebootWindow,string>, ?stripeS700: Choice<Update'StripeS700StripeS700,string>, ?stripeS710: Choice<Update'StripeS710StripeS710,string>, ?tipping: Choice<Update'TippingTipping,string>, ?verifoneM425: Choice<Update'VerifoneM425VerifoneM425,string>, ?verifoneP400: Choice<Update'VerifoneP400VerifoneP400,string>, ?verifoneP630: Choice<Update'VerifoneP630VerifoneP630,string>, ?verifoneUx700: Choice<Update'VerifoneUx700VerifoneUx700,string>, ?verifoneV660p: Choice<Update'VerifoneV660pVerifoneV660p,string>, ?wifi: Choice<Update'WifiWifi,string>) =
+        static member New(configuration: string, ?bbposWisepad3: Choice<Update'BbposWisepad3BbposWisePad3,string>, ?bbposWiseposE: Choice<Update'BbposWiseposEBbposWisePose,string>, ?cellular: Choice<Update'CellularCellular,string>, ?expand: string list, ?name: string, ?offline: Choice<Update'OfflineOffline,string>, ?readerSecurity: Choice<Update'ReaderSecurityReaderSecurity,string>, ?rebootWindow: Choice<Update'RebootWindowRebootWindow,string>, ?stripeS700: Choice<Update'StripeS700StripeS700,string>, ?stripeS710: Choice<Update'StripeS710StripeS710,string>, ?stripeT600: Choice<Update'StripeT600StripeT600,string>, ?tipping: Choice<Update'TippingTipping,string>, ?verifoneM425: Choice<Update'VerifoneM425VerifoneM425,string>, ?verifoneP400: Choice<Update'VerifoneP400VerifoneP400,string>, ?verifoneP630: Choice<Update'VerifoneP630VerifoneP630,string>, ?verifoneUx700: Choice<Update'VerifoneUx700VerifoneUx700,string>, ?verifoneV660p: Choice<Update'VerifoneV660pVerifoneV660p,string>, ?wifi: Choice<Update'WifiWifi,string>) =
             {
                 Configuration = configuration
                 BbposWisepad3 = bbposWisepad3
@@ -1790,9 +1861,11 @@ module TerminalConfigurations =
                 Expand = expand
                 Name = name
                 Offline = offline
+                ReaderSecurity = readerSecurity
                 RebootWindow = rebootWindow
                 StripeS700 = stripeS700
                 StripeS710 = stripeS710
+                StripeT600 = stripeT600
                 Tipping = tipping
                 VerifoneM425 = verifoneM425
                 VerifoneP400 = verifoneP400
@@ -2037,8 +2110,11 @@ module TerminalLocations =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Location: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Location: string
+        }
 
     type DeleteOptions with
         static member New(location: string) =
@@ -2051,6 +2127,7 @@ module TerminalLocations =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Location: string
         }
@@ -2171,6 +2248,7 @@ module TerminalLocations =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Location: string
             /// The full address of the location. You can't change the location's `country`. If you need to modify the `country` field, create a new `Location` object and re-register any existing readers to that location.
@@ -2386,8 +2464,11 @@ module TerminalReaders =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Reader: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Reader: string
+        }
 
     type DeleteOptions with
         static member New(reader: string) =
@@ -2400,6 +2481,7 @@ module TerminalReaders =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
         }
@@ -2413,6 +2495,7 @@ module TerminalReaders =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// Specifies which fields in the response should be expanded.
@@ -2466,6 +2549,7 @@ module TerminalReadersCancelAction =
 
     type CancelActionOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// Specifies which fields in the response should be expanded.
@@ -2614,6 +2698,7 @@ module TerminalReadersCollectInputs =
 
     type CollectInputsOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// Specifies which fields in the response should be expanded.
@@ -2688,6 +2773,7 @@ module TerminalReadersCollectPaymentMethod =
 
     type CollectPaymentMethodOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// Configuration overrides for this collection, such as tipping, surcharging, and customer cancellation settings.
@@ -2732,6 +2818,7 @@ module TerminalReadersConfirmPaymentIntent =
 
     type ConfirmPaymentIntentOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// Configuration overrides for this confirmation, such as surcharge settings and return URL.
@@ -2810,6 +2897,7 @@ module TerminalReadersProcessPaymentIntent =
 
     type ProcessPaymentIntentOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// Specifies which fields in the response should be expanded.
@@ -2859,6 +2947,7 @@ module TerminalReadersProcessSetupIntent =
 
     type ProcessSetupIntentOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow.
@@ -2907,6 +2996,7 @@ module TerminalReadersRefundPayment =
 
     type RefundPaymentOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// A positive integer in __cents__ representing how much of this charge to refund.
@@ -3006,6 +3096,7 @@ module TerminalReadersSetReaderDisplay =
 
     type SetReaderDisplayOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// Cart details to display on the reader screen, including line items, amounts, and currency.

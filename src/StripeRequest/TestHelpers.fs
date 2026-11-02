@@ -11,7 +11,7 @@ open Stripe.TestHelpers
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module TestHelpersConfirmationTokens =
 
     type Create'PaymentMethodDataAcssDebit =
@@ -1030,6 +1030,7 @@ module TestHelpersCustomersFundCashBalance =
 
     type FundCashBalanceOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// Amount to be used for this test cash balance transaction. A positive integer representing how much to fund in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal) (e.g., 100 cents to fund $1.00 or 100 to fund ¥100, a zero-decimal currency).
@@ -1056,7 +1057,7 @@ module TestHelpersCustomersFundCashBalance =
                 Reference = reference
             }
 
-    ///<p>Create an incoming testmode bank transfer</p>
+    ///<p>Create a test incoming bank transfer</p>
     let FundCashBalance settings (options: FundCashBalanceOptions) =
         $"/v1/test_helpers/customers/{options.Customer}/fund_cash_balance"
         |> RestApi.postAsync<_, CustomerCashBalanceTransaction> settings (Map.empty) options
@@ -2215,6 +2216,7 @@ module TestHelpersIssuingAuthorizationsCapture =
 
     type CaptureOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authorization: string
             /// The amount to capture from the authorization. If not provided, the full amount of the authorization will be captured. This amount is in the authorization currency and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
@@ -2250,6 +2252,7 @@ module TestHelpersIssuingAuthorizationsExpire =
 
     type ExpireOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authorization: string
             /// Specifies which fields in the response should be expanded.
@@ -2447,6 +2450,7 @@ module TestHelpersIssuingAuthorizationsFinalizeAmount =
 
     type FinalizeAmountOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authorization: string
             /// Specifies which fields in the response should be expanded.
@@ -2482,6 +2486,7 @@ module TestHelpersIssuingAuthorizationsFraudChallengesRespond =
 
     type RespondOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authorization: string
             /// Whether to simulate the user confirming that the transaction was legitimate (true) or telling Stripe that it was fraudulent (false).
@@ -2509,6 +2514,7 @@ module TestHelpersIssuingAuthorizationsIncrement =
 
     type IncrementOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authorization: string
             /// Specifies which fields in the response should be expanded.
@@ -2540,6 +2546,7 @@ module TestHelpersIssuingAuthorizationsReverse =
 
     type ReverseOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authorization: string
             /// Specifies which fields in the response should be expanded.
@@ -2567,6 +2574,7 @@ module TestHelpersIssuingCardsShippingDeliver =
 
     type DeliverCardOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Card: string
             /// Specifies which fields in the response should be expanded.
@@ -2590,6 +2598,7 @@ module TestHelpersIssuingCardsShippingFail =
 
     type FailCardOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Card: string
             /// Specifies which fields in the response should be expanded.
@@ -2613,6 +2622,7 @@ module TestHelpersIssuingCardsShippingReturn =
 
     type ReturnCardOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Card: string
             /// Specifies which fields in the response should be expanded.
@@ -2636,6 +2646,7 @@ module TestHelpersIssuingCardsShippingShip =
 
     type ShipCardOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Card: string
             /// Specifies which fields in the response should be expanded.
@@ -2659,6 +2670,7 @@ module TestHelpersIssuingCardsShippingSubmit =
 
     type SubmitCardOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Card: string
             /// Specifies which fields in the response should be expanded.
@@ -2682,6 +2694,7 @@ module TestHelpersIssuingPersonalizationDesignsActivate =
 
     type ActivateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PersonalizationDesign: string
             /// Specifies which fields in the response should be expanded.
@@ -2705,6 +2718,7 @@ module TestHelpersIssuingPersonalizationDesignsDeactivate =
 
     type DeactivateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PersonalizationDesign: string
             /// Specifies which fields in the response should be expanded.
@@ -2764,6 +2778,7 @@ module TestHelpersIssuingPersonalizationDesignsReject =
 
     type RejectOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PersonalizationDesign: string
             /// Specifies which fields in the response should be expanded.
@@ -4163,6 +4178,7 @@ module TestHelpersIssuingTransactionsRefund =
 
     type RefundOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transaction: string
             /// Specifies which fields in the response should be expanded.
@@ -4190,6 +4206,7 @@ module TestHelpersRefundsExpire =
 
     type ExpireOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Refund: string
             /// Specifies which fields in the response should be expanded.
@@ -4269,6 +4286,7 @@ module TestHelpersTerminalReadersPresentPaymentMethod =
 
     type PresentPaymentMethodOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// Simulated on-reader tip amount.
@@ -4316,6 +4334,7 @@ module TestHelpersTerminalReadersSucceedInputCollection =
 
     type SucceedInputCollectionOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// Specifies which fields in the response should be expanded.
@@ -4343,6 +4362,7 @@ module TestHelpersTerminalReadersTimeoutInputCollection =
 
     type TimeoutInputCollectionOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Reader: string
             /// Specifies which fields in the response should be expanded.
@@ -4415,8 +4435,11 @@ module TestHelpersTestClocks =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          TestClock: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            TestClock: string
+        }
 
     type DeleteOptions with
         static member New(testClock: string) =
@@ -4429,6 +4452,7 @@ module TestHelpersTestClocks =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             TestClock: string
         }
@@ -4466,6 +4490,7 @@ module TestHelpersTestClocksAdvance =
 
     type AdvanceOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             TestClock: string
             /// Specifies which fields in the response should be expanded.
@@ -4521,6 +4546,7 @@ module TestHelpersTreasuryInboundTransfersFail =
 
     type FailOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -4548,6 +4574,7 @@ module TestHelpersTreasuryInboundTransfersReturn =
 
     type ReturnInboundTransferOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -4571,6 +4598,7 @@ module TestHelpersTreasuryInboundTransfersSucceed =
 
     type SucceedOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -4653,6 +4681,7 @@ module TestHelpersTreasuryOutboundPayments =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -4680,6 +4709,7 @@ module TestHelpersTreasuryOutboundPaymentsFail =
 
     type FailOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -4703,6 +4733,7 @@ module TestHelpersTreasuryOutboundPaymentsPost =
 
     type PostOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -4751,6 +4782,7 @@ module TestHelpersTreasuryOutboundPaymentsReturn =
 
     type ReturnOutboundPaymentOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -4837,6 +4869,7 @@ module TestHelpersTreasuryOutboundTransfers =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             OutboundTransfer: string
             /// Specifies which fields in the response should be expanded.
@@ -4864,6 +4897,7 @@ module TestHelpersTreasuryOutboundTransfersFail =
 
     type FailOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             OutboundTransfer: string
             /// Specifies which fields in the response should be expanded.
@@ -4887,6 +4921,7 @@ module TestHelpersTreasuryOutboundTransfersPost =
 
     type PostOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             OutboundTransfer: string
             /// Specifies which fields in the response should be expanded.
@@ -4935,6 +4970,7 @@ module TestHelpersTreasuryOutboundTransfersReturn =
 
     type ReturnOutboundTransferOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             OutboundTransfer: string
             /// Specifies which fields in the response should be expanded.

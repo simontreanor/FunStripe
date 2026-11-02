@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Radar
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module RadarEarlyFraudWarnings =
 
     type ListOptions =
@@ -47,6 +47,7 @@ module RadarEarlyFraudWarnings =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             EarlyFraudWarning: string
             /// Specifies which fields in the response should be expanded.
@@ -425,8 +426,11 @@ module RadarValueListItems =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Item: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Item: string
+        }
 
     type DeleteOptions with
         static member New(item: string) =
@@ -439,6 +443,7 @@ module RadarValueListItems =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Item: string
         }
@@ -555,8 +560,11 @@ module RadarValueLists =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          ValueList: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            ValueList: string
+        }
 
     type DeleteOptions with
         static member New(valueList: string) =
@@ -569,6 +577,7 @@ module RadarValueLists =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             ValueList: string
         }
@@ -582,6 +591,7 @@ module RadarValueLists =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             ValueList: string
             /// The name of the value list for use in rules.

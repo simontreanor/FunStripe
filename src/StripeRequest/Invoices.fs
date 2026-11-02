@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Invoices =
 
     type ListOptions =
@@ -519,7 +519,7 @@ module Invoices =
             [<Config.Form>]
             AmountIncludesIof:
                 Create'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptionsAmountIncludesIof option
-            /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
+            /// The number of seconds after PaymentIntent confirmation when the Pix expires (between 60 and 1209600, inclusive). If unspecified, defaults to 14400 seconds (4 hours).
             [<Config.Form>]
             ExpiresAfterSeconds: int option
         }
@@ -757,6 +757,7 @@ module Invoices =
         | Satispay
         | SepaCreditTransfer
         | SepaDebit
+        | Sequra
         | Sofort
         | Swish
         | Twint
@@ -1198,8 +1199,11 @@ module Invoices =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Invoice: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Invoice: string
+        }
 
     type DeleteOptions with
         static member New(invoice: string) =
@@ -1212,6 +1216,7 @@ module Invoices =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
         }
@@ -1663,7 +1668,7 @@ module Invoices =
             [<Config.Form>]
             AmountIncludesIof:
                 Update'PaymentSettingsPaymentMethodOptionsPixInvoicePaymentMethodOptionsAmountIncludesIof option
-            /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
+            /// The number of seconds after PaymentIntent confirmation when the Pix expires (between 60 and 1209600, inclusive). If unspecified, defaults to 14400 seconds (4 hours).
             [<Config.Form>]
             ExpiresAfterSeconds: int option
         }
@@ -1901,6 +1906,7 @@ module Invoices =
         | Satispay
         | SepaCreditTransfer
         | SepaDebit
+        | Sequra
         | Sofort
         | Swish
         | Twint
@@ -2198,6 +2204,7 @@ module Invoices =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
@@ -2501,7 +2508,9 @@ module InvoicesCreatePreview =
         | AoTin
         | ArCuit
         | AuAbn
+        | AuAcn
         | AuArn
+        | AuWpn
         | AwTin
         | AzTin
         | BaTin
@@ -2515,6 +2524,7 @@ module InvoicesCreatePreview =
         | BrCnpj
         | BrCpf
         | BsTin
+        | BwVat
         | ByTin
         | CaBn
         | CaGstHst
@@ -2525,12 +2535,14 @@ module InvoicesCreatePreview =
         | CdNif
         | ChUid
         | ChVat
+        | CiVat
         | ClTin
         | CmNiu
         | CnTin
         | CoNit
         | CrTin
         | CvNif
+        | CzDic
         | DeStn
         | DoRcn
         | EcRuc
@@ -2540,8 +2552,12 @@ module InvoicesCreatePreview =
         | EuOssVat
         | EuVat
         | FoVat
+        | FrSiren
+        | FrSiret
+        | FrSpi
         | GbVat
         | GeVat
+        | GhTin
         | GiTin
         | GnNif
         | HkBr
@@ -2551,6 +2567,7 @@ module InvoicesCreatePreview =
         | IdNpwp
         | IlVat
         | InGst
+        | IsKt
         | IsVat
         | ItCf
         | JpCn
@@ -2566,23 +2583,28 @@ module InvoicesCreatePreview =
         | LiVat
         | LkVat
         | MaVat
+        | MdCf
         | MdVat
         | MePib
         | MkVat
         | MrNif
+        | MuVat
         | MxRfc
         | MyFrp
         | MyItn
         | MySst
+        | MzNuit
         | NgTin
         | NoVat
         | NoVoec
         | NpPan
+        | NzBn
         | NzGst
         | OmVat
         | PeRuc
         | PhTin
         | PlNip
+        | PtNif
         | PyRuc
         | RoTin
         | RsPib
@@ -2592,12 +2614,15 @@ module InvoicesCreatePreview =
         | SgGst
         | SgUen
         | SiTin
+        | SmCoe
         | SnNinea
         | SrFin
         | SvNit
         | ThVat
         | TjTin
         | TrTin
+        | TtBir
+        | TtVat
         | TwVat
         | TzVat
         | UaVat
@@ -2614,7 +2639,7 @@ module InvoicesCreatePreview =
 
     type CreatePreview'CustomerDetailsTaxIds =
         {
-            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
+            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_acn`, `au_arn`, `au_wpn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `bw_vat`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `ci_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `cz_dic`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `fr_siren`, `fr_siret`, `fr_spi`, `gb_vat`, `ge_vat`, `gh_tin`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_kt`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_cf`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mu_vat`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `mz_nuit`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_bn`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `pt_nif`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sm_coe`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tt_bir`, `tt_vat`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
             [<Config.Form>]
             Type: CreatePreview'CustomerDetailsTaxIdsType option
             /// Value of the tax ID.
@@ -2782,10 +2807,10 @@ module InvoicesCreatePreview =
             /// The period associated with this invoice item. When set to different values, the period will be rendered on the invoice. If you have [Stripe Revenue Recognition](https://docs.stripe.com/revenue-recognition) enabled, the period will be used to recognize and defer revenue. See the [Revenue Recognition documentation](https://docs.stripe.com/revenue-recognition/methodology/subscriptions-and-invoicing) for details.
             [<Config.Form>]
             Period: CreatePreview'InvoiceItemsPeriod option
-            /// The ID of the price object. One of `price` or `price_data` is required.
+            /// The ID of the price object.
             [<Config.Form>]
             Price: string option
-            /// Data used to generate a new [Price](https://docs.stripe.com/api/prices) object inline. One of `price` or `price_data` is required.
+            /// Data used to generate a new [Price](https://docs.stripe.com/api/prices) object inline.
             [<Config.Form>]
             PriceData: CreatePreview'InvoiceItemsPriceData option
             /// Non-negative integer. The quantity of units for the invoice item. Use `quantity_decimal` instead to provide decimal precision. This field will be deprecated in favor of `quantity_decimal` in a future version.
@@ -2899,6 +2924,250 @@ module InvoicesCreatePreview =
     type CreatePreview'ScheduleDetailsEndBehavior =
         | Cancel
         | Release
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPausePauseAtType =
+        | Now
+        | Timestamp
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPausePauseAt =
+        {
+            /// The Unix timestamp at which to pause the subscription. Required when `type` is `timestamp`.
+            [<Config.Form>]
+            Timestamp: DateTime option
+            /// When to pause the subscription. Use `now` to pause immediately or `timestamp` to pause at a specific time.
+            [<Config.Form>]
+            Type: CreatePreview'ScheduleDetailsPauseSchedulesPausePauseAtType option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPausePauseAt with
+        static member New(?timestamp: DateTime, ?type': CreatePreview'ScheduleDetailsPauseSchedulesPausePauseAtType) =
+            {
+                Timestamp = timestamp
+                Type = type'
+            }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForOutstandingUsageThroughType =
+        | [<JsonPropertyName("none")>] None'
+        | PauseAt
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForOutstandingUsageThrough =
+        {
+            /// Determines whether to collect metered usage accrued up to the pause date. When adding a pause schedule, defaults to `pause_at`. On updates, the existing value is preserved if not provided.
+            [<Config.Form>]
+            Type: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForOutstandingUsageThroughType option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForOutstandingUsageThrough with
+        static member New(?type': CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForOutstandingUsageThroughType) =
+            {
+                Type = type'
+            }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForUnusedTimeFromType =
+        | ItemCurrentPeriodStart
+        | [<JsonPropertyName("none")>] None'
+        | PauseAt
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForUnusedTimeFrom =
+        {
+            /// Determines which point in the billing period unused time is credited from. When adding a pause schedule, defaults to `pause_at`. On updates, the existing value is preserved if not provided.
+            [<Config.Form>]
+            Type: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForUnusedTimeFromType option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForUnusedTimeFrom with
+        static member New(?type': CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForUnusedTimeFromType) =
+            {
+                Type = type'
+            }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillFor =
+        {
+            /// Controls whether to collect metered usage accrued up to the pause date.
+            [<Config.Form>]
+            OutstandingUsageThrough:
+                CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForOutstandingUsageThrough option
+            /// Controls how unused time on subscription items is credited when pausing.
+            [<Config.Form>]
+            UnusedTimeFrom: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForUnusedTimeFrom option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillFor with
+        static member New(?outstandingUsageThrough: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForOutstandingUsageThrough, ?unusedTimeFrom: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillForUnusedTimeFrom) =
+            {
+                OutstandingUsageThrough = outstandingUsageThrough
+                UnusedTimeFrom = unusedTimeFrom
+            }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsInvoicingBehavior =
+        | Invoice
+        | PendingInvoiceItem
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsType = | Subscription
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettings =
+        {
+            /// Controls what to bill for when pausing the subscription.
+            [<Config.Form>]
+            BillFor: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillFor option
+            /// Determines whether to generate an invoice for outstanding amounts when pausing. When adding a pause schedule, defaults to `pending_invoice_item`. On updates, the existing value is preserved if not provided.
+            [<Config.Form>]
+            InvoicingBehavior: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsInvoicingBehavior option
+            /// The pause type. Currently only `subscription` is supported.
+            [<Config.Form>]
+            Type: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsType option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPauseSettings with
+        static member New(?billFor: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsBillFor, ?invoicingBehavior: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsInvoicingBehavior, ?type': CreatePreview'ScheduleDetailsPauseSchedulesPauseSettingsType) =
+            {
+                BillFor = billFor
+                InvoicingBehavior = invoicingBehavior
+                Type = type'
+            }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPause =
+        {
+            /// When to pause the subscription.
+            [<Config.Form>]
+            PauseAt: CreatePreview'ScheduleDetailsPauseSchedulesPausePauseAt option
+            /// Settings controlling billing behavior during the pause.
+            [<Config.Form>]
+            Settings: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettings option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesPause with
+        static member New(?pauseAt: CreatePreview'ScheduleDetailsPauseSchedulesPausePauseAt, ?settings: CreatePreview'ScheduleDetailsPauseSchedulesPauseSettings) =
+            {
+                PauseAt = pauseAt
+                Settings = settings
+            }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDurationInterval =
+        | Day
+        | Month
+        | Week
+        | Year
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDuration =
+        {
+            /// The time unit for the resume duration. One of `day`, `week`, `month`, or `year`.
+            [<Config.Form>]
+            Interval:
+                CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDurationInterval option
+            /// The number of intervals after which the subscription resumes.
+            [<Config.Form>]
+            IntervalCount: int option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDuration with
+        static member New(?interval: CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDurationInterval, ?intervalCount: int) =
+            {
+                Interval = interval
+                IntervalCount = intervalCount
+            }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtType =
+        | Duration
+        | Now
+        | Timestamp
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAt =
+        {
+            /// The duration after which to resume the subscription. Required when `type` is `duration`.
+            [<Config.Form>]
+            Duration:
+                CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDuration option
+            /// The Unix timestamp at which to resume the subscription. Required when `type` is `timestamp`.
+            [<Config.Form>]
+            Timestamp: DateTime option
+            /// When to resume the subscription. Use `now` to resume immediately, `duration` to resume after a set duration, or `timestamp` to resume at a specific time.
+            [<Config.Form>]
+            Type: CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtType option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAt with
+        static member New(?duration: CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtDuration, ?timestamp: DateTime, ?type': CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAtType) =
+            {
+                Duration = duration
+                Timestamp = timestamp
+                Type = type'
+            }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsBillingCycleAnchor =
+        | ResumeAt
+        | Unchanged
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsPaymentBehavior =
+        | ResumeOnPaymentAttempt
+        | ResumeOnPaymentSuccess
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsProrationBehavior =
+        | AlwaysInvoice
+        | CreateProrations
+        | [<JsonPropertyName("none")>] None'
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettings =
+        {
+            /// Controls the billing cycle anchor when the subscription resumes. When adding a pause schedule, defaults to `resume_at`. On updates, the existing value is preserved if not provided.
+            [<Config.Form>]
+            BillingCycleAnchor:
+                CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsBillingCycleAnchor option
+            /// Controls whether Stripe attempts payment on the resumption invoice and how payment affects the subscription's status. When adding a pause schedule, defaults to `resume_on_payment_success`. On updates, the existing value is preserved if not provided.
+            [<Config.Form>]
+            PaymentBehavior:
+                CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsPaymentBehavior option
+            /// Determines how to handle prorations when the subscription resumes. When adding a pause schedule, defaults to `create_prorations`. On updates, the existing value is preserved if not provided.
+            [<Config.Form>]
+            ProrationBehavior:
+                CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsProrationBehavior option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettings with
+        static member New(?billingCycleAnchor: CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsBillingCycleAnchor, ?paymentBehavior: CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsPaymentBehavior, ?prorationBehavior: CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettingsProrationBehavior) =
+            {
+                BillingCycleAnchor = billingCycleAnchor
+                PaymentBehavior = paymentBehavior
+                ProrationBehavior = prorationBehavior
+            }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParams =
+        {
+            /// When to resume the subscription.
+            [<Config.Form>]
+            ResumeAt: CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAt option
+            /// Settings controlling how the subscription resumes.
+            [<Config.Form>]
+            Settings: CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettings option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParams with
+        static member New(?resumeAt: CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsResumeAt, ?settings: CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParamsSettings) =
+            {
+                ResumeAt = resumeAt
+                Settings = settings
+            }
+
+    type CreatePreview'ScheduleDetailsPauseSchedules =
+        {
+            /// A unique identifier for this pause schedule entry.
+            [<Config.Form>]
+            Key: string option
+            /// Configuration for when and how the subscription pauses.
+            [<Config.Form>]
+            Pause: CreatePreview'ScheduleDetailsPauseSchedulesPause option
+            /// Configuration for when and how the subscription resumes.
+            [<Config.Form>]
+            Resume: Choice<CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParams,string> option
+        }
+
+    type CreatePreview'ScheduleDetailsPauseSchedules with
+        static member New(?key: string, ?pause: CreatePreview'ScheduleDetailsPauseSchedulesPause, ?resume: Choice<CreatePreview'ScheduleDetailsPauseSchedulesResumePauseScheduleUpdateResumeParams,string>) =
+            {
+                Key = key
+                Pause = pause
+                Resume = resume
+            }
 
     type CreatePreview'ScheduleDetailsPhasesAddInvoiceItemsDiscounts =
         {
@@ -3481,6 +3750,9 @@ module InvoicesCreatePreview =
             /// Behavior of the subscription schedule and underlying subscription when it ends. Possible values are `release` or `cancel` with the default being `release`. `release` will end the subscription schedule and keep the underlying subscription running. `cancel` will end the subscription schedule and cancel the underlying subscription.
             [<Config.Form>]
             EndBehavior: CreatePreview'ScheduleDetailsEndBehavior option
+            /// The subscription's pause behavior and optional resume behavior. You can provide one entry. Include its `key` to update an existing pause schedule. Omit `pause_schedules` to leave the existing schedule unchanged, or pass an empty string (`""`) to clear it.
+            [<Config.Form>]
+            PauseSchedules: Choice<CreatePreview'ScheduleDetailsPauseSchedules list,string> option
             /// List representing phases of the subscription schedule. Each phase can be customized to have different durations, plans, and coupons. If there are multiple phases, the `end_date` of one phase will always equal the `start_date` of the next phase.
             [<Config.Form>]
             Phases: CreatePreview'ScheduleDetailsPhases list option
@@ -3490,10 +3762,11 @@ module InvoicesCreatePreview =
         }
 
     type CreatePreview'ScheduleDetails with
-        static member New(?billingMode: CreatePreview'ScheduleDetailsBillingMode, ?endBehavior: CreatePreview'ScheduleDetailsEndBehavior, ?phases: CreatePreview'ScheduleDetailsPhases list, ?prorationBehavior: CreatePreview'ScheduleDetailsProrationBehavior) =
+        static member New(?billingMode: CreatePreview'ScheduleDetailsBillingMode, ?endBehavior: CreatePreview'ScheduleDetailsEndBehavior, ?pauseSchedules: Choice<CreatePreview'ScheduleDetailsPauseSchedules list,string>, ?phases: CreatePreview'ScheduleDetailsPhases list, ?prorationBehavior: CreatePreview'ScheduleDetailsProrationBehavior) =
             {
                 BillingMode = billingMode
                 EndBehavior = endBehavior
+                PauseSchedules = pauseSchedules
                 Phases = phases
                 ProrationBehavior = prorationBehavior
             }
@@ -4244,22 +4517,32 @@ module InvoicesAddLines =
         | State
 
     type AddLines'LinesTaxAmountsTaxRateDataTaxType =
+        | AdmissionsTax
         | AmusementTax
+        | AttendanceTax
         | CommunicationsTax
         | DigitalExciseTax
+        | EntertainmentTax
+        | GetFund
+        | GrossReceiptsTax
         | Gst
+        | HospitalityTax
         | Hst
         | Igst
         | Jct
         | LeaseTax
+        | LuxuryTax
         | MassTransitParkingTax
+        | Nhil
         | ParkingTax
         | Pst
         | Qst
+        | ResortTax
         | RetailDeliveryFee
         | Rst
         | SalesTax
         | ServiceTax
+        | TourismTax
         | UtilityUsersTax
         | Vat
 
@@ -4414,6 +4697,7 @@ module InvoicesAddLines =
 
     type AddLinesOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// Specifies which fields in the response should be expanded.
@@ -4445,6 +4729,7 @@ module InvoicesAttachPayment =
 
     type AttachPaymentOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// Specifies which fields in the response should be expanded.
@@ -4482,6 +4767,7 @@ module InvoicesFinalize =
 
     type FinalizeInvoiceOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// Controls whether Stripe performs [automatic collection](https://docs.stripe.com/invoicing/integration/automatic-advancement-collection) of the invoice. If `false`, the invoice's state doesn't automatically advance without an explicit action.
@@ -4515,6 +4801,7 @@ module InvoicesLines =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
@@ -4687,22 +4974,32 @@ module InvoicesLines =
         | State
 
     type Update'TaxAmountsTaxRateDataTaxType =
+        | AdmissionsTax
         | AmusementTax
+        | AttendanceTax
         | CommunicationsTax
         | DigitalExciseTax
+        | EntertainmentTax
+        | GetFund
+        | GrossReceiptsTax
         | Gst
+        | HospitalityTax
         | Hst
         | Igst
         | Jct
         | LeaseTax
+        | LuxuryTax
         | MassTransitParkingTax
+        | Nhil
         | ParkingTax
         | Pst
         | Qst
+        | ResortTax
         | RetailDeliveryFee
         | Rst
         | SalesTax
         | ServiceTax
+        | TourismTax
         | UtilityUsersTax
         | Vat
 
@@ -4881,6 +5178,7 @@ module InvoicesMarkUncollectible =
 
     type MarkUncollectibleOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// Specifies which fields in the response should be expanded.
@@ -4904,6 +5202,7 @@ module InvoicesPay =
 
     type PayOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// Specifies which fields in the response should be expanded.
@@ -4973,6 +5272,7 @@ module InvoicesRemoveLines =
 
     type RemoveLinesOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// Specifies which fields in the response should be expanded.
@@ -5004,6 +5304,7 @@ module InvoicesSend =
 
     type SendInvoiceOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// Specifies which fields in the response should be expanded.
@@ -5178,22 +5479,32 @@ module InvoicesUpdateLines =
         | State
 
     type UpdateLines'LinesTaxAmountsTaxRateDataTaxType =
+        | AdmissionsTax
         | AmusementTax
+        | AttendanceTax
         | CommunicationsTax
         | DigitalExciseTax
+        | EntertainmentTax
+        | GetFund
+        | GrossReceiptsTax
         | Gst
+        | HospitalityTax
         | Hst
         | Igst
         | Jct
         | LeaseTax
+        | LuxuryTax
         | MassTransitParkingTax
+        | Nhil
         | ParkingTax
         | Pst
         | Qst
+        | ResortTax
         | RetailDeliveryFee
         | Rst
         | SalesTax
         | ServiceTax
+        | TourismTax
         | UtilityUsersTax
         | Vat
 
@@ -5348,6 +5659,7 @@ module InvoicesUpdateLines =
 
     type UpdateLinesOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// Specifies which fields in the response should be expanded.
@@ -5379,6 +5691,7 @@ module InvoicesVoid =
 
     type VoidInvoiceOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Invoice: string
             /// Specifies which fields in the response should be expanded.

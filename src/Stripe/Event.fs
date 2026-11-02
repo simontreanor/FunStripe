@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type EventType =
     | [<JsonPropertyName("account.application.authorized")>] AccountApplicationAuthorized
     | [<JsonPropertyName("account.application.deauthorized")>] AccountApplicationDeauthorized
@@ -236,6 +236,13 @@ type EventType =
     | [<JsonPropertyName("test_helpers.test_clock.deleted")>] TestHelpersTestClockDeleted
     | [<JsonPropertyName("test_helpers.test_clock.internal_failure")>] TestHelpersTestClockInternalFailure
     | [<JsonPropertyName("test_helpers.test_clock.ready")>] TestHelpersTestClockReady
+    | [<JsonPropertyName("three_d_secure.authentication.canceled")>] ThreeDSecureAuthenticationCanceled
+    | [<JsonPropertyName("three_d_secure.authentication.challenge_started")>] ThreeDSecureAuthenticationChallengeStarted
+    | [<JsonPropertyName("three_d_secure.authentication.errored")>] ThreeDSecureAuthenticationErrored
+    | [<JsonPropertyName("three_d_secure.authentication.failed")>] ThreeDSecureAuthenticationFailed
+    | [<JsonPropertyName("three_d_secure.authentication.requires_challenge")>] ThreeDSecureAuthenticationRequiresChallenge
+    | [<JsonPropertyName("three_d_secure.authentication.requires_submission")>] ThreeDSecureAuthenticationRequiresSubmission
+    | [<JsonPropertyName("three_d_secure.authentication.succeeded")>] ThreeDSecureAuthenticationSucceeded
     | [<JsonPropertyName("topup.canceled")>] TopupCanceled
     | [<JsonPropertyName("topup.created")>] TopupCreated
     | [<JsonPropertyName("topup.failed")>] TopupFailed

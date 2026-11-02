@@ -6,7 +6,7 @@ open System
 open Stripe.FeeRefund
 
 /// A list of refunds that have been applied to the fee.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type ApplicationFeeRefunds =
     {
         /// Details about each object.
@@ -52,6 +52,10 @@ type PlatformEarningFeeSource with
             Payout = payout
         }
 
+/// When you collect a transaction fee on top of a charge made for your user
+/// (using [Connect](https://docs.stripe.com/connect)), an `Application Fee` object is created in
+/// your account. You can list, retrieve, and refund application fees.
+/// Related guide: [Collecting application fees](https://docs.stripe.com/connect/direct-charges#collect-fees)
 type ApplicationFee =
     {
         /// ID of the Stripe account this fee was taken from.

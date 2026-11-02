@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Review
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Reviews =
 
     type ListOptions =
@@ -42,6 +42,7 @@ module Reviews =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Review: string
         }
@@ -69,6 +70,7 @@ module ReviewsApprove =
 
     type ApproveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Review: string
             /// Specifies which fields in the response should be expanded.

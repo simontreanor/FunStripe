@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.TaxId
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module Customers =
 
     type ListOptions =
@@ -264,7 +264,9 @@ module Customers =
         | AoTin
         | ArCuit
         | AuAbn
+        | AuAcn
         | AuArn
+        | AuWpn
         | AwTin
         | AzTin
         | BaTin
@@ -278,6 +280,7 @@ module Customers =
         | BrCnpj
         | BrCpf
         | BsTin
+        | BwVat
         | ByTin
         | CaBn
         | CaGstHst
@@ -288,12 +291,14 @@ module Customers =
         | CdNif
         | ChUid
         | ChVat
+        | CiVat
         | ClTin
         | CmNiu
         | CnTin
         | CoNit
         | CrTin
         | CvNif
+        | CzDic
         | DeStn
         | DoRcn
         | EcRuc
@@ -303,8 +308,12 @@ module Customers =
         | EuOssVat
         | EuVat
         | FoVat
+        | FrSiren
+        | FrSiret
+        | FrSpi
         | GbVat
         | GeVat
+        | GhTin
         | GiTin
         | GnNif
         | HkBr
@@ -314,6 +323,7 @@ module Customers =
         | IdNpwp
         | IlVat
         | InGst
+        | IsKt
         | IsVat
         | ItCf
         | JpCn
@@ -329,23 +339,28 @@ module Customers =
         | LiVat
         | LkVat
         | MaVat
+        | MdCf
         | MdVat
         | MePib
         | MkVat
         | MrNif
+        | MuVat
         | MxRfc
         | MyFrp
         | MyItn
         | MySst
+        | MzNuit
         | NgTin
         | NoVat
         | NoVoec
         | NpPan
+        | NzBn
         | NzGst
         | OmVat
         | PeRuc
         | PhTin
         | PlNip
+        | PtNif
         | PyRuc
         | RoTin
         | RsPib
@@ -355,12 +370,15 @@ module Customers =
         | SgGst
         | SgUen
         | SiTin
+        | SmCoe
         | SnNinea
         | SrFin
         | SvNit
         | ThVat
         | TjTin
         | TrTin
+        | TtBir
+        | TtVat
         | TwVat
         | TzVat
         | UaVat
@@ -377,7 +395,7 @@ module Customers =
 
     type Create'TaxIdData =
         {
-            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
+            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_acn`, `au_arn`, `au_wpn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `bw_vat`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `ci_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `cz_dic`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `fr_siren`, `fr_siret`, `fr_spi`, `gb_vat`, `ge_vat`, `gh_tin`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_kt`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_cf`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mu_vat`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `mz_nuit`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_bn`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `pt_nif`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sm_coe`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tt_bir`, `tt_vat`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
             [<Config.Form>]
             Type: Create'TaxIdDataType option
             /// Value of the tax ID.
@@ -491,8 +509,11 @@ module Customers =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Customer: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Customer: string
+        }
 
     type DeleteOptions with
         static member New(customer: string) =
@@ -502,6 +523,7 @@ module Customers =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// Specifies which fields in the response should be expanded.
@@ -727,6 +749,7 @@ module Customers =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// The customer's address. Learn about [country-specific requirements for calculating tax](https://docs.stripe.com/invoicing/taxes?dashboard-or-api=dashboard#set-up-customer).
@@ -892,6 +915,7 @@ module CustomersBalanceTransactions =
             /// Only return customer balance transactions that were created during the given date interval.
             [<Config.Query>]
             Created: int option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
@@ -925,6 +949,7 @@ module CustomersBalanceTransactions =
 
     type CreateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// The integer amount in **cents (or local equivalent)** to apply to the customer's credit balance.
@@ -962,6 +987,7 @@ module CustomersBalanceTransactions =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transaction: string
         }
@@ -978,6 +1004,7 @@ module CustomersBalanceTransactions =
         {
             [<Config.Path>]
             Customer: string
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transaction: string
             /// An arbitrary string attached to the object. Often useful for displaying to users.
@@ -1027,6 +1054,7 @@ module CustomersCashBalance =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// Specifies which fields in the response should be expanded.
@@ -1061,6 +1089,7 @@ module CustomersCashBalance =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// Specifies which fields in the response should be expanded.
@@ -1094,6 +1123,7 @@ module CustomersCashBalanceTransactions =
 
     type ListOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
@@ -1127,6 +1157,7 @@ module CustomersCashBalanceTransactions =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Transaction: string
         }
@@ -1154,8 +1185,11 @@ module CustomersCashBalanceTransactions =
 module CustomersDiscount =
 
     type DeleteDiscountOptions =
-        { [<Config.Path>]
-          Customer: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Customer: string
+        }
 
     type DeleteDiscountOptions with
         static member New(customer: string) =
@@ -1222,6 +1256,7 @@ module CustomersFundingInstructions =
 
     type CreateFundingInstructionsOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// Additional parameters for `bank_transfer` funding types
@@ -1262,6 +1297,7 @@ module CustomersPaymentMethods =
             /// This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow.
             [<Config.Query>]
             AllowRedisplay: string option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
@@ -1300,6 +1336,7 @@ module CustomersPaymentMethods =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentMethod: string
         }
@@ -1360,6 +1397,7 @@ module CustomersSources =
 
     type CreateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// Specifies which fields in the response should be expanded.
@@ -1389,6 +1427,7 @@ module CustomersSources =
         {
             [<Config.Path>]
             Customer: string
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Specifies which fields in the response should be expanded.
@@ -1591,6 +1630,7 @@ module CustomersSourcesVerify =
         {
             [<Config.Path>]
             Customer: string
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Two positive integers, in *cents*, equal to the values of the microdeposits sent to the bank account.
@@ -1619,6 +1659,7 @@ module CustomersTaxIds =
 
     type ListOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
@@ -1653,7 +1694,9 @@ module CustomersTaxIds =
         | AoTin
         | ArCuit
         | AuAbn
+        | AuAcn
         | AuArn
+        | AuWpn
         | AwTin
         | AzTin
         | BaTin
@@ -1667,6 +1710,7 @@ module CustomersTaxIds =
         | BrCnpj
         | BrCpf
         | BsTin
+        | BwVat
         | ByTin
         | CaBn
         | CaGstHst
@@ -1677,12 +1721,14 @@ module CustomersTaxIds =
         | CdNif
         | ChUid
         | ChVat
+        | CiVat
         | ClTin
         | CmNiu
         | CnTin
         | CoNit
         | CrTin
         | CvNif
+        | CzDic
         | DeStn
         | DoRcn
         | EcRuc
@@ -1692,8 +1738,12 @@ module CustomersTaxIds =
         | EuOssVat
         | EuVat
         | FoVat
+        | FrSiren
+        | FrSiret
+        | FrSpi
         | GbVat
         | GeVat
+        | GhTin
         | GiTin
         | GnNif
         | HkBr
@@ -1703,6 +1753,7 @@ module CustomersTaxIds =
         | IdNpwp
         | IlVat
         | InGst
+        | IsKt
         | IsVat
         | ItCf
         | JpCn
@@ -1718,23 +1769,28 @@ module CustomersTaxIds =
         | LiVat
         | LkVat
         | MaVat
+        | MdCf
         | MdVat
         | MePib
         | MkVat
         | MrNif
+        | MuVat
         | MxRfc
         | MyFrp
         | MyItn
         | MySst
+        | MzNuit
         | NgTin
         | NoVat
         | NoVoec
         | NpPan
+        | NzBn
         | NzGst
         | OmVat
         | PeRuc
         | PhTin
         | PlNip
+        | PtNif
         | PyRuc
         | RoTin
         | RsPib
@@ -1744,12 +1800,15 @@ module CustomersTaxIds =
         | SgGst
         | SgUen
         | SiTin
+        | SmCoe
         | SnNinea
         | SrFin
         | SvNit
         | ThVat
         | TjTin
         | TrTin
+        | TtBir
+        | TtVat
         | TwVat
         | TzVat
         | UaVat
@@ -1766,12 +1825,13 @@ module CustomersTaxIds =
 
     type CreateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Customer: string
             /// Specifies which fields in the response should be expanded.
             [<Config.Form>]
             Expand: string list option
-            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
+            /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_acn`, `au_arn`, `au_wpn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `bw_vat`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `ci_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `cz_dic`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `fr_siren`, `fr_siret`, `fr_spi`, `gb_vat`, `ge_vat`, `gh_tin`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_kt`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_cf`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mu_vat`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `mz_nuit`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_bn`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `pt_nif`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sm_coe`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tt_bir`, `tt_vat`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`
             [<Config.Form>]
             Type: Create'Type
             /// Value of the tax ID.
@@ -1789,10 +1849,13 @@ module CustomersTaxIds =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          Customer: string
-          [<Config.Path>]
-          Id: string }
+        {
+            [<Config.Path>]
+            Customer: string
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Id: string
+        }
 
     type DeleteOptions with
         static member New(customer: string, id: string) =
@@ -1808,6 +1871,7 @@ module CustomersTaxIds =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
         }

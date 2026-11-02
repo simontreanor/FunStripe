@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Tax
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type DeletedTaxId =
     {
         /// Always true for a deleted object
@@ -33,7 +33,9 @@ type TaxIdType =
     | AoTin
     | ArCuit
     | AuAbn
+    | AuAcn
     | AuArn
+    | AuWpn
     | AwTin
     | AzTin
     | BaTin
@@ -47,6 +49,7 @@ type TaxIdType =
     | BrCnpj
     | BrCpf
     | BsTin
+    | BwVat
     | ByTin
     | CaBn
     | CaGstHst
@@ -57,12 +60,14 @@ type TaxIdType =
     | CdNif
     | ChUid
     | ChVat
+    | CiVat
     | ClTin
     | CmNiu
     | CnTin
     | CoNit
     | CrTin
     | CvNif
+    | CzDic
     | DeStn
     | DoRcn
     | EcRuc
@@ -72,8 +77,12 @@ type TaxIdType =
     | EuOssVat
     | EuVat
     | FoVat
+    | FrSiren
+    | FrSiret
+    | FrSpi
     | GbVat
     | GeVat
+    | GhTin
     | GiTin
     | GnNif
     | HkBr
@@ -83,6 +92,7 @@ type TaxIdType =
     | IdNpwp
     | IlVat
     | InGst
+    | IsKt
     | IsVat
     | ItCf
     | JpCn
@@ -98,23 +108,28 @@ type TaxIdType =
     | LiVat
     | LkVat
     | MaVat
+    | MdCf
     | MdVat
     | MePib
     | MkVat
     | MrNif
+    | MuVat
     | MxRfc
     | MyFrp
     | MyItn
     | MySst
+    | MzNuit
     | NgTin
     | NoVat
     | NoVoec
     | NpPan
+    | NzBn
     | NzGst
     | OmVat
     | PeRuc
     | PhTin
     | PlNip
+    | PtNif
     | PyRuc
     | RoTin
     | RsPib
@@ -124,12 +139,15 @@ type TaxIdType =
     | SgGst
     | SgUen
     | SiTin
+    | SmCoe
     | SnNinea
     | SrFin
     | SvNit
     | ThVat
     | TjTin
     | TrTin
+    | TtBir
+    | TtVat
     | TwVat
     | TzVat
     | UaVat
@@ -189,7 +207,7 @@ type TaxId =
         Livemode: bool
         /// The account or customer the tax ID belongs to.
         Owner: TaxIDsOwner option
-        /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_arn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `gb_vat`, `ge_vat`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`. Note that some legacy tax IDs have type `unknown`
+        /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_acn`, `au_arn`, `au_wpn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `bw_vat`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `ci_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `cz_dic`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `fr_siren`, `fr_siret`, `fr_spi`, `gb_vat`, `ge_vat`, `gh_tin`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_kt`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_cf`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mu_vat`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `mz_nuit`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_bn`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `pt_nif`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sm_coe`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tt_bir`, `tt_vat`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`. Note that some legacy tax IDs have type `unknown`
         Type: TaxIdType
         /// Value of the tax ID.
         Value: string

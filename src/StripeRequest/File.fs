@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.FileLink
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module FileLinks =
 
     type ListOptions =
@@ -75,6 +75,7 @@ module FileLinks =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Link: string
         }
@@ -90,6 +91,7 @@ module FileLinks =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Link: string
             /// Specifies which fields in the response should be expanded.

@@ -5,7 +5,7 @@ open FunStripe
 open System
 
 /// The amount of the tax rate when the `rate_type`` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate.
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type TaxRateFlatAmount =
     {
         /// Amount of the tax when the `rate_type` is `flat_amount`. This positive integer represents how much to charge in the smallest currency unit (e.g., 100 cents to charge $1.00 or 100 to charge ¥100, a zero-decimal currency). The amount value supports up to eight digits (e.g., a value of 99999999 for a USD charge of $999,999.99).
@@ -35,22 +35,32 @@ type TaxRateRateType =
     | Percentage
 
 type TaxRateTaxType =
+    | AdmissionsTax
     | AmusementTax
+    | AttendanceTax
     | CommunicationsTax
     | DigitalExciseTax
+    | EntertainmentTax
+    | GetFund
+    | GrossReceiptsTax
     | Gst
+    | HospitalityTax
     | Hst
     | Igst
     | Jct
     | LeaseTax
+    | LuxuryTax
     | MassTransitParkingTax
+    | Nhil
     | ParkingTax
     | Pst
     | Qst
+    | ResortTax
     | RetailDeliveryFee
     | Rst
     | SalesTax
     | ServiceTax
+    | TourismTax
     | UtilityUsersTax
     | Vat
 

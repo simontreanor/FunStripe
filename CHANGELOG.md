@@ -6,7 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
-## [Unreleased]
+## [3.1.0] - 2026-11-02
+
+### Upgrade notes
+- `StripeApiSettings` has a new `FilesBaseUrl: string option` field (and `filesBaseUrl` parameter on `New`). Uploads go to `EffectiveFilesBaseUrl`: `FilesBaseUrl` when set, otherwise `https://files.stripe.com` while `BaseUrl` is Stripe's API host and `BaseUrl` itself for any other host, so a mock or proxy serves uploads too. Code that builds the record with a record expression instead of `New` needs the field
+- The map fields under Fixed change type, and `Files.CreateOptions.File` changes from `string` to `FileUpload`. Before this release, responses with those maps could not be read and uploads did not work, so no working code depended on the old types
+- Type changes from Stripe within the endive train. As with 2.4.0, these ship as a minor release, since they affect only code that names the types or builds the records:
+  - The Radar rule type is renamed `Rule` → `RadarRule` (with `Markers.Rule` → `Markers.RadarRule`), so `ChargeOutcome.Rule` is now `StripeId<Markers.RadarRule> option`
+  - `RefundDestinationDetails.AfterpayClearpay` and `.Klarna` change from `DestinationDetailsUnimplemented` to their own types, which carry `Reference` and `ReferenceStatus` (as `RefundDestinationDetailsPaypal` now also does)
+  - `SubscriptionsResourcePaymentMethodOptions.SepaDebit` is now a `SubscriptionPaymentMethodOptionsSepaDebit` (was `InvoicePaymentMethodOptionsSepaDebit`, same shape)
+  - `SubscriptionSchedule.PauseSchedules` is now required (`list`, was `list option`)
+
+### Changed
+- Regenerated against Stripe OpenAPI spec `2026-10-28.endive` (was `2026-09-30.endive`). Highlights:
+  - **Subscription pausing in the customer portal**: `subscription_pause` portal feature (indefinite or chosen intervals) and flow type; `after_expiration.customer_login` on portal sessions; `pause_schedules` on invoice preview `schedule_details`
+  - **Dispute appeals and Smart Disputes**: `evidence.appeal`, `appeal_needs_response` and `appeal_under_review` statuses, `intended_submission_method` on dispute update and `evidence_details.submission_method`
+  - **Card stored credentials**: `stored_credential_usage` and `setup_credential_usage` on card payment method options for PaymentIntent and SetupIntent, and on charge and payment record card details
+  - **3D Secure**: `three_d_secure.authentication.*` event types for the standalone authentication resource added in 3.0.0
+  - **Tax**: 18 new tax ID types (`au_acn`, `au_wpn`, `bw_vat`, `ci_vat`, `cz_dic`, `fr_siren`, `fr_siret`, `fr_spi`, `gh_tin`, `is_kt`, `md_cf`, `mu_vat`, `mz_nuit`, `nz_bn`, `pt_nif`, `sm_coe`, `tt_bir`, `tt_vat`); registrations in Botswana, Côte d'Ivoire, Ghana and Mauritius and for US utility users tax; Ghana's `get_fund` and `nhil` and the US admissions, entertainment, hospitality and similar tax-rate types
+  - **Connect**: `wero_payments` capability, company `physical_address`, `proof_of_business_presence` documents, and the `reporting_chart`, `terminal_hardware_orders` and `terminal_hardware_shop` embedded components
+  - **Checkout and payment links**: `subscription_data.invoice_settings` takes account tax IDs, custom fields and more; Checkout Session update takes `payment_intent_data`; Scalapay on payment links; SeQura on invoice and subscription payment settings
+  - **Terminal**: `reader_security` (admin menu passcode) and Stripe T600 configurations
+  - Issuing card shipping: `shipped_at` and `delivered_at`
 
 ### Fixed
 - **Maps with typed values deserialise.** Response fields whose spec schema is a map of integers, numbers, strings or objects were all generated as `Map<string, string list>`, so any response that carried one failed to deserialise. They now get the value type of the spec: `Map<string, int>` for the balances of Financial Connections accounts, customer cash balances, `invoice_credit_balance` and the balance settings by currency, `Map<string, CurrencyOption>` (and the coupon, promotion code and shipping rate equivalents) for `currency_options`, `Map<string, string>` for billing meter event payloads, `Map<string, decimal>` for exchange rates, and so on
@@ -14,10 +35,6 @@ Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the
 - **`Files.Create` uploads files.** It sent a url-encoded form to `api.stripe.com`; Stripe takes uploads as `multipart/form-data` on `files.stripe.com`. The generator now emits `RestApi.postMultipartAsync` for multipart endpoints, and the `file` parameter is a `FileUpload` (file name, content type, bytes) instead of a `string`
 - **The `issuing_logo` file purpose** (needed for the card logo of an Issuing personalization design) is in `Files.Create'Purpose` and `FilePurpose`. Stripe's spec leaves it out; the generator now applies a small set of spec corrections (`SpecPatches.fs`), each only while the spec still needs it
 - Form-encoding a record that holds binary content no longer overflows the stack
-
-### Upgrade notes
-- `StripeApiSettings` has a new `FilesBaseUrl: string option` field (and `filesBaseUrl` parameter on `New`). Uploads go to `EffectiveFilesBaseUrl`: `FilesBaseUrl` when set, otherwise `https://files.stripe.com` while `BaseUrl` is Stripe's API host and `BaseUrl` itself for any other host, so a mock or proxy serves uploads too. Code that builds the record with a record expression instead of `New` needs the field
-- The map fields above change type, and `Files.CreateOptions.File` changes from `string` to `FileUpload`. Before this release, responses with those maps could not be read and uploads did not work, so no working code depended on the old types
 
 ## [3.0.0] - 2026-10-01
 

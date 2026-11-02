@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type DeletedRadarValueList =
     {
         /// Always true for a deleted object
@@ -789,6 +789,24 @@ type RadarReviewResourceSession with
             Version = version
         }
 
+type RadarRule =
+    {
+        /// The action taken on the payment.
+        Action: string
+        /// Unique identifier for the object.
+        Id: string
+        /// The predicate to evaluate the payment against.
+        Predicate: string
+    }
+
+type RadarRule with
+    static member New(action: string, id: string, predicate: string) =
+        {
+            Action = action
+            Id = id
+            Predicate = predicate
+        }
+
 type RadarValueListItemType =
     | Account
     | CardBin
@@ -900,22 +918,4 @@ type RadarValueList with
 module RadarValueList =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "radar.value_list"
-
-type Rule =
-    {
-        /// The action taken on the payment.
-        Action: string
-        /// Unique identifier for the object.
-        Id: string
-        /// The predicate to evaluate the payment against.
-        Predicate: string
-    }
-
-type Rule with
-    static member New(action: string, id: string, predicate: string) =
-        {
-            Action = action
-            Id = id
-            Predicate = predicate
-        }
 

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Climate
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module ClimateOrders =
 
     type ListOptions =
@@ -221,6 +221,7 @@ module ClimateProducts =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Product: string
         }
@@ -276,6 +277,7 @@ module ClimateSuppliers =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Supplier: string
         }

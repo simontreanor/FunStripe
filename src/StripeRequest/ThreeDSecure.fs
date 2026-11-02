@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.ThreeDSecure
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module ThreeDSecureAuthentications =
 
     type ListOptions =
@@ -628,6 +628,7 @@ module ThreeDSecureAuthentications =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authentication: string
             /// Specifies which fields in the response should be expanded.
@@ -664,6 +665,7 @@ module ThreeDSecureAuthenticationsCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authentication: string
             /// Specifies which fields in the response should be expanded.
@@ -692,6 +694,7 @@ module ThreeDSecureAuthenticationsSubmit =
 
     type SubmitOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Authentication: string
             /// Specifies which fields in the response should be expanded.

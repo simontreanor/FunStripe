@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.SetupAttempt
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module SetupAttempts =
 
     type ListOptions =
@@ -1396,6 +1396,11 @@ module SetupIntents =
         | Automatic
         | Challenge
 
+    type Create'PaymentMethodOptionsCardSetupCredentialUsage =
+        | Installment
+        | Recurring
+        | Unscheduled
+
     type Create'PaymentMethodOptionsCardThreeDSecureAresTransStatus =
         | [<JsonPropertyName("A")>] A
         | [<JsonPropertyName("C")>] C
@@ -1528,6 +1533,9 @@ module SetupIntents =
             /// We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://docs.stripe.com/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. If not provided, this value defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://docs.stripe.com/payments/3d-secure/authentication-flow#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
             [<Config.Form>]
             RequestThreeDSecure: Create'PaymentMethodOptionsCardRequestThreeDSecure option
+            /// Set to indicate the future transaction type usage for the card being set up.
+            [<Config.Form>]
+            SetupCredentialUsage: Create'PaymentMethodOptionsCardSetupCredentialUsage option
             /// If 3D Secure authentication was performed with a third-party provider,
             /// the authentication details to use for this setup.
             [<Config.Form>]
@@ -1535,12 +1543,13 @@ module SetupIntents =
         }
 
     type Create'PaymentMethodOptionsCard with
-        static member New(?mandateOptions: Create'PaymentMethodOptionsCardMandateOptions, ?moto: bool, ?network: Create'PaymentMethodOptionsCardNetwork, ?requestThreeDSecure: Create'PaymentMethodOptionsCardRequestThreeDSecure, ?threeDSecure: Create'PaymentMethodOptionsCardThreeDSecure) =
+        static member New(?mandateOptions: Create'PaymentMethodOptionsCardMandateOptions, ?moto: bool, ?network: Create'PaymentMethodOptionsCardNetwork, ?requestThreeDSecure: Create'PaymentMethodOptionsCardRequestThreeDSecure, ?setupCredentialUsage: Create'PaymentMethodOptionsCardSetupCredentialUsage, ?threeDSecure: Create'PaymentMethodOptionsCardThreeDSecure) =
             {
                 MandateOptions = mandateOptions
                 Moto = moto
                 Network = network
                 RequestThreeDSecure = requestThreeDSecure
+                SetupCredentialUsage = setupCredentialUsage
                 ThreeDSecure = threeDSecure
             }
 
@@ -2207,7 +2216,7 @@ module SetupIntents =
             /// The Stripe account ID created for this SetupIntent.
             [<Config.Form>]
             OnBehalfOf: string option
-            /// ID of the payment method (a PaymentMethod, Card, or saved Source object) to attach to this SetupIntent.
+            /// The ID of a PaymentMethod to attach to this SetupIntent.
             [<Config.Form>]
             PaymentMethod: string option
             /// The ID of the [payment method configuration](https://docs.stripe.com/api/payment_method_configurations) to use with this SetupIntent.
@@ -2270,6 +2279,7 @@ module SetupIntents =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
         }
@@ -3498,6 +3508,11 @@ module SetupIntents =
         | Automatic
         | Challenge
 
+    type Update'PaymentMethodOptionsCardSetupCredentialUsage =
+        | Installment
+        | Recurring
+        | Unscheduled
+
     type Update'PaymentMethodOptionsCardThreeDSecureAresTransStatus =
         | [<JsonPropertyName("A")>] A
         | [<JsonPropertyName("C")>] C
@@ -3630,6 +3645,9 @@ module SetupIntents =
             /// We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://docs.stripe.com/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. If not provided, this value defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://docs.stripe.com/payments/3d-secure/authentication-flow#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
             [<Config.Form>]
             RequestThreeDSecure: Update'PaymentMethodOptionsCardRequestThreeDSecure option
+            /// Set to indicate the future transaction type usage for the card being set up.
+            [<Config.Form>]
+            SetupCredentialUsage: Update'PaymentMethodOptionsCardSetupCredentialUsage option
             /// If 3D Secure authentication was performed with a third-party provider,
             /// the authentication details to use for this setup.
             [<Config.Form>]
@@ -3637,12 +3655,13 @@ module SetupIntents =
         }
 
     type Update'PaymentMethodOptionsCard with
-        static member New(?mandateOptions: Update'PaymentMethodOptionsCardMandateOptions, ?moto: bool, ?network: Update'PaymentMethodOptionsCardNetwork, ?requestThreeDSecure: Update'PaymentMethodOptionsCardRequestThreeDSecure, ?threeDSecure: Update'PaymentMethodOptionsCardThreeDSecure) =
+        static member New(?mandateOptions: Update'PaymentMethodOptionsCardMandateOptions, ?moto: bool, ?network: Update'PaymentMethodOptionsCardNetwork, ?requestThreeDSecure: Update'PaymentMethodOptionsCardRequestThreeDSecure, ?setupCredentialUsage: Update'PaymentMethodOptionsCardSetupCredentialUsage, ?threeDSecure: Update'PaymentMethodOptionsCardThreeDSecure) =
             {
                 MandateOptions = mandateOptions
                 Moto = moto
                 Network = network
                 RequestThreeDSecure = requestThreeDSecure
+                SetupCredentialUsage = setupCredentialUsage
                 ThreeDSecure = threeDSecure
             }
 
@@ -4241,6 +4260,7 @@ module SetupIntents =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// The list of payment method types to allow for this SetupIntent. Stripe will only use methods in this list when determining the payment methods to offer. A list of valid payment method types can be found [here](https://docs.stripe.com/api/payment_methods/object#payment_method_object-type).
@@ -4274,7 +4294,7 @@ module SetupIntents =
             /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
             [<Config.Form>]
             Metadata: Map<string, string> option
-            /// ID of the payment method (a PaymentMethod, Card, or saved Source object) to attach to this SetupIntent. To unset this field to null, pass in an empty string.
+            /// The ID of a PaymentMethod to attach to this SetupIntent. To unset this field to null, pass in an empty string.
             [<Config.Form>]
             PaymentMethod: string option
             /// The ID of the [payment method configuration](https://docs.stripe.com/api/payment_method_configurations) to use with this SetupIntent.
@@ -4343,6 +4363,7 @@ module SetupIntentsCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// Reason for canceling this SetupIntent. Possible values are: `abandoned`, `requested_by_customer`, or `duplicate`
@@ -5632,6 +5653,11 @@ module SetupIntentsConfirm =
         | Automatic
         | Challenge
 
+    type Confirm'PaymentMethodOptionsCardSetupCredentialUsage =
+        | Installment
+        | Recurring
+        | Unscheduled
+
     type Confirm'PaymentMethodOptionsCardThreeDSecureAresTransStatus =
         | [<JsonPropertyName("A")>] A
         | [<JsonPropertyName("C")>] C
@@ -5764,6 +5790,9 @@ module SetupIntentsConfirm =
             /// We strongly recommend that you rely on our SCA Engine to automatically prompt your customers for authentication based on risk level and [other requirements](https://docs.stripe.com/strong-customer-authentication). However, if you wish to request 3D Secure based on logic from your own fraud engine, provide this option. If not provided, this value defaults to `automatic`. Read our guide on [manually requesting 3D Secure](https://docs.stripe.com/payments/3d-secure/authentication-flow#manual-three-ds) for more information on how this configuration interacts with Radar and our SCA Engine.
             [<Config.Form>]
             RequestThreeDSecure: Confirm'PaymentMethodOptionsCardRequestThreeDSecure option
+            /// Set to indicate the future transaction type usage for the card being set up.
+            [<Config.Form>]
+            SetupCredentialUsage: Confirm'PaymentMethodOptionsCardSetupCredentialUsage option
             /// If 3D Secure authentication was performed with a third-party provider,
             /// the authentication details to use for this setup.
             [<Config.Form>]
@@ -5771,12 +5800,13 @@ module SetupIntentsConfirm =
         }
 
     type Confirm'PaymentMethodOptionsCard with
-        static member New(?mandateOptions: Confirm'PaymentMethodOptionsCardMandateOptions, ?moto: bool, ?network: Confirm'PaymentMethodOptionsCardNetwork, ?requestThreeDSecure: Confirm'PaymentMethodOptionsCardRequestThreeDSecure, ?threeDSecure: Confirm'PaymentMethodOptionsCardThreeDSecure) =
+        static member New(?mandateOptions: Confirm'PaymentMethodOptionsCardMandateOptions, ?moto: bool, ?network: Confirm'PaymentMethodOptionsCardNetwork, ?requestThreeDSecure: Confirm'PaymentMethodOptionsCardRequestThreeDSecure, ?setupCredentialUsage: Confirm'PaymentMethodOptionsCardSetupCredentialUsage, ?threeDSecure: Confirm'PaymentMethodOptionsCardThreeDSecure) =
             {
                 MandateOptions = mandateOptions
                 Moto = moto
                 Network = network
                 RequestThreeDSecure = requestThreeDSecure
+                SetupCredentialUsage = setupCredentialUsage
                 ThreeDSecure = threeDSecure
             }
 
@@ -6375,6 +6405,7 @@ module SetupIntentsConfirm =
 
     type ConfirmOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// The list of payment method types to allow for this SetupIntent. Stripe will only use methods in this list when determining the payment methods to offer. A list of valid payment method types can be found [here](https://docs.stripe.com/api/payment_methods/object#payment_method_object-type).
@@ -6389,7 +6420,7 @@ module SetupIntentsConfirm =
             Expand: string list option
             [<Config.Form>]
             MandateData: Choice<Confirm'MandateDataSecretKey,string,Confirm'MandateDataClientKey> option
-            /// ID of the payment method (a PaymentMethod, Card, or saved Source object) to attach to this SetupIntent.
+            /// The ID of a PaymentMethod to attach to this SetupIntent.
             [<Config.Form>]
             PaymentMethod: string option
             /// When included, this hash creates a PaymentMethod that is set as the [`payment_method`](https://docs.stripe.com/api/setup_intents/object#setup_intent_object-payment_method)
@@ -6444,6 +6475,7 @@ module SetupIntentsVerifyMicrodeposits =
 
     type VerifyMicrodepositsOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// Two positive integers, in *cents*, equal to the values of the microdeposits sent to the bank account.

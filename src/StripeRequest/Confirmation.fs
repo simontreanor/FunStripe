@@ -5,11 +5,12 @@ open System.Text.Json.Serialization
 open Stripe.ConfirmationToken
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module ConfirmationTokens =
 
     type RetrieveOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             ConfirmationToken: string
             /// Specifies which fields in the response should be expanded.

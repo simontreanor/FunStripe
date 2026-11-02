@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Identity
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module IdentityVerificationReports =
 
     type ListOptions =
@@ -54,6 +54,7 @@ module IdentityVerificationReports =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Report: string
         }
@@ -263,6 +264,7 @@ module IdentityVerificationSessions =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Session: string
         }
@@ -340,6 +342,7 @@ module IdentityVerificationSessions =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Session: string
             /// Specifies which fields in the response should be expanded.
@@ -403,6 +406,7 @@ module IdentityVerificationSessionsCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Session: string
             /// Specifies which fields in the response should be expanded.
@@ -427,6 +431,7 @@ module IdentityVerificationSessionsRedact =
 
     type RedactOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Session: string
             /// Specifies which fields in the response should be expanded.

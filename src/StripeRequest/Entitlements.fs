@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Entitlements
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module EntitlementsActiveEntitlements =
 
     type ListOptions =
@@ -145,6 +145,7 @@ module EntitlementsFeatures =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Id: string
             /// Inactive features cannot be attached to new products and will not be returned from the features list endpoint.

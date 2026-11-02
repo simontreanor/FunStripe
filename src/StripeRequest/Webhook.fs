@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.WebhookEndpoint
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module WebhookEndpoints =
 
     type ListOptions =
@@ -162,6 +162,7 @@ module WebhookEndpoints =
         | [<JsonPropertyName("2026-07-29.dahlia")>] Numeric20260729Dahlia
         | [<JsonPropertyName("2026-08-26.dahlia")>] Numeric20260826Dahlia
         | [<JsonPropertyName("2026-09-30.endive")>] Numeric20260930Endive
+        | [<JsonPropertyName("2026-10-28.endive")>] Numeric20261028Endive
 
     type Create'EnabledEvents =
         | Asterix
@@ -395,6 +396,13 @@ module WebhookEndpoints =
         | [<JsonPropertyName("test_helpers.test_clock.deleted")>] TestHelpersTestClockDeleted
         | [<JsonPropertyName("test_helpers.test_clock.internal_failure")>] TestHelpersTestClockInternalFailure
         | [<JsonPropertyName("test_helpers.test_clock.ready")>] TestHelpersTestClockReady
+        | [<JsonPropertyName("three_d_secure.authentication.canceled")>] ThreeDSecureAuthenticationCanceled
+        | [<JsonPropertyName("three_d_secure.authentication.challenge_started")>] ThreeDSecureAuthenticationChallengeStarted
+        | [<JsonPropertyName("three_d_secure.authentication.errored")>] ThreeDSecureAuthenticationErrored
+        | [<JsonPropertyName("three_d_secure.authentication.failed")>] ThreeDSecureAuthenticationFailed
+        | [<JsonPropertyName("three_d_secure.authentication.requires_challenge")>] ThreeDSecureAuthenticationRequiresChallenge
+        | [<JsonPropertyName("three_d_secure.authentication.requires_submission")>] ThreeDSecureAuthenticationRequiresSubmission
+        | [<JsonPropertyName("three_d_secure.authentication.succeeded")>] ThreeDSecureAuthenticationSucceeded
         | [<JsonPropertyName("topup.canceled")>] TopupCanceled
         | [<JsonPropertyName("topup.created")>] TopupCreated
         | [<JsonPropertyName("topup.failed")>] TopupFailed
@@ -472,8 +480,11 @@ module WebhookEndpoints =
             }
 
     type DeleteOptions =
-        { [<Config.Path>]
-          WebhookEndpoint: string }
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            WebhookEndpoint: string
+        }
 
     type DeleteOptions with
         static member New(webhookEndpoint: string) =
@@ -486,6 +497,7 @@ module WebhookEndpoints =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             WebhookEndpoint: string
         }
@@ -729,6 +741,13 @@ module WebhookEndpoints =
         | [<JsonPropertyName("test_helpers.test_clock.deleted")>] TestHelpersTestClockDeleted
         | [<JsonPropertyName("test_helpers.test_clock.internal_failure")>] TestHelpersTestClockInternalFailure
         | [<JsonPropertyName("test_helpers.test_clock.ready")>] TestHelpersTestClockReady
+        | [<JsonPropertyName("three_d_secure.authentication.canceled")>] ThreeDSecureAuthenticationCanceled
+        | [<JsonPropertyName("three_d_secure.authentication.challenge_started")>] ThreeDSecureAuthenticationChallengeStarted
+        | [<JsonPropertyName("three_d_secure.authentication.errored")>] ThreeDSecureAuthenticationErrored
+        | [<JsonPropertyName("three_d_secure.authentication.failed")>] ThreeDSecureAuthenticationFailed
+        | [<JsonPropertyName("three_d_secure.authentication.requires_challenge")>] ThreeDSecureAuthenticationRequiresChallenge
+        | [<JsonPropertyName("three_d_secure.authentication.requires_submission")>] ThreeDSecureAuthenticationRequiresSubmission
+        | [<JsonPropertyName("three_d_secure.authentication.succeeded")>] ThreeDSecureAuthenticationSucceeded
         | [<JsonPropertyName("topup.canceled")>] TopupCanceled
         | [<JsonPropertyName("topup.created")>] TopupCreated
         | [<JsonPropertyName("topup.failed")>] TopupFailed
@@ -770,6 +789,7 @@ module WebhookEndpoints =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             WebhookEndpoint: string
             /// An optional description of what the webhook is used for.

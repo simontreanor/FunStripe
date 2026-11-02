@@ -9,7 +9,7 @@ open Stripe.Plan
 open Stripe.Price
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type SchedulesPhaseAutomaticTax =
     {
         /// Whether Stripe automatically computes tax on invoices created during this phase.
@@ -309,7 +309,7 @@ type SubscriptionSchedule =
         /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
         Metadata: Map<string, string> option
         /// The pause schedules for this subscription schedule.
-        PauseSchedules: SubscriptionSchedulesResourcePauseSchedule list option
+        PauseSchedules: SubscriptionSchedulesResourcePauseSchedule list
         /// Configuration for the subscription schedule's phases.
         Phases: SubscriptionSchedulePhaseConfiguration list
         /// Time at which the subscription schedule was released. Measured in seconds since the Unix epoch.
@@ -325,7 +325,7 @@ type SubscriptionSchedule =
     }
 
 type SubscriptionSchedule with
-    static member New(application: SubscriptionScheduleApplication'AnyOf option, billingMode: SubscriptionsResourceBillingMode, canceledAt: DateTime option, completedAt: DateTime option, created: DateTime, currentPhase: SubscriptionScheduleCurrentPhase option, customer: SubscriptionScheduleCustomer'AnyOf, customerAccount: string option, defaultSettings: SubscriptionSchedulesResourceDefaultSettings, endBehavior: SubscriptionScheduleEndBehavior, id: string, livemode: bool, metadata: Map<string, string> option, phases: SubscriptionSchedulePhaseConfiguration list, releasedAt: DateTime option, releasedSubscription: string option, status: SubscriptionScheduleStatus, subscription: StripeId<Markers.Subscription> option, testClock: StripeId<Markers.TestHelpersTestClock> option, ?pauseSchedules: SubscriptionSchedulesResourcePauseSchedule list) =
+    static member New(application: SubscriptionScheduleApplication'AnyOf option, billingMode: SubscriptionsResourceBillingMode, canceledAt: DateTime option, completedAt: DateTime option, created: DateTime, currentPhase: SubscriptionScheduleCurrentPhase option, customer: SubscriptionScheduleCustomer'AnyOf, customerAccount: string option, defaultSettings: SubscriptionSchedulesResourceDefaultSettings, endBehavior: SubscriptionScheduleEndBehavior, id: string, livemode: bool, metadata: Map<string, string> option, pauseSchedules: SubscriptionSchedulesResourcePauseSchedule list, phases: SubscriptionSchedulePhaseConfiguration list, releasedAt: DateTime option, releasedSubscription: string option, status: SubscriptionScheduleStatus, subscription: StripeId<Markers.Subscription> option, testClock: StripeId<Markers.TestHelpersTestClock> option) =
         {
             Application = application
             BillingMode = billingMode
@@ -340,13 +340,13 @@ type SubscriptionSchedule with
             Id = id
             Livemode = livemode
             Metadata = metadata
+            PauseSchedules = pauseSchedules
             Phases = phases
             ReleasedAt = releasedAt
             ReleasedSubscription = releasedSubscription
             Status = status
             Subscription = subscription
             TestClock = testClock
-            PauseSchedules = pauseSchedules
         }
 
 module SubscriptionSchedule =

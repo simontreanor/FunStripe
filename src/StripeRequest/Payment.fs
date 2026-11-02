@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.PaymentRecord
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module PaymentAttemptRecords =
 
     type ListOptions =
@@ -2110,10 +2110,20 @@ module PaymentIntents =
         | Automatic
         | Challenge
 
+    type Create'PaymentMethodOptionsCardPaymentIntentSetupCredentialUsage =
+        | Installment
+        | Recurring
+        | Unscheduled
+
     type Create'PaymentMethodOptionsCardPaymentIntentSetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
+
+    type Create'PaymentMethodOptionsCardPaymentIntentStoredCredentialUsage =
+        | Installment
+        | Recurring
+        | Unscheduled
 
     type Create'PaymentMethodOptionsCardPaymentIntentThreeDSecureAresTransStatus =
         | [<JsonPropertyName("A")>] A
@@ -2284,6 +2294,9 @@ module PaymentIntents =
             /// When enabled, using a card that is attached to a customer will require the CVC to be provided again (i.e. using the cvc_token parameter).
             [<Config.Form>]
             RequireCvcRecollection: bool option
+            /// Set to indicate the future transaction type usage for the card being set up.
+            [<Config.Form>]
+            SetupCredentialUsage: Create'PaymentMethodOptionsCardPaymentIntentSetupCredentialUsage option
             /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
             /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
             /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -2297,6 +2310,12 @@ module PaymentIntents =
             /// Provides information about a card payment that customers see on their statements. Concatenated with the Kanji prefix (shortened Kanji descriptor) or Kanji statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 17 characters. On card statements, the *concatenation* of both prefix and suffix (including separators) will appear truncated to 17 characters.
             [<Config.Form>]
             StatementDescriptorSuffixKanji: Choice<string,string> option
+            /// Use this parameter in scenarios where you collect card details and [charge them later](https://stripe.com/docs/payments/cards/charging-saved-cards).
+            /// When making an off session payment with a previously saved card (that was saved with a SetupIntent or with a PaymentIntent with `setup_future_usage`), set this parameter to indicate the type of transaction.
+            /// You can set this parameter at any time before or during PaymentIntent confirmation, and confirm this PaymentIntent with `off_session=true`.
+            /// Note that this parameter is currently unsupported with the `setup_future_usage` parameter.
+            [<Config.Form>]
+            StoredCredentialUsage: Create'PaymentMethodOptionsCardPaymentIntentStoredCredentialUsage option
             /// If 3D Secure authentication was performed with a third-party provider,
             /// the authentication details to use for this payment.
             [<Config.Form>]
@@ -2304,7 +2323,7 @@ module PaymentIntents =
         }
 
     type Create'PaymentMethodOptionsCardPaymentIntent with
-        static member New(?captureMethod: Create'PaymentMethodOptionsCardPaymentIntentCaptureMethod, ?cvcToken: string, ?installments: Create'PaymentMethodOptionsCardPaymentIntentInstallments, ?mandateOptions: Create'PaymentMethodOptionsCardPaymentIntentMandateOptions, ?moto: bool, ?network: Create'PaymentMethodOptionsCardPaymentIntentNetwork, ?requestExtendedAuthorization: Create'PaymentMethodOptionsCardPaymentIntentRequestExtendedAuthorization, ?requestIncrementalAuthorization: Create'PaymentMethodOptionsCardPaymentIntentRequestIncrementalAuthorization, ?requestMulticapture: Create'PaymentMethodOptionsCardPaymentIntentRequestMulticapture, ?requestOvercapture: Create'PaymentMethodOptionsCardPaymentIntentRequestOvercapture, ?requestThreeDSecure: Create'PaymentMethodOptionsCardPaymentIntentRequestThreeDSecure, ?requireCvcRecollection: bool, ?setupFutureUsage: Create'PaymentMethodOptionsCardPaymentIntentSetupFutureUsage, ?statementDescriptorSuffixKana: Choice<string,string>, ?statementDescriptorSuffixKanji: Choice<string,string>, ?threeDSecure: Create'PaymentMethodOptionsCardPaymentIntentThreeDSecure) =
+        static member New(?captureMethod: Create'PaymentMethodOptionsCardPaymentIntentCaptureMethod, ?cvcToken: string, ?installments: Create'PaymentMethodOptionsCardPaymentIntentInstallments, ?mandateOptions: Create'PaymentMethodOptionsCardPaymentIntentMandateOptions, ?moto: bool, ?network: Create'PaymentMethodOptionsCardPaymentIntentNetwork, ?requestExtendedAuthorization: Create'PaymentMethodOptionsCardPaymentIntentRequestExtendedAuthorization, ?requestIncrementalAuthorization: Create'PaymentMethodOptionsCardPaymentIntentRequestIncrementalAuthorization, ?requestMulticapture: Create'PaymentMethodOptionsCardPaymentIntentRequestMulticapture, ?requestOvercapture: Create'PaymentMethodOptionsCardPaymentIntentRequestOvercapture, ?requestThreeDSecure: Create'PaymentMethodOptionsCardPaymentIntentRequestThreeDSecure, ?requireCvcRecollection: bool, ?setupCredentialUsage: Create'PaymentMethodOptionsCardPaymentIntentSetupCredentialUsage, ?setupFutureUsage: Create'PaymentMethodOptionsCardPaymentIntentSetupFutureUsage, ?statementDescriptorSuffixKana: Choice<string,string>, ?statementDescriptorSuffixKanji: Choice<string,string>, ?storedCredentialUsage: Create'PaymentMethodOptionsCardPaymentIntentStoredCredentialUsage, ?threeDSecure: Create'PaymentMethodOptionsCardPaymentIntentThreeDSecure) =
             {
                 CaptureMethod = captureMethod
                 CvcToken = cvcToken
@@ -2318,9 +2337,11 @@ module PaymentIntents =
                 RequestOvercapture = requestOvercapture
                 RequestThreeDSecure = requestThreeDSecure
                 RequireCvcRecollection = requireCvcRecollection
+                SetupCredentialUsage = setupCredentialUsage
                 SetupFutureUsage = setupFutureUsage
                 StatementDescriptorSuffixKana = statementDescriptorSuffixKana
                 StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
+                StoredCredentialUsage = storedCredentialUsage
                 ThreeDSecure = threeDSecure
             }
 
@@ -3332,10 +3353,10 @@ module PaymentIntents =
             /// Determines if the amount includes the IOF tax. Defaults to `never`.
             [<Config.Form>]
             AmountIncludesIof: Create'PaymentMethodOptionsPixPaymentMethodOptionsAmountIncludesIof option
-            /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
+            /// The number of seconds after PaymentIntent confirmation when the Pix expires (between 60 and 1209600, inclusive). If neither expiration option is supplied, defaults to 14400 seconds (4 hours). Mutually exclusive with `expires_at`.
             [<Config.Form>]
             ExpiresAfterSeconds: int option
-            /// The timestamp at which the Pix expires (between 10 and 1209600 seconds in the future). Defaults to 1 day in the future.
+            /// The absolute Unix timestamp at which the Pix expires, between 60 and 1209600 seconds from the current time. If neither expiration option is supplied, the Pix expires 14400 seconds (4 hours) after PaymentIntent confirmation. Mutually exclusive with `expires_after_seconds`.
             [<Config.Form>]
             ExpiresAt: DateTime option
             /// Additional fields for mandate creation. Only applicable when `setup_future_usage=off_session`.
@@ -4362,7 +4383,7 @@ module PaymentIntents =
             /// Provides industry-specific information about the charge.
             [<Config.Form>]
             PaymentDetails: Create'PaymentDetails option
-            /// ID of the payment method (a PaymentMethod, Card, or [compatible Source](https://docs.stripe.com/payments/payment-methods#compatibility) object) to attach to this PaymentIntent.
+            /// The ID of a PaymentMethod to attach to this PaymentIntent.
             /// If you don't provide the `payment_method` parameter or the `source` parameter with `confirm=true`, `source` automatically populates with `customer.default_source` to improve migration for users of the Charges API. We recommend that you explicitly provide the `payment_method` moving forward.
             /// If the payment method is attached to a Customer, you must also provide the ID of that Customer as the [customer](https://docs.stripe.com/api#create_payment_intent-customer) parameter of this PaymentIntent.
             /// end
@@ -4466,6 +4487,7 @@ module PaymentIntents =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
         }
@@ -6395,10 +6417,20 @@ module PaymentIntents =
         | Automatic
         | Challenge
 
+    type Update'PaymentMethodOptionsCardPaymentIntentSetupCredentialUsage =
+        | Installment
+        | Recurring
+        | Unscheduled
+
     type Update'PaymentMethodOptionsCardPaymentIntentSetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
+
+    type Update'PaymentMethodOptionsCardPaymentIntentStoredCredentialUsage =
+        | Installment
+        | Recurring
+        | Unscheduled
 
     type Update'PaymentMethodOptionsCardPaymentIntentThreeDSecureAresTransStatus =
         | [<JsonPropertyName("A")>] A
@@ -6569,6 +6601,9 @@ module PaymentIntents =
             /// When enabled, using a card that is attached to a customer will require the CVC to be provided again (i.e. using the cvc_token parameter).
             [<Config.Form>]
             RequireCvcRecollection: bool option
+            /// Set to indicate the future transaction type usage for the card being set up.
+            [<Config.Form>]
+            SetupCredentialUsage: Update'PaymentMethodOptionsCardPaymentIntentSetupCredentialUsage option
             /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
             /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
             /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -6582,6 +6617,12 @@ module PaymentIntents =
             /// Provides information about a card payment that customers see on their statements. Concatenated with the Kanji prefix (shortened Kanji descriptor) or Kanji statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 17 characters. On card statements, the *concatenation* of both prefix and suffix (including separators) will appear truncated to 17 characters.
             [<Config.Form>]
             StatementDescriptorSuffixKanji: Choice<string,string> option
+            /// Use this parameter in scenarios where you collect card details and [charge them later](https://stripe.com/docs/payments/cards/charging-saved-cards).
+            /// When making an off session payment with a previously saved card (that was saved with a SetupIntent or with a PaymentIntent with `setup_future_usage`), set this parameter to indicate the type of transaction.
+            /// You can set this parameter at any time before or during PaymentIntent confirmation, and confirm this PaymentIntent with `off_session=true`.
+            /// Note that this parameter is currently unsupported with the `setup_future_usage` parameter.
+            [<Config.Form>]
+            StoredCredentialUsage: Update'PaymentMethodOptionsCardPaymentIntentStoredCredentialUsage option
             /// If 3D Secure authentication was performed with a third-party provider,
             /// the authentication details to use for this payment.
             [<Config.Form>]
@@ -6589,7 +6630,7 @@ module PaymentIntents =
         }
 
     type Update'PaymentMethodOptionsCardPaymentIntent with
-        static member New(?captureMethod: Update'PaymentMethodOptionsCardPaymentIntentCaptureMethod, ?cvcToken: string, ?installments: Update'PaymentMethodOptionsCardPaymentIntentInstallments, ?mandateOptions: Update'PaymentMethodOptionsCardPaymentIntentMandateOptions, ?moto: bool, ?network: Update'PaymentMethodOptionsCardPaymentIntentNetwork, ?requestExtendedAuthorization: Update'PaymentMethodOptionsCardPaymentIntentRequestExtendedAuthorization, ?requestIncrementalAuthorization: Update'PaymentMethodOptionsCardPaymentIntentRequestIncrementalAuthorization, ?requestMulticapture: Update'PaymentMethodOptionsCardPaymentIntentRequestMulticapture, ?requestOvercapture: Update'PaymentMethodOptionsCardPaymentIntentRequestOvercapture, ?requestThreeDSecure: Update'PaymentMethodOptionsCardPaymentIntentRequestThreeDSecure, ?requireCvcRecollection: bool, ?setupFutureUsage: Update'PaymentMethodOptionsCardPaymentIntentSetupFutureUsage, ?statementDescriptorSuffixKana: Choice<string,string>, ?statementDescriptorSuffixKanji: Choice<string,string>, ?threeDSecure: Update'PaymentMethodOptionsCardPaymentIntentThreeDSecure) =
+        static member New(?captureMethod: Update'PaymentMethodOptionsCardPaymentIntentCaptureMethod, ?cvcToken: string, ?installments: Update'PaymentMethodOptionsCardPaymentIntentInstallments, ?mandateOptions: Update'PaymentMethodOptionsCardPaymentIntentMandateOptions, ?moto: bool, ?network: Update'PaymentMethodOptionsCardPaymentIntentNetwork, ?requestExtendedAuthorization: Update'PaymentMethodOptionsCardPaymentIntentRequestExtendedAuthorization, ?requestIncrementalAuthorization: Update'PaymentMethodOptionsCardPaymentIntentRequestIncrementalAuthorization, ?requestMulticapture: Update'PaymentMethodOptionsCardPaymentIntentRequestMulticapture, ?requestOvercapture: Update'PaymentMethodOptionsCardPaymentIntentRequestOvercapture, ?requestThreeDSecure: Update'PaymentMethodOptionsCardPaymentIntentRequestThreeDSecure, ?requireCvcRecollection: bool, ?setupCredentialUsage: Update'PaymentMethodOptionsCardPaymentIntentSetupCredentialUsage, ?setupFutureUsage: Update'PaymentMethodOptionsCardPaymentIntentSetupFutureUsage, ?statementDescriptorSuffixKana: Choice<string,string>, ?statementDescriptorSuffixKanji: Choice<string,string>, ?storedCredentialUsage: Update'PaymentMethodOptionsCardPaymentIntentStoredCredentialUsage, ?threeDSecure: Update'PaymentMethodOptionsCardPaymentIntentThreeDSecure) =
             {
                 CaptureMethod = captureMethod
                 CvcToken = cvcToken
@@ -6603,9 +6644,11 @@ module PaymentIntents =
                 RequestOvercapture = requestOvercapture
                 RequestThreeDSecure = requestThreeDSecure
                 RequireCvcRecollection = requireCvcRecollection
+                SetupCredentialUsage = setupCredentialUsage
                 SetupFutureUsage = setupFutureUsage
                 StatementDescriptorSuffixKana = statementDescriptorSuffixKana
                 StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
+                StoredCredentialUsage = storedCredentialUsage
                 ThreeDSecure = threeDSecure
             }
 
@@ -7617,10 +7660,10 @@ module PaymentIntents =
             /// Determines if the amount includes the IOF tax. Defaults to `never`.
             [<Config.Form>]
             AmountIncludesIof: Update'PaymentMethodOptionsPixPaymentMethodOptionsAmountIncludesIof option
-            /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
+            /// The number of seconds after PaymentIntent confirmation when the Pix expires (between 60 and 1209600, inclusive). If neither expiration option is supplied, defaults to 14400 seconds (4 hours). Mutually exclusive with `expires_at`.
             [<Config.Form>]
             ExpiresAfterSeconds: int option
-            /// The timestamp at which the Pix expires (between 10 and 1209600 seconds in the future). Defaults to 1 day in the future.
+            /// The absolute Unix timestamp at which the Pix expires, between 60 and 1209600 seconds from the current time. If neither expiration option is supplied, the Pix expires 14400 seconds (4 hours) after PaymentIntent confirmation. Mutually exclusive with `expires_after_seconds`.
             [<Config.Form>]
             ExpiresAt: DateTime option
             /// Additional fields for mandate creation. Only applicable when `setup_future_usage=off_session`.
@@ -8544,6 +8587,7 @@ module PaymentIntents =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// The list of payment method types allowed for use with this payment. Stripe automatically returns compatible payment methods from this list in the `payment_method_types` field of the response, based on the other PaymentIntent parameters, such as `currency`, `amount`, and `customer`.
@@ -8592,7 +8636,7 @@ module PaymentIntents =
             /// Provides industry-specific information about the charge.
             [<Config.Form>]
             PaymentDetails: Choice<Update'PaymentDetailsPaymentDetails,string> option
-            /// ID of the payment method (a PaymentMethod, Card, or [compatible Source](https://docs.stripe.com/payments/payment-methods/transitioning#compatibility) object) to attach to this PaymentIntent. To unset this field to null, pass in an empty string.
+            /// The ID of a PaymentMethod to attach to this PaymentIntent. To unset this field to null, pass in an empty string.
             [<Config.Form>]
             PaymentMethod: string option
             /// The ID of the [payment method configuration](https://docs.stripe.com/api/payment_method_configurations) to use with this PaymentIntent.
@@ -8747,6 +8791,7 @@ module PaymentIntentsAmountDetailsLineItems =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
@@ -8777,6 +8822,7 @@ module PaymentIntentsApplyCustomerBalance =
 
     type ApplyCustomerBalanceOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// Amount that you intend to apply to this PaymentIntent from the customer’s cash balance. If the PaymentIntent was created by an Invoice, the full amount of the PaymentIntent is applied regardless of this parameter.
@@ -8816,6 +8862,7 @@ module PaymentIntentsCancel =
 
     type CancelOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// Reason for canceling this PaymentIntent. Possible values are: `duplicate`, `fraudulent`, `requested_by_customer`, or `abandoned`
@@ -9142,6 +9189,7 @@ module PaymentIntentsCapture =
 
     type CaptureOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// Provides industry-specific information about the amount.
@@ -11237,10 +11285,20 @@ module PaymentIntentsConfirm =
         | Automatic
         | Challenge
 
+    type Confirm'PaymentMethodOptionsCardPaymentIntentSetupCredentialUsage =
+        | Installment
+        | Recurring
+        | Unscheduled
+
     type Confirm'PaymentMethodOptionsCardPaymentIntentSetupFutureUsage =
         | [<JsonPropertyName("none")>] None'
         | OffSession
         | OnSession
+
+    type Confirm'PaymentMethodOptionsCardPaymentIntentStoredCredentialUsage =
+        | Installment
+        | Recurring
+        | Unscheduled
 
     type Confirm'PaymentMethodOptionsCardPaymentIntentThreeDSecureAresTransStatus =
         | [<JsonPropertyName("A")>] A
@@ -11411,6 +11469,9 @@ module PaymentIntentsConfirm =
             /// When enabled, using a card that is attached to a customer will require the CVC to be provided again (i.e. using the cvc_token parameter).
             [<Config.Form>]
             RequireCvcRecollection: bool option
+            /// Set to indicate the future transaction type usage for the card being set up.
+            [<Config.Form>]
+            SetupCredentialUsage: Confirm'PaymentMethodOptionsCardPaymentIntentSetupCredentialUsage option
             /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
             /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
             /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -11424,6 +11485,12 @@ module PaymentIntentsConfirm =
             /// Provides information about a card payment that customers see on their statements. Concatenated with the Kanji prefix (shortened Kanji descriptor) or Kanji statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 17 characters. On card statements, the *concatenation* of both prefix and suffix (including separators) will appear truncated to 17 characters.
             [<Config.Form>]
             StatementDescriptorSuffixKanji: Choice<string,string> option
+            /// Use this parameter in scenarios where you collect card details and [charge them later](https://stripe.com/docs/payments/cards/charging-saved-cards).
+            /// When making an off session payment with a previously saved card (that was saved with a SetupIntent or with a PaymentIntent with `setup_future_usage`), set this parameter to indicate the type of transaction.
+            /// You can set this parameter at any time before or during PaymentIntent confirmation, and confirm this PaymentIntent with `off_session=true`.
+            /// Note that this parameter is currently unsupported with the `setup_future_usage` parameter.
+            [<Config.Form>]
+            StoredCredentialUsage: Confirm'PaymentMethodOptionsCardPaymentIntentStoredCredentialUsage option
             /// If 3D Secure authentication was performed with a third-party provider,
             /// the authentication details to use for this payment.
             [<Config.Form>]
@@ -11431,7 +11498,7 @@ module PaymentIntentsConfirm =
         }
 
     type Confirm'PaymentMethodOptionsCardPaymentIntent with
-        static member New(?captureMethod: Confirm'PaymentMethodOptionsCardPaymentIntentCaptureMethod, ?cvcToken: string, ?installments: Confirm'PaymentMethodOptionsCardPaymentIntentInstallments, ?mandateOptions: Confirm'PaymentMethodOptionsCardPaymentIntentMandateOptions, ?moto: bool, ?network: Confirm'PaymentMethodOptionsCardPaymentIntentNetwork, ?requestExtendedAuthorization: Confirm'PaymentMethodOptionsCardPaymentIntentRequestExtendedAuthorization, ?requestIncrementalAuthorization: Confirm'PaymentMethodOptionsCardPaymentIntentRequestIncrementalAuthorization, ?requestMulticapture: Confirm'PaymentMethodOptionsCardPaymentIntentRequestMulticapture, ?requestOvercapture: Confirm'PaymentMethodOptionsCardPaymentIntentRequestOvercapture, ?requestThreeDSecure: Confirm'PaymentMethodOptionsCardPaymentIntentRequestThreeDSecure, ?requireCvcRecollection: bool, ?setupFutureUsage: Confirm'PaymentMethodOptionsCardPaymentIntentSetupFutureUsage, ?statementDescriptorSuffixKana: Choice<string,string>, ?statementDescriptorSuffixKanji: Choice<string,string>, ?threeDSecure: Confirm'PaymentMethodOptionsCardPaymentIntentThreeDSecure) =
+        static member New(?captureMethod: Confirm'PaymentMethodOptionsCardPaymentIntentCaptureMethod, ?cvcToken: string, ?installments: Confirm'PaymentMethodOptionsCardPaymentIntentInstallments, ?mandateOptions: Confirm'PaymentMethodOptionsCardPaymentIntentMandateOptions, ?moto: bool, ?network: Confirm'PaymentMethodOptionsCardPaymentIntentNetwork, ?requestExtendedAuthorization: Confirm'PaymentMethodOptionsCardPaymentIntentRequestExtendedAuthorization, ?requestIncrementalAuthorization: Confirm'PaymentMethodOptionsCardPaymentIntentRequestIncrementalAuthorization, ?requestMulticapture: Confirm'PaymentMethodOptionsCardPaymentIntentRequestMulticapture, ?requestOvercapture: Confirm'PaymentMethodOptionsCardPaymentIntentRequestOvercapture, ?requestThreeDSecure: Confirm'PaymentMethodOptionsCardPaymentIntentRequestThreeDSecure, ?requireCvcRecollection: bool, ?setupCredentialUsage: Confirm'PaymentMethodOptionsCardPaymentIntentSetupCredentialUsage, ?setupFutureUsage: Confirm'PaymentMethodOptionsCardPaymentIntentSetupFutureUsage, ?statementDescriptorSuffixKana: Choice<string,string>, ?statementDescriptorSuffixKanji: Choice<string,string>, ?storedCredentialUsage: Confirm'PaymentMethodOptionsCardPaymentIntentStoredCredentialUsage, ?threeDSecure: Confirm'PaymentMethodOptionsCardPaymentIntentThreeDSecure) =
             {
                 CaptureMethod = captureMethod
                 CvcToken = cvcToken
@@ -11445,9 +11512,11 @@ module PaymentIntentsConfirm =
                 RequestOvercapture = requestOvercapture
                 RequestThreeDSecure = requestThreeDSecure
                 RequireCvcRecollection = requireCvcRecollection
+                SetupCredentialUsage = setupCredentialUsage
                 SetupFutureUsage = setupFutureUsage
                 StatementDescriptorSuffixKana = statementDescriptorSuffixKana
                 StatementDescriptorSuffixKanji = statementDescriptorSuffixKanji
+                StoredCredentialUsage = storedCredentialUsage
                 ThreeDSecure = threeDSecure
             }
 
@@ -12459,10 +12528,10 @@ module PaymentIntentsConfirm =
             /// Determines if the amount includes the IOF tax. Defaults to `never`.
             [<Config.Form>]
             AmountIncludesIof: Confirm'PaymentMethodOptionsPixPaymentMethodOptionsAmountIncludesIof option
-            /// The number of seconds (between 10 and 1209600) after which Pix payment will expire. Defaults to 86400 seconds.
+            /// The number of seconds after PaymentIntent confirmation when the Pix expires (between 60 and 1209600, inclusive). If neither expiration option is supplied, defaults to 14400 seconds (4 hours). Mutually exclusive with `expires_at`.
             [<Config.Form>]
             ExpiresAfterSeconds: int option
-            /// The timestamp at which the Pix expires (between 10 and 1209600 seconds in the future). Defaults to 1 day in the future.
+            /// The absolute Unix timestamp at which the Pix expires, between 60 and 1209600 seconds from the current time. If neither expiration option is supplied, the Pix expires 14400 seconds (4 hours) after PaymentIntent confirmation. Mutually exclusive with `expires_after_seconds`.
             [<Config.Form>]
             ExpiresAt: DateTime option
             /// Additional fields for mandate creation. Only applicable when `setup_future_usage=off_session`.
@@ -13361,6 +13430,7 @@ module PaymentIntentsConfirm =
 
     type ConfirmOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// The list of payment method types allowed for use with this payment. Stripe automatically returns compatible payment methods from this list in the `payment_method_types` field of the response, based on the other PaymentIntent parameters, such as `currency`, `amount`, and `customer`.
@@ -13402,7 +13472,7 @@ module PaymentIntentsConfirm =
             /// Provides industry-specific information about the charge.
             [<Config.Form>]
             PaymentDetails: Choice<Confirm'PaymentDetailsPaymentDetails,string> option
-            /// ID of the payment method (a PaymentMethod, Card, or [compatible Source](https://docs.stripe.com/payments/payment-methods/transitioning#compatibility) object) to attach to this PaymentIntent.
+            /// The ID of a PaymentMethod to attach to this PaymentIntent.
             /// If the payment method is attached to a Customer, it must match the [customer](https://docs.stripe.com/api#create_payment_intent-customer) that is set on this PaymentIntent.
             [<Config.Form>]
             PaymentMethod: string option
@@ -13798,6 +13868,7 @@ module PaymentIntentsIncrementAuthorization =
 
     type IncrementAuthorizationOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// The updated total amount that you intend to collect from the cardholder. This amount must be greater than the currently authorized amount.
@@ -13879,6 +13950,7 @@ module PaymentIntentsVerifyMicrodeposits =
 
     type VerifyMicrodepositsOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             Intent: string
             /// Two positive integers, in *cents*, equal to the values of the microdeposits sent to the bank account.
@@ -14821,6 +14893,7 @@ module PaymentLinks =
         | Pix
         | Promptpay
         | Satispay
+        | Scalapay
         | SepaDebit
         | Sequra
         | Sofort
@@ -15145,6 +15218,23 @@ module PaymentLinks =
         | Pay
         | Subscribe
 
+    type Create'SubscriptionDataInvoiceSettingsCustomFields =
+        {
+            /// The name of the custom field. This may be up to 40 characters.
+            [<Config.Form>]
+            Name: string option
+            /// The value of the custom field. This may be up to 140 characters.
+            [<Config.Form>]
+            Value: string option
+        }
+
+    type Create'SubscriptionDataInvoiceSettingsCustomFields with
+        static member New(?name: string, ?value: string) =
+            {
+                Name = name
+                Value = value
+            }
+
     type Create'SubscriptionDataInvoiceSettingsIssuerType =
         | Account
         | Self
@@ -15168,14 +15258,30 @@ module PaymentLinks =
 
     type Create'SubscriptionDataInvoiceSettings =
         {
+            /// The account tax IDs associated with the subscription. Will be set on invoices generated by the subscription.
+            [<Config.Form>]
+            AccountTaxIds: Choice<string list,string> option
+            /// A list of up to 4 custom fields to be displayed on the invoice.
+            [<Config.Form>]
+            CustomFields: Choice<Create'SubscriptionDataInvoiceSettingsCustomFields list,string> option
+            /// An arbitrary string attached to the object. Often useful for displaying to users.
+            [<Config.Form>]
+            Description: string option
+            /// Footer to be displayed on the invoice.
+            [<Config.Form>]
+            Footer: string option
             /// The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account.
             [<Config.Form>]
             Issuer: Create'SubscriptionDataInvoiceSettingsIssuer option
         }
 
     type Create'SubscriptionDataInvoiceSettings with
-        static member New(?issuer: Create'SubscriptionDataInvoiceSettingsIssuer) =
+        static member New(?accountTaxIds: Choice<string list,string>, ?customFields: Choice<Create'SubscriptionDataInvoiceSettingsCustomFields list,string>, ?description: string, ?footer: string, ?issuer: Create'SubscriptionDataInvoiceSettingsIssuer) =
             {
+                AccountTaxIds = accountTaxIds
+                CustomFields = customFields
+                Description = description
+                Footer = footer
                 Issuer = issuer
             }
 
@@ -15427,6 +15533,7 @@ module PaymentLinks =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentLink: string
         }
@@ -16182,6 +16289,7 @@ module PaymentLinks =
         | Pix
         | Promptpay
         | Satispay
+        | Scalapay
         | SepaDebit
         | Sequra
         | Sofort
@@ -16506,6 +16614,23 @@ module PaymentLinks =
         | Pay
         | Subscribe
 
+    type Update'SubscriptionDataInvoiceSettingsCustomFields =
+        {
+            /// The name of the custom field. This may be up to 40 characters.
+            [<Config.Form>]
+            Name: string option
+            /// The value of the custom field. This may be up to 140 characters.
+            [<Config.Form>]
+            Value: string option
+        }
+
+    type Update'SubscriptionDataInvoiceSettingsCustomFields with
+        static member New(?name: string, ?value: string) =
+            {
+                Name = name
+                Value = value
+            }
+
     type Update'SubscriptionDataInvoiceSettingsIssuerType =
         | Account
         | Self
@@ -16529,14 +16654,30 @@ module PaymentLinks =
 
     type Update'SubscriptionDataInvoiceSettings =
         {
+            /// The account tax IDs associated with the subscription. Will be set on invoices generated by the subscription.
+            [<Config.Form>]
+            AccountTaxIds: Choice<string list,string> option
+            /// A list of up to 4 custom fields to be displayed on the invoice.
+            [<Config.Form>]
+            CustomFields: Choice<Update'SubscriptionDataInvoiceSettingsCustomFields list,string> option
+            /// An arbitrary string attached to the object. Often useful for displaying to users.
+            [<Config.Form>]
+            Description: string option
+            /// Footer to be displayed on the invoice.
+            [<Config.Form>]
+            Footer: string option
             /// The connected account that issues the invoice. The invoice is presented with the branding and support information of the specified account.
             [<Config.Form>]
             Issuer: Update'SubscriptionDataInvoiceSettingsIssuer option
         }
 
     type Update'SubscriptionDataInvoiceSettings with
-        static member New(?issuer: Update'SubscriptionDataInvoiceSettingsIssuer) =
+        static member New(?accountTaxIds: Choice<string list,string>, ?customFields: Choice<Update'SubscriptionDataInvoiceSettingsCustomFields list,string>, ?description: string, ?footer: string, ?issuer: Update'SubscriptionDataInvoiceSettingsIssuer) =
             {
+                AccountTaxIds = accountTaxIds
+                CustomFields = customFields
+                Description = description
+                Footer = footer
                 Issuer = issuer
             }
 
@@ -16640,6 +16781,7 @@ module PaymentLinks =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentLink: string
             /// Whether the payment link's `url` is active. If `false`, customers visiting the URL will be shown a page saying that the link has been deactivated.
@@ -16814,6 +16956,7 @@ module PaymentLinksLineItems =
             /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
             [<Config.Query>]
             Limit: int option
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentLink: string
             /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
@@ -17822,6 +17965,7 @@ module PaymentMethods =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentMethod: string
         }
@@ -17966,6 +18110,7 @@ module PaymentMethods =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentMethod: string
             /// This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow. The field defaults to `unspecified`.
@@ -18027,6 +18172,7 @@ module PaymentMethodsAttach =
 
     type AttachOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentMethod: string
             /// The ID of the customer to which to attach the PaymentMethod.
@@ -18068,6 +18214,7 @@ module PaymentMethodsDetach =
 
     type DetachOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PaymentMethod: string
             /// Specifies which fields in the response should be expanded.

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PromotionCode
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 module PromotionCodes =
 
     type ListOptions =
@@ -156,6 +156,7 @@ module PromotionCodes =
             /// Specifies which fields in the response should be expanded.
             [<Config.Query>]
             Expand: string list option
+            /// Unique identifier for the object.
             [<Config.Path>]
             PromotionCode: string
         }
@@ -182,6 +183,7 @@ module PromotionCodes =
 
     type UpdateOptions =
         {
+            /// Unique identifier for the object.
             [<Config.Path>]
             PromotionCode: string
             /// Whether the promotion code is currently active. A promotion code can only be reactivated when the coupon is still valid and the promotion code is otherwise redeemable.

@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Application
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.0.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
 type BillingPortalConfigurationApplication'AnyOf =
     | String of string
     | Application of Application
@@ -139,6 +139,62 @@ type PortalSubscriptionCancel with
         }
 
 [<Struct>]
+type PortalSubscriptionPauseDurationType =
+    | Indefinite
+    | IntervalOptions
+
+[<Struct>]
+type PortalSubscriptionPauseIntervalOptionInterval =
+    | Day
+    | Month
+    | Week
+    | Year
+
+type PortalSubscriptionPauseIntervalOption =
+    {
+        /// Specifies the pause duration unit. Either `day`, `week`, `month`, or `year`.
+        Interval: PortalSubscriptionPauseIntervalOptionInterval
+        /// The number of intervals in the pause duration. The maximum duration is three years.
+        IntervalCount: int
+    }
+
+type PortalSubscriptionPauseIntervalOption with
+    static member New(interval: PortalSubscriptionPauseIntervalOptionInterval, intervalCount: int) =
+        {
+            Interval = interval
+            IntervalCount = intervalCount
+        }
+
+type PortalSubscriptionPauseDuration =
+    {
+        /// The preset pause durations customers can choose from.
+        IntervalOptions: PortalSubscriptionPauseIntervalOption list
+        /// Whether subscriptions can be paused indefinitely or for a preset duration.
+        Type: PortalSubscriptionPauseDurationType
+    }
+
+type PortalSubscriptionPauseDuration with
+    static member New(intervalOptions: PortalSubscriptionPauseIntervalOption list, ``type``: PortalSubscriptionPauseDurationType) =
+        {
+            IntervalOptions = intervalOptions
+            Type = ``type``
+        }
+
+type PortalSubscriptionPause =
+    {
+        Duration: PortalSubscriptionPauseDuration
+        /// Whether the feature is enabled. Customers can only pause subscriptions in the [redesigned customer portal](/customer-management).
+        Enabled: bool
+    }
+
+type PortalSubscriptionPause with
+    static member New(duration: PortalSubscriptionPauseDuration, enabled: bool) =
+        {
+            Duration = duration
+            Enabled = enabled
+        }
+
+[<Struct>]
 type PortalResourceScheduleUpdateAtPeriodEndConditionType =
     | DecreasingItemAmount
     | ShorteningInterval
@@ -258,15 +314,17 @@ type PortalFeatures =
       InvoiceHistory: PortalInvoiceList
       PaymentMethodUpdate: PortalPaymentMethodUpdate
       SubscriptionCancel: PortalSubscriptionCancel
+      SubscriptionPause: PortalSubscriptionPause
       SubscriptionUpdate: PortalSubscriptionUpdate }
 
 type PortalFeatures with
-    static member New(customerUpdate: PortalCustomerUpdate, invoiceHistory: PortalInvoiceList, paymentMethodUpdate: PortalPaymentMethodUpdate, subscriptionCancel: PortalSubscriptionCancel, subscriptionUpdate: PortalSubscriptionUpdate) =
+    static member New(customerUpdate: PortalCustomerUpdate, invoiceHistory: PortalInvoiceList, paymentMethodUpdate: PortalPaymentMethodUpdate, subscriptionCancel: PortalSubscriptionCancel, subscriptionPause: PortalSubscriptionPause, subscriptionUpdate: PortalSubscriptionUpdate) =
         {
             CustomerUpdate = customerUpdate
             InvoiceHistory = invoiceHistory
             PaymentMethodUpdate = paymentMethodUpdate
             SubscriptionCancel = subscriptionCancel
+            SubscriptionPause = subscriptionPause
             SubscriptionUpdate = subscriptionUpdate
         }
 
@@ -403,6 +461,34 @@ type BillingPortalSessionLocale =
     | [<JsonPropertyName("zh-HK")>] ZhHK
     | [<JsonPropertyName("zh-TW")>] ZhTW
 
+type PortalAfterExpirationCustomerLogin =
+    {
+        /// The time after which the customer can no longer recover this session.
+        ExpiresAt: DateTime option
+    }
+
+type PortalAfterExpirationCustomerLogin with
+    static member New(expiresAt: DateTime option) =
+        {
+            ExpiresAt = expiresAt
+        }
+
+type PortalAfterExpiration =
+    {
+        /// Configuration for authenticating the customer after the session expires.
+        CustomerLogin: PortalAfterExpirationCustomerLogin option
+    }
+
+type PortalAfterExpiration with
+    static member New(customerLogin: PortalAfterExpirationCustomerLogin option) =
+        {
+            CustomerLogin = customerLogin
+        }
+
+module PortalAfterExpiration =
+    ///The behavior to apply when the session expires.
+    let ``type`` = "customer_login"
+
 type PortalFlowsAfterCompletionHostedConfirmation =
     {
         /// A custom message to display to the customer after the flow is completed.
@@ -503,6 +589,18 @@ type PortalFlowsFlowSubscriptionCancel with
             Subscription = subscription
         }
 
+type PortalFlowsFlowSubscriptionPause =
+    {
+        /// The ID of the subscription to be paused.
+        Subscription: string
+    }
+
+type PortalFlowsFlowSubscriptionPause with
+    static member New(subscription: string) =
+        {
+            Subscription = subscription
+        }
+
 type PortalFlowsFlowSubscriptionUpdate =
     {
         /// The ID of the subscription to be updated.
@@ -566,11 +664,11 @@ type PortalFlowsFlowSubscriptionUpdateConfirm with
             Subscription = subscription
         }
 
-[<Struct>]
 type PortalFlowsFlowType =
     | CustomerUpdate
     | PaymentMethodUpdate
     | SubscriptionCancel
+    | SubscriptionPause
     | SubscriptionUpdate
     | SubscriptionUpdateConfirm
 
@@ -581,6 +679,8 @@ type PortalFlowsFlow =
         CustomerUpdate: PortalFlowsFlowCustomerUpdate option
         /// Configuration when `flow.type=subscription_cancel`.
         SubscriptionCancel: PortalFlowsFlowSubscriptionCancel option
+        /// Configuration when `flow.type=subscription_pause`.
+        SubscriptionPause: PortalFlowsFlowSubscriptionPause option
         /// Configuration when `flow.type=subscription_update`.
         SubscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option
         /// Configuration when `flow.type=subscription_update_confirm`.
@@ -590,11 +690,12 @@ type PortalFlowsFlow =
     }
 
 type PortalFlowsFlow with
-    static member New(afterCompletion: PortalFlowsFlowAfterCompletion, customerUpdate: PortalFlowsFlowCustomerUpdate option, subscriptionCancel: PortalFlowsFlowSubscriptionCancel option, subscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option, subscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option, ``type``: PortalFlowsFlowType) =
+    static member New(afterCompletion: PortalFlowsFlowAfterCompletion, customerUpdate: PortalFlowsFlowCustomerUpdate option, subscriptionCancel: PortalFlowsFlowSubscriptionCancel option, subscriptionPause: PortalFlowsFlowSubscriptionPause option, subscriptionUpdate: PortalFlowsFlowSubscriptionUpdate option, subscriptionUpdateConfirm: PortalFlowsFlowSubscriptionUpdateConfirm option, ``type``: PortalFlowsFlowType) =
         {
             AfterCompletion = afterCompletion
             CustomerUpdate = customerUpdate
             SubscriptionCancel = subscriptionCancel
+            SubscriptionPause = subscriptionPause
             SubscriptionUpdate = subscriptionUpdate
             SubscriptionUpdateConfirm = subscriptionUpdateConfirm
             Type = ``type``
@@ -613,6 +714,8 @@ type PortalFlowsFlow with
 /// Related guide: [Customer management](/customer-management)
 type BillingPortalSession =
     {
+        /// Behavior after the portal session expires.
+        AfterExpiration: PortalAfterExpiration option
         /// The configuration used by this session, describing the features available.
         Configuration: StripeId<Markers.BillingPortalConfiguration>
         /// Time at which the object was created. Measured in seconds since the Unix epoch.
@@ -638,7 +741,7 @@ type BillingPortalSession =
     }
 
 type BillingPortalSession with
-    static member New(configuration: StripeId<Markers.BillingPortalConfiguration>, created: DateTime, customer: string, customerAccount: string option, flow: PortalFlowsFlow option, id: string, livemode: bool, locale: BillingPortalSessionLocale option, onBehalfOf: string option, returnUrl: string option, url: string) =
+    static member New(configuration: StripeId<Markers.BillingPortalConfiguration>, created: DateTime, customer: string, customerAccount: string option, flow: PortalFlowsFlow option, id: string, livemode: bool, locale: BillingPortalSessionLocale option, onBehalfOf: string option, returnUrl: string option, url: string, ?afterExpiration: PortalAfterExpiration option) =
         {
             Configuration = configuration
             Created = created
@@ -651,6 +754,7 @@ type BillingPortalSession with
             OnBehalfOf = onBehalfOf
             ReturnUrl = returnUrl
             Url = url
+            AfterExpiration = afterExpiration |> Option.flatten
         }
 
 module BillingPortalSession =
