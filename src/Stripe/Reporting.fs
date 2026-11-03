@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.File
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.1")>]
 type FinancialReportingFinanceReportRunRunParametersTimezone =
     | IntervalStart
     | IntervalEnd

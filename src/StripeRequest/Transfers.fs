@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.TransferReversal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.1")>]
 module Transfers =
 
     type ListOptions =
