@@ -1051,6 +1051,15 @@ module Tests =
             Assert.That(result.Kind, Is.EqualTo DateTimeKind.Utc)
 
         [<Test>]
+        member _.``integer epoch in milliseconds deserialises to correct UTC DateTime``() =
+            // A Terminal reader's last_seen_at, which Stripe sends in milliseconds
+            let result = System.Text.Json.JsonSerializer.Deserialize<DateTime>("1695166525506", opts)
+            Assert.That(result, Is.EqualTo (DateTime(2023, 9, 19, 23, 35, 25, 506, DateTimeKind.Utc)))
+            Assert.That(result.Kind, Is.EqualTo DateTimeKind.Utc)
+            let reader = Util.deserialise<Stripe.Terminal.TerminalReader> """{ "id": "tmr_1", "object": "terminal.reader", "action": null, "device_sw_version": null, "device_type": "simulated_wisepos_e", "ip_address": null, "label": "Till", "last_seen_at": 1695166525506, "livemode": false, "location": null, "metadata": {}, "serial_number": "1", "status": "online" }"""
+            Assert.That(reader.LastSeenAt, Is.EqualTo(Some (DateTime(2023, 9, 19, 23, 35, 25, 506, DateTimeKind.Utc))))
+
+        [<Test>]
         member _.``ISO-8601 string deserialises to DateTime``() =
             let json = "\"2021-01-06T10:42:03Z\""
             let result = System.Text.Json.JsonSerializer.Deserialize<DateTime>(json, opts)
@@ -2245,8 +2254,9 @@ module Tests =
             let form = StripeRequest.Files.Files.CreateOptions.New(FileUpload.New("logo.png", [| 1uy |]), StripeRequest.Files.Files.Create'Purpose.IssuingLogo) |> serialise |> Map.ofSeq
             Assert.That(form.["purpose"], Is.EqualTo "issuing_logo")
 
-        /// Uploads a file named `fileName` to a local listener; returns what it received and the result.
-        member private _.UploadToListener(fileName: string) =
+        /// Sends a request with settings whose files host is a local listener, which answers `answer`;
+        /// returns what it received and the result.
+        member private _.SendToListener(answer: string, send: RestApi.StripeApiSettings -> Async<'r>) =
             let port =
                 let probe = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Loopback, 0)
                 probe.Start()
@@ -2261,7 +2271,7 @@ module Tests =
                     let! context = listener.GetContextAsync() |> Async.AwaitTask
                     use reader = new IO.StreamReader(context.Request.InputStream)
                     let body = reader.ReadToEnd()
-                    let response = Encoding.UTF8.GetBytes """{ "id": "file_1", "object": "file", "created": 1790000000, "purpose": "issuing_logo", "size": 4, "expires_at": null, "filename": "logo.png", "title": null, "type": "png", "url": null }"""
+                    let response = Encoding.UTF8.GetBytes answer
                     context.Response.ContentType <- "application/json"
                     context.Response.OutputStream.Write(response, 0, response.Length)
                     context.Response.Close()
@@ -2270,15 +2280,19 @@ module Tests =
                 |> Async.StartAsTask
 
             let uploadSettings = RestApi.StripeApiSettings.New(apiKey = "sk_test_upload", baseUrl = "http://unused.invalid", filesBaseUrl = $"http://localhost:{port}")
-            let result =
-                StripeRequest.Files.Files.CreateOptions.New(
-                    FileUpload.New(fileName, Encoding.ASCII.GetBytes "PNG!", "image/png"),
-                    StripeRequest.Files.Files.Create'Purpose.IssuingLogo)
-                |> StripeRequest.Files.Files.Create uploadSettings
-                |> Async.RunSynchronously
-
+            let result = send uploadSettings |> Async.RunSynchronously
             let path, contentType, authorization, body = received.Result
             path, contentType, authorization, body, result
+
+        /// Uploads a file named `fileName` to a local listener; returns what it received and the result.
+        member private this.UploadToListener(fileName: string) =
+            this.SendToListener(
+                """{ "id": "file_1", "object": "file", "created": 1790000000, "purpose": "issuing_logo", "size": 4, "expires_at": null, "filename": "logo.png", "title": null, "type": "png", "url": null }""",
+                fun settings ->
+                    StripeRequest.Files.Files.CreateOptions.New(
+                        FileUpload.New(fileName, Encoding.ASCII.GetBytes "PNG!", "image/png"),
+                        StripeRequest.Files.Files.Create'Purpose.IssuingLogo)
+                    |> StripeRequest.Files.Files.Create settings)
 
         [<Test>]
         member this.``Files.Create sends a multipart upload to the files host``() =
@@ -2302,3 +2316,28 @@ module Tests =
             Assert.That(body, Does.Contain "filename*=utf-8''log%C3%B6.png")
             Assert.That(body, Does.Not.Contain "%22")
             Assert.That(Result.isOk result, Is.True)
+
+        [<Test>]
+        member this.``TerminalReadersPrintContent sends the image to the files host and reads the reader``() =
+            let reader =
+                """{ "id": "tmr_1", "object": "terminal.reader", "action": { "failure_code": null, "failure_message": null, "print_content": { "image": { "created_at": 1748971913, "filename": "receipt.png", "size": 4, "type": "png" }, "type": "image" }, "status": "in_progress", "type": "print_content" }, "device_sw_version": "2.37.2.0", "device_type": "verifone_v660p", "ip_address": "0.0.0.0", "label": "Till", "last_seen_at": 1695166525506, "livemode": false, "location": "tml_1", "metadata": {}, "serial_number": "1", "status": "online" }"""
+            let path, contentType, _, body, result =
+                this.SendToListener(
+                    reader,
+                    fun settings ->
+                        StripeRequest.Terminal.TerminalReadersPrintContent.PrintContentOptions.New(
+                            FileUpload.New("receipt.png", Encoding.ASCII.GetBytes "PNG!", "image/png"),
+                            "tmr_1",
+                            StripeRequest.Terminal.TerminalReadersPrintContent.PrintContent'Type.Image)
+                        |> StripeRequest.Terminal.TerminalReadersPrintContent.PrintContent settings)
+            Assert.That(path, Is.EqualTo "/v1/terminal/readers/tmr_1/print_content")
+            Assert.That(contentType, Does.StartWith "multipart/form-data")
+            Assert.That(body, Does.Contain "name=\"image\"; filename=\"receipt.png\"")
+            Assert.That(body, Does.Contain "name=\"type\"")
+            Assert.That(body, Does.Contain "\r\n\r\nimage\r\n")
+            Assert.That(body, Does.Not.Contain "name=\"reader\"")
+            match result with
+            | Ok r ->
+                Assert.That(r.Id, Is.EqualTo "tmr_1")
+                Assert.That(r.Action |> Option.map (fun a -> a.Type), Is.EqualTo(Some Stripe.Terminal.TerminalReaderReaderResourceReaderActionType.PrintContent))
+            | Error e -> Assert.Fail $"Expected Ok, got {e.StripeError.Message}"

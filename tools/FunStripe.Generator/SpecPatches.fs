@@ -180,11 +180,44 @@ module SpecPatches =
             operations.Add(operation "fund_balance" "custom" "post" "/v1/test_helpers/issuing/fund_balance")
             true
 
+    ///Printing on a reader's embedded printer (`/v1/terminal/readers/{reader}/print_content`): Stripe
+    ///documents it in its API reference, and the spec has the reader's `print_content` action, but
+    ///leaves the endpoint out. It takes the PNG or JPEG image as `multipart/form-data` on the files host,
+    ///like a file upload. Built from the reader's `set_reader_display` request and offered as a method
+    ///of the `terminal.reader` object.
+    let private terminalReaderPrintContent (spec: JsonNode) =
+        let paths = spec.["paths"].AsObject()
+        let display = spec |> at [ "paths"; "/v1/terminal/readers/{reader}/set_reader_display"; "post" ]
+        let reader = spec |> at [ "components"; "schemas"; "terminal.reader" ]
+
+        if paths.ContainsKey "/v1/terminal/readers/{reader}/print_content" || display = null || reader = null then
+            false
+        else
+            let print = JsonObject()
+            print.["description"] <- JsonValue.Create "<p>Prints content on the reader's embedded printer. Send the PNG or JPEG image to print as <code>multipart/form-data</code>.</p>"
+            print.["operationId"] <- JsonValue.Create "PostTerminalReadersReaderPrintContent"
+            print.["parameters"] <- display.["parameters"].DeepClone()
+            print.["requestBody"] <-
+                JsonNode.Parse
+                    """{ "content": { "multipart/form-data": { "encoding": { "expand": { "explode": true, "style": "deepObject" } }, "schema": { "additionalProperties": false, "properties": { "expand": { "description": "Specifies which fields in the response should be expanded.", "items": { "maxLength": 5000, "type": "string" }, "type": "array" }, "image": { "description": "The image file to print. Must be a PNG or JPEG not exceeding 100 kB in size. Use black and white images for best results. Specifications must follow RFC 2388, which defines file transfers for the `multipart/form-data` protocol.", "format": "binary", "type": "string" }, "type": { "description": "The type of content to print. Currently supports `image`.", "enum": ["image"], "type": "string" } }, "required": ["image", "type"], "type": "object" } } }, "required": true }"""
+            print.["responses"] <- display.["responses"].DeepClone()
+            print.["servers"] <- JsonNode.Parse """[ { "url": "https://files.stripe.com/" } ]"""
+            paths.["/v1/terminal/readers/{reader}/print_content"] <- JsonObject([ KeyValuePair("post", print :> JsonNode) ])
+
+            match reader.["x-stripeOperations"] with
+            | :? JsonArray as operations ->
+                operations.Add(
+                    JsonNode.Parse
+                        """{ "method_name": "print_content", "method_on": "service", "method_type": "custom", "operation": "post", "path": "/v1/terminal/readers/{reader}/print_content" }""")
+            | _ -> ()
+            true
+
     let private patches = [
         "issuing_logo file purpose", issuingLogoFilePurpose
         "funding instructions bank transfer types", fundingBankTransferTypes
         "Issuing funding instructions and fund_balance", issuingFundingInstructions
         "Checkout Cash App setup_future_usage", checkoutCashappSetupFutureUsage
+        "Terminal reader print_content", terminalReaderPrintContent
     ]
 
     ///Applies the patches to the JSON of a spec and returns the patched JSON

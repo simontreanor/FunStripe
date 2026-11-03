@@ -10,3 +10,21 @@ POST /v1/customers/{}/cash_balance settings.reconciliation_mode    # as above
 POST /v1/payment_intents payment_method_options.upi.setup_future_usage            # none clears the setting, so no response carries it
 POST /v1/payment_intents/{} payment_method_options.upi.setup_future_usage         # as above
 POST /v1/payment_intents/{}/confirm payment_method_options.upi.setup_future_usage # as above
+POST /v1/stripe_balance_debit_agreements           # preview: the payment_method_options.stripe_balance it serves is only in Stripe's beta and private preview specs
+GET /v1/stripe_balance_debit_agreements/{}         # as above
+POST /v1/stripe_balance_debit_agreements/{}/revoke # as above
+GET /v1/terminal/hardware_orders                   # Terminal Hardware Orders API preview, gated per account; no spec has its objects
+POST /v1/terminal/hardware_orders                  # as above
+GET /v1/terminal/hardware_orders/preview           # as above
+GET /v1/terminal/hardware_orders/{}                # as above
+POST /v1/terminal/hardware_orders/{}/cancel        # as above
+GET /v1/terminal/hardware_products                 # as above
+GET /v1/terminal/hardware_products/{}              # as above
+GET /v1/terminal/hardware_shipping_methods         # as above
+GET /v1/terminal/hardware_shipping_methods/{}      # as above
+GET /v1/terminal/hardware_skus                     # as above
+GET /v1/terminal/hardware_skus/{}                  # as above
+POST /v1/test_helpers/terminal/hardware_orders/{}/deliver             # as above
+POST /v1/test_helpers/terminal/hardware_orders/{}/mark_ready_to_ship  # as above
+POST /v1/test_helpers/terminal/hardware_orders/{}/mark_undeliverable  # as above
+POST /v1/test_helpers/terminal/hardware_orders/{}/ship                # as above

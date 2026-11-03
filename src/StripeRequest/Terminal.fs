@@ -3124,3 +3124,37 @@ module TerminalReadersSetReaderDisplay =
         $"/v1/terminal/readers/{options.Reader}/set_reader_display"
         |> RestApi.postAsync<_, TerminalReader> settings (Map.empty) options
 
+module TerminalReadersPrintContent =
+
+    type PrintContent'Type = | Image
+
+    type PrintContentOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Reader: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+            /// The image file to print. Must be a PNG or JPEG not exceeding 100 kB in size. Use black and white images for best results. Specifications must follow RFC 2388, which defines file transfers for the `multipart/form-data` protocol.
+            [<Config.Form>]
+            Image: FileUpload
+            /// The type of content to print. Currently supports `image`.
+            [<Config.Form>]
+            Type: PrintContent'Type
+        }
+
+    type PrintContentOptions with
+        static member New(image: FileUpload, reader: string, type': PrintContent'Type, ?expand: string list) =
+            {
+                Image = image
+                Reader = reader
+                Type = type'
+                Expand = expand
+            }
+
+    ///<p>Prints content on the reader's embedded printer. Send the PNG or JPEG image to print as <code>multipart/form-data</code>.</p>
+    let PrintContent settings (options: PrintContentOptions) =
+        $"/v1/terminal/readers/{options.Reader}/print_content"
+        |> RestApi.postMultipartAsync<_, TerminalReader> settings (Map.empty) options
+

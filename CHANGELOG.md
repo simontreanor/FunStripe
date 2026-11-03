@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [Unreleased]
+
+### Added
+- **Printing on a Terminal reader**: `TerminalReadersPrintContent.PrintContent` (`/v1/terminal/readers/{reader}/print_content`) sends a PNG or JPEG image to the reader's embedded printer, as a multipart upload to the files host. Stripe documents the endpoint but leaves it out of its spec
+
+### Fixed
+- **A Terminal reader that Stripe has seen can be deserialised.** Its `last_seen_at` is in milliseconds, unlike Stripe's other timestamps, though the spec gives it the same `unix-time` format, so reading it overflowed. A timestamp too large to be in seconds is now read as milliseconds
+
 ## [3.2.0] - 2026-11-03
 
 ### Upgrade notes

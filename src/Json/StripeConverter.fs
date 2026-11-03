@@ -41,16 +41,25 @@ module StripeConverter =
     // DateTime converter: reads epoch int64 or ISO-8601 string
     // ---------------------------------------------------------------------------
 
+    let private epoch = DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+
+    /// The largest Unix time in seconds that a DateTime can hold (the end of the year 9999)
+    let private maxEpochSeconds = int64 (DateTime.MaxValue - epoch).TotalSeconds
+
     /// Deserializes DateTime from a Unix-epoch integer or ISO-8601 string.
     /// Serializes as a Unix-epoch integer (matching Stripe's wire format).
+    /// A few Stripe timestamps are in milliseconds, such as a Terminal reader's `last_seen_at`,
+    /// though the spec gives them the same `unix-time` format. A number too large to be seconds
+    /// is read as milliseconds.
     type EpochDateTimeConverter() =
         inherit JsonConverter<DateTime>()
 
         override _.Read(reader, _, _) =
             match reader.TokenType with
             | JsonTokenType.Number ->
-                DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
-                    .Add(TimeSpan.FromSeconds(float (reader.GetInt64())))
+                match reader.GetInt64() with
+                | seconds when seconds <= maxEpochSeconds -> epoch.AddSeconds(float seconds)
+                | milliseconds -> epoch.AddMilliseconds(float milliseconds)
             | JsonTokenType.String ->
                 DateTime.Parse(
                     reader.GetString(),
@@ -59,8 +68,7 @@ module StripeConverter =
             | t -> failwith $"EpochDateTimeConverter: unexpected token type {t}"
 
         override _.Write(writer, value, _) =
-            let epoch = int64((value.ToUniversalTime() - DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds)
-            writer.WriteNumberValue(epoch)
+            writer.WriteNumberValue(int64 (value.ToUniversalTime() - epoch).TotalSeconds)
 
     // ---------------------------------------------------------------------------
     // StripeId<'phantom> converter: reads/writes as a plain string
