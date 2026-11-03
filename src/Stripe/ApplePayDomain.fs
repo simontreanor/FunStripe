@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
 type ApplePayDomain =
     {
         /// Time at which the object was created. Measured in seconds since the Unix epoch.

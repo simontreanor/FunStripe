@@ -1,6 +1,6 @@
 namespace FunStripe
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
 [<AutoOpen>]
 module StripeIds =
 
@@ -26,7 +26,7 @@ module StripeIds =
             static member New (data: 'T list, hasMore: bool, url: string) =
                 { Data = data; HasMore = hasMore; Url = url }
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
 module Markers =
 
     // Phantom marker types — one per resource that appears as a single-target
@@ -107,7 +107,7 @@ module Markers =
     type TransferReversal = class end
     type TreasuryTransaction = class end
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
 module SpecInfo =
 
     /// The Stripe API date-version (the spec's `info.version`) this build was generated from.

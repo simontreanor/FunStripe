@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
 type DeletedTestHelpersTestClock =
     {
         /// Always true for a deleted object

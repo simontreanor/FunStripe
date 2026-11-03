@@ -6,7 +6,7 @@ open System
 open Stripe.CreditNoteLineItem
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
 type CreditNoteCustomer'AnyOf =
     | String of string
     | Customer of Customer

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.BillingPortal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
 module BillingPortalConfigurations =
 
     type ListOptions =

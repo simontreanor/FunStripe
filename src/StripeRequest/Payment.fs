@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.PaymentRecord
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
 module PaymentAttemptRecords =
 
     type ListOptions =

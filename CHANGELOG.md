@@ -6,13 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
-## [Unreleased]
+## [3.1.2] - 2026-11-03
 
 ### Added
-- **Issuing funding instructions and test funding:** `IssuingFundingInstructions.Create` and `.List` (`/v1/issuing/funding_instructions`) and `TestHelpersIssuingFundBalance.FundBalance` (`/v1/test_helpers/issuing/fund_balance`), which Stripe documents but leaves out of its spec
+- **Issuing funding instructions and test funding** ([#52](https://github.com/simontreanor/FunStripe/pull/52)): `IssuingFundingInstructions.Create` and `.List` (`/v1/issuing/funding_instructions`) and `TestHelpersIssuingFundBalance.FundBalance` (`/v1/test_helpers/issuing/fund_balance`), which Stripe documents but leaves out of its spec
 
 ### Fixed
-- **Funding instructions read `gb_bank_transfer`, `mx_bank_transfer` and `us_bank_transfer`.** The object's bank transfer type knew only `eu_bank_transfer` and `jp_bank_transfer`, so the funding instructions of a UK Issuing balance failed to deserialise
+- **Funding instructions read `gb_bank_transfer`, `mx_bank_transfer` and `us_bank_transfer`.** The object's bank transfer type knew only `eu_bank_transfer` and `jp_bank_transfer`, so funding instructions for a UK, Mexican or US balance failed to deserialise. This hit customer cash balance funding instructions as well as Issuing ([#52](https://github.com/simontreanor/FunStripe/pull/52), reported upstream as [stripe/openapi#209](https://github.com/stripe/openapi/issues/209))
 
 ## [3.1.1] - 2026-11-03
 
