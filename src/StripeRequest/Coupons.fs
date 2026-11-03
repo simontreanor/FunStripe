@@ -116,19 +116,6 @@ module Coupons =
                 RedeemBy = redeemBy
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Coupon: string
-        }
-
-    type DeleteOptions with
-        static member New(coupon: string) =
-            {
-                Coupon = coupon
-            }
-
     type RetrieveOptions =
         {
             /// Unique identifier for the object.
@@ -175,6 +162,19 @@ module Coupons =
                 Name = name
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Coupon: string
+        }
+
+    type DeleteOptions with
+        static member New(coupon: string) =
+            {
+                Coupon = coupon
+            }
+
     ///<p>Returns a list of your coupons.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -187,11 +187,6 @@ module Coupons =
         $"/v1/coupons"
         |> RestApi.postAsync<_, Coupon> settings (Map.empty) options
 
-    ///<p>You can delete coupons via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. However, deleting a coupon does not affect any customers who have already applied the coupon; it means that new customers can’t redeem the coupon. You can also delete coupons via the API.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/coupons/{options.Coupon}"
-        |> RestApi.deleteAsync<DeletedCoupon> settings (Map.empty)
-
     ///<p>Retrieves the coupon with the given ID.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -202,4 +197,9 @@ module Coupons =
     let Update settings (options: UpdateOptions) =
         $"/v1/coupons/{options.Coupon}"
         |> RestApi.postAsync<_, Coupon> settings (Map.empty) options
+
+    ///<p>You can delete coupons via the <a href="https://dashboard.stripe.com/coupons">coupon management</a> page of the Stripe dashboard. However, deleting a coupon does not affect any customers who have already applied the coupon; it means that new customers can’t redeem the coupon. You can also delete coupons via the API.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/coupons/{options.Coupon}"
+        |> RestApi.deleteAsync<DeletedCoupon> settings (Map.empty)
 

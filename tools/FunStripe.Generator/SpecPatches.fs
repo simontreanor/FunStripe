@@ -220,9 +220,28 @@ module SpecPatches =
         "Terminal reader print_content", terminalReaderPrintContent
     ]
 
+    ///Keeps the v1 API only. Stripe's combined spec (`latest/openapi.spec3.sdk.json`) also has the v2
+    ///API: `/v2/` paths, their `v2.*` objects, and the `v1.*` and `v2.*` event payloads that v2 event
+    ///destinations send. FunStripe generates v1, whose requests are form-encoded where v2's are JSON.
+    ///Without these, the combined spec is the v1-only spec of the same version.
+    let private v1Only (spec: JsonNode) =
+        let paths = spec.["paths"].AsObject()
+        let schemas = spec.["components"].["schemas"].AsObject()
+        let drop (node: JsonObject) (keep: string -> bool) =
+            let names = [ for property in node do if not (keep property.Key) then property.Key ]
+            for name in names do node.Remove name |> ignore
+            names.Length
+        let removedPaths = drop paths (fun path -> path.StartsWith("/v1/", System.StringComparison.Ordinal))
+        let removedSchemas =
+            drop schemas (fun name ->
+                not (name.StartsWith("v1.", System.StringComparison.Ordinal) || name.StartsWith("v2.", System.StringComparison.Ordinal)))
+        if removedPaths + removedSchemas > 0 then
+            printfn "  Kept the v1 API only: left out %d paths and %d schemas" removedPaths removedSchemas
+
     ///Applies the patches to the JSON of a spec and returns the patched JSON
     let apply (specJson: string) =
         let spec = JsonNode.Parse specJson
+        v1Only spec
         for name, patch in patches do
             if patch spec then printfn "  Patched the spec: %s" name
         spec.ToJsonString()

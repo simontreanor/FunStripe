@@ -1600,66 +1600,6 @@ module Subscriptions =
                 TrialSettings = trialSettings
             }
 
-    type Cancel'CancellationDetailsFeedback =
-        | CustomerService
-        | LowQuality
-        | MissingFeatures
-        | Other
-        | SwitchedService
-        | TooComplex
-        | TooExpensive
-        | Unused
-
-    type Cancel'CancellationDetails =
-        {
-            /// Additional comments about why the user canceled the subscription, if the subscription was canceled explicitly by the user.
-            [<Config.Form>]
-            Comment: Choice<string,string> option
-            /// The customer submitted reason for why they canceled, if the subscription was canceled explicitly by the user.
-            [<Config.Form>]
-            Feedback: Cancel'CancellationDetailsFeedback option
-            /// Customized feedback options that provide deeper insight into why the subscription was canceled, if the subscription was canceled explicitly by the user.
-            [<Config.Form>]
-            FeedbackOption: string option
-        }
-
-    type Cancel'CancellationDetails with
-        static member New(?comment: Choice<string,string>, ?feedback: Cancel'CancellationDetailsFeedback, ?feedbackOption: string) =
-            {
-                Comment = comment
-                Feedback = feedback
-                FeedbackOption = feedbackOption
-            }
-
-    type CancelOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            SubscriptionExposedId: string
-            /// Details about why this subscription was cancelled
-            [<Config.Form>]
-            CancellationDetails: Cancel'CancellationDetails option
-            /// Specifies which fields in the response should be expanded.
-            [<Config.Form>]
-            Expand: string list option
-            /// Will generate a final invoice that invoices for any un-invoiced metered usage and new/pending proration invoice items. Defaults to `false`.
-            [<Config.Form>]
-            InvoiceNow: bool option
-            /// Will generate a proration invoice item that credits remaining unused time until the subscription period end. Defaults to `false`.
-            [<Config.Form>]
-            Prorate: bool option
-        }
-
-    type CancelOptions with
-        static member New(subscriptionExposedId: string, ?cancellationDetails: Cancel'CancellationDetails, ?expand: string list, ?invoiceNow: bool, ?prorate: bool) =
-            {
-                SubscriptionExposedId = subscriptionExposedId
-                CancellationDetails = cancellationDetails
-                Expand = expand
-                InvoiceNow = invoiceNow
-                Prorate = prorate
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -3202,6 +3142,66 @@ module Subscriptions =
                 TrialSettings = trialSettings
             }
 
+    type Cancel'CancellationDetailsFeedback =
+        | CustomerService
+        | LowQuality
+        | MissingFeatures
+        | Other
+        | SwitchedService
+        | TooComplex
+        | TooExpensive
+        | Unused
+
+    type Cancel'CancellationDetails =
+        {
+            /// Additional comments about why the user canceled the subscription, if the subscription was canceled explicitly by the user.
+            [<Config.Form>]
+            Comment: Choice<string,string> option
+            /// The customer submitted reason for why they canceled, if the subscription was canceled explicitly by the user.
+            [<Config.Form>]
+            Feedback: Cancel'CancellationDetailsFeedback option
+            /// Customized feedback options that provide deeper insight into why the subscription was canceled, if the subscription was canceled explicitly by the user.
+            [<Config.Form>]
+            FeedbackOption: string option
+        }
+
+    type Cancel'CancellationDetails with
+        static member New(?comment: Choice<string,string>, ?feedback: Cancel'CancellationDetailsFeedback, ?feedbackOption: string) =
+            {
+                Comment = comment
+                Feedback = feedback
+                FeedbackOption = feedbackOption
+            }
+
+    type CancelOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            SubscriptionExposedId: string
+            /// Details about why this subscription was cancelled
+            [<Config.Form>]
+            CancellationDetails: Cancel'CancellationDetails option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+            /// Will generate a final invoice that invoices for any un-invoiced metered usage and new/pending proration invoice items. Defaults to `false`.
+            [<Config.Form>]
+            InvoiceNow: bool option
+            /// Will generate a proration invoice item that credits remaining unused time until the subscription period end. Defaults to `false`.
+            [<Config.Form>]
+            Prorate: bool option
+        }
+
+    type CancelOptions with
+        static member New(subscriptionExposedId: string, ?cancellationDetails: Cancel'CancellationDetails, ?expand: string list, ?invoiceNow: bool, ?prorate: bool) =
+            {
+                SubscriptionExposedId = subscriptionExposedId
+                CancellationDetails = cancellationDetails
+                Expand = expand
+                InvoiceNow = invoiceNow
+                Prorate = prorate
+            }
+
     ///<p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
     let List settings (options: ListOptions) =
         let qs = [("automatic_tax", options.AutomaticTax |> box); ("collection_method", options.CollectionMethod |> box); ("created", options.Created |> box); ("current_period_end", options.CurrentPeriodEnd |> box); ("current_period_start", options.CurrentPeriodStart |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("plan", options.Plan |> box); ("price", options.Price |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("test_clock", options.TestClock |> box)] |> Map.ofList
@@ -3216,13 +3216,6 @@ module Subscriptions =
     let Create settings (options: CreateOptions) =
         $"/v1/subscriptions"
         |> RestApi.postAsync<_, Subscription> settings (Map.empty) options
-
-    ///<p>Cancels a customer’s subscription immediately. The customer won’t be charged again for the subscription. After it’s canceled, the subscription is largely immutable. You can still update its <a href="/metadata">metadata</a> and <code>cancellation_details</code>.</p>
-    ///<p>Pending invoice items are included on a final invoice if you generate one. Otherwise, they remain pending and can be billed on another invoice for the customer. To prevent billing, manually <a href="/api/invoiceitems/delete">delete</a> them. If you’ve set the subscription to cancel at the end of the period, any pending prorations are also left in place and collected at the end of the period. But if the subscription is set to cancel immediately, pending prorations are removed if <code>invoice_now</code> and <code>prorate</code> are both set to false.</p>
-    ///<p>By default, upon subscription cancellation, Stripe stops automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>
-    let Cancel settings (options: CancelOptions) =
-        $"/v1/subscriptions/{options.SubscriptionExposedId}"
-        |> RestApi.deleteAsync<Subscription> settings (Map.empty)
 
     ///<p>Retrieves the subscription with the given ID.</p>
     let Retrieve settings (options: RetrieveOptions) =
@@ -3247,6 +3240,13 @@ module Subscriptions =
     let Update settings (options: UpdateOptions) =
         $"/v1/subscriptions/{options.SubscriptionExposedId}"
         |> RestApi.postAsync<_, Subscription> settings (Map.empty) options
+
+    ///<p>Cancels a customer’s subscription immediately. The customer won’t be charged again for the subscription. After it’s canceled, the subscription is largely immutable. You can still update its <a href="/metadata">metadata</a> and <code>cancellation_details</code>.</p>
+    ///<p>Pending invoice items are included on a final invoice if you generate one. Otherwise, they remain pending and can be billed on another invoice for the customer. To prevent billing, manually <a href="/api/invoiceitems/delete">delete</a> them. If you’ve set the subscription to cancel at the end of the period, any pending prorations are also left in place and collected at the end of the period. But if the subscription is set to cancel immediately, pending prorations are removed if <code>invoice_now</code> and <code>prorate</code> are both set to false.</p>
+    ///<p>By default, upon subscription cancellation, Stripe stops automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>
+    let Cancel settings (options: CancelOptions) =
+        $"/v1/subscriptions/{options.SubscriptionExposedId}"
+        |> RestApi.deleteAsync<Subscription> settings (Map.empty)
 
 module SubscriptionsSearch =
 

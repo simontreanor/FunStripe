@@ -17,14 +17,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      # Stripe's combined spec, latest/openapi.spec3.sdk.json, has the v1 and v2 APIs; the
+      # v1-only openapi/spec3.sdk.json is legacy. The generator keeps v1 only (see SpecPatches.fs).
+      # The version is the spec's own info.version: the release notes list only the openapi/ files.
       - name: Get latest Stripe OpenAPI release
         id: stripe
         run: |
-          RELEASE=$(curl -s https://api.github.com/repos/stripe/openapi/releases/latest)
-          TAG=$(echo "$RELEASE" | jq -r '.tag_name')
-          SPEC_VERSION=$(echo "$RELEASE" | jq -r '.body' \
-            | grep 'spec3\.sdk\.' | grep -v beta | grep -v private \
-            | awk -F'|' '{print $3}' | tr -d ' ')
+          TAG=$(curl -fsSL https://api.github.com/repos/stripe/openapi/releases/latest | jq -r '.tag_name')
+          curl -fsSL "https://raw.githubusercontent.com/stripe/openapi/$TAG/latest/openapi.spec3.sdk.json" \
+            -o "$RUNNER_TEMP/latest.json"
+          SPEC_VERSION=$(jq -r '.info.version' "$RUNNER_TEMP/latest.json")
+          if ! [[ "$SPEC_VERSION" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}(\.[a-z]+)?$ ]]; then
+            echo "::error::$TAG's latest/openapi.spec3.sdk.json has no usable info.version ($SPEC_VERSION)"
+            exit 1
+          fi
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "spec_version=$SPEC_VERSION" >> "$GITHUB_OUTPUT"
           echo "Latest stripe/openapi release: $TAG (spec version: $SPEC_VERSION)"
@@ -49,8 +55,6 @@ jobs:
             echo "::warning::Latest spec $SPEC_VERSION is tracked but isn't the targeted $TARGET — nothing to do."
             echo "kind=none" >> "$GITHUB_OUTPUT"
           else
-            curl -fsSL "https://raw.githubusercontent.com/stripe/openapi/$TAG/openapi/spec3.sdk.json" \
-              -o "$RUNNER_TEMP/latest.json"
             if cmp -s "$RUNNER_TEMP/latest.json" "$SPEC_FILE"; then
               echo "Spec $SPEC_VERSION is up to date with $TAG — nothing to do."
               echo "kind=none" >> "$GITHUB_OUTPUT"
@@ -60,13 +64,11 @@ jobs:
             fi
           fi
 
-      - name: Download spec
+      - name: Save spec
         if: steps.check.outputs.kind != 'none'
         run: |
-          curl -fsSL \
-            "https://raw.githubusercontent.com/stripe/openapi/${{ steps.stripe.outputs.tag }}/openapi/spec3.sdk.json" \
-            -o "${{ steps.check.outputs.spec_file }}"
-          echo "Downloaded ${{ steps.check.outputs.spec_file }}"
+          cp "$RUNNER_TEMP/latest.json" "${{ steps.check.outputs.spec_file }}"
+          echo "Saved ${{ steps.check.outputs.spec_file }}"
 
       - name: Setup .NET
         if: steps.check.outputs.kind != 'none'

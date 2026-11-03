@@ -4978,19 +4978,6 @@ module TaxIds =
                 Owner = owner
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Id: string
-        }
-
-    type DeleteOptions with
-        static member New(id: string) =
-            {
-                Id = id
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -5008,6 +4995,19 @@ module TaxIds =
                 Expand = expand
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Id: string
+        }
+
+    type DeleteOptions with
+        static member New(id: string) =
+            {
+                Id = id
+            }
+
     ///<p>Returns a list of tax IDs.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("owner", options.Owner |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -5019,16 +5019,16 @@ module TaxIds =
         $"/v1/tax_ids"
         |> RestApi.postAsync<_, TaxId> settings (Map.empty) options
 
-    ///<p>Deletes an existing account or customer <code>tax_id</code> object.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/tax_ids/{options.Id}"
-        |> RestApi.deleteAsync<DeletedTaxId> settings (Map.empty)
-
     ///<p>Retrieves an account or customer <code>tax_id</code> object.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/tax_ids/{options.Id}"
         |> RestApi.getAsync<TaxId> settings qs
+
+    ///<p>Deletes an existing account or customer <code>tax_id</code> object.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/tax_ids/{options.Id}"
+        |> RestApi.deleteAsync<DeletedTaxId> settings (Map.empty)
 
 module TaxRates =
 

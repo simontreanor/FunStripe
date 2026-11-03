@@ -508,19 +508,6 @@ module Customers =
                 Validate = validate
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Customer: string
-        }
-
-    type DeleteOptions with
-        static member New(customer: string) =
-            {
-                Customer = customer
-            }
-
     type RetrieveOptions =
         {
             /// Unique identifier for the object.
@@ -844,6 +831,19 @@ module Customers =
                 Validate = validate
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Customer: string
+        }
+
+    type DeleteOptions with
+        static member New(customer: string) =
+            {
+                Customer = customer
+            }
+
     ///<p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("email", options.Email |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("test_clock", options.TestClock |> box)] |> Map.ofList
@@ -854,11 +854,6 @@ module Customers =
     let Create settings (options: CreateOptions) =
         $"/v1/customers"
         |> RestApi.postAsync<_, Customer> settings (Map.empty) options
-
-    ///<p>Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/customers/{options.Customer}"
-        |> RestApi.deleteAsync<DeletedCustomer> settings (Map.empty)
 
     ///<p>Retrieves a Customer object.</p>
     let Retrieve settings (options: RetrieveOptions) =
@@ -871,6 +866,11 @@ module Customers =
     let Update settings (options: UpdateOptions) =
         $"/v1/customers/{options.Customer}"
         |> RestApi.postAsync<_, Customer> settings (Map.empty) options
+
+    ///<p>Permanently deletes a customer. It cannot be undone. Also immediately cancels any active subscriptions on the customer.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/customers/{options.Customer}"
+        |> RestApi.deleteAsync<DeletedCustomer> settings (Map.empty)
 
 module CustomersSearch =
 
@@ -1423,26 +1423,6 @@ module CustomersSources =
                 Validate = validate
             }
 
-    type DeleteOptions =
-        {
-            [<Config.Path>]
-            Customer: string
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Id: string
-            /// Specifies which fields in the response should be expanded.
-            [<Config.Form>]
-            Expand: string list option
-        }
-
-    type DeleteOptions with
-        static member New(customer: string, id: string, ?expand: string list) =
-            {
-                Customer = customer
-                Id = id
-                Expand = expand
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -1594,6 +1574,26 @@ module CustomersSources =
                 Owner = owner
             }
 
+    type DeleteOptions =
+        {
+            [<Config.Path>]
+            Customer: string
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Id: string
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+        }
+
+    type DeleteOptions with
+        static member New(customer: string, id: string, ?expand: string list) =
+            {
+                Customer = customer
+                Id = id
+                Expand = expand
+            }
+
     ///<p>List sources for a specified customer.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("object", options.Object |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -1608,11 +1608,6 @@ module CustomersSources =
         $"/v1/customers/{options.Customer}/sources"
         |> RestApi.postAsync<_, PaymentSource> settings (Map.empty) options
 
-    ///<p>Delete a specified source for a given customer.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/customers/{options.Customer}/sources/{options.Id}"
-        |> RestApi.deleteAsync<PaymentSource> settings (Map.empty)
-
     ///<p>Retrieve a specified source for a given customer.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -1623,6 +1618,11 @@ module CustomersSources =
     let Update settings (options: UpdateOptions) =
         $"/v1/customers/{options.Customer}/sources/{options.Id}"
         |> RestApi.postAsync<_, Card> settings (Map.empty) options
+
+    ///<p>Delete a specified source for a given customer.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/customers/{options.Customer}/sources/{options.Id}"
+        |> RestApi.deleteAsync<PaymentSource> settings (Map.empty)
 
 module CustomersSourcesVerify =
 
@@ -1848,22 +1848,6 @@ module CustomersTaxIds =
                 Expand = expand
             }
 
-    type DeleteOptions =
-        {
-            [<Config.Path>]
-            Customer: string
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Id: string
-        }
-
-    type DeleteOptions with
-        static member New(customer: string, id: string) =
-            {
-                Customer = customer
-                Id = id
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -1884,6 +1868,22 @@ module CustomersTaxIds =
                 Expand = expand
             }
 
+    type DeleteOptions =
+        {
+            [<Config.Path>]
+            Customer: string
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Id: string
+        }
+
+    type DeleteOptions with
+        static member New(customer: string, id: string) =
+            {
+                Customer = customer
+                Id = id
+            }
+
     ///<p>Returns a list of tax IDs for a customer.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -1895,14 +1895,14 @@ module CustomersTaxIds =
         $"/v1/customers/{options.Customer}/tax_ids"
         |> RestApi.postAsync<_, TaxId> settings (Map.empty) options
 
-    ///<p>Deletes an existing <code>tax_id</code> object.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/customers/{options.Customer}/tax_ids/{options.Id}"
-        |> RestApi.deleteAsync<DeletedTaxId> settings (Map.empty)
-
     ///<p>Retrieves the <code>tax_id</code> object with the given identifier.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/customers/{options.Customer}/tax_ids/{options.Id}"
         |> RestApi.getAsync<TaxId> settings qs
+
+    ///<p>Deletes an existing <code>tax_id</code> object.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/customers/{options.Customer}/tax_ids/{options.Id}"
+        |> RestApi.deleteAsync<DeletedTaxId> settings (Map.empty)
 

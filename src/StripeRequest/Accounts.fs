@@ -2994,19 +2994,6 @@ module Accounts =
                 Type = type'
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Account: string
-        }
-
-    type DeleteOptions with
-        static member New(account: string) =
-            {
-                Account = account
-            }
-
     type RetrieveOptions =
         {
             /// Unique identifier for the object.
@@ -5922,6 +5909,19 @@ module Accounts =
                 TosAcceptance = tosAcceptance
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Account: string
+        }
+
+    type DeleteOptions with
+        static member New(account: string) =
+            {
+                Account = account
+            }
+
     ///<p>Returns a list of accounts connected to your platform via <a href="/docs/connect">Connect</a>. If you’re not a platform, the list is empty.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -5936,14 +5936,6 @@ module Accounts =
     let Create settings (options: CreateOptions) =
         $"/v1/accounts"
         |> RestApi.postAsync<_, Account> settings (Map.empty) options
-
-    ///<p>With <a href="/connect">Connect</a>, you can delete accounts you manage.</p>
-    ///<p>Test-mode accounts can be deleted at any time.</p>
-    ///<p>Live-mode accounts that have access to the standard dashboard and Stripe is responsible for negative account balances cannot be deleted, which includes Standard accounts. All other Live-mode accounts, can be deleted when all <a href="/api/balance/balance_object">balances</a> are zero.</p>
-    ///<p>If you want to delete your own account, use the <a href="https://dashboard.stripe.com/settings/account">account information tab in your account settings</a> instead.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/accounts/{options.Account}"
-        |> RestApi.deleteAsync<DeletedAccount> settings (Map.empty)
 
     ///<p>Retrieves the details of an account.</p>
     let Retrieve settings (options: RetrieveOptions) =
@@ -5964,6 +5956,14 @@ module Accounts =
     let Update settings (options: UpdateOptions) =
         $"/v1/accounts/{options.Account}"
         |> RestApi.postAsync<_, Account> settings (Map.empty) options
+
+    ///<p>With <a href="/connect">Connect</a>, you can delete accounts you manage.</p>
+    ///<p>Test-mode accounts can be deleted at any time.</p>
+    ///<p>Live-mode accounts that have access to the standard dashboard and Stripe is responsible for negative account balances cannot be deleted, which includes Standard accounts. All other Live-mode accounts, can be deleted when all <a href="/api/balance/balance_object">balances</a> are zero.</p>
+    ///<p>If you want to delete your own account, use the <a href="https://dashboard.stripe.com/settings/account">account information tab in your account settings</a> instead.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/accounts/{options.Account}"
+        |> RestApi.deleteAsync<DeletedAccount> settings (Map.empty)
 
 module AccountsCapabilities =
 
@@ -6108,22 +6108,6 @@ module AccountsExternalAccounts =
                 Metadata = metadata
             }
 
-    type DeleteOptions =
-        {
-            [<Config.Path>]
-            Account: string
-            /// Unique identifier for the external account to be deleted.
-            [<Config.Path>]
-            Id: string
-        }
-
-    type DeleteOptions with
-        static member New(account: string, id: string) =
-            {
-                Account = account
-                Id = id
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -6259,6 +6243,22 @@ module AccountsExternalAccounts =
                 Name = name
             }
 
+    type DeleteOptions =
+        {
+            [<Config.Path>]
+            Account: string
+            /// Unique identifier for the external account to be deleted.
+            [<Config.Path>]
+            Id: string
+        }
+
+    type DeleteOptions with
+        static member New(account: string, id: string) =
+            {
+                Account = account
+                Id = id
+            }
+
     ///<p>List external accounts for an account.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("object", options.Object |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -6269,11 +6269,6 @@ module AccountsExternalAccounts =
     let Create settings (options: CreateOptions) =
         $"/v1/accounts/{options.Account}/external_accounts"
         |> RestApi.postAsync<_, ExternalAccount> settings (Map.empty) options
-
-    ///<p>Delete a specified external account for a given account.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/accounts/{options.Account}/external_accounts/{options.Id}"
-        |> RestApi.deleteAsync<DeletedExternalAccount> settings (Map.empty)
 
     ///<p>Retrieve a specified external account for a given account.</p>
     let Retrieve settings (options: RetrieveOptions) =
@@ -6290,6 +6285,11 @@ module AccountsExternalAccounts =
     let Update settings (options: UpdateOptions) =
         $"/v1/accounts/{options.Account}/external_accounts/{options.Id}"
         |> RestApi.postAsync<_, ExternalAccount> settings (Map.empty) options
+
+    ///<p>Delete a specified external account for a given account.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/accounts/{options.Account}/external_accounts/{options.Id}"
+        |> RestApi.deleteAsync<DeletedExternalAccount> settings (Map.empty)
 
 module AccountsLoginLinks =
 
@@ -6924,22 +6924,6 @@ module AccountsPersons =
                 Verification = verification
             }
 
-    type DeleteOptions =
-        {
-            [<Config.Path>]
-            Account: string
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Person: string
-        }
-
-    type DeleteOptions with
-        static member New(account: string, person: string) =
-            {
-                Account = account
-                Person = person
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -7537,6 +7521,22 @@ module AccountsPersons =
                 Verification = verification
             }
 
+    type DeleteOptions =
+        {
+            [<Config.Path>]
+            Account: string
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Person: string
+        }
+
+    type DeleteOptions with
+        static member New(account: string, person: string) =
+            {
+                Account = account
+                Person = person
+            }
+
     ///<p>Returns a list of people associated with the account’s legal entity. The people are returned sorted by creation date, with the most recent people appearing first.</p>
     let Persons settings (options: PersonsOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("relationship", options.Relationship |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -7548,11 +7548,6 @@ module AccountsPersons =
         $"/v1/accounts/{options.Account}/persons"
         |> RestApi.postAsync<_, Person> settings (Map.empty) options
 
-    ///<p>Deletes an existing person’s relationship to the account’s legal entity. Any person with a relationship for an account can be deleted through the API, except if the person is the <code>representative</code>. If your integration is using the <code>executive</code> parameter, you cannot delete the only verified <code>executive</code> on file.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/accounts/{options.Account}/persons/{options.Person}"
-        |> RestApi.deleteAsync<DeletedPerson> settings (Map.empty)
-
     ///<p>Retrieves an existing person.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -7563,6 +7558,11 @@ module AccountsPersons =
     let Update settings (options: UpdateOptions) =
         $"/v1/accounts/{options.Account}/persons/{options.Person}"
         |> RestApi.postAsync<_, Person> settings (Map.empty) options
+
+    ///<p>Deletes an existing person’s relationship to the account’s legal entity. Any person with a relationship for an account can be deleted through the API, except if the person is the <code>representative</code>. If your integration is using the <code>executive</code> parameter, you cannot delete the only verified <code>executive</code> on file.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/accounts/{options.Account}/persons/{options.Person}"
+        |> RestApi.deleteAsync<DeletedPerson> settings (Map.empty)
 
 module AccountsReject =
 

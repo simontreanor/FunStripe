@@ -4435,19 +4435,6 @@ module TestHelpersTestClocks =
                 Name = name
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            TestClock: string
-        }
-
-    type DeleteOptions with
-        static member New(testClock: string) =
-            {
-                TestClock = testClock
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -4465,6 +4452,19 @@ module TestHelpersTestClocks =
                 Expand = expand
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            TestClock: string
+        }
+
+    type DeleteOptions with
+        static member New(testClock: string) =
+            {
+                TestClock = testClock
+            }
+
     ///<p>Returns a list of your test clocks.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -4476,16 +4476,16 @@ module TestHelpersTestClocks =
         $"/v1/test_helpers/test_clocks"
         |> RestApi.postAsync<_, TestHelpersTestClock> settings (Map.empty) options
 
-    ///<p>Deletes a test clock.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/test_helpers/test_clocks/{options.TestClock}"
-        |> RestApi.deleteAsync<DeletedTestHelpersTestClock> settings (Map.empty)
-
     ///<p>Retrieves a test clock.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/test_helpers/test_clocks/{options.TestClock}"
         |> RestApi.getAsync<TestHelpersTestClock> settings qs
+
+    ///<p>Deletes a test clock.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/test_helpers/test_clocks/{options.TestClock}"
+        |> RestApi.deleteAsync<DeletedTestHelpersTestClock> settings (Map.empty)
 
 module TestHelpersTestClocksAdvance =
 

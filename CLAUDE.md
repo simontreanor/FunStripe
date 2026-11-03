@@ -34,7 +34,9 @@ dotnet test    tests/FunStripe.Tests.fsproj # NUnit; live-API tests are skipped 
     `StripeRequest.Modular.props` files list the generated files for compilation.
 - `tools/FunStripe.Generator/` — the code generator (an F# console app) that reads the
   OpenAPI spec and emits the generated `src/` files using Fabulous.AST.
-- `spec/` — bundled Stripe OpenAPI spec snapshots (`stripe-openapi-<version>.json`).
+- `spec/` — bundled Stripe OpenAPI spec snapshots (`stripe-openapi-<version>.json`). Since
+  `2026-10-28.endive` these are Stripe's combined v1 + v2 spec (`latest/openapi.spec3.sdk.json`
+  in `stripe/openapi`); the v1-only `openapi/spec3.sdk.json` is legacy. FunStripe generates v1 only.
 - `tests/` — NUnit test project.
 - `.github/workflows/` — CI, publishing, and the spec-update automation (see below).
 
@@ -59,7 +61,8 @@ Key generator modules:
 - `Generator.fs` — entry point (`--spec`, `--output`, `--version` args).
 - `SpecPatches.fs` — corrections applied to the spec before generation, where Stripe's spec
   disagrees with its API (e.g. the missing `issuing_logo` file purpose). Each patch is a no-op
-  once the spec no longer needs it.
+  once the spec no longer needs it. It first drops the v2 API (`/v2/` paths, and the `v1.*` and
+  `v2.*` schemas), which leaves exactly the v1 spec.
 
 Note on schema shapes: Stripe represents free-form maps as title-less `"type": "object"`
 schemas with `additionalProperties` (e.g. the various `*_by_currency` fields). The request
@@ -71,8 +74,9 @@ the generator.
 
 ## Spec update automation
 
-- **`check-stripe-spec.yml`** (weekly + manual) — checks `stripe/openapi` for a newer spec
-  version, downloads it, runs the generator, and opens a PR with the new spec + regenerated
+- **`check-stripe-spec.yml`** (weekly + manual) — downloads the combined spec of the latest
+  `stripe/openapi` release, takes its version from the spec's `info.version`, and for a newer
+  version runs the generator and opens a PR with the new spec + regenerated
   `src/` (minor bump). It also catches Stripe updating the targeted spec *in place* under the
   same `info.version`: it diffs the latest download against `spec/`, regenerates, and opens a
   patch-bump PR only if something other than `///` doc comments changed. The PR body carries
