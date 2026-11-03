@@ -1,0 +1,86 @@
+name: Spec gaps
+
+# Weekly search for places where Stripe's OpenAPI spec falls short of its API: endpoints in the
+# API reference that the spec leaves out, and responses that cannot read values their request
+# accepts. Keeps one open issue labelled spec-gaps up to date, and comments on it when a gap is
+# new. Gaps are closed with patches in tools/FunStripe.Generator/SpecPatches.fs, or listed in
+# tools/spec_gaps_known.txt when they need none. See tools/spec_gaps.py.
+
+on:
+  schedule:
+    - cron: '0 10 * * 1'  # every Monday at 10:00 UTC, after "Check for new Stripe OpenAPI spec"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  gaps:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v5
+
+      # Compare against what we generate from: our spec with SpecPatches applied, so gaps we
+      # have patched drop off the issue by themselves
+      - name: Patched spec
+        run: dotnet run --project tools/FunStripe.Generator -- --patched-spec "$RUNNER_TEMP/patched.json"
+
+      # Stripe's other specs say whether a missing endpoint is a preview or in a newer spec
+      - name: Stripe's other specs
+        run: |
+          for f in spec3.sdk.json spec3.beta.sdk.json spec3.private_preview.sdk.json; do
+            curl -fsSL -o "$RUNNER_TEMP/$f" "https://raw.githubusercontent.com/stripe/openapi/master/openapi/$f"
+          done
+
+      - name: Previous issue
+        id: issue
+        run: |
+          gh label create spec-gaps --color FBCA04 --description "Gaps in Stripe's OpenAPI spec" 2>/dev/null || true
+          number=$(gh issue list --label spec-gaps --state open --json number --jq '.[0].number // empty')
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          touch "$RUNNER_TEMP/previous.md"
+          if [ -n "$number" ]; then gh issue view "$number" --json body --jq .body > "$RUNNER_TEMP/previous.md"; fi
+
+      - name: Find gaps
+        id: gaps
+        run: |
+          python3 -I tools/spec_gaps.py \
+            --spec "$RUNNER_TEMP/patched.json" \
+            --other-spec "latest GA=$RUNNER_TEMP/spec3.sdk.json" \
+            --other-spec "beta=$RUNNER_TEMP/spec3.beta.sdk.json" \
+            --other-spec "private preview=$RUNNER_TEMP/spec3.private_preview.sdk.json" \
+            --previous "$RUNNER_TEMP/previous.md" \
+            --report "$RUNNER_TEMP/report.md" \
+            --new "$RUNNER_TEMP/new.txt"
+          cat "$RUNNER_TEMP/report.md" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Update the issue
+        env:
+          NUMBER: ${{ steps.issue.outputs.number }}
+          GAPS: ${{ steps.gaps.outputs.gaps }}
+          NEW: ${{ steps.gaps.outputs.new }}
+        run: |
+          report="$RUNNER_TEMP/report.md"
+          if [ -z "$NUMBER" ]; then
+            if [ "$GAPS" != 0 ]; then
+              gh issue create --title "Spec gaps: where Stripe's OpenAPI spec falls short of its API" \
+                --label spec-gaps --body-file "$report"
+            fi
+          elif [ "$GAPS" = 0 ]; then
+            gh issue edit "$NUMBER" --body-file "$report"
+            gh issue close "$NUMBER" --comment "No gaps left: each one is patched in \`SpecPatches.fs\`, listed in \`tools/spec_gaps_known.txt\`, or fixed in Stripe's spec."
+          else
+            gh issue edit "$NUMBER" --body-file "$report"
+            if [ "$NEW" != 0 ]; then
+              { echo "New this week:"; echo; sed 's/.*/- `&`/' "$RUNNER_TEMP/new.txt"; } > "$RUNNER_TEMP/comment.md"
+              gh issue comment "$NUMBER" --body-file "$RUNNER_TEMP/comment.md"
+            fi
+          fi

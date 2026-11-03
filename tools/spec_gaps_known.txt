@@ -1,0 +1,12 @@
+# Gaps in Stripe's spec that need no SpecPatch, one per line: the key as the "Spec gaps" issue
+# shows it, then # and the reason. tools/spec_gaps.py leaves these out of the issue.
+GET /v1/customers/{}/cards                 # alias of /v1/customers/{customer}/sources, which the spec has
+GET /v1/customers/{}/cards/{}              # alias of /v1/customers/{customer}/sources/{id}
+GET /v1/customers/{}/bank_accounts         # alias of /v1/customers/{customer}/sources
+GET /v1/customers/{}/bank_accounts/{}      # alias of /v1/customers/{customer}/sources/{id}
+POST /v1/customers cash_balance.settings.reconciliation_mode       # merchant_default asks for the account's mode; the response shows the mode it resolves to
+POST /v1/customers/{} cash_balance.settings.reconciliation_mode    # as above
+POST /v1/customers/{}/cash_balance settings.reconciliation_mode    # as above
+POST /v1/payment_intents payment_method_options.upi.setup_future_usage            # none clears the setting, so no response carries it
+POST /v1/payment_intents/{} payment_method_options.upi.setup_future_usage         # as above
+POST /v1/payment_intents/{}/confirm payment_method_options.upi.setup_future_usage # as above

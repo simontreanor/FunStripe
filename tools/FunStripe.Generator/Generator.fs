@@ -12,7 +12,7 @@ let private parseArgs (argv: string array) =
         args
         |> List.tryFindIndex ((=) flag)
         |> Option.bind (fun i -> args |> List.tryItem (i + 1))
-    getArg "--spec", getArg "--output", getArg "--version"
+    getArg "--spec", getArg "--output", getArg "--version", getArg "--patched-spec"
 
 /// Repo root, relative to this source file's compile-time location.
 let private repoRoot = Path.GetFullPath(Path.Combine(__SOURCE_DIRECTORY__, "../.."))
@@ -32,7 +32,7 @@ let private readBuildProp (name: string) =
 
 [<EntryPoint>]
 let main argv =
-    let specPath, outputDir, version = parseArgs argv
+    let specPath, outputDir, version, patchedSpecOut = parseArgs argv
     // Default the version from the single source of truth rather than a hard-coded literal
     // (a stale literal previously stamped the wrong version into generated files).
     let version' =
@@ -53,9 +53,6 @@ let main argv =
     // Ensure the output directory exists; StripeIds.fs is written to its root directly.
     Directory.CreateDirectory(outputDir') |> ignore
 
-    let normalizeLineEndings (s: string) =
-        s.Replace("\r\n", "\n").Replace("\n", System.Environment.NewLine)
-
     // Resolve the spec path the same way the model builders do; default to the bundled spec
     // for the StripeApiVersion recorded in /Directory.Build.props.
     let resolvedSpecPath =
@@ -65,39 +62,47 @@ let main argv =
             | Some v -> Path.Combine(repoRoot, "spec", $"stripe-openapi-{v}.json")
             | None -> Path.Combine(repoRoot, "spec", "stripe-openapi-2026-04-22.dahlia.json"))
 
-    // The builders read a copy of the spec with SpecPatches applied, which correct the places
-    // where Stripe's spec disagrees with its API. The copy has a name of its own per run, so that
-    // runs at the same time cannot read each other's, and is deleted at the end.
-    let patchedSpecPath = Path.Combine(Path.GetTempPath(), $"funstripe-{Guid.NewGuid():N}-{Path.GetFileName resolvedSpecPath}")
-    File.WriteAllText(patchedSpecPath, File.ReadAllText resolvedSpecPath |> SpecPatches.apply)
+    match patchedSpecOut with
+    | Some path ->
+        // --patched-spec <path>: write the spec with SpecPatches applied and stop, for tools
+        // that compare the spec we generate from with Stripe's docs (tools/spec_gaps.py)
+        File.WriteAllText(path, File.ReadAllText resolvedSpecPath |> SpecPatches.apply)
+        printfn "Wrote the patched spec to %s" path
+        0
+    | None ->
+        // The builders read a copy of the spec with SpecPatches applied, which correct the places
+        // where Stripe's spec disagrees with its API. The copy has a name of its own per run, so that
+        // runs at the same time cannot read each other's, and is deleted at the end.
+        let patchedSpecPath = Path.Combine(Path.GetTempPath(), $"funstripe-{Guid.NewGuid():N}-{Path.GetFileName resolvedSpecPath}")
+        File.WriteAllText(patchedSpecPath, File.ReadAllText resolvedSpecPath |> SpecPatches.apply)
 
-    // Delete generated .fs files in `dir` that this run didn't write (e.g. a module the spec
-    // no longer produces). Only files carrying our GeneratedCode stamp are touched.
-    let removeStaleFiles dir (written: string list) =
-        let keep = HashSet<string>(written, StringComparer.OrdinalIgnoreCase)
-        for path in Directory.GetFiles(dir, "*.fs") do
-            let name = Path.GetFileName path
-            if not (keep.Contains name) && File.ReadAllText(path).Contains("GeneratedCode(\"FunStripe\"") then
-                File.Delete path
-                printfn "  Removed stale %s" name
+        // Delete generated .fs files in `dir` that this run didn't write (e.g. a module the spec
+        // no longer produces). Only files carrying our GeneratedCode stamp are touched.
+        let removeStaleFiles dir (written: string list) =
+            let keep = HashSet<string>(written, StringComparer.OrdinalIgnoreCase)
+            for path in Directory.GetFiles(dir, "*.fs") do
+                let name = Path.GetFileName path
+                if not (keep.Contains name) && File.ReadAllText(path).Contains("GeneratedCode(\"FunStripe\"") then
+                    File.Delete path
+                    printfn "  Removed stale %s" name
 
-    try
-        printfn "Generating StripeIds.fs..."
-        StripeIdsBuilder.generate version' outputDir' patchedSpecPath |> ignore
+        try
+            printfn "Generating StripeIds.fs..."
+            StripeIdsBuilder.generate version' outputDir' patchedSpecPath |> ignore
 
-        printfn "Generating modular Stripe model files (Stripe/*.fs)..."
-        let stripeModelDir = Path.Combine(outputDir', "Stripe")
-        let modelFiles = ModelBuilderModular.generateAllModuleFiles version' stripeModelDir (Some patchedSpecPath)
-        printfn "  Written %d model module files" modelFiles.Length
-        removeStaleFiles stripeModelDir modelFiles
+            printfn "Generating modular Stripe model files (Stripe/*.fs)..."
+            let stripeModelDir = Path.Combine(outputDir', "Stripe")
+            let modelFiles = ModelBuilderModular.generateAllModuleFiles version' stripeModelDir (Some patchedSpecPath)
+            printfn "  Written %d model module files" modelFiles.Length
+            removeStaleFiles stripeModelDir modelFiles
 
-        printfn "Generating modular StripeRequest files (StripeRequest/*.fs)..."
-        let stripeRequestDir = Path.Combine(outputDir', "StripeRequest")
-        let requestFiles = RequestBuilderAST.generateAllRequestFiles version' stripeRequestDir (Some patchedSpecPath)
-        printfn "  Written %d request module files" requestFiles.Length
-        removeStaleFiles stripeRequestDir requestFiles
+            printfn "Generating modular StripeRequest files (StripeRequest/*.fs)..."
+            let stripeRequestDir = Path.Combine(outputDir', "StripeRequest")
+            let requestFiles = RequestBuilderAST.generateAllRequestFiles version' stripeRequestDir (Some patchedSpecPath)
+            printfn "  Written %d request module files" requestFiles.Length
+            removeStaleFiles stripeRequestDir requestFiles
 
-    finally
-        File.Delete patchedSpecPath
+        finally
+            File.Delete patchedSpecPath
 
-    0
+        0
