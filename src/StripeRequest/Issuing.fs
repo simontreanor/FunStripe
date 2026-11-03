@@ -2,6 +2,7 @@ namespace StripeRequest.Issuing
 
 open FunStripe
 open System.Text.Json.Serialization
+open Stripe.FundingInstructions
 open Stripe.Issuing
 open Stripe.IssuingCard
 open Stripe.IssuingCardholder
@@ -6447,4 +6448,86 @@ module IssuingTransactions =
     let Update settings (options: UpdateOptions) =
         $"/v1/issuing/transactions/{options.Transaction}"
         |> RestApi.postAsync<_, IssuingTransaction> settings (Map.empty) options
+
+module IssuingFundingInstructions =
+
+    type ListOptions =
+        {
+            /// A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list.
+            [<Config.Query>]
+            EndingBefore: string option
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Query>]
+            Expand: string list option
+            /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
+            [<Config.Query>]
+            Limit: int option
+            /// A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list.
+            [<Config.Query>]
+            StartingAfter: string option
+        }
+
+    type ListOptions with
+        static member New(?endingBefore: string, ?expand: string list, ?limit: int, ?startingAfter: string) =
+            {
+                EndingBefore = endingBefore
+                Expand = expand
+                Limit = limit
+                StartingAfter = startingAfter
+            }
+
+    type Create'BankTransferType =
+        | EuBankTransfer
+        | GbBankTransfer
+
+    type Create'BankTransfer =
+        {
+            /// The type of the `bank_transfer`
+            [<Config.Form>]
+            Type: Create'BankTransferType option
+        }
+
+    type Create'BankTransfer with
+        static member New(?type': Create'BankTransferType) =
+            {
+                Type = type'
+            }
+
+    type Create'FundingType = | BankTransfer
+
+    type CreateOptions =
+        {
+            /// The bank transfer to fund the balance by
+            [<Config.Form>]
+            BankTransfer: Create'BankTransfer
+            /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+            /// The `funding_type` to get the instructions for.
+            [<Config.Form>]
+            FundingType: Create'FundingType
+        }
+
+    type CreateOptions with
+        static member New(bankTransfer: Create'BankTransfer, currency: IsoTypes.IsoCurrencyCode, fundingType: Create'FundingType, ?expand: string list) =
+            {
+                BankTransfer = bankTransfer
+                Currency = currency
+                FundingType = fundingType
+                Expand = expand
+            }
+
+    ///<p>Retrieve all applicable funding instructions for an Issuing balance.</p>
+    let List settings (options: ListOptions) =
+        let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
+        $"/v1/issuing/funding_instructions"
+        |> RestApi.getAsync<StripeList<FundingInstructions>> settings qs
+
+    ///<p>Create or retrieve funding instructions for an Issuing balance. If funding instructions don't yet exist for the account, new funding instructions will be created. If funding instructions have already been created for a given account, the same funding instructions will be retrieved. In other words, we will return the same funding instructions each time.</p>
+    let Create settings (options: CreateOptions) =
+        $"/v1/issuing/funding_instructions"
+        |> RestApi.postAsync<_, FundingInstructions> settings (Map.empty) options
 

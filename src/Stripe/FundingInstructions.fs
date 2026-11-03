@@ -258,6 +258,9 @@ type FundingInstructionsBankTransferFinancialAddress with
 type FundingInstructionsBankTransferType =
     | EuBankTransfer
     | JpBankTransfer
+    | GbBankTransfer
+    | MxBankTransfer
+    | UsBankTransfer
 
 type FundingInstructionsBankTransfer =
     {

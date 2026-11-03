@@ -777,6 +777,40 @@ module Tests =
             Assert.That(pairs |> List.exists (fun (k,v) -> k = "active" && v = "true"), Is.True)
 
     // =========================================================================
+    // Issuing funding instructions (added to the spec by SpecPatches)
+    // =========================================================================
+
+    [<TestFixture>]
+    type IssuingFundingInstructionsUnitTests () =
+
+        // The answer of POST /v1/issuing/funding_instructions in Stripe test mode, for a UK account
+        let answer = """{"object":"funding_instructions","bank_transfer":{"country":"GB","financial_addresses":[{"sort_code":{"account_holder_address":{"city":"London","country":"GB","line1":"9th Floor, 107 Cheapside","line2":null,"postal_code":"EC2V6DN","state":"London"},"account_holder_name":"Stripe Payments UK Limited","account_number":"98575148","bank_address":{"city":"London","country":"GB","line1":"1 CHURCHILL PLACE","line2":null,"postal_code":"E14 5HP","state":"England"},"sort_code":"281214"},"supported_networks":["bacs","fps"],"type":"sort_code"}],"type":"gb_bank_transfer"},"currency":"gbp","funding_type":"bank_transfer","livemode":false}"""
+
+        [<Test>]
+        member _.``a UK Issuing balance's funding instructions deserialise with their sort code``() =
+            let instructions = Util.deserialise<FundingInstructions> answer
+            Assert.That(instructions.BankTransfer.Type, Is.EqualTo FundingInstructionsBankTransferType.GbBankTransfer)
+            let address = instructions.BankTransfer.FinancialAddresses |> List.exactlyOne
+            Assert.That(address.SortCode |> Option.map _.SortCode, Is.EqualTo(Some "281214"))
+            Assert.That(address.SortCode |> Option.map _.AccountNumber, Is.EqualTo(Some "98575148"))
+
+        [<Test>]
+        member _.``funding instructions and the test top-up send Stripe's form fields``() =
+            let create =
+                StripeRequest.Issuing.IssuingFundingInstructions.CreateOptions.New(
+                    StripeRequest.Issuing.IssuingFundingInstructions.Create'BankTransfer.New(
+                        type' = StripeRequest.Issuing.IssuingFundingInstructions.Create'BankTransferType.GbBankTransfer),
+                    IsoCurrencyCode.GBP,
+                    StripeRequest.Issuing.IssuingFundingInstructions.Create'FundingType.BankTransfer)
+                |> serialise |> Map.ofSeq
+            Assert.That(create, Is.EquivalentTo(Map.ofList [ "bank_transfer[type]", "gb_bank_transfer"; "currency", "gbp"; "funding_type", "bank_transfer" ]))
+
+            let fund =
+                StripeRequest.TestHelpers.TestHelpersIssuingFundBalance.FundBalanceOptions.New(10000, IsoCurrencyCode.GBP)
+                |> serialise |> Map.ofSeq
+            Assert.That(fund, Is.EquivalentTo(Map.ofList [ "amount", "10000"; "currency", "gbp" ]))
+
+    // =========================================================================
     // B. Query string formatting — consumer-facing behaviour
     // =========================================================================
 
