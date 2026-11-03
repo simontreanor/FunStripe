@@ -6,10 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
-## [Unreleased]
+## [3.2.0] - 2026-11-03
 
-### Changed
-- **Breaking: optional one-value enums are read from the response.** A response field whose enum has a single value was a constant (a member, or a `let` in the type's module) that ignored the JSON, so a field Stripe left out or sent as null still reported its one value. Every Checkout Session and payment method's options read `CaptureMethod = "manual"` and `SetupFutureUsage = "none"`, whether or not those were set. Where the field is optional or nullable it is now a record field: an option of a one-case union, `None` when Stripe leaves it out. This affects about 110 fields, mostly `capture_method` and `setup_future_usage` on payment method options in `Stripe.Checkout` and `Stripe.PaymentMethod`, plus `Mandate` `collection_method`, subscription schedule phases' automatic tax `disabled_reason` and Treasury initiating payment method `balance`. Code that read them as strings now matches on the option, and the `New` of the records that gain a field takes it. One-value fields Stripe always sends, such as `object`, stay constants. A Checkout Session's Cash App `setup_future_usage` also reads `off_session` and `on_session`, which its create request accepts though the spec allows only `none` in the answer, so a session created with them stays readable
+### Upgrade notes
+- About 110 response fields that were constants are now read from the response (see Fixed). Each changes from a `string` member, or a `let` in the type's module, to an option of a one-case union: for example `CheckoutAffirmPaymentMethodOptions.CaptureMethod` is now `CheckoutAffirmPaymentMethodOptionsCaptureMethod option`. The `New` of the records that gain a field takes it. Match on the option: `Some Manual` where Stripe sent the value, `None` where it left it out.
+- As with 2.3.0 and 3.1.0, this ships as a minor release. It changes only the types of generated models, not the hand-written API, and the old members never reflected what Stripe sent, so no code reading them got correct values.
+
+### Fixed
+- **Optional one-value enums are read from the response** ([#57](https://github.com/simontreanor/FunStripe/pull/57)). A response field whose enum has a single value was a constant that ignored the JSON, so a field Stripe left out or sent as null still reported its one value. Every Checkout Session and payment method's options read `CaptureMethod = "manual"` and `SetupFutureUsage = "none"`, whether or not those were set. Where the field is optional or nullable it is now read, and is `None` when Stripe leaves it out. This affects mostly `capture_method` and `setup_future_usage` on payment method options in `Stripe.Checkout` and `Stripe.PaymentMethod`, plus `Mandate` `collection_method`, subscription schedule phases' automatic tax `disabled_reason` and Treasury initiating payment method `balance`. One-value fields Stripe always sends, such as `object`, stay constants
+- **A Checkout Session's Cash App `setup_future_usage` reads `off_session` and `on_session`.** Its create request accepts them, but the spec allows only `none` in the answer, so now that the field is read, a session created with them could not have been deserialised
 
 ## [3.1.2] - 2026-11-03
 

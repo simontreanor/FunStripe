@@ -100,9 +100,12 @@ truth. Never hard-code a version anywhere else:
 `src/FunStripe.Core/Directory.Build.props` chains up to the root one via `GetPathOfFileAbove`,
 since MSBuild only auto-imports the nearest `Directory.Build.props`.
 
-Bump policy: new Stripe API spec version → **minor**; library fix/feature → patch; breaking
-library change → major. The spec-update workflow applies the minor bump automatically; bump
-to major by hand when the spec is breaking (e.g. a new Stripe release train, as with endive → 3.0.0).
+Bump policy: new Stripe API spec version → **minor**; generated model types changing shape
+from a generator fix → **minor**; library fix/feature that leaves existing types alone → patch;
+new Stripe release train or a breaking change to the hand-written API → major. Generated-type
+changes in a minor get an **Upgrade notes** section in `CHANGELOG.md`. The spec-update workflow
+applies the minor bump automatically; bump to major by hand for a new Stripe release train (as
+with endive → 3.0.0).
 
 Release: ensure `FunStripeVersion` is set, regenerate if needed, expand `CHANGELOG.md`, commit
 as `release: X.Y.Z`, then push the `vX/X.Y.Z` tag, where the prefix is the major version, e.g.

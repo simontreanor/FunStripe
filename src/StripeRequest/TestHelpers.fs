@@ -12,7 +12,7 @@ open Stripe.TestHelpers
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
 module TestHelpersConfirmationTokens =
 
     type Create'PaymentMethodDataAcssDebit =

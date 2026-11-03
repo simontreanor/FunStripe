@@ -6,7 +6,7 @@ open System
 open Stripe.FundingInstructions
 open Stripe.IssuingCardholder
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
 type IssuingCardAuthorizationControlsAllowedCardPresences =
     | NotPresent
     | Present

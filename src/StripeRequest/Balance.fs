@@ -6,7 +6,7 @@ open Stripe.Balance
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
 module Balance =
 
     type RetrieveOptions =

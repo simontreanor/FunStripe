@@ -37,8 +37,13 @@ Version-bump policy (semantic versioning):
 | New Stripe API spec version | **minor** | `2.0.6` → `2.1.0` |
 | Stripe updates the current spec in place (same version) | patch | `3.0.0` → `3.0.1` |
 | New Stripe release train with breaking changes | major | `2.4.0` → `3.0.0` (endive) |
-| Library bug fix / feature | patch | `2.1.0` → `2.1.1` |
-| Breaking library API change | major | `2.1.0` → `3.0.0` |
+| Generated model types change shape (from a generator fix) | **minor** | `3.1.2` → `3.2.0` |
+| Library bug fix / feature that leaves existing types alone | patch | `2.1.0` → `2.1.1` |
+| Breaking change to the hand-written API (`RestApi`, `Config`, `Util`, the JSON layer) | major | |
+
+A major version means a new Stripe release train or a break in the hand-written API. Changes to
+the shape of generated models, whether from a new spec or a generator fix, ship in a minor, with
+an **Upgrade notes** section in `CHANGELOG.md` saying what changed and how to update code.
 
 New-spec releases are produced automatically: the **Check for new Stripe OpenAPI spec**
 workflow bumps `Directory.Build.props`, regenerates `src/`, adds a `CHANGELOG.md` entry, and
