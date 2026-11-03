@@ -12,7 +12,7 @@ open Stripe.PaymentMethodDomain
 open Stripe.SubscriptionSchedule
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
 module Account =
 
     type RetrieveOptions =

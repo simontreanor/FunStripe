@@ -12,14 +12,17 @@
 
     Versioning strategy:
       - New Stripe API spec version  -> minor bump (e.g. 2.0.6 -> 2.1.0)
+      - Generated model types change shape (generator fix) -> minor bump, with
+        Upgrade notes in CHANGELOG.md (e.g. 3.1.2 -> 3.2.0)
       - Library bug fixes / features -> patch bump (e.g. 2.1.0 -> 2.1.1)
-      - Breaking library API changes -> major bump (e.g. 2.1.0 -> 3.0.0)
+      - New Stripe release train, or a breaking change to the hand-written API
+        (RestApi, Config, Util, JSON) -> major bump (e.g. 2.4.0 -> 3.0.0)
 
     The "Check for new Stripe OpenAPI spec" workflow bumps these automatically when it
     opens a spec-update PR; for a manual release, edit them here and nowhere else.
   -->
   <PropertyGroup>
-    <FunStripeVersion>3.1.2</FunStripeVersion>
+    <FunStripeVersion>3.2.0</FunStripeVersion>
     <StripeApiVersion>2026-10-28.endive</StripeApiVersion>
   </PropertyGroup>
 

@@ -38,6 +38,31 @@ module SpecPatches =
         |> List.map (addEnumValue "issuing_logo")
         |> List.exists id
 
+    ///The node at `path` under `node`, or null where any step is missing
+    let private at (path: string list) (node: JsonNode) =
+        path |> List.fold (fun (n: JsonNode) key -> if n = null then null else n.[key]) node
+
+    ///A Checkout Session's Cash App `setup_future_usage`: the object allows only `none`, while the
+    ///create request takes `none`, `off_session` and `on_session`. A session created with
+    ///`off_session` could then fail to deserialise, since the field is read from the answer. The
+    ///values are taken from the create request, as the docs also list only `none` for the object.
+    let private checkoutCashappSetupFutureUsage (spec: JsonNode) =
+        let answer =
+            spec |> at [ "components"; "schemas"; "checkout_cashapp_payment_method_options"; "properties"; "setup_future_usage" ]
+        let request =
+            spec
+            |> at [ "paths"; "/v1/checkout/sessions"; "post"; "requestBody"; "content"; "application/x-www-form-urlencoded"
+                    "schema"; "properties"; "payment_method_options"; "properties"; "cashapp"; "properties"
+                    "setup_future_usage"; "enum" ]
+        match answer, request with
+        | null, _ -> false
+        | answer, (:? JsonArray as accepted) ->
+            [ for value in accepted do
+                  if value <> null && value.GetValue<string>() <> "" then
+                      addEnumValue (value.GetValue<string>()) answer ]
+            |> List.exists id
+        | _ -> false
+
     ///The bank transfer types of funding instructions: the object lists only `eu_bank_transfer` and
     ///`jp_bank_transfer`, while the requests take (and Stripe answers) `gb_bank_transfer`,
     ///`mx_bank_transfer` and `us_bank_transfer` too, e.g. for a UK Issuing balance. The missing values
@@ -159,6 +184,7 @@ module SpecPatches =
         "issuing_logo file purpose", issuingLogoFilePurpose
         "funding instructions bank transfer types", fundingBankTransferTypes
         "Issuing funding instructions and fund_balance", issuingFundingInstructions
+        "Checkout Cash App setup_future_usage", checkoutCashappSetupFutureUsage
     ]
 
     ///Applies the patches to the JSON of a spec and returns the patched JSON

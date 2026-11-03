@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Price
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
 module Prices =
 
     type ListOptions =

@@ -6,7 +6,7 @@ open System
 open Stripe.PaymentMethod
 open Stripe.ThreeDSecure
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
 type SetupAttemptCustomer'AnyOf =
     | String of string
     | Customer of Customer

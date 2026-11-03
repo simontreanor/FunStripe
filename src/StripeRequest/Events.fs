@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Event
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
 module Events =
 
     type ListOptions =

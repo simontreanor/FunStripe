@@ -141,9 +141,13 @@ module ModelParsing =
                     { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "string"; EnumValues = None; SubValues = None; StaticValue = None }
                 else
                     match ev |> List.tryExactlyOne with
-                    | Some e ->
+                    // A one-value enum is a constant only when Stripe always sends it (the `object`
+                    // tag, a sub-object's `type`). An optional or nullable one is read from the
+                    // answer, as a one-case union: Stripe leaves it out when it does not apply, e.g.
+                    // `capture_method: manual` on payment method options that capture automatically.
+                    | Some e when req && not nullable ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = "string"; EnumValues = None; SubValues = None; StaticValue = e |> Some }
-                    | None ->
+                    | _ ->
                         { Description = desc; Name = name; Nullable = nullable; Required = req; Type = $"{prefix}{name'}"; EnumValues = Some ev; SubValues = None; StaticValue = None }
             | None ->
                 if (desc |> String.IsNullOrWhiteSpace |> not) && (Regex.IsMatch(desc, enumRegex)) then

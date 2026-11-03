@@ -811,6 +811,31 @@ module Tests =
             Assert.That(fund, Is.EquivalentTo(Map.ofList [ "amount", "10000"; "currency", "gbp" ]))
 
     // =========================================================================
+    // One-value enums that Stripe may leave out are read, not assumed
+    // =========================================================================
+
+    [<TestFixture>]
+    type OneValueEnumUnitTests () =
+
+        [<Test>]
+        member _.``a payment method option Stripe leaves out reads as None``() =
+            let options = Util.deserialise<Stripe.Checkout.CheckoutAffirmPaymentMethodOptions> "{}"
+            Assert.That(options.CaptureMethod, Is.EqualTo None)
+            Assert.That(options.SetupFutureUsage, Is.EqualTo None)
+
+        [<Test>]
+        member _.``a payment method option Stripe sends reads as its value``() =
+            let options = Util.deserialise<Stripe.Checkout.CheckoutAffirmPaymentMethodOptions> """{"capture_method":"manual","setup_future_usage":"none"}"""
+            Assert.That(options.CaptureMethod, Is.EqualTo(Some Stripe.Checkout.CheckoutAffirmPaymentMethodOptionsCaptureMethod.Manual))
+            Assert.That(options.SetupFutureUsage, Is.EqualTo(Some Stripe.Checkout.CheckoutAffirmPaymentMethodOptionsSetupFutureUsage.None'))
+
+        [<Test>]
+        member _.``a Checkout Session's Cash App options read the setup_future_usage the request accepts``() =
+            // The spec allows only `none` here; SpecPatches adds the request's `off_session` and `on_session`
+            let options = Util.deserialise<Stripe.Checkout.CheckoutCashappPaymentMethodOptions> """{"setup_future_usage":"off_session"}"""
+            Assert.That(options.SetupFutureUsage, Is.EqualTo(Some Stripe.Checkout.CheckoutCashappPaymentMethodOptionsSetupFutureUsage.OffSession))
+
+    // =========================================================================
     // B. Query string formatting — consumer-facing behaviour
     // =========================================================================
 
