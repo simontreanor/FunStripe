@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
 type PaymentAttemptRecordCustomerPresence =
     | OffSession
     | OnSession

@@ -185,7 +185,7 @@ By cloning the source repository, you can regenerate the modular files using the
 dotnet run --project tools/FunStripe.Generator -- \
   --spec spec/stripe-openapi-2026-10-28.endive.json \
   --output src \
-  --version 3.2.0
+  --version 3.2.1
 ```
 
 All three arguments are optional. The spec and version default to the `StripeApiVersion` and `FunStripeVersion` in `Directory.Build.props` (the values shown above for this release), and the output to `src`. The generator emits:
