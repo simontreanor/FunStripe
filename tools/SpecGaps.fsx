@@ -83,7 +83,7 @@ let fetch (cache: string option) (url: string) =
                 | Choice1Of2 text ->
                     file |> Option.iter (fun file -> File.WriteAllText(file, text))
                     return Some text
-                | Choice2Of2 error when n < 3 ->
+                | Choice2Of2 _ when n < 3 ->
                     do! Async.Sleep(2000 * n)
                     return! attempt (n + 1)
                 | Choice2Of2 error ->
