@@ -29,7 +29,11 @@ let options =
     |> Array.tail
     |> Array.chunkBySize 2
     |> Array.map (function
-        | [| name; value |] when name.StartsWith("--", StringComparison.Ordinal) -> name.Substring 2, value
+        | [| name; value |] when
+            name.StartsWith("--", StringComparison.Ordinal)
+            && List.contains (name.Substring 2) [ "kind"; "spec-version"; "tag"; "body" ]
+            ->
+            name.Substring 2, value
         | other -> fail $"""Unexpected argument: {String.Join(" ", other)}
 
 {usage}""")
@@ -45,6 +49,11 @@ let spec = required "spec-version"
 let tag = required "tag"
 let bodyPath = Path.GetFullPath(required "body")
 if kind <> "new" && kind <> "refresh" then fail $"--kind must be new or refresh, not {kind}"
+// The workflow reads these from Stripe's release notes, so a change in their format could pass
+// something empty or wrong
+if not (Regex.IsMatch(spec, @"^\d{4}-\d{2}-\d{2}(\.[a-z]+)?$")) then
+    fail $"--spec-version {spec} is not a Stripe API version, such as 2026-10-28.endive"
+if String.IsNullOrWhiteSpace tag then fail "--tag is empty"
 
 let root = Path.GetFullPath(Path.Combine(__SOURCE_DIRECTORY__, ".."))
 let propsPath = Path.Combine(root, "Directory.Build.props")
@@ -60,12 +69,11 @@ let setElement name (value: string) (text: string) =
 let current = element "FunStripeVersion"
 let oldSpec = element "StripeApiVersion"
 let next =
-    match current.Split('.') with
-    | [| major; minor; patch |] ->
-        if kind = "new" then $"{major}.{int minor + 1}.0" else $"{major}.{minor}.{int patch + 1}"
+    match Regex.Match(current, @"^(\d+)\.(\d+)\.(\d+)$") with
+    | version when version.Success ->
+        let part (i: int) = int version.Groups.[i].Value
+        if kind = "new" then $"{part 1}.{part 2 + 1}.0" else $"{part 1}.{part 2}.{part 3 + 1}"
     | _ -> fail $"FunStripeVersion {current} is not major.minor.patch"
-
-File.WriteAllText(propsPath, props |> setElement "FunStripeVersion" next |> setElement "StripeApiVersion" spec)
 
 let releaseUrl = $"https://github.com/stripe/openapi/releases/tag/{tag}"
 let note, title, branch, intro, bumpCheck =
@@ -94,6 +102,9 @@ let latest = changelog.IndexOf("## [", StringComparison.Ordinal)
 if latest < 0 then fail $"No release heading (## [) in {changelogPath}"
 let date = DateTime.UtcNow.ToString("yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
 let entry = $"## [{next}] - {date}\n\n### Changed\n- {note}\n\n"
+
+// Written only once everything has been checked, so a failure leaves both files as they were
+File.WriteAllText(propsPath, props |> setElement "FunStripeVersion" next |> setElement "StripeApiVersion" spec)
 File.WriteAllText(changelogPath, changelog.Insert(latest, entry))
 
 let major = next.Split('.').[0]
