@@ -6,10 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
-## [Unreleased]
+## [3.1.1] - 2026-11-03
 
 ### Fixed
-- **Request fields with embedded digits use Stripe's names.** Form fields were snake-cased from the member name, so `Line1` went out as `line_1` and Stripe rejected the request as an unknown parameter. This hit every request with an address (customers, Issuing cardholders, shipping, ...) and fields such as `p24`, `address_line1` and the terminal `verifone_p400`. The generator now puts `[<JsonPropertyName>]` on these request fields, as it already did on the response models
+- **Request fields with embedded digits use Stripe's names** ([#49](https://github.com/simontreanor/FunStripe/issues/49)). Form fields were snake-cased from the member name, so `Line1` went out as `line_1` and Stripe rejected the request as an unknown parameter. This hit every request with an address (customers, Issuing cardholders, shipping, ...) and fields such as `p24`, `address_line1` and the terminal `verifone_p400`. The generator now puts `[<JsonPropertyName>]` on these request fields, as it already did on the response models. The bug dates from before 2.0: 1.x applied the same snake-casing to these fields
 
 ## [3.1.0] - 2026-11-02
 
