@@ -45,16 +45,23 @@ let options =
     if args |> Array.exists (fun a -> a = "--help" || a = "-h") then
         printfn "%s" usage
         exit 0
+    let names = set [ "spec"; "other-spec"; "known"; "previous"; "cache"; "repo-url"; "report"; "new" ]
     args
     |> Array.chunkBySize 2
     |> Array.map (function
-        | [| name; value |] when name.StartsWith("--", StringComparison.Ordinal) -> name.Substring 2, value
+        | [| name; value |] when name.StartsWith("--", StringComparison.Ordinal) && names.Contains(name.Substring 2) ->
+            name.Substring 2, value
         | other -> fail $"""Unexpected argument: {String.Join(" ", other)}
 
 {usage}""")
 
 let option name = options |> Array.tryFindBack (fun (n, _) -> n = name) |> Option.map snd
 let required name = option name |> Option.defaultWith (fun () -> fail $"--{name} is required\n\n{usage}")
+
+// Checked before the docs are read, which takes a while
+let specPath = required "spec"
+let reportPath = required "report"
+let newPath = required "new"
 
 let docs = "https://docs.stripe.com"
 let methods = set [ "get"; "post"; "delete" ]
@@ -227,7 +234,7 @@ let readSpec (path: string) =
 
 let cache = option "cache"
 cache |> Option.iter (Directory.CreateDirectory >> ignore)
-let spec = readSpec (required "spec")
+let spec = readSpec specPath
 let ours = operations spec
 let others =
     [ for name, value in options do
@@ -289,12 +296,16 @@ let previous =
         else Set.empty
     | _ -> Set.empty
 let fresh = keys |> List.filter (previous.Contains >> not)
-File.WriteAllText(required "new", String.Join("", fresh |> List.map (fun k -> k + "\n")))
+File.WriteAllText(newPath,String.Join("", fresh |> List.map (fun k -> k + "\n")))
 
 let code (values: string list) = String.Join(", ", values |> List.map (fun v -> $"`{v}`"))
 let lines (items: string seq) = String.Join("\n", items)
 let report =
-    [ $"Places where Stripe's OpenAPI spec falls short of its API, found by [`tools/SpecGaps.fsx`]({repoUrl}/blob/main/tools/SpecGaps.fsx) in the weekly [Spec gaps]({repoUrl}/actions/workflows/spec-gaps.yml) workflow. It compares the spec we generate from, with `SpecPatches` applied, against Stripe's API reference. A gap is closed by a patch in `tools/FunStripe.Generator/SpecPatches.fs`, or listed in `tools/spec_gaps_known.txt` when no patch is needed. This issue is rewritten on each run.\n"
+    [ $"Places where Stripe's OpenAPI spec falls short of its API, found by [`tools/SpecGaps.fsx`]({repoUrl}/blob/main/tools/SpecGaps.fsx) "
+      + $"in the weekly [Spec gaps]({repoUrl}/actions/workflows/spec-gaps.yml) workflow. It compares the spec we generate from, "
+      + "with `SpecPatches` applied, against Stripe's API reference. A gap is closed by a patch in "
+      + "`tools/FunStripe.Generator/SpecPatches.fs`, or listed in `tools/spec_gaps_known.txt` when no patch is needed. "
+      + "This issue is rewritten on each run.\n"
       $"## Documented endpoints missing from the spec ({gaps.Count})\n"
       "In the API reference but in none of Stripe's specs.\n"
       (if gaps.Count = 0 then "None." else lines [ for text, url in gaps -> $"- [ ] `{text}` ([docs]({url}))" ])
@@ -313,7 +324,7 @@ let report =
       $"{documented.Count} documented endpoints in {pages.Length} reference pages; {ours.Count} operations in our spec."
       + (if failed.Length = 0 then "" else $" {failed.Length} pages could not be read, so endpoints on them count as undocumented.")
       "\n<!-- gap keys\n" + String.Join("", keys |> List.map (fun k -> k + "\n")) + "-->\n" ]
-File.WriteAllText(required "report", lines report)
+File.WriteAllText(reportPath, lines report)
 
 printfn $"{gaps.Count} missing endpoints, {narrow.Count} narrow responses, {fresh.Length} new"
 match Environment.GetEnvironmentVariable "GITHUB_OUTPUT" with
