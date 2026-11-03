@@ -1,5 +1,5 @@
 # Gaps in Stripe's spec that need no SpecPatch, one per line: the key as the "Spec gaps" issue
-# shows it, then # and the reason. tools/spec_gaps.py leaves these out of the issue.
+# shows it, then # and the reason. tools/SpecGaps.fsx leaves these out of the issue.
 GET /v1/customers/{}/cards                 # alias of /v1/customers/{customer}/sources, which the spec has
 GET /v1/customers/{}/cards/{}              # alias of /v1/customers/{customer}/sources/{id}
 GET /v1/customers/{}/bank_accounts         # alias of /v1/customers/{customer}/sources
