@@ -76,7 +76,9 @@ the generator.
   `src/` (minor bump). It also catches Stripe updating the targeted spec *in place* under the
   same `info.version`: it diffs the latest download against `spec/`, regenerates, and opens a
   patch-bump PR only if something other than `///` doc comments changed. The PR body carries
-  a human checklist (version bump, changelog, release tag).
+  a human checklist (version bump, changelog, release tag). `tools/BumpSpecVersion.fsx` (an F#
+  script) makes the version bump, the changelog entry and the PR body.
+- Repo tooling and workflow scripts are F# (`.fsx` run with `dotnet fsi`), never Python.
 - **`spec-gaps.yml`** (weekly + manual) — runs `tools/spec_gaps.py` to find where Stripe's spec
   falls short of its API: endpoints in the API reference (docs.stripe.com, read as Markdown) that
   no Stripe spec has, and responses whose enums leave out values their request accepts. It
