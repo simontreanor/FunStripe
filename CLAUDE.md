@@ -77,6 +77,12 @@ the generator.
   same `info.version`: it diffs the latest download against `spec/`, regenerates, and opens a
   patch-bump PR only if something other than `///` doc comments changed. The PR body carries
   a human checklist (version bump, changelog, release tag).
+- **`spec-gaps.yml`** (weekly + manual) — runs `tools/spec_gaps.py` to find where Stripe's spec
+  falls short of its API: endpoints in the API reference (docs.stripe.com, read as Markdown) that
+  no Stripe spec has, and responses whose enums leave out values their request accepts. It
+  compares the spec with `SpecPatches` applied (`--patched-spec <path>` on the generator writes it),
+  keeps one `spec-gaps` issue up to date and comments when a gap is new. Close a gap with a
+  patch, or list it in `tools/spec_gaps_known.txt` when it needs none.
 - **`regenerate.yml`** (manual) — regenerate `src/` from a chosen spec/version and open a PR.
 - **`ci.yml`** — build + test on PR/push. It first regenerates `src/` and fails if the committed
   generated files differ, so hand edits, generator changes committed without regenerating, and
