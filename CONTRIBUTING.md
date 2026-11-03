@@ -10,7 +10,11 @@ All development happens on `main`. NuGet package: `FunStripe.Core` (`FunStripe.C
 
 1. Fork and create a feature branch from `main`.
 2. Run `dotnet build` and `dotnet test` locally before pushing.
-3. For changes to generated code, update the generator under `tools/FunStripe.Generator/` and regenerate — do not hand-edit the generated files.
+3. For changes to generated code, update the generator under `tools/FunStripe.Generator/` and regenerate — do not hand-edit the generated files. Where Stripe's spec is wrong or leaves out something the API documents, add a patch to `tools/FunStripe.Generator/SpecPatches.fs`. CI regenerates `src/` and fails if the committed files differ, so commit the regenerated output with the generator change:
+
+   ```powershell
+   dotnet run --project tools/FunStripe.Generator -- --output src
+   ```
 4. Open a PR against the appropriate target branch. The PR template guides the rest.
 
 ## Versioning
