@@ -65,7 +65,7 @@ let main argv =
     match patchedSpecOut with
     | Some path ->
         // --patched-spec <path>: write the spec with SpecPatches applied and stop, for tools
-        // that compare the spec we generate from with Stripe's docs (tools/spec_gaps.py)
+        // that compare the spec we generate from with Stripe's docs (tools/SpecGaps.fsx)
         File.WriteAllText(path, File.ReadAllText resolvedSpecPath |> SpecPatches.apply)
         printfn "Wrote the patched spec to %s" path
         0

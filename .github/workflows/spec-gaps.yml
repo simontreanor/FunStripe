@@ -4,7 +4,7 @@ name: Spec gaps
 # API reference that the spec leaves out, and responses that cannot read values their request
 # accepts. Keeps one open issue labelled spec-gaps up to date, and comments on it when a gap is
 # new. Gaps are closed with patches in tools/FunStripe.Generator/SpecPatches.fs, or listed in
-# tools/spec_gaps_known.txt when they need none. See tools/spec_gaps.py.
+# tools/spec_gaps_known.txt when they need none. See tools/SpecGaps.fsx.
 
 on:
   schedule:
@@ -52,7 +52,7 @@ jobs:
       - name: Find gaps
         id: gaps
         run: |
-          python3 -I tools/spec_gaps.py \
+          dotnet fsi tools/SpecGaps.fsx \
             --spec "$RUNNER_TEMP/patched.json" \
             --other-spec "latest GA=$RUNNER_TEMP/spec3.sdk.json" \
             --other-spec "beta=$RUNNER_TEMP/spec3.beta.sdk.json" \

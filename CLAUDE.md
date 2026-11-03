@@ -78,8 +78,7 @@ the generator.
   patch-bump PR only if something other than `///` doc comments changed. The PR body carries
   a human checklist (version bump, changelog, release tag). `tools/BumpSpecVersion.fsx` (an F#
   script) makes the version bump, the changelog entry and the PR body.
-- Repo tooling and workflow scripts are F# (`.fsx` run with `dotnet fsi`), never Python.
-- **`spec-gaps.yml`** (weekly + manual) — runs `tools/spec_gaps.py` to find where Stripe's spec
+- **`spec-gaps.yml`** (weekly + manual) — runs `tools/SpecGaps.fsx` (an F# script) to find where Stripe's spec
   falls short of its API: endpoints in the API reference (docs.stripe.com, read as Markdown) that
   no Stripe spec has, and responses whose enums leave out values their request accepts. It
   compares the spec with `SpecPatches` applied (`--patched-spec <path>` on the generator writes it),
@@ -89,6 +88,8 @@ the generator.
 - **`ci.yml`** — build + test on PR/push. It first regenerates `src/` and fails if the committed
   generated files differ, so hand edits, generator changes committed without regenerating, and
   generator crashes are all caught in PR CI.
+
+Repo tooling and workflow scripts are F# (`.fsx` run with `dotnet fsi`), never Python.
 
 ## Versioning & releasing
 
