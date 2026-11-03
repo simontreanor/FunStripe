@@ -9,9 +9,13 @@ open Stripe.Plan
 open Stripe.Price
 open Stripe.TaxRate
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.1.2")>]
+type SchedulesPhaseAutomaticTaxDisabledReason = | RequiresLocationInputs
+
 type SchedulesPhaseAutomaticTax =
     {
+        /// If Stripe disabled automatic tax, this enum describes why.
+        DisabledReason: SchedulesPhaseAutomaticTaxDisabledReason option
         /// Whether Stripe automatically computes tax on invoices created during this phase.
         Enabled: bool
         /// The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account.
@@ -19,15 +23,12 @@ type SchedulesPhaseAutomaticTax =
     }
 
 type SchedulesPhaseAutomaticTax with
-    static member New(enabled: bool, liability: ConnectAccountReference option) =
+    static member New(disabledReason: SchedulesPhaseAutomaticTaxDisabledReason option, enabled: bool, liability: ConnectAccountReference option) =
         {
+            DisabledReason = disabledReason
             Enabled = enabled
             Liability = liability
         }
-
-module SchedulesPhaseAutomaticTax =
-    ///If Stripe disabled automatic tax, this enum describes why.
-    let disabledReason = "requires_location_inputs"
 
 type StackableDiscountWithDiscountSettings =
     {

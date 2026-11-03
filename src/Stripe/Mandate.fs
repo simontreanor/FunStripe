@@ -367,14 +367,20 @@ type MandateUpi with
             EndDate = endDate
         }
 
-type MandateUsBankAccount () = 
-    ///Mandate collection method
-    member _.CollectionMethod = "paper"
+[<Struct>]
+type MandateUsBankAccountCollectionMethod = | Paper
 
+type MandateUsBankAccount =
+    {
+        /// Mandate collection method
+        CollectionMethod: MandateUsBankAccountCollectionMethod option
+    }
 
-module MandateUsBankAccount =
-    ///Mandate collection method
-    let collectionMethod = "paper"
+type MandateUsBankAccount with
+    static member New(?collectionMethod: MandateUsBankAccountCollectionMethod) =
+        {
+            CollectionMethod = collectionMethod
+        }
 
 type MandatePaymentMethodDetails =
     {

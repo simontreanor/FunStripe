@@ -1735,6 +1735,9 @@ type TreasuryReceivedCreditsResourceReversalDetails with
         }
 
 [<Struct>]
+type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsBalance = | Payments
+
+[<Struct>]
 type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType =
     | Balance
     | FinancialAccount
@@ -1763,6 +1766,8 @@ type TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount with
 
 type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails =
     {
+        /// Set when `type` is `balance`.
+        Balance: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsBalance option
         BillingDetails: TreasurySharedResourceBillingDetails
         FinancialAccount: ReceivedPaymentMethodDetailsFinancialAccount option
         /// Set when `type` is `issuing_card`. This is an [Issuing Card](https://docs.stripe.com/api#issuing_cards) ID.
@@ -1773,18 +1778,15 @@ type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethod
     }
 
 type TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails with
-    static member New(billingDetails: TreasurySharedResourceBillingDetails, ``type``: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType, ?financialAccount: ReceivedPaymentMethodDetailsFinancialAccount, ?issuingCard: string, ?usBankAccount: TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount) =
+    static member New(billingDetails: TreasurySharedResourceBillingDetails, ``type``: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsType, ?balance: TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetailsBalance, ?financialAccount: ReceivedPaymentMethodDetailsFinancialAccount, ?issuingCard: string, ?usBankAccount: TreasurySharedResourceInitiatingPaymentMethodDetailsUsBankAccount) =
         {
             BillingDetails = billingDetails
             Type = ``type``
+            Balance = balance
             FinancialAccount = financialAccount
             IssuingCard = issuingCard
             UsBankAccount = usBankAccount
         }
-
-module TreasurySharedResourceInitiatingPaymentMethodDetailsInitiatingPaymentMethodDetails =
-    ///Set when `type` is `balance`.
-    let balance = "payments"
 
 /// Legacy ReceivedCredits are part of the v1 version of Treasury for platforms and do not support many of the features introduced in [Treasury for platforms v2](https://docs.stripe.com/treasury/connect). Use [Received Credits](https://docs.stripe.com/api/v2/money-management/received-credits?api-version=preview) instead of building a new v1 integration.
 /// ReceivedCredits represent funds sent to a [FinancialAccount](https://docs.stripe.com/api#financial_accounts) (for example, via ACH or wire). These money movements are not initiated from the FinancialAccount.

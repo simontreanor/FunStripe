@@ -1277,8 +1277,13 @@ type ConnectAccountReference =
         Type: ConnectAccountReferenceType
     }
 
+[<Struct>]
+type SubscriptionAutomaticTaxDisabledReason = | RequiresLocationInputs
+
 type SubscriptionAutomaticTax =
     {
+        /// If Stripe disabled automatic tax, this enum describes why.
+        DisabledReason: SubscriptionAutomaticTaxDisabledReason option
         /// Whether Stripe automatically computes tax on this subscription.
         Enabled: bool
         /// The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account.
@@ -1565,8 +1570,15 @@ type InvoicePaymentMethodOptionsCustomerBalanceBankTransfer =
         Type: InvoicePaymentMethodOptionsCustomerBalanceBankTransferType option
     }
 
+[<Struct>]
+type InvoicePaymentMethodOptionsCustomerBalanceFundingType = | BankTransfer
+
 type InvoicePaymentMethodOptionsCustomerBalance =
-    { BankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransfer option }
+    {
+        BankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransfer option
+        /// The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
+        FundingType: InvoicePaymentMethodOptionsCustomerBalanceFundingType option
+    }
 
 type InvoicePaymentMethodOptionsKonbini =
     { InvoicePaymentMethodOptionsKonbini: string option }
@@ -3579,6 +3591,9 @@ type AccountExternalAccountUpdated =
 /// Occurs whenever an account status or property has changed.
 type AccountUpdated = { Object: Account }
 
+[<Struct>]
+type AmazonPayUnderlyingPaymentMethodFundingDetailsType = | Card
+
 type PaymentMethodDetailsPassthroughCardBrand =
     | [<JsonPropertyName("American Express")>] AmericanExpress
     | [<JsonPropertyName("Cartes Bancaires")>] CartesBancaires
@@ -3617,7 +3632,11 @@ type PaymentMethodDetailsPassthroughCard =
     }
 
 type AmazonPayUnderlyingPaymentMethodFundingDetails =
-    { Card: PaymentMethodDetailsPassthroughCard option }
+    {
+        Card: PaymentMethodDetailsPassthroughCard option
+        /// funding type of the underlying payment method.
+        Type: AmazonPayUnderlyingPaymentMethodFundingDetailsType option
+    }
 
 type ApiErrorsCode =
     | AccountClosed
@@ -4530,12 +4549,17 @@ type PaymentIntentNextAction =
     }
 
 [<Struct>]
+type PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptionsCaptureMethod = | Manual
+
+[<Struct>]
 type PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptionsSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
     | OffSession
 
 type PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptions =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptionsCaptureMethod option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
         /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
         /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -4544,12 +4568,17 @@ type PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptions =
     }
 
 [<Struct>]
+type PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptionsCaptureMethod = | Manual
+
+[<Struct>]
 type PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptionsSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
     | OffSession
 
 type PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptions =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptionsCaptureMethod option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
         /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
         /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -4557,25 +4586,40 @@ type PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptions =
         SetupFutureUsage: PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptionsSetupFutureUsage option
     }
 
-type PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptions () = 
-    ///Controls when the funds will be captured from the customer's account.
-    member _.CaptureMethod = "manual"
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptionsCaptureMethod = | Manual
 
+[<Struct>]
+type PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptionsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
-type PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptions () = 
-    ///Controls when the funds will be captured from the customer's account.
-    member _.CaptureMethod = "manual"
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+type PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptions =
+    {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptionsCaptureMethod option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptionsSetupFutureUsage option
+    }
 
+[<Struct>]
+type PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptionsCaptureMethod = | Manual
+
+[<Struct>]
+type PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptionsSetupFutureUsage =
+    | [<JsonPropertyName("none")>] None'
+
+type PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptions =
+    {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptionsCaptureMethod option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptionsSetupFutureUsage option
+    }
 
 [<Struct>]
 type PaymentIntentPaymentMethodOptionsAcssDebitSetupFutureUsage =
@@ -4672,10 +4716,15 @@ type PaymentIntentPaymentMethodOptionsBlikSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
     | OffSession
 
+[<Struct>]
+type PaymentIntentPaymentMethodOptionsMandateOptionsBlikType = | OffSession
+
 type PaymentIntentPaymentMethodOptionsMandateOptionsBlik =
     {
         /// Date at which the mandate expires.
         ExpiresAt: DateTime option
+        /// Type of the mandate.
+        Type: PaymentIntentPaymentMethodOptionsMandateOptionsBlikType option
     }
 
 type PaymentIntentPaymentMethodOptionsBlik =
@@ -4687,6 +4736,9 @@ type PaymentIntentPaymentMethodOptionsBlik =
         /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
         SetupFutureUsage: PaymentIntentPaymentMethodOptionsBlikSetupFutureUsage option
     }
+
+[<Struct>]
+type PaymentIntentPaymentMethodOptionsCardCaptureMethod = | Manual
 
 type PaymentIntentPaymentMethodOptionsCardNetwork =
     | Amex
@@ -4748,6 +4800,9 @@ type PaymentIntentPaymentMethodOptionsCardStoredCredentialUsage =
     | Unscheduled
 
 [<Struct>]
+type PaymentMethodDetailsCardInstallmentsPlanInterval = | Month
+
+[<Struct>]
 type PaymentMethodDetailsCardInstallmentsPlanType =
     | Bonus
     | FixedCount
@@ -4757,6 +4812,9 @@ type PaymentMethodDetailsCardInstallmentsPlan =
     {
         /// For `fixed_count` installment plans, this is the number of installment payments your customer will make to their credit card.
         Count: int option
+        /// For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card.
+        /// One of `month`.
+        Interval: PaymentMethodDetailsCardInstallmentsPlanInterval option
         /// Type of installment plan, one of `fixed_count`, `bonus`, or `revolving`.
         Type: PaymentMethodDetailsCardInstallmentsPlanType
     }
@@ -4784,6 +4842,9 @@ type PaymentMethodOptionsCardMandateOptionsInterval =
     | Week
     | Year
 
+[<Struct>]
+type PaymentMethodOptionsCardMandateOptionsSupportedTypes = | India
+
 type PaymentMethodOptionsCardMandateOptions =
     {
         /// Amount to be charged for future payments, specified in the presentment currency.
@@ -4803,11 +4864,13 @@ type PaymentMethodOptionsCardMandateOptions =
         /// Start date of the mandate or subscription. Start date should not be lesser than yesterday.
         StartDate: DateTime
         /// Specifies the type of mandates supported. Possible values are `india`.
-        SupportedTypes: string list option
+        SupportedTypes: PaymentMethodOptionsCardMandateOptionsSupportedTypes list option
     }
 
 type PaymentIntentPaymentMethodOptionsCard =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentIntentPaymentMethodOptionsCardCaptureMethod option
         /// Installment details for this payment.
         /// For more information, see the [installments integration guide](https://docs.stripe.com/payments/installments).
         Installments: PaymentMethodOptionsCardInstallments option
@@ -4842,13 +4905,20 @@ type PaymentIntentPaymentMethodOptionsCard =
         StoredCredentialUsage: PaymentIntentPaymentMethodOptionsCardStoredCredentialUsage option
     }
 
-type PaymentIntentPaymentMethodOptionsEps () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentIntentPaymentMethodOptionsEpsSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentIntentPaymentMethodOptionsEps =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentIntentPaymentMethodOptionsEpsSetupFutureUsage option
+    }
+
+[<Struct>]
+type PaymentIntentPaymentMethodOptionsLinkCaptureMethod = | Manual
 
 [<Struct>]
 type PaymentIntentPaymentMethodOptionsLinkSetupFutureUsage =
@@ -4857,6 +4927,8 @@ type PaymentIntentPaymentMethodOptionsLinkSetupFutureUsage =
 
 type PaymentIntentPaymentMethodOptionsLink =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentIntentPaymentMethodOptionsLinkCaptureMethod option
         /// [Deprecated] This is a legacy parameter that no longer has any function.
         PersistentToken: string option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -4866,15 +4938,22 @@ type PaymentIntentPaymentMethodOptionsLink =
         SetupFutureUsage: PaymentIntentPaymentMethodOptionsLinkSetupFutureUsage option
     }
 
-type PaymentIntentPaymentMethodOptionsMobilepay () = 
-    ///Controls when the funds will be captured from the customer's account.
-    member _.CaptureMethod = "manual"
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentIntentPaymentMethodOptionsMobilepayCaptureMethod = | Manual
 
+[<Struct>]
+type PaymentIntentPaymentMethodOptionsMobilepaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
+type PaymentIntentPaymentMethodOptionsMobilepay =
+    {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentIntentPaymentMethodOptionsMobilepayCaptureMethod option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentIntentPaymentMethodOptionsMobilepaySetupFutureUsage option
+    }
 
 [<Struct>]
 type PaymentIntentPaymentMethodOptionsNzBankAccountSetupFutureUsage =
@@ -4976,10 +5055,18 @@ type PaymentIntentPaymentMethodOptionsSepaDebit =
         TargetDate: string option
     }
 
+[<Struct>]
+type PaymentIntentPaymentMethodOptionsSwishSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
 type PaymentIntentPaymentMethodOptionsSwish =
     {
         /// A reference for this payment to be displayed in the Swish app.
         Reference: string option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentIntentPaymentMethodOptionsSwishSetupFutureUsage option
     }
 
 [<Struct>]
@@ -5037,10 +5124,14 @@ type PaymentIntentPaymentMethodOptionsUsBankAccountVerificationMethod =
     | Instant
     | Microdeposits
 
-type PaymentMethodOptionsUsBankAccountMandateOptions () = 
-    ///Mandate collection method
-    member _.CollectionMethod = "paper"
+[<Struct>]
+type PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod = | Paper
 
+type PaymentMethodOptionsUsBankAccountMandateOptions =
+    {
+        /// Mandate collection method
+        CollectionMethod: PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod option
+    }
 
 type PaymentIntentPaymentMethodOptionsUsBankAccount =
     {
@@ -5059,17 +5150,43 @@ type PaymentIntentPaymentMethodOptionsUsBankAccount =
         VerificationMethod: PaymentIntentPaymentMethodOptionsUsBankAccountVerificationMethod option
     }
 
+[<Struct>]
+type PaymentMethodOptionsAffirmCaptureMethod = | Manual
+
+[<Struct>]
+type PaymentMethodOptionsAffirmSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
 type PaymentMethodOptionsAffirm =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsAffirmCaptureMethod option
         /// Preferred language of the Affirm authorization page that the customer is redirected to.
         PreferredLocale: string option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsAffirmSetupFutureUsage option
     }
+
+[<Struct>]
+type PaymentMethodOptionsAfterpayClearpayCaptureMethod = | Manual
+
+[<Struct>]
+type PaymentMethodOptionsAfterpayClearpaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
 type PaymentMethodOptionsAfterpayClearpay =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsAfterpayClearpayCaptureMethod option
         /// An internal identifier or reference that this payment corresponds to. You must limit the identifier to 128 characters, and it can only contain letters, numbers, underscores, backslashes, and dashes.
         /// This field differs from the statement descriptor and item name.
         Reference: string option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsAfterpayClearpaySetupFutureUsage option
     }
 
 [<Struct>]
@@ -5086,10 +5203,17 @@ type PaymentMethodOptionsAlipay =
         SetupFutureUsage: PaymentMethodOptionsAlipaySetupFutureUsage option
     }
 
-type PaymentMethodOptionsAlma () = 
-    ///Controls when the funds will be captured from the customer's account.
-    member _.CaptureMethod = "manual"
+[<Struct>]
+type PaymentMethodOptionsAlmaCaptureMethod = | Manual
 
+type PaymentMethodOptionsAlma =
+    {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsAlmaCaptureMethod option
+    }
+
+[<Struct>]
+type PaymentMethodOptionsAmazonPayCaptureMethod = | Manual
 
 [<Struct>]
 type PaymentMethodOptionsAmazonPaySetupFutureUsage =
@@ -5098,6 +5222,8 @@ type PaymentMethodOptionsAmazonPaySetupFutureUsage =
 
 type PaymentMethodOptionsAmazonPay =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsAmazonPayCaptureMethod option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
         /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
         /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -5178,8 +5304,13 @@ type PaymentFlowsPrivatePaymentMethodsBilliePaymentMethodOptionsResourceCompanyD
         Vat: string option
     }
 
+[<Struct>]
+type PaymentMethodOptionsBillieCaptureMethod = | Manual
+
 type PaymentMethodOptionsBillie =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsBillieCaptureMethod option
         CompanyDetails: PaymentFlowsPrivatePaymentMethodsBilliePaymentMethodOptionsResourceCompanyDetails option
         /// An identifier or reference that this payment corresponds to.
         Reference: string option
@@ -5233,6 +5364,9 @@ type PaymentMethodOptionsCardPresent =
     }
 
 [<Struct>]
+type PaymentMethodOptionsCashappCaptureMethod = | Manual
+
+[<Struct>]
 type PaymentMethodOptionsCashappSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
     | OffSession
@@ -5240,6 +5374,8 @@ type PaymentMethodOptionsCashappSetupFutureUsage =
 
 type PaymentMethodOptionsCashapp =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsCashappCaptureMethod option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
         /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
         /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -5247,13 +5383,17 @@ type PaymentMethodOptionsCashapp =
         SetupFutureUsage: PaymentMethodOptionsCashappSetupFutureUsage option
     }
 
-type PaymentMethodOptionsCrypto () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsCryptoSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentMethodOptionsCrypto =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsCryptoSetupFutureUsage option
+    }
 
 type PaymentMethodOptionsCustomerBalanceBankTransferRequestedAddressTypes =
     | Aba
@@ -5296,32 +5436,59 @@ type PaymentMethodOptionsCustomerBalanceBankTransfer =
         Type: PaymentMethodOptionsCustomerBalanceBankTransferType option
     }
 
+[<Struct>]
+type PaymentMethodOptionsCustomerBalanceFundingType = | BankTransfer
+
+[<Struct>]
+type PaymentMethodOptionsCustomerBalanceSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
 type PaymentMethodOptionsCustomerBalance =
-    { BankTransfer: PaymentMethodOptionsCustomerBalanceBankTransfer option }
+    {
+        BankTransfer: PaymentMethodOptionsCustomerBalanceBankTransfer option
+        /// The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
+        FundingType: PaymentMethodOptionsCustomerBalanceFundingType option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsCustomerBalanceSetupFutureUsage option
+    }
 
-type PaymentMethodOptionsFpx () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsFpxSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentMethodOptionsFpx =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsFpxSetupFutureUsage option
+    }
 
-type PaymentMethodOptionsGiropay () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsGiropaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentMethodOptionsGiropay =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsGiropaySetupFutureUsage option
+    }
 
-type PaymentMethodOptionsGrabpay () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsGrabpaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentMethodOptionsGrabpay =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsGrabpaySetupFutureUsage option
+    }
 
 [<Struct>]
 type PaymentMethodOptionsIdealSetupFutureUsage =
@@ -5341,6 +5508,9 @@ type PaymentMethodOptionsInteracPresent =
     { PaymentMethodOptionsInteracPresent: string option }
 
 [<Struct>]
+type PaymentMethodOptionsKlarnaCaptureMethod = | Manual
+
+[<Struct>]
 type PaymentMethodOptionsKlarnaSetupFutureUsage =
     | [<JsonPropertyName("none")>] None'
     | OffSession
@@ -5348,6 +5518,8 @@ type PaymentMethodOptionsKlarnaSetupFutureUsage =
 
 type PaymentMethodOptionsKlarna =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsKlarnaCaptureMethod option
         /// Preferred locale of the Klarna checkout page that the customer is redirected to.
         PreferredLocale: string option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
@@ -5356,6 +5528,9 @@ type PaymentMethodOptionsKlarna =
         /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
         SetupFutureUsage: PaymentMethodOptionsKlarnaSetupFutureUsage option
     }
+
+[<Struct>]
+type PaymentMethodOptionsKonbiniSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
 type PaymentMethodOptionsKonbini =
     {
@@ -5367,7 +5542,15 @@ type PaymentMethodOptionsKonbini =
         ExpiresAt: DateTime option
         /// A product descriptor of up to 22 characters, which will appear to customers at the convenience store.
         ProductDescription: string option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsKonbiniSetupFutureUsage option
     }
+
+[<Struct>]
+type PaymentMethodOptionsKrCardCaptureMethod = | Manual
 
 [<Struct>]
 type PaymentMethodOptionsKrCardSetupFutureUsage =
@@ -5376,6 +5559,8 @@ type PaymentMethodOptionsKrCardSetupFutureUsage =
 
 type PaymentMethodOptionsKrCard =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsKrCardCaptureMethod option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
         /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
         /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -5383,46 +5568,73 @@ type PaymentMethodOptionsKrCard =
         SetupFutureUsage: PaymentMethodOptionsKrCardSetupFutureUsage option
     }
 
-type PaymentMethodOptionsMbWay () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsMbWaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentMethodOptionsMbWay =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsMbWaySetupFutureUsage option
+    }
 
-type PaymentMethodOptionsMultibanco () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsMultibancoSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentMethodOptionsMultibanco =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsMultibancoSetupFutureUsage option
+    }
+
+[<Struct>]
+type PaymentMethodOptionsOxxoSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
 type PaymentMethodOptionsOxxo =
     {
         /// The number of calendar days before an OXXO invoice expires. For example, if you create an OXXO invoice on Monday and you set expires_after_days to 2, the OXXO invoice will expire on Wednesday at 23:59 America/Mexico_City time.
         ExpiresAfterDays: int
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsOxxoSetupFutureUsage option
     }
 
-type PaymentMethodOptionsP24 () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsP24SetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentMethodOptionsP24 =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsP24SetupFutureUsage option
+    }
 
 type PaymentMethodOptionsPayByBank =
     { PaymentMethodOptionsPayByBank: string option }
 
-type PaymentMethodOptionsPaynow () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsPaynowSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentMethodOptionsPaynow =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsPaynowSetupFutureUsage option
+    }
+
+[<Struct>]
+type PaymentMethodOptionsPaypalCaptureMethod = | Manual
 
 [<Struct>]
 type PaymentMethodOptionsPaypalSetupFutureUsage =
@@ -5431,6 +5643,8 @@ type PaymentMethodOptionsPaypalSetupFutureUsage =
 
 type PaymentMethodOptionsPaypal =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsPaypalCaptureMethod option
         /// Preferred locale of the PayPal checkout page that the customer is redirected to.
         PreferredLocale: string option
         /// A reference of the PayPal transaction visible to customer which is mapped to PayPal's invoice ID. This must be a globally unique ID if you have configured in your PayPal settings to block multiple payments per invoice ID.
@@ -5509,13 +5723,20 @@ type PaymentMethodOptionsPix =
         SetupFutureUsage: PaymentMethodOptionsPixSetupFutureUsage option
     }
 
-type PaymentMethodOptionsPromptpay () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsPromptpaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentMethodOptionsPromptpay =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsPromptpaySetupFutureUsage option
+    }
+
+[<Struct>]
+type PaymentMethodOptionsRevolutPayCaptureMethod = | Manual
 
 [<Struct>]
 type PaymentMethodOptionsRevolutPaySetupFutureUsage =
@@ -5524,12 +5745,17 @@ type PaymentMethodOptionsRevolutPaySetupFutureUsage =
 
 type PaymentMethodOptionsRevolutPay =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsRevolutPayCaptureMethod option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
         /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
         /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
         /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
         SetupFutureUsage: PaymentMethodOptionsRevolutPaySetupFutureUsage option
     }
+
+[<Struct>]
+type PaymentMethodOptionsSatispayCaptureMethod = | Manual
 
 [<Struct>]
 type PaymentMethodOptionsSatispaySetupFutureUsage =
@@ -5539,6 +5765,8 @@ type PaymentMethodOptionsSatispaySetupFutureUsage =
 
 type PaymentMethodOptionsSatispay =
     {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsSatispayCaptureMethod option
         /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
         /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
         /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
@@ -5546,20 +5774,31 @@ type PaymentMethodOptionsSatispay =
         SetupFutureUsage: PaymentMethodOptionsSatispaySetupFutureUsage option
     }
 
-type PaymentMethodOptionsScalapay () = 
-    ///Controls when the funds will be captured from the customer's account.
-    member _.CaptureMethod = "manual"
+[<Struct>]
+type PaymentMethodOptionsScalapayCaptureMethod = | Manual
 
+type PaymentMethodOptionsScalapay =
+    {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsScalapayCaptureMethod option
+    }
 
-type PaymentMethodOptionsSequra () = 
-    ///Controls when the funds will be captured from the customer's account.
-    member _.CaptureMethod = "manual"
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsSequraCaptureMethod = | Manual
 
+[<Struct>]
+type PaymentMethodOptionsSequraSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
+type PaymentMethodOptionsSequra =
+    {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsSequraCaptureMethod option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsSequraSetupFutureUsage option
+    }
 
 type PaymentMethodOptionsSofortPreferredLanguage =
     | De
@@ -5586,15 +5825,22 @@ type PaymentMethodOptionsSofort =
         SetupFutureUsage: PaymentMethodOptionsSofortSetupFutureUsage option
     }
 
-type PaymentMethodOptionsSunbit () = 
-    ///Controls when the funds will be captured from the customer's account.
-    member _.CaptureMethod = "manual"
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsSunbitCaptureMethod = | Manual
 
+[<Struct>]
+type PaymentMethodOptionsSunbitSetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
+type PaymentMethodOptionsSunbit =
+    {
+        /// Controls when the funds will be captured from the customer's account.
+        CaptureMethod: PaymentMethodOptionsSunbitCaptureMethod option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsSunbitSetupFutureUsage option
+    }
 
 [<Struct>]
 type PaymentMethodOptionsTwintSetupFutureUsage =
@@ -5630,21 +5876,33 @@ type PaymentMethodOptionsWechatPayClient =
     | Ios
     | Web
 
+[<Struct>]
+type PaymentMethodOptionsWechatPaySetupFutureUsage = | [<JsonPropertyName("none")>] None'
+
 type PaymentMethodOptionsWechatPay =
     {
         /// The app ID registered with WeChat Pay. Only required when client is ios, android, or mini_program.
         AppId: string option
         /// The client type that the end customer will pay from
         Client: PaymentMethodOptionsWechatPayClient option
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsWechatPaySetupFutureUsage option
     }
 
-type PaymentMethodOptionsZip () = 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    member _.SetupFutureUsage = "none"
+[<Struct>]
+type PaymentMethodOptionsZipSetupFutureUsage = | [<JsonPropertyName("none")>] None'
 
+type PaymentMethodOptionsZip =
+    {
+        /// Indicates that you intend to make future payments with this PaymentIntent's payment method.
+        /// If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
+        /// If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
+        /// When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
+        SetupFutureUsage: PaymentMethodOptionsZipSetupFutureUsage option
+    }
 
 type PaymentIntentPaymentMethodOptions =
     { AcssDebit: PaymentIntentPaymentMethodOptionsAcssDebit option
@@ -5985,10 +6243,15 @@ type PaymentMethodDetailsCardPresentNetwork =
     | Visa
     | Unknown
 
+[<Struct>]
+type PaymentMethodDetailsCardPresentOfflineType = | Deferred
+
 type PaymentMethodDetailsCardPresentOffline =
     {
         /// Time at which the payment was collected while offline
         StoredAt: DateTime option
+        /// The method used to process this payment method offline. Only deferred is allowed.
+        Type: PaymentMethodDetailsCardPresentOfflineType option
     }
 
 [<Struct>]
@@ -7292,10 +7555,15 @@ type SetupIntentPaymentMethodOptionsBacsDebit =
 type SetupIntentPaymentMethodOptionsBizum =
     { SetupIntentPaymentMethodOptionsBizum: string option }
 
+[<Struct>]
+type SetupIntentPaymentMethodOptionsMandateOptionsBlikType = | OffSession
+
 type SetupIntentPaymentMethodOptionsMandateOptionsBlik =
     {
         /// Date at which the mandate expires.
         ExpiresAt: DateTime option
+        /// Type of the mandate.
+        Type: SetupIntentPaymentMethodOptionsMandateOptionsBlikType option
     }
 
 type SetupIntentPaymentMethodOptionsBlik =
@@ -7313,6 +7581,9 @@ type SetupIntentPaymentMethodOptionsCardMandateOptionsInterval =
     | Sporadic
     | Week
     | Year
+
+[<Struct>]
+type SetupIntentPaymentMethodOptionsCardMandateOptionsSupportedTypes = | India
 
 type SetupIntentPaymentMethodOptionsCardMandateOptions =
     {
@@ -7335,7 +7606,7 @@ type SetupIntentPaymentMethodOptionsCardMandateOptions =
         /// Start date of the mandate or subscription. Start date should not be lesser than yesterday.
         StartDate: DateTime
         /// Specifies the type of mandates supported. Possible values are `india`.
-        SupportedTypes: string list option
+        SupportedTypes: SetupIntentPaymentMethodOptionsCardMandateOptionsSupportedTypes list option
     }
 
 type SetupIntentPaymentMethodOptionsCardNetwork =
@@ -9494,8 +9765,15 @@ type PaymentMethodDetailsPromptpay =
         Reference: string option
     }
 
+[<Struct>]
+type RevolutPayUnderlyingPaymentMethodFundingDetailsType = | Card
+
 type RevolutPayUnderlyingPaymentMethodFundingDetails =
-    { Card: PaymentMethodDetailsPassthroughCard option }
+    {
+        Card: PaymentMethodDetailsPassthroughCard option
+        /// funding type of the underlying payment method.
+        Type: RevolutPayUnderlyingPaymentMethodFundingDetailsType option
+    }
 
 type PaymentMethodDetailsRevolutPay =
     {
@@ -11557,6 +11835,9 @@ type BankConnectionsResourceAccountNumberDetailsStatus =
     | Pending
     | Transactable
 
+[<Struct>]
+type BankConnectionsResourceAccountNumberDetailsSupportedNetworks = | Ach
+
 type BankConnectionsResourceAccountNumberDetails =
     {
         /// When the account number is expected to expire, if applicable.
@@ -11566,7 +11847,7 @@ type BankConnectionsResourceAccountNumberDetails =
         /// Whether the account number is currently active and usable for transactions.
         Status: BankConnectionsResourceAccountNumberDetailsStatus
         /// The payment networks that the account number can be used for.
-        SupportedNetworks: string list
+        SupportedNetworks: BankConnectionsResourceAccountNumberDetailsSupportedNetworks list
     }
 
 [<Struct>]
@@ -12119,8 +12400,13 @@ type BillingCreditGrantsResourceApplicablePrice =
         Id: string option
     }
 
+[<Struct>]
+type BillingCreditGrantsResourceScopePriceType = | Metered
+
 type BillingCreditGrantsResourceScope =
     {
+        /// The price type that credit grants can apply to. We currently only support the `metered` price type. This refers to prices that have a [Billing Meter](https://docs.stripe.com/api/billing/meter) attached to them. Cannot be used in combination with `prices`.
+        PriceType: BillingCreditGrantsResourceScopePriceType option
         /// The prices that credit grants can apply to. We currently only support `metered` prices. This refers to prices that have a [Billing Meter](https://docs.stripe.com/api/billing/meter) attached to them. Cannot be used in combination with `price_type`.
         Prices: BillingCreditGrantsResourceApplicablePrice list option
     }
@@ -12908,6 +13194,9 @@ type FinancialConnectionsAccountSubcategory =
     | Savings
 
 [<Struct>]
+type FinancialConnectionsAccountSubscriptions = | Transactions
+
+[<Struct>]
 type FinancialConnectionsAccountSupportedPaymentMethodTypes =
     | Link
     | UsBankAccount
@@ -12959,7 +13248,7 @@ type FinancialConnectionsAccount =
         /// If `category` is `investment` or `other`, this will be `other`.
         Subcategory: FinancialConnectionsAccountSubcategory
         /// The list of data refresh subscriptions requested on this account.
-        Subscriptions: string list option
+        Subscriptions: FinancialConnectionsAccountSubscriptions list option
         /// The [PaymentMethod type](https://docs.stripe.com/api/payment_methods/object#payment_method_object-type)(s) that can be created from this account.
         SupportedPaymentMethodTypes: FinancialConnectionsAccountSupportedPaymentMethodTypes list
         /// The state of the most recent attempt to refresh the account transactions.
@@ -15064,9 +15353,16 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResour
         Last4: string option
     }
 
+[<Struct>]
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingType = | Card
+
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding =
-    { Card:
-        PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard option }
+    {
+        Card:
+            PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard option
+        /// funding type of the underlying payment method.
+        Type: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingType option
+    }
 
 type PaymentMethodDetailsPaymentRecordAmazonPay =
     {
@@ -15546,9 +15842,16 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResou
         Last4: string option
     }
 
+[<Struct>]
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFundingType = | Card
+
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFunding =
-    { Card:
-        PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFundingResourceFundingCard option }
+    {
+        Card:
+            PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFundingResourceFundingCard option
+        /// Funding type of the underlying payment method.
+        Type: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFundingType option
+    }
 
 type PaymentMethodDetailsPaymentRecordRevolutPay =
     {
@@ -15842,11 +16145,16 @@ type PaymentPagesCheckoutSessionConsentPromotions =
     | OptIn
     | OptOut
 
+[<Struct>]
+type PaymentPagesCheckoutSessionConsentTermsOfService = | Accepted
+
 type PaymentPagesCheckoutSessionConsent =
     {
         /// If `opt_in`, the customer consents to receiving promotional communications
         /// from the merchant about this Checkout Session.
         Promotions: PaymentPagesCheckoutSessionConsentPromotions option
+        /// If `accepted`, the customer in this Checkout Session has agreed to the merchant's terms of service.
+        TermsOfService: PaymentPagesCheckoutSessionConsentTermsOfService option
     }
 
 [<Struct>]
@@ -16716,6 +17024,9 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChe
     }
 
 [<Struct>]
+type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlanInterval = | Month
+
+[<Struct>]
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlanType =
     | Bonus
     | FixedCount
@@ -16725,6 +17036,8 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceIns
     {
         /// For `fixed_count` installment plans, this is the number of installment payments your customer will make to their credit card.
         Count: int option
+        /// For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card. One of `month`.
+        Interval: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlanInterval option
         /// Type of installment plan, one of `fixed_count`, `revolving`, or `bonus`.
         Type: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlanType
     }
@@ -17093,8 +17406,13 @@ type SourceFailed = { Object: Source }
 /// Occurs whenever the refund attributes are required on a receiver source to process a refund or a mispayment.
 type SourceRefundAttributesRequired = { Object: Source }
 
+[<Struct>]
+type SubscriptionSchedulesResourceDefaultSettingsAutomaticTaxDisabledReason = | RequiresLocationInputs
+
 type SubscriptionSchedulesResourceDefaultSettingsAutomaticTax =
     {
+        /// If Stripe disabled automatic tax, this enum describes why.
+        DisabledReason: SubscriptionSchedulesResourceDefaultSettingsAutomaticTaxDisabledReason option
         /// Whether Stripe automatically computes tax on invoices created during this phase.
         Enabled: bool
         /// The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account.
@@ -17868,15 +18186,12 @@ type ConnectAccountReference with
         }
 
 type SubscriptionAutomaticTax with
-    static member New(enabled: bool, liability: ConnectAccountReference option) =
+    static member New(disabledReason: SubscriptionAutomaticTaxDisabledReason option, enabled: bool, liability: ConnectAccountReference option) =
         {
+            DisabledReason = disabledReason
             Enabled = enabled
             Liability = liability
         }
-
-module SubscriptionAutomaticTax =
-    ///If Stripe disabled automatic tax, this enum describes why.
-    let disabledReason = "requires_location_inputs"
 
 type SubscriptionBillingThresholds with
     static member New(amountGte: int option, resetBillingCycleAnchor: bool option) =
@@ -18046,14 +18361,11 @@ type InvoicePaymentMethodOptionsCustomerBalanceBankTransfer with
         }
 
 type InvoicePaymentMethodOptionsCustomerBalance with
-    static member New(?bankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransfer) =
+    static member New(fundingType: InvoicePaymentMethodOptionsCustomerBalanceFundingType option, ?bankTransfer: InvoicePaymentMethodOptionsCustomerBalanceBankTransfer) =
         {
+            FundingType = fundingType
             BankTransfer = bankTransfer
         }
-
-module InvoicePaymentMethodOptionsCustomerBalance =
-    ///The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
-    let fundingType = "bank_transfer"
 
 type InvoicePaymentMethodOptionsKonbini with
     static member New(?invoicePaymentMethodOptionsKonbini: string option) =
@@ -19150,14 +19462,11 @@ type PaymentMethodDetailsPassthroughCard with
         }
 
 type AmazonPayUnderlyingPaymentMethodFundingDetails with
-    static member New(?card: PaymentMethodDetailsPassthroughCard) =
+    static member New(``type``: AmazonPayUnderlyingPaymentMethodFundingDetailsType option, ?card: PaymentMethodDetailsPassthroughCard) =
         {
+            Type = ``type``
             Card = card
         }
-
-module AmazonPayUnderlyingPaymentMethodFundingDetails =
-    ///funding type of the underlying payment method.
-    let ``type`` = "card"
 
 type PaymentFlowsAmountDetailsClientResourceTip with
     static member New(?amount: int) =
@@ -19570,44 +19879,32 @@ type PaymentIntentNextAction with
         }
 
 type PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptions with
-    static member New(?setupFutureUsage: PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptionsSetupFutureUsage) =
+    static member New(?captureMethod: PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptionsSetupFutureUsage) =
         {
+            CaptureMethod = captureMethod
             SetupFutureUsage = setupFutureUsage
         }
-
-module PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptions =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
 
 type PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptions with
-    static member New(?setupFutureUsage: PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptionsSetupFutureUsage) =
+    static member New(?captureMethod: PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptionsSetupFutureUsage) =
         {
+            CaptureMethod = captureMethod
             SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptions =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
+type PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptions with
+    static member New(?captureMethod: PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptionsSetupFutureUsage) =
+        {
+            CaptureMethod = captureMethod
+            SetupFutureUsage = setupFutureUsage
+        }
 
-module PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptions =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
-
-module PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptions =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptions with
+    static member New(?captureMethod: PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptionsCaptureMethod, ?setupFutureUsage: PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptionsSetupFutureUsage) =
+        {
+            CaptureMethod = captureMethod
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit with
     static member New(intervalDescription: string option, paymentSchedule: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitPaymentSchedule option, transactionType: PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebitTransactionType option, ?customMandateUrl: string) =
@@ -19649,14 +19946,11 @@ type PaymentIntentPaymentMethodOptionsBacsDebit with
         }
 
 type PaymentIntentPaymentMethodOptionsMandateOptionsBlik with
-    static member New(expiresAt: DateTime option) =
+    static member New(expiresAt: DateTime option, ``type``: PaymentIntentPaymentMethodOptionsMandateOptionsBlikType option) =
         {
             ExpiresAt = expiresAt
+            Type = ``type``
         }
-
-module PaymentIntentPaymentMethodOptionsMandateOptionsBlik =
-    ///Type of the mandate.
-    let ``type`` = "off_session"
 
 type PaymentIntentPaymentMethodOptionsBlik with
     static member New(?mandateOptions: PaymentIntentPaymentMethodOptionsMandateOptionsBlik, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsBlikSetupFutureUsage) =
@@ -19666,16 +19960,12 @@ type PaymentIntentPaymentMethodOptionsBlik with
         }
 
 type PaymentMethodDetailsCardInstallmentsPlan with
-    static member New(count: int option, ``type``: PaymentMethodDetailsCardInstallmentsPlanType) =
+    static member New(count: int option, interval: PaymentMethodDetailsCardInstallmentsPlanInterval option, ``type``: PaymentMethodDetailsCardInstallmentsPlanType) =
         {
             Count = count
+            Interval = interval
             Type = ``type``
         }
-
-module PaymentMethodDetailsCardInstallmentsPlan =
-    ///For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card.
-    ///One of `month`.
-    let interval = "month"
 
 type PaymentMethodOptionsCardInstallments with
     static member New(availablePlans: PaymentMethodDetailsCardInstallmentsPlan list option, enabled: bool, plan: PaymentMethodDetailsCardInstallmentsPlan option) =
@@ -19686,7 +19976,7 @@ type PaymentMethodOptionsCardInstallments with
         }
 
 type PaymentMethodOptionsCardMandateOptions with
-    static member New(amount: int, amountType: PaymentMethodOptionsCardMandateOptionsAmountType, description: string option, endDate: DateTime option, interval: PaymentMethodOptionsCardMandateOptionsInterval, intervalCount: int option, reference: string, startDate: DateTime, supportedTypes: string list option) =
+    static member New(amount: int, amountType: PaymentMethodOptionsCardMandateOptionsAmountType, description: string option, endDate: DateTime option, interval: PaymentMethodOptionsCardMandateOptionsInterval, intervalCount: int option, reference: string, startDate: DateTime, supportedTypes: PaymentMethodOptionsCardMandateOptionsSupportedTypes list option) =
         {
             Amount = amount
             AmountType = amountType
@@ -19700,12 +19990,13 @@ type PaymentMethodOptionsCardMandateOptions with
         }
 
 type PaymentIntentPaymentMethodOptionsCard with
-    static member New(installments: PaymentMethodOptionsCardInstallments option, mandateOptions: PaymentMethodOptionsCardMandateOptions option, network: PaymentIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option, ?requestExtendedAuthorization: PaymentIntentPaymentMethodOptionsCardRequestExtendedAuthorization, ?requestIncrementalAuthorization: PaymentIntentPaymentMethodOptionsCardRequestIncrementalAuthorization, ?requestMulticapture: PaymentIntentPaymentMethodOptionsCardRequestMulticapture, ?requestOvercapture: PaymentIntentPaymentMethodOptionsCardRequestOvercapture, ?requireCvcRecollection: bool, ?setupCredentialUsage: PaymentIntentPaymentMethodOptionsCardSetupCredentialUsage, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsCardSetupFutureUsage, ?statementDescriptorSuffixKana: string, ?statementDescriptorSuffixKanji: string, ?storedCredentialUsage: PaymentIntentPaymentMethodOptionsCardStoredCredentialUsage) =
+    static member New(installments: PaymentMethodOptionsCardInstallments option, mandateOptions: PaymentMethodOptionsCardMandateOptions option, network: PaymentIntentPaymentMethodOptionsCardNetwork option, requestThreeDSecure: PaymentIntentPaymentMethodOptionsCardRequestThreeDSecure option, ?captureMethod: PaymentIntentPaymentMethodOptionsCardCaptureMethod, ?requestExtendedAuthorization: PaymentIntentPaymentMethodOptionsCardRequestExtendedAuthorization, ?requestIncrementalAuthorization: PaymentIntentPaymentMethodOptionsCardRequestIncrementalAuthorization, ?requestMulticapture: PaymentIntentPaymentMethodOptionsCardRequestMulticapture, ?requestOvercapture: PaymentIntentPaymentMethodOptionsCardRequestOvercapture, ?requireCvcRecollection: bool, ?setupCredentialUsage: PaymentIntentPaymentMethodOptionsCardSetupCredentialUsage, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsCardSetupFutureUsage, ?statementDescriptorSuffixKana: string, ?statementDescriptorSuffixKanji: string, ?storedCredentialUsage: PaymentIntentPaymentMethodOptionsCardStoredCredentialUsage) =
         {
             Installments = installments
             MandateOptions = mandateOptions
             Network = network
             RequestThreeDSecure = requestThreeDSecure
+            CaptureMethod = captureMethod
             RequestExtendedAuthorization = requestExtendedAuthorization
             RequestIncrementalAuthorization = requestIncrementalAuthorization
             RequestMulticapture = requestMulticapture
@@ -19718,37 +20009,26 @@ type PaymentIntentPaymentMethodOptionsCard with
             StoredCredentialUsage = storedCredentialUsage
         }
 
-module PaymentIntentPaymentMethodOptionsCard =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-module PaymentIntentPaymentMethodOptionsEps =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
-
-type PaymentIntentPaymentMethodOptionsLink with
-    static member New(persistentToken: string option, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsLinkSetupFutureUsage) =
+type PaymentIntentPaymentMethodOptionsEps with
+    static member New(?setupFutureUsage: PaymentIntentPaymentMethodOptionsEpsSetupFutureUsage) =
         {
-            PersistentToken = persistentToken
             SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentIntentPaymentMethodOptionsLink =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
+type PaymentIntentPaymentMethodOptionsLink with
+    static member New(persistentToken: string option, ?captureMethod: PaymentIntentPaymentMethodOptionsLinkCaptureMethod, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsLinkSetupFutureUsage) =
+        {
+            PersistentToken = persistentToken
+            CaptureMethod = captureMethod
+            SetupFutureUsage = setupFutureUsage
+        }
 
-module PaymentIntentPaymentMethodOptionsMobilepay =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentIntentPaymentMethodOptionsMobilepay with
+    static member New(?captureMethod: PaymentIntentPaymentMethodOptionsMobilepayCaptureMethod, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsMobilepaySetupFutureUsage) =
+        {
+            CaptureMethod = captureMethod
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentIntentPaymentMethodOptionsNzBankAccount with
     static member New(?setupFutureUsage: PaymentIntentPaymentMethodOptionsNzBankAccountSetupFutureUsage, ?targetDate: string) =
@@ -19790,17 +20070,11 @@ type PaymentIntentPaymentMethodOptionsSepaDebit with
         }
 
 type PaymentIntentPaymentMethodOptionsSwish with
-    static member New(reference: string option) =
+    static member New(reference: string option, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsSwishSetupFutureUsage) =
         {
             Reference = reference
+            SetupFutureUsage = setupFutureUsage
         }
-
-module PaymentIntentPaymentMethodOptionsSwish =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
 
 type PaymentFlowsPrivatePaymentMethodsFinancialConnectionsCommonLinkedAccountOptionsFilters with
     static member New(?accountSubcategories: PaymentFlowsPrivatePaymentMethodsFinancialConnectionsCommonLinkedAccountOptionsFiltersAccountSubcategories list) =
@@ -19817,9 +20091,11 @@ type LinkedAccountOptionsCommon with
             ReturnUrl = returnUrl
         }
 
-module PaymentMethodOptionsUsBankAccountMandateOptions =
-    ///Mandate collection method
-    let collectionMethod = "paper"
+type PaymentMethodOptionsUsBankAccountMandateOptions with
+    static member New(?collectionMethod: PaymentMethodOptionsUsBankAccountMandateOptionsCollectionMethod) =
+        {
+            CollectionMethod = collectionMethod
+        }
 
 type PaymentIntentPaymentMethodOptionsUsBankAccount with
     static member New(?financialConnections: LinkedAccountOptionsCommon, ?mandateOptions: PaymentMethodOptionsUsBankAccountMandateOptions, ?setupFutureUsage: PaymentIntentPaymentMethodOptionsUsBankAccountSetupFutureUsage, ?targetDate: string, ?transactionPurpose: PaymentIntentPaymentMethodOptionsUsBankAccountTransactionPurpose, ?verificationMethod: PaymentIntentPaymentMethodOptionsUsBankAccountVerificationMethod) =
@@ -19833,36 +20109,20 @@ type PaymentIntentPaymentMethodOptionsUsBankAccount with
         }
 
 type PaymentMethodOptionsAffirm with
-    static member New(?preferredLocale: string) =
+    static member New(?captureMethod: PaymentMethodOptionsAffirmCaptureMethod, ?preferredLocale: string, ?setupFutureUsage: PaymentMethodOptionsAffirmSetupFutureUsage) =
         {
+            CaptureMethod = captureMethod
             PreferredLocale = preferredLocale
+            SetupFutureUsage = setupFutureUsage
         }
-
-module PaymentMethodOptionsAffirm =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
 
 type PaymentMethodOptionsAfterpayClearpay with
-    static member New(reference: string option) =
+    static member New(reference: string option, ?captureMethod: PaymentMethodOptionsAfterpayClearpayCaptureMethod, ?setupFutureUsage: PaymentMethodOptionsAfterpayClearpaySetupFutureUsage) =
         {
             Reference = reference
+            CaptureMethod = captureMethod
+            SetupFutureUsage = setupFutureUsage
         }
-
-module PaymentMethodOptionsAfterpayClearpay =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
 
 type PaymentMethodOptionsAlipay with
     static member New(?setupFutureUsage: PaymentMethodOptionsAlipaySetupFutureUsage) =
@@ -19870,19 +20130,18 @@ type PaymentMethodOptionsAlipay with
             SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsAlma =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-type PaymentMethodOptionsAmazonPay with
-    static member New(?setupFutureUsage: PaymentMethodOptionsAmazonPaySetupFutureUsage) =
+type PaymentMethodOptionsAlma with
+    static member New(?captureMethod: PaymentMethodOptionsAlmaCaptureMethod) =
         {
-            SetupFutureUsage = setupFutureUsage
+            CaptureMethod = captureMethod
         }
 
-module PaymentMethodOptionsAmazonPay =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
+type PaymentMethodOptionsAmazonPay with
+    static member New(?captureMethod: PaymentMethodOptionsAmazonPayCaptureMethod, ?setupFutureUsage: PaymentMethodOptionsAmazonPaySetupFutureUsage) =
+        {
+            CaptureMethod = captureMethod
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentMethodOptionsBancontact with
     static member New(preferredLanguage: PaymentMethodOptionsBancontactPreferredLanguage, ?setupFutureUsage: PaymentMethodOptionsBancontactSetupFutureUsage) =
@@ -19913,15 +20172,12 @@ type PaymentFlowsPrivatePaymentMethodsBilliePaymentMethodOptionsResourceCompanyD
         }
 
 type PaymentMethodOptionsBillie with
-    static member New(?companyDetails: PaymentFlowsPrivatePaymentMethodsBilliePaymentMethodOptionsResourceCompanyDetails, ?reference: string option) =
+    static member New(?captureMethod: PaymentMethodOptionsBillieCaptureMethod, ?companyDetails: PaymentFlowsPrivatePaymentMethodsBilliePaymentMethodOptionsResourceCompanyDetails, ?reference: string option) =
         {
+            CaptureMethod = captureMethod
             CompanyDetails = companyDetails
             Reference = reference |> Option.flatten
         }
-
-module PaymentMethodOptionsBillie =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
 
 type PaymentMethodOptionsBizum with
     static member New(?paymentMethodOptionsBizum: string option) =
@@ -19952,21 +20208,17 @@ type PaymentMethodOptionsCardPresent with
         }
 
 type PaymentMethodOptionsCashapp with
-    static member New(?setupFutureUsage: PaymentMethodOptionsCashappSetupFutureUsage) =
+    static member New(?captureMethod: PaymentMethodOptionsCashappCaptureMethod, ?setupFutureUsage: PaymentMethodOptionsCashappSetupFutureUsage) =
         {
+            CaptureMethod = captureMethod
             SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsCashapp =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-module PaymentMethodOptionsCrypto =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentMethodOptionsCrypto with
+    static member New(?setupFutureUsage: PaymentMethodOptionsCryptoSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentMethodOptionsCustomerBalanceEuBankAccount with
     static member New(country: PaymentMethodOptionsCustomerBalanceEuBankAccountCountry) =
@@ -19983,41 +20235,30 @@ type PaymentMethodOptionsCustomerBalanceBankTransfer with
         }
 
 type PaymentMethodOptionsCustomerBalance with
-    static member New(?bankTransfer: PaymentMethodOptionsCustomerBalanceBankTransfer) =
+    static member New(fundingType: PaymentMethodOptionsCustomerBalanceFundingType option, ?bankTransfer: PaymentMethodOptionsCustomerBalanceBankTransfer, ?setupFutureUsage: PaymentMethodOptionsCustomerBalanceSetupFutureUsage) =
         {
+            FundingType = fundingType
             BankTransfer = bankTransfer
+            SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsCustomerBalance =
-    ///The funding method type to be used when there are not enough funds in the customer balance. Permitted values include: `bank_transfer`.
-    let fundingType = "bank_transfer"
+type PaymentMethodOptionsFpx with
+    static member New(?setupFutureUsage: PaymentMethodOptionsFpxSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentMethodOptionsGiropay with
+    static member New(?setupFutureUsage: PaymentMethodOptionsGiropaySetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
-module PaymentMethodOptionsFpx =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
-
-module PaymentMethodOptionsGiropay =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
-
-module PaymentMethodOptionsGrabpay =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentMethodOptionsGrabpay with
+    static member New(?setupFutureUsage: PaymentMethodOptionsGrabpaySetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentMethodOptionsIdeal with
     static member New(?setupFutureUsage: PaymentMethodOptionsIdealSetupFutureUsage) =
@@ -20032,75 +20273,54 @@ type PaymentMethodOptionsInteracPresent with
         }
 
 type PaymentMethodOptionsKlarna with
-    static member New(preferredLocale: string option, ?setupFutureUsage: PaymentMethodOptionsKlarnaSetupFutureUsage) =
+    static member New(preferredLocale: string option, ?captureMethod: PaymentMethodOptionsKlarnaCaptureMethod, ?setupFutureUsage: PaymentMethodOptionsKlarnaSetupFutureUsage) =
         {
             PreferredLocale = preferredLocale
+            CaptureMethod = captureMethod
             SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsKlarna =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
 type PaymentMethodOptionsKonbini with
-    static member New(confirmationNumber: string option, expiresAfterDays: int option, expiresAt: DateTime option, productDescription: string option) =
+    static member New(confirmationNumber: string option, expiresAfterDays: int option, expiresAt: DateTime option, productDescription: string option, ?setupFutureUsage: PaymentMethodOptionsKonbiniSetupFutureUsage) =
         {
             ConfirmationNumber = confirmationNumber
             ExpiresAfterDays = expiresAfterDays
             ExpiresAt = expiresAt
             ProductDescription = productDescription
+            SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsKonbini =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
-
 type PaymentMethodOptionsKrCard with
-    static member New(?setupFutureUsage: PaymentMethodOptionsKrCardSetupFutureUsage) =
+    static member New(?captureMethod: PaymentMethodOptionsKrCardCaptureMethod, ?setupFutureUsage: PaymentMethodOptionsKrCardSetupFutureUsage) =
+        {
+            CaptureMethod = captureMethod
+            SetupFutureUsage = setupFutureUsage
+        }
+
+type PaymentMethodOptionsMbWay with
+    static member New(?setupFutureUsage: PaymentMethodOptionsMbWaySetupFutureUsage) =
         {
             SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsKrCard =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-module PaymentMethodOptionsMbWay =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
-
-module PaymentMethodOptionsMultibanco =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
-
-type PaymentMethodOptionsOxxo with
-    static member New(expiresAfterDays: int) =
+type PaymentMethodOptionsMultibanco with
+    static member New(?setupFutureUsage: PaymentMethodOptionsMultibancoSetupFutureUsage) =
         {
-            ExpiresAfterDays = expiresAfterDays
+            SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsOxxo =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentMethodOptionsOxxo with
+    static member New(expiresAfterDays: int, ?setupFutureUsage: PaymentMethodOptionsOxxoSetupFutureUsage) =
+        {
+            ExpiresAfterDays = expiresAfterDays
+            SetupFutureUsage = setupFutureUsage
+        }
 
-module PaymentMethodOptionsP24 =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentMethodOptionsP24 with
+    static member New(?setupFutureUsage: PaymentMethodOptionsP24SetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentMethodOptionsPayByBank with
     static member New(?paymentMethodOptionsPayByBank: string option) =
@@ -20108,24 +20328,20 @@ type PaymentMethodOptionsPayByBank with
             PaymentMethodOptionsPayByBank = paymentMethodOptionsPayByBank |> Option.flatten
         }
 
-module PaymentMethodOptionsPaynow =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
-
-type PaymentMethodOptionsPaypal with
-    static member New(preferredLocale: string option, reference: string option, ?setupFutureUsage: PaymentMethodOptionsPaypalSetupFutureUsage) =
+type PaymentMethodOptionsPaynow with
+    static member New(?setupFutureUsage: PaymentMethodOptionsPaynowSetupFutureUsage) =
         {
-            PreferredLocale = preferredLocale
-            Reference = reference
             SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsPaypal =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
+type PaymentMethodOptionsPaypal with
+    static member New(preferredLocale: string option, reference: string option, ?captureMethod: PaymentMethodOptionsPaypalCaptureMethod, ?setupFutureUsage: PaymentMethodOptionsPaypalSetupFutureUsage) =
+        {
+            PreferredLocale = preferredLocale
+            Reference = reference
+            CaptureMethod = captureMethod
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentMethodOptionsPaypay with
     static member New(?paymentMethodOptionsPaypay: string option) =
@@ -20156,46 +20372,38 @@ type PaymentMethodOptionsPix with
             SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsPromptpay =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentMethodOptionsPromptpay with
+    static member New(?setupFutureUsage: PaymentMethodOptionsPromptpaySetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentMethodOptionsRevolutPay with
-    static member New(?setupFutureUsage: PaymentMethodOptionsRevolutPaySetupFutureUsage) =
+    static member New(?captureMethod: PaymentMethodOptionsRevolutPayCaptureMethod, ?setupFutureUsage: PaymentMethodOptionsRevolutPaySetupFutureUsage) =
         {
+            CaptureMethod = captureMethod
             SetupFutureUsage = setupFutureUsage
         }
-
-module PaymentMethodOptionsRevolutPay =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
 
 type PaymentMethodOptionsSatispay with
-    static member New(?setupFutureUsage: PaymentMethodOptionsSatispaySetupFutureUsage) =
+    static member New(?captureMethod: PaymentMethodOptionsSatispayCaptureMethod, ?setupFutureUsage: PaymentMethodOptionsSatispaySetupFutureUsage) =
         {
+            CaptureMethod = captureMethod
             SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsSatispay =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
+type PaymentMethodOptionsScalapay with
+    static member New(?captureMethod: PaymentMethodOptionsScalapayCaptureMethod) =
+        {
+            CaptureMethod = captureMethod
+        }
 
-module PaymentMethodOptionsScalapay =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-module PaymentMethodOptionsSequra =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentMethodOptionsSequra with
+    static member New(?captureMethod: PaymentMethodOptionsSequraCaptureMethod, ?setupFutureUsage: PaymentMethodOptionsSequraSetupFutureUsage) =
+        {
+            CaptureMethod = captureMethod
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentMethodOptionsSofort with
     static member New(preferredLanguage: PaymentMethodOptionsSofortPreferredLanguage option, ?setupFutureUsage: PaymentMethodOptionsSofortSetupFutureUsage) =
@@ -20204,15 +20412,12 @@ type PaymentMethodOptionsSofort with
             SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsSunbit =
-    ///Controls when the funds will be captured from the customer's account.
-    let captureMethod = "manual"
-
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentMethodOptionsSunbit with
+    static member New(?captureMethod: PaymentMethodOptionsSunbitCaptureMethod, ?setupFutureUsage: PaymentMethodOptionsSunbitSetupFutureUsage) =
+        {
+            CaptureMethod = captureMethod
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentMethodOptionsTwint with
     static member New(?setupFutureUsage: PaymentMethodOptionsTwintSetupFutureUsage) =
@@ -20227,25 +20432,18 @@ type PaymentMethodOptionsUpi with
         }
 
 type PaymentMethodOptionsWechatPay with
-    static member New(appId: string option, client: PaymentMethodOptionsWechatPayClient option) =
+    static member New(appId: string option, client: PaymentMethodOptionsWechatPayClient option, ?setupFutureUsage: PaymentMethodOptionsWechatPaySetupFutureUsage) =
         {
             AppId = appId
             Client = client
+            SetupFutureUsage = setupFutureUsage
         }
 
-module PaymentMethodOptionsWechatPay =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
-
-module PaymentMethodOptionsZip =
-    ///Indicates that you intend to make future payments with this PaymentIntent's payment method.
-    ///If you provide a Customer with the PaymentIntent, you can use this parameter to [attach the payment method](/payments/save-during-payment) to the Customer after the PaymentIntent is confirmed and the customer completes any required actions. If you don't provide a Customer, you can still [attach](/api/payment_methods/attach) the payment method to a Customer after the transaction completes.
-    ///If the payment method is `card_present` and isn't a digital wallet, Stripe creates and attaches a [generated_card](/api/charges/object#charge_object-payment_method_details-card_present-generated_card) payment method representing the card to the Customer instead.
-    ///When processing card payments, Stripe uses `setup_future_usage` to help you comply with regional legislation and network rules, such as [SCA](/strong-customer-authentication).
-    let setupFutureUsage = "none"
+type PaymentMethodOptionsZip with
+    static member New(?setupFutureUsage: PaymentMethodOptionsZipSetupFutureUsage) =
+        {
+            SetupFutureUsage = setupFutureUsage
+        }
 
 type PaymentIntentPaymentMethodOptions with
     static member New(?acssDebit: PaymentIntentPaymentMethodOptionsAcssDebit, ?affirm: PaymentMethodOptionsAffirm, ?afterpayClearpay: PaymentMethodOptionsAfterpayClearpay, ?alipay: PaymentMethodOptionsAlipay, ?alma: PaymentMethodOptionsAlma, ?amazonPay: PaymentMethodOptionsAmazonPay, ?auBecsDebit: PaymentIntentPaymentMethodOptionsAuBecsDebit, ?bacsDebit: PaymentIntentPaymentMethodOptionsBacsDebit, ?bancontact: PaymentMethodOptionsBancontact, ?billie: PaymentMethodOptionsBillie, ?bizum: PaymentMethodOptionsBizum, ?blik: PaymentIntentPaymentMethodOptionsBlik, ?boleto: PaymentMethodOptionsBoleto, ?card: PaymentIntentPaymentMethodOptionsCard, ?cardPresent: PaymentMethodOptionsCardPresent, ?cashapp: PaymentMethodOptionsCashapp, ?crypto: PaymentMethodOptionsCrypto, ?customerBalance: PaymentMethodOptionsCustomerBalance, ?eps: PaymentIntentPaymentMethodOptionsEps, ?fpx: PaymentMethodOptionsFpx, ?giropay: PaymentMethodOptionsGiropay, ?grabpay: PaymentMethodOptionsGrabpay, ?ideal: PaymentMethodOptionsIdeal, ?interacPresent: PaymentMethodOptionsInteracPresent, ?kakaoPay: PaymentFlowsPrivatePaymentMethodsKakaoPayPaymentMethodOptions, ?klarna: PaymentMethodOptionsKlarna, ?konbini: PaymentMethodOptionsKonbini, ?krCard: PaymentMethodOptionsKrCard, ?link: PaymentIntentPaymentMethodOptionsLink, ?mbWay: PaymentMethodOptionsMbWay, ?mobilepay: PaymentIntentPaymentMethodOptionsMobilepay, ?multibanco: PaymentMethodOptionsMultibanco, ?naverPay: PaymentFlowsPrivatePaymentMethodsNaverPayPaymentMethodOptions, ?nzBankAccount: PaymentIntentPaymentMethodOptionsNzBankAccount, ?oxxo: PaymentMethodOptionsOxxo, ?p24: PaymentMethodOptionsP24, ?payByBank: PaymentMethodOptionsPayByBank, ?payco: PaymentFlowsPrivatePaymentMethodsPaycoPaymentMethodOptions, ?paynow: PaymentMethodOptionsPaynow, ?paypal: PaymentMethodOptionsPaypal, ?paypay: PaymentMethodOptionsPaypay, ?payto: PaymentIntentPaymentMethodOptionsPayto, ?pix: PaymentMethodOptionsPix, ?promptpay: PaymentMethodOptionsPromptpay, ?revolutPay: PaymentMethodOptionsRevolutPay, ?samsungPay: PaymentFlowsPrivatePaymentMethodsSamsungPayPaymentMethodOptions, ?satispay: PaymentMethodOptionsSatispay, ?scalapay: PaymentMethodOptionsScalapay, ?sepaDebit: PaymentIntentPaymentMethodOptionsSepaDebit, ?sequra: PaymentMethodOptionsSequra, ?sofort: PaymentMethodOptionsSofort, ?sunbit: PaymentMethodOptionsSunbit, ?swish: PaymentIntentPaymentMethodOptionsSwish, ?twint: PaymentMethodOptionsTwint, ?upi: PaymentMethodOptionsUpi, ?usBankAccount: PaymentIntentPaymentMethodOptionsUsBankAccount, ?wechatPay: PaymentMethodOptionsWechatPay, ?zip: PaymentMethodOptionsZip) =
@@ -20487,14 +20685,11 @@ type PaymentFlowsPrivatePaymentMethodsCardPresentCommonWallet with
         }
 
 type PaymentMethodDetailsCardPresentOffline with
-    static member New(storedAt: DateTime option) =
+    static member New(storedAt: DateTime option, ``type``: PaymentMethodDetailsCardPresentOfflineType option) =
         {
             StoredAt = storedAt
+            Type = ``type``
         }
-
-module PaymentMethodDetailsCardPresentOffline =
-    ///The method used to process this payment method offline. Only deferred is allowed.
-    let ``type`` = "deferred"
 
 type PaymentMethodDetailsCardPresentReceipt with
     static member New(applicationCryptogram: string option, applicationPreferredName: string option, authorizationCode: string option, authorizationResponseCode: string option, cardholderVerificationMethod: PaymentMethodDetailsCardPresentReceiptCardholderVerificationMethod option, dedicatedFileName: string option, terminalVerificationResults: string option, transactionStatusInformation: string option, ?accountType: PaymentMethodDetailsCardPresentReceiptAccountType) =
@@ -21185,14 +21380,11 @@ type SetupIntentPaymentMethodOptionsBizum with
         }
 
 type SetupIntentPaymentMethodOptionsMandateOptionsBlik with
-    static member New(expiresAt: DateTime option) =
+    static member New(expiresAt: DateTime option, ``type``: SetupIntentPaymentMethodOptionsMandateOptionsBlikType option) =
         {
             ExpiresAt = expiresAt
+            Type = ``type``
         }
-
-module SetupIntentPaymentMethodOptionsMandateOptionsBlik =
-    ///Type of the mandate.
-    let ``type`` = "off_session"
 
 type SetupIntentPaymentMethodOptionsBlik with
     static member New(?mandateOptions: SetupIntentPaymentMethodOptionsMandateOptionsBlik) =
@@ -21201,7 +21393,7 @@ type SetupIntentPaymentMethodOptionsBlik with
         }
 
 type SetupIntentPaymentMethodOptionsCardMandateOptions with
-    static member New(amount: int, amountType: SetupIntentPaymentMethodOptionsCardMandateOptionsAmountType, currency: IsoTypes.IsoCurrencyCode, description: string option, endDate: DateTime option, interval: SetupIntentPaymentMethodOptionsCardMandateOptionsInterval, intervalCount: int option, reference: string, startDate: DateTime, supportedTypes: string list option) =
+    static member New(amount: int, amountType: SetupIntentPaymentMethodOptionsCardMandateOptionsAmountType, currency: IsoTypes.IsoCurrencyCode, description: string option, endDate: DateTime option, interval: SetupIntentPaymentMethodOptionsCardMandateOptionsInterval, intervalCount: int option, reference: string, startDate: DateTime, supportedTypes: SetupIntentPaymentMethodOptionsCardMandateOptionsSupportedTypes list option) =
         {
             Amount = amount
             AmountType = amountType
@@ -22341,14 +22533,11 @@ type PaymentMethodDetailsPromptpay with
         }
 
 type RevolutPayUnderlyingPaymentMethodFundingDetails with
-    static member New(?card: PaymentMethodDetailsPassthroughCard) =
+    static member New(``type``: RevolutPayUnderlyingPaymentMethodFundingDetailsType option, ?card: PaymentMethodDetailsPassthroughCard) =
         {
+            Type = ``type``
             Card = card
         }
-
-module RevolutPayUnderlyingPaymentMethodFundingDetails =
-    ///funding type of the underlying payment method.
-    let ``type`` = "card"
 
 type PaymentMethodDetailsRevolutPay with
     static member New(transactionId: string option, ?funding: RevolutPayUnderlyingPaymentMethodFundingDetails) =
@@ -23508,7 +23697,7 @@ module Transfer =
     let object = "transfer"
 
 type BankConnectionsResourceAccountNumberDetails with
-    static member New(expectedExpiryDate: DateTime option, identifierType: BankConnectionsResourceAccountNumberDetailsIdentifierType, status: BankConnectionsResourceAccountNumberDetailsStatus, supportedNetworks: string list) =
+    static member New(expectedExpiryDate: DateTime option, identifierType: BankConnectionsResourceAccountNumberDetailsIdentifierType, status: BankConnectionsResourceAccountNumberDetailsStatus, supportedNetworks: BankConnectionsResourceAccountNumberDetailsSupportedNetworks list) =
         {
             ExpectedExpiryDate = expectedExpiryDate
             IdentifierType = identifierType
@@ -23912,14 +24101,11 @@ type BillingCreditGrantsResourceApplicablePrice with
         }
 
 type BillingCreditGrantsResourceScope with
-    static member New(?prices: BillingCreditGrantsResourceApplicablePrice list) =
+    static member New(?priceType: BillingCreditGrantsResourceScopePriceType, ?prices: BillingCreditGrantsResourceApplicablePrice list) =
         {
+            PriceType = priceType
             Prices = prices
         }
-
-module BillingCreditGrantsResourceScope =
-    ///The price type that credit grants can apply to. We currently only support the `metered` price type. This refers to prices that have a [Billing Meter](https://docs.stripe.com/api/billing/meter) attached to them. Cannot be used in combination with `prices`.
-    let priceType = "metered"
 
 type BillingCreditGrantsResourceApplicabilityConfig with
     static member New(scope: BillingCreditGrantsResourceScope) =
@@ -24684,7 +24870,7 @@ type DiscountsResourceStackableDiscountWithDiscountEnd with
         }
 
 type FinancialConnectionsAccount with
-    static member New(accountHolder: BankConnectionsResourceAccountholder option, accountNumbers: BankConnectionsResourceAccountNumberDetails list option, balance: BankConnectionsResourceBalance option, balanceRefresh: BankConnectionsResourceBalanceRefresh option, category: FinancialConnectionsAccountCategory, created: DateTime, displayName: string option, id: string, institutionName: string, last4: string option, livemode: bool, ownership: StripeId<Markers.FinancialConnectionsAccountOwnership> option, ownershipRefresh: BankConnectionsResourceOwnershipRefresh option, permissions: FinancialConnectionsAccountPermissions list option, status: FinancialConnectionsAccountStatus, subcategory: FinancialConnectionsAccountSubcategory, subscriptions: string list option, supportedPaymentMethodTypes: FinancialConnectionsAccountSupportedPaymentMethodTypes list, transactionRefresh: BankConnectionsResourceTransactionRefresh option, ?statusDetails: BankConnectionsResourceAccountStatusDetails) =
+    static member New(accountHolder: BankConnectionsResourceAccountholder option, accountNumbers: BankConnectionsResourceAccountNumberDetails list option, balance: BankConnectionsResourceBalance option, balanceRefresh: BankConnectionsResourceBalanceRefresh option, category: FinancialConnectionsAccountCategory, created: DateTime, displayName: string option, id: string, institutionName: string, last4: string option, livemode: bool, ownership: StripeId<Markers.FinancialConnectionsAccountOwnership> option, ownershipRefresh: BankConnectionsResourceOwnershipRefresh option, permissions: FinancialConnectionsAccountPermissions list option, status: FinancialConnectionsAccountStatus, subcategory: FinancialConnectionsAccountSubcategory, subscriptions: FinancialConnectionsAccountSubscriptions list option, supportedPaymentMethodTypes: FinancialConnectionsAccountSupportedPaymentMethodTypes list, transactionRefresh: BankConnectionsResourceTransactionRefresh option, ?statusDetails: BankConnectionsResourceAccountStatusDetails) =
         {
             AccountHolder = accountHolder
             AccountNumbers = accountNumbers
@@ -25984,14 +26170,11 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResour
         }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding with
-    static member New(?card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard) =
+    static member New(``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingType option, ?card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFundingResourceFundingCard) =
         {
+            Type = ``type``
             Card = card
         }
-
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding =
-    ///funding type of the underlying payment method.
-    let ``type`` = "card"
 
 type PaymentMethodDetailsPaymentRecordAmazonPay with
     static member New(transactionId: string option, ?funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodAmazonPayDetailsResourceFunding) =
@@ -26272,14 +26455,11 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResou
         }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFunding with
-    static member New(?card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFundingResourceFundingCard) =
+    static member New(``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFundingType option, ?card: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFundingResourceFundingCard) =
         {
+            Type = ``type``
             Card = card
         }
-
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFunding =
-    ///Funding type of the underlying payment method.
-    let ``type`` = "card"
 
 type PaymentMethodDetailsPaymentRecordRevolutPay with
     static member New(transactionId: string option, ?funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodRevolutPayDetailsResourceFunding) =
@@ -26481,14 +26661,11 @@ type PaymentPagesCheckoutSessionCollectedInformation with
         }
 
 type PaymentPagesCheckoutSessionConsent with
-    static member New(promotions: PaymentPagesCheckoutSessionConsentPromotions option) =
+    static member New(promotions: PaymentPagesCheckoutSessionConsentPromotions option, termsOfService: PaymentPagesCheckoutSessionConsentTermsOfService option) =
         {
             Promotions = promotions
+            TermsOfService = termsOfService
         }
-
-module PaymentPagesCheckoutSessionConsent =
-    ///If `accepted`, the customer in this Checkout Session has agreed to the merchant's terms of service.
-    let termsOfService = "accepted"
 
 type PaymentPagesCheckoutSessionPaymentMethodReuseAgreement with
     static member New(position: PaymentPagesCheckoutSessionPaymentMethodReuseAgreementPosition) =
@@ -26783,15 +26960,12 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChe
         }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlan with
-    static member New(count: int option, ``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlanType) =
+    static member New(count: int option, interval: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlanInterval option, ``type``: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlanType) =
         {
             Count = count
+            Interval = interval
             Type = ``type``
         }
-
-module PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlan =
-    ///For `fixed_count` installment plans, this is the interval between installment payments your customer will make to their credit card. One of `month`.
-    let interval = "month"
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments with
     static member New(plan: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallmentPlan option) =
@@ -27111,15 +27285,12 @@ type SourceRefundAttributesRequired with
         }
 
 type SubscriptionSchedulesResourceDefaultSettingsAutomaticTax with
-    static member New(enabled: bool, liability: ConnectAccountReference option) =
+    static member New(disabledReason: SubscriptionSchedulesResourceDefaultSettingsAutomaticTaxDisabledReason option, enabled: bool, liability: ConnectAccountReference option) =
         {
+            DisabledReason = disabledReason
             Enabled = enabled
             Liability = liability
         }
-
-module SubscriptionSchedulesResourceDefaultSettingsAutomaticTax =
-    ///If Stripe disabled automatic tax, this enum describes why.
-    let disabledReason = "requires_location_inputs"
 
 type SubscriptionSchedulesResourceDefaultSettings with
     static member New(applicationFeePercent: decimal option, billingCycleAnchor: SubscriptionSchedulesResourceDefaultSettingsBillingCycleAnchor, billingThresholds: SubscriptionBillingThresholds option, collectionMethod: SubscriptionSchedulesResourceDefaultSettingsCollectionMethod option, defaultPaymentMethod: StripeId<Markers.PaymentMethod> option, description: string option, invoiceSettings: InvoiceSettingSubscriptionScheduleSetting, onBehalfOf: StripeId<Markers.Account> option, transferData: SubscriptionTransferData option, ?automaticTax: SubscriptionSchedulesResourceDefaultSettingsAutomaticTax) =
