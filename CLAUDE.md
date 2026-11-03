@@ -78,8 +78,9 @@ the generator.
   patch-bump PR only if something other than `///` doc comments changed. The PR body carries
   a human checklist (version bump, changelog, release tag).
 - **`regenerate.yml`** (manual) — regenerate `src/` from a chosen spec/version and open a PR.
-- **`ci.yml`** — build + test on PR/push, plus a generator smoke-test that runs the generator
-  end-to-end so generator regressions are caught in PR CI (not only in the weekly job).
+- **`ci.yml`** — build + test on PR/push. It first regenerates `src/` and fails if the committed
+  generated files differ, so hand edits, generator changes committed without regenerating, and
+  generator crashes are all caught in PR CI.
 
 ## Versioning & releasing
 

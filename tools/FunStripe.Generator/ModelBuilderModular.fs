@@ -1023,7 +1023,8 @@ module ModelBuilderModular =
                 let pascalName = pascalModuleName moduleName
                 let fileName = $"{pascalName}.fs"
                 let filePath = Path.Combine(outputDir, fileName)
-                File.WriteAllText(filePath, content)
+                // LF on every OS, as committed: CI diffs the generated files against src/
+                File.WriteAllText(filePath, content.Replace("\r\n", "\n"))
                 generatedFiles.Add(fileName)
                 let typeCount = types.Length
                 let recCount = types |> List.filter (fun (_, isRec) -> isRec) |> List.length

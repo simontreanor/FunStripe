@@ -133,7 +133,8 @@ module StripeIdsBuilder =
         let markers = collectMarkers root
         let source = emitSource version apiVersion markers
         let path = Path.Combine(outputDir, "StripeIds.fs")
-        let normalized = source.Replace("\r\n", "\n").Replace("\n", System.Environment.NewLine)
+        // LF on every OS, as committed: CI diffs the generated files against src/
+        let normalized = source.Replace("\r\n", "\n")
         File.WriteAllText(path, normalized)
         printfn "  Written StripeIds.fs (%d markers)" markers.Length
         path

@@ -21,16 +21,24 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
 
-      - name: Generator smoke test
-        # Runs the code generator end-to-end against the bundled spec so that any
-        # crash in the generator (e.g. an unhandled schema shape) is caught here on
-        # every PR, instead of only surfacing in the weekly "Check for new Stripe
-        # OpenAPI spec" job. Output goes to a throwaway dir; we only assert it exits 0.
+      - name: Generated code matches the generator
+        # Regenerates src/ from the spec and versions in Directory.Build.props and fails
+        # if the committed generated files differ: a hand edit, a generator or SpecPatches
+        # change committed without regenerating, or a version bump without regenerating.
+        # It also catches generator crashes on every PR, not only in the weekly spec job.
+        # Output goes to an empty dir, so an extra file in a generated folder fails too.
         run: |
-          mkdir -p "${RUNNER_TEMP}/gen-smoke"
-          dotnet run --project tools/FunStripe.Generator \
-            -- --spec spec/stripe-openapi-2026-04-22.dahlia.json \
-               --output "${RUNNER_TEMP}/gen-smoke"
+          out="${RUNNER_TEMP}/generated"
+          dotnet run --project tools/FunStripe.Generator -- --output "$out"
+          drift=0
+          for path in Stripe StripeRequest StripeIds.fs; do
+            diff -r "$out/$path" "src/$path" > "${RUNNER_TEMP}/drift-$path.txt" || drift=1
+          done
+          if [ "$drift" = 1 ]; then
+            cat "${RUNNER_TEMP}"/drift-*.txt | head -n 200
+            echo "::error::Generated files in src/ do not match the generator's output. Never hand-edit them: change tools/FunStripe.Generator (SpecPatches.fs for spec gaps) and run: dotnet run --project tools/FunStripe.Generator -- --output src"
+            exit 1
+          fi
 
       - name: Restore
         run: dotnet restore
