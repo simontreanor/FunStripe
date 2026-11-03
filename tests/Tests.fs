@@ -2243,3 +2243,48 @@ module Tests =
             Assert.That(body, Does.Contain "filename*=utf-8''log%C3%B6.png")
             Assert.That(body, Does.Not.Contain "%22")
             Assert.That(Result.isOk result, Is.True)
+
+    // =========================================================================
+    // Spec gap probes: what Stripe answers where its spec looks wrong
+    // =========================================================================
+
+    [<TestFixture>]
+    type SpecGapProbes () =
+
+        [<SetUp>]
+        member _.Setup() = assumeStripeKey ()
+
+        ///The spec gives a Checkout Session's `payment_method_options.cashapp.setup_future_usage` the
+        ///single value `none`, so the model makes it a constant, while the request accepts `off_session`
+        ///and `on_session` (the weekly spec gaps report). The raw answer says which is right.
+        [<Test>]
+        member _.``a Checkout Session reports the Cash App setup_future_usage it was created with``() =
+            let options =
+                StripeRequest.Checkout.CheckoutSessions.CreateOptions.New(
+                    mode = StripeRequest.Checkout.CheckoutSessions.Create'Mode.Payment,
+                    customerCreation = StripeRequest.Checkout.CheckoutSessions.Create'CustomerCreation.Always,
+                    allowedPaymentMethodTypes = [ StripeRequest.Checkout.CheckoutSessions.Create'AllowedPaymentMethodTypes.Cashapp ],
+                    lineItems = [
+                        StripeRequest.Checkout.CheckoutSessions.Create'LineItems.New(
+                            priceData =
+                                StripeRequest.Checkout.CheckoutSessions.Create'LineItemsPriceData.New(
+                                    currency = IsoCurrencyCode.USD,
+                                    productData = StripeRequest.Checkout.CheckoutSessions.Create'LineItemsPriceDataProductData.New(name = "FunStripe CI probe"),
+                                    unitAmount = 1000),
+                            quantity = 1) ],
+                    paymentMethodOptions =
+                        StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodOptions.New(
+                            cashapp =
+                                StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodOptionsCashapp.New(
+                                    setupFutureUsage = StripeRequest.Checkout.CheckoutSessions.Create'PaymentMethodOptionsCashappSetupFutureUsage.OffSession)),
+                    successUrl = "https://example.com/success")
+            let result =
+                "/v1/checkout/sessions"
+                |> RestApi.postAsync<_, System.Text.Json.JsonElement> settings Map.empty options
+                |> Async.RunSynchronously
+            match result with
+            | Ok session ->
+                let cashapp = session.GetProperty("payment_method_options").GetProperty("cashapp")
+                TestContext.Out.WriteLine($"payment_method_options.cashapp = {cashapp.GetRawText()}")
+                Assert.That(cashapp.GetProperty("setup_future_usage").GetString(), Is.EqualTo "off_session")
+            | Error e -> Assert.Fail $"Stripe refused the Checkout Session: {e.StripeError.Message}"
