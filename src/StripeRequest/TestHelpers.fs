@@ -83,10 +83,10 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -714,7 +714,7 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Oxxo: string option
             /// If this is a `p24` PaymentMethod, this hash contains details about the P24 payment method.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Create'PaymentMethodDataP24 option
             /// If this is a `pay_by_bank` PaymentMethod, this hash contains details about the PayByBank payment method.
             [<Config.Form>]
@@ -938,10 +938,10 @@ module TestHelpersConfirmationTokens =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -1790,7 +1790,7 @@ module TestHelpersIssuingAuthorizations =
     type Create'VerificationData =
         {
             /// Whether the cardholder provided an address first line and if it matched the cardholder’s `billing.address.line1`.
-            [<Config.Form>]
+            [<JsonPropertyName("address_line1_check"); Config.Form>]
             AddressLine1Check: Create'VerificationDataAddressLine1Check option
             /// Whether the cardholder provided a postal code and if it matched the cardholder’s `billing.address.postal_code`.
             [<Config.Form>]

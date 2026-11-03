@@ -709,6 +709,22 @@ module Tests =
                 "address[postal_code] should be SW1A 1AA")
 
         [<Test>]
+        member _.``field names with embedded digits keep the spec spelling``() =
+            let addr =
+                Customers.Create'AddressOptionalFieldsCustomerAddress.New(line1 = "1 High St", line2 = "Flat 2")
+            let opts = Customers.CreateOptions.New(address = Choice1Of2 addr)
+            let keys = opts |> serialise |> Seq.map fst |> Seq.toList
+            Assert.That(keys, Is.EquivalentTo [ "address[line1]"; "address[line2]" ])
+
+            let cardholder =
+                StripeRequest.Issuing.IssuingCardholders.CreateOptions.New(
+                    StripeRequest.Issuing.IssuingCardholders.Create'Billing.New(
+                        StripeRequest.Issuing.IssuingCardholders.Create'BillingAddress.New(line1 = "1 High St")),
+                    "Zoe Smith")
+            let keys = cardholder |> serialise |> Seq.map fst |> Seq.toList
+            Assert.That(keys, Does.Contain "billing[address][line1]")
+
+        [<Test>]
         member _.``non-empty Map produces metadata bracket keys``() =
             let opts = Customers.CreateOptions.New(metadata = (Map.ofList [("orderId", "42")]))
             let pairs = opts |> serialise |> Seq.toList
@@ -896,7 +912,8 @@ module Tests =
 
         [<Test>]
         member _.``name with trailing digit``() =
-            // Line1 → "line1" (digit boundary triggers split)
+            // Line1 → "line_1" (digit boundary triggers split); generated fields carry
+            // [<JsonPropertyName("line1")>] where the spec spells the name without the split
             let result = Util.snakeCase "Line1"
             Assert.That(result, Is.EqualTo "line_1")
 

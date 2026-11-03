@@ -771,10 +771,10 @@ module Subscriptions =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1 (for example, street, PO Box, or company name).
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2 (for example, apartment, suite, unit, or building).
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -2386,10 +2386,10 @@ module Subscriptions =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1 (for example, street, PO Box, or company name).
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2 (for example, apartment, suite, unit, or building).
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]

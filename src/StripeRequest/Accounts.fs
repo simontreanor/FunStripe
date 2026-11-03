@@ -93,10 +93,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -1223,7 +1223,7 @@ module Accounts =
             [<Config.Form>]
             OxxoPayments: Create'CapabilitiesOxxoPayments option
             /// The p24_payments capability.
-            [<Config.Form>]
+            [<JsonPropertyName("p24_payments"); Config.Form>]
             P24Payments: Create'CapabilitiesP24Payments option
             /// The pay_by_bank_payments capability.
             [<Config.Form>]
@@ -1277,10 +1277,10 @@ module Accounts =
             [<Config.Form>]
             SwishPayments: Create'CapabilitiesSwishPayments option
             /// The tax_reporting_us_1099_k capability.
-            [<Config.Form>]
+            [<JsonPropertyName("tax_reporting_us_1099_k"); Config.Form>]
             TaxReportingUs1099K: Create'CapabilitiesTaxReportingUs1099K option
             /// The tax_reporting_us_1099_misc capability.
-            [<Config.Form>]
+            [<JsonPropertyName("tax_reporting_us_1099_misc"); Config.Form>]
             TaxReportingUs1099Misc: Create'CapabilitiesTaxReportingUs1099Misc option
             /// The transfers capability.
             [<Config.Form>]
@@ -1392,10 +1392,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -1425,10 +1425,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -1462,10 +1462,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -1499,10 +1499,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -1578,10 +1578,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -1611,10 +1611,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -2128,10 +2128,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -2161,10 +2161,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -2198,10 +2198,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -2260,10 +2260,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -3078,10 +3078,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -4208,7 +4208,7 @@ module Accounts =
             [<Config.Form>]
             OxxoPayments: Update'CapabilitiesOxxoPayments option
             /// The p24_payments capability.
-            [<Config.Form>]
+            [<JsonPropertyName("p24_payments"); Config.Form>]
             P24Payments: Update'CapabilitiesP24Payments option
             /// The pay_by_bank_payments capability.
             [<Config.Form>]
@@ -4262,10 +4262,10 @@ module Accounts =
             [<Config.Form>]
             SwishPayments: Update'CapabilitiesSwishPayments option
             /// The tax_reporting_us_1099_k capability.
-            [<Config.Form>]
+            [<JsonPropertyName("tax_reporting_us_1099_k"); Config.Form>]
             TaxReportingUs1099K: Update'CapabilitiesTaxReportingUs1099K option
             /// The tax_reporting_us_1099_misc capability.
-            [<Config.Form>]
+            [<JsonPropertyName("tax_reporting_us_1099_misc"); Config.Form>]
             TaxReportingUs1099Misc: Update'CapabilitiesTaxReportingUs1099Misc option
             /// The transfers capability.
             [<Config.Form>]
@@ -4377,10 +4377,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -4410,10 +4410,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -4447,10 +4447,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -4484,10 +4484,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -4563,10 +4563,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -4596,10 +4596,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -5065,10 +5065,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -5098,10 +5098,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -5135,10 +5135,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -5197,10 +5197,10 @@ module Accounts =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -6202,10 +6202,10 @@ module AccountsExternalAccounts =
             [<Config.Form>]
             AddressCountry: IsoTypes.IsoCountryCode option
             /// Address line 1 (Street address/PO Box/Company name).
-            [<Config.Form>]
+            [<JsonPropertyName("address_line1"); Config.Form>]
             AddressLine1: string option
             /// Address line 2 (Apartment/Suite/Unit/Building).
-            [<Config.Form>]
+            [<JsonPropertyName("address_line2"); Config.Form>]
             AddressLine2: string option
             /// State/County/Province/Region.
             [<Config.Form>]
@@ -6394,10 +6394,10 @@ module AccountsPersons =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -6427,10 +6427,10 @@ module AccountsPersons =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -6464,10 +6464,10 @@ module AccountsPersons =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -6586,10 +6586,10 @@ module AccountsPersons =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -7003,10 +7003,10 @@ module AccountsPersons =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -7036,10 +7036,10 @@ module AccountsPersons =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -7073,10 +7073,10 @@ module AccountsPersons =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -7195,10 +7195,10 @@ module AccountsPersons =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]

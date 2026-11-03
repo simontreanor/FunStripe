@@ -5166,7 +5166,7 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             Oxxo: Create'Oxxo option
             /// Przelewy24 is a Poland-based payment method aggregator that allows customers to complete transactions online using bank transfers and other methods. Bank transfers account for 30% of online payments in Poland and Przelewy24 provides a way for customers to pay with over 165 banks. Check this [page](https://docs.stripe.com/payments/p24) for more details.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Create'P24 option
             /// Configuration's parent configuration. Specify to create a child configuration.
             [<Config.Form>]
@@ -7380,7 +7380,7 @@ module PaymentMethodConfigurations =
             [<Config.Form>]
             Oxxo: Update'Oxxo option
             /// Przelewy24 is a Poland-based payment method aggregator that allows customers to complete transactions online using bank transfers and other methods. Bank transfers account for 30% of online payments in Poland and Przelewy24 provides a way for customers to pay with over 165 banks. Check this [page](https://docs.stripe.com/payments/p24) for more details.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Update'P24 option
             /// Pay by bank is a redirect payment method backed by bank transfers. A customer is redirected to their bank to authorize a bank transfer for a given amount. This removes a lot of the error risks inherent in waiting for the customer to initiate a transfer themselves, and is less expensive than card payments.
             [<Config.Form>]
