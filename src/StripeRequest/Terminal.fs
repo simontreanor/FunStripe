@@ -861,7 +861,7 @@ module TerminalConfigurations =
     type CreateOptions =
         {
             /// An object containing device type specific settings for BBPOS WisePad 3 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("bbpos_wisepad3"); Config.Form>]
             BbposWisepad3: Create'BbposWisepad3 option
             /// An object containing device type specific settings for BBPOS WisePOS E readers.
             [<Config.Form>]
@@ -885,31 +885,31 @@ module TerminalConfigurations =
             [<Config.Form>]
             RebootWindow: Create'RebootWindow option
             /// An object containing device type specific settings for Stripe S700 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("stripe_s700"); Config.Form>]
             StripeS700: Create'StripeS700 option
             /// An object containing device type specific settings for Stripe S710 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("stripe_s710"); Config.Form>]
             StripeS710: Create'StripeS710 option
             /// An object containing device type specific settings for Stripe T600 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("stripe_t600"); Config.Form>]
             StripeT600: Create'StripeT600 option
             /// Tipping configurations for readers that support on-reader tips.
             [<Config.Form>]
             Tipping: Choice<Create'TippingTipping,string> option
             /// An object containing device type specific settings for Verifone M425 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("verifone_m425"); Config.Form>]
             VerifoneM425: Create'VerifoneM425 option
             /// An object containing device type specific settings for Verifone P400 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("verifone_p400"); Config.Form>]
             VerifoneP400: Create'VerifoneP400 option
             /// An object containing device type specific settings for Verifone P630 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("verifone_p630"); Config.Form>]
             VerifoneP630: Create'VerifoneP630 option
             /// An object containing device type specific settings for Verifone UX700 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("verifone_ux700"); Config.Form>]
             VerifoneUx700: Create'VerifoneUx700 option
             /// An object containing device type specific settings for Verifone V660p readers.
-            [<Config.Form>]
+            [<JsonPropertyName("verifone_v660p"); Config.Form>]
             VerifoneV660p: Create'VerifoneV660p option
             /// Configurations for connecting to a WiFi network.
             [<Config.Form>]
@@ -1796,7 +1796,7 @@ module TerminalConfigurations =
             [<Config.Path>]
             Configuration: string
             /// An object containing device type specific settings for BBPOS WisePad 3 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("bbpos_wisepad3"); Config.Form>]
             BbposWisepad3: Choice<Update'BbposWisepad3BbposWisePad3,string> option
             /// An object containing device type specific settings for BBPOS WisePOS E readers.
             [<Config.Form>]
@@ -1820,31 +1820,31 @@ module TerminalConfigurations =
             [<Config.Form>]
             RebootWindow: Choice<Update'RebootWindowRebootWindow,string> option
             /// An object containing device type specific settings for Stripe S700 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("stripe_s700"); Config.Form>]
             StripeS700: Choice<Update'StripeS700StripeS700,string> option
             /// An object containing device type specific settings for Stripe S710 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("stripe_s710"); Config.Form>]
             StripeS710: Choice<Update'StripeS710StripeS710,string> option
             /// An object containing device type specific settings for Stripe T600 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("stripe_t600"); Config.Form>]
             StripeT600: Choice<Update'StripeT600StripeT600,string> option
             /// Tipping configurations for readers that support on-reader tips.
             [<Config.Form>]
             Tipping: Choice<Update'TippingTipping,string> option
             /// An object containing device type specific settings for Verifone M425 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("verifone_m425"); Config.Form>]
             VerifoneM425: Choice<Update'VerifoneM425VerifoneM425,string> option
             /// An object containing device type specific settings for Verifone P400 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("verifone_p400"); Config.Form>]
             VerifoneP400: Choice<Update'VerifoneP400VerifoneP400,string> option
             /// An object containing device type specific settings for Verifone P630 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("verifone_p630"); Config.Form>]
             VerifoneP630: Choice<Update'VerifoneP630VerifoneP630,string> option
             /// An object containing device type specific settings for Verifone UX700 readers.
-            [<Config.Form>]
+            [<JsonPropertyName("verifone_ux700"); Config.Form>]
             VerifoneUx700: Choice<Update'VerifoneUx700VerifoneUx700,string> option
             /// An object containing device type specific settings for Verifone V660p readers.
-            [<Config.Form>]
+            [<JsonPropertyName("verifone_v660p"); Config.Form>]
             VerifoneV660p: Choice<Update'VerifoneV660pVerifoneV660p,string> option
             /// Configurations for connecting to a WiFi network.
             [<Config.Form>]
@@ -1962,10 +1962,10 @@ module TerminalLocations =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -1995,10 +1995,10 @@ module TerminalLocations =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -2032,10 +2032,10 @@ module TerminalLocations =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -2148,10 +2148,10 @@ module TerminalLocations =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -2181,10 +2181,10 @@ module TerminalLocations =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]
@@ -2218,10 +2218,10 @@ module TerminalLocations =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Block or building number.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Building details.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// Postal code.
             [<Config.Form>]

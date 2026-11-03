@@ -227,10 +227,10 @@ module IssuingCardholders =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -1459,10 +1459,10 @@ module IssuingCardholders =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -2702,7 +2702,7 @@ module IssuingCards =
             [<Config.Query>]
             Expand: string list option
             /// Only return cards that have the given last four digits.
-            [<Config.Query>]
+            [<JsonPropertyName("last4"); Config.Query>]
             Last4: string option
             /// A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10.
             [<Config.Query>]
@@ -2791,10 +2791,10 @@ module IssuingCards =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -3993,10 +3993,10 @@ module IssuingCards =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]

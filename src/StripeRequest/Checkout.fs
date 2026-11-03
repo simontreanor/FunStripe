@@ -1174,10 +1174,10 @@ module CheckoutSessions =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -3078,7 +3078,7 @@ module CheckoutSessions =
             [<Config.Form>]
             Oxxo: Create'PaymentMethodOptionsOxxo option
             /// contains details about the P24 payment method options.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Create'PaymentMethodOptionsP24 option
             /// contains details about the Pay By Bank payment method options.
             [<Config.Form>]
@@ -4319,10 +4319,10 @@ module CheckoutSessions =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]

@@ -118,10 +118,10 @@ module Disputes =
             [<Config.Form>]
             Country: Choice<IsoTypes.IsoCountryCode,string> option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: Choice<string,string> option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: Choice<string,string> option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -194,10 +194,10 @@ module Disputes =
             [<Config.Form>]
             Country: Choice<IsoTypes.IsoCountryCode,string> option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: Choice<string,string> option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: Choice<string,string> option
             /// ZIP or postal code.
             [<Config.Form>]

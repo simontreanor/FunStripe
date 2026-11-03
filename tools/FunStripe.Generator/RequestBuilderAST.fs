@@ -32,6 +32,8 @@ module RequestBuilderAST =
         DocLines: string list
         FieldName: string
         FieldType: string
+        /// The form field name, when snake-casing the member name would split an embedded digit (`line1`, `p24`)
+        JsonFieldName: string option
         OptionAttribute: OptionType
         IsRequired: bool
     }
@@ -105,6 +107,7 @@ module RequestBuilderAST =
                 { DocLines = docLines
                   FieldName = v.Name |> pascalCasify
                   FieldType = $"{v.Type}{optionSuffix}"
+                  JsonFieldName = if Regex.IsMatch(v.Name, @"(?<!_)\d") then Some v.Name else None
                   OptionAttribute = v.OptionType
                   IsRequired = req }
             ) |> Array.toList
@@ -458,7 +461,9 @@ module RequestBuilderAST =
                         | Query -> "Config.Query"
                         | Path -> "Config.Path"
                         | Undefined -> "Config.Form"
-                    field.attribute(Attribute(attrName))
+                    match f.JsonFieldName with
+                    | Some n -> field.attributes([ Attribute("JsonPropertyName", ParenExpr(String(n))); Attribute(attrName) ])
+                    | None -> field.attribute(Attribute(attrName))
             }
         } }
         (Gen.mkOak oak |> Gen.run).Trim()

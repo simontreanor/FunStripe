@@ -709,10 +709,10 @@ module PaymentIntents =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -1340,7 +1340,7 @@ module PaymentIntents =
             [<Config.Form>]
             Oxxo: string option
             /// If this is a `p24` PaymentMethod, this hash contains details about the P24 payment method.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Create'PaymentMethodDataP24 option
             /// If this is a `pay_by_bank` PaymentMethod, this hash contains details about the PayByBank payment method.
             [<Config.Form>]
@@ -1802,10 +1802,10 @@ module PaymentIntents =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1 (e.g., street, PO Box, or company name).
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2 (e.g., apartment, suite, unit, or building).
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -4037,7 +4037,7 @@ module PaymentIntents =
             [<Config.Form>]
             Oxxo: Choice<Create'PaymentMethodOptionsOxxoPaymentMethodOptions,string> option
             /// If this is a `p24` PaymentMethod, this sub-hash contains details about the Przelewy24 payment method options.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Choice<Create'PaymentMethodOptionsP24PaymentMethodOptions,string> option
             /// If this is a `pay_by_bank` PaymentMethod, this sub-hash contains details about the PayByBank payment method options.
             [<Config.Form>]
@@ -4200,10 +4200,10 @@ module PaymentIntents =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -5016,10 +5016,10 @@ module PaymentIntents =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -5647,7 +5647,7 @@ module PaymentIntents =
             [<Config.Form>]
             Oxxo: string option
             /// If this is a `p24` PaymentMethod, this hash contains details about the P24 payment method.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Update'PaymentMethodDataP24 option
             /// If this is a `pay_by_bank` PaymentMethod, this hash contains details about the PayByBank payment method.
             [<Config.Form>]
@@ -6109,10 +6109,10 @@ module PaymentIntents =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1 (e.g., street, PO Box, or company name).
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2 (e.g., apartment, suite, unit, or building).
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -8344,7 +8344,7 @@ module PaymentIntents =
             [<Config.Form>]
             Oxxo: Choice<Update'PaymentMethodOptionsOxxoPaymentMethodOptions,string> option
             /// If this is a `p24` PaymentMethod, this sub-hash contains details about the Przelewy24 payment method options.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Choice<Update'PaymentMethodOptionsP24PaymentMethodOptions,string> option
             /// If this is a `pay_by_bank` PaymentMethod, this sub-hash contains details about the PayByBank payment method options.
             [<Config.Form>]
@@ -8490,10 +8490,10 @@ module PaymentIntents =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -9883,10 +9883,10 @@ module PaymentIntentsConfirm =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -10514,7 +10514,7 @@ module PaymentIntentsConfirm =
             [<Config.Form>]
             Oxxo: string option
             /// If this is a `p24` PaymentMethod, this hash contains details about the P24 payment method.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Confirm'PaymentMethodDataP24 option
             /// If this is a `pay_by_bank` PaymentMethod, this hash contains details about the PayByBank payment method.
             [<Config.Form>]
@@ -10977,10 +10977,10 @@ module PaymentIntentsConfirm =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1 (e.g., street, PO Box, or company name).
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2 (e.g., apartment, suite, unit, or building).
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -13212,7 +13212,7 @@ module PaymentIntentsConfirm =
             [<Config.Form>]
             Oxxo: Choice<Confirm'PaymentMethodOptionsOxxoPaymentMethodOptions,string> option
             /// If this is a `p24` PaymentMethod, this sub-hash contains details about the Przelewy24 payment method options.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Choice<Confirm'PaymentMethodOptionsP24PaymentMethodOptions,string> option
             /// If this is a `pay_by_bank` PaymentMethod, this sub-hash contains details about the PayByBank payment method options.
             [<Config.Form>]
@@ -13375,10 +13375,10 @@ module PaymentIntentsConfirm =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -17092,10 +17092,10 @@ module PaymentMethods =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -17810,7 +17810,7 @@ module PaymentMethods =
             [<Config.Form>]
             Oxxo: string option
             /// If this is a `p24` PaymentMethod, this hash contains details about the P24 payment method.
-            [<Config.Form>]
+            [<JsonPropertyName("p24"); Config.Form>]
             P24: Create'P24 option
             /// If this is a `pay_by_bank` PaymentMethod, this hash contains details about the PayByBank payment method.
             [<Config.Form>]
@@ -17991,10 +17991,10 @@ module PaymentMethods =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -18399,10 +18399,10 @@ module PaymentRecordsReportPayment =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -18533,10 +18533,10 @@ module PaymentRecordsReportPayment =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -18705,10 +18705,10 @@ module PaymentRecordsReportPaymentAttempt =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -18807,10 +18807,10 @@ module PaymentRecordsReportPaymentAttempt =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
@@ -19046,10 +19046,10 @@ module PaymentRecordsReportPaymentAttemptInformational =
             [<Config.Form>]
             Country: IsoTypes.IsoCountryCode option
             /// Address line 1, such as the street, PO Box, or company name.
-            [<Config.Form>]
+            [<JsonPropertyName("line1"); Config.Form>]
             Line1: string option
             /// Address line 2, such as the apartment, suite, unit, or building.
-            [<Config.Form>]
+            [<JsonPropertyName("line2"); Config.Form>]
             Line2: string option
             /// ZIP or postal code.
             [<Config.Form>]
