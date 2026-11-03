@@ -3,6 +3,7 @@ namespace StripeRequest.TestHelpers
 open FunStripe
 open System.Text.Json.Serialization
 open Stripe.ConfirmationToken
+open Stripe.FundingInstructions
 open Stripe.IssuingCard
 open Stripe.IssuingPersonalizationDesign
 open Stripe.PaymentMethod
@@ -5168,4 +5169,32 @@ module TestHelpersTreasuryReceivedDebits =
     let Create settings (options: CreateOptions) =
         $"/v1/test_helpers/treasury/received_debits"
         |> RestApi.postAsync<_, TreasuryReceivedDebit> settings (Map.empty) options
+
+module TestHelpersIssuingFundBalance =
+
+    type FundBalanceOptions =
+        {
+            /// The amount to fund, in the smallest currency unit.
+            [<Config.Form>]
+            Amount: int
+            /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode
+            /// Specifies which fields in the response should be expanded.
+            [<Config.Form>]
+            Expand: string list option
+        }
+
+    type FundBalanceOptions with
+        static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?expand: string list) =
+            {
+                Amount = amount
+                Currency = currency
+                Expand = expand
+            }
+
+    ///<p>Updates the Issuing balance as if money had arrived by bank transfer. Test mode only.</p>
+    let FundBalance settings (options: FundBalanceOptions) =
+        $"/v1/test_helpers/issuing/fund_balance"
+        |> RestApi.postAsync<_, FundingInstructions> settings (Map.empty) options
 
