@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
 type IssuingPersonalizationDesignCarrierText =
     {
         /// The footer body text of the carrier letter.

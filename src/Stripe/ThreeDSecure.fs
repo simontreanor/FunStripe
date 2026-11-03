@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
 type ThreeDSecureAuthenticationDirectoryServer =
     | AmericanExpress
     | CartesBancaires

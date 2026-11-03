@@ -6,7 +6,7 @@ open System
 open Stripe.Application
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
 type PaymentLinkApplication'AnyOf =
     | String of string
     | Application of Application
