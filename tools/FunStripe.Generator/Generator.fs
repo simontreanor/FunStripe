@@ -53,9 +53,6 @@ let main argv =
     // Ensure the output directory exists; StripeIds.fs is written to its root directly.
     Directory.CreateDirectory(outputDir') |> ignore
 
-    let normalizeLineEndings (s: string) =
-        s.Replace("\r\n", "\n").Replace("\n", System.Environment.NewLine)
-
     // Resolve the spec path the same way the model builders do; default to the bundled spec
     // for the StripeApiVersion recorded in /Directory.Build.props.
     let resolvedSpecPath =
