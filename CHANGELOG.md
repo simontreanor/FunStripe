@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [Unreleased]
+
+### Fixed
+- **Requests no longer follow redirects.** On a redirect to another host, .NET drops the API key but sends `Stripe-Account` and `Idempotency-Key`, and on a 307 the form body. A 3xx answer is now an `Error`.
+
 ## [3.2.1] - 2026-11-03
 
 ### Added
