@@ -232,19 +232,6 @@ module Invoiceitems =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Invoiceitem: string
-        }
-
-    type DeleteOptions with
-        static member New(invoiceitem: string) =
-            {
-                Invoiceitem = invoiceitem
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -428,6 +415,19 @@ module Invoiceitems =
                 UnitAmountDecimal = unitAmountDecimal
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Invoiceitem: string
+        }
+
+    type DeleteOptions with
+        static member New(invoiceitem: string) =
+            {
+                Invoiceitem = invoiceitem
+            }
+
     ///<p>Returns a list of your invoice items. Invoice items are returned sorted by creation date, with the most recently created invoice items appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("invoice", options.Invoice |> box); ("limit", options.Limit |> box); ("pending", options.Pending |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -439,11 +439,6 @@ module Invoiceitems =
         $"/v1/invoiceitems"
         |> RestApi.postAsync<_, Invoiceitem> settings (Map.empty) options
 
-    ///<p>Deletes an invoice item, removing it from an invoice. Deleting invoice items is only possible when they’re not attached to invoices, or if it’s attached to a draft invoice.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/invoiceitems/{options.Invoiceitem}"
-        |> RestApi.deleteAsync<DeletedInvoiceitem> settings (Map.empty)
-
     ///<p>Retrieves the invoice item with the given ID.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -454,4 +449,9 @@ module Invoiceitems =
     let Update settings (options: UpdateOptions) =
         $"/v1/invoiceitems/{options.Invoiceitem}"
         |> RestApi.postAsync<_, Invoiceitem> settings (Map.empty) options
+
+    ///<p>Deletes an invoice item, removing it from an invoice. Deleting invoice items is only possible when they’re not attached to invoices, or if it’s attached to a draft invoice.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/invoiceitems/{options.Invoiceitem}"
+        |> RestApi.deleteAsync<DeletedInvoiceitem> settings (Map.empty)
 

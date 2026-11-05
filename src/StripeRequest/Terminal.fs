@@ -939,19 +939,6 @@ module TerminalConfigurations =
                 Wifi = wifi
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Configuration: string
-        }
-
-    type DeleteOptions with
-        static member New(configuration: string) =
-            {
-                Configuration = configuration
-            }
-
     type RetrieveOptions =
         {
             /// Unique identifier for the object.
@@ -1875,6 +1862,19 @@ module TerminalConfigurations =
                 Wifi = wifi
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Configuration: string
+        }
+
+    type DeleteOptions with
+        static member New(configuration: string) =
+            {
+                Configuration = configuration
+            }
+
     ///<p>Returns a list of <code>Configuration</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("is_account_default", options.IsAccountDefault |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -1886,11 +1886,6 @@ module TerminalConfigurations =
         $"/v1/terminal/configurations"
         |> RestApi.postAsync<_, TerminalConfiguration> settings (Map.empty) options
 
-    ///<p>Deletes a <code>Configuration</code> object.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/terminal/configurations/{options.Configuration}"
-        |> RestApi.deleteAsync<DeletedTerminalConfiguration> settings (Map.empty)
-
     ///<p>Retrieves a <code>Configuration</code> object.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -1901,6 +1896,11 @@ module TerminalConfigurations =
     let Update settings (options: UpdateOptions) =
         $"/v1/terminal/configurations/{options.Configuration}"
         |> RestApi.postAsync<_, TerminalConfiguration> settings (Map.empty) options
+
+    ///<p>Deletes a <code>Configuration</code> object.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/terminal/configurations/{options.Configuration}"
+        |> RestApi.deleteAsync<DeletedTerminalConfiguration> settings (Map.empty)
 
 module TerminalConnectionTokens =
 
@@ -2109,19 +2109,6 @@ module TerminalLocations =
                 Phone = phone
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Location: string
-        }
-
-    type DeleteOptions with
-        static member New(location: string) =
-            {
-                Location = location
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2299,6 +2286,19 @@ module TerminalLocations =
                 Phone = phone
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Location: string
+        }
+
+    type DeleteOptions with
+        static member New(location: string) =
+            {
+                Location = location
+            }
+
     ///<p>Returns a list of <code>Location</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -2311,11 +2311,6 @@ module TerminalLocations =
         $"/v1/terminal/locations"
         |> RestApi.postAsync<_, TerminalLocation> settings (Map.empty) options
 
-    ///<p>Deletes a <code>Location</code> object.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/terminal/locations/{options.Location}"
-        |> RestApi.deleteAsync<DeletedTerminalLocation> settings (Map.empty)
-
     ///<p>Retrieves a <code>Location</code> object.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -2326,6 +2321,11 @@ module TerminalLocations =
     let Update settings (options: UpdateOptions) =
         $"/v1/terminal/locations/{options.Location}"
         |> RestApi.postAsync<_, TerminalLocation> settings (Map.empty) options
+
+    ///<p>Deletes a <code>Location</code> object.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/terminal/locations/{options.Location}"
+        |> RestApi.deleteAsync<DeletedTerminalLocation> settings (Map.empty)
 
 module TerminalOnboardingLinks =
 
@@ -2463,19 +2463,6 @@ module TerminalReaders =
                 Metadata = metadata
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Reader: string
-        }
-
-    type DeleteOptions with
-        static member New(reader: string) =
-            {
-                Reader = reader
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2518,6 +2505,19 @@ module TerminalReaders =
                 Metadata = metadata
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Reader: string
+        }
+
+    type DeleteOptions with
+        static member New(reader: string) =
+            {
+                Reader = reader
+            }
+
     ///<p>Returns a list of <code>Reader</code> objects.</p>
     let List settings (options: ListOptions) =
         let qs = [("device_type", options.DeviceType |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("location", options.Location |> box); ("serial_number", options.SerialNumber |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
@@ -2529,11 +2529,6 @@ module TerminalReaders =
         $"/v1/terminal/readers"
         |> RestApi.postAsync<_, TerminalReader> settings (Map.empty) options
 
-    ///<p>Deletes a <code>Reader</code> object.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/terminal/readers/{options.Reader}"
-        |> RestApi.deleteAsync<DeletedTerminalReader> settings (Map.empty)
-
     ///<p>Retrieves a <code>Reader</code> object.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -2544,6 +2539,11 @@ module TerminalReaders =
     let Update settings (options: UpdateOptions) =
         $"/v1/terminal/readers/{options.Reader}"
         |> RestApi.postAsync<_, TerminalReader> settings (Map.empty) options
+
+    ///<p>Deletes a <code>Reader</code> object.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/terminal/readers/{options.Reader}"
+        |> RestApi.deleteAsync<DeletedTerminalReader> settings (Map.empty)
 
 module TerminalReadersCancelAction =
 

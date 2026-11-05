@@ -7901,46 +7901,6 @@ module SubscriptionItems =
                 TaxRates = taxRates
             }
 
-    type Delete'PaymentBehavior =
-        | AllowIncomplete
-        | DefaultIncomplete
-        | ErrorIfIncomplete
-        | PendingIfIncomplete
-
-    type Delete'ProrationBehavior =
-        | AlwaysInvoice
-        | CreateProrations
-        | [<JsonPropertyName("none")>] None'
-
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Item: string
-            /// Delete all usage for the given subscription item. Allowed only when the current plan's `usage_type` is `metered`.
-            [<Config.Form>]
-            ClearUsage: bool option
-            /// Controls how Stripe handles payment when a subscription update requires payment and `collection_method=charge_automatically`.
-            [<Config.Form>]
-            PaymentBehavior: Delete'PaymentBehavior option
-            /// Determines how to handle [prorations](https://docs.stripe.com/billing/subscriptions/prorations) when the billing cycle changes (e.g., when switching plans, resetting `billing_cycle_anchor=now`, or starting a trial), or if an item's `quantity` changes. The default value is `create_prorations`.
-            [<Config.Form>]
-            ProrationBehavior: Delete'ProrationBehavior option
-            /// If set, the proration will be calculated as though the subscription was updated at the given time. This can be used to apply the same proration that was previewed with the [upcoming invoice](/api/invoices/create_preview) endpoint.
-            [<Config.Form>]
-            ProrationDate: DateTime option
-        }
-
-    type DeleteOptions with
-        static member New(item: string, ?clearUsage: bool, ?paymentBehavior: Delete'PaymentBehavior, ?prorationBehavior: Delete'ProrationBehavior, ?prorationDate: DateTime) =
-            {
-                Item = item
-                ClearUsage = clearUsage
-                PaymentBehavior = paymentBehavior
-                ProrationBehavior = prorationBehavior
-                ProrationDate = prorationDate
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -8146,6 +8106,46 @@ module SubscriptionItems =
                 TaxRates = taxRates
             }
 
+    type Delete'PaymentBehavior =
+        | AllowIncomplete
+        | DefaultIncomplete
+        | ErrorIfIncomplete
+        | PendingIfIncomplete
+
+    type Delete'ProrationBehavior =
+        | AlwaysInvoice
+        | CreateProrations
+        | [<JsonPropertyName("none")>] None'
+
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Item: string
+            /// Delete all usage for the given subscription item. Allowed only when the current plan's `usage_type` is `metered`.
+            [<Config.Form>]
+            ClearUsage: bool option
+            /// Controls how Stripe handles payment when a subscription update requires payment and `collection_method=charge_automatically`.
+            [<Config.Form>]
+            PaymentBehavior: Delete'PaymentBehavior option
+            /// Determines how to handle [prorations](https://docs.stripe.com/billing/subscriptions/prorations) when the billing cycle changes (e.g., when switching plans, resetting `billing_cycle_anchor=now`, or starting a trial), or if an item's `quantity` changes. The default value is `create_prorations`.
+            [<Config.Form>]
+            ProrationBehavior: Delete'ProrationBehavior option
+            /// If set, the proration will be calculated as though the subscription was updated at the given time. This can be used to apply the same proration that was previewed with the [upcoming invoice](/api/invoices/create_preview) endpoint.
+            [<Config.Form>]
+            ProrationDate: DateTime option
+        }
+
+    type DeleteOptions with
+        static member New(item: string, ?clearUsage: bool, ?paymentBehavior: Delete'PaymentBehavior, ?prorationBehavior: Delete'ProrationBehavior, ?prorationDate: DateTime) =
+            {
+                Item = item
+                ClearUsage = clearUsage
+                PaymentBehavior = paymentBehavior
+                ProrationBehavior = prorationBehavior
+                ProrationDate = prorationDate
+            }
+
     ///<p>Returns a list of your subscription items for a given subscription.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("subscription", options.Subscription |> box)] |> Map.ofList
@@ -8157,11 +8157,6 @@ module SubscriptionItems =
         $"/v1/subscription_items"
         |> RestApi.postAsync<_, SubscriptionItem> settings (Map.empty) options
 
-    ///<p>Deletes an item from the subscription. Removing a subscription item from a subscription will not cancel the subscription.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/subscription_items/{options.Item}"
-        |> RestApi.deleteAsync<DeletedSubscriptionItem> settings (Map.empty)
-
     ///<p>Retrieves the subscription item with the given ID.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -8172,6 +8167,11 @@ module SubscriptionItems =
     let Update settings (options: UpdateOptions) =
         $"/v1/subscription_items/{options.Item}"
         |> RestApi.postAsync<_, SubscriptionItem> settings (Map.empty) options
+
+    ///<p>Deletes an item from the subscription. Removing a subscription item from a subscription will not cancel the subscription.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/subscription_items/{options.Item}"
+        |> RestApi.deleteAsync<DeletedSubscriptionItem> settings (Map.empty)
 
 module SubscriptionSchedules =
 

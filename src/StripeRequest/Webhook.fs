@@ -479,19 +479,6 @@ module WebhookEndpoints =
                 Metadata = metadata
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            WebhookEndpoint: string
-        }
-
-    type DeleteOptions with
-        static member New(webhookEndpoint: string) =
-            {
-                WebhookEndpoint = webhookEndpoint
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -824,6 +811,19 @@ module WebhookEndpoints =
                 Url = url
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            WebhookEndpoint: string
+        }
+
+    type DeleteOptions with
+        static member New(webhookEndpoint: string) =
+            {
+                WebhookEndpoint = webhookEndpoint
+            }
+
     ///<p>Returns a list of your webhook endpoints.</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -835,11 +835,6 @@ module WebhookEndpoints =
         $"/v1/webhook_endpoints"
         |> RestApi.postAsync<_, WebhookEndpoint> settings (Map.empty) options
 
-    ///<p>You can also delete webhook endpoints via the <a href="https://dashboard.stripe.com/account/webhooks">webhook endpoint management</a> page of the Stripe dashboard.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/webhook_endpoints/{options.WebhookEndpoint}"
-        |> RestApi.deleteAsync<DeletedWebhookEndpoint> settings (Map.empty)
-
     ///<p>Retrieves the webhook endpoint with the given ID.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -850,4 +845,9 @@ module WebhookEndpoints =
     let Update settings (options: UpdateOptions) =
         $"/v1/webhook_endpoints/{options.WebhookEndpoint}"
         |> RestApi.postAsync<_, WebhookEndpoint> settings (Map.empty) options
+
+    ///<p>You can also delete webhook endpoints via the <a href="https://dashboard.stripe.com/account/webhooks">webhook endpoint management</a> page of the Stripe dashboard.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/webhook_endpoints/{options.WebhookEndpoint}"
+        |> RestApi.deleteAsync<DeletedWebhookEndpoint> settings (Map.empty)
 

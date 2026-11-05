@@ -12,7 +12,7 @@
 // Compare against the spec with SpecPatches applied, so patched gaps drop off by themselves:
 //
 //     dotnet run --project tools/FunStripe.Generator -- --patched-spec patched.json
-//     dotnet fsi tools/SpecGaps.fsx --spec patched.json --other-spec "latest GA=spec3.sdk.json" ...
+//     dotnet fsi tools/SpecGaps.fsx --spec patched.json --other-spec "latest GA=openapi.spec3.sdk.json" ...
 //
 // Known gaps that need no patch go in tools/spec_gaps_known.txt.
 
@@ -27,7 +27,7 @@ let usage =
     """Usage: dotnet fsi tools/SpecGaps.fsx --spec <path> --report <path> --new <path> [options]
 
   --spec <path>               our spec, with SpecPatches applied
-  --other-spec <label=path>   another Stripe spec to classify gaps by, e.g. "beta=spec3.beta.sdk.json"
+  --other-spec <label=path>   another Stripe spec to classify gaps by, e.g. "public preview=openapi.spec3.sdk.json"
                               (repeatable; checked in the order given)
   --known <path>              known gaps (default: tools/spec_gaps_known.txt)
   --previous <path>           the issue body of the last run, to list what is new
