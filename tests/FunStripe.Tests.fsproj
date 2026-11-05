@@ -8,6 +8,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tests.fs" />
+    <Compile Include="RedirectTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="FSharp.Core" />

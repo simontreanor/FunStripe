@@ -146,6 +146,16 @@ module RestApi =
         | "" -> ""
         | _ -> $"?{options'}"
 
+    ///Requests don't follow redirects: the form body and headers such as `Stripe-Account` would go to wherever one points.
+    let private noRedirects (request: System.Net.HttpWebRequest) =
+        request.AllowAutoRedirect <- false
+        request
+
+    ///The error for a redirect, which has no Stripe error in its body.
+    let private redirected (status: int) =
+        $"""{{"error":{{"message":"Stripe answered HTTP {status}, a redirect, which isn't followed.","type":"api_error"}}}}"""
+        |> Util.deserialise<StripeError.ErrorResponse>
+
     ///Parse response from API and convert it to a `Result`
     let parseResponse<'a> (r: HttpResponse) =
         match r.StatusCode with
@@ -154,6 +164,7 @@ module RestApi =
                 |> function Text t -> t | Binary _ -> ""
                 |> Util.deserialise<'a>
                 |> Ok
+        | sc when sc >= 300 && sc <= 399 -> redirected sc |> Error
         | _ ->
             r.Body
             |> function Text t -> t | Binary _ -> ""
@@ -164,7 +175,7 @@ module RestApi =
     let getAsync<'a> settings queryStringOptions (url: string) =
         let queryString = queryStringOptions |> formatQueryString
         async {
-            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get)
+            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, customizeHttpRequest = noRedirects, httpMethod = HttpMethod.Get)
             return response |> parseResponse<'a>
         }
 
@@ -173,7 +184,7 @@ module RestApi =
         let queryString = queryStringOptions |> formatQueryString
         let formValues = data |> Util.serialiseForm |> FormValues
         async {
-            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Get, body = formValues)
+            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, customizeHttpRequest = noRedirects, httpMethod = HttpMethod.Get, body = formValues)
             return response |> parseResponse<'b>
         }
 
@@ -182,7 +193,7 @@ module RestApi =
         let queryString = queryStringOptions |> formatQueryString
         let formValues = data |> Util.serialiseForm |> FormValues
         async {
-            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post, body = formValues)
+            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, customizeHttpRequest = noRedirects, httpMethod = HttpMethod.Post, body = formValues)
             return response |> parseResponse<'b>
         }
 
@@ -190,11 +201,11 @@ module RestApi =
     let postWithoutAsync<'a> settings queryStringOptions (url: string) =
         let queryString = queryStringOptions |> formatQueryString
         async {
-            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Post)
+            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, customizeHttpRequest = noRedirects, httpMethod = HttpMethod.Post)
             return response |> parseResponse<'a>
         }
 
-    let private httpClient = lazy (new System.Net.Http.HttpClient())
+    let private httpClient = lazy (new System.Net.Http.HttpClient(new System.Net.Http.HttpClientHandler(AllowAutoRedirect = false)))
 
     ///Make a `POST` request with a `multipart/form-data` body to the files host (file uploads).
     ///`FileUpload` fields become file parts; the other form fields are encoded as for `postAsync`.
@@ -246,6 +257,7 @@ module RestApi =
             let! body = response.Content.ReadAsStringAsync() |> Async.AwaitTask
             return
                 if response.IsSuccessStatusCode then body |> Util.deserialise<'b> |> Ok
+                elif int response.StatusCode >= 300 && int response.StatusCode <= 399 then redirected (int response.StatusCode) |> Error
                 else body |> Util.deserialise<StripeError.ErrorResponse> |> Error
         }
 
@@ -253,7 +265,7 @@ module RestApi =
     let deleteAsync<'a> settings queryStringOptions (url: string) =
         let queryString = queryStringOptions |> formatQueryString
         async {
-            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, httpMethod = HttpMethod.Delete)
+            let! response = Http.AsyncRequest ($"{settings.BaseUrl}{url}{queryString}", headers = createHeader settings, silentHttpErrors = true, customizeHttpRequest = noRedirects, httpMethod = HttpMethod.Delete)
             return response |> parseResponse<'a>
         }
 
