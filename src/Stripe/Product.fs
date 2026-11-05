@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.Tax
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
 type DeletedProduct =
     {
         /// Always true for a deleted object

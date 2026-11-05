@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.PaymentRecord
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
 module PaymentAttemptRecords =
 
     type ListOptions =
@@ -8779,7 +8779,7 @@ module PaymentIntentsSearch =
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
         $"/v1/payment_intents/search"
-        |> RestApi.getAsync<StripeList<PaymentIntent>> settings qs
+        |> RestApi.getAsync<StripeSearchResult<PaymentIntent>> settings qs
 
 module PaymentIntentsAmountDetailsLineItems =
 

@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Identity
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
 module IdentityVerificationReports =
 
     type ListOptions =

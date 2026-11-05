@@ -6,7 +6,7 @@ open System
 open Stripe.PaymentMethod
 open Stripe.TaxRate
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
 type CreditNoteLineItemType =
     | CustomLineItem
     | InvoiceLineItem

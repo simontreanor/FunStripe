@@ -2,8 +2,8 @@
 //
 // A new spec version is a minor bump; Stripe updating the targeted spec in place is a patch bump
 // (see Directory.Build.props). Sets FunStripeVersion and StripeApiVersion in Directory.Build.props,
-// adds a CHANGELOG.md entry above the latest release, writes the pull request body, and writes
-// next, title, subject, branch and body_path to GITHUB_OUTPUT.
+// adds a CHANGELOG.md entry above the latest release (or makes [Unreleased] the entry), writes the
+// pull request body, and writes next, title, subject, branch and body_path to GITHUB_OUTPUT.
 //
 //     dotnet fsi tools/BumpSpecVersion.fsx --kind new --spec-version 2026-10-28.endive --tag v2214 --body pr-body.md
 
@@ -96,16 +96,31 @@ let note, title, branch, intro, bumpCheck =
         + $"bumped to **`{next}`**:",
         "- [ ] Confirm the bump is right (a refresh that removes or retypes anything needs a minor or major bump instead)"
 
-// The entry goes above the most recent release heading
+// The entry goes above the most recent release heading. Changes waiting under [Unreleased] ship in
+// this release, so that section becomes the entry, with the note first under its ### Changed.
 let changelog = File.ReadAllText changelogPath
 let latest = changelog.IndexOf("## [", StringComparison.Ordinal)
 if latest < 0 then fail $"No release heading (## [) in {changelogPath}"
 let date = DateTime.UtcNow.ToString("yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
-let entry = $"## [{next}] - {date}\n\n### Changed\n- {note}\n\n"
+let heading = $"## [{next}] - {date}"
+let newChangelog =
+    let unreleased = Regex.Match(changelog.Substring latest, @"\A## \[Unreleased\][^\n]*\n")
+    if unreleased.Success then
+        let sectionStart = latest + unreleased.Length
+        let nextHeading = changelog.IndexOf("\n## [", sectionStart, StringComparison.Ordinal)
+        let sectionEnd = if nextHeading < 0 then changelog.Length else nextHeading + 1
+        let section = changelog.Substring(sectionStart, sectionEnd - sectionStart)
+        let changed = Regex.Match(section, @"^### Changed[^\n]*\n", RegexOptions.Multiline)
+        let section' =
+            if changed.Success then section.Insert(changed.Index + changed.Length, $"- {note}\n")
+            else $"\n### Changed\n- {note}\n" + section
+        changelog.Substring(0, latest) + heading + "\n" + section' + changelog.Substring sectionEnd
+    else
+        changelog.Insert(latest, $"{heading}\n\n### Changed\n- {note}\n\n")
 
 // Written only once everything has been checked, so a failure leaves both files as they were
 File.WriteAllText(propsPath, props |> setElement "FunStripeVersion" next |> setElement "StripeApiVersion" spec)
-File.WriteAllText(changelogPath, changelog.Insert(latest, entry))
+File.WriteAllText(changelogPath, newChangelog)
 
 let major = next.Split('.').[0]
 let body =

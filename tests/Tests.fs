@@ -1265,6 +1265,59 @@ module Tests =
             let result = Util.deserialise<StripeList<Stripe.PaymentMethod.Customer>> json
             Assert.That(result.HasMore, Is.True)
 
+    [<TestFixture>]
+    type StripeSearchResultUnitTests () =
+
+        [<Test>]
+        member _.``a search answer gives the cursor for the next page``() =
+            let json = """{"object":"search_result","data":[],"has_more":true,"next_page":"abc","total_count":42,"url":"/v1/customers/search"}"""
+            let result = Util.deserialise<StripeSearchResult<Stripe.PaymentMethod.Customer>> json
+            Assert.That(result.HasMore, Is.True)
+            Assert.That(result.NextPage, Is.EqualTo(Some "abc"))
+            Assert.That(result.TotalCount, Is.EqualTo(Some 42))
+
+        [<Test>]
+        member _.``the last page of a search has no cursor``() =
+            let json = """{"object":"search_result","data":[],"has_more":false,"next_page":null,"url":"/v1/customers/search"}"""
+            let result = Util.deserialise<StripeSearchResult<Stripe.PaymentMethod.Customer>> json
+            Assert.That(result.HasMore, Is.False)
+            Assert.That(result.NextPage, Is.EqualTo None)
+            Assert.That(result.TotalCount, Is.EqualTo None)
+
+        [<Test>]
+        member _.``searchAllAsync follows next_page to the end``() =
+            let asked = ResizeArray<string option>()
+
+            let search _ (page: string option) =
+                async {
+                    asked.Add page
+
+                    return
+                        match page with
+                        | None -> Ok(StripeSearchResult.New([ 1; 2 ], true, Some "second", "/v1/x/search"))
+                        | Some "second" -> Ok(StripeSearchResult.New([ 3 ], true, Some "third", "/v1/x/search"))
+                        | _ -> Ok(StripeSearchResult.New([ 4 ], false, None, "/v1/x/search"))
+                }
+
+            let result =
+                RestApi.searchAllAsync search (fun next _ -> Some next) Unchecked.defaultof<_> None
+                |> Async.RunSynchronously
+
+            match result with
+            | Ok items ->
+                Assert.That((items = [ 1; 2; 3; 4 ]), Is.True)
+                Assert.That((List.ofSeq asked = [ None; Some "second"; Some "third" ]), Is.True)
+            | Error e -> Assert.Fail(sprintf "Error: %A" e)
+
+        [<Test>]
+        member _.``the generated search functions fit searchAllAsync (checked when compiling)``() =
+            let prices =
+                RestApi.searchAllAsync
+                    StripeRequest.Prices.PricesSearch.Search
+                    (fun page (options: StripeRequest.Prices.PricesSearch.SearchOptions) -> { options with Page = Some page })
+
+            Assert.That(box prices, Is.Not.Null)
+
     // =========================================================================
     // J. ErrorResponse deserialization + union case utilities
     // =========================================================================

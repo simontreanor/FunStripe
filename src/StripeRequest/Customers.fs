@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.TaxId
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
 module Customers =
 
     type ListOptions =
@@ -906,7 +906,7 @@ module CustomersSearch =
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
         $"/v1/customers/search"
-        |> RestApi.getAsync<StripeList<Customer>> settings qs
+        |> RestApi.getAsync<StripeSearchResult<Customer>> settings qs
 
 module CustomersBalanceTransactions =
 

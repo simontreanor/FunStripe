@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
 module Subscriptions =
 
     type ListOptions =
@@ -3282,7 +3282,7 @@ module SubscriptionsSearch =
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
         $"/v1/subscriptions/search"
-        |> RestApi.getAsync<StripeList<Subscription>> settings qs
+        |> RestApi.getAsync<StripeSearchResult<Subscription>> settings qs
 
 module SubscriptionsDiscount =
 

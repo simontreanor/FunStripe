@@ -6,7 +6,7 @@ open Stripe.Product
 open Stripe.ProductFeature
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
 module Products =
 
     type ListOptions =
@@ -511,7 +511,7 @@ module ProductsSearch =
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
         $"/v1/products/search"
-        |> RestApi.getAsync<StripeList<Product>> settings qs
+        |> RestApi.getAsync<StripeSearchResult<Product>> settings qs
 
 module ProductsFeatures =
 
