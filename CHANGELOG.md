@@ -6,17 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
-## [Unreleased]
+## [3.3.0] - 2026-11-05
 
-### Changed
-- **Breaking: `Search` functions return `StripeSearchResult<T>`** instead of `StripeList<T>`. `Data`, `HasMore` and `Url` are as before; `NextPage` is new.
+### Upgrade notes
+- The seven `Search` functions (charges, customers, invoices, payment intents, prices, products and subscriptions) return `StripeSearchResult<'T>` where they returned `StripeList<'T>` (see Fixed). `Data`, `HasMore` and `Url` are as before, so code that only reads them compiles unchanged; code that names the type now names `StripeSearchResult<Customer>` and so on. Read every page with `RestApi.searchAllAsync`: `RestApi.listAllAsync` can't page a search, which ignores `starting_after`.
+- As with 3.2.0, this ships as a minor release. Generated types change; the hand-written API only gains `searchAllAsync`.
 
 ### Added
-- `RestApi.searchAllAsync` reads every page of a search.
+- **`RestApi.searchAllAsync`** reads every page of a search, following each answer's `next_page` until `has_more` is false ([#64](https://github.com/simontreanor/FunStripe/pull/64), thanks [Thorium](https://github.com/Thorium)).
+- `StripeSearchResult` has the search's `NextPage`, and its `TotalCount` when the search expands `total_count`.
 
 ### Fixed
-- **A search's later pages can be reached.** `StripeList` has no `next_page`, which is the cursor a search's `Page` takes, so only the first page could be read.
-- **Requests no longer follow redirects.** On a redirect to another host, .NET drops the API key but sends `Stripe-Account` and `Idempotency-Key`, and on a 307 the form body. A 3xx answer is now an `Error`.
+- **A search's later pages can be read** ([#64](https://github.com/simontreanor/FunStripe/pull/64)). A search continues from the `next_page` its answer gives, passed as the search's `Page`, not from the last item's id as a list does. `StripeList` had no `next_page`, so only a search's first page could be read. Lists were unaffected.
+- **Requests don't follow redirects** ([#63](https://github.com/simontreanor/FunStripe/pull/63), thanks [Thorium](https://github.com/Thorium)). A redirect could take headers such as `Stripe-Account` and `Idempotency-Key`, and on a 307 the form body, to another host. A 3xx answer is now an `Error`.
 
 ## [3.2.1] - 2026-11-03
 

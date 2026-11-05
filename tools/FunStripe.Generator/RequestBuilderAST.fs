@@ -248,7 +248,9 @@ module RequestBuilderAST =
                                         match responseSchema.TryGetProperty("properties") with
                                         | Some jv ->
                                             let listType = jv.GetProperty("data").GetProperty("items").GetProperty("$ref").AsString()
-                                            $"{listType |> parseRef |> pascalCasify} list"
+                                            // A search continues from the next_page its answer gives; a list, from its last item's id
+                                            let kind = match jv.TryGetProperty("next_page") with Some _ -> "search" | None -> "list"
+                                            $"{listType |> parseRef |> pascalCasify} {kind}"
                                         | _ ->
                                             failwith $"Unhandled response type: {moduleName}"
                             | _ ->
@@ -379,8 +381,8 @@ module RequestBuilderAST =
         for td in typeDefs do
             match td with
             | RequestFunction(_, _, _, call) ->
-                // Response type may be "TypeName" or "TypeName list"
-                let respType = call.ResponseType.Replace(" list", "").Trim()
+                // Response type may be "TypeName", "TypeName list" or "TypeName search"
+                let respType = call.ResponseType.Replace(" list", "").Replace(" search", "").Trim()
                 result.Add(respType)
             | _ -> ()
         result |> Set.ofSeq
@@ -529,16 +531,13 @@ module RequestBuilderAST =
 
         sb.ToString()
 
-    /// Convert a response type string: "TypeName list" -> "StripeList<TypeName>", or
-    /// "StripeSearchResult<TypeName>" for a search, whose next page takes a cursor from the answer. Others unchanged.
-    let formatResponseType (functionName: string) (responseType: string) =
+    /// Convert a response type string: "TypeName list" -> "StripeList<TypeName>", "TypeName search" ->
+    /// "StripeSearchResult<TypeName>" (a search's next page takes a cursor from its answer). Others unchanged.
+    let formatResponseType (responseType: string) =
         if responseType.EndsWith(" list") then
-            let innerType = responseType.[..responseType.Length - 6]
-
-            if functionName = "Search" then
-                $"StripeSearchResult<{innerType}>"
-            else
-                $"StripeList<{innerType}>"
+            $"StripeList<{responseType.[..responseType.Length - 6]}>"
+        elif responseType.EndsWith(" search") then
+            $"StripeSearchResult<{responseType.[..responseType.Length - 8]}>"
         else
             responseType
 
@@ -581,7 +580,7 @@ module RequestBuilderAST =
             if call.HasQueryOptions && not call.QueryFields.IsEmpty then " qs"
             else " (Map.empty)"
 
-        let responseTypeStr = formatResponseType name call.ResponseType
+        let responseTypeStr = formatResponseType call.ResponseType
 
         match call.HttpVerb with
         | "get" when call.HasFormOptions ->

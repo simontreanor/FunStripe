@@ -1,6 +1,6 @@
 namespace FunStripe
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
 [<AutoOpen>]
 module StripeIds =
 
@@ -34,16 +34,18 @@ module StripeIds =
         HasMore: bool
         ///The cursor to pass as the search's Page for the next page, while there is one.
         NextPage: string option
+        ///The number of objects that match the search, accurate up to 10,000. Only there when the search expands `total_count`.
+        TotalCount: int option
         ///The URL where this search can be accessed.
         Url: string
     }
         with
             ///String representing the object's type. Always has the value `search_result`.
             member _.Object = "search_result"
-            static member New (data: 'T list, hasMore: bool, nextPage: string option, url: string) =
-                { Data = data; HasMore = hasMore; NextPage = nextPage; Url = url }
+            static member New (data: 'T list, hasMore: bool, nextPage: string option, url: string, ?totalCount: int) =
+                { Data = data; HasMore = hasMore; NextPage = nextPage; TotalCount = totalCount; Url = url }
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
 module Markers =
 
     // Phantom marker types — one per resource that appears as a single-target
@@ -124,7 +126,7 @@ module Markers =
     type TransferReversal = class end
     type TreasuryTransaction = class end
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
 module SpecInfo =
 
     /// The Stripe API date-version (the spec's `info.version`) this build was generated from.

@@ -1270,10 +1270,11 @@ module Tests =
 
         [<Test>]
         member _.``a search answer gives the cursor for the next page``() =
-            let json = """{"object":"search_result","data":[],"has_more":true,"next_page":"abc","url":"/v1/customers/search"}"""
+            let json = """{"object":"search_result","data":[],"has_more":true,"next_page":"abc","total_count":42,"url":"/v1/customers/search"}"""
             let result = Util.deserialise<StripeSearchResult<Stripe.PaymentMethod.Customer>> json
             Assert.That(result.HasMore, Is.True)
             Assert.That(result.NextPage, Is.EqualTo(Some "abc"))
+            Assert.That(result.TotalCount, Is.EqualTo(Some 42))
 
         [<Test>]
         member _.``the last page of a search has no cursor``() =
@@ -1281,6 +1282,7 @@ module Tests =
             let result = Util.deserialise<StripeSearchResult<Stripe.PaymentMethod.Customer>> json
             Assert.That(result.HasMore, Is.False)
             Assert.That(result.NextPage, Is.EqualTo None)
+            Assert.That(result.TotalCount, Is.EqualTo None)
 
         [<Test>]
         member _.``searchAllAsync follows next_page to the end``() =
@@ -1308,7 +1310,7 @@ module Tests =
             | Error e -> Assert.Fail(sprintf "Error: %A" e)
 
         [<Test>]
-        member _.``the generated search functions fit searchAllAsync``() =
+        member _.``the generated search functions fit searchAllAsync (checked when compiling)``() =
             let prices =
                 RestApi.searchAllAsync
                     StripeRequest.Prices.PricesSearch.Search
