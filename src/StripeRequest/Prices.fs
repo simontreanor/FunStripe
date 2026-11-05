@@ -457,5 +457,5 @@ module PricesSearch =
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
         $"/v1/prices/search"
-        |> RestApi.getAsync<StripeList<Price>> settings qs
+        |> RestApi.getAsync<StripeSearchResult<Price>> settings qs
 

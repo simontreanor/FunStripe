@@ -4361,7 +4361,7 @@ module InvoicesSearch =
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
         $"/v1/invoices/search"
-        |> RestApi.getAsync<StripeList<Invoice>> settings qs
+        |> RestApi.getAsync<StripeSearchResult<Invoice>> settings qs
 
 module InvoicesAddLines =
 

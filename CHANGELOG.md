@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [Unreleased]
+
+### Changed
+- **Breaking: `Search` functions return `StripeSearchResult<T>`** instead of `StripeList<T>`. `Data`, `HasMore` and `Url` are as before; `NextPage` is new.
+
+### Added
+- `RestApi.searchAllAsync` reads every page of a search.
+
+### Fixed
+- **A search's later pages can be reached.** `StripeList` has no `next_page`, which is the cursor a search's `Page` takes, so only the first page could be read.
+
 ## [3.2.1] - 2026-11-03
 
 ### Added

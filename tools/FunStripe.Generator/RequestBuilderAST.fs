@@ -529,11 +529,16 @@ module RequestBuilderAST =
 
         sb.ToString()
 
-    /// Convert a response type string: "TypeName list" -> "StripeList<TypeName>", others unchanged.
-    let formatResponseType (responseType: string) =
+    /// Convert a response type string: "TypeName list" -> "StripeList<TypeName>", or
+    /// "StripeSearchResult<TypeName>" for a search, whose next page takes a cursor from the answer. Others unchanged.
+    let formatResponseType (functionName: string) (responseType: string) =
         if responseType.EndsWith(" list") then
             let innerType = responseType.[..responseType.Length - 6]
-            $"StripeList<{innerType}>"
+
+            if functionName = "Search" then
+                $"StripeSearchResult<{innerType}>"
+            else
+                $"StripeList<{innerType}>"
         else
             responseType
 
@@ -576,7 +581,7 @@ module RequestBuilderAST =
             if call.HasQueryOptions && not call.QueryFields.IsEmpty then " qs"
             else " (Map.empty)"
 
-        let responseTypeStr = formatResponseType call.ResponseType
+        let responseTypeStr = formatResponseType name call.ResponseType
 
         match call.HttpVerb with
         | "get" when call.HasFormOptions ->

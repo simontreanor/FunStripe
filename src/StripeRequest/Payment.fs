@@ -8779,7 +8779,7 @@ module PaymentIntentsSearch =
     let Search settings (options: SearchOptions) =
         let qs = [("expand", options.Expand |> box); ("limit", options.Limit |> box); ("page", options.Page |> box); ("query", options.Query |> box)] |> Map.ofList
         $"/v1/payment_intents/search"
-        |> RestApi.getAsync<StripeList<PaymentIntent>> settings qs
+        |> RestApi.getAsync<StripeSearchResult<PaymentIntent>> settings qs
 
 module PaymentIntentsAmountDetailsLineItems =
 

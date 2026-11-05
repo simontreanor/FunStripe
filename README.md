@@ -103,6 +103,18 @@ let! allCustomers =
 // allCustomers is Result<Customer list, ErrorResponse>
 ```
 
+A search answers with `StripeSearchResult`, which continues from its `NextPage`. `RestApi.searchAllAsync` follows it:
+
+```F#
+let! gold =
+    RestApi.searchAllAsync
+        Customers.Search
+        (fun page opts -> { opts with Page = Some page })
+        settings
+        (Customers.SearchOptions.New("metadata['tier']:'gold'"))
+// gold is Result<Customer list, ErrorResponse>
+```
+
 ## Webhooks
 
 To handle a Stripe webhook (e.g. to fulfil an order after `checkout.session.completed`), verify the signature with `WebhookSigning`, deserialise the payload into a typed `Event`, and extract the resource from the event's raw `data.object` fragment with `Util.deserialiseRaw`:

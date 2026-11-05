@@ -26,6 +26,23 @@ module StripeIds =
             static member New (data: 'T list, hasMore: bool, url: string) =
                 { Data = data; HasMore = hasMore; Url = url }
 
+    /// One page of a Stripe search. Unlike a list, a search continues from NextPage, not from the last item's id.
+    type StripeSearchResult<'T> = {
+        ///The objects in this page.
+        Data: 'T list
+        ///True if this search has another page of items after this one that can be fetched.
+        HasMore: bool
+        ///The cursor to pass as the search's Page for the next page, while there is one.
+        NextPage: string option
+        ///The URL where this search can be accessed.
+        Url: string
+    }
+        with
+            ///String representing the object's type. Always has the value `search_result`.
+            member _.Object = "search_result"
+            static member New (data: 'T list, hasMore: bool, nextPage: string option, url: string) =
+                { Data = data; HasMore = hasMore; NextPage = nextPage; Url = url }
+
 [<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.2.1")>]
 module Markers =
 

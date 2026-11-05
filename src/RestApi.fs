@@ -286,3 +286,24 @@ module RestApi =
                         return Ok (acc' |> List.rev |> List.concat)
             }
         loop [] options
+
+    ///<summary>Fetches every page of a Stripe search. A search continues from the <c>next_page</c> its answer gives,
+    ///not from the last item's id, so this passes that on until <c>has_more</c> is false.</summary>
+    ///<param name="searchFunc">The search function from a StripeRequest module (e.g., <c>Customers.Search</c>).</param>
+    ///<param name="withPage">A function that sets the <c>Page</c> field on the options record.</param>
+    ///<param name="settings">The Stripe API settings.</param>
+    ///<param name="options">The initial search options.</param>
+    ///<returns>An async result containing all items from all pages combined into a single list.</returns>
+    let searchAllAsync<'item, 'options> (searchFunc: StripeApiSettings -> 'options -> Async<Result<StripeSearchResult<'item>, StripeError.ErrorResponse>>) (withPage: string -> 'options -> 'options) (settings: StripeApiSettings) (options: 'options) =
+        let rec loop (acc: 'item list list) (opts: 'options) =
+            async {
+                let! result = searchFunc settings opts
+                match result with
+                | Error e -> return Error e
+                | Ok page ->
+                    let acc' = page.Data :: acc
+                    match page.NextPage with
+                    | Some next when page.HasMore -> return! loop acc' (withPage next opts)
+                    | _ -> return Ok (acc' |> List.rev |> List.concat)
+            }
+        loop [] options
