@@ -252,5 +252,5 @@ If you need official Stripe support or are working primarily in C#, Stripe.net i
 
 [Official Stripe .NET Library](https://github.com/stripe/stripe-dotnet)
 
-[Stripe OpenAPI Specification](https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.sdk.json)
+[Stripe OpenAPI Specification](https://github.com/stripe/openapi/tree/master/latest)
 

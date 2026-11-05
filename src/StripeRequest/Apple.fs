@@ -52,16 +52,6 @@ module ApplePayDomains =
                 Expand = expand
             }
 
-    type DeleteOptions =
-        { [<Config.Path>]
-          Domain: string }
-
-    type DeleteOptions with
-        static member New(domain: string) =
-            {
-                Domain = domain
-            }
-
     type RetrieveOptions =
         {
             [<Config.Path>]
@@ -78,6 +68,16 @@ module ApplePayDomains =
                 Expand = expand
             }
 
+    type DeleteOptions =
+        { [<Config.Path>]
+          Domain: string }
+
+    type DeleteOptions with
+        static member New(domain: string) =
+            {
+                Domain = domain
+            }
+
     ///<p>List apple pay domains.</p>
     let List settings (options: ListOptions) =
         let qs = [("domain_name", options.DomainName |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -89,14 +89,14 @@ module ApplePayDomains =
         $"/v1/apple_pay/domains"
         |> RestApi.postAsync<_, ApplePayDomain> settings (Map.empty) options
 
-    ///<p>Delete an apple pay domain.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/apple_pay/domains/{options.Domain}"
-        |> RestApi.deleteAsync<DeletedApplePayDomain> settings (Map.empty)
-
     ///<p>Retrieve an apple pay domain.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/apple_pay/domains/{options.Domain}"
         |> RestApi.getAsync<ApplePayDomain> settings qs
+
+    ///<p>Delete an apple pay domain.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/apple_pay/domains/{options.Domain}"
+        |> RestApi.deleteAsync<DeletedApplePayDomain> settings (Map.empty)
 

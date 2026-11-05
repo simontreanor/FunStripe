@@ -425,19 +425,6 @@ module RadarValueListItems =
                 Expand = expand
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Item: string
-        }
-
-    type DeleteOptions with
-        static member New(item: string) =
-            {
-                Item = item
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -455,6 +442,19 @@ module RadarValueListItems =
                 Expand = expand
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Item: string
+        }
+
+    type DeleteOptions with
+        static member New(item: string) =
+            {
+                Item = item
+            }
+
     ///<p>Returns a list of <code>ValueListItem</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("value", options.Value |> box); ("value_list", options.ValueList |> box)] |> Map.ofList
@@ -466,16 +466,16 @@ module RadarValueListItems =
         $"/v1/radar/value_list_items"
         |> RestApi.postAsync<_, RadarValueListItem> settings (Map.empty) options
 
-    ///<p>Deletes a <code>ValueListItem</code> object, removing it from its parent value list.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/radar/value_list_items/{options.Item}"
-        |> RestApi.deleteAsync<DeletedRadarValueListItem> settings (Map.empty)
-
     ///<p>Retrieves a <code>ValueListItem</code> object.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/radar/value_list_items/{options.Item}"
         |> RestApi.getAsync<RadarValueListItem> settings qs
+
+    ///<p>Deletes a <code>ValueListItem</code> object, removing it from its parent value list.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/radar/value_list_items/{options.Item}"
+        |> RestApi.deleteAsync<DeletedRadarValueListItem> settings (Map.empty)
 
 module RadarValueLists =
 
@@ -559,19 +559,6 @@ module RadarValueLists =
                 Metadata = metadata
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            ValueList: string
-        }
-
-    type DeleteOptions with
-        static member New(valueList: string) =
-            {
-                ValueList = valueList
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -618,6 +605,19 @@ module RadarValueLists =
                 Name = name
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            ValueList: string
+        }
+
+    type DeleteOptions with
+        static member New(valueList: string) =
+            {
+                ValueList = valueList
+            }
+
     ///<p>Returns a list of <code>ValueList</code> objects. The objects are sorted in descending order by creation date, with the most recently created object appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("alias", options.Alias |> box); ("contains", options.Contains |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -629,11 +629,6 @@ module RadarValueLists =
         $"/v1/radar/value_lists"
         |> RestApi.postAsync<_, RadarValueList> settings (Map.empty) options
 
-    ///<p>Deletes a <code>ValueList</code> object, also deleting any items contained within the value list. To be deleted, a value list must not be referenced in any rules.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/radar/value_lists/{options.ValueList}"
-        |> RestApi.deleteAsync<DeletedRadarValueList> settings (Map.empty)
-
     ///<p>Retrieves a <code>ValueList</code> object.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -644,4 +639,9 @@ module RadarValueLists =
     let Update settings (options: UpdateOptions) =
         $"/v1/radar/value_lists/{options.ValueList}"
         |> RestApi.postAsync<_, RadarValueList> settings (Map.empty) options
+
+    ///<p>Deletes a <code>ValueList</code> object, also deleting any items contained within the value list. To be deleted, a value list must not be referenced in any rules.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/radar/value_lists/{options.ValueList}"
+        |> RestApi.deleteAsync<DeletedRadarValueList> settings (Map.empty)
 

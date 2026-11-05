@@ -290,19 +290,6 @@ module Products =
                 Url = url
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Id: string
-        }
-
-    type DeleteOptions with
-        static member New(id: string) =
-            {
-                Id = id
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -450,6 +437,19 @@ module Products =
                 Url = url
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Id: string
+        }
+
+    type DeleteOptions with
+        static member New(id: string) =
+            {
+                Id = id
+            }
+
     ///<p>Returns a list of your products. The products are returned sorted by creation date, with the most recently created products appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("ids", options.Ids |> box); ("limit", options.Limit |> box); ("shippable", options.Shippable |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box); ("url", options.Url |> box)] |> Map.ofList
@@ -461,11 +461,6 @@ module Products =
         $"/v1/products"
         |> RestApi.postAsync<_, Product> settings (Map.empty) options
 
-    ///<p>Delete a product. Deleting a product is only possible if it has no prices associated with it. Additionally, deleting a product with <code>type=good</code> is only possible if it has no SKUs associated with it.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/products/{options.Id}"
-        |> RestApi.deleteAsync<DeletedProduct> settings (Map.empty)
-
     ///<p>Retrieves the details of an existing product. Supply the unique product ID from either a product creation request or the product list, and Stripe will return the corresponding product information.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -476,6 +471,11 @@ module Products =
     let Update settings (options: UpdateOptions) =
         $"/v1/products/{options.Id}"
         |> RestApi.postAsync<_, Product> settings (Map.empty) options
+
+    ///<p>Delete a product. Deleting a product is only possible if it has no prices associated with it. Additionally, deleting a product with <code>type=good</code> is only possible if it has no SKUs associated with it.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/products/{options.Id}"
+        |> RestApi.deleteAsync<DeletedProduct> settings (Map.empty)
 
 module ProductsSearch =
 
@@ -565,22 +565,6 @@ module ProductsFeatures =
                 Expand = expand
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Id: string
-            [<Config.Path>]
-            Product: string
-        }
-
-    type DeleteOptions with
-        static member New(id: string, product: string) =
-            {
-                Id = id
-                Product = product
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -602,6 +586,22 @@ module ProductsFeatures =
                 Expand = expand
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Id: string
+            [<Config.Path>]
+            Product: string
+        }
+
+    type DeleteOptions with
+        static member New(id: string, product: string) =
+            {
+                Id = id
+                Product = product
+            }
+
     ///<p>Retrieve a list of features for a product</p>
     let List settings (options: ListOptions) =
         let qs = [("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -613,14 +613,14 @@ module ProductsFeatures =
         $"/v1/products/{options.Product}/features"
         |> RestApi.postAsync<_, ProductFeature> settings (Map.empty) options
 
-    ///<p>Deletes the feature attachment to a product</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/products/{options.Product}/features/{options.Id}"
-        |> RestApi.deleteAsync<DeletedProductFeature> settings (Map.empty)
-
     ///<p>Retrieves a product_feature, which represents a feature attachment to a product</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
         $"/v1/products/{options.Product}/features/{options.Id}"
         |> RestApi.getAsync<ProductFeature> settings qs
+
+    ///<p>Deletes the feature attachment to a product</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/products/{options.Product}/features/{options.Id}"
+        |> RestApi.deleteAsync<DeletedProductFeature> settings (Map.empty)
 

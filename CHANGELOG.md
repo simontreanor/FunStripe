@@ -16,6 +16,7 @@ Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the
 
 ### Fixed
 - **A search's later pages can be reached.** `StripeList` has no `next_page`, which is the cursor a search's `Page` takes, so only the first page could be read.
+- **Requests no longer follow redirects.** On a redirect to another host, .NET drops the API key but sends `Stripe-Account` and `Idempotency-Key`, and on a 307 the form body. A 3xx answer is now an `Error`.
 
 ## [3.2.1] - 2026-11-03
 

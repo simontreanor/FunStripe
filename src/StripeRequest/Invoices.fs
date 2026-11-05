@@ -1198,19 +1198,6 @@ module Invoices =
                 TransferData = transferData
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Invoice: string
-        }
-
-    type DeleteOptions with
-        static member New(invoice: string) =
-            {
-                Invoice = invoice
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -2323,6 +2310,19 @@ module Invoices =
                 TransferData = transferData
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Invoice: string
+        }
+
+    type DeleteOptions with
+        static member New(invoice: string) =
+            {
+                Invoice = invoice
+            }
+
     ///<p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
     let List settings (options: ListOptions) =
         let qs = [("collection_method", options.CollectionMethod |> box); ("created", options.Created |> box); ("customer", options.Customer |> box); ("customer_account", options.CustomerAccount |> box); ("due_date", options.DueDate |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box); ("subscription", options.Subscription |> box)] |> Map.ofList
@@ -2333,11 +2333,6 @@ module Invoices =
     let Create settings (options: CreateOptions) =
         $"/v1/invoices"
         |> RestApi.postAsync<_, Invoice> settings (Map.empty) options
-
-    ///<p>Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to delete invoices that are no longer in a draft state will fail; once an invoice has been finalized or if an invoice is for a subscription, it must be <a href="/api/invoices/void">voided</a>.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/invoices/{options.Invoice}"
-        |> RestApi.deleteAsync<DeletedInvoice> settings (Map.empty)
 
     ///<p>Retrieves the invoice with the given ID.</p>
     let Retrieve settings (options: RetrieveOptions) =
@@ -2354,6 +2349,11 @@ module Invoices =
     let Update settings (options: UpdateOptions) =
         $"/v1/invoices/{options.Invoice}"
         |> RestApi.postAsync<_, Invoice> settings (Map.empty) options
+
+    ///<p>Permanently deletes a one-off invoice draft. This cannot be undone. Attempts to delete invoices that are no longer in a draft state will fail; once an invoice has been finalized or if an invoice is for a subscription, it must be <a href="/api/invoices/void">voided</a>.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/invoices/{options.Invoice}"
+        |> RestApi.deleteAsync<DeletedInvoice> settings (Map.empty)
 
 module InvoicesCreatePreview =
 

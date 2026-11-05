@@ -254,19 +254,6 @@ module Plans =
                 UsageType = usageType
             }
 
-    type DeleteOptions =
-        {
-            /// Unique identifier for the object.
-            [<Config.Path>]
-            Plan: string
-        }
-
-    type DeleteOptions with
-        static member New(plan: string) =
-            {
-                Plan = plan
-            }
-
     type RetrieveOptions =
         {
             /// Specifies which fields in the response should be expanded.
@@ -321,6 +308,19 @@ module Plans =
                 TrialPeriodDays = trialPeriodDays
             }
 
+    type DeleteOptions =
+        {
+            /// Unique identifier for the object.
+            [<Config.Path>]
+            Plan: string
+        }
+
+    type DeleteOptions with
+        static member New(plan: string) =
+            {
+                Plan = plan
+            }
+
     ///<p>Returns a list of your plans.</p>
     let List settings (options: ListOptions) =
         let qs = [("active", options.Active |> box); ("created", options.Created |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("product", options.Product |> box); ("starting_after", options.StartingAfter |> box)] |> Map.ofList
@@ -332,11 +332,6 @@ module Plans =
         $"/v1/plans"
         |> RestApi.postAsync<_, Plan> settings (Map.empty) options
 
-    ///<p>Deleting plans means new subscribers can’t be added. Existing subscribers aren’t affected.</p>
-    let Delete settings (options: DeleteOptions) =
-        $"/v1/plans/{options.Plan}"
-        |> RestApi.deleteAsync<DeletedPlan> settings (Map.empty)
-
     ///<p>Retrieves the plan with the given ID.</p>
     let Retrieve settings (options: RetrieveOptions) =
         let qs = [("expand", options.Expand |> box)] |> Map.ofList
@@ -347,4 +342,9 @@ module Plans =
     let Update settings (options: UpdateOptions) =
         $"/v1/plans/{options.Plan}"
         |> RestApi.postAsync<_, Plan> settings (Map.empty) options
+
+    ///<p>Deleting plans means new subscribers can’t be added. Existing subscribers aren’t affected.</p>
+    let Delete settings (options: DeleteOptions) =
+        $"/v1/plans/{options.Plan}"
+        |> RestApi.deleteAsync<DeletedPlan> settings (Map.empty)
 

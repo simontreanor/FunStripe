@@ -36,9 +36,10 @@ jobs:
       # Stripe's other specs say whether a missing endpoint is a preview or in a newer spec
       - name: Stripe's other specs
         run: |
-          for f in spec3.sdk.json spec3.beta.sdk.json spec3.private_preview.sdk.json; do
-            curl -fsSL -o "$RUNNER_TEMP/$f" "https://raw.githubusercontent.com/stripe/openapi/master/openapi/$f"
-          done
+          base=https://raw.githubusercontent.com/stripe/openapi/master
+          curl -fsSL -o "$RUNNER_TEMP/latest.json" "$base/latest/openapi.spec3.sdk.json"
+          curl -fsSL -o "$RUNNER_TEMP/preview.json" "$base/preview/openapi.spec3.sdk.json"
+          curl -fsSL -o "$RUNNER_TEMP/private-preview.json" "$base/preview/openapi.private_preview.spec3.sdk.json"
 
       - name: Previous issue
         id: issue
@@ -54,9 +55,9 @@ jobs:
         run: |
           dotnet fsi tools/SpecGaps.fsx \
             --spec "$RUNNER_TEMP/patched.json" \
-            --other-spec "latest GA=$RUNNER_TEMP/spec3.sdk.json" \
-            --other-spec "beta=$RUNNER_TEMP/spec3.beta.sdk.json" \
-            --other-spec "private preview=$RUNNER_TEMP/spec3.private_preview.sdk.json" \
+            --other-spec "latest GA=$RUNNER_TEMP/latest.json" \
+            --other-spec "public preview=$RUNNER_TEMP/preview.json" \
+            --other-spec "private preview=$RUNNER_TEMP/private-preview.json" \
             --previous "$RUNNER_TEMP/previous.md" \
             --report "$RUNNER_TEMP/report.md" \
             --new "$RUNNER_TEMP/new.txt"
