@@ -156,20 +156,35 @@ module RestApi =
         $"""{{"error":{{"message":"Stripe answered HTTP {status}, a redirect, which isn't followed.","type":"api_error"}}}}"""
         |> Util.deserialise<StripeError.ErrorResponse>
 
-    ///Parse response from API and convert it to a `Result`
+    ///The error for an answer that can't be read, which has no Stripe error to give: a body that isn't JSON, such as a
+    ///proxy's page, or one with a value the models don't list. Stripe may have done the work.
+    let private unreadable (status: int) (reason: string) : StripeError.ErrorResponse =
+        { StripeError =
+            StripeError.ErrorObject.New(
+                message = $"Stripe answered HTTP {status}, and the answer could not be read: {reason}",
+                ``type`` = StripeError.ApiError) }
+
+    ///Read an answer's status and text as a `Result`. An answer that can't be read is an `Error`: nothing is thrown.
+    let private readAnswer<'a> (status: int) (text: string) : Result<'a, StripeError.ErrorResponse> =
+        try
+            if status >= 200 && status <= 299 then
+                match Util.deserialise<'a> text with
+                | value when isNull (box value) && typeof<'a> <> typeof<unit> -> Error (unreadable status "it is null")
+                | value -> Ok value
+            elif status >= 300 && status <= 399 then
+                Error (redirected status)
+            else
+                match Util.deserialise<StripeError.ErrorResponse> text with
+                | error when isNull (box error) || isNull (box error.StripeError) ->
+                    Error (unreadable status "it holds no error")
+                | error -> Error error
+        with e ->
+            Error (unreadable status $"{e.GetType().Name}: {e.Message}")
+
+    ///Parse response from API and convert it to a `Result`. An answer that can't be read is an `Error` whose message
+    ///says so, with type `api_error`.
     let parseResponse<'a> (r: HttpResponse) =
-        match r.StatusCode with
-        | sc when sc >= 200 && sc <= 299 ->
-            r.Body
-                |> function Text t -> t | Binary _ -> ""
-                |> Util.deserialise<'a>
-                |> Ok
-        | sc when sc >= 300 && sc <= 399 -> redirected sc |> Error
-        | _ ->
-            r.Body
-            |> function Text t -> t | Binary _ -> ""
-            |> Util.deserialise<StripeError.ErrorResponse>
-            |> Error
+        readAnswer<'a> r.StatusCode (match r.Body with Text t -> t | Binary _ -> "")
 
     ///Make a `GET` request (without form parameters in the body (default))
     let getAsync<'a> settings queryStringOptions (url: string) =
@@ -255,10 +270,7 @@ module RestApi =
                 request.Headers.TryAddWithoutValidation(name, value) |> ignore
             use! response = httpClient.Value.SendAsync(request, cancellationToken) |> Async.AwaitTask
             let! body = response.Content.ReadAsStringAsync() |> Async.AwaitTask
-            return
-                if response.IsSuccessStatusCode then body |> Util.deserialise<'b> |> Ok
-                elif int response.StatusCode >= 300 && int response.StatusCode <= 399 then redirected (int response.StatusCode) |> Error
-                else body |> Util.deserialise<StripeError.ErrorResponse> |> Error
+            return readAnswer<'b> (int response.StatusCode) body
         }
 
     ///Make a `DELETE` request (without form parameters in the body (default))

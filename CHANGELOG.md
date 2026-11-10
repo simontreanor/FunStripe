@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
+## [Unreleased]
+
+### Upgrade notes
+- A call whose answer can't be read returns an `Error` where it threw (see Fixed). Code that caught `JsonException` around a request now finds the failure in the `Error`, with type `api_error` and a message starting "Stripe answered HTTP".
+
+### Fixed
+- **An answer that can't be read is an `Error`, not an exception.** The request functions return a `Result`, but a body that isn't JSON (a proxy's HTML page, an empty body), an error body without an `error`, or an enum value the models don't list threw from the deserialiser. Stripe may have done the work, as with any error.
+- **`WebhookSigning.verifySignature` refuses an empty secret.** An HMAC keyed with nothing is one anyone can compute, so a header signed that way verified. It is now a `SignatureMismatch`.
+- **`WebhookSigning.verifySignature` no longer throws on a timestamp at the far end of its range.** A `t` such as now + `Int64.MinValue` overflowed the age calculation with an `OverflowException`; it is now `TimestampOutOfTolerance`.
+
 ## [3.3.0] - 2026-11-05
 
 ### Upgrade notes

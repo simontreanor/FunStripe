@@ -68,14 +68,21 @@ module WebhookSigning =
     ///<param name="header">The value of the Stripe-Signature header.</param>
     ///<param name="tolerance">Maximum age in seconds for a webhook timestamp (use defaultTolerance for 300 s).</param>
     ///Returns Ok () if the signature is valid, or Error with a WebhookError describing the failure.
+    ///An empty secret is a SignatureMismatch.
     let verifySignature (secret: string) (rawBody: string) (header: string) (tolerance: int) : Result<unit, WebhookError> =
+        // Anyone can compute an HMAC keyed with nothing, so an empty secret verifies nothing
+        if String.IsNullOrWhiteSpace secret then
+            Error (SignatureMismatch "The signing secret is empty, so no signature can be verified")
+        else
         match parseHeader header with
         | Error e -> Error e
         | Ok (timestamp, signatures) ->
             let currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-            let age = abs (currentTime - timestamp)
-            if age > int64 tolerance then
-                Error (TimestampOutOfTolerance (sprintf "Webhook timestamp is %d seconds old, which exceeds the tolerance of %d seconds" age tolerance))
+            // Compared without a difference: t is the sender's, and one at the far end of its range has no age to take
+            let withinTolerance =
+                timestamp >= currentTime - int64 tolerance && timestamp <= currentTime + int64 tolerance
+            if not withinTolerance then
+                Error (TimestampOutOfTolerance (sprintf "Webhook timestamp %d is more than %d seconds from now" timestamp tolerance))
             else
                 let signedPayload = sprintf "%d.%s" timestamp rawBody
                 let computedSig = computeSignature secret signedPayload
