@@ -924,8 +924,15 @@ module Tests =
             Assert.That(headers |> List.exists (fun (k,v) -> k = "Stripe-Version" && v = "2026-04-22.dahlia"), Is.True)
 
         [<Test>]
-        member _.``stripeVersion header is absent when not set``() =
+        member _.``stripeVersion header is the library's API version when not set``() =
             let s = RestApi.StripeApiSettings.New(apiKey = "sk_test_x")
+            let headers = RestApi.createHeader s
+            let versions = headers |> List.filter (fun (k,_) -> k = "Stripe-Version") |> List.map snd
+            Assert.That(versions, Is.EqualTo([ Config.DefaultStripeApiVersion ] :> obj))
+
+        [<Test>]
+        member _.``stripeVersion header is absent when set to None``() =
+            let s = { RestApi.StripeApiSettings.New(apiKey = "sk_test_x") with StripeVersion = None }
             let headers = RestApi.createHeader s
             Assert.That(headers |> List.exists (fun (k,_) -> k = "Stripe-Version"), Is.False)
 
