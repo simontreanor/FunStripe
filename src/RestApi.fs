@@ -30,9 +30,12 @@ module RestApi =
         FilesBaseUrl: string option
         IdempotencyKey: string option
         StripeAccount: string option
+        ///The `Stripe-Version` header: the API version Stripe answers in. `None` sends no header, so Stripe answers
+        ///in the account's default version, which may not be the one the models were generated from.
         StripeVersion: string option
     }
     with
+        ///`stripeVersion` defaults to `Config.DefaultStripeApiVersion`, the version the models were generated from.
         static member New(?apiKey: string, ?baseUrl: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string, ?filesBaseUrl: string) =
             {
                 ApiKey = defaultArg apiKey Config.StripeTestApiKey
@@ -40,7 +43,7 @@ module RestApi =
                 FilesBaseUrl = filesBaseUrl
                 IdempotencyKey = idempotencyKey
                 StripeAccount = stripeAccount
-                StripeVersion = stripeVersion
+                StripeVersion = Some (defaultArg stripeVersion Config.DefaultStripeApiVersion)
             }
 
         ///Where file uploads go: `FilesBaseUrl` when set; otherwise Stripe's files host for Stripe's
