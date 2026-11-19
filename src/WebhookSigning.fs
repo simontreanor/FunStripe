@@ -23,7 +23,8 @@ module WebhookSigning =
     ///Parse the Stripe-Signature header into a Unix timestamp and a list of v1 signatures.
     ///Returns the parsed components so callers can inspect or log suspicious headers.
     let parseHeader (header: string) =
-        let parts = header.Split(',')
+        // A request without the header gives null
+        let parts = if isNull header then [||] else header.Split(',')
         let mutable timestamp: int64 option = None
         let mutable signatures: string list = []
         for part in parts do
@@ -68,22 +69,29 @@ module WebhookSigning =
     ///<param name="header">The value of the Stripe-Signature header.</param>
     ///<param name="tolerance">Maximum age in seconds for a webhook timestamp (use defaultTolerance for 300 s).</param>
     ///Returns Ok () if the signature is valid, or Error with a WebhookError describing the failure.
+    ///An empty secret is a SignatureMismatch, and a missing (null) header an InvalidHeader.
     let verifySignature (secret: string) (rawBody: string) (header: string) (tolerance: int) : Result<unit, WebhookError> =
-        match parseHeader header with
-        | Error e -> Error e
-        | Ok (timestamp, signatures) ->
-            let currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
-            let age = abs (currentTime - timestamp)
-            if age > int64 tolerance then
-                Error (TimestampOutOfTolerance (sprintf "Webhook timestamp is %d seconds old, which exceeds the tolerance of %d seconds" age tolerance))
-            else
-                let signedPayload = sprintf "%d.%s" timestamp rawBody
-                let computedSig = computeSignature secret signedPayload
-                let isValid = signatures |> List.exists (constantTimeEquals computedSig)
-                if isValid then
-                    Ok ()
+        // Anyone can compute an HMAC keyed with nothing, so an empty secret verifies nothing
+        if String.IsNullOrWhiteSpace secret then
+            Error (SignatureMismatch "The signing secret is empty, so no signature can be verified")
+        else
+            match parseHeader header with
+            | Error e -> Error e
+            | Ok (timestamp, signatures) ->
+                let currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                // Compared without a difference: t is the sender's, and one at the far end of its range has no age to take
+                let withinTolerance =
+                    timestamp >= currentTime - int64 tolerance && timestamp <= currentTime + int64 tolerance
+                if not withinTolerance then
+                    Error (TimestampOutOfTolerance (sprintf "Webhook timestamp %d is more than %d seconds from now" timestamp tolerance))
                 else
-                    Error (SignatureMismatch "Computed HMAC-SHA256 signature does not match any v1 signature in the Stripe-Signature header")
+                    let signedPayload = sprintf "%d.%s" timestamp rawBody
+                    let computedSig = computeSignature secret signedPayload
+                    let isValid = signatures |> List.exists (constantTimeEquals computedSig)
+                    if isValid then
+                        Ok ()
+                    else
+                        Error (SignatureMismatch "Computed HMAC-SHA256 signature does not match any v1 signature in the Stripe-Signature header")
 
     ///Verify a Stripe webhook using the default 5-minute tolerance window.
     ///Equivalent to calling verifySignature with defaultTolerance.
