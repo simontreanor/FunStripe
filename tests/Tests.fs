@@ -924,8 +924,15 @@ module Tests =
             Assert.That(headers |> List.exists (fun (k,v) -> k = "Stripe-Version" && v = "2026-04-22.dahlia"), Is.True)
 
         [<Test>]
-        member _.``stripeVersion header is absent when not set``() =
+        member _.``stripeVersion header is the library's API version when not set``() =
             let s = RestApi.StripeApiSettings.New(apiKey = "sk_test_x")
+            let headers = RestApi.createHeader s
+            let versions = headers |> List.filter (fun (k,_) -> k = "Stripe-Version") |> List.map snd
+            Assert.That(versions, Is.EqualTo([ Config.DefaultStripeApiVersion ] :> obj))
+
+        [<Test>]
+        member _.``stripeVersion header is absent when set to None``() =
+            let s = { RestApi.StripeApiSettings.New(apiKey = "sk_test_x") with StripeVersion = None }
             let headers = RestApi.createHeader s
             Assert.That(headers |> List.exists (fun (k,_) -> k = "Stripe-Version"), Is.False)
 
@@ -1102,7 +1109,7 @@ module Tests =
         [<Test>]
         member _.``expanded object without id field throws``() =
             let json = """{"object":"customer","email":"test@example.com"}"""
-            Assert.Throws<Exception>(fun () ->
+            Assert.Throws<System.Text.Json.JsonException>(fun () ->
                 System.Text.Json.JsonSerializer.Deserialize<StripeId<Markers.Customer>>(json, opts) |> ignore
             ) |> ignore
 
@@ -1130,7 +1137,7 @@ module Tests =
         [<Test>]
         member _.``unknown string enum throws``() =
             let json = "\"invalid_brand_xyz\""
-            Assert.Throws<Exception>(fun () ->
+            Assert.Throws<System.Text.Json.JsonException>(fun () ->
                 System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.PaymentMethodCardBrand>(json, opts) |> ignore
             ) |> ignore
 
@@ -2229,7 +2236,7 @@ module Tests =
         [<Test>]
         member _.``enums without the catch-all still reject unknown values``() =
             let json = "\"brand_new_source\""
-            Assert.Throws<Exception>(fun () ->
+            Assert.Throws<System.Text.Json.JsonException>(fun () ->
                 System.Text.Json.JsonSerializer.Deserialize<Stripe.PaymentMethod.SourceType>(json, opts) |> ignore
             ) |> ignore
 

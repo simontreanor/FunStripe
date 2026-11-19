@@ -1,5 +1,6 @@
 namespace FunStripe
 
+open System.Text.Json
 open FSharp.Data
 open FSharp.Reflection
 open FunStripe
@@ -30,9 +31,12 @@ module RestApi =
         FilesBaseUrl: string option
         IdempotencyKey: string option
         StripeAccount: string option
+        ///The `Stripe-Version` header: the API version Stripe answers in. `None` sends no header, so Stripe answers
+        ///in the account's default version, which may not be the one the models were generated from.
         StripeVersion: string option
     }
     with
+        ///`stripeVersion` defaults to `Config.DefaultStripeApiVersion`, the version the models were generated from.
         static member New(?apiKey: string, ?baseUrl: string, ?idempotencyKey: string, ?stripeAccount: string, ?stripeVersion: string, ?filesBaseUrl: string) =
             {
                 ApiKey = defaultArg apiKey Config.StripeTestApiKey
@@ -40,7 +44,7 @@ module RestApi =
                 FilesBaseUrl = filesBaseUrl
                 IdempotencyKey = idempotencyKey
                 StripeAccount = stripeAccount
-                StripeVersion = stripeVersion
+                StripeVersion = Some (defaultArg stripeVersion Config.DefaultStripeApiVersion)
             }
 
         ///Where file uploads go: `FilesBaseUrl` when set; otherwise Stripe's files host for Stripe's
@@ -157,34 +161,92 @@ module RestApi =
         |> Util.deserialise<StripeError.ErrorResponse>
 
     ///The error for an answer that can't be read, which has no Stripe error to give: a body that isn't JSON, such as a
-    ///proxy's page, or one with a value the models don't list. Stripe may have done the work.
-    let private unreadable (status: int) (reason: string) : StripeError.ErrorResponse =
+    ///proxy's page, or one with a value the models don't list. Its `Code` tells it from Stripe's own errors, and its
+    ///`Metadata` has the `http_status` and Stripe's `request_id`. For a 2xx Stripe has done the work, so the error
+    ///has no type: `api_error` is Stripe's own failure, which callers send again.
+    let private unreadable (status: int) (requestId: string option) (reason: string) : StripeError.ErrorResponse =
+        let success = status >= 200 && status <= 299
+        let metadata =
+            ("http_status", string status) :: (requestId |> Option.map (fun id -> "request_id", id) |> Option.toList)
+            |> Map.ofList
         { StripeError =
-            StripeError.ErrorObject.New(
+            { StripeError.ErrorObject.New(
                 message = $"Stripe answered HTTP {status}, and the answer could not be read: {reason}",
-                ``type`` = StripeError.ApiError) }
+                code = (if success then StripeError.UnreadableSuccessCode else StripeError.UnreadableErrorCode),
+                metadata = metadata) with
+                Type = if success then None else Some StripeError.ApiError } }
 
-    ///Read an answer's status and text as a `Result`. An answer that can't be read is an `Error`: nothing is thrown.
-    let private readAnswer<'a> (status: int) (text: string) : Result<'a, StripeError.ErrorResponse> =
+    ///Why an answer could not be read, with the place in the JSON when the serialiser gives one. Inside a record it
+    ///gives the root only, as FSharp.SystemTextJson reads a record's fields itself.
+    let private reasonOf (e: JsonException) =
+        if isNull e.Path || e.Path = "$" || e.Message.Contains "Path: " then e.Message else $"{e.Message} Path: {e.Path}"
+
+    ///Stripe's error read field by field, for an error body the models can't read in full. An error embeds a payment
+    ///intent, payment method, setup intent and source, and one value the models don't list in any of them fails the
+    ///typed read. The embedded objects are left out. `None` when the body has no error to read.
+    let private errorFields (body: string) : StripeError.ErrorResponse option =
         try
-            if status >= 200 && status <= 299 then
-                match Util.deserialise<'a> text with
-                | value when isNull (box value) && typeof<'a> <> typeof<unit> -> Error (unreadable status "it is null")
-                | value -> Ok value
-            elif status >= 300 && status <= 399 then
-                Error (redirected status)
-            else
-                match Util.deserialise<StripeError.ErrorResponse> text with
-                | error when isNull (box error) || isNull (box error.StripeError) ->
-                    Error (unreadable status "it holds no error")
-                | error -> Error error
-        with e ->
-            Error (unreadable status $"{e.GetType().Name}: {e.Message}")
+            use doc = JsonDocument.Parse body
+            let stringOf (name: string) (element: JsonElement) =
+                match element.TryGetProperty name with
+                | true, value when value.ValueKind = JsonValueKind.String -> Some value
+                | _ -> None
+            let error =
+                if doc.RootElement.ValueKind <> JsonValueKind.Object then None
+                else
+                    match doc.RootElement.TryGetProperty "error" with
+                    | true, error when error.ValueKind = JsonValueKind.Object -> Some error
+                    | _ -> None
+            error
+            |> Option.bind (fun error ->
+                let text name = error |> stringOf name |> Option.map (fun value -> value.GetString())
+                let errorType =
+                    error |> stringOf "type" |> Option.map (fun value -> Util.deserialise<StripeError.ErrorType> (value.GetRawText()))
+                match errorType, text "code", text "message" with
+                | None, None, None -> None
+                | _, code, message ->
+                    Some
+                        { StripeError =
+                            { StripeError.ErrorObject.New() with
+                                Charge = text "charge"
+                                Code = code
+                                DeclineCode = text "decline_code"
+                                DocUrl = text "doc_url"
+                                Message = message
+                                Param = text "param"
+                                Type = errorType } })
+        with :? JsonException -> None
 
-    ///Parse response from API and convert it to a `Result`. An answer that can't be read is an `Error` whose message
-    ///says so, with type `api_error`.
+    ///Read an answer's status and text as a `Result`. An answer that can't be read is an `Error`. Only the
+    ///serialiser's `JsonException` is caught: any other exception is a fault in the library.
+    let private readAnswer<'a> (status: int) (requestId: string option) (text: string) : Result<'a, StripeError.ErrorResponse> =
+        if status >= 200 && status <= 299 then
+            try
+                match Util.deserialise<'a> text with
+                // A record is never null; a `string` answer can be
+                | value when isNull (box value) -> Error (unreadable status requestId "it is null")
+                | value -> Ok value
+            with :? JsonException as e ->
+                Error (unreadable status requestId (reasonOf e))
+        elif status >= 300 && status <= 399 then
+            Error (redirected status)
+        else
+            try
+                Error (Util.deserialise<StripeError.ErrorResponse> text)
+            with :? JsonException as e ->
+                errorFields text
+                |> Option.defaultWith (fun () -> unreadable status requestId (reasonOf e))
+                |> Error
+
+    ///Parse response from API and convert it to a `Result`. An answer that can't be read is an `Error` whose `Code`
+    ///is `StripeError.UnreadableSuccessCode` for a 2xx, which must not be sent again, and
+    ///`StripeError.UnreadableErrorCode` otherwise.
     let parseResponse<'a> (r: HttpResponse) =
-        readAnswer<'a> r.StatusCode (match r.Body with Text t -> t | Binary _ -> "")
+        let requestId =
+            r.Headers
+            |> Map.tryPick (fun name value ->
+                if name.Equals("Request-Id", System.StringComparison.OrdinalIgnoreCase) then Some value else None)
+        readAnswer<'a> r.StatusCode requestId (match r.Body with Text t -> t | Binary _ -> "")
 
     ///Make a `GET` request (without form parameters in the body (default))
     let getAsync<'a> settings queryStringOptions (url: string) =
@@ -270,7 +332,11 @@ module RestApi =
                 request.Headers.TryAddWithoutValidation(name, value) |> ignore
             use! response = httpClient.Value.SendAsync(request, cancellationToken) |> Async.AwaitTask
             let! body = response.Content.ReadAsStringAsync() |> Async.AwaitTask
-            return readAnswer<'b> (int response.StatusCode) body
+            let requestId =
+                match response.Headers.TryGetValues "Request-Id" with
+                | true, values -> Seq.tryHead values
+                | _ -> None
+            return readAnswer<'b> (int response.StatusCode) requestId body
         }
 
     ///Make a `DELETE` request (without form parameters in the body (default))

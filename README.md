@@ -149,14 +149,10 @@ Config.DefaultStripeApiVersion  // e.g. "2026-10-28.endive"
 
 The generator takes it from the spec's `info.version`, so it always matches the generated models. It is also embedded as an assembly-level attribute (`Config.StripeApiVersionAttribute`) and in the NuGet package tags, giving downstream projects an auditable record of the API surface they are compiled against.
 
-By default, FunStripe does **not** send a `Stripe-Version` request header, so Stripe uses the version pinned to your account. If you want every request to be explicitly tied to the library's target API version — useful when upgrading or for forward-compatibility testing — pass it through `StripeApiSettings`:
+Every request sends this version as its `Stripe-Version` header, so Stripe answers in the shape the models were generated from, whatever version your account is pinned to. `StripeApiSettings.New` sets it unless you pass another `stripeVersion`. To send no header, and have Stripe answer in your account's default version, set `StripeVersion` to `None`:
 
 ```F#
-let settings =
-    RestApi.StripeApiSettings.New(
-        apiKey = Config.StripeTestApiKey,
-        stripeVersion = Config.DefaultStripeApiVersion
-    )
+let settings = { RestApi.StripeApiSettings.New(apiKey = Config.StripeTestApiKey) with StripeVersion = None }
 ```
 
 To test against a **newer** Stripe API version before upgrading the library, supply the target date directly:
@@ -168,6 +164,8 @@ let settings =
         stripeVersion = "2026-10-28.endive"   // override for forward-compatibility testing
     )
 ```
+
+The header doesn't reach webhooks. Stripe renders an event in the API version of the webhook endpoint that receives it, or your account's default version when the endpoint has none. Create your endpoints with the library's version, in the Dashboard or with the `apiVersion` of `WebhookEndpoints.Create`, so their events match the models too.
 
 See [CHANGELOG.md](CHANGELOG.md) for the full FunStripe version → Stripe API version compatibility table.
 

@@ -6,6 +6,15 @@ open Stripe.PaymentMethod
 ///See [Stripe API docs](https://stripe.com/docs/api/errors)
 module StripeError =
 
+    ///The `Code` of the `Error` for a 2xx answer that could not be read. Stripe has done the work, so the request
+    ///must not be sent again. The error has no `Type`.
+    [<Literal>]
+    let UnreadableSuccessCode = "funstripe_unreadable_success"
+
+    ///The `Code` of the `Error` for a 4xx or 5xx answer that could not be read. Its `Type` is `api_error`.
+    [<Literal>]
+    let UnreadableErrorCode = "funstripe_unreadable_error"
+
     ///Type of error
     [<Struct>]
     type ErrorType =
