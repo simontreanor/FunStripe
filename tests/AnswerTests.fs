@@ -98,7 +98,20 @@ let ``a decline stays a decline when a value in its body isn't in the models`` (
         Assert.That(e.StripeError.Charge, Is.EqualTo(Some "ch_1"))
         Assert.That(e.StripeError.DocUrl, Is.EqualTo(Some "https://stripe.com/docs/error-codes/card-declined"))
         Assert.That(e.StripeError.PaymentMethod, Is.EqualTo(None: Stripe.PaymentMethod.PaymentMethod option))
+        Assert.That(e.StripeError.PaymentMethodType, Is.EqualTo(None: Stripe.PaymentMethod.PaymentMethodType option))
     | Ok _ -> Assert.Fail "A 402 isn't a success"
+
+[<Test>]
+let ``a payment method type the models list is kept when the payment method can't be read`` () =
+    let body =
+        """{"error":{"type":"invalid_request_error","message":"No","payment_method_type":"card",
+            "payment_method":{"id":"pm_1","object":"payment_method","type":"a_type_of_tomorrow"}}}"""
+
+    match read 400 body with
+    | Error e ->
+        Assert.That(e.StripeError.PaymentMethodType, Is.EqualTo(Some Stripe.PaymentMethod.PaymentMethodType.Card))
+        Assert.That(e.StripeError.PaymentMethod, Is.EqualTo(None: Stripe.PaymentMethod.PaymentMethod option))
+    | Ok _ -> Assert.Fail "A 400 isn't a success"
 
 [<Test>]
 let ``an error type of tomorrow is kept when its body can't be read in full`` () =

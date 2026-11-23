@@ -183,7 +183,8 @@ module RestApi =
 
     ///Stripe's error read field by field, for an error body the models can't read in full. An error embeds a payment
     ///intent, payment method, setup intent and source, and one value the models don't list in any of them fails the
-    ///typed read. The embedded objects are left out. `None` when the body has no error to read.
+    ///typed read. The embedded objects are left out, and so is a payment method type the models don't list. `None`
+    ///when the body has no error to read.
     let private errorFields (body: string) : StripeError.ErrorResponse option =
         try
             use doc = JsonDocument.Parse body
@@ -202,6 +203,12 @@ module RestApi =
                 let text name = error |> stringOf name |> Option.map (fun value -> value.GetString())
                 let errorType =
                     error |> stringOf "type" |> Option.map (fun value -> Util.deserialise<StripeError.ErrorType> (value.GetRawText()))
+                let paymentMethodType =
+                    error
+                    |> stringOf "payment_method_type"
+                    |> Option.bind (fun value ->
+                        try Some (Util.deserialise<Stripe.PaymentMethod.PaymentMethodType> (value.GetRawText()))
+                        with :? JsonException -> None)
                 match errorType, text "code", text "message" with
                 | None, None, None -> None
                 | _, code, message ->
@@ -214,6 +221,7 @@ module RestApi =
                                 DocUrl = text "doc_url"
                                 Message = message
                                 Param = text "param"
+                                PaymentMethodType = paymentMethodType
                                 Type = errorType } })
         with :? JsonException -> None
 
