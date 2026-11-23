@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type EventType =
     | [<JsonPropertyName("account.application.authorized")>] AccountApplicationAuthorized
     | [<JsonPropertyName("account.application.deauthorized")>] AccountApplicationDeauthorized
@@ -343,7 +343,7 @@ type Event =
         Id: string
         /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
         Livemode: bool
-        /// Number of webhooks that haven't been successfully delivered (for example, to return a 20x response) to the URLs you specify.
+        /// Number of webhooks that haven't been successfully delivered (for example, to return a 20x response). This count can include deliveries to endpoints that belong to Connect platforms or apps with access to your account. These endpoints don't appear when you list your account's webhook endpoints or event destinations. To see the delivery status for each endpoint, view the event in [Workbench](https://docs.stripe.com/workbench/overview#events).
         PendingWebhooks: int
         /// Information on the API request that triggers the event.
         Request: NotificationEventRequest option

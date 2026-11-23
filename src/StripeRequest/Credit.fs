@@ -6,7 +6,7 @@ open Stripe.CreditNote
 open Stripe.CreditNoteLineItem
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module CreditNotes =
 
     type ListOptions =

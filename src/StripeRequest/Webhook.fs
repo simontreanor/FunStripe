@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.WebhookEndpoint
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module WebhookEndpoints =
 
     type ListOptions =
@@ -163,6 +163,7 @@ module WebhookEndpoints =
         | [<JsonPropertyName("2026-08-26.dahlia")>] Numeric20260826Dahlia
         | [<JsonPropertyName("2026-09-30.endive")>] Numeric20260930Endive
         | [<JsonPropertyName("2026-10-28.endive")>] Numeric20261028Endive
+        | [<JsonPropertyName("2026-11-18.endive")>] Numeric20261118Endive
 
     type Create'EnabledEvents =
         | Asterix

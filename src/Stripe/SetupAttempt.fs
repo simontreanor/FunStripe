@@ -6,7 +6,7 @@ open System
 open Stripe.PaymentMethod
 open Stripe.ThreeDSecure
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type SetupAttemptCustomer'AnyOf =
     | String of string
     | Customer of Customer
@@ -153,10 +153,10 @@ type SetupAttemptPaymentMethodDetailsCardChecksCvcCheck =
 
 type SetupAttemptPaymentMethodDetailsCardChecks =
     {
-        /// If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
+        /// If an address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         [<JsonPropertyName("address_line1_check")>]
         AddressLine1Check: SetupAttemptPaymentMethodDetailsCardChecksAddressLine1Check option
-        /// If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
+        /// If an address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         AddressPostalCodeCheck: SetupAttemptPaymentMethodDetailsCardChecksAddressPostalCodeCheck option
         /// If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         CvcCheck: SetupAttemptPaymentMethodDetailsCardChecksCvcCheck option

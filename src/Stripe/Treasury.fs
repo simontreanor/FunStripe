@@ -3,10 +3,9 @@ namespace Stripe.Treasury
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.FundingInstructions
 open Stripe.PaymentMethod
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type InboundTransfersPaymentMethodDetailsUsBankAccountAccountHolderType =
     | Company
     | Individual
@@ -981,16 +980,46 @@ type TreasuryInboundTransfersResourceFailureDetailsCode =
     | NoAccount
     | Other
 
+type TreasurySharedResourceFailureDetailsAch =
+    {
+        /// NACHA ACH return code.
+        ReturnCode: string option
+        /// NACHA ACH return reason.
+        ReturnReason: string option
+    }
+
+type TreasurySharedResourceFailureDetailsAch with
+    static member New(returnCode: string option, returnReason: string option) =
+        {
+            ReturnCode = returnCode
+            ReturnReason = returnReason
+        }
+
+type TreasuryInboundTransfersResourceFailureDetailsResourceNetworkDetails =
+    {
+        /// ACH return details.
+        Ach: TreasurySharedResourceFailureDetailsAch option
+    }
+
+type TreasuryInboundTransfersResourceFailureDetailsResourceNetworkDetails with
+    static member New(ach: TreasurySharedResourceFailureDetailsAch option) =
+        {
+            Ach = ach
+        }
+
 type TreasuryInboundTransfersResourceFailureDetails =
     {
         /// Reason for the failure.
         Code: TreasuryInboundTransfersResourceFailureDetailsCode
+        /// Money movement network-specific details regarding the failure.
+        NetworkDetails: TreasuryInboundTransfersResourceFailureDetailsResourceNetworkDetails option
     }
 
 type TreasuryInboundTransfersResourceFailureDetails with
-    static member New(code: TreasuryInboundTransfersResourceFailureDetailsCode) =
+    static member New(code: TreasuryInboundTransfersResourceFailureDetailsCode, networkDetails: TreasuryInboundTransfersResourceFailureDetailsResourceNetworkDetails option) =
         {
             Code = code
+            NetworkDetails = networkDetails
         }
 
 type TreasuryInboundTransfersResourceInboundTransferResourceLinkedFlows =
@@ -1237,18 +1266,33 @@ type TreasuryOutboundPaymentsResourceReturnedStatusCode =
     | NoAccount
     | Other
 
+type TreasurySharedResourceFailureDetailsNetworkDetails =
+    {
+        /// ACH return details.
+        Ach: TreasurySharedResourceFailureDetailsAch option
+    }
+
+type TreasurySharedResourceFailureDetailsNetworkDetails with
+    static member New(ach: TreasurySharedResourceFailureDetailsAch option) =
+        {
+            Ach = ach
+        }
+
 type TreasuryOutboundPaymentsResourceReturnedStatus =
     {
         /// Reason for the return.
         Code: TreasuryOutboundPaymentsResourceReturnedStatusCode
+        /// Money movement network-specific details regarding the failure.
+        NetworkDetails: TreasurySharedResourceFailureDetailsNetworkDetails option
         /// The Transaction associated with this object.
         Transaction: StripeId<Markers.TreasuryTransaction>
     }
 
 type TreasuryOutboundPaymentsResourceReturnedStatus with
-    static member New(code: TreasuryOutboundPaymentsResourceReturnedStatusCode, transaction: StripeId<Markers.TreasuryTransaction>) =
+    static member New(code: TreasuryOutboundPaymentsResourceReturnedStatusCode, networkDetails: TreasurySharedResourceFailureDetailsNetworkDetails option, transaction: StripeId<Markers.TreasuryTransaction>) =
         {
             Code = code
+            NetworkDetails = networkDetails
             Transaction = transaction
         }
 
@@ -1469,14 +1513,17 @@ type TreasuryOutboundTransfersResourceReturnedDetails =
     {
         /// Reason for the return.
         Code: TreasuryOutboundTransfersResourceReturnedDetailsCode
+        /// Money movement network-specific details regarding the failure.
+        NetworkDetails: TreasurySharedResourceFailureDetailsNetworkDetails option
         /// The Transaction associated with this object.
         Transaction: StripeId<Markers.TreasuryTransaction>
     }
 
 type TreasuryOutboundTransfersResourceReturnedDetails with
-    static member New(code: TreasuryOutboundTransfersResourceReturnedDetailsCode, transaction: StripeId<Markers.TreasuryTransaction>) =
+    static member New(code: TreasuryOutboundTransfersResourceReturnedDetailsCode, networkDetails: TreasurySharedResourceFailureDetailsNetworkDetails option, transaction: StripeId<Markers.TreasuryTransaction>) =
         {
             Code = code
+            NetworkDetails = networkDetails
             Transaction = transaction
         }
 

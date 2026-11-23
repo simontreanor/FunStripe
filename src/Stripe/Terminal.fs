@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type AddressApiResourceTerminal =
     {
         /// City, district, suburb, town, or village.
@@ -88,13 +88,18 @@ type DeletedTerminalReaderDeviceType =
     | [<JsonPropertyName("simulated_wisepos_e")>] SimulatedWiseposE
     | [<JsonPropertyName("stripe_m2")>] StripeM2
     | [<JsonPropertyName("stripe_s700")>] StripeS700
+    | [<JsonPropertyName("stripe_s700_devkit")>] StripeS700Devkit
     | [<JsonPropertyName("stripe_s710")>] StripeS710
+    | [<JsonPropertyName("stripe_s710_devkit")>] StripeS710Devkit
     | [<JsonPropertyName("stripe_t600")>] StripeT600
+    | [<JsonPropertyName("stripe_t600_devkit")>] StripeT600Devkit
     | [<JsonPropertyName("verifone_P400")>] VerifoneP400
     | [<JsonPropertyName("verifone_m425")>] VerifoneM425
     | [<JsonPropertyName("verifone_p630")>] VerifoneP630
     | [<JsonPropertyName("verifone_ux700")>] VerifoneUx700
+    | [<JsonPropertyName("verifone_ux700_devkit")>] VerifoneUx700Devkit
     | [<JsonPropertyName("verifone_v660p")>] VerifoneV660p
+    | [<JsonPropertyName("verifone_v660p_devkit")>] VerifoneV660pDevkit
 
 type DeletedTerminalReader =
     {
@@ -537,13 +542,18 @@ type TerminalReaderDeviceType =
     | [<JsonPropertyName("simulated_wisepos_e")>] SimulatedWiseposE
     | [<JsonPropertyName("stripe_m2")>] StripeM2
     | [<JsonPropertyName("stripe_s700")>] StripeS700
+    | [<JsonPropertyName("stripe_s700_devkit")>] StripeS700Devkit
     | [<JsonPropertyName("stripe_s710")>] StripeS710
+    | [<JsonPropertyName("stripe_s710_devkit")>] StripeS710Devkit
     | [<JsonPropertyName("stripe_t600")>] StripeT600
+    | [<JsonPropertyName("stripe_t600_devkit")>] StripeT600Devkit
     | [<JsonPropertyName("verifone_P400")>] VerifoneP400
     | [<JsonPropertyName("verifone_m425")>] VerifoneM425
     | [<JsonPropertyName("verifone_p630")>] VerifoneP630
     | [<JsonPropertyName("verifone_ux700")>] VerifoneUx700
+    | [<JsonPropertyName("verifone_ux700_devkit")>] VerifoneUx700Devkit
     | [<JsonPropertyName("verifone_v660p")>] VerifoneV660p
+    | [<JsonPropertyName("verifone_v660p_devkit")>] VerifoneV660pDevkit
 
 /// Represents custom text to be displayed when collecting the input using a reader
 type TerminalReaderReaderResourceCustomText =

@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type DeletedRadarValueList =
     {
         /// Always true for a deleted object
@@ -706,7 +706,7 @@ type RadarPaymentEvaluation =
         /// Indicates the final outcome for the payment evaluation.
         Outcome: InsightsResourcesPaymentEvaluationOutcome option
         PaymentDetails: InsightsResourcesPaymentEvaluationPaymentDetails option
-        /// Recommended action based on the score of the `fraudulent_payment` signal. Possible values are `block`, `continue` and `request_three_d_secure`.
+        /// Recommended action for this payment based on its evaluated signals and rules.
         RecommendedAction: RadarPaymentEvaluationRecommendedAction
         Signals: InsightsResourcesPaymentEvaluationSignals
     }

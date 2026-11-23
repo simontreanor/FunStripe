@@ -8,7 +8,7 @@ open Stripe.PaymentMethod
 open Stripe.PaymentRecord
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module PaymentAttemptRecords =
 
     type ListOptions =
@@ -621,12 +621,885 @@ module PaymentIntents =
         | OneOff
         | Recurring
 
+    type Create'PaymentDetailsCarRentalDataAffiliate =
+        {
+            /// Affiliate partner code.
+            [<Config.Form>]
+            Code: string option
+            /// Name of affiliate partner.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Create'PaymentDetailsCarRentalDataAffiliate with
+        static member New(?code: string, ?name: string) =
+            {
+                Code = code
+                Name = name
+            }
+
+    type Create'PaymentDetailsCarRentalDataDistanceUnit =
+        | Kilometers
+        | Miles
+
+    type Create'PaymentDetailsCarRentalDataDistance =
+        {
+            /// Distance traveled.
+            [<Config.Form>]
+            Amount: int option
+            /// Unit of measurement for the distance traveled. One of `miles` or `kilometers`.
+            [<Config.Form>]
+            Unit: Create'PaymentDetailsCarRentalDataDistanceUnit option
+        }
+
+    type Create'PaymentDetailsCarRentalDataDistance with
+        static member New(?amount: int, ?unit: Create'PaymentDetailsCarRentalDataDistanceUnit) =
+            {
+                Amount = amount
+                Unit = unit
+            }
+
+    type Create'PaymentDetailsCarRentalDataDriversDateOfBirth =
+        {
+            /// Day of birth (1-31).
+            [<Config.Form>]
+            Day: int option
+            /// Month of birth (1-12).
+            [<Config.Form>]
+            Month: int option
+            /// Year of birth (must be greater than 1900).
+            [<Config.Form>]
+            Year: int option
+        }
+
+    type Create'PaymentDetailsCarRentalDataDriversDateOfBirth with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
+    type Create'PaymentDetailsCarRentalDataDrivers =
+        {
+            /// Driver's date of birth.
+            [<Config.Form>]
+            DateOfBirth: Create'PaymentDetailsCarRentalDataDriversDateOfBirth option
+            /// Driver's identification number.
+            [<Config.Form>]
+            DriverIdentificationNumber: string option
+            /// Driver's tax number.
+            [<Config.Form>]
+            DriverTaxNumber: string option
+            /// Driver's full name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Create'PaymentDetailsCarRentalDataDrivers with
+        static member New(?dateOfBirth: Create'PaymentDetailsCarRentalDataDriversDateOfBirth, ?driverIdentificationNumber: string, ?driverTaxNumber: string, ?name: string) =
+            {
+                DateOfBirth = dateOfBirth
+                DriverIdentificationNumber = driverIdentificationNumber
+                DriverTaxNumber = driverTaxNumber
+                Name = name
+            }
+
+    type Create'PaymentDetailsCarRentalDataDropOffAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'PaymentDetailsCarRentalDataDropOffAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Create'PaymentDetailsCarRentalDataDropOff =
+        {
+            /// Address of the rental location.
+            [<Config.Form>]
+            Address: Create'PaymentDetailsCarRentalDataDropOffAddress option
+            /// Location name.
+            [<Config.Form>]
+            LocationName: string option
+            /// Timestamp for the location.
+            [<Config.Form>]
+            Time: DateTime option
+        }
+
+    type Create'PaymentDetailsCarRentalDataDropOff with
+        static member New(?address: Create'PaymentDetailsCarRentalDataDropOffAddress, ?locationName: string, ?time: DateTime) =
+            {
+                Address = address
+                LocationName = locationName
+                Time = time
+            }
+
+    type Create'PaymentDetailsCarRentalDataInsurancesInsuranceType =
+        | LiabilitySupplement
+        | LossDamageWaiver
+        | Other
+        | PartialDamageWaiver
+        | PersonalAccident
+        | PersonalEffects
+
+    type Create'PaymentDetailsCarRentalDataInsurances =
+        {
+            /// Amount of the insurance coverage in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the insurance amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Name of the insurance company.
+            [<Config.Form>]
+            InsuranceCompanyName: string option
+            /// Type of insurance coverage.
+            [<Config.Form>]
+            InsuranceType: Create'PaymentDetailsCarRentalDataInsurancesInsuranceType option
+        }
+
+    type Create'PaymentDetailsCarRentalDataInsurances with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?insuranceCompanyName: string, ?insuranceType: Create'PaymentDetailsCarRentalDataInsurancesInsuranceType) =
+            {
+                Amount = amount
+                Currency = currency
+                InsuranceCompanyName = insuranceCompanyName
+                InsuranceType = insuranceType
+            }
+
+    type Create'PaymentDetailsCarRentalDataPickupAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'PaymentDetailsCarRentalDataPickupAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Create'PaymentDetailsCarRentalDataPickup =
+        {
+            /// Address of the rental location.
+            [<Config.Form>]
+            Address: Create'PaymentDetailsCarRentalDataPickupAddress option
+            /// Location name.
+            [<Config.Form>]
+            LocationName: string option
+            /// Timestamp for the location.
+            [<Config.Form>]
+            Time: DateTime option
+        }
+
+    type Create'PaymentDetailsCarRentalDataPickup with
+        static member New(?address: Create'PaymentDetailsCarRentalDataPickupAddress, ?locationName: string, ?time: DateTime) =
+            {
+                Address = address
+                LocationName = locationName
+                Time = time
+            }
+
+    type Create'PaymentDetailsCarRentalDataTotalDiscounts =
+        {
+            /// Corporate client discount code.
+            [<Config.Form>]
+            CorporateClientCode: string option
+            /// Coupon code applied to the rental.
+            [<Config.Form>]
+            Coupon: string option
+            /// Maximum number of free miles or kilometers included.
+            [<Config.Form>]
+            MaximumFreeMilesOrKilometers: int option
+        }
+
+    type Create'PaymentDetailsCarRentalDataTotalDiscounts with
+        static member New(?corporateClientCode: string, ?coupon: string, ?maximumFreeMilesOrKilometers: int) =
+            {
+                CorporateClientCode = corporateClientCode
+                Coupon = coupon
+                MaximumFreeMilesOrKilometers = maximumFreeMilesOrKilometers
+            }
+
+    type Create'PaymentDetailsCarRentalDataTotalExtraChargesType =
+        | ExtraMileage
+        | Gas
+        | Gps
+        | LateCharge
+        | OneWayDropOff
+        | Other
+        | Parking
+        | Phone
+        | RegularMileage
+        | Towing
+
+    type Create'PaymentDetailsCarRentalDataTotalExtraCharges =
+        {
+            /// Amount of the extra charge in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Type of extra charge.
+            [<Config.Form>]
+            Type: Create'PaymentDetailsCarRentalDataTotalExtraChargesType option
+        }
+
+    type Create'PaymentDetailsCarRentalDataTotalExtraCharges with
+        static member New(?amount: int, ?type': Create'PaymentDetailsCarRentalDataTotalExtraChargesType) =
+            {
+                Amount = amount
+                Type = type'
+            }
+
+    type Create'PaymentDetailsCarRentalDataTotalRateUnit =
+        | Days
+        | Kilometers
+        | Miles
+        | Months
+        | Weeks
+
+    type Create'PaymentDetailsCarRentalDataTotalTaxTaxItems =
+        {
+            /// Tax amount.
+            [<Config.Form>]
+            Amount: int option
+            /// Tax rate applied.
+            [<Config.Form>]
+            Rate: int option
+            /// Type of tax applied.
+            [<Config.Form>]
+            Type: string option
+        }
+
+    type Create'PaymentDetailsCarRentalDataTotalTaxTaxItems with
+        static member New(?amount: int, ?rate: int, ?type': string) =
+            {
+                Amount = amount
+                Rate = rate
+                Type = type'
+            }
+
+    type Create'PaymentDetailsCarRentalDataTotalTax =
+        {
+            /// Indicates if the transaction is tax exempt.
+            [<Config.Form>]
+            TaxExemptIndicator: bool option
+            /// Array of tax details.
+            [<Config.Form>]
+            TaxItems: Create'PaymentDetailsCarRentalDataTotalTaxTaxItems list option
+        }
+
+    type Create'PaymentDetailsCarRentalDataTotalTax with
+        static member New(?taxExemptIndicator: bool, ?taxItems: Create'PaymentDetailsCarRentalDataTotalTaxTaxItems list) =
+            {
+                TaxExemptIndicator = taxExemptIndicator
+                TaxItems = taxItems
+            }
+
+    type Create'PaymentDetailsCarRentalDataTotal =
+        {
+            /// Total amount in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Discount details for the rental.
+            [<Config.Form>]
+            Discounts: Create'PaymentDetailsCarRentalDataTotalDiscounts option
+            /// Additional charges for the rental.
+            [<Config.Form>]
+            ExtraCharges: Create'PaymentDetailsCarRentalDataTotalExtraCharges list option
+            /// Rate per unit for the rental.
+            [<Config.Form>]
+            RatePerUnit: int option
+            /// Unit of measurement for the rate.
+            [<Config.Form>]
+            RateUnit: Create'PaymentDetailsCarRentalDataTotalRateUnit option
+            /// Tax breakdown for the rental.
+            [<Config.Form>]
+            Tax: Create'PaymentDetailsCarRentalDataTotalTax option
+        }
+
+    type Create'PaymentDetailsCarRentalDataTotal with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?discounts: Create'PaymentDetailsCarRentalDataTotalDiscounts, ?extraCharges: Create'PaymentDetailsCarRentalDataTotalExtraCharges list, ?ratePerUnit: int, ?rateUnit: Create'PaymentDetailsCarRentalDataTotalRateUnit, ?tax: Create'PaymentDetailsCarRentalDataTotalTax) =
+            {
+                Amount = amount
+                Currency = currency
+                Discounts = discounts
+                ExtraCharges = extraCharges
+                RatePerUnit = ratePerUnit
+                RateUnit = rateUnit
+                Tax = tax
+            }
+
+    type Create'PaymentDetailsCarRentalDataVehicleType =
+        | CargoVan
+        | Compact
+        | Economy
+        | Exotic
+        | ExoticSuv
+        | FifteenPassengerVan
+        | FourWheelDrive
+        | FullSize
+        | Intermediate
+        | LargeSuv
+        | LargeTruck
+        | Luxury
+        | MediumSuv
+        | Midsize
+        | Mini
+        | Minivan
+        | Miscellaneous
+        | Moped
+        | MovingVan
+        | Premium
+        | Regular
+        | SmallMediumTruck
+        | SmallSuv
+        | Special
+        | Standard
+        | Stretch
+        | Subcompact
+        | Taxi
+        | TwelveFootTruck
+        | TwelvePassengerVan
+        | TwentyFootTruck
+        | TwentyFourFootTruck
+        | TwentySixFootTruck
+        | Unique
+
+    type Create'PaymentDetailsCarRentalDataVehicleVehicleClass =
+        | Business
+        | Economy
+        | FirstClass
+        | PremiumEconomy
+
+    type Create'PaymentDetailsCarRentalDataVehicle =
+        {
+            /// Make of the rental vehicle.
+            [<Config.Form>]
+            Make: string option
+            /// Model of the rental vehicle.
+            [<Config.Form>]
+            Model: string option
+            /// Odometer reading at the time of rental.
+            [<Config.Form>]
+            Odometer: int option
+            /// Type of the rental vehicle.
+            [<Config.Form>]
+            Type: Create'PaymentDetailsCarRentalDataVehicleType option
+            /// Class of the rental vehicle.
+            [<Config.Form>]
+            VehicleClass: Create'PaymentDetailsCarRentalDataVehicleVehicleClass option
+            /// Vehicle identification number (VIN).
+            [<Config.Form>]
+            VehicleIdentificationNumber: string option
+        }
+
+    type Create'PaymentDetailsCarRentalDataVehicle with
+        static member New(?make: string, ?model: string, ?odometer: int, ?type': Create'PaymentDetailsCarRentalDataVehicleType, ?vehicleClass: Create'PaymentDetailsCarRentalDataVehicleVehicleClass, ?vehicleIdentificationNumber: string) =
+            {
+                Make = make
+                Model = model
+                Odometer = odometer
+                Type = type'
+                VehicleClass = vehicleClass
+                VehicleIdentificationNumber = vehicleIdentificationNumber
+            }
+
+    type Create'PaymentDetailsCarRentalData =
+        {
+            /// Affiliate (such as travel agency) details for the rental.
+            [<Config.Form>]
+            Affiliate: Create'PaymentDetailsCarRentalDataAffiliate option
+            /// Booking confirmation number for the car rental.
+            [<Config.Form>]
+            BookingNumber: string option
+            /// Name of the car rental company.
+            [<Config.Form>]
+            CarrierName: string option
+            /// Customer service phone number for the car rental company.
+            [<Config.Form>]
+            CustomerServicePhoneNumber: string option
+            /// Number of days the car is being rented.
+            [<Config.Form>]
+            DaysRented: int option
+            /// Distance details for the rental.
+            [<Config.Form>]
+            Distance: Create'PaymentDetailsCarRentalDataDistance option
+            /// List of drivers for the rental.
+            [<Config.Form>]
+            Drivers: Create'PaymentDetailsCarRentalDataDrivers list option
+            /// Drop-off location details.
+            [<Config.Form>]
+            DropOff: Create'PaymentDetailsCarRentalDataDropOff option
+            /// Insurance details for the rental.
+            [<Config.Form>]
+            Insurances: Create'PaymentDetailsCarRentalDataInsurances list option
+            /// Indicates if the customer was a no-show.
+            [<Config.Form>]
+            NoShowIndicator: bool option
+            /// Pickup location details.
+            [<Config.Form>]
+            Pickup: Create'PaymentDetailsCarRentalDataPickup option
+            /// Name of the person renting the vehicle.
+            [<Config.Form>]
+            RenterName: string option
+            /// Total cost breakdown for the rental.
+            [<Config.Form>]
+            Total: Create'PaymentDetailsCarRentalDataTotal option
+            /// Vehicle details for the rental.
+            [<Config.Form>]
+            Vehicle: Create'PaymentDetailsCarRentalDataVehicle option
+        }
+
+    type Create'PaymentDetailsCarRentalData with
+        static member New(?affiliate: Create'PaymentDetailsCarRentalDataAffiliate, ?bookingNumber: string, ?carrierName: string, ?customerServicePhoneNumber: string, ?daysRented: int, ?distance: Create'PaymentDetailsCarRentalDataDistance, ?drivers: Create'PaymentDetailsCarRentalDataDrivers list, ?dropOff: Create'PaymentDetailsCarRentalDataDropOff, ?insurances: Create'PaymentDetailsCarRentalDataInsurances list, ?noShowIndicator: bool, ?pickup: Create'PaymentDetailsCarRentalDataPickup, ?renterName: string, ?total: Create'PaymentDetailsCarRentalDataTotal, ?vehicle: Create'PaymentDetailsCarRentalDataVehicle) =
+            {
+                Affiliate = affiliate
+                BookingNumber = bookingNumber
+                CarrierName = carrierName
+                CustomerServicePhoneNumber = customerServicePhoneNumber
+                DaysRented = daysRented
+                Distance = distance
+                Drivers = drivers
+                DropOff = dropOff
+                Insurances = insurances
+                NoShowIndicator = noShowIndicator
+                Pickup = pickup
+                RenterName = renterName
+                Total = total
+                Vehicle = vehicle
+            }
+
+    type Create'PaymentDetailsLodgingDataAccommodationAccommodationType =
+        | Apartment
+        | Cabana
+        | House
+        | Penthouse
+        | Room
+        | Standard
+        | Suite
+        | Villa
+
+    type Create'PaymentDetailsLodgingDataAccommodation =
+        {
+            /// Type of accommodation.
+            [<Config.Form>]
+            AccommodationType: Create'PaymentDetailsLodgingDataAccommodationAccommodationType option
+            /// Bed type.
+            [<Config.Form>]
+            BedType: string option
+            /// Daily accommodation rate in cents.
+            [<Config.Form>]
+            DailyRateAmount: int option
+            /// Number of nights.
+            [<Config.Form>]
+            Nights: int option
+            /// Number of rooms, cabanas, apartments, and so on.
+            [<Config.Form>]
+            NumberOfRooms: int option
+            /// Rate type.
+            [<Config.Form>]
+            RateType: string option
+            /// Whether smoking is allowed.
+            [<Config.Form>]
+            SmokingIndicator: bool option
+        }
+
+    type Create'PaymentDetailsLodgingDataAccommodation with
+        static member New(?accommodationType: Create'PaymentDetailsLodgingDataAccommodationAccommodationType, ?bedType: string, ?dailyRateAmount: int, ?nights: int, ?numberOfRooms: int, ?rateType: string, ?smokingIndicator: bool) =
+            {
+                AccommodationType = accommodationType
+                BedType = bedType
+                DailyRateAmount = dailyRateAmount
+                Nights = nights
+                NumberOfRooms = numberOfRooms
+                RateType = rateType
+                SmokingIndicator = smokingIndicator
+            }
+
+    type Create'PaymentDetailsLodgingDataAffiliate =
+        {
+            /// Affiliate partner code.
+            [<Config.Form>]
+            Code: string option
+            /// Affiliate partner name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Create'PaymentDetailsLodgingDataAffiliate with
+        static member New(?code: string, ?name: string) =
+            {
+                Code = code
+                Name = name
+            }
+
+    type Create'PaymentDetailsLodgingDataGuests =
+        {
+            /// Guest's full name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Create'PaymentDetailsLodgingDataGuests with
+        static member New(?name: string) =
+            {
+                Name = name
+            }
+
+    type Create'PaymentDetailsLodgingDataHostAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Create'PaymentDetailsLodgingDataHostAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Create'PaymentDetailsLodgingDataHostHostType =
+        | Hostel
+        | Hotel
+        | Owner
+        | RentalAgency
+
+    type Create'PaymentDetailsLodgingDataHost =
+        {
+            /// Address of the host.
+            [<Config.Form>]
+            Address: Create'PaymentDetailsLodgingDataHostAddress option
+            /// Host's country of domicile.
+            [<Config.Form>]
+            CountryOfDomicile: string option
+            /// Reference number for the host.
+            [<Config.Form>]
+            HostReference: string option
+            /// Type of host.
+            [<Config.Form>]
+            HostType: Create'PaymentDetailsLodgingDataHostHostType option
+            /// Name of the lodging property or host.
+            [<Config.Form>]
+            Name: string option
+            /// Total number of reservations for the host.
+            [<Config.Form>]
+            NumberOfReservations: int option
+            /// Property phone number.
+            [<Config.Form>]
+            PropertyPhoneNumber: string option
+            /// Host's registration date.
+            [<Config.Form>]
+            RegisteredAt: DateTime option
+        }
+
+    type Create'PaymentDetailsLodgingDataHost with
+        static member New(?address: Create'PaymentDetailsLodgingDataHostAddress, ?countryOfDomicile: string, ?hostReference: string, ?hostType: Create'PaymentDetailsLodgingDataHostHostType, ?name: string, ?numberOfReservations: int, ?propertyPhoneNumber: string, ?registeredAt: DateTime) =
+            {
+                Address = address
+                CountryOfDomicile = countryOfDomicile
+                HostReference = hostReference
+                HostType = hostType
+                Name = name
+                NumberOfReservations = numberOfReservations
+                PropertyPhoneNumber = propertyPhoneNumber
+                RegisteredAt = registeredAt
+            }
+
+    type Create'PaymentDetailsLodgingDataInsurancesInsuranceType =
+        | Bankruptcy
+        | Cancelation
+        | Emergency
+        | Medical
+
+    type Create'PaymentDetailsLodgingDataInsurances =
+        {
+            /// Price of the insurance coverage in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the insurance amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Name of the insurance company.
+            [<Config.Form>]
+            InsuranceCompanyName: string option
+            /// Type of insurance coverage.
+            [<Config.Form>]
+            InsuranceType: Create'PaymentDetailsLodgingDataInsurancesInsuranceType option
+        }
+
+    type Create'PaymentDetailsLodgingDataInsurances with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?insuranceCompanyName: string, ?insuranceType: Create'PaymentDetailsLodgingDataInsurancesInsuranceType) =
+            {
+                Amount = amount
+                Currency = currency
+                InsuranceCompanyName = insuranceCompanyName
+                InsuranceType = insuranceType
+            }
+
+    type Create'PaymentDetailsLodgingDataTotalDiscounts =
+        {
+            /// Corporate client discount code.
+            [<Config.Form>]
+            CorporateClientCode: string option
+            /// Coupon code.
+            [<Config.Form>]
+            Coupon: string option
+        }
+
+    type Create'PaymentDetailsLodgingDataTotalDiscounts with
+        static member New(?corporateClientCode: string, ?coupon: string) =
+            {
+                CorporateClientCode = corporateClientCode
+                Coupon = coupon
+            }
+
+    type Create'PaymentDetailsLodgingDataTotalExtraChargesType =
+        | GiftShop
+        | Laundry
+        | MiniBar
+        | Other
+        | Phone
+        | Restaurant
+
+    type Create'PaymentDetailsLodgingDataTotalExtraCharges =
+        {
+            /// Amount of the extra charge in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Type of extra charge.
+            [<Config.Form>]
+            Type: Create'PaymentDetailsLodgingDataTotalExtraChargesType option
+        }
+
+    type Create'PaymentDetailsLodgingDataTotalExtraCharges with
+        static member New(?amount: int, ?type': Create'PaymentDetailsLodgingDataTotalExtraChargesType) =
+            {
+                Amount = amount
+                Type = type'
+            }
+
+    type Create'PaymentDetailsLodgingDataTotalTaxTaxItems =
+        {
+            /// Tax amount in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Tax rate.
+            [<Config.Form>]
+            Rate: int option
+            /// Type of tax applied.
+            [<Config.Form>]
+            Type: string option
+        }
+
+    type Create'PaymentDetailsLodgingDataTotalTaxTaxItems with
+        static member New(?amount: int, ?rate: int, ?type': string) =
+            {
+                Amount = amount
+                Rate = rate
+                Type = type'
+            }
+
+    type Create'PaymentDetailsLodgingDataTotalTax =
+        {
+            /// Indicates whether the transaction is tax exempt.
+            [<Config.Form>]
+            TaxExemptIndicator: bool option
+            /// Tax details.
+            [<Config.Form>]
+            TaxItems: Create'PaymentDetailsLodgingDataTotalTaxTaxItems list option
+        }
+
+    type Create'PaymentDetailsLodgingDataTotalTax with
+        static member New(?taxExemptIndicator: bool, ?taxItems: Create'PaymentDetailsLodgingDataTotalTaxTaxItems list) =
+            {
+                TaxExemptIndicator = taxExemptIndicator
+                TaxItems = taxItems
+            }
+
+    type Create'PaymentDetailsLodgingDataTotal =
+        {
+            /// Total price of the lodging reservation in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Cash advances in cents.
+            [<Config.Form>]
+            CashAdvances: int option
+            /// Currency of the total amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Discount details for the lodging.
+            [<Config.Form>]
+            Discounts: Create'PaymentDetailsLodgingDataTotalDiscounts option
+            /// Additional charges for the lodging.
+            [<Config.Form>]
+            ExtraCharges: Create'PaymentDetailsLodgingDataTotalExtraCharges list option
+            /// Prepaid amount in cents.
+            [<Config.Form>]
+            PrepaidAmount: int option
+            /// Tax breakdown for the lodging reservation.
+            [<Config.Form>]
+            Tax: Create'PaymentDetailsLodgingDataTotalTax option
+        }
+
+    type Create'PaymentDetailsLodgingDataTotal with
+        static member New(?amount: int, ?cashAdvances: int, ?currency: IsoTypes.IsoCurrencyCode, ?discounts: Create'PaymentDetailsLodgingDataTotalDiscounts, ?extraCharges: Create'PaymentDetailsLodgingDataTotalExtraCharges list, ?prepaidAmount: int, ?tax: Create'PaymentDetailsLodgingDataTotalTax) =
+            {
+                Amount = amount
+                CashAdvances = cashAdvances
+                Currency = currency
+                Discounts = discounts
+                ExtraCharges = extraCharges
+                PrepaidAmount = prepaidAmount
+                Tax = tax
+            }
+
+    type Create'PaymentDetailsLodgingData =
+        {
+            /// Accommodation details for the lodging.
+            [<Config.Form>]
+            Accommodation: Create'PaymentDetailsLodgingDataAccommodation option
+            /// Affiliate details if applicable.
+            [<Config.Form>]
+            Affiliate: Create'PaymentDetailsLodgingDataAffiliate option
+            /// Booking confirmation number for the lodging.
+            [<Config.Form>]
+            BookingNumber: string option
+            /// Check-in date.
+            [<Config.Form>]
+            CheckinAt: DateTime option
+            /// Check-out date.
+            [<Config.Form>]
+            CheckoutAt: DateTime option
+            /// Customer service phone number for the lodging company.
+            [<Config.Form>]
+            CustomerServicePhoneNumber: string option
+            /// Whether the lodging is compliant with any hotel fire safety regulations.
+            [<Config.Form>]
+            FireSafetyActComplianceIndicator: bool option
+            /// List of guests for the lodging.
+            [<Config.Form>]
+            Guests: Create'PaymentDetailsLodgingDataGuests list option
+            /// Host details for the lodging.
+            [<Config.Form>]
+            Host: Create'PaymentDetailsLodgingDataHost option
+            /// List of insurances for the lodging.
+            [<Config.Form>]
+            Insurances: Create'PaymentDetailsLodgingDataInsurances list option
+            /// Whether the renter is a no-show.
+            [<Config.Form>]
+            NoShowIndicator: bool option
+            /// Renter ID number for the lodging.
+            [<Config.Form>]
+            RenterIdNumber: string option
+            /// Renter name for the lodging.
+            [<Config.Form>]
+            RenterName: string option
+            /// Total details for the lodging.
+            [<Config.Form>]
+            Total: Create'PaymentDetailsLodgingDataTotal option
+        }
+
+    type Create'PaymentDetailsLodgingData with
+        static member New(?accommodation: Create'PaymentDetailsLodgingDataAccommodation, ?affiliate: Create'PaymentDetailsLodgingDataAffiliate, ?bookingNumber: string, ?checkinAt: DateTime, ?checkoutAt: DateTime, ?customerServicePhoneNumber: string, ?fireSafetyActComplianceIndicator: bool, ?guests: Create'PaymentDetailsLodgingDataGuests list, ?host: Create'PaymentDetailsLodgingDataHost, ?insurances: Create'PaymentDetailsLodgingDataInsurances list, ?noShowIndicator: bool, ?renterIdNumber: string, ?renterName: string, ?total: Create'PaymentDetailsLodgingDataTotal) =
+            {
+                Accommodation = accommodation
+                Affiliate = affiliate
+                BookingNumber = bookingNumber
+                CheckinAt = checkinAt
+                CheckoutAt = checkoutAt
+                CustomerServicePhoneNumber = customerServicePhoneNumber
+                FireSafetyActComplianceIndicator = fireSafetyActComplianceIndicator
+                Guests = guests
+                Host = host
+                Insurances = insurances
+                NoShowIndicator = noShowIndicator
+                RenterIdNumber = renterIdNumber
+                RenterName = renterName
+                Total = total
+            }
+
     type Create'PaymentDetails =
         {
+            /// Car rental data for this PaymentIntent.
+            [<Config.Form>]
+            CarRentalData: Choice<Create'PaymentDetailsCarRentalData list,string> option
             /// A unique value to identify the customer. This field is available only for card payments.
             /// This field is truncated to 25 alphanumeric characters, excluding spaces, before being sent to card networks.
             [<Config.Form>]
             CustomerReference: Choice<string,string> option
+            /// Lodging data for this PaymentIntent.
+            [<Config.Form>]
+            LodgingData: Choice<Create'PaymentDetailsLodgingData list,string> option
             /// A unique value assigned by the business to identify the transaction. Required for L2 and L3 rates.
             /// For Cards, this field is truncated to 25 alphanumeric characters, excluding spaces, before being sent to card networks. For Klarna, this field is truncated to 255 characters and is visible to customers when they view the order in the Klarna app.
             [<Config.Form>]
@@ -634,9 +1507,11 @@ module PaymentIntents =
         }
 
     type Create'PaymentDetails with
-        static member New(?customerReference: Choice<string,string>, ?orderReference: Choice<string,string>) =
+        static member New(?carRentalData: Choice<Create'PaymentDetailsCarRentalData list,string>, ?customerReference: Choice<string,string>, ?lodgingData: Choice<Create'PaymentDetailsLodgingData list,string>, ?orderReference: Choice<string,string>) =
             {
+                CarRentalData = carRentalData
                 CustomerReference = customerReference
+                LodgingData = lodgingData
                 OrderReference = orderReference
             }
 
@@ -4422,7 +5297,7 @@ module PaymentIntents =
             /// Setting this value for a card charge returns an error. For card charges, set the [statement_descriptor_suffix](https://docs.stripe.com/get-started/account/statement-descriptors#dynamic) instead.
             [<Config.Form>]
             StatementDescriptor: string option
-            /// Provides information about a card charge. Concatenated to the account's [statement descriptor prefix](https://docs.stripe.com/get-started/account/statement-descriptors#static) to form the complete statement descriptor that appears on the customer's statement.
+            /// Provides information about a card charge. Concatenated to the account's [statement descriptor prefix](https://docs.stripe.com/get-started/account/statement-descriptors#static) to form the complete statement descriptor that appears on the customer's statement. A suffix longer than 22 characters returns an error. If a valid suffix makes the complete statement descriptor longer than 22 characters, Stripe truncates the descriptor instead of returning an error. Learn how to [fit the suffix in the complete descriptor](https://docs.stripe.com/get-started/account/statement-descriptors#suffix-length).
             [<Config.Form>]
             StatementDescriptorSuffix: string option
             /// The parameters that you can use to automatically create a Transfer.
@@ -4928,12 +5803,885 @@ module PaymentIntents =
                 Inputs = inputs
             }
 
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataAffiliate =
+        {
+            /// Affiliate partner code.
+            [<Config.Form>]
+            Code: string option
+            /// Name of affiliate partner.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataAffiliate with
+        static member New(?code: string, ?name: string) =
+            {
+                Code = code
+                Name = name
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDistanceUnit =
+        | Kilometers
+        | Miles
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDistance =
+        {
+            /// Distance traveled.
+            [<Config.Form>]
+            Amount: int option
+            /// Unit of measurement for the distance traveled. One of `miles` or `kilometers`.
+            [<Config.Form>]
+            Unit: Update'PaymentDetailsPaymentDetailsCarRentalDataDistanceUnit option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDistance with
+        static member New(?amount: int, ?unit: Update'PaymentDetailsPaymentDetailsCarRentalDataDistanceUnit) =
+            {
+                Amount = amount
+                Unit = unit
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDriversDateOfBirth =
+        {
+            /// Day of birth (1-31).
+            [<Config.Form>]
+            Day: int option
+            /// Month of birth (1-12).
+            [<Config.Form>]
+            Month: int option
+            /// Year of birth (must be greater than 1900).
+            [<Config.Form>]
+            Year: int option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDriversDateOfBirth with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDrivers =
+        {
+            /// Driver's date of birth.
+            [<Config.Form>]
+            DateOfBirth: Update'PaymentDetailsPaymentDetailsCarRentalDataDriversDateOfBirth option
+            /// Driver's identification number.
+            [<Config.Form>]
+            DriverIdentificationNumber: string option
+            /// Driver's tax number.
+            [<Config.Form>]
+            DriverTaxNumber: string option
+            /// Driver's full name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDrivers with
+        static member New(?dateOfBirth: Update'PaymentDetailsPaymentDetailsCarRentalDataDriversDateOfBirth, ?driverIdentificationNumber: string, ?driverTaxNumber: string, ?name: string) =
+            {
+                DateOfBirth = dateOfBirth
+                DriverIdentificationNumber = driverIdentificationNumber
+                DriverTaxNumber = driverTaxNumber
+                Name = name
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDropOffAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDropOffAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDropOff =
+        {
+            /// Address of the rental location.
+            [<Config.Form>]
+            Address: Update'PaymentDetailsPaymentDetailsCarRentalDataDropOffAddress option
+            /// Location name.
+            [<Config.Form>]
+            LocationName: string option
+            /// Timestamp for the location.
+            [<Config.Form>]
+            Time: DateTime option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataDropOff with
+        static member New(?address: Update'PaymentDetailsPaymentDetailsCarRentalDataDropOffAddress, ?locationName: string, ?time: DateTime) =
+            {
+                Address = address
+                LocationName = locationName
+                Time = time
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataInsurancesInsuranceType =
+        | LiabilitySupplement
+        | LossDamageWaiver
+        | Other
+        | PartialDamageWaiver
+        | PersonalAccident
+        | PersonalEffects
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataInsurances =
+        {
+            /// Amount of the insurance coverage in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the insurance amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Name of the insurance company.
+            [<Config.Form>]
+            InsuranceCompanyName: string option
+            /// Type of insurance coverage.
+            [<Config.Form>]
+            InsuranceType: Update'PaymentDetailsPaymentDetailsCarRentalDataInsurancesInsuranceType option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataInsurances with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?insuranceCompanyName: string, ?insuranceType: Update'PaymentDetailsPaymentDetailsCarRentalDataInsurancesInsuranceType) =
+            {
+                Amount = amount
+                Currency = currency
+                InsuranceCompanyName = insuranceCompanyName
+                InsuranceType = insuranceType
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataPickupAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataPickupAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataPickup =
+        {
+            /// Address of the rental location.
+            [<Config.Form>]
+            Address: Update'PaymentDetailsPaymentDetailsCarRentalDataPickupAddress option
+            /// Location name.
+            [<Config.Form>]
+            LocationName: string option
+            /// Timestamp for the location.
+            [<Config.Form>]
+            Time: DateTime option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataPickup with
+        static member New(?address: Update'PaymentDetailsPaymentDetailsCarRentalDataPickupAddress, ?locationName: string, ?time: DateTime) =
+            {
+                Address = address
+                LocationName = locationName
+                Time = time
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotalDiscounts =
+        {
+            /// Corporate client discount code.
+            [<Config.Form>]
+            CorporateClientCode: string option
+            /// Coupon code applied to the rental.
+            [<Config.Form>]
+            Coupon: string option
+            /// Maximum number of free miles or kilometers included.
+            [<Config.Form>]
+            MaximumFreeMilesOrKilometers: int option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotalDiscounts with
+        static member New(?corporateClientCode: string, ?coupon: string, ?maximumFreeMilesOrKilometers: int) =
+            {
+                CorporateClientCode = corporateClientCode
+                Coupon = coupon
+                MaximumFreeMilesOrKilometers = maximumFreeMilesOrKilometers
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraChargesType =
+        | ExtraMileage
+        | Gas
+        | Gps
+        | LateCharge
+        | OneWayDropOff
+        | Other
+        | Parking
+        | Phone
+        | RegularMileage
+        | Towing
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraCharges =
+        {
+            /// Amount of the extra charge in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Type of extra charge.
+            [<Config.Form>]
+            Type: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraChargesType option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraCharges with
+        static member New(?amount: int, ?type': Update'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraChargesType) =
+            {
+                Amount = amount
+                Type = type'
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotalRateUnit =
+        | Days
+        | Kilometers
+        | Miles
+        | Months
+        | Weeks
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotalTaxTaxItems =
+        {
+            /// Tax amount.
+            [<Config.Form>]
+            Amount: int option
+            /// Tax rate applied.
+            [<Config.Form>]
+            Rate: int option
+            /// Type of tax applied.
+            [<Config.Form>]
+            Type: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotalTaxTaxItems with
+        static member New(?amount: int, ?rate: int, ?type': string) =
+            {
+                Amount = amount
+                Rate = rate
+                Type = type'
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotalTax =
+        {
+            /// Indicates if the transaction is tax exempt.
+            [<Config.Form>]
+            TaxExemptIndicator: bool option
+            /// Array of tax details.
+            [<Config.Form>]
+            TaxItems: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalTaxTaxItems list option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotalTax with
+        static member New(?taxExemptIndicator: bool, ?taxItems: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalTaxTaxItems list) =
+            {
+                TaxExemptIndicator = taxExemptIndicator
+                TaxItems = taxItems
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotal =
+        {
+            /// Total amount in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Discount details for the rental.
+            [<Config.Form>]
+            Discounts: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalDiscounts option
+            /// Additional charges for the rental.
+            [<Config.Form>]
+            ExtraCharges: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraCharges list option
+            /// Rate per unit for the rental.
+            [<Config.Form>]
+            RatePerUnit: int option
+            /// Unit of measurement for the rate.
+            [<Config.Form>]
+            RateUnit: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalRateUnit option
+            /// Tax breakdown for the rental.
+            [<Config.Form>]
+            Tax: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalTax option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataTotal with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?discounts: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalDiscounts, ?extraCharges: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraCharges list, ?ratePerUnit: int, ?rateUnit: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalRateUnit, ?tax: Update'PaymentDetailsPaymentDetailsCarRentalDataTotalTax) =
+            {
+                Amount = amount
+                Currency = currency
+                Discounts = discounts
+                ExtraCharges = extraCharges
+                RatePerUnit = ratePerUnit
+                RateUnit = rateUnit
+                Tax = tax
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataVehicleType =
+        | CargoVan
+        | Compact
+        | Economy
+        | Exotic
+        | ExoticSuv
+        | FifteenPassengerVan
+        | FourWheelDrive
+        | FullSize
+        | Intermediate
+        | LargeSuv
+        | LargeTruck
+        | Luxury
+        | MediumSuv
+        | Midsize
+        | Mini
+        | Minivan
+        | Miscellaneous
+        | Moped
+        | MovingVan
+        | Premium
+        | Regular
+        | SmallMediumTruck
+        | SmallSuv
+        | Special
+        | Standard
+        | Stretch
+        | Subcompact
+        | Taxi
+        | TwelveFootTruck
+        | TwelvePassengerVan
+        | TwentyFootTruck
+        | TwentyFourFootTruck
+        | TwentySixFootTruck
+        | Unique
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataVehicleVehicleClass =
+        | Business
+        | Economy
+        | FirstClass
+        | PremiumEconomy
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataVehicle =
+        {
+            /// Make of the rental vehicle.
+            [<Config.Form>]
+            Make: string option
+            /// Model of the rental vehicle.
+            [<Config.Form>]
+            Model: string option
+            /// Odometer reading at the time of rental.
+            [<Config.Form>]
+            Odometer: int option
+            /// Type of the rental vehicle.
+            [<Config.Form>]
+            Type: Update'PaymentDetailsPaymentDetailsCarRentalDataVehicleType option
+            /// Class of the rental vehicle.
+            [<Config.Form>]
+            VehicleClass: Update'PaymentDetailsPaymentDetailsCarRentalDataVehicleVehicleClass option
+            /// Vehicle identification number (VIN).
+            [<Config.Form>]
+            VehicleIdentificationNumber: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalDataVehicle with
+        static member New(?make: string, ?model: string, ?odometer: int, ?type': Update'PaymentDetailsPaymentDetailsCarRentalDataVehicleType, ?vehicleClass: Update'PaymentDetailsPaymentDetailsCarRentalDataVehicleVehicleClass, ?vehicleIdentificationNumber: string) =
+            {
+                Make = make
+                Model = model
+                Odometer = odometer
+                Type = type'
+                VehicleClass = vehicleClass
+                VehicleIdentificationNumber = vehicleIdentificationNumber
+            }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalData =
+        {
+            /// Affiliate (such as travel agency) details for the rental.
+            [<Config.Form>]
+            Affiliate: Update'PaymentDetailsPaymentDetailsCarRentalDataAffiliate option
+            /// Booking confirmation number for the car rental.
+            [<Config.Form>]
+            BookingNumber: string option
+            /// Name of the car rental company.
+            [<Config.Form>]
+            CarrierName: string option
+            /// Customer service phone number for the car rental company.
+            [<Config.Form>]
+            CustomerServicePhoneNumber: string option
+            /// Number of days the car is being rented.
+            [<Config.Form>]
+            DaysRented: int option
+            /// Distance details for the rental.
+            [<Config.Form>]
+            Distance: Update'PaymentDetailsPaymentDetailsCarRentalDataDistance option
+            /// List of drivers for the rental.
+            [<Config.Form>]
+            Drivers: Update'PaymentDetailsPaymentDetailsCarRentalDataDrivers list option
+            /// Drop-off location details.
+            [<Config.Form>]
+            DropOff: Update'PaymentDetailsPaymentDetailsCarRentalDataDropOff option
+            /// Insurance details for the rental.
+            [<Config.Form>]
+            Insurances: Update'PaymentDetailsPaymentDetailsCarRentalDataInsurances list option
+            /// Indicates if the customer was a no-show.
+            [<Config.Form>]
+            NoShowIndicator: bool option
+            /// Pickup location details.
+            [<Config.Form>]
+            Pickup: Update'PaymentDetailsPaymentDetailsCarRentalDataPickup option
+            /// Name of the person renting the vehicle.
+            [<Config.Form>]
+            RenterName: string option
+            /// Total cost breakdown for the rental.
+            [<Config.Form>]
+            Total: Update'PaymentDetailsPaymentDetailsCarRentalDataTotal option
+            /// Vehicle details for the rental.
+            [<Config.Form>]
+            Vehicle: Update'PaymentDetailsPaymentDetailsCarRentalDataVehicle option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsCarRentalData with
+        static member New(?affiliate: Update'PaymentDetailsPaymentDetailsCarRentalDataAffiliate, ?bookingNumber: string, ?carrierName: string, ?customerServicePhoneNumber: string, ?daysRented: int, ?distance: Update'PaymentDetailsPaymentDetailsCarRentalDataDistance, ?drivers: Update'PaymentDetailsPaymentDetailsCarRentalDataDrivers list, ?dropOff: Update'PaymentDetailsPaymentDetailsCarRentalDataDropOff, ?insurances: Update'PaymentDetailsPaymentDetailsCarRentalDataInsurances list, ?noShowIndicator: bool, ?pickup: Update'PaymentDetailsPaymentDetailsCarRentalDataPickup, ?renterName: string, ?total: Update'PaymentDetailsPaymentDetailsCarRentalDataTotal, ?vehicle: Update'PaymentDetailsPaymentDetailsCarRentalDataVehicle) =
+            {
+                Affiliate = affiliate
+                BookingNumber = bookingNumber
+                CarrierName = carrierName
+                CustomerServicePhoneNumber = customerServicePhoneNumber
+                DaysRented = daysRented
+                Distance = distance
+                Drivers = drivers
+                DropOff = dropOff
+                Insurances = insurances
+                NoShowIndicator = noShowIndicator
+                Pickup = pickup
+                RenterName = renterName
+                Total = total
+                Vehicle = vehicle
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataAccommodationAccommodationType =
+        | Apartment
+        | Cabana
+        | House
+        | Penthouse
+        | Room
+        | Standard
+        | Suite
+        | Villa
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataAccommodation =
+        {
+            /// Type of accommodation.
+            [<Config.Form>]
+            AccommodationType: Update'PaymentDetailsPaymentDetailsLodgingDataAccommodationAccommodationType option
+            /// Bed type.
+            [<Config.Form>]
+            BedType: string option
+            /// Daily accommodation rate in cents.
+            [<Config.Form>]
+            DailyRateAmount: int option
+            /// Number of nights.
+            [<Config.Form>]
+            Nights: int option
+            /// Number of rooms, cabanas, apartments, and so on.
+            [<Config.Form>]
+            NumberOfRooms: int option
+            /// Rate type.
+            [<Config.Form>]
+            RateType: string option
+            /// Whether smoking is allowed.
+            [<Config.Form>]
+            SmokingIndicator: bool option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataAccommodation with
+        static member New(?accommodationType: Update'PaymentDetailsPaymentDetailsLodgingDataAccommodationAccommodationType, ?bedType: string, ?dailyRateAmount: int, ?nights: int, ?numberOfRooms: int, ?rateType: string, ?smokingIndicator: bool) =
+            {
+                AccommodationType = accommodationType
+                BedType = bedType
+                DailyRateAmount = dailyRateAmount
+                Nights = nights
+                NumberOfRooms = numberOfRooms
+                RateType = rateType
+                SmokingIndicator = smokingIndicator
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataAffiliate =
+        {
+            /// Affiliate partner code.
+            [<Config.Form>]
+            Code: string option
+            /// Affiliate partner name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataAffiliate with
+        static member New(?code: string, ?name: string) =
+            {
+                Code = code
+                Name = name
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataGuests =
+        {
+            /// Guest's full name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataGuests with
+        static member New(?name: string) =
+            {
+                Name = name
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataHostAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataHostAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataHostHostType =
+        | Hostel
+        | Hotel
+        | Owner
+        | RentalAgency
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataHost =
+        {
+            /// Address of the host.
+            [<Config.Form>]
+            Address: Update'PaymentDetailsPaymentDetailsLodgingDataHostAddress option
+            /// Host's country of domicile.
+            [<Config.Form>]
+            CountryOfDomicile: string option
+            /// Reference number for the host.
+            [<Config.Form>]
+            HostReference: string option
+            /// Type of host.
+            [<Config.Form>]
+            HostType: Update'PaymentDetailsPaymentDetailsLodgingDataHostHostType option
+            /// Name of the lodging property or host.
+            [<Config.Form>]
+            Name: string option
+            /// Total number of reservations for the host.
+            [<Config.Form>]
+            NumberOfReservations: int option
+            /// Property phone number.
+            [<Config.Form>]
+            PropertyPhoneNumber: string option
+            /// Host's registration date.
+            [<Config.Form>]
+            RegisteredAt: DateTime option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataHost with
+        static member New(?address: Update'PaymentDetailsPaymentDetailsLodgingDataHostAddress, ?countryOfDomicile: string, ?hostReference: string, ?hostType: Update'PaymentDetailsPaymentDetailsLodgingDataHostHostType, ?name: string, ?numberOfReservations: int, ?propertyPhoneNumber: string, ?registeredAt: DateTime) =
+            {
+                Address = address
+                CountryOfDomicile = countryOfDomicile
+                HostReference = hostReference
+                HostType = hostType
+                Name = name
+                NumberOfReservations = numberOfReservations
+                PropertyPhoneNumber = propertyPhoneNumber
+                RegisteredAt = registeredAt
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataInsurancesInsuranceType =
+        | Bankruptcy
+        | Cancelation
+        | Emergency
+        | Medical
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataInsurances =
+        {
+            /// Price of the insurance coverage in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the insurance amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Name of the insurance company.
+            [<Config.Form>]
+            InsuranceCompanyName: string option
+            /// Type of insurance coverage.
+            [<Config.Form>]
+            InsuranceType: Update'PaymentDetailsPaymentDetailsLodgingDataInsurancesInsuranceType option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataInsurances with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?insuranceCompanyName: string, ?insuranceType: Update'PaymentDetailsPaymentDetailsLodgingDataInsurancesInsuranceType) =
+            {
+                Amount = amount
+                Currency = currency
+                InsuranceCompanyName = insuranceCompanyName
+                InsuranceType = insuranceType
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotalDiscounts =
+        {
+            /// Corporate client discount code.
+            [<Config.Form>]
+            CorporateClientCode: string option
+            /// Coupon code.
+            [<Config.Form>]
+            Coupon: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotalDiscounts with
+        static member New(?corporateClientCode: string, ?coupon: string) =
+            {
+                CorporateClientCode = corporateClientCode
+                Coupon = coupon
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotalExtraChargesType =
+        | GiftShop
+        | Laundry
+        | MiniBar
+        | Other
+        | Phone
+        | Restaurant
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotalExtraCharges =
+        {
+            /// Amount of the extra charge in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Type of extra charge.
+            [<Config.Form>]
+            Type: Update'PaymentDetailsPaymentDetailsLodgingDataTotalExtraChargesType option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotalExtraCharges with
+        static member New(?amount: int, ?type': Update'PaymentDetailsPaymentDetailsLodgingDataTotalExtraChargesType) =
+            {
+                Amount = amount
+                Type = type'
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotalTaxTaxItems =
+        {
+            /// Tax amount in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Tax rate.
+            [<Config.Form>]
+            Rate: int option
+            /// Type of tax applied.
+            [<Config.Form>]
+            Type: string option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotalTaxTaxItems with
+        static member New(?amount: int, ?rate: int, ?type': string) =
+            {
+                Amount = amount
+                Rate = rate
+                Type = type'
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotalTax =
+        {
+            /// Indicates whether the transaction is tax exempt.
+            [<Config.Form>]
+            TaxExemptIndicator: bool option
+            /// Tax details.
+            [<Config.Form>]
+            TaxItems: Update'PaymentDetailsPaymentDetailsLodgingDataTotalTaxTaxItems list option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotalTax with
+        static member New(?taxExemptIndicator: bool, ?taxItems: Update'PaymentDetailsPaymentDetailsLodgingDataTotalTaxTaxItems list) =
+            {
+                TaxExemptIndicator = taxExemptIndicator
+                TaxItems = taxItems
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotal =
+        {
+            /// Total price of the lodging reservation in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Cash advances in cents.
+            [<Config.Form>]
+            CashAdvances: int option
+            /// Currency of the total amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Discount details for the lodging.
+            [<Config.Form>]
+            Discounts: Update'PaymentDetailsPaymentDetailsLodgingDataTotalDiscounts option
+            /// Additional charges for the lodging.
+            [<Config.Form>]
+            ExtraCharges: Update'PaymentDetailsPaymentDetailsLodgingDataTotalExtraCharges list option
+            /// Prepaid amount in cents.
+            [<Config.Form>]
+            PrepaidAmount: int option
+            /// Tax breakdown for the lodging reservation.
+            [<Config.Form>]
+            Tax: Update'PaymentDetailsPaymentDetailsLodgingDataTotalTax option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingDataTotal with
+        static member New(?amount: int, ?cashAdvances: int, ?currency: IsoTypes.IsoCurrencyCode, ?discounts: Update'PaymentDetailsPaymentDetailsLodgingDataTotalDiscounts, ?extraCharges: Update'PaymentDetailsPaymentDetailsLodgingDataTotalExtraCharges list, ?prepaidAmount: int, ?tax: Update'PaymentDetailsPaymentDetailsLodgingDataTotalTax) =
+            {
+                Amount = amount
+                CashAdvances = cashAdvances
+                Currency = currency
+                Discounts = discounts
+                ExtraCharges = extraCharges
+                PrepaidAmount = prepaidAmount
+                Tax = tax
+            }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingData =
+        {
+            /// Accommodation details for the lodging.
+            [<Config.Form>]
+            Accommodation: Update'PaymentDetailsPaymentDetailsLodgingDataAccommodation option
+            /// Affiliate details if applicable.
+            [<Config.Form>]
+            Affiliate: Update'PaymentDetailsPaymentDetailsLodgingDataAffiliate option
+            /// Booking confirmation number for the lodging.
+            [<Config.Form>]
+            BookingNumber: string option
+            /// Check-in date.
+            [<Config.Form>]
+            CheckinAt: DateTime option
+            /// Check-out date.
+            [<Config.Form>]
+            CheckoutAt: DateTime option
+            /// Customer service phone number for the lodging company.
+            [<Config.Form>]
+            CustomerServicePhoneNumber: string option
+            /// Whether the lodging is compliant with any hotel fire safety regulations.
+            [<Config.Form>]
+            FireSafetyActComplianceIndicator: bool option
+            /// List of guests for the lodging.
+            [<Config.Form>]
+            Guests: Update'PaymentDetailsPaymentDetailsLodgingDataGuests list option
+            /// Host details for the lodging.
+            [<Config.Form>]
+            Host: Update'PaymentDetailsPaymentDetailsLodgingDataHost option
+            /// List of insurances for the lodging.
+            [<Config.Form>]
+            Insurances: Update'PaymentDetailsPaymentDetailsLodgingDataInsurances list option
+            /// Whether the renter is a no-show.
+            [<Config.Form>]
+            NoShowIndicator: bool option
+            /// Renter ID number for the lodging.
+            [<Config.Form>]
+            RenterIdNumber: string option
+            /// Renter name for the lodging.
+            [<Config.Form>]
+            RenterName: string option
+            /// Total details for the lodging.
+            [<Config.Form>]
+            Total: Update'PaymentDetailsPaymentDetailsLodgingDataTotal option
+        }
+
+    type Update'PaymentDetailsPaymentDetailsLodgingData with
+        static member New(?accommodation: Update'PaymentDetailsPaymentDetailsLodgingDataAccommodation, ?affiliate: Update'PaymentDetailsPaymentDetailsLodgingDataAffiliate, ?bookingNumber: string, ?checkinAt: DateTime, ?checkoutAt: DateTime, ?customerServicePhoneNumber: string, ?fireSafetyActComplianceIndicator: bool, ?guests: Update'PaymentDetailsPaymentDetailsLodgingDataGuests list, ?host: Update'PaymentDetailsPaymentDetailsLodgingDataHost, ?insurances: Update'PaymentDetailsPaymentDetailsLodgingDataInsurances list, ?noShowIndicator: bool, ?renterIdNumber: string, ?renterName: string, ?total: Update'PaymentDetailsPaymentDetailsLodgingDataTotal) =
+            {
+                Accommodation = accommodation
+                Affiliate = affiliate
+                BookingNumber = bookingNumber
+                CheckinAt = checkinAt
+                CheckoutAt = checkoutAt
+                CustomerServicePhoneNumber = customerServicePhoneNumber
+                FireSafetyActComplianceIndicator = fireSafetyActComplianceIndicator
+                Guests = guests
+                Host = host
+                Insurances = insurances
+                NoShowIndicator = noShowIndicator
+                RenterIdNumber = renterIdNumber
+                RenterName = renterName
+                Total = total
+            }
+
     type Update'PaymentDetailsPaymentDetails =
         {
+            /// Car rental data for this PaymentIntent.
+            [<Config.Form>]
+            CarRentalData: Choice<Update'PaymentDetailsPaymentDetailsCarRentalData list,string> option
             /// A unique value to identify the customer. This field is available only for card payments.
             /// This field is truncated to 25 alphanumeric characters, excluding spaces, before being sent to card networks.
             [<Config.Form>]
             CustomerReference: Choice<string,string> option
+            /// Lodging data for this PaymentIntent.
+            [<Config.Form>]
+            LodgingData: Choice<Update'PaymentDetailsPaymentDetailsLodgingData list,string> option
             /// A unique value assigned by the business to identify the transaction. Required for L2 and L3 rates.
             /// For Cards, this field is truncated to 25 alphanumeric characters, excluding spaces, before being sent to card networks. For Klarna, this field is truncated to 255 characters and is visible to customers when they view the order in the Klarna app.
             [<Config.Form>]
@@ -4941,9 +6689,11 @@ module PaymentIntents =
         }
 
     type Update'PaymentDetailsPaymentDetails with
-        static member New(?customerReference: Choice<string,string>, ?orderReference: Choice<string,string>) =
+        static member New(?carRentalData: Choice<Update'PaymentDetailsPaymentDetailsCarRentalData list,string>, ?customerReference: Choice<string,string>, ?lodgingData: Choice<Update'PaymentDetailsPaymentDetailsLodgingData list,string>, ?orderReference: Choice<string,string>) =
             {
+                CarRentalData = carRentalData
                 CustomerReference = customerReference
+                LodgingData = lodgingData
                 OrderReference = orderReference
             }
 
@@ -8667,7 +10417,7 @@ module PaymentIntents =
             /// Setting this value for a card charge returns an error. For card charges, set the [statement_descriptor_suffix](https://docs.stripe.com/get-started/account/statement-descriptors#dynamic) instead.
             [<Config.Form>]
             StatementDescriptor: string option
-            /// Provides information about a card charge. Concatenated to the account's [statement descriptor prefix](https://docs.stripe.com/get-started/account/statement-descriptors#static) to form the complete statement descriptor that appears on the customer's statement.
+            /// Provides information about a card charge. Concatenated to the account's [statement descriptor prefix](https://docs.stripe.com/get-started/account/statement-descriptors#static) to form the complete statement descriptor that appears on the customer's statement. A suffix longer than 22 characters returns an error. If a valid suffix makes the complete statement descriptor longer than 22 characters, Stripe truncates the descriptor instead of returning an error. Learn how to [fit the suffix in the complete descriptor](https://docs.stripe.com/get-started/account/statement-descriptors#suffix-length).
             [<Config.Form>]
             StatementDescriptorSuffix: string option
             /// Use this parameter to automatically create a Transfer when the payment succeeds. Learn more about the [use case for connected accounts](https://docs.stripe.com/payments/connected-accounts).
@@ -9155,22 +10905,898 @@ module PaymentIntentsCapture =
                 Inputs = inputs
             }
 
-    type Capture'PaymentDetailsPaymentDetailsCaptureParams =
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataAffiliate =
         {
+            /// Affiliate partner code.
+            [<Config.Form>]
+            Code: string option
+            /// Name of affiliate partner.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataAffiliate with
+        static member New(?code: string, ?name: string) =
+            {
+                Code = code
+                Name = name
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDistanceUnit =
+        | Kilometers
+        | Miles
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDistance =
+        {
+            /// Distance traveled.
+            [<Config.Form>]
+            Amount: int option
+            /// Unit of measurement for the distance traveled. One of `miles` or `kilometers`.
+            [<Config.Form>]
+            Unit: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDistanceUnit option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDistance with
+        static member New(?amount: int, ?unit: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDistanceUnit) =
+            {
+                Amount = amount
+                Unit = unit
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDriversDateOfBirth =
+        {
+            /// Day of birth (1-31).
+            [<Config.Form>]
+            Day: int option
+            /// Month of birth (1-12).
+            [<Config.Form>]
+            Month: int option
+            /// Year of birth (must be greater than 1900).
+            [<Config.Form>]
+            Year: int option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDriversDateOfBirth with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDrivers =
+        {
+            /// Driver's date of birth.
+            [<Config.Form>]
+            DateOfBirth: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDriversDateOfBirth option
+            /// Driver's identification number.
+            [<Config.Form>]
+            DriverIdentificationNumber: string option
+            /// Driver's tax number.
+            [<Config.Form>]
+            DriverTaxNumber: string option
+            /// Driver's full name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDrivers with
+        static member New(?dateOfBirth: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDriversDateOfBirth, ?driverIdentificationNumber: string, ?driverTaxNumber: string, ?name: string) =
+            {
+                DateOfBirth = dateOfBirth
+                DriverIdentificationNumber = driverIdentificationNumber
+                DriverTaxNumber = driverTaxNumber
+                Name = name
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDropOffAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDropOffAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDropOff =
+        {
+            /// Address of the rental location.
+            [<Config.Form>]
+            Address: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDropOffAddress option
+            /// Location name.
+            [<Config.Form>]
+            LocationName: string option
+            /// Timestamp for the location.
+            [<Config.Form>]
+            Time: DateTime option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDropOff with
+        static member New(?address: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDropOffAddress, ?locationName: string, ?time: DateTime) =
+            {
+                Address = address
+                LocationName = locationName
+                Time = time
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataInsurancesInsuranceType =
+        | LiabilitySupplement
+        | LossDamageWaiver
+        | Other
+        | PartialDamageWaiver
+        | PersonalAccident
+        | PersonalEffects
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataInsurances =
+        {
+            /// Amount of the insurance coverage in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the insurance amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Name of the insurance company.
+            [<Config.Form>]
+            InsuranceCompanyName: string option
+            /// Type of insurance coverage.
+            [<Config.Form>]
+            InsuranceType: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataInsurancesInsuranceType option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataInsurances with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?insuranceCompanyName: string, ?insuranceType: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataInsurancesInsuranceType) =
+            {
+                Amount = amount
+                Currency = currency
+                InsuranceCompanyName = insuranceCompanyName
+                InsuranceType = insuranceType
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataPickupAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataPickupAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataPickup =
+        {
+            /// Address of the rental location.
+            [<Config.Form>]
+            Address: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataPickupAddress option
+            /// Location name.
+            [<Config.Form>]
+            LocationName: string option
+            /// Timestamp for the location.
+            [<Config.Form>]
+            Time: DateTime option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataPickup with
+        static member New(?address: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataPickupAddress, ?locationName: string, ?time: DateTime) =
+            {
+                Address = address
+                LocationName = locationName
+                Time = time
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalDiscounts =
+        {
+            /// Corporate client discount code.
+            [<Config.Form>]
+            CorporateClientCode: string option
+            /// Coupon code applied to the rental.
+            [<Config.Form>]
+            Coupon: string option
+            /// Maximum number of free miles or kilometers included.
+            [<Config.Form>]
+            MaximumFreeMilesOrKilometers: int option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalDiscounts with
+        static member New(?corporateClientCode: string, ?coupon: string, ?maximumFreeMilesOrKilometers: int) =
+            {
+                CorporateClientCode = corporateClientCode
+                Coupon = coupon
+                MaximumFreeMilesOrKilometers = maximumFreeMilesOrKilometers
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalExtraChargesType =
+        | ExtraMileage
+        | Gas
+        | Gps
+        | LateCharge
+        | OneWayDropOff
+        | Other
+        | Parking
+        | Phone
+        | RegularMileage
+        | Towing
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalExtraCharges =
+        {
+            /// Amount of the extra charge in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Type of extra charge.
+            [<Config.Form>]
+            Type: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalExtraChargesType option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalExtraCharges with
+        static member New(?amount: int, ?type': Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalExtraChargesType) =
+            {
+                Amount = amount
+                Type = type'
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalRateUnit =
+        | Days
+        | Kilometers
+        | Miles
+        | Months
+        | Weeks
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalTaxTaxItems =
+        {
+            /// Tax amount.
+            [<Config.Form>]
+            Amount: int option
+            /// Tax rate applied.
+            [<Config.Form>]
+            Rate: int option
+            /// Type of tax applied.
+            [<Config.Form>]
+            Type: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalTaxTaxItems with
+        static member New(?amount: int, ?rate: int, ?type': string) =
+            {
+                Amount = amount
+                Rate = rate
+                Type = type'
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalTax =
+        {
+            /// Indicates if the transaction is tax exempt.
+            [<Config.Form>]
+            TaxExemptIndicator: bool option
+            /// Array of tax details.
+            [<Config.Form>]
+            TaxItems: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalTaxTaxItems list option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalTax with
+        static member New(?taxExemptIndicator: bool, ?taxItems: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalTaxTaxItems list) =
+            {
+                TaxExemptIndicator = taxExemptIndicator
+                TaxItems = taxItems
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotal =
+        {
+            /// Total amount in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Discount details for the rental.
+            [<Config.Form>]
+            Discounts: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalDiscounts option
+            /// Additional charges for the rental.
+            [<Config.Form>]
+            ExtraCharges: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalExtraCharges list option
+            /// Rate per unit for the rental.
+            [<Config.Form>]
+            RatePerUnit: int option
+            /// Unit of measurement for the rate.
+            [<Config.Form>]
+            RateUnit: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalRateUnit option
+            /// Tax breakdown for the rental.
+            [<Config.Form>]
+            Tax: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalTax option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotal with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?discounts: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalDiscounts, ?extraCharges: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalExtraCharges list, ?ratePerUnit: int, ?rateUnit: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalRateUnit, ?tax: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotalTax) =
+            {
+                Amount = amount
+                Currency = currency
+                Discounts = discounts
+                ExtraCharges = extraCharges
+                RatePerUnit = ratePerUnit
+                RateUnit = rateUnit
+                Tax = tax
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataVehicleType =
+        | CargoVan
+        | Compact
+        | Economy
+        | Exotic
+        | ExoticSuv
+        | FifteenPassengerVan
+        | FourWheelDrive
+        | FullSize
+        | Intermediate
+        | LargeSuv
+        | LargeTruck
+        | Luxury
+        | MediumSuv
+        | Midsize
+        | Mini
+        | Minivan
+        | Miscellaneous
+        | Moped
+        | MovingVan
+        | Premium
+        | Regular
+        | SmallMediumTruck
+        | SmallSuv
+        | Special
+        | Standard
+        | Stretch
+        | Subcompact
+        | Taxi
+        | TwelveFootTruck
+        | TwelvePassengerVan
+        | TwentyFootTruck
+        | TwentyFourFootTruck
+        | TwentySixFootTruck
+        | Unique
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataVehicleVehicleClass =
+        | Business
+        | Economy
+        | FirstClass
+        | PremiumEconomy
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataVehicle =
+        {
+            /// Make of the rental vehicle.
+            [<Config.Form>]
+            Make: string option
+            /// Model of the rental vehicle.
+            [<Config.Form>]
+            Model: string option
+            /// Odometer reading at the time of rental.
+            [<Config.Form>]
+            Odometer: int option
+            /// Type of the rental vehicle.
+            [<Config.Form>]
+            Type: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataVehicleType option
+            /// Class of the rental vehicle.
+            [<Config.Form>]
+            VehicleClass: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataVehicleVehicleClass option
+            /// Vehicle identification number (VIN).
+            [<Config.Form>]
+            VehicleIdentificationNumber: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataVehicle with
+        static member New(?make: string, ?model: string, ?odometer: int, ?type': Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataVehicleType, ?vehicleClass: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataVehicleVehicleClass, ?vehicleIdentificationNumber: string) =
+            {
+                Make = make
+                Model = model
+                Odometer = odometer
+                Type = type'
+                VehicleClass = vehicleClass
+                VehicleIdentificationNumber = vehicleIdentificationNumber
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalData =
+        {
+            /// Affiliate (such as travel agency) details for the rental.
+            [<Config.Form>]
+            Affiliate: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataAffiliate option
+            /// Booking confirmation number for the car rental.
+            [<Config.Form>]
+            BookingNumber: string option
+            /// Name of the car rental company.
+            [<Config.Form>]
+            CarrierName: string option
+            /// Customer service phone number for the car rental company.
+            [<Config.Form>]
+            CustomerServicePhoneNumber: string option
+            /// Number of days the car is being rented.
+            [<Config.Form>]
+            DaysRented: int option
+            /// Distance details for the rental.
+            [<Config.Form>]
+            Distance: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDistance option
+            /// List of drivers for the rental.
+            [<Config.Form>]
+            Drivers: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDrivers list option
+            /// Drop-off location details.
+            [<Config.Form>]
+            DropOff: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDropOff option
+            /// Insurance details for the rental.
+            [<Config.Form>]
+            Insurances: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataInsurances list option
+            /// Indicates if the customer was a no-show.
+            [<Config.Form>]
+            NoShowIndicator: bool option
+            /// Pickup location details.
+            [<Config.Form>]
+            Pickup: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataPickup option
+            /// Name of the person renting the vehicle.
+            [<Config.Form>]
+            RenterName: string option
+            /// Total cost breakdown for the rental.
+            [<Config.Form>]
+            Total: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotal option
+            /// Vehicle details for the rental.
+            [<Config.Form>]
+            Vehicle: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataVehicle option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalData with
+        static member New(?affiliate: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataAffiliate, ?bookingNumber: string, ?carrierName: string, ?customerServicePhoneNumber: string, ?daysRented: int, ?distance: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDistance, ?drivers: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDrivers list, ?dropOff: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataDropOff, ?insurances: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataInsurances list, ?noShowIndicator: bool, ?pickup: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataPickup, ?renterName: string, ?total: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataTotal, ?vehicle: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalDataVehicle) =
+            {
+                Affiliate = affiliate
+                BookingNumber = bookingNumber
+                CarrierName = carrierName
+                CustomerServicePhoneNumber = customerServicePhoneNumber
+                DaysRented = daysRented
+                Distance = distance
+                Drivers = drivers
+                DropOff = dropOff
+                Insurances = insurances
+                NoShowIndicator = noShowIndicator
+                Pickup = pickup
+                RenterName = renterName
+                Total = total
+                Vehicle = vehicle
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAccommodationAccommodationType =
+        | Apartment
+        | Cabana
+        | House
+        | Penthouse
+        | Room
+        | Standard
+        | Suite
+        | Villa
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAccommodation =
+        {
+            /// Type of accommodation.
+            [<Config.Form>]
+            AccommodationType:
+                Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAccommodationAccommodationType option
+            /// Bed type.
+            [<Config.Form>]
+            BedType: string option
+            /// Daily accommodation rate in cents.
+            [<Config.Form>]
+            DailyRateAmount: int option
+            /// Number of nights.
+            [<Config.Form>]
+            Nights: int option
+            /// Number of rooms, cabanas, apartments, and so on.
+            [<Config.Form>]
+            NumberOfRooms: int option
+            /// Rate type.
+            [<Config.Form>]
+            RateType: string option
+            /// Whether smoking is allowed.
+            [<Config.Form>]
+            SmokingIndicator: bool option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAccommodation with
+        static member New(?accommodationType: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAccommodationAccommodationType, ?bedType: string, ?dailyRateAmount: int, ?nights: int, ?numberOfRooms: int, ?rateType: string, ?smokingIndicator: bool) =
+            {
+                AccommodationType = accommodationType
+                BedType = bedType
+                DailyRateAmount = dailyRateAmount
+                Nights = nights
+                NumberOfRooms = numberOfRooms
+                RateType = rateType
+                SmokingIndicator = smokingIndicator
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAffiliate =
+        {
+            /// Affiliate partner code.
+            [<Config.Form>]
+            Code: string option
+            /// Affiliate partner name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAffiliate with
+        static member New(?code: string, ?name: string) =
+            {
+                Code = code
+                Name = name
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataGuests =
+        {
+            /// Guest's full name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataGuests with
+        static member New(?name: string) =
+            {
+                Name = name
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHostAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHostAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHostHostType =
+        | Hostel
+        | Hotel
+        | Owner
+        | RentalAgency
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHost =
+        {
+            /// Address of the host.
+            [<Config.Form>]
+            Address: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHostAddress option
+            /// Host's country of domicile.
+            [<Config.Form>]
+            CountryOfDomicile: string option
+            /// Reference number for the host.
+            [<Config.Form>]
+            HostReference: string option
+            /// Type of host.
+            [<Config.Form>]
+            HostType: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHostHostType option
+            /// Name of the lodging property or host.
+            [<Config.Form>]
+            Name: string option
+            /// Total number of reservations for the host.
+            [<Config.Form>]
+            NumberOfReservations: int option
+            /// Property phone number.
+            [<Config.Form>]
+            PropertyPhoneNumber: string option
+            /// Host's registration date.
+            [<Config.Form>]
+            RegisteredAt: DateTime option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHost with
+        static member New(?address: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHostAddress, ?countryOfDomicile: string, ?hostReference: string, ?hostType: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHostHostType, ?name: string, ?numberOfReservations: int, ?propertyPhoneNumber: string, ?registeredAt: DateTime) =
+            {
+                Address = address
+                CountryOfDomicile = countryOfDomicile
+                HostReference = hostReference
+                HostType = hostType
+                Name = name
+                NumberOfReservations = numberOfReservations
+                PropertyPhoneNumber = propertyPhoneNumber
+                RegisteredAt = registeredAt
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataInsurancesInsuranceType =
+        | Bankruptcy
+        | Cancelation
+        | Emergency
+        | Medical
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataInsurances =
+        {
+            /// Price of the insurance coverage in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the insurance amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Name of the insurance company.
+            [<Config.Form>]
+            InsuranceCompanyName: string option
+            /// Type of insurance coverage.
+            [<Config.Form>]
+            InsuranceType: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataInsurancesInsuranceType option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataInsurances with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?insuranceCompanyName: string, ?insuranceType: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataInsurancesInsuranceType) =
+            {
+                Amount = amount
+                Currency = currency
+                InsuranceCompanyName = insuranceCompanyName
+                InsuranceType = insuranceType
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalDiscounts =
+        {
+            /// Corporate client discount code.
+            [<Config.Form>]
+            CorporateClientCode: string option
+            /// Coupon code.
+            [<Config.Form>]
+            Coupon: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalDiscounts with
+        static member New(?corporateClientCode: string, ?coupon: string) =
+            {
+                CorporateClientCode = corporateClientCode
+                Coupon = coupon
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalExtraChargesType =
+        | GiftShop
+        | Laundry
+        | MiniBar
+        | Other
+        | Phone
+        | Restaurant
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalExtraCharges =
+        {
+            /// Amount of the extra charge in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Type of extra charge.
+            [<Config.Form>]
+            Type: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalExtraChargesType option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalExtraCharges with
+        static member New(?amount: int, ?type': Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalExtraChargesType) =
+            {
+                Amount = amount
+                Type = type'
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalTaxTaxItems =
+        {
+            /// Tax amount in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Tax rate.
+            [<Config.Form>]
+            Rate: int option
+            /// Type of tax applied.
+            [<Config.Form>]
+            Type: string option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalTaxTaxItems with
+        static member New(?amount: int, ?rate: int, ?type': string) =
+            {
+                Amount = amount
+                Rate = rate
+                Type = type'
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalTax =
+        {
+            /// Indicates whether the transaction is tax exempt.
+            [<Config.Form>]
+            TaxExemptIndicator: bool option
+            /// Tax details.
+            [<Config.Form>]
+            TaxItems: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalTaxTaxItems list option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalTax with
+        static member New(?taxExemptIndicator: bool, ?taxItems: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalTaxTaxItems list) =
+            {
+                TaxExemptIndicator = taxExemptIndicator
+                TaxItems = taxItems
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotal =
+        {
+            /// Total price of the lodging reservation in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Cash advances in cents.
+            [<Config.Form>]
+            CashAdvances: int option
+            /// Currency of the total amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Discount details for the lodging.
+            [<Config.Form>]
+            Discounts: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalDiscounts option
+            /// Additional charges for the lodging.
+            [<Config.Form>]
+            ExtraCharges: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalExtraCharges list option
+            /// Prepaid amount in cents.
+            [<Config.Form>]
+            PrepaidAmount: int option
+            /// Tax breakdown for the lodging reservation.
+            [<Config.Form>]
+            Tax: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalTax option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotal with
+        static member New(?amount: int, ?cashAdvances: int, ?currency: IsoTypes.IsoCurrencyCode, ?discounts: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalDiscounts, ?extraCharges: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalExtraCharges list, ?prepaidAmount: int, ?tax: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotalTax) =
+            {
+                Amount = amount
+                CashAdvances = cashAdvances
+                Currency = currency
+                Discounts = discounts
+                ExtraCharges = extraCharges
+                PrepaidAmount = prepaidAmount
+                Tax = tax
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingData =
+        {
+            /// Accommodation details for the lodging.
+            [<Config.Form>]
+            Accommodation: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAccommodation option
+            /// Affiliate details if applicable.
+            [<Config.Form>]
+            Affiliate: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAffiliate option
+            /// Booking confirmation number for the lodging.
+            [<Config.Form>]
+            BookingNumber: string option
+            /// Check-in date.
+            [<Config.Form>]
+            CheckinAt: DateTime option
+            /// Check-out date.
+            [<Config.Form>]
+            CheckoutAt: DateTime option
+            /// Customer service phone number for the lodging company.
+            [<Config.Form>]
+            CustomerServicePhoneNumber: string option
+            /// Whether the lodging is compliant with any hotel fire safety regulations.
+            [<Config.Form>]
+            FireSafetyActComplianceIndicator: bool option
+            /// List of guests for the lodging.
+            [<Config.Form>]
+            Guests: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataGuests list option
+            /// Host details for the lodging.
+            [<Config.Form>]
+            Host: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHost option
+            /// List of insurances for the lodging.
+            [<Config.Form>]
+            Insurances: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataInsurances list option
+            /// Whether the renter is a no-show.
+            [<Config.Form>]
+            NoShowIndicator: bool option
+            /// Renter ID number for the lodging.
+            [<Config.Form>]
+            RenterIdNumber: string option
+            /// Renter name for the lodging.
+            [<Config.Form>]
+            RenterName: string option
+            /// Total details for the lodging.
+            [<Config.Form>]
+            Total: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotal option
+        }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingData with
+        static member New(?accommodation: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAccommodation, ?affiliate: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataAffiliate, ?bookingNumber: string, ?checkinAt: DateTime, ?checkoutAt: DateTime, ?customerServicePhoneNumber: string, ?fireSafetyActComplianceIndicator: bool, ?guests: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataGuests list, ?host: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataHost, ?insurances: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataInsurances list, ?noShowIndicator: bool, ?renterIdNumber: string, ?renterName: string, ?total: Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingDataTotal) =
+            {
+                Accommodation = accommodation
+                Affiliate = affiliate
+                BookingNumber = bookingNumber
+                CheckinAt = checkinAt
+                CheckoutAt = checkoutAt
+                CustomerServicePhoneNumber = customerServicePhoneNumber
+                FireSafetyActComplianceIndicator = fireSafetyActComplianceIndicator
+                Guests = guests
+                Host = host
+                Insurances = insurances
+                NoShowIndicator = noShowIndicator
+                RenterIdNumber = renterIdNumber
+                RenterName = renterName
+                Total = total
+            }
+
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParams =
+        {
+            /// Car rental data for this PaymentIntent.
+            [<Config.Form>]
+            CarRentalData: Choice<Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalData list,string> option
             /// A unique value to identify the customer. This field is available only for card payments.
             /// This field is truncated to 25 alphanumeric characters, excluding spaces, before being sent to card networks.
             [<Config.Form>]
             CustomerReference: Choice<string,string> option
+            /// Lodging data for this PaymentIntent.
+            [<Config.Form>]
+            LodgingData: Choice<Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingData list,string> option
             /// A unique value assigned by the business to identify the transaction. Required for L2 and L3 rates.
             /// For Cards, this field is truncated to 25 alphanumeric characters, excluding spaces, before being sent to card networks. For Klarna, this field is truncated to 255 characters and is visible to customers when they view the order in the Klarna app.
             [<Config.Form>]
             OrderReference: Choice<string,string> option
         }
 
-    type Capture'PaymentDetailsPaymentDetailsCaptureParams with
-        static member New(?customerReference: Choice<string,string>, ?orderReference: Choice<string,string>) =
+    type Capture'PaymentDetailsPaymentDetailsCaptureApiParams with
+        static member New(?carRentalData: Choice<Capture'PaymentDetailsPaymentDetailsCaptureApiParamsCarRentalData list,string>, ?customerReference: Choice<string,string>, ?lodgingData: Choice<Capture'PaymentDetailsPaymentDetailsCaptureApiParamsLodgingData list,string>, ?orderReference: Choice<string,string>) =
             {
+                CarRentalData = carRentalData
                 CustomerReference = customerReference
+                LodgingData = lodgingData
                 OrderReference = orderReference
             }
 
@@ -9215,7 +11841,7 @@ module PaymentIntentsCapture =
             Metadata: Map<string, string> option
             /// Provides industry-specific information about the charge.
             [<Config.Form>]
-            PaymentDetails: Choice<Capture'PaymentDetailsPaymentDetailsCaptureParams,string> option
+            PaymentDetails: Choice<Capture'PaymentDetailsPaymentDetailsCaptureApiParams,string> option
             /// Text that appears on the customer's statement as the statement descriptor for a non-card charge. This value overrides the account's default statement descriptor. For information about requirements, including the 22-character limit, see [the Statement Descriptor docs](https://docs.stripe.com/get-started/account/statement-descriptors).
             /// Setting this value for a card charge returns an error. For card charges, set the [statement_descriptor_suffix](https://docs.stripe.com/get-started/account/statement-descriptors#dynamic) instead.
             [<Config.Form>]
@@ -9230,7 +11856,7 @@ module PaymentIntentsCapture =
         }
 
     type CaptureOptions with
-        static member New(intent: string, ?amountDetails: Capture'AmountDetails, ?amountToCapture: int, ?applicationFeeAmount: int, ?expand: string list, ?finalCapture: bool, ?hooks: Capture'Hooks, ?metadata: Map<string, string>, ?paymentDetails: Choice<Capture'PaymentDetailsPaymentDetailsCaptureParams,string>, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: Capture'TransferData) =
+        static member New(intent: string, ?amountDetails: Capture'AmountDetails, ?amountToCapture: int, ?applicationFeeAmount: int, ?expand: string list, ?finalCapture: bool, ?hooks: Capture'Hooks, ?metadata: Map<string, string>, ?paymentDetails: Choice<Capture'PaymentDetailsPaymentDetailsCaptureApiParams,string>, ?statementDescriptor: string, ?statementDescriptorSuffix: string, ?transferData: Capture'TransferData) =
             {
                 Intent = intent
                 AmountDetails = amountDetails
@@ -9795,12 +12421,885 @@ module PaymentIntentsConfirm =
         | OneOff
         | Recurring
 
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataAffiliate =
+        {
+            /// Affiliate partner code.
+            [<Config.Form>]
+            Code: string option
+            /// Name of affiliate partner.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataAffiliate with
+        static member New(?code: string, ?name: string) =
+            {
+                Code = code
+                Name = name
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDistanceUnit =
+        | Kilometers
+        | Miles
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDistance =
+        {
+            /// Distance traveled.
+            [<Config.Form>]
+            Amount: int option
+            /// Unit of measurement for the distance traveled. One of `miles` or `kilometers`.
+            [<Config.Form>]
+            Unit: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDistanceUnit option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDistance with
+        static member New(?amount: int, ?unit: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDistanceUnit) =
+            {
+                Amount = amount
+                Unit = unit
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDriversDateOfBirth =
+        {
+            /// Day of birth (1-31).
+            [<Config.Form>]
+            Day: int option
+            /// Month of birth (1-12).
+            [<Config.Form>]
+            Month: int option
+            /// Year of birth (must be greater than 1900).
+            [<Config.Form>]
+            Year: int option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDriversDateOfBirth with
+        static member New(?day: int, ?month: int, ?year: int) =
+            {
+                Day = day
+                Month = month
+                Year = year
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDrivers =
+        {
+            /// Driver's date of birth.
+            [<Config.Form>]
+            DateOfBirth: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDriversDateOfBirth option
+            /// Driver's identification number.
+            [<Config.Form>]
+            DriverIdentificationNumber: string option
+            /// Driver's tax number.
+            [<Config.Form>]
+            DriverTaxNumber: string option
+            /// Driver's full name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDrivers with
+        static member New(?dateOfBirth: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDriversDateOfBirth, ?driverIdentificationNumber: string, ?driverTaxNumber: string, ?name: string) =
+            {
+                DateOfBirth = dateOfBirth
+                DriverIdentificationNumber = driverIdentificationNumber
+                DriverTaxNumber = driverTaxNumber
+                Name = name
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDropOffAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDropOffAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDropOff =
+        {
+            /// Address of the rental location.
+            [<Config.Form>]
+            Address: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDropOffAddress option
+            /// Location name.
+            [<Config.Form>]
+            LocationName: string option
+            /// Timestamp for the location.
+            [<Config.Form>]
+            Time: DateTime option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataDropOff with
+        static member New(?address: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDropOffAddress, ?locationName: string, ?time: DateTime) =
+            {
+                Address = address
+                LocationName = locationName
+                Time = time
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataInsurancesInsuranceType =
+        | LiabilitySupplement
+        | LossDamageWaiver
+        | Other
+        | PartialDamageWaiver
+        | PersonalAccident
+        | PersonalEffects
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataInsurances =
+        {
+            /// Amount of the insurance coverage in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the insurance amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Name of the insurance company.
+            [<Config.Form>]
+            InsuranceCompanyName: string option
+            /// Type of insurance coverage.
+            [<Config.Form>]
+            InsuranceType: Confirm'PaymentDetailsPaymentDetailsCarRentalDataInsurancesInsuranceType option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataInsurances with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?insuranceCompanyName: string, ?insuranceType: Confirm'PaymentDetailsPaymentDetailsCarRentalDataInsurancesInsuranceType) =
+            {
+                Amount = amount
+                Currency = currency
+                InsuranceCompanyName = insuranceCompanyName
+                InsuranceType = insuranceType
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataPickupAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataPickupAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataPickup =
+        {
+            /// Address of the rental location.
+            [<Config.Form>]
+            Address: Confirm'PaymentDetailsPaymentDetailsCarRentalDataPickupAddress option
+            /// Location name.
+            [<Config.Form>]
+            LocationName: string option
+            /// Timestamp for the location.
+            [<Config.Form>]
+            Time: DateTime option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataPickup with
+        static member New(?address: Confirm'PaymentDetailsPaymentDetailsCarRentalDataPickupAddress, ?locationName: string, ?time: DateTime) =
+            {
+                Address = address
+                LocationName = locationName
+                Time = time
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalDiscounts =
+        {
+            /// Corporate client discount code.
+            [<Config.Form>]
+            CorporateClientCode: string option
+            /// Coupon code applied to the rental.
+            [<Config.Form>]
+            Coupon: string option
+            /// Maximum number of free miles or kilometers included.
+            [<Config.Form>]
+            MaximumFreeMilesOrKilometers: int option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalDiscounts with
+        static member New(?corporateClientCode: string, ?coupon: string, ?maximumFreeMilesOrKilometers: int) =
+            {
+                CorporateClientCode = corporateClientCode
+                Coupon = coupon
+                MaximumFreeMilesOrKilometers = maximumFreeMilesOrKilometers
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraChargesType =
+        | ExtraMileage
+        | Gas
+        | Gps
+        | LateCharge
+        | OneWayDropOff
+        | Other
+        | Parking
+        | Phone
+        | RegularMileage
+        | Towing
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraCharges =
+        {
+            /// Amount of the extra charge in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Type of extra charge.
+            [<Config.Form>]
+            Type: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraChargesType option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraCharges with
+        static member New(?amount: int, ?type': Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraChargesType) =
+            {
+                Amount = amount
+                Type = type'
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalRateUnit =
+        | Days
+        | Kilometers
+        | Miles
+        | Months
+        | Weeks
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalTaxTaxItems =
+        {
+            /// Tax amount.
+            [<Config.Form>]
+            Amount: int option
+            /// Tax rate applied.
+            [<Config.Form>]
+            Rate: int option
+            /// Type of tax applied.
+            [<Config.Form>]
+            Type: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalTaxTaxItems with
+        static member New(?amount: int, ?rate: int, ?type': string) =
+            {
+                Amount = amount
+                Rate = rate
+                Type = type'
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalTax =
+        {
+            /// Indicates if the transaction is tax exempt.
+            [<Config.Form>]
+            TaxExemptIndicator: bool option
+            /// Array of tax details.
+            [<Config.Form>]
+            TaxItems: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalTaxTaxItems list option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalTax with
+        static member New(?taxExemptIndicator: bool, ?taxItems: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalTaxTaxItems list) =
+            {
+                TaxExemptIndicator = taxExemptIndicator
+                TaxItems = taxItems
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotal =
+        {
+            /// Total amount in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Discount details for the rental.
+            [<Config.Form>]
+            Discounts: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalDiscounts option
+            /// Additional charges for the rental.
+            [<Config.Form>]
+            ExtraCharges: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraCharges list option
+            /// Rate per unit for the rental.
+            [<Config.Form>]
+            RatePerUnit: int option
+            /// Unit of measurement for the rate.
+            [<Config.Form>]
+            RateUnit: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalRateUnit option
+            /// Tax breakdown for the rental.
+            [<Config.Form>]
+            Tax: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalTax option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotal with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?discounts: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalDiscounts, ?extraCharges: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalExtraCharges list, ?ratePerUnit: int, ?rateUnit: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalRateUnit, ?tax: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotalTax) =
+            {
+                Amount = amount
+                Currency = currency
+                Discounts = discounts
+                ExtraCharges = extraCharges
+                RatePerUnit = ratePerUnit
+                RateUnit = rateUnit
+                Tax = tax
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataVehicleType =
+        | CargoVan
+        | Compact
+        | Economy
+        | Exotic
+        | ExoticSuv
+        | FifteenPassengerVan
+        | FourWheelDrive
+        | FullSize
+        | Intermediate
+        | LargeSuv
+        | LargeTruck
+        | Luxury
+        | MediumSuv
+        | Midsize
+        | Mini
+        | Minivan
+        | Miscellaneous
+        | Moped
+        | MovingVan
+        | Premium
+        | Regular
+        | SmallMediumTruck
+        | SmallSuv
+        | Special
+        | Standard
+        | Stretch
+        | Subcompact
+        | Taxi
+        | TwelveFootTruck
+        | TwelvePassengerVan
+        | TwentyFootTruck
+        | TwentyFourFootTruck
+        | TwentySixFootTruck
+        | Unique
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataVehicleVehicleClass =
+        | Business
+        | Economy
+        | FirstClass
+        | PremiumEconomy
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataVehicle =
+        {
+            /// Make of the rental vehicle.
+            [<Config.Form>]
+            Make: string option
+            /// Model of the rental vehicle.
+            [<Config.Form>]
+            Model: string option
+            /// Odometer reading at the time of rental.
+            [<Config.Form>]
+            Odometer: int option
+            /// Type of the rental vehicle.
+            [<Config.Form>]
+            Type: Confirm'PaymentDetailsPaymentDetailsCarRentalDataVehicleType option
+            /// Class of the rental vehicle.
+            [<Config.Form>]
+            VehicleClass: Confirm'PaymentDetailsPaymentDetailsCarRentalDataVehicleVehicleClass option
+            /// Vehicle identification number (VIN).
+            [<Config.Form>]
+            VehicleIdentificationNumber: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalDataVehicle with
+        static member New(?make: string, ?model: string, ?odometer: int, ?type': Confirm'PaymentDetailsPaymentDetailsCarRentalDataVehicleType, ?vehicleClass: Confirm'PaymentDetailsPaymentDetailsCarRentalDataVehicleVehicleClass, ?vehicleIdentificationNumber: string) =
+            {
+                Make = make
+                Model = model
+                Odometer = odometer
+                Type = type'
+                VehicleClass = vehicleClass
+                VehicleIdentificationNumber = vehicleIdentificationNumber
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalData =
+        {
+            /// Affiliate (such as travel agency) details for the rental.
+            [<Config.Form>]
+            Affiliate: Confirm'PaymentDetailsPaymentDetailsCarRentalDataAffiliate option
+            /// Booking confirmation number for the car rental.
+            [<Config.Form>]
+            BookingNumber: string option
+            /// Name of the car rental company.
+            [<Config.Form>]
+            CarrierName: string option
+            /// Customer service phone number for the car rental company.
+            [<Config.Form>]
+            CustomerServicePhoneNumber: string option
+            /// Number of days the car is being rented.
+            [<Config.Form>]
+            DaysRented: int option
+            /// Distance details for the rental.
+            [<Config.Form>]
+            Distance: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDistance option
+            /// List of drivers for the rental.
+            [<Config.Form>]
+            Drivers: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDrivers list option
+            /// Drop-off location details.
+            [<Config.Form>]
+            DropOff: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDropOff option
+            /// Insurance details for the rental.
+            [<Config.Form>]
+            Insurances: Confirm'PaymentDetailsPaymentDetailsCarRentalDataInsurances list option
+            /// Indicates if the customer was a no-show.
+            [<Config.Form>]
+            NoShowIndicator: bool option
+            /// Pickup location details.
+            [<Config.Form>]
+            Pickup: Confirm'PaymentDetailsPaymentDetailsCarRentalDataPickup option
+            /// Name of the person renting the vehicle.
+            [<Config.Form>]
+            RenterName: string option
+            /// Total cost breakdown for the rental.
+            [<Config.Form>]
+            Total: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotal option
+            /// Vehicle details for the rental.
+            [<Config.Form>]
+            Vehicle: Confirm'PaymentDetailsPaymentDetailsCarRentalDataVehicle option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsCarRentalData with
+        static member New(?affiliate: Confirm'PaymentDetailsPaymentDetailsCarRentalDataAffiliate, ?bookingNumber: string, ?carrierName: string, ?customerServicePhoneNumber: string, ?daysRented: int, ?distance: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDistance, ?drivers: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDrivers list, ?dropOff: Confirm'PaymentDetailsPaymentDetailsCarRentalDataDropOff, ?insurances: Confirm'PaymentDetailsPaymentDetailsCarRentalDataInsurances list, ?noShowIndicator: bool, ?pickup: Confirm'PaymentDetailsPaymentDetailsCarRentalDataPickup, ?renterName: string, ?total: Confirm'PaymentDetailsPaymentDetailsCarRentalDataTotal, ?vehicle: Confirm'PaymentDetailsPaymentDetailsCarRentalDataVehicle) =
+            {
+                Affiliate = affiliate
+                BookingNumber = bookingNumber
+                CarrierName = carrierName
+                CustomerServicePhoneNumber = customerServicePhoneNumber
+                DaysRented = daysRented
+                Distance = distance
+                Drivers = drivers
+                DropOff = dropOff
+                Insurances = insurances
+                NoShowIndicator = noShowIndicator
+                Pickup = pickup
+                RenterName = renterName
+                Total = total
+                Vehicle = vehicle
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataAccommodationAccommodationType =
+        | Apartment
+        | Cabana
+        | House
+        | Penthouse
+        | Room
+        | Standard
+        | Suite
+        | Villa
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataAccommodation =
+        {
+            /// Type of accommodation.
+            [<Config.Form>]
+            AccommodationType: Confirm'PaymentDetailsPaymentDetailsLodgingDataAccommodationAccommodationType option
+            /// Bed type.
+            [<Config.Form>]
+            BedType: string option
+            /// Daily accommodation rate in cents.
+            [<Config.Form>]
+            DailyRateAmount: int option
+            /// Number of nights.
+            [<Config.Form>]
+            Nights: int option
+            /// Number of rooms, cabanas, apartments, and so on.
+            [<Config.Form>]
+            NumberOfRooms: int option
+            /// Rate type.
+            [<Config.Form>]
+            RateType: string option
+            /// Whether smoking is allowed.
+            [<Config.Form>]
+            SmokingIndicator: bool option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataAccommodation with
+        static member New(?accommodationType: Confirm'PaymentDetailsPaymentDetailsLodgingDataAccommodationAccommodationType, ?bedType: string, ?dailyRateAmount: int, ?nights: int, ?numberOfRooms: int, ?rateType: string, ?smokingIndicator: bool) =
+            {
+                AccommodationType = accommodationType
+                BedType = bedType
+                DailyRateAmount = dailyRateAmount
+                Nights = nights
+                NumberOfRooms = numberOfRooms
+                RateType = rateType
+                SmokingIndicator = smokingIndicator
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataAffiliate =
+        {
+            /// Affiliate partner code.
+            [<Config.Form>]
+            Code: string option
+            /// Affiliate partner name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataAffiliate with
+        static member New(?code: string, ?name: string) =
+            {
+                Code = code
+                Name = name
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataGuests =
+        {
+            /// Guest's full name.
+            [<Config.Form>]
+            Name: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataGuests with
+        static member New(?name: string) =
+            {
+                Name = name
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataHostAddress =
+        {
+            /// City, district, suburb, town, or village.
+            [<Config.Form>]
+            City: string option
+            /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+            [<Config.Form>]
+            Country: IsoTypes.IsoCountryCode option
+            /// Address line 1, such as the street, PO Box, or company name.
+            [<JsonPropertyName("line1"); Config.Form>]
+            Line1: string option
+            /// Address line 2, such as the apartment, suite, unit, or building.
+            [<JsonPropertyName("line2"); Config.Form>]
+            Line2: string option
+            /// ZIP or postal code.
+            [<Config.Form>]
+            PostalCode: string option
+            /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+            [<Config.Form>]
+            State: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataHostAddress with
+        static member New(?city: string, ?country: IsoTypes.IsoCountryCode, ?line1: string, ?line2: string, ?postalCode: string, ?state: string) =
+            {
+                City = city
+                Country = country
+                Line1 = line1
+                Line2 = line2
+                PostalCode = postalCode
+                State = state
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataHostHostType =
+        | Hostel
+        | Hotel
+        | Owner
+        | RentalAgency
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataHost =
+        {
+            /// Address of the host.
+            [<Config.Form>]
+            Address: Confirm'PaymentDetailsPaymentDetailsLodgingDataHostAddress option
+            /// Host's country of domicile.
+            [<Config.Form>]
+            CountryOfDomicile: string option
+            /// Reference number for the host.
+            [<Config.Form>]
+            HostReference: string option
+            /// Type of host.
+            [<Config.Form>]
+            HostType: Confirm'PaymentDetailsPaymentDetailsLodgingDataHostHostType option
+            /// Name of the lodging property or host.
+            [<Config.Form>]
+            Name: string option
+            /// Total number of reservations for the host.
+            [<Config.Form>]
+            NumberOfReservations: int option
+            /// Property phone number.
+            [<Config.Form>]
+            PropertyPhoneNumber: string option
+            /// Host's registration date.
+            [<Config.Form>]
+            RegisteredAt: DateTime option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataHost with
+        static member New(?address: Confirm'PaymentDetailsPaymentDetailsLodgingDataHostAddress, ?countryOfDomicile: string, ?hostReference: string, ?hostType: Confirm'PaymentDetailsPaymentDetailsLodgingDataHostHostType, ?name: string, ?numberOfReservations: int, ?propertyPhoneNumber: string, ?registeredAt: DateTime) =
+            {
+                Address = address
+                CountryOfDomicile = countryOfDomicile
+                HostReference = hostReference
+                HostType = hostType
+                Name = name
+                NumberOfReservations = numberOfReservations
+                PropertyPhoneNumber = propertyPhoneNumber
+                RegisteredAt = registeredAt
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataInsurancesInsuranceType =
+        | Bankruptcy
+        | Cancelation
+        | Emergency
+        | Medical
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataInsurances =
+        {
+            /// Price of the insurance coverage in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Currency of the insurance amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Name of the insurance company.
+            [<Config.Form>]
+            InsuranceCompanyName: string option
+            /// Type of insurance coverage.
+            [<Config.Form>]
+            InsuranceType: Confirm'PaymentDetailsPaymentDetailsLodgingDataInsurancesInsuranceType option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataInsurances with
+        static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?insuranceCompanyName: string, ?insuranceType: Confirm'PaymentDetailsPaymentDetailsLodgingDataInsurancesInsuranceType) =
+            {
+                Amount = amount
+                Currency = currency
+                InsuranceCompanyName = insuranceCompanyName
+                InsuranceType = insuranceType
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalDiscounts =
+        {
+            /// Corporate client discount code.
+            [<Config.Form>]
+            CorporateClientCode: string option
+            /// Coupon code.
+            [<Config.Form>]
+            Coupon: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalDiscounts with
+        static member New(?corporateClientCode: string, ?coupon: string) =
+            {
+                CorporateClientCode = corporateClientCode
+                Coupon = coupon
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalExtraChargesType =
+        | GiftShop
+        | Laundry
+        | MiniBar
+        | Other
+        | Phone
+        | Restaurant
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalExtraCharges =
+        {
+            /// Amount of the extra charge in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Type of extra charge.
+            [<Config.Form>]
+            Type: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalExtraChargesType option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalExtraCharges with
+        static member New(?amount: int, ?type': Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalExtraChargesType) =
+            {
+                Amount = amount
+                Type = type'
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalTaxTaxItems =
+        {
+            /// Tax amount in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Tax rate.
+            [<Config.Form>]
+            Rate: int option
+            /// Type of tax applied.
+            [<Config.Form>]
+            Type: string option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalTaxTaxItems with
+        static member New(?amount: int, ?rate: int, ?type': string) =
+            {
+                Amount = amount
+                Rate = rate
+                Type = type'
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalTax =
+        {
+            /// Indicates whether the transaction is tax exempt.
+            [<Config.Form>]
+            TaxExemptIndicator: bool option
+            /// Tax details.
+            [<Config.Form>]
+            TaxItems: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalTaxTaxItems list option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalTax with
+        static member New(?taxExemptIndicator: bool, ?taxItems: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalTaxTaxItems list) =
+            {
+                TaxExemptIndicator = taxExemptIndicator
+                TaxItems = taxItems
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotal =
+        {
+            /// Total price of the lodging reservation in cents.
+            [<Config.Form>]
+            Amount: int option
+            /// Cash advances in cents.
+            [<Config.Form>]
+            CashAdvances: int option
+            /// Currency of the total amount.
+            [<Config.Form>]
+            Currency: IsoTypes.IsoCurrencyCode option
+            /// Discount details for the lodging.
+            [<Config.Form>]
+            Discounts: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalDiscounts option
+            /// Additional charges for the lodging.
+            [<Config.Form>]
+            ExtraCharges: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalExtraCharges list option
+            /// Prepaid amount in cents.
+            [<Config.Form>]
+            PrepaidAmount: int option
+            /// Tax breakdown for the lodging reservation.
+            [<Config.Form>]
+            Tax: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalTax option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingDataTotal with
+        static member New(?amount: int, ?cashAdvances: int, ?currency: IsoTypes.IsoCurrencyCode, ?discounts: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalDiscounts, ?extraCharges: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalExtraCharges list, ?prepaidAmount: int, ?tax: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotalTax) =
+            {
+                Amount = amount
+                CashAdvances = cashAdvances
+                Currency = currency
+                Discounts = discounts
+                ExtraCharges = extraCharges
+                PrepaidAmount = prepaidAmount
+                Tax = tax
+            }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingData =
+        {
+            /// Accommodation details for the lodging.
+            [<Config.Form>]
+            Accommodation: Confirm'PaymentDetailsPaymentDetailsLodgingDataAccommodation option
+            /// Affiliate details if applicable.
+            [<Config.Form>]
+            Affiliate: Confirm'PaymentDetailsPaymentDetailsLodgingDataAffiliate option
+            /// Booking confirmation number for the lodging.
+            [<Config.Form>]
+            BookingNumber: string option
+            /// Check-in date.
+            [<Config.Form>]
+            CheckinAt: DateTime option
+            /// Check-out date.
+            [<Config.Form>]
+            CheckoutAt: DateTime option
+            /// Customer service phone number for the lodging company.
+            [<Config.Form>]
+            CustomerServicePhoneNumber: string option
+            /// Whether the lodging is compliant with any hotel fire safety regulations.
+            [<Config.Form>]
+            FireSafetyActComplianceIndicator: bool option
+            /// List of guests for the lodging.
+            [<Config.Form>]
+            Guests: Confirm'PaymentDetailsPaymentDetailsLodgingDataGuests list option
+            /// Host details for the lodging.
+            [<Config.Form>]
+            Host: Confirm'PaymentDetailsPaymentDetailsLodgingDataHost option
+            /// List of insurances for the lodging.
+            [<Config.Form>]
+            Insurances: Confirm'PaymentDetailsPaymentDetailsLodgingDataInsurances list option
+            /// Whether the renter is a no-show.
+            [<Config.Form>]
+            NoShowIndicator: bool option
+            /// Renter ID number for the lodging.
+            [<Config.Form>]
+            RenterIdNumber: string option
+            /// Renter name for the lodging.
+            [<Config.Form>]
+            RenterName: string option
+            /// Total details for the lodging.
+            [<Config.Form>]
+            Total: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotal option
+        }
+
+    type Confirm'PaymentDetailsPaymentDetailsLodgingData with
+        static member New(?accommodation: Confirm'PaymentDetailsPaymentDetailsLodgingDataAccommodation, ?affiliate: Confirm'PaymentDetailsPaymentDetailsLodgingDataAffiliate, ?bookingNumber: string, ?checkinAt: DateTime, ?checkoutAt: DateTime, ?customerServicePhoneNumber: string, ?fireSafetyActComplianceIndicator: bool, ?guests: Confirm'PaymentDetailsPaymentDetailsLodgingDataGuests list, ?host: Confirm'PaymentDetailsPaymentDetailsLodgingDataHost, ?insurances: Confirm'PaymentDetailsPaymentDetailsLodgingDataInsurances list, ?noShowIndicator: bool, ?renterIdNumber: string, ?renterName: string, ?total: Confirm'PaymentDetailsPaymentDetailsLodgingDataTotal) =
+            {
+                Accommodation = accommodation
+                Affiliate = affiliate
+                BookingNumber = bookingNumber
+                CheckinAt = checkinAt
+                CheckoutAt = checkoutAt
+                CustomerServicePhoneNumber = customerServicePhoneNumber
+                FireSafetyActComplianceIndicator = fireSafetyActComplianceIndicator
+                Guests = guests
+                Host = host
+                Insurances = insurances
+                NoShowIndicator = noShowIndicator
+                RenterIdNumber = renterIdNumber
+                RenterName = renterName
+                Total = total
+            }
+
     type Confirm'PaymentDetailsPaymentDetails =
         {
+            /// Car rental data for this PaymentIntent.
+            [<Config.Form>]
+            CarRentalData: Choice<Confirm'PaymentDetailsPaymentDetailsCarRentalData list,string> option
             /// A unique value to identify the customer. This field is available only for card payments.
             /// This field is truncated to 25 alphanumeric characters, excluding spaces, before being sent to card networks.
             [<Config.Form>]
             CustomerReference: Choice<string,string> option
+            /// Lodging data for this PaymentIntent.
+            [<Config.Form>]
+            LodgingData: Choice<Confirm'PaymentDetailsPaymentDetailsLodgingData list,string> option
             /// A unique value assigned by the business to identify the transaction. Required for L2 and L3 rates.
             /// For Cards, this field is truncated to 25 alphanumeric characters, excluding spaces, before being sent to card networks. For Klarna, this field is truncated to 255 characters and is visible to customers when they view the order in the Klarna app.
             [<Config.Form>]
@@ -9808,9 +13307,11 @@ module PaymentIntentsConfirm =
         }
 
     type Confirm'PaymentDetailsPaymentDetails with
-        static member New(?customerReference: Choice<string,string>, ?orderReference: Choice<string,string>) =
+        static member New(?carRentalData: Choice<Confirm'PaymentDetailsPaymentDetailsCarRentalData list,string>, ?customerReference: Choice<string,string>, ?lodgingData: Choice<Confirm'PaymentDetailsPaymentDetailsLodgingData list,string>, ?orderReference: Choice<string,string>) =
             {
+                CarRentalData = carRentalData
                 CustomerReference = customerReference
+                LodgingData = lodgingData
                 OrderReference = orderReference
             }
 
@@ -16157,12 +19658,20 @@ module PaymentLinks =
                 Quantity = quantity
             }
 
+    type Update'PaymentIntentDataCaptureMethod =
+        | Automatic
+        | AutomaticAsync
+        | Manual
+
     type Update'PaymentIntentDataSetupFutureUsage =
         | OffSession
         | OnSession
 
     type Update'PaymentIntentData =
         {
+            /// Controls when the funds will be captured from the customer's account.
+            [<Config.Form>]
+            CaptureMethod: Update'PaymentIntentDataCaptureMethod option
             /// An arbitrary string attached to the object. Often useful for displaying to users.
             [<Config.Form>]
             Description: Choice<string,string> option
@@ -16190,8 +19699,9 @@ module PaymentLinks =
         }
 
     type Update'PaymentIntentData with
-        static member New(?description: Choice<string,string>, ?metadata: Map<string, string>, ?setupFutureUsage: Update'PaymentIntentDataSetupFutureUsage, ?statementDescriptor: Choice<string,string>, ?statementDescriptorSuffix: Choice<string,string>, ?transferGroup: Choice<string,string>) =
+        static member New(?captureMethod: Update'PaymentIntentDataCaptureMethod, ?description: Choice<string,string>, ?metadata: Map<string, string>, ?setupFutureUsage: Update'PaymentIntentDataSetupFutureUsage, ?statementDescriptor: Choice<string,string>, ?statementDescriptorSuffix: Choice<string,string>, ?transferGroup: Choice<string,string>) =
             {
+                CaptureMethod = captureMethod
                 Description = description
                 Metadata = metadata
                 SetupFutureUsage = setupFutureUsage

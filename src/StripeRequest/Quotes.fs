@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.Quote
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module Quotes =
 
     type ListOptions =
@@ -281,7 +281,7 @@ module Quotes =
 
     type Create'LineItems =
         {
-            /// The discounts applied to this line item.
+            /// The discounts applied to this line item. Repeating coupons are only supported for recurring prices.
             [<Config.Form>]
             Discounts: Choice<Create'LineItemsDiscounts list,string> option
             /// The ID of the price object. One of `price` or `price_data` is required.
@@ -722,7 +722,7 @@ module Quotes =
 
     type Update'LineItems =
         {
-            /// The discounts applied to this line item.
+            /// The discounts applied to this line item. Repeating coupons are only supported for recurring prices.
             [<Config.Form>]
             Discounts: Choice<Update'LineItemsDiscounts list,string> option
             /// The ID of an existing line item on the quote.

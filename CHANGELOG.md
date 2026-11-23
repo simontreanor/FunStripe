@@ -6,13 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the same change was released for `FunStripe`, the equivalent version is noted in brackets, e.g. `[FunStripe 0.9.2]`. Entries marked `FunStripe only` have no `FunStripeLite` equivalent.
 
-## [Unreleased]
+## [3.4.0] - 2026-11-23
 
 ### Upgrade notes
 - Requests send the library's API version as their `Stripe-Version` header (see Changed). Where your account's default version is the library's, nothing changes. Where it differs, Stripe now handles each request under the library's version. The API version sets behaviour as well as the shape of responses: default parameters, payment flows and validation can change, and the compiler can't show you where. Read Stripe's upgrade notes for the versions between your account's default and the library's. To keep the account's version, set `StripeVersion = None` on the settings.
 - This ships as a minor release. No signature changes, and the generated request and response types already target the library's version.
 
 ### Changed
+- Regenerated against Stripe OpenAPI spec `2026-11-18.endive` (was `2026-10-28.endive`)
 - **Requests send the API version the models were generated from.** `StripeApiSettings.New` sets `StripeVersion` to `Config.DefaultStripeApiVersion` unless given another `stripeVersion`. Without the header Stripe answered in the account's default version, whose responses can differ in shape from the models and fail to read. Webhook events still follow each endpoint's API version: the README shows how to set it.
 
 ## [3.3.0] - 2026-11-05

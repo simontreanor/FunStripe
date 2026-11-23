@@ -8,19 +8,14 @@ open Stripe.ApplicationFee
 open Stripe.BankAccount
 open Stripe.ConnectCollectionTransfer
 open Stripe.FeeRefund
-open Stripe.FundingInstructions
-open Stripe.IssuingCard
-open Stripe.Plan
-open Stripe.Price
 open Stripe.Radar
 open Stripe.ReserveTransaction
 open Stripe.TaxDeductedAtSource
-open Stripe.TaxId
 open Stripe.TaxRate
 open Stripe.ThreeDSecure
 open Stripe.TransferReversal
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type AccountAnnualRevenue =
     {
         /// A non-negative integer representing the amount in the [smallest currency unit](/currencies#zero-decimal).
@@ -45,6 +40,24 @@ type AccountMonthlyEstimatedRevenue =
         Amount: int
         /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
         Currency: IsoTypes.IsoCurrencyCode
+    }
+
+type Address =
+    {
+        /// City, district, suburb, town, or village.
+        City: string option
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        /// Address line 1, such as the street, PO Box, or company name.
+        [<JsonPropertyName("line1")>]
+        Line1: string option
+        /// Address line 2, such as the apartment, suite, unit, or building.
+        [<JsonPropertyName("line2")>]
+        Line2: string option
+        /// ZIP or postal code.
+        PostalCode: string option
+        /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        State: string option
     }
 
 type AccountBusinessProfile =
@@ -1303,6 +1316,355 @@ type SubscriptionCollectionMethod =
     | ChargeAutomatically
     | SendInvoice
 
+[<Struct>]
+type PlanBillingScheme =
+    | PerUnit
+    | Tiered
+
+[<Struct>]
+type PlanInterval =
+    | Day
+    | Month
+    | Week
+    | Year
+
+type DeletedProduct =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type PackageDimensions =
+    {
+        /// Height, in inches.
+        Height: decimal
+        /// Length, in inches.
+        Length: decimal
+        /// Weight, in ounces.
+        Weight: decimal
+        /// Width, in inches.
+        Width: decimal
+    }
+
+type ProductMarketingFeature =
+    {
+        /// Optional text that describes what a customer loses by canceling, shown for this marketing feature in the Customer Portal cancellation flow. Up to 80 characters long. If you omit it when you update `marketing_features`, Stripe keeps the message stored for the feature with the same name. Duplicate names are matched in order. Set it to an empty string to remove the override. When no override is stored, eligible cancellation flows use the marketing feature name. A renamed feature is treated as a new feature, so send the message again to keep it.
+        LossMessage: string option
+        /// The marketing feature name. Up to 80 characters long.
+        Name: string option
+    }
+
+[<Struct>]
+type ProductType =
+    | Good
+    | Service
+
+/// Tax details contains information about the data that was used to calculate taxes.
+type TaxProductTaxDetailsResourceTaxDetails =
+    {
+        /// The ID of a tax location with type `performance`, representing where the performance takes place.
+        PerformanceLocation: string option
+        /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
+        TaxCode: string option
+    }
+
+/// Products describe the specific goods or services you offer to your customers.
+/// For example, you might offer a Standard and Premium version of your goods or service; each version would be a separate Product.
+/// They can be used in conjunction with [Prices](https://docs.stripe.com/api#prices) to configure pricing in Payment Links, Checkout, and Subscriptions.
+/// Related guides: [Set up a subscription](https://docs.stripe.com/billing/subscriptions/set-up-subscription),
+/// [share a Payment Link](https://docs.stripe.com/payment-links),
+/// [accept payments with Checkout](https://docs.stripe.com/payments/accept-a-payment#create-product-prices-upfront),
+/// and more about [Products and Prices](https://docs.stripe.com/products-prices/overview)
+type Product =
+    {
+        /// Whether the product is currently available for purchase.
+        Active: bool
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// The ID of the [Price](https://docs.stripe.com/api/prices) object that is the default price for this product.
+        DefaultPrice: StripeId<Markers.Price> option
+        /// The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
+        Description: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// A list of up to 8 URLs of images for this product, meant to be displayable to the customer.
+        Images: string list
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// A list of up to 15 marketing features for this product. These are displayed in [pricing tables](https://docs.stripe.com/payments/checkout/pricing-table).
+        MarketingFeatures: ProductMarketingFeature list
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// The product's name, meant to be displayable to the customer.
+        Name: string
+        /// The dimensions of this product for shipping purposes.
+        PackageDimensions: PackageDimensions option
+        /// Whether this product is shipped (i.e., physical goods).
+        Shippable: bool option
+        /// Extra information about a product which will appear on your customer's credit card statement. In the case that multiple products are billed at once, the first statement descriptor will be used. Only used for subscription payments.
+        StatementDescriptor: string option
+        /// A [tax code](https://docs.stripe.com/tax/tax-categories) ID.
+        TaxCode: StripeId<Markers.TaxCode> option
+        /// Tax details for this product, including the [tax code](/tax/tax-codes) and an optional performance location.
+        TaxDetails: TaxProductTaxDetailsResourceTaxDetails option
+        /// The type of the product. The product is either of type `good`, which is eligible for use with Orders and SKUs, or `service`, which is eligible for use with Subscriptions and Plans.
+        Type: ProductType
+        /// A label that represents units of this product. When set, this will be included in customers' receipts, invoices, Checkout, and the customer portal.
+        UnitLabel: string option
+        /// Time at which the object was last updated. Measured in seconds since the Unix epoch.
+        Updated: DateTime
+        /// A URL of a publicly-accessible webpage for this product.
+        Url: string option
+    }
+
+type PlanProduct'AnyOf =
+    | String of string
+    | Product of Product
+    | DeletedProduct of DeletedProduct
+
+type PlanTier =
+    {
+        /// Price for the entire tier.
+        FlatAmount: int option
+        /// Same as `flat_amount`, but contains a decimal value with at most 12 decimal places.
+        FlatAmountDecimal: string option
+        /// Per unit price for units relevant to the tier.
+        UnitAmount: int option
+        /// Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
+        UnitAmountDecimal: string option
+        /// Up to and including to this quantity will be contained in the tier.
+        UpTo: int option
+    }
+
+[<Struct>]
+type PlanTiersMode =
+    | Graduated
+    | Volume
+
+[<Struct>]
+type PlanUsageType =
+    | Licensed
+    | Metered
+
+[<Struct>]
+type TransformUsageRound =
+    | Down
+    | Up
+
+type TransformUsage =
+    {
+        /// Divide usage by this number.
+        DivideBy: int
+        /// After division, either round the result `up` or `down`.
+        Round: TransformUsageRound
+    }
+
+/// You can now model subscriptions more flexibly using the [Prices API](https://docs.stripe.com/api#prices). It replaces the Plans API and is backwards compatible to simplify your migration.
+/// Plans define the base price, currency, and billing cycle for recurring purchases of products.
+/// [Products](https://docs.stripe.com/api#products) help you track inventory or provisioning, and plans help you track pricing. Different physical goods or levels of service should be represented by products, and pricing options should be represented by plans. This approach lets you change prices without having to change your provisioning scheme.
+/// For example, you might have a single "gold" product that has plans for $10/month, $100/year, €9/month, and €90/year.
+/// Related guides: [Set up a subscription](https://docs.stripe.com/billing/subscriptions/set-up-subscription) and more about [products and prices](https://docs.stripe.com/products-prices/overview).
+type Plan =
+    {
+        /// Whether the plan can be used for new purchases.
+        Active: bool
+        /// The unit amount in cents (or local equivalent) to be charged, represented as a whole integer if possible. Only set if `billing_scheme=per_unit`.
+        Amount: int option
+        /// The unit amount in cents (or local equivalent) to be charged, represented as a decimal string with at most 12 decimal places. Only set if `billing_scheme=per_unit`.
+        AmountDecimal: string option
+        /// Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `amount`) will be charged per unit in `quantity` (for plans with `usage_type=licensed`), or per unit of total usage (for plans with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
+        BillingScheme: PlanBillingScheme
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// Unique identifier for the object.
+        Id: string
+        /// The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`.
+        Interval: PlanInterval
+        /// The number of intervals (specified in the `interval` attribute) between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months.
+        IntervalCount: int
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// The meter tracking the usage of a metered price
+        Meter: string option
+        /// A brief description of the plan, hidden from customers.
+        Nickname: string option
+        /// The product whose pricing this plan determines.
+        Product: PlanProduct'AnyOf option
+        /// Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
+        Tiers: PlanTier list option
+        /// Defines if the tiering price should be `graduated` or `volume` based. In `volume`-based tiering, the maximum quantity within a period determines the per unit price. In `graduated` tiering, pricing can change as the quantity grows.
+        TiersMode: PlanTiersMode option
+        /// Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`.
+        TransformUsage: TransformUsage option
+        /// Default number of trial days when subscribing a customer to this plan using [`trial_from_plan=true`](https://docs.stripe.com/api#create_subscription-trial_from_plan).
+        TrialPeriodDays: int option
+        /// Configures how the quantity per period should be determined. Can be either `metered` or `licensed`. `licensed` automatically bills the `quantity` set when adding it to a subscription. `metered` aggregates the total usage based on usage records. Defaults to `licensed`.
+        UsageType: PlanUsageType
+    }
+
+[<Struct>]
+type CurrencyOptionTaxBehavior =
+    | Exclusive
+    | Inclusive
+    | Unspecified
+
+type CustomUnitAmount =
+    {
+        /// The maximum unit amount the customer can specify for this item.
+        Maximum: int option
+        /// The minimum unit amount the customer can specify for this item. Must be at least the minimum charge amount.
+        Minimum: int option
+        /// The starting unit amount which can be updated by the customer.
+        Preset: int option
+    }
+
+type PriceTier =
+    {
+        /// Price for the entire tier.
+        FlatAmount: int option
+        /// Same as `flat_amount`, but contains a decimal value with at most 12 decimal places.
+        FlatAmountDecimal: string option
+        /// Per unit price for units relevant to the tier.
+        UnitAmount: int option
+        /// Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
+        UnitAmountDecimal: string option
+        /// Up to and including to this quantity will be contained in the tier.
+        UpTo: int option
+    }
+
+type CurrencyOption =
+    {
+        /// When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
+        CustomUnitAmount: CustomUnitAmount option
+        /// Only required if a [default tax behavior](https://docs.stripe.com/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
+        TaxBehavior: CurrencyOptionTaxBehavior option
+        /// Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
+        Tiers: PriceTier list option
+        /// The unit amount in cents (or local equivalent) to be charged, represented as a whole integer if possible. Only set if `billing_scheme=per_unit`.
+        UnitAmount: int option
+        /// The unit amount in cents (or local equivalent) to be charged, represented as a decimal string with at most 12 decimal places. Only set if `billing_scheme=per_unit`.
+        UnitAmountDecimal: string option
+    }
+
+[<Struct>]
+type PriceBillingScheme =
+    | PerUnit
+    | Tiered
+
+type PriceProduct'AnyOf =
+    | String of string
+    | Product of Product
+    | DeletedProduct of DeletedProduct
+
+[<Struct>]
+type PriceTaxBehavior =
+    | Exclusive
+    | Inclusive
+    | Unspecified
+
+[<Struct>]
+type PriceTiersMode =
+    | Graduated
+    | Volume
+
+[<Struct>]
+type PriceType =
+    | OneTime
+    | Recurring
+
+[<Struct>]
+type RecurringInterval =
+    | Day
+    | Month
+    | Week
+    | Year
+
+[<Struct>]
+type RecurringUsageType =
+    | Licensed
+    | Metered
+
+type Recurring =
+    {
+        /// The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`.
+        Interval: RecurringInterval
+        /// The number of intervals (specified in the `interval` attribute) between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months.
+        IntervalCount: int
+        /// The meter tracking the usage of a metered price
+        Meter: string option
+        /// Default number of trial days when subscribing a customer to this price using [`trial_from_plan=true`](https://docs.stripe.com/api#create_subscription-trial_from_plan).
+        TrialPeriodDays: int option
+        /// Configures how the quantity per period should be determined. Can be either `metered` or `licensed`. `licensed` automatically bills the `quantity` set when adding it to a subscription. `metered` aggregates the total usage based on usage records. Defaults to `licensed`.
+        UsageType: RecurringUsageType
+    }
+
+[<Struct>]
+type TransformQuantityRound =
+    | Down
+    | Up
+
+type TransformQuantity =
+    {
+        /// Divide usage by this number.
+        DivideBy: int
+        /// After division, either round the result `up` or `down`.
+        Round: TransformQuantityRound
+    }
+
+/// Prices define the unit cost, currency, and (optional) billing cycle for both recurring and one-time purchases of products.
+/// [Products](https://docs.stripe.com/api#products) help you track inventory or provisioning, and prices help you track payment terms. Different physical goods or levels of service should be represented by products, and pricing options should be represented by prices. This approach lets you change prices without having to change your provisioning scheme.
+/// For example, you might have a single "gold" product that has prices for $10/month, $100/year, and €9 once.
+/// Related guides: [Set up a subscription](https://docs.stripe.com/billing/subscriptions/set-up-subscription), [create an invoice](https://docs.stripe.com/billing/invoices/create), and more about [products and prices](https://docs.stripe.com/products-prices/overview).
+type Price =
+    {
+        /// Whether the price can be used for new purchases.
+        Active: bool
+        /// Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `unit_amount` or `unit_amount_decimal`) will be charged per unit in `quantity` (for prices with `usage_type=licensed`), or per unit of total usage (for prices with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
+        BillingScheme: PriceBillingScheme
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// Prices defined in each available currency option. Each key must be a three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) and a [supported currency](https://stripe.com/docs/currencies).
+        CurrencyOptions: Map<string, CurrencyOption> option
+        /// When set, provides configuration for the amount to be adjusted by the customer during Checkout Sessions and Payment Links.
+        CustomUnitAmount: CustomUnitAmount option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// A lookup key used to retrieve prices dynamically from a static string. This may be up to 200 characters.
+        LookupKey: string option
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// A brief description of the price, hidden from customers.
+        Nickname: string option
+        /// The ID of the product this price is associated with.
+        Product: PriceProduct'AnyOf
+        /// The recurring components of a price such as `interval` and `usage_type`.
+        Recurring: Recurring option
+        /// Only required if a [default tax behavior](https://docs.stripe.com/tax/products-prices-tax-categories-tax-behavior#setting-a-default-tax-behavior-(recommended)) was not provided in the Stripe Tax settings. Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
+        TaxBehavior: PriceTaxBehavior option
+        /// Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
+        Tiers: PriceTier list option
+        /// Defines if the tiering price should be `graduated` or `volume` based. In `volume`-based tiering, the maximum quantity within a period determines the per unit price. In `graduated` tiering, pricing can change as the quantity grows.
+        TiersMode: PriceTiersMode option
+        /// Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`.
+        TransformQuantity: TransformQuantity option
+        /// One of `one_time` or `recurring` depending on whether the price is for a one-time purchase or a recurring (subscription) purchase.
+        Type: PriceType
+        /// The unit amount in cents (or local equivalent) to be charged, represented as a whole integer if possible. Only set if `billing_scheme=per_unit`.
+        UnitAmount: int option
+        /// The unit amount in cents (or local equivalent) to be charged, represented as a decimal string with at most 12 decimal places. Only set if `billing_scheme=per_unit`.
+        UnitAmountDecimal: string option
+    }
+
 type SubscriptionItemBillingThresholds =
     {
         /// Usage threshold that triggers the subscription to create an invoice
@@ -1615,26 +1977,6 @@ type InvoicePaymentMethodOptionsPayto =
     { MandateOptions: InvoiceMandateOptionsPayto option }
 
 [<Struct>]
-type InvoicePaymentMethodOptionsMandateOptionsUpiAmountType =
-    | Fixed
-    | Maximum
-
-type InvoicePaymentMethodOptionsMandateOptionsUpi =
-    {
-        /// Amount to be charged for future payments.
-        Amount: int option
-        /// One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
-        AmountType: InvoicePaymentMethodOptionsMandateOptionsUpiAmountType option
-        /// A description of the mandate or subscription that is meant to be displayed to the customer.
-        Description: string option
-        /// End date of the mandate or subscription.
-        EndDate: DateTime option
-    }
-
-type InvoicePaymentMethodOptionsUpi =
-    { MandateOptions: InvoicePaymentMethodOptionsMandateOptionsUpi option }
-
-[<Struct>]
 type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFiltersAccountSubcategories =
     | Checking
     | Savings
@@ -1820,6 +2162,26 @@ type SubscriptionPaymentMethodOptionsPix =
 type SubscriptionPaymentMethodOptionsSepaDebit =
     { SubscriptionPaymentMethodOptionsSepaDebit: string option }
 
+[<Struct>]
+type InvoicePaymentMethodOptionsMandateOptionsUpiAmountType =
+    | Fixed
+    | Maximum
+
+type InvoicePaymentMethodOptionsMandateOptionsUpi =
+    {
+        /// Amount to be charged for future payments.
+        Amount: int option
+        /// One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
+        AmountType: InvoicePaymentMethodOptionsMandateOptionsUpiAmountType option
+        /// A description of the mandate or subscription that is meant to be displayed to the customer.
+        Description: string option
+        /// End date of the mandate or subscription.
+        EndDate: DateTime option
+    }
+
+type SubscriptionPaymentMethodOptionsUpi =
+    { MandateOptions: InvoicePaymentMethodOptionsMandateOptionsUpi option }
+
 type SubscriptionsResourcePaymentMethodOptions =
     {
         /// This sub-hash contains details about the Canadian pre-authorized debit payment method options to pass to invoices created by the subscription.
@@ -1843,7 +2205,7 @@ type SubscriptionsResourcePaymentMethodOptions =
         /// This sub-hash contains details about the SEPA Direct Debit payment method options to pass to invoices created by the subscription.
         SepaDebit: SubscriptionPaymentMethodOptionsSepaDebit option
         /// This sub-hash contains details about the UPI payment method options to pass to invoices created by the subscription.
-        Upi: InvoicePaymentMethodOptionsUpi option
+        Upi: SubscriptionPaymentMethodOptionsUpi option
         /// This sub-hash contains details about the ACH direct debit payment method options to pass to invoices created by the subscription.
         UsBankAccount: InvoicePaymentMethodOptionsUsBankAccount option
     }
@@ -1955,6 +2317,217 @@ type InvoiceSettingCustomField =
         Name: string
         /// The value of the custom field.
         Value: string
+    }
+
+type DeletedTaxId =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+[<Struct>]
+type TaxIDsOwnerType =
+    | Account
+    | Application
+    | Customer
+    | Self
+
+type TaxIDsOwner =
+    {
+        /// The account being referenced when `type` is `account`.
+        Account: StripeId<Markers.Account> option
+        /// The Connect Application being referenced when `type` is `application`.
+        Application: StripeId<Markers.Application> option
+        /// The customer being referenced when `type` is `customer`.
+        Customer: StripeId<Markers.Customer> option
+        /// The Account representing the customer being referenced when `type` is `customer`.
+        CustomerAccount: string option
+        /// Type of owner referenced.
+        Type: TaxIDsOwnerType
+    }
+
+type TaxIdType =
+    | AdNrt
+    | AeTrn
+    | AlTin
+    | AmTin
+    | AoTin
+    | ArCuit
+    | AuAbn
+    | AuAcn
+    | AuArn
+    | AuWpn
+    | AwTin
+    | AzTin
+    | BaTin
+    | BbTin
+    | BdBin
+    | BfIfu
+    | BgUic
+    | BhVat
+    | BjIfu
+    | BoTin
+    | BrCnpj
+    | BrCpf
+    | BsTin
+    | BwVat
+    | ByTin
+    | CaBn
+    | CaGstHst
+    | CaPstBc
+    | CaPstMb
+    | CaPstSk
+    | CaQst
+    | CdNif
+    | ChUid
+    | ChVat
+    | CiVat
+    | ClTin
+    | CmNiu
+    | CnTin
+    | CoNit
+    | CrTin
+    | CvNif
+    | CzDic
+    | DeStn
+    | DoRcn
+    | EcRuc
+    | EgTin
+    | EsCif
+    | EtTin
+    | EuOssVat
+    | EuVat
+    | FoVat
+    | FrSiren
+    | FrSiret
+    | FrSpi
+    | GbVat
+    | GeVat
+    | GhTin
+    | GiTin
+    | GnNif
+    | HkBr
+    | HrOib
+    | HuTin
+    | IcNif
+    | IdNpwp
+    | IlVat
+    | InGst
+    | IsKt
+    | IsVat
+    | ItCf
+    | JpCn
+    | JpRn
+    | JpTrn
+    | KePin
+    | KgTin
+    | KhTin
+    | KrBrn
+    | KzBin
+    | LaTin
+    | LiUid
+    | LiVat
+    | LkVat
+    | MaVat
+    | MdCf
+    | MdVat
+    | MePib
+    | MkVat
+    | MrNif
+    | MuVat
+    | MxRfc
+    | MyFrp
+    | MyItn
+    | MySst
+    | MzNuit
+    | NgTin
+    | NoVat
+    | NoVoec
+    | NpPan
+    | NzBn
+    | NzGst
+    | OmVat
+    | PeRuc
+    | PhTin
+    | PlNip
+    | PtNif
+    | PyRuc
+    | RoTin
+    | RsPib
+    | RuInn
+    | RuKpp
+    | SaVat
+    | SgGst
+    | SgUen
+    | SiTin
+    | SmCoe
+    | SnNinea
+    | SrFin
+    | SvNit
+    | ThVat
+    | TjTin
+    | TrTin
+    | TtBir
+    | TtVat
+    | TwVat
+    | TzVat
+    | UaVat
+    | UgTin
+    | Unknown
+    | UsEin
+    | UyRuc
+    | UzTin
+    | UzVat
+    | VeRif
+    | VnTin
+    | ZaVat
+    | ZmTin
+    | ZwTin
+
+[<Struct>]
+type TaxIdVerificationStatus =
+    | Pending
+    | Unavailable
+    | Unverified
+    | Verified
+
+type TaxIdVerification =
+    {
+        /// Verification status, one of `pending`, `verified`, `unverified`, or `unavailable`.
+        Status: TaxIdVerificationStatus
+        /// Verified address.
+        VerifiedAddress: string option
+        /// Verified name.
+        VerifiedName: string option
+    }
+
+/// You can add one or multiple tax IDs to a [customer](https://docs.stripe.com/api/customers) or account.
+/// Customer and account tax IDs get displayed on related invoices and credit notes.
+/// Related guides: [Customer tax identification numbers](https://docs.stripe.com/billing/taxes/tax-ids), [Account tax IDs](https://docs.stripe.com/invoicing/connect#account-tax-ids)
+type TaxId =
+    {
+        /// Two-letter ISO code representing the country of the tax ID.
+        Country: IsoTypes.IsoCountryCode option
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// ID of the customer.
+        Customer: StripeId<Markers.Customer> option
+        /// ID of the Account representing the customer.
+        CustomerAccount: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The account or customer the tax ID belongs to.
+        Owner: TaxIDsOwner option
+        /// Type of the tax ID, one of `ad_nrt`, `ae_trn`, `al_tin`, `am_tin`, `ao_tin`, `ar_cuit`, `au_abn`, `au_acn`, `au_arn`, `au_wpn`, `aw_tin`, `az_tin`, `ba_tin`, `bb_tin`, `bd_bin`, `bf_ifu`, `bg_uic`, `bh_vat`, `bj_ifu`, `bo_tin`, `br_cnpj`, `br_cpf`, `bs_tin`, `bw_vat`, `by_tin`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `cd_nif`, `ch_uid`, `ch_vat`, `ci_vat`, `cl_tin`, `cm_niu`, `cn_tin`, `co_nit`, `cr_tin`, `cv_nif`, `cz_dic`, `de_stn`, `do_rcn`, `ec_ruc`, `eg_tin`, `es_cif`, `et_tin`, `eu_oss_vat`, `eu_vat`, `fo_vat`, `fr_siren`, `fr_siret`, `fr_spi`, `gb_vat`, `ge_vat`, `gh_tin`, `gi_tin`, `gn_nif`, `hk_br`, `hr_oib`, `hu_tin`, `ic_nif`, `id_npwp`, `il_vat`, `in_gst`, `is_kt`, `is_vat`, `it_cf`, `jp_cn`, `jp_rn`, `jp_trn`, `ke_pin`, `kg_tin`, `kh_tin`, `kr_brn`, `kz_bin`, `la_tin`, `li_uid`, `li_vat`, `lk_vat`, `ma_vat`, `md_cf`, `md_vat`, `me_pib`, `mk_vat`, `mr_nif`, `mu_vat`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `mz_nuit`, `ng_tin`, `no_vat`, `no_voec`, `np_pan`, `nz_bn`, `nz_gst`, `om_vat`, `pe_ruc`, `ph_tin`, `pl_nip`, `pt_nif`, `py_ruc`, `ro_tin`, `rs_pib`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `si_tin`, `sm_coe`, `sn_ninea`, `sr_fin`, `sv_nit`, `th_vat`, `tj_tin`, `tr_tin`, `tt_bir`, `tt_vat`, `tw_vat`, `tz_vat`, `ua_vat`, `ug_tin`, `us_ein`, `uy_ruc`, `uz_tin`, `uz_vat`, `ve_rif`, `vn_tin`, `za_vat`, `zm_tin`, or `zw_tin`. Note that some legacy tax IDs have type `unknown`
+        Type: TaxIdType
+        /// Value of the tax ID.
+        Value: string
+        /// Tax ID verification information.
+        Verification: TaxIdVerification option
     }
 
 type SubscriptionsResourceSubscriptionInvoiceSettingsAccountTaxIds'AnyOf =
@@ -3712,6 +4285,7 @@ type ApiErrorsCode =
     | ForwardingApiUpstreamConnectionTimeout
     | ForwardingApiUpstreamError
     | IdempotencyKeyInUse
+    | InactiveApiOperationConfirmationRequired
     | IncorrectAddress
     | IncorrectCvc
     | IncorrectNumber
@@ -3996,11 +4570,413 @@ type PaymentFlowsAutomaticPaymentMethodsPaymentIntent =
         Enabled: bool
     }
 
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryAffiliate =
+    {
+        /// Affiliate code.
+        Code: string option
+        /// Affiliate name.
+        Name: string option
+    }
+
+[<Struct>]
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDistanceUnit =
+    | Kilometers
+    | Miles
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDistance =
+    {
+        /// Distance amount.
+        Amount: int option
+        /// Unit for the distance.
+        Unit: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDistanceUnit option
+    }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDateOfBirth =
+    {
+        /// Day of birth.
+        Day: int option
+        /// Month of birth.
+        Month: int option
+        /// Year of birth.
+        Year: int option
+    }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDriver =
+    {
+        DateOfBirth: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDateOfBirth option
+        /// Driver's identification number.
+        DriverIdentificationNumber: string option
+        /// Driver's tax number.
+        DriverTaxNumber: string option
+        /// Full name of the driver.
+        Name: string option
+    }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryInsuranceInsuranceType =
+    | LiabilitySupplement
+    | LossDamageWaiver
+    | Other
+    | PartialDamageWaiver
+    | PersonalAccident
+    | PersonalEffects
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryInsurance =
+    {
+        /// Amount of the insurance.
+        Amount: int option
+        /// Currency for the insurance price.
+        Currency: IsoTypes.IsoCurrencyCode option
+        /// Name of the insurance company.
+        InsuranceCompanyName: string option
+        /// Type of insurance.
+        InsuranceType:
+            PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryInsuranceInsuranceType option
+    }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryLocation =
+    {
+        Address: Address option
+        /// Name of the location.
+        LocationName: string option
+        /// Time associated with the location.
+        Time: DateTime option
+    }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDiscounts =
+    {
+        /// Corporate client discount code.
+        CorporateClientCode: string option
+        /// Coupon code applied.
+        Coupon: string option
+        /// Maximum free miles or kilometers included.
+        MaximumFreeMilesOrKilometers: int option
+    }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryExtraChargeType =
+    | ExtraMileage
+    | Gas
+    | Gps
+    | LateCharge
+    | OneWayDropOff
+    | Other
+    | Parking
+    | Phone
+    | RegularMileage
+    | Towing
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryExtraCharge =
+    {
+        /// Amount of the extra charge.
+        Amount: int option
+        /// Type of extra charge.
+        Type: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryExtraChargeType option
+    }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTaxItem =
+    {
+        /// Tax amount.
+        Amount: int option
+        /// Tax rate.
+        Rate: int option
+        /// Type of tax.
+        Type: string option
+    }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTax =
+    {
+        /// Indicates whether the rental is tax-exempt.
+        TaxExemptIndicator: bool option
+        /// Tax details.
+        TaxItems: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTaxItem list option
+    }
+
+[<Struct>]
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTotalRateUnit =
+    | Kilometers
+    | Miles
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTotal =
+    {
+        /// Total amount.
+        Amount: int option
+        /// Currency for the total amount.
+        Currency: IsoTypes.IsoCurrencyCode option
+        Discounts: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDiscounts option
+        /// Additional charges for the rental.
+        ExtraCharges: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryExtraCharge list option
+        /// Rate per unit.
+        RatePerUnit: int option
+        /// Unit for the rate.
+        RateUnit: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTotalRateUnit option
+        Tax: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTax option
+    }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryVehicleType =
+    | CargoVan
+    | Compact
+    | Economy
+    | Exotic
+    | ExoticSuv
+    | FifteenPassengerVan
+    | FourWheelDrive
+    | FullSize
+    | Intermediate
+    | LargeSuv
+    | LargeTruck
+    | Luxury
+    | MediumSuv
+    | Midsize
+    | Mini
+    | Minivan
+    | Miscellaneous
+    | Moped
+    | MovingVan
+    | Premium
+    | Regular
+    | SmallMediumTruck
+    | SmallSuv
+    | Special
+    | Standard
+    | Stretch
+    | Subcompact
+    | Taxi
+    | TwelveFootTruck
+    | TwelvePassengerVan
+    | TwentyFootTruck
+    | TwentyFourFootTruck
+    | TwentySixFootTruck
+    | Unique
+
+[<Struct>]
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryVehicleVehicleClass =
+    | Business
+    | Economy
+    | FirstClass
+    | PremiumEconomy
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryVehicle =
+    {
+        /// Make of the vehicle.
+        Make: string option
+        /// Model of the vehicle.
+        Model: string option
+        /// Odometer reading.
+        Odometer: int option
+        /// Type of the vehicle.
+        Type: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryVehicleType option
+        /// Class of the vehicle.
+        VehicleClass: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryVehicleVehicleClass option
+        /// Vehicle identification number.
+        VehicleIdentificationNumber: string option
+    }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRental =
+    {
+        Affiliate: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryAffiliate option
+        /// The booking number associated with the car rental.
+        BookingNumber: string option
+        /// The name of the car rental company.
+        CarrierName: string option
+        /// The customer service phone number of the car rental company.
+        CustomerServicePhoneNumber: string option
+        /// Number of days the car is being rented.
+        DaysRented: int option
+        Distance: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDistance option
+        /// The details of the drivers associated with the rental.
+        Drivers: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDriver list option
+        DropOff: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryLocation option
+        /// Insurance details for the car rental.
+        Insurances: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryInsurance list option
+        /// Indicates if the customer did not keep nor cancel their booking.
+        NoShowIndicator: bool option
+        Pickup: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryLocation option
+        /// Name of the person renting the vehicle.
+        RenterName: string option
+        Total: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTotal option
+        Vehicle: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryVehicle option
+    }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAccommodationAccommodationType =
+    | Apartment
+    | Cabana
+    | House
+    | Penthouse
+    | Room
+    | Standard
+    | Suite
+    | Villa
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAccommodation =
+    {
+        /// Type of accommodation.
+        AccommodationType:
+            PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAccommodationAccommodationType option
+        /// Bed type.
+        BedType: string option
+        /// Daily accommodation rate in cents.
+        DailyRateAmount: int option
+        /// Number of nights.
+        Nights: int option
+        /// Number of rooms, cabanas, apartments, and so on.
+        NumberOfRooms: int option
+        /// Rate type.
+        RateType: string option
+        /// Whether smoking is allowed.
+        SmokingIndicator: bool option
+    }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAffiliate =
+    {
+        /// Affiliate partner code.
+        Code: string option
+        /// Affiliate partner name.
+        Name: string option
+    }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryGuest =
+    {
+        /// Guest's full name.
+        Name: string option
+    }
+
+[<Struct>]
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryHostHostType =
+    | Hostel
+    | Hotel
+    | Owner
+    | RentalAgency
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryHost =
+    {
+        Address: Address option
+        /// Host's country of domicile.
+        CountryOfDomicile: string option
+        /// Reference number for the host.
+        HostReference: string option
+        /// Type of host.
+        HostType: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryHostHostType option
+        /// Name of the lodging property or host.
+        Name: string option
+        /// Total number of reservations for the host.
+        NumberOfReservations: int option
+        /// Property phone number.
+        PropertyPhoneNumber: string option
+        /// Host's registration date.
+        RegisteredAt: DateTime option
+    }
+
+[<Struct>]
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryInsuranceInsuranceType =
+    | Bankruptcy
+    | Cancelation
+    | Emergency
+    | Medical
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryInsurance =
+    {
+        /// Price of the insurance coverage in cents.
+        Amount: int option
+        /// Currency of the insurance amount.
+        Currency: IsoTypes.IsoCurrencyCode option
+        /// Name of the insurance company.
+        InsuranceCompanyName: string option
+        /// Type of insurance coverage.
+        InsuranceType: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryInsuranceInsuranceType option
+    }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryDiscount =
+    {
+        /// Corporate client discount code.
+        CorporateClientCode: string option
+        /// Coupon code.
+        Coupon: string option
+    }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryExtraChargeType =
+    | GiftShop
+    | Laundry
+    | MiniBar
+    | Other
+    | Phone
+    | Restaurant
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryExtraCharge =
+    {
+        /// Amount of the extra charge in cents.
+        Amount: int option
+        /// Type of extra charge.
+        Type: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryExtraChargeType option
+    }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTaxItem =
+    {
+        /// Tax amount in cents.
+        Amount: int option
+        /// Tax rate.
+        Rate: int option
+        /// Type of tax applied.
+        Type: string option
+    }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTax =
+    {
+        /// Indicates whether the transaction is tax exempt.
+        TaxExemptIndicator: bool option
+        /// Tax details.
+        TaxItems: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTaxItem list option
+    }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTotal =
+    {
+        /// Total price of the lodging reservation in cents.
+        Amount: int option
+        /// Cash advances in cents.
+        CashAdvances: int option
+        /// Currency of the total amount.
+        Currency: IsoTypes.IsoCurrencyCode option
+        Discounts: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryDiscount option
+        /// Additional charges for the lodging.
+        ExtraCharges: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryExtraCharge list option
+        /// Prepaid amount in cents.
+        PrepaidAmount: int option
+        Tax: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTax option
+    }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodging =
+    {
+        Accommodation: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAccommodation option
+        Affiliate: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAffiliate option
+        /// Booking confirmation number for the lodging.
+        BookingNumber: string option
+        /// Check-in date.
+        CheckinAt: DateTime option
+        /// Check-out date.
+        CheckoutAt: DateTime option
+        /// Customer service phone number for the lodging company.
+        CustomerServicePhoneNumber: string option
+        /// Whether the lodging is compliant with any hotel fire safety regulations.
+        FireSafetyActComplianceIndicator: bool option
+        /// List of guests for the lodging.
+        Guests: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryGuest list option
+        Host: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryHost option
+        /// List of insurances for the lodging.
+        Insurances: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryInsurance list option
+        /// Whether the renter is a no-show.
+        NoShowIndicator: bool option
+        /// Renter ID number for the lodging.
+        RenterIdNumber: string option
+        /// Renter name for the lodging.
+        RenterName: string option
+        Total: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTotal option
+    }
+
 type PaymentFlowsPaymentDetails =
     {
+        CarRentalData: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRental list option
         /// A unique value to identify the customer. This field is available only for card payments.
         /// This field is truncated to 25 alphanumeric characters, excluding spaces, before being sent to card networks.
         CustomerReference: string option
+        LodgingData: PaymentFlowsIndustryMetadataLodgingDataResourceLodging list option
         /// A unique value assigned by the business to identify the transaction. Required for L2 and L3 rates.
         /// For Cards, this field is truncated to 25 alphanumeric characters, excluding spaces, before being sent to card networks. For Klarna, this field is truncated to 255 characters and is visible to customers when they view the order in the Klarna app.
         OrderReference: string option
@@ -4264,6 +5240,143 @@ type PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode =
         QrCode: PaymentIntentNextActionCashappQrCode
     }
 
+/// ABA Records contain U.S. bank account details per the ABA format.
+type FundingInstructionsBankTransferAbaRecord =
+    {
+        AccountHolderAddress: Address
+        /// The account holder name
+        AccountHolderName: string
+        /// The ABA account number
+        AccountNumber: string
+        /// The account type
+        AccountType: string
+        BankAddress: Address
+        /// The bank name
+        BankName: string
+        /// The ABA routing number
+        RoutingNumber: string
+    }
+
+type FundingInstructionsBankTransferFinancialAddressSupportedNetworks =
+    | Ach
+    | Bacs
+    | Chaps
+    | DomesticWireUs
+    | Fps
+    | Sepa
+    | Spei
+    | Swift
+    | Zengin
+
+type FundingInstructionsBankTransferFinancialAddressType =
+    | Aba
+    | Iban
+    | SortCode
+    | Spei
+    | Swift
+    | Zengin
+
+/// Iban Records contain E.U. bank account details per the SEPA format.
+type FundingInstructionsBankTransferIbanRecord =
+    {
+        AccountHolderAddress: Address
+        /// The name of the person or business that owns the bank account
+        AccountHolderName: string
+        BankAddress: Address
+        /// The BIC/SWIFT code of the account.
+        Bic: string
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode
+        /// The IBAN of the account.
+        Iban: string
+    }
+
+/// Sort Code Records contain U.K. bank account details per the sort code format.
+type FundingInstructionsBankTransferSortCodeRecord =
+    {
+        AccountHolderAddress: Address
+        /// The name of the person or business that owns the bank account
+        AccountHolderName: string
+        /// The account number
+        AccountNumber: string
+        BankAddress: Address
+        /// The six-digit sort code
+        SortCode: string
+    }
+
+/// SPEI Records contain Mexico bank account details per the SPEI format.
+type FundingInstructionsBankTransferSpeiRecord =
+    {
+        AccountHolderAddress: Address
+        /// The account holder name
+        AccountHolderName: string
+        BankAddress: Address
+        /// The three-digit bank code
+        BankCode: string
+        /// The short banking institution name
+        BankName: string
+        /// The CLABE number
+        Clabe: string
+    }
+
+/// SWIFT Records contain U.S. bank account details per the SWIFT format.
+type FundingInstructionsBankTransferSwiftRecord =
+    {
+        AccountHolderAddress: Address
+        /// The account holder name
+        AccountHolderName: string
+        /// The account number
+        AccountNumber: string
+        /// The account type
+        AccountType: string
+        BankAddress: Address
+        /// The bank name
+        BankName: string
+        /// The SWIFT code
+        SwiftCode: string
+    }
+
+[<Struct>]
+type FundingInstructionsBankTransferZenginRecordAccountType =
+    | Futsu
+    | Toza
+
+/// Zengin Records contain Japan bank account details per the Zengin format.
+type FundingInstructionsBankTransferZenginRecord =
+    {
+        AccountHolderAddress: Address
+        /// The account holder name
+        AccountHolderName: string option
+        /// The account number
+        AccountNumber: string option
+        /// The bank account type. In Japan, this can only be `futsu` or `toza`.
+        AccountType: FundingInstructionsBankTransferZenginRecordAccountType option
+        BankAddress: Address
+        /// The bank code of the account
+        BankCode: string option
+        /// The bank name of the account
+        BankName: string option
+        /// The branch code of the account
+        BranchCode: string option
+        /// The branch name of the account
+        BranchName: string option
+    }
+
+/// FinancialAddresses contain identifying information that resolves to a FinancialAccount.
+type FundingInstructionsBankTransferFinancialAddress =
+    {
+        Aba: FundingInstructionsBankTransferAbaRecord option
+        Iban: FundingInstructionsBankTransferIbanRecord option
+        SortCode: FundingInstructionsBankTransferSortCodeRecord option
+        Spei: FundingInstructionsBankTransferSpeiRecord option
+        /// The payment networks supported by this FinancialAddress
+        SupportedNetworks: FundingInstructionsBankTransferFinancialAddressSupportedNetworks list option
+        Swift: FundingInstructionsBankTransferSwiftRecord option
+        /// The type of financial address
+        Type: FundingInstructionsBankTransferFinancialAddressType
+        Zengin: FundingInstructionsBankTransferZenginRecord option
+    }
+
 [<Struct>]
 type PaymentIntentNextActionDisplayBankTransferInstructionsType =
     | EuBankTransfer
@@ -4474,7 +5587,7 @@ type PaymentIntentNextActionVerifyWithMicrodepositsMicrodepositType =
 
 type PaymentIntentNextActionVerifyWithMicrodeposits =
     {
-        /// The timestamp when the microdeposits are expected to land.
+        /// The timestamp when the microdeposits are expected to land. Null for instant microdeposits.
         ArrivalDate: DateTime
         /// The URL for the hosted verification page, which allows customers to verify their bank account.
         HostedVerificationUrl: string
@@ -6180,10 +7293,10 @@ type PaymentMethodCardChecksCvcCheck =
 
 type PaymentMethodCardChecks =
     {
-        /// If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
+        /// If an address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         [<JsonPropertyName("address_line1_check")>]
         AddressLine1Check: PaymentMethodCardChecksAddressLine1Check option
-        /// If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
+        /// If an address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         AddressPostalCodeCheck: PaymentMethodCardChecksAddressPostalCodeCheck option
         /// If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         CvcCheck: PaymentMethodCardChecksCvcCheck option
@@ -7468,7 +8581,7 @@ type SetupIntentNextActionVerifyWithMicrodepositsMicrodepositType =
 
 type SetupIntentNextActionVerifyWithMicrodeposits =
     {
-        /// The timestamp when the microdeposits are expected to land.
+        /// The timestamp when the microdeposits are expected to land. Null for instant microdeposits.
         ArrivalDate: DateTime
         /// The URL for the hosted verification page, which allows customers to verify their bank account.
         HostedVerificationUrl: string
@@ -8147,7 +9260,7 @@ type BalanceTransaction =
         Currency: IsoTypes.IsoCurrencyCode
         /// An arbitrary string attached to the object. Often useful for displaying to users.
         Description: string option
-        /// If applicable, this transaction uses an exchange rate. If money converts from currency A to currency B, then the `amount` in currency A, multiplied by the `exchange_rate`, equals the `amount` in currency B. For example, if you charge a customer 10.00 EUR, the PaymentIntent's `amount` is `1000` and `currency` is `eur`. If this converts to 12.34 USD in your Stripe account, the BalanceTransaction's `amount` is `1234`, its `currency` is `usd`, and the `exchange_rate` is `1.234`.
+        /// The exchange rate used for this transaction, if applicable. Multiplying the source `amount` by the `exchange_rate` gives the destination `amount`, both in their currencies' smallest units. For example, `1000` EUR cents converts to `1234` USD cents at `1.234`. For a zero-decimal currency such as JPY, `1000` JPY converts to `640` USD cents (6.40 USD) at `0.64`, equivalent to `0.0064` USD per JPY. For JPY to USD, the API multiplier is 100 times the whole-unit rate because JPY amounts use yen and USD amounts use cents.
         ExchangeRate: decimal option
         /// Fees (in cents (or local equivalent)) paid for this transaction. Represented as a positive integer when assessed.
         Fee: int
@@ -8250,6 +9363,20 @@ type RefundDestinationDetailsAfterpayClearpay =
         Reference: string option
         /// Status of the reference on the refund. This can be `pending`, `available` or `unavailable`.
         ReferenceStatus: RefundDestinationDetailsAfterpayClearpayReferenceStatus option
+    }
+
+[<Struct>]
+type RefundDestinationDetailsBizumReferenceStatus =
+    | Pending
+    | Available
+    | Unavailable
+
+type RefundDestinationDetailsBizum =
+    {
+        /// The reference assigned to the refund.
+        Reference: string option
+        /// Status of the reference on the refund. This can be `pending`, `available` or `unavailable`.
+        ReferenceStatus: RefundDestinationDetailsBizumReferenceStatus option
     }
 
 [<Struct>]
@@ -8471,6 +9598,20 @@ type RefundDestinationDetailsThBankTransfer =
     }
 
 [<Struct>]
+type RefundDestinationDetailsUpiReferenceStatus =
+    | Pending
+    | Available
+    | Unavailable
+
+type RefundDestinationDetailsUpi =
+    {
+        /// The reference assigned to the refund.
+        Reference: string option
+        /// Status of the reference on the refund. This can be `pending`, `available` or `unavailable`.
+        ReferenceStatus: RefundDestinationDetailsUpiReferenceStatus option
+    }
+
+[<Struct>]
 type RefundDestinationDetailsUsBankTransferReferenceStatus =
     | Pending
     | Available
@@ -8492,6 +9633,7 @@ type RefundDestinationDetails =
         Alma: DestinationDetailsUnimplemented option
         AmazonPay: DestinationDetailsUnimplemented option
         AuBankTransfer: DestinationDetailsUnimplemented option
+        Bizum: RefundDestinationDetailsBizum option
         Blik: RefundDestinationDetailsBlik option
         BrBankTransfer: RefundDestinationDetailsBrBankTransfer option
         Card: RefundDestinationDetailsCard option
@@ -8522,6 +9664,7 @@ type RefundDestinationDetails =
         Twint: DestinationDetailsUnimplemented option
         /// The type of transaction-specific details of the payment method used in the refund (e.g., `card`). An additional hash is included on `destination_details` with a name matching this value. It contains information specific to the refund transaction.
         Type: string
+        Upi: RefundDestinationDetailsUpi option
         UsBankTransfer: RefundDestinationDetailsUsBankTransfer option
         WechatPay: DestinationDetailsUnimplemented option
         Zip: DestinationDetailsUnimplemented option
@@ -8587,6 +9730,8 @@ type Refund =
     {
         /// Amount, in cents (or local equivalent).
         Amount: int
+        /// ID of the Connect application that created the refund. This can differ from the application on the associated Charge or PaymentIntent. A null value does not necessarily mean the refund was created without a Connect application.
+        Application: StripeId<Markers.Application> option
         /// Balance transaction that describes the impact on your account balance.
         BalanceTransaction: StripeId<Markers.BalanceTransaction> option
         /// ID of the charge that's refunded.
@@ -8948,10 +10093,10 @@ type PaymentMethodDetailsCardChecksCvcCheck =
 
 type PaymentMethodDetailsCardChecks =
     {
-        /// If a address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
+        /// If an address line1 was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         [<JsonPropertyName("address_line1_check")>]
         AddressLine1Check: PaymentMethodDetailsCardChecksAddressLine1Check option
-        /// If a address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
+        /// If an address postal code was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         AddressPostalCodeCheck: PaymentMethodDetailsCardChecksAddressPostalCodeCheck option
         /// If a CVC was provided, results of the check, one of `pass`, `fail`, `unavailable`, or `unchecked`.
         CvcCheck: PaymentMethodDetailsCardChecksCvcCheck option
@@ -9016,10 +10161,100 @@ type PaymentMethodDetailsCardWalletApplePay =
 type PaymentMethodDetailsCardWalletGooglePay =
     { PaymentMethodDetailsCardWalletGooglePay: string option }
 
+type PaymentMethodDetailsLinkFundingSourceCardBrand =
+    | Amex
+    | CartesBancaires
+    | Diners
+    | Discover
+    | EftposAu
+    | Jcb
+    | Link
+    | Mastercard
+    | Unionpay
+    | Visa
+    | Unknown
+
+[<Struct>]
+type PaymentMethodDetailsLinkFundingSourceCardFunding =
+    | Credit
+    | Debit
+    | Prepaid
+    | Unknown
+
+type PaymentMethodDetailsLinkFundingSourceCardNetwork =
+    | Amex
+    | CartesBancaires
+    | Diners
+    | Discover
+    | EftposAu
+    | Interac
+    | Jcb
+    | Link
+    | Mastercard
+    | Unionpay
+    | Visa
+    | Unknown
+
+[<Struct>]
+type PaymentMethodDetailsLinkFundingSourceCardRegulatedStatus =
+    | Regulated
+    | Unregulated
+
+type PaymentMethodDetailsLinkFundingSourceCard =
+    {
+        /// The authorized amount.
+        AmountAuthorized: int option
+        /// Authorization code on the charge.
+        AuthorizationCode: string option
+        /// Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
+        Brand: PaymentMethodDetailsLinkFundingSourceCardBrand option
+        /// Check results by Card networks on Card address and CVC at time of payment.
+        Checks: PaymentMethodDetailsCardChecks option
+        /// Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
+        Country: IsoTypes.IsoCountryCode option
+        /// A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
+        Description: string option
+        /// The Electronic Commerce Indicator (ECI) returned by the card network in the authorization response. Indicates the level of authentication used. Only populated for Visa and Mastercard transactions. This is the network's final ECI and can differ from the request value. An authenticated ECI alone doesn't determine liability shift.
+        ElectronicCommerceIndicator: string option
+        /// Two-digit number representing the card's expiration month.
+        ExpMonth: int
+        /// Four-digit number representing the card's expiration year.
+        ExpYear: int
+        /// Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
+        /// *As of May 1, 2021, card fingerprint in India for Connect changed to allow two fingerprints for the same card---one for India and one for the rest of the world.*
+        Fingerprint: string option
+        /// Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
+        Funding: PaymentMethodDetailsLinkFundingSourceCardFunding option
+        /// Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
+        Iin: string option
+        /// The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
+        Issuer: string option
+        /// The last four digits of the card.
+        [<JsonPropertyName("last4")>]
+        Last4: string option
+        /// Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `interac`, `jcb`, `link`, `mastercard`, `unionpay`, `visa`, or `unknown`.
+        Network: PaymentMethodDetailsLinkFundingSourceCardNetwork option
+        /// If this card has network token credentials, this contains the details of the network token credentials.
+        NetworkToken: PaymentMethodDetailsCardNetworkToken option
+        /// This is used by the financial networks to identify a transaction. Visa calls this the Transaction ID, Mastercard calls this the Trace ID, and American Express calls this the Acquirer Reference Data. This value will be present if it is returned by the financial network in the authorization response, and null otherwise.
+        NetworkTransactionId: string option
+        /// Status of a card based on the card issuer.
+        RegulatedStatus: PaymentMethodDetailsLinkFundingSourceCardRegulatedStatus option
+        /// Populated if this transaction used 3D Secure authentication.
+        ThreeDSecure: ThreeDSecureDetailsCharge option
+        /// Transaction Link ID (TLID) is a unique identifier for a transaction. This is used by some card networks, such as Mastercard, for transaction linking, in addition to Network Transaction IDs. This value will be present if it is returned by the financial network in the authorization response, and null otherwise.
+        TransactionLinkId: string option
+    }
+
+type PaymentMethodDetailsLinkFundingSource =
+    { Card: PaymentMethodDetailsLinkFundingSourceCard }
+
 type PaymentMethodDetailsCardWalletLink =
     {
         /// The [funding source group code](https://docs.stripe.com/payments/link/link-payment-methods) applied to this Link payment at confirmation time.
         FundingSourceGroup: string option
+        /// Details about the funding sources used for this Link payment.
+        FundingSources: PaymentMethodDetailsLinkFundingSource list option
     }
 
 type PaymentMethodDetailsCardWalletMasterpass =
@@ -9159,6 +10394,7 @@ type PaymentMethodDetailsCryptoNetwork =
     | Solana
     | Sui
     | Tempo
+    | Tron
 
 type PaymentMethodDetailsCryptoTokenCurrency =
     | Ousd
@@ -9568,6 +10804,8 @@ type PaymentMethodDetailsLink =
         Country: IsoTypes.IsoCountryCode option
         /// The [funding source group code](https://docs.stripe.com/payments/link/link-payment-methods) applied to this Link payment at confirmation time.
         FundingSourceGroup: string option
+        /// Details about the funding sources used for this Link payment.
+        FundingSources: PaymentMethodDetailsLinkFundingSource list option
     }
 
 type PaymentMethodDetailsMbWay =
@@ -9612,7 +10850,7 @@ type PaymentMethodDetailsNaverPay =
 
 type PaymentMethodDetailsNzBankAccount =
     {
-        /// The name on the bank account. Only present if the account holder name is different from the name of the authorized signatory collected in the PaymentMethod’s billing details.
+        /// The name on the bank account. Only present if the account holder name is different from the name of the authorized signatory collected in the PaymentMethod's billing details.
         AccountHolderName: string option
         /// The numeric code for the bank account's bank.
         BankCode: string
@@ -9734,7 +10972,10 @@ type PaymentMethodDetailsPaypal =
     }
 
 type PaymentMethodDetailsPaypay =
-    { PaymentMethodDetailsPaypay: string option }
+    {
+        /// Uniquely identifies this particular PayPay account. You can use this attribute to check whether two PayPay accounts are the same.
+        Fingerprint: string option
+    }
 
 type PaymentMethodDetailsPayto =
     {
@@ -10648,7 +11889,7 @@ type Dispute =
     {
         /// Disputed amount. Usually the amount of the charge, but it can differ (usually because of currency fluctuation or because only part of the order is disputed).
         Amount: int
-        /// List of zero, one, or two balance transactions that show funds withdrawn and reinstated to your Stripe account as a result of this dispute.
+        /// List of balance transactions that show funds withdrawn and reinstated to your Stripe account as a result of this dispute.
         BalanceTransactions: BalanceTransaction list
         /// ID of the charge that's disputed.
         Charge: StripeId<Markers.Charge>
@@ -11027,6 +12268,2259 @@ type IssuingAuthorizationWallet =
     | ApplePay
     | GooglePay
     | SamsungPay
+
+[<Struct>]
+type IssuingCardAuthorizationControlsAllowedCardPresences =
+    | NotPresent
+    | Present
+
+type IssuingCardAuthorizationControlsAllowedCategories =
+    | AcRefrigerationRepair
+    | AccountingBookkeepingServices
+    | AdvertisingServices
+    | AgriculturalCooperative
+    | AirlinesAirCarriers
+    | AirportsFlyingFields
+    | AmbulanceServices
+    | AmusementParksCarnivals
+    | AntiqueReproductions
+    | AntiqueShops
+    | Aquariums
+    | ArchitecturalSurveyingServices
+    | ArtDealersAndGalleries
+    | ArtistsSupplyAndCraftShops
+    | AutoAndHomeSupplyStores
+    | AutoBodyRepairShops
+    | AutoPaintShops
+    | AutoServiceShops
+    | AutomatedCashDisburse
+    | AutomatedFuelDispensers
+    | AutomobileAssociations
+    | AutomotivePartsAndAccessoriesStores
+    | AutomotiveTireStores
+    | BailAndBondPayments
+    | Bakeries
+    | BandsOrchestras
+    | BarberAndBeautyShops
+    | BettingCasinoGambling
+    | BicycleShops
+    | BilliardPoolEstablishments
+    | BoatDealers
+    | BoatRentalsAndLeases
+    | BookStores
+    | BooksPeriodicalsAndNewspapers
+    | BowlingAlleys
+    | BusLines
+    | BusinessSecretarialSchools
+    | BuyingShoppingServices
+    | CableSatelliteAndOtherPayTelevisionAndRadio
+    | CameraAndPhotographicSupplyStores
+    | CandyNutAndConfectioneryStores
+    | CarAndTruckDealersNewUsed
+    | CarAndTruckDealersUsedOnly
+    | CarRentalAgencies
+    | CarWashes
+    | CarpentryServices
+    | CarpetUpholsteryCleaning
+    | Caterers
+    | CharitableAndSocialServiceOrganizationsFundraising
+    | ChemicalsAndAlliedProducts
+    | ChildCareServices
+    | ChildrensAndInfantsWearStores
+    | ChiropodistsPodiatrists
+    | Chiropractors
+    | CigarStoresAndStands
+    | CivicSocialFraternalAssociations
+    | CleaningAndMaintenance
+    | ClothingRental
+    | CollegesUniversities
+    | CommercialEquipment
+    | CommercialFootwear
+    | CommercialPhotographyArtAndGraphics
+    | CommuterTransportAndFerries
+    | ComputerNetworkServices
+    | ComputerProgramming
+    | ComputerRepair
+    | ComputerSoftwareStores
+    | ComputersPeripheralsAndSoftware
+    | ConcreteWorkServices
+    | ConstructionMaterials
+    | ConsultingPublicRelations
+    | CorrespondenceSchools
+    | CosmeticStores
+    | CounselingServices
+    | CountryClubs
+    | CourierServices
+    | CourtCosts
+    | CreditReportingAgencies
+    | CruiseLines
+    | DairyProductsStores
+    | DanceHallStudiosSchools
+    | DatingEscortServices
+    | DentistsOrthodontists
+    | DepartmentStores
+    | DetectiveAgencies
+    | DigitalGoodsApplications
+    | DigitalGoodsGames
+    | DigitalGoodsLargeVolume
+    | DigitalGoodsMedia
+    | DirectMarketingCatalogMerchant
+    | DirectMarketingCombinationCatalogAndRetailMerchant
+    | DirectMarketingInboundTelemarketing
+    | DirectMarketingInsuranceServices
+    | DirectMarketingOther
+    | DirectMarketingOutboundTelemarketing
+    | DirectMarketingSubscription
+    | DirectMarketingTravel
+    | DiscountStores
+    | Doctors
+    | DoorToDoorSales
+    | DraperyWindowCoveringAndUpholsteryStores
+    | DrinkingPlaces
+    | DrugStoresAndPharmacies
+    | DrugsDrugProprietariesAndDruggistSundries
+    | DryCleaners
+    | DurableGoods
+    | DutyFreeStores
+    | EatingPlacesRestaurants
+    | EducationalServices
+    | ElectricRazorStores
+    | ElectricVehicleCharging
+    | ElectricalPartsAndEquipment
+    | ElectricalServices
+    | ElectronicsRepairShops
+    | ElectronicsStores
+    | ElementarySecondarySchools
+    | EmergencyServicesGcasVisaUseOnly
+    | EmploymentTempAgencies
+    | EquipmentRental
+    | ExterminatingServices
+    | FamilyClothingStores
+    | FastFoodRestaurants
+    | FinancialInstitutions
+    | FinesGovernmentAdministrativeEntities
+    | FireplaceFireplaceScreensAndAccessoriesStores
+    | FloorCoveringStores
+    | Florists
+    | FloristsSuppliesNurseryStockAndFlowers
+    | FreezerAndLockerMeatProvisioners
+    | FuelDealersNonAutomotive
+    | FuneralServicesCrematories
+    | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+    | FurnitureRepairRefinishing
+    | FurriersAndFurShops
+    | GeneralServices
+    | GiftCardNoveltyAndSouvenirShops
+    | GlassPaintAndWallpaperStores
+    | GlasswareCrystalStores
+    | GolfCoursesPublic
+    | GovernmentLicensedHorseDogRacingUsRegionOnly
+    | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+    | GovernmentOwnedLotteriesNonUsRegion
+    | GovernmentOwnedLotteriesUsRegionOnly
+    | GovernmentServices
+    | GroceryStoresSupermarkets
+    | HardwareEquipmentAndSupplies
+    | HardwareStores
+    | HealthAndBeautySpas
+    | HearingAidsSalesAndSupplies
+    | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
+    | HobbyToyAndGameShops
+    | HomeSupplyWarehouseStores
+    | Hospitals
+    | HotelsMotelsAndResorts
+    | HouseholdApplianceStores
+    | IndustrialSupplies
+    | InformationRetrievalServices
+    | InsuranceDefault
+    | InsuranceUnderwritingPremiums
+    | IntraCompanyPurchases
+    | JewelryStoresWatchesClocksAndSilverwareStores
+    | LandscapingServices
+    | Laundries
+    | LaundryCleaningServices
+    | LegalServicesAttorneys
+    | LuggageAndLeatherGoodsStores
+    | LumberBuildingMaterialsStores
+    | ManualCashDisburse
+    | MarinasServiceAndSupplies
+    | Marketplaces
+    | MasonryStoneworkAndPlaster
+    | MassageParlors
+    | MedicalAndDentalLabs
+    | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+    | MedicalServices
+    | MembershipOrganizations
+    | MensAndBoysClothingAndAccessoriesStores
+    | MensWomensClothingStores
+    | MetalServiceCenters
+    | Miscellaneous
+    | MiscellaneousApparelAndAccessoryShops
+    | MiscellaneousAutoDealers
+    | MiscellaneousBusinessServices
+    | MiscellaneousFoodStores
+    | MiscellaneousGeneralMerchandise
+    | MiscellaneousGeneralServices
+    | MiscellaneousHomeFurnishingSpecialtyStores
+    | MiscellaneousPublishingAndPrinting
+    | MiscellaneousRecreationServices
+    | MiscellaneousRepairShops
+    | MiscellaneousSpecialtyRetail
+    | MobileHomeDealers
+    | MotionPictureTheaters
+    | MotorFreightCarriersAndTrucking
+    | MotorHomesDealers
+    | MotorVehicleSuppliesAndNewParts
+    | MotorcycleShopsAndDealers
+    | MotorcycleShopsDealers
+    | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+    | NewsDealersAndNewsstands
+    | NonFiMoneyOrders
+    | NonFiStoredValueCardPurchaseLoad
+    | NondurableGoods
+    | NurseriesLawnAndGardenSupplyStores
+    | NursingPersonalCare
+    | OfficeAndCommercialFurniture
+    | OpticiansEyeglasses
+    | OptometristsOphthalmologist
+    | OrthopedicGoodsProstheticDevices
+    | Osteopaths
+    | PackageStoresBeerWineAndLiquor
+    | PaintsVarnishesAndSupplies
+    | ParkingLotsGarages
+    | PassengerRailways
+    | PawnShops
+    | PetShopsPetFoodAndSupplies
+    | PetroleumAndPetroleumProducts
+    | PhotoDeveloping
+    | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+    | PhotographicStudios
+    | PictureVideoProduction
+    | PieceGoodsNotionsAndOtherDryGoods
+    | PlumbingHeatingEquipmentAndSupplies
+    | PoliticalOrganizations
+    | PostalServicesGovernmentOnly
+    | PreciousStonesAndMetalsWatchesAndJewelry
+    | ProfessionalServices
+    | PublicWarehousingAndStorage
+    | QuickCopyReproAndBlueprint
+    | Railroads
+    | RealEstateAgentsAndManagersRentals
+    | RecordStores
+    | RecreationalVehicleRentals
+    | ReligiousGoodsStores
+    | ReligiousOrganizations
+    | RoofingSidingSheetMetal
+    | SecretarialSupportServices
+    | SecurityBrokersDealers
+    | ServiceStations
+    | SewingNeedleworkFabricAndPieceGoodsStores
+    | ShoeRepairHatCleaning
+    | ShoeStores
+    | SmallApplianceRepair
+    | SnowmobileDealers
+    | SpecialTradeServices
+    | SpecialtyCleaning
+    | SportingGoodsStores
+    | SportingRecreationCamps
+    | SportsAndRidingApparelStores
+    | SportsClubsFields
+    | StampAndCoinStores
+    | StationaryOfficeSuppliesPrintingAndWritingPaper
+    | StationeryStoresOfficeAndSchoolSupplyStores
+    | SwimmingPoolsSales
+    | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
+    | TailorsAlterations
+    | TaxPaymentsGovernmentAgencies
+    | TaxPreparationServices
+    | TaxicabsLimousines
+    | TelecommunicationEquipmentAndTelephoneSales
+    | TelecommunicationServices
+    | TelegraphServices
+    | TentAndAwningShops
+    | TestingLaboratories
+    | TheatricalTicketAgencies
+    | Timeshares
+    | TireRetreadingAndRepair
+    | TollsBridgeFees
+    | TouristAttractionsAndExhibits
+    | TowingServices
+    | TrailerParksCampgrounds
+    | TransportationServices
+    | TravelAgenciesTourOperators
+    | TruckStopIteration
+    | TruckUtilityTrailerRentals
+    | TypesettingPlateMakingAndRelatedServices
+    | TypewriterStores
+    | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
+    | UniformsCommercialClothing
+    | UsedMerchandiseAndSecondhandStores
+    | Utilities
+    | VarietyStores
+    | VeterinaryServices
+    | VideoAmusementGameSupplies
+    | VideoGameArcades
+    | VideoTapeRentalStores
+    | VocationalTradeSchools
+    | WatchJewelryRepair
+    | WeldingRepair
+    | WholesaleClubs
+    | WigAndToupeeStores
+    | WiresMoneyOrders
+    | WomensAccessoryAndSpecialtyShops
+    | WomensReadyToWearStores
+    | WreckingAndSalvageYards
+
+[<Struct>]
+type IssuingCardAuthorizationControlsBlockedCardPresences =
+    | NotPresent
+    | Present
+
+type IssuingCardAuthorizationControlsBlockedCategories =
+    | AcRefrigerationRepair
+    | AccountingBookkeepingServices
+    | AdvertisingServices
+    | AgriculturalCooperative
+    | AirlinesAirCarriers
+    | AirportsFlyingFields
+    | AmbulanceServices
+    | AmusementParksCarnivals
+    | AntiqueReproductions
+    | AntiqueShops
+    | Aquariums
+    | ArchitecturalSurveyingServices
+    | ArtDealersAndGalleries
+    | ArtistsSupplyAndCraftShops
+    | AutoAndHomeSupplyStores
+    | AutoBodyRepairShops
+    | AutoPaintShops
+    | AutoServiceShops
+    | AutomatedCashDisburse
+    | AutomatedFuelDispensers
+    | AutomobileAssociations
+    | AutomotivePartsAndAccessoriesStores
+    | AutomotiveTireStores
+    | BailAndBondPayments
+    | Bakeries
+    | BandsOrchestras
+    | BarberAndBeautyShops
+    | BettingCasinoGambling
+    | BicycleShops
+    | BilliardPoolEstablishments
+    | BoatDealers
+    | BoatRentalsAndLeases
+    | BookStores
+    | BooksPeriodicalsAndNewspapers
+    | BowlingAlleys
+    | BusLines
+    | BusinessSecretarialSchools
+    | BuyingShoppingServices
+    | CableSatelliteAndOtherPayTelevisionAndRadio
+    | CameraAndPhotographicSupplyStores
+    | CandyNutAndConfectioneryStores
+    | CarAndTruckDealersNewUsed
+    | CarAndTruckDealersUsedOnly
+    | CarRentalAgencies
+    | CarWashes
+    | CarpentryServices
+    | CarpetUpholsteryCleaning
+    | Caterers
+    | CharitableAndSocialServiceOrganizationsFundraising
+    | ChemicalsAndAlliedProducts
+    | ChildCareServices
+    | ChildrensAndInfantsWearStores
+    | ChiropodistsPodiatrists
+    | Chiropractors
+    | CigarStoresAndStands
+    | CivicSocialFraternalAssociations
+    | CleaningAndMaintenance
+    | ClothingRental
+    | CollegesUniversities
+    | CommercialEquipment
+    | CommercialFootwear
+    | CommercialPhotographyArtAndGraphics
+    | CommuterTransportAndFerries
+    | ComputerNetworkServices
+    | ComputerProgramming
+    | ComputerRepair
+    | ComputerSoftwareStores
+    | ComputersPeripheralsAndSoftware
+    | ConcreteWorkServices
+    | ConstructionMaterials
+    | ConsultingPublicRelations
+    | CorrespondenceSchools
+    | CosmeticStores
+    | CounselingServices
+    | CountryClubs
+    | CourierServices
+    | CourtCosts
+    | CreditReportingAgencies
+    | CruiseLines
+    | DairyProductsStores
+    | DanceHallStudiosSchools
+    | DatingEscortServices
+    | DentistsOrthodontists
+    | DepartmentStores
+    | DetectiveAgencies
+    | DigitalGoodsApplications
+    | DigitalGoodsGames
+    | DigitalGoodsLargeVolume
+    | DigitalGoodsMedia
+    | DirectMarketingCatalogMerchant
+    | DirectMarketingCombinationCatalogAndRetailMerchant
+    | DirectMarketingInboundTelemarketing
+    | DirectMarketingInsuranceServices
+    | DirectMarketingOther
+    | DirectMarketingOutboundTelemarketing
+    | DirectMarketingSubscription
+    | DirectMarketingTravel
+    | DiscountStores
+    | Doctors
+    | DoorToDoorSales
+    | DraperyWindowCoveringAndUpholsteryStores
+    | DrinkingPlaces
+    | DrugStoresAndPharmacies
+    | DrugsDrugProprietariesAndDruggistSundries
+    | DryCleaners
+    | DurableGoods
+    | DutyFreeStores
+    | EatingPlacesRestaurants
+    | EducationalServices
+    | ElectricRazorStores
+    | ElectricVehicleCharging
+    | ElectricalPartsAndEquipment
+    | ElectricalServices
+    | ElectronicsRepairShops
+    | ElectronicsStores
+    | ElementarySecondarySchools
+    | EmergencyServicesGcasVisaUseOnly
+    | EmploymentTempAgencies
+    | EquipmentRental
+    | ExterminatingServices
+    | FamilyClothingStores
+    | FastFoodRestaurants
+    | FinancialInstitutions
+    | FinesGovernmentAdministrativeEntities
+    | FireplaceFireplaceScreensAndAccessoriesStores
+    | FloorCoveringStores
+    | Florists
+    | FloristsSuppliesNurseryStockAndFlowers
+    | FreezerAndLockerMeatProvisioners
+    | FuelDealersNonAutomotive
+    | FuneralServicesCrematories
+    | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+    | FurnitureRepairRefinishing
+    | FurriersAndFurShops
+    | GeneralServices
+    | GiftCardNoveltyAndSouvenirShops
+    | GlassPaintAndWallpaperStores
+    | GlasswareCrystalStores
+    | GolfCoursesPublic
+    | GovernmentLicensedHorseDogRacingUsRegionOnly
+    | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+    | GovernmentOwnedLotteriesNonUsRegion
+    | GovernmentOwnedLotteriesUsRegionOnly
+    | GovernmentServices
+    | GroceryStoresSupermarkets
+    | HardwareEquipmentAndSupplies
+    | HardwareStores
+    | HealthAndBeautySpas
+    | HearingAidsSalesAndSupplies
+    | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
+    | HobbyToyAndGameShops
+    | HomeSupplyWarehouseStores
+    | Hospitals
+    | HotelsMotelsAndResorts
+    | HouseholdApplianceStores
+    | IndustrialSupplies
+    | InformationRetrievalServices
+    | InsuranceDefault
+    | InsuranceUnderwritingPremiums
+    | IntraCompanyPurchases
+    | JewelryStoresWatchesClocksAndSilverwareStores
+    | LandscapingServices
+    | Laundries
+    | LaundryCleaningServices
+    | LegalServicesAttorneys
+    | LuggageAndLeatherGoodsStores
+    | LumberBuildingMaterialsStores
+    | ManualCashDisburse
+    | MarinasServiceAndSupplies
+    | Marketplaces
+    | MasonryStoneworkAndPlaster
+    | MassageParlors
+    | MedicalAndDentalLabs
+    | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+    | MedicalServices
+    | MembershipOrganizations
+    | MensAndBoysClothingAndAccessoriesStores
+    | MensWomensClothingStores
+    | MetalServiceCenters
+    | Miscellaneous
+    | MiscellaneousApparelAndAccessoryShops
+    | MiscellaneousAutoDealers
+    | MiscellaneousBusinessServices
+    | MiscellaneousFoodStores
+    | MiscellaneousGeneralMerchandise
+    | MiscellaneousGeneralServices
+    | MiscellaneousHomeFurnishingSpecialtyStores
+    | MiscellaneousPublishingAndPrinting
+    | MiscellaneousRecreationServices
+    | MiscellaneousRepairShops
+    | MiscellaneousSpecialtyRetail
+    | MobileHomeDealers
+    | MotionPictureTheaters
+    | MotorFreightCarriersAndTrucking
+    | MotorHomesDealers
+    | MotorVehicleSuppliesAndNewParts
+    | MotorcycleShopsAndDealers
+    | MotorcycleShopsDealers
+    | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+    | NewsDealersAndNewsstands
+    | NonFiMoneyOrders
+    | NonFiStoredValueCardPurchaseLoad
+    | NondurableGoods
+    | NurseriesLawnAndGardenSupplyStores
+    | NursingPersonalCare
+    | OfficeAndCommercialFurniture
+    | OpticiansEyeglasses
+    | OptometristsOphthalmologist
+    | OrthopedicGoodsProstheticDevices
+    | Osteopaths
+    | PackageStoresBeerWineAndLiquor
+    | PaintsVarnishesAndSupplies
+    | ParkingLotsGarages
+    | PassengerRailways
+    | PawnShops
+    | PetShopsPetFoodAndSupplies
+    | PetroleumAndPetroleumProducts
+    | PhotoDeveloping
+    | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+    | PhotographicStudios
+    | PictureVideoProduction
+    | PieceGoodsNotionsAndOtherDryGoods
+    | PlumbingHeatingEquipmentAndSupplies
+    | PoliticalOrganizations
+    | PostalServicesGovernmentOnly
+    | PreciousStonesAndMetalsWatchesAndJewelry
+    | ProfessionalServices
+    | PublicWarehousingAndStorage
+    | QuickCopyReproAndBlueprint
+    | Railroads
+    | RealEstateAgentsAndManagersRentals
+    | RecordStores
+    | RecreationalVehicleRentals
+    | ReligiousGoodsStores
+    | ReligiousOrganizations
+    | RoofingSidingSheetMetal
+    | SecretarialSupportServices
+    | SecurityBrokersDealers
+    | ServiceStations
+    | SewingNeedleworkFabricAndPieceGoodsStores
+    | ShoeRepairHatCleaning
+    | ShoeStores
+    | SmallApplianceRepair
+    | SnowmobileDealers
+    | SpecialTradeServices
+    | SpecialtyCleaning
+    | SportingGoodsStores
+    | SportingRecreationCamps
+    | SportsAndRidingApparelStores
+    | SportsClubsFields
+    | StampAndCoinStores
+    | StationaryOfficeSuppliesPrintingAndWritingPaper
+    | StationeryStoresOfficeAndSchoolSupplyStores
+    | SwimmingPoolsSales
+    | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
+    | TailorsAlterations
+    | TaxPaymentsGovernmentAgencies
+    | TaxPreparationServices
+    | TaxicabsLimousines
+    | TelecommunicationEquipmentAndTelephoneSales
+    | TelecommunicationServices
+    | TelegraphServices
+    | TentAndAwningShops
+    | TestingLaboratories
+    | TheatricalTicketAgencies
+    | Timeshares
+    | TireRetreadingAndRepair
+    | TollsBridgeFees
+    | TouristAttractionsAndExhibits
+    | TowingServices
+    | TrailerParksCampgrounds
+    | TransportationServices
+    | TravelAgenciesTourOperators
+    | TruckStopIteration
+    | TruckUtilityTrailerRentals
+    | TypesettingPlateMakingAndRelatedServices
+    | TypewriterStores
+    | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
+    | UniformsCommercialClothing
+    | UsedMerchandiseAndSecondhandStores
+    | Utilities
+    | VarietyStores
+    | VeterinaryServices
+    | VideoAmusementGameSupplies
+    | VideoGameArcades
+    | VideoTapeRentalStores
+    | VocationalTradeSchools
+    | WatchJewelryRepair
+    | WeldingRepair
+    | WholesaleClubs
+    | WigAndToupeeStores
+    | WiresMoneyOrders
+    | WomensAccessoryAndSpecialtyShops
+    | WomensReadyToWearStores
+    | WreckingAndSalvageYards
+
+type IssuingCardSpendingLimitCategories =
+    | AcRefrigerationRepair
+    | AccountingBookkeepingServices
+    | AdvertisingServices
+    | AgriculturalCooperative
+    | AirlinesAirCarriers
+    | AirportsFlyingFields
+    | AmbulanceServices
+    | AmusementParksCarnivals
+    | AntiqueReproductions
+    | AntiqueShops
+    | Aquariums
+    | ArchitecturalSurveyingServices
+    | ArtDealersAndGalleries
+    | ArtistsSupplyAndCraftShops
+    | AutoAndHomeSupplyStores
+    | AutoBodyRepairShops
+    | AutoPaintShops
+    | AutoServiceShops
+    | AutomatedCashDisburse
+    | AutomatedFuelDispensers
+    | AutomobileAssociations
+    | AutomotivePartsAndAccessoriesStores
+    | AutomotiveTireStores
+    | BailAndBondPayments
+    | Bakeries
+    | BandsOrchestras
+    | BarberAndBeautyShops
+    | BettingCasinoGambling
+    | BicycleShops
+    | BilliardPoolEstablishments
+    | BoatDealers
+    | BoatRentalsAndLeases
+    | BookStores
+    | BooksPeriodicalsAndNewspapers
+    | BowlingAlleys
+    | BusLines
+    | BusinessSecretarialSchools
+    | BuyingShoppingServices
+    | CableSatelliteAndOtherPayTelevisionAndRadio
+    | CameraAndPhotographicSupplyStores
+    | CandyNutAndConfectioneryStores
+    | CarAndTruckDealersNewUsed
+    | CarAndTruckDealersUsedOnly
+    | CarRentalAgencies
+    | CarWashes
+    | CarpentryServices
+    | CarpetUpholsteryCleaning
+    | Caterers
+    | CharitableAndSocialServiceOrganizationsFundraising
+    | ChemicalsAndAlliedProducts
+    | ChildCareServices
+    | ChildrensAndInfantsWearStores
+    | ChiropodistsPodiatrists
+    | Chiropractors
+    | CigarStoresAndStands
+    | CivicSocialFraternalAssociations
+    | CleaningAndMaintenance
+    | ClothingRental
+    | CollegesUniversities
+    | CommercialEquipment
+    | CommercialFootwear
+    | CommercialPhotographyArtAndGraphics
+    | CommuterTransportAndFerries
+    | ComputerNetworkServices
+    | ComputerProgramming
+    | ComputerRepair
+    | ComputerSoftwareStores
+    | ComputersPeripheralsAndSoftware
+    | ConcreteWorkServices
+    | ConstructionMaterials
+    | ConsultingPublicRelations
+    | CorrespondenceSchools
+    | CosmeticStores
+    | CounselingServices
+    | CountryClubs
+    | CourierServices
+    | CourtCosts
+    | CreditReportingAgencies
+    | CruiseLines
+    | DairyProductsStores
+    | DanceHallStudiosSchools
+    | DatingEscortServices
+    | DentistsOrthodontists
+    | DepartmentStores
+    | DetectiveAgencies
+    | DigitalGoodsApplications
+    | DigitalGoodsGames
+    | DigitalGoodsLargeVolume
+    | DigitalGoodsMedia
+    | DirectMarketingCatalogMerchant
+    | DirectMarketingCombinationCatalogAndRetailMerchant
+    | DirectMarketingInboundTelemarketing
+    | DirectMarketingInsuranceServices
+    | DirectMarketingOther
+    | DirectMarketingOutboundTelemarketing
+    | DirectMarketingSubscription
+    | DirectMarketingTravel
+    | DiscountStores
+    | Doctors
+    | DoorToDoorSales
+    | DraperyWindowCoveringAndUpholsteryStores
+    | DrinkingPlaces
+    | DrugStoresAndPharmacies
+    | DrugsDrugProprietariesAndDruggistSundries
+    | DryCleaners
+    | DurableGoods
+    | DutyFreeStores
+    | EatingPlacesRestaurants
+    | EducationalServices
+    | ElectricRazorStores
+    | ElectricVehicleCharging
+    | ElectricalPartsAndEquipment
+    | ElectricalServices
+    | ElectronicsRepairShops
+    | ElectronicsStores
+    | ElementarySecondarySchools
+    | EmergencyServicesGcasVisaUseOnly
+    | EmploymentTempAgencies
+    | EquipmentRental
+    | ExterminatingServices
+    | FamilyClothingStores
+    | FastFoodRestaurants
+    | FinancialInstitutions
+    | FinesGovernmentAdministrativeEntities
+    | FireplaceFireplaceScreensAndAccessoriesStores
+    | FloorCoveringStores
+    | Florists
+    | FloristsSuppliesNurseryStockAndFlowers
+    | FreezerAndLockerMeatProvisioners
+    | FuelDealersNonAutomotive
+    | FuneralServicesCrematories
+    | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+    | FurnitureRepairRefinishing
+    | FurriersAndFurShops
+    | GeneralServices
+    | GiftCardNoveltyAndSouvenirShops
+    | GlassPaintAndWallpaperStores
+    | GlasswareCrystalStores
+    | GolfCoursesPublic
+    | GovernmentLicensedHorseDogRacingUsRegionOnly
+    | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+    | GovernmentOwnedLotteriesNonUsRegion
+    | GovernmentOwnedLotteriesUsRegionOnly
+    | GovernmentServices
+    | GroceryStoresSupermarkets
+    | HardwareEquipmentAndSupplies
+    | HardwareStores
+    | HealthAndBeautySpas
+    | HearingAidsSalesAndSupplies
+    | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
+    | HobbyToyAndGameShops
+    | HomeSupplyWarehouseStores
+    | Hospitals
+    | HotelsMotelsAndResorts
+    | HouseholdApplianceStores
+    | IndustrialSupplies
+    | InformationRetrievalServices
+    | InsuranceDefault
+    | InsuranceUnderwritingPremiums
+    | IntraCompanyPurchases
+    | JewelryStoresWatchesClocksAndSilverwareStores
+    | LandscapingServices
+    | Laundries
+    | LaundryCleaningServices
+    | LegalServicesAttorneys
+    | LuggageAndLeatherGoodsStores
+    | LumberBuildingMaterialsStores
+    | ManualCashDisburse
+    | MarinasServiceAndSupplies
+    | Marketplaces
+    | MasonryStoneworkAndPlaster
+    | MassageParlors
+    | MedicalAndDentalLabs
+    | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+    | MedicalServices
+    | MembershipOrganizations
+    | MensAndBoysClothingAndAccessoriesStores
+    | MensWomensClothingStores
+    | MetalServiceCenters
+    | Miscellaneous
+    | MiscellaneousApparelAndAccessoryShops
+    | MiscellaneousAutoDealers
+    | MiscellaneousBusinessServices
+    | MiscellaneousFoodStores
+    | MiscellaneousGeneralMerchandise
+    | MiscellaneousGeneralServices
+    | MiscellaneousHomeFurnishingSpecialtyStores
+    | MiscellaneousPublishingAndPrinting
+    | MiscellaneousRecreationServices
+    | MiscellaneousRepairShops
+    | MiscellaneousSpecialtyRetail
+    | MobileHomeDealers
+    | MotionPictureTheaters
+    | MotorFreightCarriersAndTrucking
+    | MotorHomesDealers
+    | MotorVehicleSuppliesAndNewParts
+    | MotorcycleShopsAndDealers
+    | MotorcycleShopsDealers
+    | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+    | NewsDealersAndNewsstands
+    | NonFiMoneyOrders
+    | NonFiStoredValueCardPurchaseLoad
+    | NondurableGoods
+    | NurseriesLawnAndGardenSupplyStores
+    | NursingPersonalCare
+    | OfficeAndCommercialFurniture
+    | OpticiansEyeglasses
+    | OptometristsOphthalmologist
+    | OrthopedicGoodsProstheticDevices
+    | Osteopaths
+    | PackageStoresBeerWineAndLiquor
+    | PaintsVarnishesAndSupplies
+    | ParkingLotsGarages
+    | PassengerRailways
+    | PawnShops
+    | PetShopsPetFoodAndSupplies
+    | PetroleumAndPetroleumProducts
+    | PhotoDeveloping
+    | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+    | PhotographicStudios
+    | PictureVideoProduction
+    | PieceGoodsNotionsAndOtherDryGoods
+    | PlumbingHeatingEquipmentAndSupplies
+    | PoliticalOrganizations
+    | PostalServicesGovernmentOnly
+    | PreciousStonesAndMetalsWatchesAndJewelry
+    | ProfessionalServices
+    | PublicWarehousingAndStorage
+    | QuickCopyReproAndBlueprint
+    | Railroads
+    | RealEstateAgentsAndManagersRentals
+    | RecordStores
+    | RecreationalVehicleRentals
+    | ReligiousGoodsStores
+    | ReligiousOrganizations
+    | RoofingSidingSheetMetal
+    | SecretarialSupportServices
+    | SecurityBrokersDealers
+    | ServiceStations
+    | SewingNeedleworkFabricAndPieceGoodsStores
+    | ShoeRepairHatCleaning
+    | ShoeStores
+    | SmallApplianceRepair
+    | SnowmobileDealers
+    | SpecialTradeServices
+    | SpecialtyCleaning
+    | SportingGoodsStores
+    | SportingRecreationCamps
+    | SportsAndRidingApparelStores
+    | SportsClubsFields
+    | StampAndCoinStores
+    | StationaryOfficeSuppliesPrintingAndWritingPaper
+    | StationeryStoresOfficeAndSchoolSupplyStores
+    | SwimmingPoolsSales
+    | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
+    | TailorsAlterations
+    | TaxPaymentsGovernmentAgencies
+    | TaxPreparationServices
+    | TaxicabsLimousines
+    | TelecommunicationEquipmentAndTelephoneSales
+    | TelecommunicationServices
+    | TelegraphServices
+    | TentAndAwningShops
+    | TestingLaboratories
+    | TheatricalTicketAgencies
+    | Timeshares
+    | TireRetreadingAndRepair
+    | TollsBridgeFees
+    | TouristAttractionsAndExhibits
+    | TowingServices
+    | TrailerParksCampgrounds
+    | TransportationServices
+    | TravelAgenciesTourOperators
+    | TruckStopIteration
+    | TruckUtilityTrailerRentals
+    | TypesettingPlateMakingAndRelatedServices
+    | TypewriterStores
+    | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
+    | UniformsCommercialClothing
+    | UsedMerchandiseAndSecondhandStores
+    | Utilities
+    | VarietyStores
+    | VeterinaryServices
+    | VideoAmusementGameSupplies
+    | VideoGameArcades
+    | VideoTapeRentalStores
+    | VocationalTradeSchools
+    | WatchJewelryRepair
+    | WeldingRepair
+    | WholesaleClubs
+    | WigAndToupeeStores
+    | WiresMoneyOrders
+    | WomensAccessoryAndSpecialtyShops
+    | WomensReadyToWearStores
+    | WreckingAndSalvageYards
+
+type IssuingCardSpendingLimitInterval =
+    | AllTime
+    | Daily
+    | Monthly
+    | PerAuthorization
+    | Weekly
+    | Yearly
+
+type IssuingCardSpendingLimit =
+    {
+        /// Maximum amount allowed to spend per interval. This amount is in the card's currency and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
+        Amount: int
+        /// Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
+        Categories: IssuingCardSpendingLimitCategories list option
+        /// Interval (or event) to which the amount applies.
+        Interval: IssuingCardSpendingLimitInterval
+    }
+
+type IssuingCardAuthorizationControls =
+    {
+        /// Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.
+        AllowedCardPresences: IssuingCardAuthorizationControlsAllowedCardPresences list option
+        /// Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
+        AllowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option
+        /// Array of strings containing representing countries from which authorizations will be allowed. Authorizations from merchants in all other countries will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `blocked_merchant_countries`. Provide an empty value to unset this control.
+        AllowedMerchantCountries: string list option
+        /// Array of card presence statuses from which authorizations will be declined. Possible options are `present`, `not_present`. Cannot be set with `allowed_card_presences`. Provide an empty value to unset this control.
+        BlockedCardPresences: IssuingCardAuthorizationControlsBlockedCardPresences list option
+        /// Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
+        BlockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option
+        /// Array of strings containing representing countries from which authorizations will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `allowed_merchant_countries`. Provide an empty value to unset this control.
+        BlockedMerchantCountries: string list option
+        /// Limit spending with amount-based rules that apply across any cards this card replaced (i.e., its `replacement_for` card and _that_ card's `replacement_for` card, up the chain).
+        SpendingLimits: IssuingCardSpendingLimit list option
+        /// Currency of the amounts within `spending_limits`. Always the same as the currency of the card.
+        SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
+    }
+
+[<Struct>]
+type IssuingCardCancellationReason =
+    | DesignRejected
+    | FulfillmentError
+    | Lost
+    | Stolen
+
+[<Struct>]
+type IssuingCardFraudWarningType =
+    | CardTestingExposure
+    | FraudDisputeFiled
+    | ThirdPartyReported
+    | UserIndicatedFraud
+
+type IssuingCardFraudWarning =
+    {
+        /// Timestamp of the most recent fraud warning.
+        StartedAt: DateTime option
+        /// The type of fraud warning that most recently took place on this card. This field updates with every new fraud warning, so the value changes over time. If populated, cancel and reissue the card.
+        Type: IssuingCardFraudWarningType option
+    }
+
+type IssuingCardLifecycleConditions =
+    {
+        /// The card is automatically cancelled when it makes this number of non-zero payment authorizations and transactions. The count includes penny authorizations, but doesn't include non-payment actions, such as authorization advice.
+        PaymentCount: int
+    }
+
+type IssuingCardLifecycleControls =
+    { CancelAfter: IssuingCardLifecycleConditions }
+
+[<Struct>]
+type IssuingCardReplacementReason =
+    | Damaged
+    | Expired
+    | FulfillmentError
+    | Lost
+    | Stolen
+
+[<Struct>]
+type IssuingCardShippingAddressValidationMode =
+    | Disabled
+    | NormalizationOnly
+    | ValidationAndNormalization
+
+[<Struct>]
+type IssuingCardShippingAddressValidationResult =
+    | Indeterminate
+    | LikelyDeliverable
+    | LikelyUndeliverable
+
+type IssuingCardShippingAddressValidation =
+    {
+        /// The address validation capabilities to use.
+        Mode: IssuingCardShippingAddressValidationMode
+        /// The normalized shipping address.
+        NormalizedAddress: Address option
+        /// The validation result for the shipping address.
+        Result: IssuingCardShippingAddressValidationResult option
+    }
+
+[<Struct>]
+type IssuingCardShippingCarrier =
+    | Correos
+    | Dhl
+    | Fedex
+    | RoyalMail
+    | Usps
+
+type IssuingCardShippingCustoms =
+    {
+        /// A registration number used for customs in Europe. See [https://www.gov.uk/eori](https://www.gov.uk/eori) for the UK and [https://ec.europa.eu/taxation_customs/business/customs-procedures-import-and-export/customs-procedures/economic-operators-registration-and-identification-number-eori_en](https://ec.europa.eu/taxation_customs/business/customs-procedures-import-and-export/customs-procedures/economic-operators-registration-and-identification-number-eori_en) for the EU.
+        EoriNumber: string option
+    }
+
+[<Struct>]
+type IssuingCardShippingService =
+    | Express
+    | Priority
+    | Standard
+
+type IssuingCardShippingStatus =
+    | Canceled
+    | Delivered
+    | Failure
+    | Pending
+    | Returned
+    | Shipped
+    | Submitted
+
+[<Struct>]
+type IssuingCardShippingType =
+    | Bulk
+    | Individual
+
+type IssuingCardShipping =
+    {
+        Address: Address
+        /// Address validation details for the shipment.
+        AddressValidation: IssuingCardShippingAddressValidation option
+        /// The name of the business at the shipping address, used on the shipping label to ensure delivery when the card is shipped to a cardholder's workplace.
+        BusinessName: string option
+        /// The delivery company that shipped a card.
+        Carrier: IssuingCardShippingCarrier option
+        /// Additional information that may be required for clearing customs.
+        Customs: IssuingCardShippingCustoms option
+        /// The time the card was reported as delivered. Null for undelivered or untracked shipments, or if Stripe has not recorded a delivery time.
+        DeliveredAt: DateTime option
+        /// A unix timestamp representing a best estimate of when the card will be delivered.
+        Eta: DateTime option
+        /// Recipient name.
+        Name: string
+        /// The phone number of the receiver of the shipment. Our courier partners will use this number to contact you in the event of card delivery issues. For individual shipments to the EU/UK, if this field is empty, we will provide them with the phone number provided when the cardholder was initially created.
+        PhoneNumber: string option
+        /// Whether a signature is required for card delivery. This feature is only supported for US users. Standard shipping service does not support signature on delivery. The default value for standard shipping service is false and for express and priority services is true.
+        RequireSignature: bool option
+        /// Shipment service, such as `standard` or `express`.
+        Service: IssuingCardShippingService
+        /// The time the card was reported as shipped. Null if Stripe has not recorded a shipment time.
+        ShippedAt: DateTime option
+        /// The delivery status of the card.
+        Status: IssuingCardShippingStatus option
+        /// A tracking number for a card shipment.
+        TrackingNumber: string option
+        /// A link to the shipping carrier's site where you can view detailed information about a card shipment.
+        TrackingUrl: string option
+        /// Packaging options.
+        Type: IssuingCardShippingType
+    }
+
+[<Struct>]
+type IssuingCardStatus =
+    | Active
+    | Canceled
+    | Inactive
+
+[<Struct>]
+type IssuingCardType =
+    | Physical
+    | Virtual
+
+[<Struct>]
+type IssuingCardApplePayIneligibleReason =
+    | MissingAgreement
+    | MissingCardholderContact
+    | UnsupportedRegion
+
+type IssuingCardApplePay =
+    {
+        /// Apple Pay Eligibility
+        Eligible: bool
+        /// Reason the card is ineligible for Apple Pay
+        IneligibleReason: IssuingCardApplePayIneligibleReason option
+    }
+
+[<Struct>]
+type IssuingCardGooglePayIneligibleReason =
+    | MissingAgreement
+    | MissingCardholderContact
+    | UnsupportedRegion
+
+type IssuingCardGooglePay =
+    {
+        /// Google Pay Eligibility
+        Eligible: bool
+        /// Reason the card is ineligible for Google Pay
+        IneligibleReason: IssuingCardGooglePayIneligibleReason option
+    }
+
+type IssuingCardWallets =
+    {
+        ApplePay: IssuingCardApplePay
+        GooglePay: IssuingCardGooglePay
+        /// Unique identifier for a card used with digital wallets
+        PrimaryAccountIdentifier: string option
+    }
+
+type IssuingCardholderAddress = { Address: Address }
+
+[<Struct>]
+type IssuingCardholderAuthorizationControlsAllowedCardPresences =
+    | NotPresent
+    | Present
+
+type IssuingCardholderAuthorizationControlsAllowedCategories =
+    | AcRefrigerationRepair
+    | AccountingBookkeepingServices
+    | AdvertisingServices
+    | AgriculturalCooperative
+    | AirlinesAirCarriers
+    | AirportsFlyingFields
+    | AmbulanceServices
+    | AmusementParksCarnivals
+    | AntiqueReproductions
+    | AntiqueShops
+    | Aquariums
+    | ArchitecturalSurveyingServices
+    | ArtDealersAndGalleries
+    | ArtistsSupplyAndCraftShops
+    | AutoAndHomeSupplyStores
+    | AutoBodyRepairShops
+    | AutoPaintShops
+    | AutoServiceShops
+    | AutomatedCashDisburse
+    | AutomatedFuelDispensers
+    | AutomobileAssociations
+    | AutomotivePartsAndAccessoriesStores
+    | AutomotiveTireStores
+    | BailAndBondPayments
+    | Bakeries
+    | BandsOrchestras
+    | BarberAndBeautyShops
+    | BettingCasinoGambling
+    | BicycleShops
+    | BilliardPoolEstablishments
+    | BoatDealers
+    | BoatRentalsAndLeases
+    | BookStores
+    | BooksPeriodicalsAndNewspapers
+    | BowlingAlleys
+    | BusLines
+    | BusinessSecretarialSchools
+    | BuyingShoppingServices
+    | CableSatelliteAndOtherPayTelevisionAndRadio
+    | CameraAndPhotographicSupplyStores
+    | CandyNutAndConfectioneryStores
+    | CarAndTruckDealersNewUsed
+    | CarAndTruckDealersUsedOnly
+    | CarRentalAgencies
+    | CarWashes
+    | CarpentryServices
+    | CarpetUpholsteryCleaning
+    | Caterers
+    | CharitableAndSocialServiceOrganizationsFundraising
+    | ChemicalsAndAlliedProducts
+    | ChildCareServices
+    | ChildrensAndInfantsWearStores
+    | ChiropodistsPodiatrists
+    | Chiropractors
+    | CigarStoresAndStands
+    | CivicSocialFraternalAssociations
+    | CleaningAndMaintenance
+    | ClothingRental
+    | CollegesUniversities
+    | CommercialEquipment
+    | CommercialFootwear
+    | CommercialPhotographyArtAndGraphics
+    | CommuterTransportAndFerries
+    | ComputerNetworkServices
+    | ComputerProgramming
+    | ComputerRepair
+    | ComputerSoftwareStores
+    | ComputersPeripheralsAndSoftware
+    | ConcreteWorkServices
+    | ConstructionMaterials
+    | ConsultingPublicRelations
+    | CorrespondenceSchools
+    | CosmeticStores
+    | CounselingServices
+    | CountryClubs
+    | CourierServices
+    | CourtCosts
+    | CreditReportingAgencies
+    | CruiseLines
+    | DairyProductsStores
+    | DanceHallStudiosSchools
+    | DatingEscortServices
+    | DentistsOrthodontists
+    | DepartmentStores
+    | DetectiveAgencies
+    | DigitalGoodsApplications
+    | DigitalGoodsGames
+    | DigitalGoodsLargeVolume
+    | DigitalGoodsMedia
+    | DirectMarketingCatalogMerchant
+    | DirectMarketingCombinationCatalogAndRetailMerchant
+    | DirectMarketingInboundTelemarketing
+    | DirectMarketingInsuranceServices
+    | DirectMarketingOther
+    | DirectMarketingOutboundTelemarketing
+    | DirectMarketingSubscription
+    | DirectMarketingTravel
+    | DiscountStores
+    | Doctors
+    | DoorToDoorSales
+    | DraperyWindowCoveringAndUpholsteryStores
+    | DrinkingPlaces
+    | DrugStoresAndPharmacies
+    | DrugsDrugProprietariesAndDruggistSundries
+    | DryCleaners
+    | DurableGoods
+    | DutyFreeStores
+    | EatingPlacesRestaurants
+    | EducationalServices
+    | ElectricRazorStores
+    | ElectricVehicleCharging
+    | ElectricalPartsAndEquipment
+    | ElectricalServices
+    | ElectronicsRepairShops
+    | ElectronicsStores
+    | ElementarySecondarySchools
+    | EmergencyServicesGcasVisaUseOnly
+    | EmploymentTempAgencies
+    | EquipmentRental
+    | ExterminatingServices
+    | FamilyClothingStores
+    | FastFoodRestaurants
+    | FinancialInstitutions
+    | FinesGovernmentAdministrativeEntities
+    | FireplaceFireplaceScreensAndAccessoriesStores
+    | FloorCoveringStores
+    | Florists
+    | FloristsSuppliesNurseryStockAndFlowers
+    | FreezerAndLockerMeatProvisioners
+    | FuelDealersNonAutomotive
+    | FuneralServicesCrematories
+    | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+    | FurnitureRepairRefinishing
+    | FurriersAndFurShops
+    | GeneralServices
+    | GiftCardNoveltyAndSouvenirShops
+    | GlassPaintAndWallpaperStores
+    | GlasswareCrystalStores
+    | GolfCoursesPublic
+    | GovernmentLicensedHorseDogRacingUsRegionOnly
+    | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+    | GovernmentOwnedLotteriesNonUsRegion
+    | GovernmentOwnedLotteriesUsRegionOnly
+    | GovernmentServices
+    | GroceryStoresSupermarkets
+    | HardwareEquipmentAndSupplies
+    | HardwareStores
+    | HealthAndBeautySpas
+    | HearingAidsSalesAndSupplies
+    | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
+    | HobbyToyAndGameShops
+    | HomeSupplyWarehouseStores
+    | Hospitals
+    | HotelsMotelsAndResorts
+    | HouseholdApplianceStores
+    | IndustrialSupplies
+    | InformationRetrievalServices
+    | InsuranceDefault
+    | InsuranceUnderwritingPremiums
+    | IntraCompanyPurchases
+    | JewelryStoresWatchesClocksAndSilverwareStores
+    | LandscapingServices
+    | Laundries
+    | LaundryCleaningServices
+    | LegalServicesAttorneys
+    | LuggageAndLeatherGoodsStores
+    | LumberBuildingMaterialsStores
+    | ManualCashDisburse
+    | MarinasServiceAndSupplies
+    | Marketplaces
+    | MasonryStoneworkAndPlaster
+    | MassageParlors
+    | MedicalAndDentalLabs
+    | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+    | MedicalServices
+    | MembershipOrganizations
+    | MensAndBoysClothingAndAccessoriesStores
+    | MensWomensClothingStores
+    | MetalServiceCenters
+    | Miscellaneous
+    | MiscellaneousApparelAndAccessoryShops
+    | MiscellaneousAutoDealers
+    | MiscellaneousBusinessServices
+    | MiscellaneousFoodStores
+    | MiscellaneousGeneralMerchandise
+    | MiscellaneousGeneralServices
+    | MiscellaneousHomeFurnishingSpecialtyStores
+    | MiscellaneousPublishingAndPrinting
+    | MiscellaneousRecreationServices
+    | MiscellaneousRepairShops
+    | MiscellaneousSpecialtyRetail
+    | MobileHomeDealers
+    | MotionPictureTheaters
+    | MotorFreightCarriersAndTrucking
+    | MotorHomesDealers
+    | MotorVehicleSuppliesAndNewParts
+    | MotorcycleShopsAndDealers
+    | MotorcycleShopsDealers
+    | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+    | NewsDealersAndNewsstands
+    | NonFiMoneyOrders
+    | NonFiStoredValueCardPurchaseLoad
+    | NondurableGoods
+    | NurseriesLawnAndGardenSupplyStores
+    | NursingPersonalCare
+    | OfficeAndCommercialFurniture
+    | OpticiansEyeglasses
+    | OptometristsOphthalmologist
+    | OrthopedicGoodsProstheticDevices
+    | Osteopaths
+    | PackageStoresBeerWineAndLiquor
+    | PaintsVarnishesAndSupplies
+    | ParkingLotsGarages
+    | PassengerRailways
+    | PawnShops
+    | PetShopsPetFoodAndSupplies
+    | PetroleumAndPetroleumProducts
+    | PhotoDeveloping
+    | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+    | PhotographicStudios
+    | PictureVideoProduction
+    | PieceGoodsNotionsAndOtherDryGoods
+    | PlumbingHeatingEquipmentAndSupplies
+    | PoliticalOrganizations
+    | PostalServicesGovernmentOnly
+    | PreciousStonesAndMetalsWatchesAndJewelry
+    | ProfessionalServices
+    | PublicWarehousingAndStorage
+    | QuickCopyReproAndBlueprint
+    | Railroads
+    | RealEstateAgentsAndManagersRentals
+    | RecordStores
+    | RecreationalVehicleRentals
+    | ReligiousGoodsStores
+    | ReligiousOrganizations
+    | RoofingSidingSheetMetal
+    | SecretarialSupportServices
+    | SecurityBrokersDealers
+    | ServiceStations
+    | SewingNeedleworkFabricAndPieceGoodsStores
+    | ShoeRepairHatCleaning
+    | ShoeStores
+    | SmallApplianceRepair
+    | SnowmobileDealers
+    | SpecialTradeServices
+    | SpecialtyCleaning
+    | SportingGoodsStores
+    | SportingRecreationCamps
+    | SportsAndRidingApparelStores
+    | SportsClubsFields
+    | StampAndCoinStores
+    | StationaryOfficeSuppliesPrintingAndWritingPaper
+    | StationeryStoresOfficeAndSchoolSupplyStores
+    | SwimmingPoolsSales
+    | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
+    | TailorsAlterations
+    | TaxPaymentsGovernmentAgencies
+    | TaxPreparationServices
+    | TaxicabsLimousines
+    | TelecommunicationEquipmentAndTelephoneSales
+    | TelecommunicationServices
+    | TelegraphServices
+    | TentAndAwningShops
+    | TestingLaboratories
+    | TheatricalTicketAgencies
+    | Timeshares
+    | TireRetreadingAndRepair
+    | TollsBridgeFees
+    | TouristAttractionsAndExhibits
+    | TowingServices
+    | TrailerParksCampgrounds
+    | TransportationServices
+    | TravelAgenciesTourOperators
+    | TruckStopIteration
+    | TruckUtilityTrailerRentals
+    | TypesettingPlateMakingAndRelatedServices
+    | TypewriterStores
+    | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
+    | UniformsCommercialClothing
+    | UsedMerchandiseAndSecondhandStores
+    | Utilities
+    | VarietyStores
+    | VeterinaryServices
+    | VideoAmusementGameSupplies
+    | VideoGameArcades
+    | VideoTapeRentalStores
+    | VocationalTradeSchools
+    | WatchJewelryRepair
+    | WeldingRepair
+    | WholesaleClubs
+    | WigAndToupeeStores
+    | WiresMoneyOrders
+    | WomensAccessoryAndSpecialtyShops
+    | WomensReadyToWearStores
+    | WreckingAndSalvageYards
+
+[<Struct>]
+type IssuingCardholderAuthorizationControlsBlockedCardPresences =
+    | NotPresent
+    | Present
+
+type IssuingCardholderAuthorizationControlsBlockedCategories =
+    | AcRefrigerationRepair
+    | AccountingBookkeepingServices
+    | AdvertisingServices
+    | AgriculturalCooperative
+    | AirlinesAirCarriers
+    | AirportsFlyingFields
+    | AmbulanceServices
+    | AmusementParksCarnivals
+    | AntiqueReproductions
+    | AntiqueShops
+    | Aquariums
+    | ArchitecturalSurveyingServices
+    | ArtDealersAndGalleries
+    | ArtistsSupplyAndCraftShops
+    | AutoAndHomeSupplyStores
+    | AutoBodyRepairShops
+    | AutoPaintShops
+    | AutoServiceShops
+    | AutomatedCashDisburse
+    | AutomatedFuelDispensers
+    | AutomobileAssociations
+    | AutomotivePartsAndAccessoriesStores
+    | AutomotiveTireStores
+    | BailAndBondPayments
+    | Bakeries
+    | BandsOrchestras
+    | BarberAndBeautyShops
+    | BettingCasinoGambling
+    | BicycleShops
+    | BilliardPoolEstablishments
+    | BoatDealers
+    | BoatRentalsAndLeases
+    | BookStores
+    | BooksPeriodicalsAndNewspapers
+    | BowlingAlleys
+    | BusLines
+    | BusinessSecretarialSchools
+    | BuyingShoppingServices
+    | CableSatelliteAndOtherPayTelevisionAndRadio
+    | CameraAndPhotographicSupplyStores
+    | CandyNutAndConfectioneryStores
+    | CarAndTruckDealersNewUsed
+    | CarAndTruckDealersUsedOnly
+    | CarRentalAgencies
+    | CarWashes
+    | CarpentryServices
+    | CarpetUpholsteryCleaning
+    | Caterers
+    | CharitableAndSocialServiceOrganizationsFundraising
+    | ChemicalsAndAlliedProducts
+    | ChildCareServices
+    | ChildrensAndInfantsWearStores
+    | ChiropodistsPodiatrists
+    | Chiropractors
+    | CigarStoresAndStands
+    | CivicSocialFraternalAssociations
+    | CleaningAndMaintenance
+    | ClothingRental
+    | CollegesUniversities
+    | CommercialEquipment
+    | CommercialFootwear
+    | CommercialPhotographyArtAndGraphics
+    | CommuterTransportAndFerries
+    | ComputerNetworkServices
+    | ComputerProgramming
+    | ComputerRepair
+    | ComputerSoftwareStores
+    | ComputersPeripheralsAndSoftware
+    | ConcreteWorkServices
+    | ConstructionMaterials
+    | ConsultingPublicRelations
+    | CorrespondenceSchools
+    | CosmeticStores
+    | CounselingServices
+    | CountryClubs
+    | CourierServices
+    | CourtCosts
+    | CreditReportingAgencies
+    | CruiseLines
+    | DairyProductsStores
+    | DanceHallStudiosSchools
+    | DatingEscortServices
+    | DentistsOrthodontists
+    | DepartmentStores
+    | DetectiveAgencies
+    | DigitalGoodsApplications
+    | DigitalGoodsGames
+    | DigitalGoodsLargeVolume
+    | DigitalGoodsMedia
+    | DirectMarketingCatalogMerchant
+    | DirectMarketingCombinationCatalogAndRetailMerchant
+    | DirectMarketingInboundTelemarketing
+    | DirectMarketingInsuranceServices
+    | DirectMarketingOther
+    | DirectMarketingOutboundTelemarketing
+    | DirectMarketingSubscription
+    | DirectMarketingTravel
+    | DiscountStores
+    | Doctors
+    | DoorToDoorSales
+    | DraperyWindowCoveringAndUpholsteryStores
+    | DrinkingPlaces
+    | DrugStoresAndPharmacies
+    | DrugsDrugProprietariesAndDruggistSundries
+    | DryCleaners
+    | DurableGoods
+    | DutyFreeStores
+    | EatingPlacesRestaurants
+    | EducationalServices
+    | ElectricRazorStores
+    | ElectricVehicleCharging
+    | ElectricalPartsAndEquipment
+    | ElectricalServices
+    | ElectronicsRepairShops
+    | ElectronicsStores
+    | ElementarySecondarySchools
+    | EmergencyServicesGcasVisaUseOnly
+    | EmploymentTempAgencies
+    | EquipmentRental
+    | ExterminatingServices
+    | FamilyClothingStores
+    | FastFoodRestaurants
+    | FinancialInstitutions
+    | FinesGovernmentAdministrativeEntities
+    | FireplaceFireplaceScreensAndAccessoriesStores
+    | FloorCoveringStores
+    | Florists
+    | FloristsSuppliesNurseryStockAndFlowers
+    | FreezerAndLockerMeatProvisioners
+    | FuelDealersNonAutomotive
+    | FuneralServicesCrematories
+    | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+    | FurnitureRepairRefinishing
+    | FurriersAndFurShops
+    | GeneralServices
+    | GiftCardNoveltyAndSouvenirShops
+    | GlassPaintAndWallpaperStores
+    | GlasswareCrystalStores
+    | GolfCoursesPublic
+    | GovernmentLicensedHorseDogRacingUsRegionOnly
+    | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+    | GovernmentOwnedLotteriesNonUsRegion
+    | GovernmentOwnedLotteriesUsRegionOnly
+    | GovernmentServices
+    | GroceryStoresSupermarkets
+    | HardwareEquipmentAndSupplies
+    | HardwareStores
+    | HealthAndBeautySpas
+    | HearingAidsSalesAndSupplies
+    | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
+    | HobbyToyAndGameShops
+    | HomeSupplyWarehouseStores
+    | Hospitals
+    | HotelsMotelsAndResorts
+    | HouseholdApplianceStores
+    | IndustrialSupplies
+    | InformationRetrievalServices
+    | InsuranceDefault
+    | InsuranceUnderwritingPremiums
+    | IntraCompanyPurchases
+    | JewelryStoresWatchesClocksAndSilverwareStores
+    | LandscapingServices
+    | Laundries
+    | LaundryCleaningServices
+    | LegalServicesAttorneys
+    | LuggageAndLeatherGoodsStores
+    | LumberBuildingMaterialsStores
+    | ManualCashDisburse
+    | MarinasServiceAndSupplies
+    | Marketplaces
+    | MasonryStoneworkAndPlaster
+    | MassageParlors
+    | MedicalAndDentalLabs
+    | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+    | MedicalServices
+    | MembershipOrganizations
+    | MensAndBoysClothingAndAccessoriesStores
+    | MensWomensClothingStores
+    | MetalServiceCenters
+    | Miscellaneous
+    | MiscellaneousApparelAndAccessoryShops
+    | MiscellaneousAutoDealers
+    | MiscellaneousBusinessServices
+    | MiscellaneousFoodStores
+    | MiscellaneousGeneralMerchandise
+    | MiscellaneousGeneralServices
+    | MiscellaneousHomeFurnishingSpecialtyStores
+    | MiscellaneousPublishingAndPrinting
+    | MiscellaneousRecreationServices
+    | MiscellaneousRepairShops
+    | MiscellaneousSpecialtyRetail
+    | MobileHomeDealers
+    | MotionPictureTheaters
+    | MotorFreightCarriersAndTrucking
+    | MotorHomesDealers
+    | MotorVehicleSuppliesAndNewParts
+    | MotorcycleShopsAndDealers
+    | MotorcycleShopsDealers
+    | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+    | NewsDealersAndNewsstands
+    | NonFiMoneyOrders
+    | NonFiStoredValueCardPurchaseLoad
+    | NondurableGoods
+    | NurseriesLawnAndGardenSupplyStores
+    | NursingPersonalCare
+    | OfficeAndCommercialFurniture
+    | OpticiansEyeglasses
+    | OptometristsOphthalmologist
+    | OrthopedicGoodsProstheticDevices
+    | Osteopaths
+    | PackageStoresBeerWineAndLiquor
+    | PaintsVarnishesAndSupplies
+    | ParkingLotsGarages
+    | PassengerRailways
+    | PawnShops
+    | PetShopsPetFoodAndSupplies
+    | PetroleumAndPetroleumProducts
+    | PhotoDeveloping
+    | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+    | PhotographicStudios
+    | PictureVideoProduction
+    | PieceGoodsNotionsAndOtherDryGoods
+    | PlumbingHeatingEquipmentAndSupplies
+    | PoliticalOrganizations
+    | PostalServicesGovernmentOnly
+    | PreciousStonesAndMetalsWatchesAndJewelry
+    | ProfessionalServices
+    | PublicWarehousingAndStorage
+    | QuickCopyReproAndBlueprint
+    | Railroads
+    | RealEstateAgentsAndManagersRentals
+    | RecordStores
+    | RecreationalVehicleRentals
+    | ReligiousGoodsStores
+    | ReligiousOrganizations
+    | RoofingSidingSheetMetal
+    | SecretarialSupportServices
+    | SecurityBrokersDealers
+    | ServiceStations
+    | SewingNeedleworkFabricAndPieceGoodsStores
+    | ShoeRepairHatCleaning
+    | ShoeStores
+    | SmallApplianceRepair
+    | SnowmobileDealers
+    | SpecialTradeServices
+    | SpecialtyCleaning
+    | SportingGoodsStores
+    | SportingRecreationCamps
+    | SportsAndRidingApparelStores
+    | SportsClubsFields
+    | StampAndCoinStores
+    | StationaryOfficeSuppliesPrintingAndWritingPaper
+    | StationeryStoresOfficeAndSchoolSupplyStores
+    | SwimmingPoolsSales
+    | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
+    | TailorsAlterations
+    | TaxPaymentsGovernmentAgencies
+    | TaxPreparationServices
+    | TaxicabsLimousines
+    | TelecommunicationEquipmentAndTelephoneSales
+    | TelecommunicationServices
+    | TelegraphServices
+    | TentAndAwningShops
+    | TestingLaboratories
+    | TheatricalTicketAgencies
+    | Timeshares
+    | TireRetreadingAndRepair
+    | TollsBridgeFees
+    | TouristAttractionsAndExhibits
+    | TowingServices
+    | TrailerParksCampgrounds
+    | TransportationServices
+    | TravelAgenciesTourOperators
+    | TruckStopIteration
+    | TruckUtilityTrailerRentals
+    | TypesettingPlateMakingAndRelatedServices
+    | TypewriterStores
+    | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
+    | UniformsCommercialClothing
+    | UsedMerchandiseAndSecondhandStores
+    | Utilities
+    | VarietyStores
+    | VeterinaryServices
+    | VideoAmusementGameSupplies
+    | VideoGameArcades
+    | VideoTapeRentalStores
+    | VocationalTradeSchools
+    | WatchJewelryRepair
+    | WeldingRepair
+    | WholesaleClubs
+    | WigAndToupeeStores
+    | WiresMoneyOrders
+    | WomensAccessoryAndSpecialtyShops
+    | WomensReadyToWearStores
+    | WreckingAndSalvageYards
+
+type IssuingCardholderSpendingLimitCategories =
+    | AcRefrigerationRepair
+    | AccountingBookkeepingServices
+    | AdvertisingServices
+    | AgriculturalCooperative
+    | AirlinesAirCarriers
+    | AirportsFlyingFields
+    | AmbulanceServices
+    | AmusementParksCarnivals
+    | AntiqueReproductions
+    | AntiqueShops
+    | Aquariums
+    | ArchitecturalSurveyingServices
+    | ArtDealersAndGalleries
+    | ArtistsSupplyAndCraftShops
+    | AutoAndHomeSupplyStores
+    | AutoBodyRepairShops
+    | AutoPaintShops
+    | AutoServiceShops
+    | AutomatedCashDisburse
+    | AutomatedFuelDispensers
+    | AutomobileAssociations
+    | AutomotivePartsAndAccessoriesStores
+    | AutomotiveTireStores
+    | BailAndBondPayments
+    | Bakeries
+    | BandsOrchestras
+    | BarberAndBeautyShops
+    | BettingCasinoGambling
+    | BicycleShops
+    | BilliardPoolEstablishments
+    | BoatDealers
+    | BoatRentalsAndLeases
+    | BookStores
+    | BooksPeriodicalsAndNewspapers
+    | BowlingAlleys
+    | BusLines
+    | BusinessSecretarialSchools
+    | BuyingShoppingServices
+    | CableSatelliteAndOtherPayTelevisionAndRadio
+    | CameraAndPhotographicSupplyStores
+    | CandyNutAndConfectioneryStores
+    | CarAndTruckDealersNewUsed
+    | CarAndTruckDealersUsedOnly
+    | CarRentalAgencies
+    | CarWashes
+    | CarpentryServices
+    | CarpetUpholsteryCleaning
+    | Caterers
+    | CharitableAndSocialServiceOrganizationsFundraising
+    | ChemicalsAndAlliedProducts
+    | ChildCareServices
+    | ChildrensAndInfantsWearStores
+    | ChiropodistsPodiatrists
+    | Chiropractors
+    | CigarStoresAndStands
+    | CivicSocialFraternalAssociations
+    | CleaningAndMaintenance
+    | ClothingRental
+    | CollegesUniversities
+    | CommercialEquipment
+    | CommercialFootwear
+    | CommercialPhotographyArtAndGraphics
+    | CommuterTransportAndFerries
+    | ComputerNetworkServices
+    | ComputerProgramming
+    | ComputerRepair
+    | ComputerSoftwareStores
+    | ComputersPeripheralsAndSoftware
+    | ConcreteWorkServices
+    | ConstructionMaterials
+    | ConsultingPublicRelations
+    | CorrespondenceSchools
+    | CosmeticStores
+    | CounselingServices
+    | CountryClubs
+    | CourierServices
+    | CourtCosts
+    | CreditReportingAgencies
+    | CruiseLines
+    | DairyProductsStores
+    | DanceHallStudiosSchools
+    | DatingEscortServices
+    | DentistsOrthodontists
+    | DepartmentStores
+    | DetectiveAgencies
+    | DigitalGoodsApplications
+    | DigitalGoodsGames
+    | DigitalGoodsLargeVolume
+    | DigitalGoodsMedia
+    | DirectMarketingCatalogMerchant
+    | DirectMarketingCombinationCatalogAndRetailMerchant
+    | DirectMarketingInboundTelemarketing
+    | DirectMarketingInsuranceServices
+    | DirectMarketingOther
+    | DirectMarketingOutboundTelemarketing
+    | DirectMarketingSubscription
+    | DirectMarketingTravel
+    | DiscountStores
+    | Doctors
+    | DoorToDoorSales
+    | DraperyWindowCoveringAndUpholsteryStores
+    | DrinkingPlaces
+    | DrugStoresAndPharmacies
+    | DrugsDrugProprietariesAndDruggistSundries
+    | DryCleaners
+    | DurableGoods
+    | DutyFreeStores
+    | EatingPlacesRestaurants
+    | EducationalServices
+    | ElectricRazorStores
+    | ElectricVehicleCharging
+    | ElectricalPartsAndEquipment
+    | ElectricalServices
+    | ElectronicsRepairShops
+    | ElectronicsStores
+    | ElementarySecondarySchools
+    | EmergencyServicesGcasVisaUseOnly
+    | EmploymentTempAgencies
+    | EquipmentRental
+    | ExterminatingServices
+    | FamilyClothingStores
+    | FastFoodRestaurants
+    | FinancialInstitutions
+    | FinesGovernmentAdministrativeEntities
+    | FireplaceFireplaceScreensAndAccessoriesStores
+    | FloorCoveringStores
+    | Florists
+    | FloristsSuppliesNurseryStockAndFlowers
+    | FreezerAndLockerMeatProvisioners
+    | FuelDealersNonAutomotive
+    | FuneralServicesCrematories
+    | FurnitureHomeFurnishingsAndEquipmentStoresExceptAppliances
+    | FurnitureRepairRefinishing
+    | FurriersAndFurShops
+    | GeneralServices
+    | GiftCardNoveltyAndSouvenirShops
+    | GlassPaintAndWallpaperStores
+    | GlasswareCrystalStores
+    | GolfCoursesPublic
+    | GovernmentLicensedHorseDogRacingUsRegionOnly
+    | GovernmentLicensedOnlineCasionsOnlineGamblingUsRegionOnly
+    | GovernmentOwnedLotteriesNonUsRegion
+    | GovernmentOwnedLotteriesUsRegionOnly
+    | GovernmentServices
+    | GroceryStoresSupermarkets
+    | HardwareEquipmentAndSupplies
+    | HardwareStores
+    | HealthAndBeautySpas
+    | HearingAidsSalesAndSupplies
+    | [<JsonPropertyName("heating_plumbing_a_c")>] HeatingPlumbingAC
+    | HobbyToyAndGameShops
+    | HomeSupplyWarehouseStores
+    | Hospitals
+    | HotelsMotelsAndResorts
+    | HouseholdApplianceStores
+    | IndustrialSupplies
+    | InformationRetrievalServices
+    | InsuranceDefault
+    | InsuranceUnderwritingPremiums
+    | IntraCompanyPurchases
+    | JewelryStoresWatchesClocksAndSilverwareStores
+    | LandscapingServices
+    | Laundries
+    | LaundryCleaningServices
+    | LegalServicesAttorneys
+    | LuggageAndLeatherGoodsStores
+    | LumberBuildingMaterialsStores
+    | ManualCashDisburse
+    | MarinasServiceAndSupplies
+    | Marketplaces
+    | MasonryStoneworkAndPlaster
+    | MassageParlors
+    | MedicalAndDentalLabs
+    | MedicalDentalOphthalmicAndHospitalEquipmentAndSupplies
+    | MedicalServices
+    | MembershipOrganizations
+    | MensAndBoysClothingAndAccessoriesStores
+    | MensWomensClothingStores
+    | MetalServiceCenters
+    | Miscellaneous
+    | MiscellaneousApparelAndAccessoryShops
+    | MiscellaneousAutoDealers
+    | MiscellaneousBusinessServices
+    | MiscellaneousFoodStores
+    | MiscellaneousGeneralMerchandise
+    | MiscellaneousGeneralServices
+    | MiscellaneousHomeFurnishingSpecialtyStores
+    | MiscellaneousPublishingAndPrinting
+    | MiscellaneousRecreationServices
+    | MiscellaneousRepairShops
+    | MiscellaneousSpecialtyRetail
+    | MobileHomeDealers
+    | MotionPictureTheaters
+    | MotorFreightCarriersAndTrucking
+    | MotorHomesDealers
+    | MotorVehicleSuppliesAndNewParts
+    | MotorcycleShopsAndDealers
+    | MotorcycleShopsDealers
+    | MusicStoresMusicalInstrumentsPianosAndSheetMusic
+    | NewsDealersAndNewsstands
+    | NonFiMoneyOrders
+    | NonFiStoredValueCardPurchaseLoad
+    | NondurableGoods
+    | NurseriesLawnAndGardenSupplyStores
+    | NursingPersonalCare
+    | OfficeAndCommercialFurniture
+    | OpticiansEyeglasses
+    | OptometristsOphthalmologist
+    | OrthopedicGoodsProstheticDevices
+    | Osteopaths
+    | PackageStoresBeerWineAndLiquor
+    | PaintsVarnishesAndSupplies
+    | ParkingLotsGarages
+    | PassengerRailways
+    | PawnShops
+    | PetShopsPetFoodAndSupplies
+    | PetroleumAndPetroleumProducts
+    | PhotoDeveloping
+    | PhotographicPhotocopyMicrofilmEquipmentAndSupplies
+    | PhotographicStudios
+    | PictureVideoProduction
+    | PieceGoodsNotionsAndOtherDryGoods
+    | PlumbingHeatingEquipmentAndSupplies
+    | PoliticalOrganizations
+    | PostalServicesGovernmentOnly
+    | PreciousStonesAndMetalsWatchesAndJewelry
+    | ProfessionalServices
+    | PublicWarehousingAndStorage
+    | QuickCopyReproAndBlueprint
+    | Railroads
+    | RealEstateAgentsAndManagersRentals
+    | RecordStores
+    | RecreationalVehicleRentals
+    | ReligiousGoodsStores
+    | ReligiousOrganizations
+    | RoofingSidingSheetMetal
+    | SecretarialSupportServices
+    | SecurityBrokersDealers
+    | ServiceStations
+    | SewingNeedleworkFabricAndPieceGoodsStores
+    | ShoeRepairHatCleaning
+    | ShoeStores
+    | SmallApplianceRepair
+    | SnowmobileDealers
+    | SpecialTradeServices
+    | SpecialtyCleaning
+    | SportingGoodsStores
+    | SportingRecreationCamps
+    | SportsAndRidingApparelStores
+    | SportsClubsFields
+    | StampAndCoinStores
+    | StationaryOfficeSuppliesPrintingAndWritingPaper
+    | StationeryStoresOfficeAndSchoolSupplyStores
+    | SwimmingPoolsSales
+    | [<JsonPropertyName("t_ui_travel_germany")>] TUiTravelGermany
+    | TailorsAlterations
+    | TaxPaymentsGovernmentAgencies
+    | TaxPreparationServices
+    | TaxicabsLimousines
+    | TelecommunicationEquipmentAndTelephoneSales
+    | TelecommunicationServices
+    | TelegraphServices
+    | TentAndAwningShops
+    | TestingLaboratories
+    | TheatricalTicketAgencies
+    | Timeshares
+    | TireRetreadingAndRepair
+    | TollsBridgeFees
+    | TouristAttractionsAndExhibits
+    | TowingServices
+    | TrailerParksCampgrounds
+    | TransportationServices
+    | TravelAgenciesTourOperators
+    | TruckStopIteration
+    | TruckUtilityTrailerRentals
+    | TypesettingPlateMakingAndRelatedServices
+    | TypewriterStores
+    | [<JsonPropertyName("u_s_federal_government_agencies_or_departments")>] USFederalGovernmentAgenciesOrDepartments
+    | UniformsCommercialClothing
+    | UsedMerchandiseAndSecondhandStores
+    | Utilities
+    | VarietyStores
+    | VeterinaryServices
+    | VideoAmusementGameSupplies
+    | VideoGameArcades
+    | VideoTapeRentalStores
+    | VocationalTradeSchools
+    | WatchJewelryRepair
+    | WeldingRepair
+    | WholesaleClubs
+    | WigAndToupeeStores
+    | WiresMoneyOrders
+    | WomensAccessoryAndSpecialtyShops
+    | WomensReadyToWearStores
+    | WreckingAndSalvageYards
+
+type IssuingCardholderSpendingLimitInterval =
+    | AllTime
+    | Daily
+    | Monthly
+    | PerAuthorization
+    | Weekly
+    | Yearly
+
+type IssuingCardholderSpendingLimit =
+    {
+        /// Maximum amount allowed to spend per interval. This amount is in the card's currency and in the [smallest currency unit](https://docs.stripe.com/currencies#zero-decimal).
+        Amount: int
+        /// Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) this limit applies to. Omitting this field will apply the limit to all categories.
+        Categories: IssuingCardholderSpendingLimitCategories list option
+        /// Interval (or event) to which the amount applies.
+        Interval: IssuingCardholderSpendingLimitInterval
+    }
+
+type IssuingCardholderAuthorizationControls =
+    {
+        /// Array of card presence statuses from which authorizations will be allowed. Possible options are `present`, `not_present`. All other statuses will be blocked. Cannot be set with `blocked_card_presences`. Provide an empty value to unset this control.
+        AllowedCardPresences: IssuingCardholderAuthorizationControlsAllowedCardPresences list option
+        /// Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to allow. All other categories will be blocked. Cannot be set with `blocked_categories`.
+        AllowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list option
+        /// Array of strings containing representing countries from which authorizations will be allowed. Authorizations from merchants in all other countries will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `blocked_merchant_countries`. Provide an empty value to unset this control.
+        AllowedMerchantCountries: string list option
+        /// Array of card presence statuses from which authorizations will be declined. Possible options are `present`, `not_present`. Cannot be set with `allowed_card_presences`. Provide an empty value to unset this control.
+        BlockedCardPresences: IssuingCardholderAuthorizationControlsBlockedCardPresences list option
+        /// Array of strings containing [categories](https://docs.stripe.com/api#issuing_authorization_object-merchant_data-category) of authorizations to decline. All other categories will be allowed. Cannot be set with `allowed_categories`.
+        BlockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list option
+        /// Array of strings containing representing countries from which authorizations will be declined. Country codes should be ISO 3166 alpha-2 country codes (e.g. `US`). Cannot be set with `allowed_merchant_countries`. Provide an empty value to unset this control.
+        BlockedMerchantCountries: string list option
+        /// Limit spending with amount-based rules that apply across this cardholder's cards.
+        SpendingLimits: IssuingCardholderSpendingLimit list option
+        /// Currency of the amounts within `spending_limits`.
+        SpendingLimitsCurrency: IsoTypes.IsoCurrencyCode option
+    }
+
+type IssuingCardholderCompany =
+    {
+        /// Whether the company's business ID number was provided.
+        TaxIdProvided: bool
+    }
+
+type IssuingCardholderUserTermsAcceptance =
+    {
+        /// The Unix timestamp marking when the cardholder accepted the Authorized User Terms.
+        Date: DateTime option
+        /// The IP address from which the cardholder accepted the Authorized User Terms.
+        Ip: string option
+        /// The user agent of the browser from which the cardholder accepted the Authorized User Terms.
+        UserAgent: string option
+    }
+
+type IssuingCardholderCardIssuing =
+    {
+        /// Information about cardholder acceptance of Celtic [Authorized User Terms](https://docs.stripe.com/issuing/compliance-us#issuing-terms). Required for cards backed by a Celtic program.
+        UserTermsAcceptance: IssuingCardholderUserTermsAcceptance option
+    }
+
+type IssuingCardholderIndividualDob =
+    {
+        /// The day of birth, between 1 and 31.
+        Day: int option
+        /// The month of birth, between 1 and 12.
+        Month: int option
+        /// The four-digit year of birth.
+        Year: int option
+    }
+
+type IssuingCardholderIdDocument =
+    {
+        /// The back of a document returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `identity_document`.
+        Back: StripeId<Markers.File> option
+        /// The front of a document returned by a [file upload](https://docs.stripe.com/api#create_file) with a `purpose` value of `identity_document`.
+        Front: StripeId<Markers.File> option
+    }
+
+type IssuingCardholderVerification =
+    {
+        /// An identifying document, either a passport or local ID card.
+        Document: IssuingCardholderIdDocument option
+    }
+
+type IssuingCardholderIndividual =
+    {
+        /// Information related to the card_issuing program for this cardholder.
+        CardIssuing: IssuingCardholderCardIssuing option
+        /// The date of birth of this cardholder.
+        Dob: IssuingCardholderIndividualDob option
+        /// The first name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters.
+        FirstName: string option
+        /// The last name of this cardholder. Required before activating Cards. This field cannot contain any numbers, special characters (except periods, commas, hyphens, spaces and apostrophes) or non-latin letters.
+        LastName: string option
+        /// Government-issued ID document for this cardholder.
+        Verification: IssuingCardholderVerification option
+    }
+
+[<Struct>]
+type IssuingCardholderPreferredLocales =
+    | De
+    | En
+    | Es
+    | Fr
+    | It
+
+[<Struct>]
+type IssuingCardholderRequirementsDisabledReason =
+    | Listed
+    | [<JsonPropertyName("rejected.listed")>] RejectedListed
+    | [<JsonPropertyName("requirements.past_due")>] RequirementsPastDue
+    | UnderReview
+
+type IssuingCardholderRequirementsPastDue =
+    | [<JsonPropertyName("company.tax_id")>] CompanyTaxId
+    | [<JsonPropertyName("individual.card_issuing.user_terms_acceptance.date")>] IndividualCardIssuingUserTermsAcceptanceDate
+    | [<JsonPropertyName("individual.card_issuing.user_terms_acceptance.ip")>] IndividualCardIssuingUserTermsAcceptanceIp
+    | [<JsonPropertyName("individual.dob.day")>] IndividualDobDay
+    | [<JsonPropertyName("individual.dob.month")>] IndividualDobMonth
+    | [<JsonPropertyName("individual.dob.year")>] IndividualDobYear
+    | [<JsonPropertyName("individual.first_name")>] IndividualFirstName
+    | [<JsonPropertyName("individual.last_name")>] IndividualLastName
+    | [<JsonPropertyName("individual.verification.document")>] IndividualVerificationDocument
+
+type IssuingCardholderRequirements =
+    {
+        /// If `disabled_reason` is present, all cards will decline authorizations with `cardholder_verification_required` reason.
+        DisabledReason: IssuingCardholderRequirementsDisabledReason option
+        /// Array of fields that need to be collected in order to verify and re-enable the cardholder.
+        PastDue: IssuingCardholderRequirementsPastDue list option
+    }
+
+[<Struct>]
+type IssuingCardholderStatus =
+    | Active
+    | Blocked
+    | Inactive
+
+[<Struct>]
+type IssuingCardholderType =
+    | Company
+    | Individual
+
+/// An Issuing `Cardholder` object represents an individual or business entity who is [issued](https://docs.stripe.com/issuing) cards.
+/// Related guide: [How to create a cardholder](https://docs.stripe.com/issuing/cards/virtual/issue-cards#create-cardholder)
+type IssuingCardholder =
+    {
+        Billing: IssuingCardholderAddress
+        /// Additional information about a `company` cardholder.
+        Company: IssuingCardholderCompany option
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// The cardholder's email address.
+        Email: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// Additional information about an `individual` cardholder.
+        Individual: IssuingCardholderIndividual option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// The cardholder's name. This will be printed on cards issued to them.
+        Name: string
+        /// The cardholder's phone number. This is required for all cardholders who will be creating EU cards. See the [3D Secure documentation](https://docs.stripe.com/issuing/3d-secure#when-is-3d-secure-applied) for more details.
+        PhoneNumber: string option
+        /// The cardholder’s preferred locales (languages), ordered by preference. Locales can be `de`, `en`, `es`, `fr`, or `it`.
+        ///  This changes the language of the [3D Secure flow](https://docs.stripe.com/issuing/3d-secure) and one-time password messages sent to the cardholder.
+        PreferredLocales: IssuingCardholderPreferredLocales list option
+        Requirements: IssuingCardholderRequirements
+        /// Rules that control spending across this cardholder's cards. Refer to our [documentation](https://docs.stripe.com/issuing/controls/spending-controls) for more details.
+        SpendingControls: IssuingCardholderAuthorizationControls option
+        /// Specifies whether to permit authorizations on this cardholder's cards.
+        Status: IssuingCardholderStatus
+        /// One of `individual` or `company`. See [Choose a cardholder type](https://docs.stripe.com/issuing/other/choose-cardholder) for more details.
+        Type: IssuingCardholderType
+    }
+
+/// You can [create physical or virtual cards](https://docs.stripe.com/issuing) that are issued to cardholders.
+type IssuingCard =
+    {
+        /// The brand of the card.
+        Brand: string
+        /// The reason why the card was canceled.
+        CancellationReason: IssuingCardCancellationReason option
+        Cardholder: IssuingCardholder
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Supported currencies are `usd` in the US, `eur` in the EU, and `gbp` in the UK.
+        Currency: IsoTypes.IsoCurrencyCode
+        /// The card's CVC. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://docs.stripe.com/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://docs.stripe.com/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
+        Cvc: string option
+        /// The expiration month of the card.
+        ExpMonth: int
+        /// The expiration year of the card.
+        ExpYear: int
+        /// The financial account this card is attached to.
+        FinancialAccount: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// The last 4 digits of the card number.
+        [<JsonPropertyName("last4")>]
+        Last4: string
+        /// Stripe’s assessment of whether this card’s details have been compromised. If this property isn’t null, cancel and reissue the card to reduce the risk of fraudulent activity. Stripe may remove a fraud warning if the cardholder confirms that the activity on the card is legitimate.
+        LatestFraudWarning: IssuingCardFraudWarning option
+        /// Rules that control the lifecycle of this card, such as automatic cancellation. Refer to our [documentation](/issuing/controls/lifecycle-controls) for more details.
+        LifecycleControls: IssuingCardLifecycleControls option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string>
+        /// The full unredacted card number. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://docs.stripe.com/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://docs.stripe.com/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
+        Number: string option
+        /// The personalization design object belonging to this card.
+        PersonalizationDesign: StripeId<Markers.IssuingPersonalizationDesign> option
+        /// The latest card that replaces this card, if any.
+        ReplacedBy: StripeId<Markers.IssuingCard> option
+        /// The card this card replaces, if any.
+        ReplacementFor: StripeId<Markers.IssuingCard> option
+        /// The reason why the previous card needed to be replaced.
+        ReplacementReason: IssuingCardReplacementReason option
+        /// Text separate from cardholder name, printed on the card.
+        SecondLine: string option
+        /// Where and how the card will be shipped.
+        Shipping: IssuingCardShipping option
+        SpendingControls: IssuingCardAuthorizationControls
+        /// Whether authorizations can be approved on this card. May be blocked from activating cards depending on past-due Cardholder requirements. Defaults to `inactive`.
+        Status: IssuingCardStatus
+        /// The type of the card.
+        Type: IssuingCardType
+        /// Information relating to digital wallets (like Apple Pay and Google Pay).
+        Wallets: IssuingCardWallets option
+    }
 
 type IssuingTransactionAmountDetails =
     {
@@ -12682,6 +16176,340 @@ type ChargeSucceeded = { Object: Charge }
 /// Occurs whenever a charge description or metadata is updated, or upon an asynchronous capture.
 type ChargeUpdated = { Object: Charge }
 
+[<Struct>]
+type ConfirmationTokenSetupFutureUsage =
+    | OffSession
+    | OnSession
+
+/// This hash contains details about the online acceptance.
+type ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline =
+    {
+        /// The IP address from which the Mandate was accepted by the customer.
+        IpAddress: string option
+        /// The user agent of the browser from which the Mandate was accepted by the customer.
+        UserAgent: string option
+    }
+
+/// This hash contains details about the customer acceptance of the Mandate.
+type ConfirmationTokensResourceMandateDataResourceCustomerAcceptance =
+    {
+        /// If this is a Mandate accepted online, this hash contains details about the online acceptance.
+        Online: ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline option
+        /// The type of customer acceptance information included with the Mandate.
+        Type: string
+    }
+
+/// Data used for generating a Mandate.
+type ConfirmationTokensResourceMandateData =
+    { CustomerAcceptance: ConfirmationTokensResourceMandateDataResourceCustomerAcceptance }
+
+/// Installment configuration for payments.
+type ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment =
+    { Plan: PaymentMethodDetailsCardInstallmentsPlan option }
+
+/// This hash contains the card payment method options.
+type ConfirmationTokensResourcePaymentMethodOptionsResourceCard =
+    {
+        /// The `cvc_update` Token collected from the Payment Element.
+        CvcToken: string option
+        Installments: ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment option
+    }
+
+/// Payment-method-specific configuration
+type ConfirmationTokensResourcePaymentMethodOptions =
+    {
+        /// This hash contains the card payment method options.
+        Card: ConfirmationTokensResourcePaymentMethodOptionsResourceCard option
+    }
+
+type ConfirmationTokenPaymentMethodPreviewCardBrand =
+    | Amex
+    | CartesBancaires
+    | Diners
+    | Discover
+    | EftposAu
+    | Jcb
+    | Link
+    | Mastercard
+    | Unionpay
+    | Visa
+    | Unknown
+
+[<Struct>]
+type ConfirmationTokenPaymentMethodPreviewCardFunding =
+    | Credit
+    | Debit
+    | Prepaid
+    | Unknown
+
+[<Struct>]
+type ConfirmationTokenPaymentMethodPreviewCardRegulatedStatus =
+    | Regulated
+    | Unregulated
+
+type ConfirmationTokenPaymentMethodPreviewCardWalletLink =
+    { ConfirmationTokenPaymentMethodPreviewCardWalletLink: string option }
+
+type ConfirmationTokenPaymentMethodPreviewCardWalletType =
+    | AmexExpressCheckout
+    | ApplePay
+    | GooglePay
+    | Link
+    | Masterpass
+    | SamsungPay
+    | VisaCheckout
+
+type ConfirmationTokenPaymentMethodPreviewCardWallet =
+    {
+        AmexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout option
+        ApplePay: PaymentMethodCardWalletApplePay option
+        /// (For tokenized numbers only.) The last four digits of the device account number.
+        [<JsonPropertyName("dynamic_last4")>]
+        DynamicLast4: string option
+        GooglePay: PaymentMethodCardWalletGooglePay option
+        Link: ConfirmationTokenPaymentMethodPreviewCardWalletLink option
+        Masterpass: PaymentMethodCardWalletMasterpass option
+        SamsungPay: PaymentMethodCardWalletSamsungPay option
+        /// The type of the card wallet, one of `amex_express_checkout`, `apple_pay`, `google_pay`, `masterpass`, `samsung_pay`, `visa_checkout`, or `link`. An additional hash is included on the Wallet subhash with a name matching this value. It contains additional information specific to the card wallet type.
+        Type: ConfirmationTokenPaymentMethodPreviewCardWalletType
+        VisaCheckout: PaymentMethodCardWalletVisaCheckout option
+    }
+
+type ConfirmationTokenPaymentMethodPreviewCard =
+    {
+        /// Card brand. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `eftpos_au`, `jcb`, `link`, `mastercard`, `unionpay`, `visa` or `unknown`.
+        Brand: ConfirmationTokenPaymentMethodPreviewCardBrand
+        /// Checks on Card address and CVC if provided.
+        Checks: PaymentMethodCardChecks option
+        /// Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
+        Country: IsoTypes.IsoCountryCode option
+        /// A high-level description of the type of cards issued in this range. (For internal use only and not typically available in standard API requests.)
+        Description: string option
+        /// The brand to use when displaying the card, this accounts for customer's brand choice on dual-branded cards. Can be `american_express`, `cartes_bancaires`, `diners_club`, `discover`, `eftpos_australia`, `interac`, `jcb`, `mastercard`, `union_pay`, `visa`, or `other` and may contain more values in the future.
+        DisplayBrand: string option
+        /// Two-digit number representing the card's expiration month.
+        ExpMonth: int
+        /// Four-digit number representing the card's expiration year.
+        ExpYear: int
+        /// Uniquely identifies this particular card number. You can use this attribute to check whether two customers who’ve signed up with you are using the same card number, for example. For payment methods that tokenize card information (Apple Pay, Google Pay), the tokenized number might be provided instead of the underlying card number.
+        /// *As of May 1, 2021, card fingerprint in India for Connect changed to allow two fingerprints for the same card---one for India and one for the rest of the world.*
+        Fingerprint: string option
+        /// Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
+        Funding: ConfirmationTokenPaymentMethodPreviewCardFunding
+        /// Details of the original PaymentMethod that created this object.
+        GeneratedFrom: PaymentMethodCardGeneratedCard option
+        /// Issuer identification number of the card. (For internal use only and not typically available in standard API requests.)
+        Iin: string option
+        /// The name of the card's issuing bank. (For internal use only and not typically available in standard API requests.)
+        Issuer: string option
+        /// The last four digits of the card.
+        [<JsonPropertyName("last4")>]
+        Last4: string
+        /// Contains information about card networks that can be used to process the payment.
+        Networks: Networks option
+        /// Status of a card based on the card issuer.
+        RegulatedStatus: ConfirmationTokenPaymentMethodPreviewCardRegulatedStatus option
+        /// Contains details on how this Card may be used for 3D Secure authentication.
+        ThreeDSecureUsage: ThreeDSecureUsage option
+        /// If this Card is part of a card wallet, this contains the details of the card wallet.
+        Wallet: ConfirmationTokenPaymentMethodPreviewCardWallet option
+    }
+
+type ConfirmationTokenPaymentMethodPreviewLink =
+    {
+        /// Account owner's email address.
+        Email: string option
+        /// [Deprecated] This is a legacy parameter that no longer has any function.
+        PersistentToken: string option
+    }
+
+[<Struct>]
+type ConfirmationTokensResourcePaymentMethodPreviewAllowRedisplay =
+    | Always
+    | Limited
+    | Unspecified
+
+type ConfirmationTokensResourcePaymentMethodPreviewType =
+    | AcssDebit
+    | Affirm
+    | AfterpayClearpay
+    | Alipay
+    | Alma
+    | AmazonPay
+    | AuBecsDebit
+    | BacsDebit
+    | Bancontact
+    | Billie
+    | Bizum
+    | Blik
+    | Boleto
+    | Card
+    | CardPresent
+    | Cashapp
+    | Crypto
+    | Custom
+    | CustomerBalance
+    | Eps
+    | Fpx
+    | Giropay
+    | Grabpay
+    | Ideal
+    | InteracPresent
+    | KakaoPay
+    | Klarna
+    | Konbini
+    | KrCard
+    | Link
+    | MbWay
+    | Mobilepay
+    | Multibanco
+    | NaverPay
+    | NzBankAccount
+    | Oxxo
+    | [<JsonPropertyName("p24")>] P24
+    | PayByBank
+    | Payco
+    | Paynow
+    | Paypal
+    | Paypay
+    | Payto
+    | Pix
+    | Promptpay
+    | RevolutPay
+    | SamsungPay
+    | Satispay
+    | Scalapay
+    | SepaDebit
+    | Sequra
+    | Sofort
+    | Sunbit
+    | Swish
+    | Twint
+    | Upi
+    | UsBankAccount
+    | WechatPay
+    | Zip
+
+/// Details of the PaymentMethod collected by Payment Element
+type ConfirmationTokensResourcePaymentMethodPreview =
+    {
+        AcssDebit: PaymentMethodAcssDebit option
+        Affirm: PaymentMethodAffirm option
+        AfterpayClearpay: PaymentMethodAfterpayClearpay option
+        Alipay: PaymentFlowsPrivatePaymentMethodsAlipay option
+        /// This field indicates whether this payment method can be shown again to its customer in a checkout flow. Stripe products such as Checkout and Elements use this field to determine whether a payment method can be shown as a saved payment method in a checkout flow. The field defaults to “unspecified”.
+        AllowRedisplay: ConfirmationTokensResourcePaymentMethodPreviewAllowRedisplay option
+        Alma: PaymentMethodAlma option
+        AmazonPay: PaymentMethodAmazonPay option
+        AuBecsDebit: PaymentMethodAuBecsDebit option
+        BacsDebit: PaymentMethodBacsDebit option
+        Bancontact: PaymentMethodBancontact option
+        Billie: PaymentMethodBillie option
+        BillingDetails: BillingDetails
+        Bizum: PaymentMethodBizum option
+        Blik: PaymentMethodBlik option
+        Boleto: PaymentMethodBoleto option
+        Card: ConfirmationTokenPaymentMethodPreviewCard option
+        CardPresent: PaymentMethodCardPresent option
+        Cashapp: PaymentMethodCashapp option
+        Crypto: PaymentMethodCrypto option
+        /// The ID of the Customer to which this PaymentMethod is saved. This will not be set when the PaymentMethod has not been saved to a Customer.
+        Customer: StripeId<Markers.Customer> option
+        CustomerAccount: string option
+        CustomerBalance: PaymentMethodCustomerBalance option
+        Eps: PaymentMethodEps option
+        Fpx: PaymentMethodFpx option
+        Giropay: PaymentMethodGiropay option
+        Grabpay: PaymentMethodGrabpay option
+        Ideal: PaymentMethodIdeal option
+        InteracPresent: PaymentMethodInteracPresent option
+        KakaoPay: PaymentMethodKakaoPay option
+        Klarna: PaymentMethodKlarna option
+        Konbini: PaymentMethodKonbini option
+        KrCard: PaymentMethodKrCard option
+        Link: ConfirmationTokenPaymentMethodPreviewLink option
+        MbWay: PaymentMethodMbWay option
+        Mobilepay: PaymentMethodMobilepay option
+        Multibanco: PaymentMethodMultibanco option
+        NaverPay: PaymentMethodNaverPay option
+        NzBankAccount: PaymentMethodNzBankAccount option
+        Oxxo: PaymentMethodOxxo option
+        [<JsonPropertyName("p24")>]
+        P24: PaymentMethodP24 option
+        PayByBank: PaymentMethodPayByBank option
+        Payco: PaymentMethodPayco option
+        Paynow: PaymentMethodPaynow option
+        Paypal: PaymentMethodPaypal option
+        Paypay: PaymentMethodPaypay option
+        Payto: PaymentMethodPayto option
+        Pix: PaymentMethodPix option
+        Promptpay: PaymentMethodPromptpay option
+        RevolutPay: PaymentMethodRevolutPay option
+        SamsungPay: PaymentMethodSamsungPay option
+        Satispay: PaymentMethodSatispay option
+        Scalapay: PaymentMethodScalapay option
+        SepaDebit: PaymentMethodSepaDebit option
+        Sequra: PaymentMethodSequra option
+        Sofort: PaymentMethodSofort option
+        Sunbit: PaymentMethodSunbit option
+        Swish: PaymentMethodSwish option
+        Twint: PaymentMethodTwint option
+        /// The type of the PaymentMethod. An additional hash is included on the PaymentMethod with a name matching this value. It contains additional information specific to the PaymentMethod type.
+        Type: ConfirmationTokensResourcePaymentMethodPreviewType
+        Upi: PaymentMethodUpi option
+        UsBankAccount: PaymentMethodUsBankAccount option
+        WechatPay: PaymentMethodWechatPay option
+        Zip: PaymentMethodZip option
+    }
+
+type ConfirmationTokensResourceShipping =
+    {
+        Address: Address
+        /// Recipient name.
+        Name: string
+        /// Recipient phone (including extension).
+        Phone: string option
+    }
+
+/// ConfirmationTokens help transport client side data collected by Stripe JS over
+/// to your server for confirming a PaymentIntent or SetupIntent. If the confirmation
+/// is successful, values present on the ConfirmationToken are written onto the Intent.
+/// To learn more about how to use ConfirmationToken, visit the related guides:
+/// - [Finalize payments on the server](https://docs.stripe.com/payments/finalize-payments-on-the-server)
+/// - [Build two-step confirmation](https://docs.stripe.com/payments/build-a-two-step-confirmation).
+type ConfirmationToken =
+    {
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Time at which this ConfirmationToken expires and can no longer be used to confirm a PaymentIntent or SetupIntent.
+        ExpiresAt: DateTime option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Data used for generating a Mandate.
+        MandateData: ConfirmationTokensResourceMandateData option
+        /// Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// ID of the PaymentIntent that this ConfirmationToken was used to confirm, or null if this ConfirmationToken has not yet been used.
+        PaymentIntent: string option
+        /// Payment-method-specific configuration for this ConfirmationToken.
+        PaymentMethodOptions: ConfirmationTokensResourcePaymentMethodOptions option
+        /// Payment details collected by the Payment Element, used to create a PaymentMethod when a PaymentIntent or SetupIntent is confirmed with this ConfirmationToken.
+        PaymentMethodPreview: ConfirmationTokensResourcePaymentMethodPreview option
+        /// Return URL used to confirm the Intent.
+        ReturnUrl: string option
+        /// Indicates that you intend to make future payments with this ConfirmationToken's payment method.
+        /// The presence of this property will [attach the payment method](https://docs.stripe.com/payments/save-during-payment) to the PaymentIntent's Customer, if present, after the PaymentIntent is confirmed and any required actions from the user are complete.
+        SetupFutureUsage: ConfirmationTokenSetupFutureUsage option
+        /// ID of the SetupIntent that this ConfirmationToken was used to confirm, or null if this ConfirmationToken has not yet been used.
+        SetupIntent: string option
+        /// Shipping information collected on this ConfirmationToken.
+        Shipping: ConfirmationTokensResourceShipping option
+        /// Indicates whether the Stripe SDK is used to handle confirmation flow. Defaults to `true` on ConfirmationToken.
+        UseStripeSdk: bool
+    }
+
 type ConnectEmbeddedAccountFeaturesClaim =
     {
         /// Whether Stripe user authentication is disabled. This value can only be `true` for accounts where `controller.requirement_collection` is `application` for the account. The default value is the opposite of the `external_account_collection` value. For example, if you don't set `external_account_collection`, it defaults to `true` and `disable_stripe_user_authentication` defaults to `false`.
@@ -12824,6 +16652,21 @@ type ConnectEmbeddedIssuingCardsListConfigClaim =
         Features: ConnectEmbeddedIssuingCardsListFeatures
     }
 
+type ConnectEmbeddedNotificationBannerFeatures =
+    {
+        /// Whether Stripe user authentication is disabled. This value can only be `true` for accounts where `controller.requirement_collection` is `application` for the account. The default value is the opposite of the `external_account_collection` value. For example, if you don't set `external_account_collection`, it defaults to `true` and `disable_stripe_user_authentication` defaults to `false`.
+        DisableStripeUserAuthentication: bool
+        /// Whether external account collection is enabled. This feature can only be `false` for accounts where you’re responsible for collecting updated information when requirements are due or change, like Custom accounts. The default value for this feature is `true`.
+        ExternalAccountCollection: bool
+    }
+
+type ConnectEmbeddedNotificationBannerConfig =
+    {
+        /// Whether the embedded component is enabled.
+        Enabled: bool
+        Features: ConnectEmbeddedNotificationBannerFeatures
+    }
+
 type ConnectEmbeddedPaymentDisputesFeatures =
     {
         /// Whether connected accounts can manage destination charges that are created on behalf of them. This is `false` by default.
@@ -12910,7 +16753,7 @@ type ConnectEmbeddedAccountSessionCreateComponents =
       InstantPayoutsPromotion: ConnectEmbeddedInstantPayoutsPromotionConfig
       IssuingCard: ConnectEmbeddedIssuingCardConfigClaim
       IssuingCardsList: ConnectEmbeddedIssuingCardsListConfigClaim
-      NotificationBanner: ConnectEmbeddedAccountConfigClaim
+      NotificationBanner: ConnectEmbeddedNotificationBannerConfig
       PaymentDetails: ConnectEmbeddedPaymentsConfigClaim
       PaymentDisputes: ConnectEmbeddedPaymentDisputesConfig
       PaymentMethodSettings: ConnectEmbeddedPaymentMethodSettingsConfigClaim
@@ -13127,6 +16970,22 @@ type DeletedInvoice =
     }
 
 type DeletedPerson =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedPlan =
+    {
+        /// Always true for a deleted object
+        Deleted: bool
+        /// Unique identifier for the object.
+        Id: string
+    }
+
+type DeletedPrice =
     {
         /// Always true for a deleted object
         Deleted: bool
@@ -13483,6 +17342,38 @@ type FinancialConnectionsTransaction =
         Updated: DateTime
     }
 
+[<Struct>]
+type FundingInstructionsBankTransferType =
+    | EuBankTransfer
+    | JpBankTransfer
+    | GbBankTransfer
+    | MxBankTransfer
+    | UsBankTransfer
+
+type FundingInstructionsBankTransfer =
+    {
+        /// The country of the bank account to fund
+        Country: IsoTypes.IsoCountryCode
+        /// A list of financial addresses that can be used to fund a particular balance
+        FinancialAddresses: FundingInstructionsBankTransferFinancialAddress list
+        /// The bank_transfer type
+        Type: FundingInstructionsBankTransferType
+    }
+
+/// Each customer has a [`balance`](https://docs.stripe.com/api/customers/object#customer_object-balance) that is
+/// automatically applied to future invoices and payments using the `customer_balance` payment method.
+/// Customers can fund this balance by initiating a bank transfer to any account in the
+/// `financial_addresses` field.
+/// Related guide: [Customer balance funding instructions](https://docs.stripe.com/payments/customer-balance/funding-instructions)
+type FundingInstructions =
+    {
+        BankTransfer: FundingInstructionsBankTransfer
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+    }
+
 type InvoiceAccountTaxIds'AnyOf =
     | String of string
     | TaxId of TaxId
@@ -13755,6 +17646,9 @@ type InvoicePaymentMethodOptionsPix =
 
 type InvoicePaymentMethodOptionsSepaDebit =
     { InvoicePaymentMethodOptionsSepaDebit: string option }
+
+type InvoicePaymentMethodOptionsUpi =
+    { MandateOptions: InvoicePaymentMethodOptionsMandateOptionsUpi option }
 
 type InvoicesPaymentMethodOptions =
     {
@@ -14474,6 +18368,18 @@ type IssuingAuthorizationCreated = { Object: IssuingAuthorization }
 
 /// Occurs whenever an authorization is updated. For verification authorizations, this event is only accessible via private preview.
 type IssuingAuthorizationUpdated = { Object: IssuingAuthorization }
+
+/// Occurs whenever a card is created.
+type IssuingCardCreated = { Object: IssuingCard }
+
+/// Occurs whenever a card is updated.
+type IssuingCardUpdated = { Object: IssuingCard }
+
+/// Occurs whenever a cardholder is created.
+type IssuingCardholderCreated = { Object: IssuingCardholder }
+
+/// Occurs whenever a cardholder is updated.
+type IssuingCardholderUpdated = { Object: IssuingCardholder }
 
 /// Occurs whenever a dispute is won, lost or expired.
 type IssuingDisputeClosed = { Object: IssuingDispute }
@@ -15774,7 +19680,10 @@ type PaymentMethodDetailsPaymentRecordPaynow =
     }
 
 type PaymentMethodDetailsPaymentRecordPaypay =
-    { PaymentMethodDetailsPaymentRecordPaypay: string option }
+    {
+        /// Uniquely identifies this particular PayPay account. You can use this attribute to check whether two PayPay accounts are the same.
+        Fingerprint: string option
+    }
 
 type PaymentMethodDetailsPaymentRecordPayto =
     {
@@ -16044,6 +19953,11 @@ type PaymentPagesCheckoutSessionAfterExpiration =
     }
 
 [<Struct>]
+type PaymentPagesCheckoutSessionAutomaticTaxAddressCollectionPrecision =
+    | Full
+    | Minimal
+
+[<Struct>]
 type PaymentPagesCheckoutSessionAutomaticTaxStatus =
     | Complete
     | Failed
@@ -16051,6 +19965,8 @@ type PaymentPagesCheckoutSessionAutomaticTaxStatus =
 
 type PaymentPagesCheckoutSessionAutomaticTax =
     {
+        /// Controls how much address information Checkout collects when automatic tax is enabled.
+        AddressCollectionPrecision: PaymentPagesCheckoutSessionAutomaticTaxAddressCollectionPrecision option
         /// Indicates whether automatic tax is enabled for the session
         Enabled: bool
         /// The account that's liable for tax. If set, the business address and tax registrations required to perform the tax calculation are loaded from this account. The tax transaction is returned in the report of the connected account.
@@ -17016,7 +20932,7 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChe
         [<JsonPropertyName("address_line1_check")>]
         AddressLine1Check:
             PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksAddressLine1Check option
-        /// If you provide a address postal code, the check result is one of `pass`, `fail`, `unavailable`, or `unchecked`.
+        /// If you provide an address postal code, the check result is one of `pass`, `fail`, `unavailable`, or `unchecked`.
         AddressPostalCodeCheck:
             PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecksAddressPostalCodeCheck option
         /// If you provide a CVC, the check results is one of `pass`, `fail`, `unavailable`, or `unchecked`.
@@ -17357,6 +21273,33 @@ type PersonDeleted = { Object: Person }
 /// Occurs whenever a person associated with an account is updated.
 type PersonUpdated = { Object: Person }
 
+/// Occurs whenever a plan is created.
+type PlanCreated = { Object: Plan }
+
+/// Occurs whenever a plan is deleted.
+type PlanDeleted = { Object: Plan }
+
+/// Occurs whenever a plan is updated.
+type PlanUpdated = { Object: Plan }
+
+/// Occurs whenever a price is created.
+type PriceCreated = { Object: Price }
+
+/// Occurs whenever a price is deleted.
+type PriceDeleted = { Object: Price }
+
+/// Occurs whenever a price is updated.
+type PriceUpdated = { Object: Price }
+
+/// Occurs whenever a product is created.
+type ProductCreated = { Object: Product }
+
+/// Occurs whenever a product is deleted.
+type ProductDeleted = { Object: Product }
+
+/// Occurs whenever a product is updated.
+type ProductUpdated = { Object: Product }
+
 /// Occurs whenever a refund is created.
 type RefundCreated = { Object: Refund }
 
@@ -17606,6 +21549,1096 @@ type SubscriptionSchedulesResourcePauseSchedule =
         Resume: SubscriptionSchedulesResourcePauseScheduleResume option
     }
 
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted =
+    {
+        /// The [Tax Transaction](https://docs.stripe.com/api/tax/transaction/object)
+        Transaction: string
+    }
+
+[<Struct>]
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason =
+    | AnotherPaymentAssociatedWithCalculation
+    | CalculationExpired
+    | CurrencyMismatch
+    | OriginalTransactionVoided
+    | UniqueReferenceViolation
+
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored =
+    {
+        /// Details on why we couldn't commit the tax transaction.
+        Reason: TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason
+    }
+
+[<Struct>]
+type TaxProductResourceTaxAssociationTransactionAttemptsStatus =
+    | Errored
+    | Committed
+
+type TaxProductResourceTaxAssociationTransactionAttempts =
+    {
+        Committed: TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted option
+        Errored: TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored option
+        /// The source of the tax transaction attempt. This is either a refund or a payment intent.
+        Source: string
+        /// The status of the transaction attempt. This can be `errored` or `committed`.
+        Status: TaxProductResourceTaxAssociationTransactionAttemptsStatus
+    }
+
+/// A Tax Association exposes the Tax Transactions that Stripe attempted to create on your behalf based on the PaymentIntent input
+type TaxAssociation =
+    {
+        /// The [Tax Calculation](https://docs.stripe.com/api/tax/calculations/object) that was included in PaymentIntent.
+        Calculation: string
+        /// Unique identifier for the object.
+        Id: string
+        /// The [PaymentIntent](https://docs.stripe.com/api/payment_intents/object) that this Tax Association is tracking.
+        PaymentIntent: string
+        /// Information about the tax transactions linked to this payment intent
+        TaxTransactionAttempts: TaxProductResourceTaxAssociationTransactionAttempts list option
+    }
+
+[<Struct>]
+type TaxCalculationLineItemTaxBehavior =
+    | Exclusive
+    | Inclusive
+
+[<Struct>]
+type TaxProductResourceJurisdictionLevel =
+    | City
+    | Country
+    | County
+    | District
+    | State
+
+type TaxProductResourceJurisdiction =
+    {
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode
+        /// A human-readable name for the jurisdiction imposing the tax.
+        DisplayName: string
+        /// Indicates the level of the jurisdiction imposing the tax.
+        Level: TaxProductResourceJurisdictionLevel
+        /// [ISO 3166-2 subdivision code](https://en.wikipedia.org/wiki/ISO_3166-2), without country prefix. For example, "NY" for New York, United States.
+        State: string option
+    }
+
+[<Struct>]
+type TaxProductResourceLineItemTaxBreakdownSourcing =
+    | Destination
+    | Origin
+    | Performance
+
+type TaxProductResourceLineItemTaxBreakdownTaxabilityReason =
+    | CustomerExempt
+    | NotCollecting
+    | NotSubjectToTax
+    | NotSupported
+    | PortionProductExempt
+    | PortionReducedRated
+    | PortionStandardRated
+    | ProductExempt
+    | ProductExemptHoliday
+    | ProportionallyRated
+    | ReducedRated
+    | ReverseCharge
+    | StandardRated
+    | TaxableBasisReduced
+    | ZeroRated
+
+type TaxProductResourceLineItemTaxRateDetailsTaxType =
+    | AdmissionsTax
+    | AmusementTax
+    | AttendanceTax
+    | CommunicationsTax
+    | DigitalExciseTax
+    | EntertainmentTax
+    | GetFund
+    | GrossReceiptsTax
+    | Gst
+    | HospitalityTax
+    | Hst
+    | Igst
+    | Jct
+    | LeaseTax
+    | LuxuryTax
+    | MassTransitParkingTax
+    | Nhil
+    | ParkingTax
+    | Pst
+    | Qst
+    | RecyclingFee
+    | ResortTax
+    | RetailDeliveryFee
+    | Rst
+    | SalesTax
+    | ServiceTax
+    | TourismTax
+    | UtilityUsersTax
+    | Vat
+
+type TaxProductResourceLineItemTaxRateDetails =
+    {
+        /// A localized display name for tax type, intended to be human-readable. For example, "Local Sales and Use Tax", "Value-added tax (VAT)", or "Umsatzsteuer (USt.)".
+        DisplayName: string
+        /// The tax rate percentage as a string. For example, 8.5% is represented as "8.5".
+        PercentageDecimal: string
+        /// The tax type, such as `vat` or `sales_tax`.
+        TaxType: TaxProductResourceLineItemTaxRateDetailsTaxType
+    }
+
+type TaxProductResourceLineItemTaxBreakdown =
+    {
+        /// The amount of tax, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        Amount: int
+        Jurisdiction: TaxProductResourceJurisdiction
+        /// Indicates whether the jurisdiction was determined by the origin (merchant's address) or destination (customer's address).
+        Sourcing: TaxProductResourceLineItemTaxBreakdownSourcing
+        /// Details regarding the rate for this tax. This field will be `null` when the tax is not imposed, for example if the product is exempt from tax.
+        TaxRateDetails: TaxProductResourceLineItemTaxRateDetails option
+        /// The reasoning behind this tax, for example, if the product is tax exempt. The possible values for this field may be extended as new tax rules are supported.
+        TaxabilityReason: TaxProductResourceLineItemTaxBreakdownTaxabilityReason
+        /// The amount on which tax is calculated, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        TaxableAmount: int
+    }
+
+/// A Tax Calculation Line Item represents a single item in a tax calculation.
+type TaxCalculationLineItem =
+    {
+        /// The line item amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
+        Amount: int
+        /// The amount of tax calculated for this line item, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        AmountTax: int
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// Indicates the line item represents a performance where the venue location might determine the tax, not the customer address. Leave empty if the tax code doesn't require a tax location. If you provide this value for tax codes with an `optional` location requirement, it overrides the customer address.
+        PerformanceLocation: string option
+        /// The ID of an existing [Product](https://docs.stripe.com/api/products/object).
+        Product: string option
+        /// The number of units of the item being purchased. For reversals, this is the quantity reversed.
+        Quantity: int
+        /// A custom identifier for this line item.
+        Reference: string
+        /// Specifies whether the `amount` includes taxes. If `tax_behavior=inclusive`, then the amount includes taxes.
+        TaxBehavior: TaxCalculationLineItemTaxBehavior
+        /// Detailed account of taxes relevant to this line item.
+        TaxBreakdown: TaxProductResourceLineItemTaxBreakdown list option
+        /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for this resource.
+        TaxCode: string
+    }
+
+/// The list of items the customer is purchasing.
+type TaxCalculationLineItems =
+    {
+        /// Details about each object.
+        Data: TaxCalculationLineItem list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+[<Struct>]
+type TaxProductResourceCustomerDetailsAddressSource =
+    | Billing
+    | Shipping
+
+type TaxProductResourceCustomerDetailsResourceTaxIdType =
+    | AdNrt
+    | AeTrn
+    | AlTin
+    | AmTin
+    | AoTin
+    | ArCuit
+    | AuAbn
+    | AuAcn
+    | AuArn
+    | AuWpn
+    | AwTin
+    | AzTin
+    | BaTin
+    | BbTin
+    | BdBin
+    | BfIfu
+    | BgUic
+    | BhVat
+    | BjIfu
+    | BoTin
+    | BrCnpj
+    | BrCpf
+    | BsTin
+    | BwVat
+    | ByTin
+    | CaBn
+    | CaGstHst
+    | CaPstBc
+    | CaPstMb
+    | CaPstSk
+    | CaQst
+    | CdNif
+    | ChUid
+    | ChVat
+    | CiVat
+    | ClTin
+    | CmNiu
+    | CnTin
+    | CoNit
+    | CrTin
+    | CvNif
+    | CzDic
+    | DeStn
+    | DoRcn
+    | EcRuc
+    | EgTin
+    | EsCif
+    | EtTin
+    | EuOssVat
+    | EuVat
+    | FoVat
+    | FrSiren
+    | FrSiret
+    | FrSpi
+    | GbVat
+    | GeVat
+    | GhTin
+    | GiTin
+    | GnNif
+    | HkBr
+    | HrOib
+    | HuTin
+    | IcNif
+    | IdNpwp
+    | IlVat
+    | InGst
+    | IsKt
+    | IsVat
+    | ItCf
+    | JpCn
+    | JpRn
+    | JpTrn
+    | KePin
+    | KgTin
+    | KhTin
+    | KrBrn
+    | KzBin
+    | LaTin
+    | LiUid
+    | LiVat
+    | LkVat
+    | MaVat
+    | MdCf
+    | MdVat
+    | MePib
+    | MkVat
+    | MrNif
+    | MuVat
+    | MxRfc
+    | MyFrp
+    | MyItn
+    | MySst
+    | MzNuit
+    | NgTin
+    | NoVat
+    | NoVoec
+    | NpPan
+    | NzBn
+    | NzGst
+    | OmVat
+    | PeRuc
+    | PhTin
+    | PlNip
+    | PtNif
+    | PyRuc
+    | RoTin
+    | RsPib
+    | RuInn
+    | RuKpp
+    | SaVat
+    | SgGst
+    | SgUen
+    | SiTin
+    | SmCoe
+    | SnNinea
+    | SrFin
+    | SvNit
+    | ThVat
+    | TjTin
+    | TrTin
+    | TtBir
+    | TtVat
+    | TwVat
+    | TzVat
+    | UaVat
+    | UgTin
+    | Unknown
+    | UsEin
+    | UyRuc
+    | UzTin
+    | UzVat
+    | VeRif
+    | VnTin
+    | ZaVat
+    | ZmTin
+    | ZwTin
+
+type TaxProductResourceCustomerDetailsResourceTaxId =
+    {
+        /// The type of the tax ID, one of `ad_nrt`, `ar_cuit`, `eu_vat`, `bo_tin`, `br_cnpj`, `br_cpf`, `cn_tin`, `co_nit`, `cr_tin`, `do_rcn`, `ec_ruc`, `eu_oss_vat`, `hr_oib`, `pe_ruc`, `ro_tin`, `rs_pib`, `sv_nit`, `uy_ruc`, `ve_rif`, `vn_tin`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `no_voec`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `pl_nip`, `it_cf`, `fo_vat`, `gi_tin`, `py_ruc`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `jp_trn`, `li_uid`, `li_vat`, `lk_vat`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, `ge_vat`, `ua_vat`, `is_vat`, `bg_uic`, `hu_tin`, `si_tin`, `ke_pin`, `tr_tin`, `eg_tin`, `ph_tin`, `al_tin`, `bh_vat`, `kz_bin`, `ng_tin`, `om_vat`, `de_stn`, `ch_uid`, `tz_vat`, `uz_vat`, `uz_tin`, `md_vat`, `ma_vat`, `by_tin`, `ao_tin`, `bs_tin`, `bb_tin`, `cd_nif`, `mr_nif`, `me_pib`, `zw_tin`, `ba_tin`, `gn_nif`, `mk_vat`, `sr_fin`, `sn_ninea`, `am_tin`, `np_pan`, `tj_tin`, `ug_tin`, `zm_tin`, `kh_tin`, `aw_tin`, `az_tin`, `bd_bin`, `au_acn`, `nz_bn`, `pt_nif`, `cz_dic`, `fr_siret`, `fr_siren`, `fr_spi`, `sm_coe`, `tt_vat`, `tt_bir`, `mu_vat`, `mz_nuit`, `au_wpn`, `md_cf`, `is_kt`, `bj_ifu`, `et_tin`, `kg_tin`, `la_tin`, `cm_niu`, `cv_nif`, `bf_ifu`, `ic_nif`, `gh_tin`, `bw_vat`, `ci_vat`, or `unknown`
+        Type: TaxProductResourceCustomerDetailsResourceTaxIdType
+        /// The value of the tax ID.
+        Value: string
+    }
+
+[<Struct>]
+type TaxProductResourceCustomerDetailsTaxabilityOverride =
+    | CustomerExempt
+    | [<JsonPropertyName("none")>] None'
+    | ReverseCharge
+
+type TaxProductResourcePostalAddress =
+    {
+        /// City, district, suburb, town, or village.
+        City: string option
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode
+        /// Address line 1, such as the street, PO Box, or company name.
+        [<JsonPropertyName("line1")>]
+        Line1: string option
+        /// Address line 2, such as the apartment, suite, unit, or building.
+        [<JsonPropertyName("line2")>]
+        Line2: string option
+        /// ZIP or postal code.
+        PostalCode: string option
+        /// State/province as an [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2) subdivision code, without country prefix, such as "NY" or "TX".
+        State: string option
+    }
+
+type TaxProductResourceCustomerDetails =
+    {
+        /// The customer's postal address (for example, home or business location).
+        Address: TaxProductResourcePostalAddress option
+        /// The type of customer address provided.
+        AddressSource: TaxProductResourceCustomerDetailsAddressSource option
+        /// The customer's IP address (IPv4 or IPv6).
+        IpAddress: string option
+        /// The customer's tax IDs (for example, EU VAT numbers).
+        TaxIds: TaxProductResourceCustomerDetailsResourceTaxId list
+        /// The taxability override used for taxation.
+        TaxabilityOverride: TaxProductResourceCustomerDetailsTaxabilityOverride
+    }
+
+type TaxProductResourceShipFromDetails =
+    { Address: TaxProductResourcePostalAddress }
+
+type TaxProductResourceTaxBreakdownTaxabilityReason =
+    | CustomerExempt
+    | NotCollecting
+    | NotSubjectToTax
+    | NotSupported
+    | PortionProductExempt
+    | PortionReducedRated
+    | PortionStandardRated
+    | ProductExempt
+    | ProductExemptHoliday
+    | ProportionallyRated
+    | ReducedRated
+    | ReverseCharge
+    | StandardRated
+    | TaxableBasisReduced
+    | ZeroRated
+
+[<Struct>]
+type TaxProductResourceTaxRateDetailsRateType =
+    | FlatAmount
+    | Percentage
+
+type TaxProductResourceTaxRateDetailsTaxType =
+    | AdmissionsTax
+    | AmusementTax
+    | AttendanceTax
+    | CommunicationsTax
+    | DigitalExciseTax
+    | EntertainmentTax
+    | GetFund
+    | GrossReceiptsTax
+    | Gst
+    | HospitalityTax
+    | Hst
+    | Igst
+    | Jct
+    | LeaseTax
+    | LuxuryTax
+    | MassTransitParkingTax
+    | Nhil
+    | ParkingTax
+    | Pst
+    | Qst
+    | RecyclingFee
+    | ResortTax
+    | RetailDeliveryFee
+    | Rst
+    | SalesTax
+    | ServiceTax
+    | TourismTax
+    | UtilityUsersTax
+    | Vat
+
+type TaxProductResourceTaxRateDetails =
+    {
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode option
+        /// The amount of the tax rate when the `rate_type` is `flat_amount`. Tax rates with `rate_type` `percentage` can vary based on the transaction, resulting in this field being `null`. This field exposes the amount and currency of the flat tax rate.
+        FlatAmount: TaxRateFlatAmount option
+        /// The tax rate percentage as a string. For example, 8.5% is represented as `"8.5"`.
+        PercentageDecimal: string
+        /// Indicates the type of tax rate applied to the taxable amount. This value can be `null` when no tax applies to the location. This field is only present for TaxRates created by Stripe Tax.
+        RateType: TaxProductResourceTaxRateDetailsRateType option
+        /// State, county, province, or region ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        State: string option
+        /// The tax type, such as `vat` or `sales_tax`.
+        TaxType: TaxProductResourceTaxRateDetailsTaxType option
+    }
+
+type TaxProductResourceTaxBreakdown =
+    {
+        /// The amount of tax, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        Amount: int
+        /// Specifies whether the tax amount is included in the line item amount.
+        Inclusive: bool
+        TaxRateDetails: TaxProductResourceTaxRateDetails
+        /// The reasoning behind this tax, for example, if the product is tax exempt. We might extend the possible values for this field to support new tax rules.
+        TaxabilityReason: TaxProductResourceTaxBreakdownTaxabilityReason
+        /// The amount on which tax is calculated, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        TaxableAmount: int
+    }
+
+[<Struct>]
+type TaxProductResourceTaxCalculationShippingCostTaxBehavior =
+    | Exclusive
+    | Inclusive
+
+type TaxProductResourceTaxCalculationShippingCost =
+    {
+        /// The shipping amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
+        Amount: int
+        /// The amount of tax calculated for shipping, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        AmountTax: int
+        /// The ID of an existing [ShippingRate](https://docs.stripe.com/api/shipping_rates/object).
+        ShippingRate: string option
+        /// Specifies whether the `amount` includes taxes. If `tax_behavior=inclusive`, then the amount includes taxes.
+        TaxBehavior: TaxProductResourceTaxCalculationShippingCostTaxBehavior
+        /// Detailed account of taxes relevant to shipping cost.
+        TaxBreakdown: TaxProductResourceLineItemTaxBreakdown list option
+        /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for shipping.
+        TaxCode: string
+    }
+
+/// A Tax Calculation allows you to calculate the tax to collect from your customer.
+/// Related guide: [Calculate tax in your custom payment flow](https://docs.stripe.com/tax/custom)
+type TaxCalculation =
+    {
+        /// Total amount after taxes in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        AmountTotal: int
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// The ID of an existing [Customer](https://docs.stripe.com/api/customers/object) used for the resource.
+        Customer: string option
+        CustomerDetails: TaxProductResourceCustomerDetails
+        /// Timestamp of date at which the tax calculation will expire.
+        ExpiresAt: DateTime option
+        /// Unique identifier for the calculation.
+        Id: string option
+        /// The list of items the customer is purchasing.
+        LineItems: TaxCalculationLineItems option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The details of the ship from location, such as the address.
+        ShipFromDetails: TaxProductResourceShipFromDetails option
+        /// The shipping cost details for the calculation.
+        ShippingCost: TaxProductResourceTaxCalculationShippingCost option
+        /// The amount of tax to be collected on top of the line item prices.
+        TaxAmountExclusive: int
+        /// The amount of tax already included in the line item prices.
+        TaxAmountInclusive: int
+        /// Breakdown of individual tax amounts that add up to the total.
+        TaxBreakdown: TaxProductResourceTaxBreakdown list
+        /// The calculation uses the tax rules and rates that are in effect at this timestamp. You can use a date up to 31 days in the past or up to 31 days in the future. If you use a future date, Stripe doesn't guarantee that the expected tax rules and rate being used match the actual rules and rate that will be in effect on that date. We deploy tax changes before their effective date, but not within a fixed window.
+        TaxDate: DateTime
+    }
+
+/// Tax locations represent venues for services, tickets, or other product types.
+type TaxLocation =
+    {
+        Address: Address
+        /// A descriptive text providing additional context about the tax location. This can include information about the venue, types of events held, services available, or any relevant details for better identification (for example, "A spacious auditorium suitable for large concerts and events.").
+        Description: string option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard =
+    {
+        /// Two-letter CA province code ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        Province: string
+    }
+
+[<Struct>]
+type TaxProductRegistrationsResourceCountryOptionsCanadaType =
+    | ProvinceStandard
+    | Simplified
+    | Standard
+
+type TaxProductRegistrationsResourceCountryOptionsCanada =
+    {
+        ProvinceStandard: TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard option
+        /// Type of registration in Canada.
+        Type: TaxProductRegistrationsResourceCountryOptionsCanadaType
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsDefault () = 
+    ///Type of registration in `country`.
+    member _.Type = "standard"
+
+
+[<Struct>]
+type TaxProductRegistrationsResourceCountryOptionsDefaultStandardPlaceOfSupplyScheme =
+    | InboundGoods
+    | Standard
+
+type TaxProductRegistrationsResourceCountryOptionsDefaultStandard =
+    {
+        /// Place of supply scheme used in an Default standard registration.
+        PlaceOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsDefaultStandardPlaceOfSupplyScheme
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods =
+    { Standard: TaxProductRegistrationsResourceCountryOptionsDefaultStandard option }
+
+[<Struct>]
+type TaxProductRegistrationsResourceCountryOptionsEuStandardPlaceOfSupplyScheme =
+    | InboundGoods
+    | SmallSeller
+    | Standard
+
+type TaxProductRegistrationsResourceCountryOptionsEuStandard =
+    {
+        /// Place of supply scheme used in an EU standard registration.
+        PlaceOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsEuStandardPlaceOfSupplyScheme
+    }
+
+[<Struct>]
+type TaxProductRegistrationsResourceCountryOptionsEuropeType =
+    | Ioss
+    | OssNonUnion
+    | OssUnion
+    | Standard
+
+type TaxProductRegistrationsResourceCountryOptionsEurope =
+    {
+        Standard: TaxProductRegistrationsResourceCountryOptionsEuStandard option
+        /// Type of registration in an EU country.
+        Type: TaxProductRegistrationsResourceCountryOptionsEuropeType
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsSimplified () = 
+    ///Type of registration in `country`.
+    member _.Type = "simplified"
+
+
+[<Struct>]
+type TaxProductRegistrationsResourceCountryOptionsIgicPlaceOfSupplyScheme =
+    | InboundGoods
+    | Standard
+
+type TaxProductRegistrationsResourceCountryOptionsIgic =
+    {
+        /// Place of supply scheme used in an IGIC registration.
+        PlaceOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsIgicPlaceOfSupplyScheme
+    }
+
+[<Struct>]
+type TaxProductRegistrationsResourceCountryOptionsSpainType =
+    | Igic
+    | Ioss
+    | OssNonUnion
+    | OssUnion
+    | Standard
+
+type TaxProductRegistrationsResourceCountryOptionsSpain =
+    {
+        Igic: TaxProductRegistrationsResourceCountryOptionsIgic option
+        Standard: TaxProductRegistrationsResourceCountryOptionsEuStandard option
+        /// Type of registration in ES.
+        Type: TaxProductRegistrationsResourceCountryOptionsSpainType
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsThailand () = 
+    ///Type of registration in `country`.
+    member _.Type = "simplified"
+
+
+type TaxProductRegistrationsResourceCountryOptionsUnitedStatesType =
+    | AdmissionsTax
+    | AttendanceTax
+    | DigitalExciseTax
+    | EntertainmentTax
+    | GrossReceiptsTax
+    | HospitalityTax
+    | LocalAmusementTax
+    | LocalLeaseTax
+    | LuxuryTax
+    | MassTransitParkingTax
+    | ParkingTax
+    | ResortTax
+    | StateCommunicationsTax
+    | StateRetailDeliveryFee
+    | StateSalesTax
+    | TourismTax
+    | UtilityUsersTax
+
+type TaxProductRegistrationsResourceCountryOptionsUsAdmissionsTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=admissions_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsAttendanceTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=attendance_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsEntertainmentTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=entertainment_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsGrossReceiptsTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=gross_receipts_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsHospitalityTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=hospitality_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax =
+    {
+        /// A [FIPS code](https://www.census.gov/library/reference/code-lists/ansi.html) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax =
+    {
+        /// A [FIPS code](https://www.census.gov/library/reference/code-lists/ansi.html) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsLuxuryTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=luxury_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsMassTransitParkingTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=mass_transit_parking_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsParkingTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=parking_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsResortTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=resort_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+[<Struct>]
+type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType =
+    | LocalUseTax
+    | SimplifiedSellersUseTax
+    | SingleLocalUseTax
+
+type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection =
+    {
+        /// A [FIPS code](https://www.census.gov/library/reference/code-lists/ansi.html) representing the local jurisdiction.
+        Jurisdiction: string option
+        /// The type of the election for the state sales tax registration.
+        Type: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax =
+    {
+        /// Elections for the state sales tax registration.
+        Elections: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection list option
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsTourismTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=tourism_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUsUtilityUsersTax =
+    {
+        /// A [jurisdiction code](https://docs.stripe.com/tax/registering?type=utility_users_tax#registration-types) representing the local jurisdiction.
+        Jurisdiction: string
+    }
+
+type TaxProductRegistrationsResourceCountryOptionsUnitedStates =
+    {
+        AdmissionsTax: TaxProductRegistrationsResourceCountryOptionsUsAdmissionsTax option
+        AttendanceTax: TaxProductRegistrationsResourceCountryOptionsUsAttendanceTax option
+        EntertainmentTax: TaxProductRegistrationsResourceCountryOptionsUsEntertainmentTax option
+        GrossReceiptsTax: TaxProductRegistrationsResourceCountryOptionsUsGrossReceiptsTax option
+        HospitalityTax: TaxProductRegistrationsResourceCountryOptionsUsHospitalityTax option
+        LocalAmusementTax: TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax option
+        LocalLeaseTax: TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax option
+        LuxuryTax: TaxProductRegistrationsResourceCountryOptionsUsLuxuryTax option
+        MassTransitParkingTax: TaxProductRegistrationsResourceCountryOptionsUsMassTransitParkingTax option
+        ParkingTax: TaxProductRegistrationsResourceCountryOptionsUsParkingTax option
+        ResortTax: TaxProductRegistrationsResourceCountryOptionsUsResortTax option
+        /// Two-letter US state code ([ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)).
+        State: string
+        StateSalesTax: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax option
+        TourismTax: TaxProductRegistrationsResourceCountryOptionsUsTourismTax option
+        /// Type of registration in the US.
+        Type: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType
+        UtilityUsersTax: TaxProductRegistrationsResourceCountryOptionsUsUtilityUsersTax option
+    }
+
+type TaxProductRegistrationsResourceCountryOptions =
+    { Ae: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option
+      Al: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Am: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Ao: TaxProductRegistrationsResourceCountryOptionsDefault option
+      At: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Au: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option
+      Aw: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Az: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Ba: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Bb: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Bd: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Be: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Bf: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Bg: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Bh: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Bj: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Bs: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Bw: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      By: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Ca: TaxProductRegistrationsResourceCountryOptionsCanada option
+      Cd: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Ch: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option
+      Ci: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Cl: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Cm: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Co: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Cr: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Cv: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Cy: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Cz: TaxProductRegistrationsResourceCountryOptionsEurope option
+      De: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Dk: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Ec: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Ee: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Eg: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Es: TaxProductRegistrationsResourceCountryOptionsSpain option
+      Et: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Fi: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Fr: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Gb: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option
+      Ge: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Gh: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Gn: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Gr: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Hr: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Hu: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Id: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Ie: TaxProductRegistrationsResourceCountryOptionsEurope option
+      In: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Is: TaxProductRegistrationsResourceCountryOptionsDefault option
+      It: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Jp: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option
+      Ke: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Kg: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Kh: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Kr: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Kz: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      La: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Lk: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Lt: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Lu: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Lv: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Ma: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Md: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Me: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Mk: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Mr: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Mt: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Mu: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Mx: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      My: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Ng: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Nl: TaxProductRegistrationsResourceCountryOptionsEurope option
+      No: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option
+      Np: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Nz: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option
+      Om: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Pe: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Ph: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Pl: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Pt: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Ro: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Rs: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Ru: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Sa: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Se: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Sg: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods option
+      Si: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Sk: TaxProductRegistrationsResourceCountryOptionsEurope option
+      Sn: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Sr: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Th: TaxProductRegistrationsResourceCountryOptionsThailand option
+      Tj: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Tr: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Tw: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Tz: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Ua: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Ug: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Us: TaxProductRegistrationsResourceCountryOptionsUnitedStates option
+      Uy: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Uz: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Vn: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Za: TaxProductRegistrationsResourceCountryOptionsDefault option
+      Zm: TaxProductRegistrationsResourceCountryOptionsSimplified option
+      Zw: TaxProductRegistrationsResourceCountryOptionsDefault option }
+
+[<Struct>]
+type TaxProductResourceTaxSettingsDefaultsProvider =
+    | Anrok
+    | Avalara
+    | Sphere
+    | Stripe
+
+[<Struct>]
+type TaxProductResourceTaxSettingsDefaultsTaxBehavior =
+    | Exclusive
+    | Inclusive
+    | InferredByCurrency
+
+type TaxProductResourceTaxSettingsDefaults =
+    {
+        /// The tax calculation provider this account uses. Defaults to `stripe` when not using a [third-party provider](/tax/third-party-apps).
+        Provider: TaxProductResourceTaxSettingsDefaultsProvider
+        /// Default [tax behavior](https://stripe.com/docs/tax/products-prices-tax-categories-tax-behavior#tax-behavior) used to specify whether the price is considered inclusive of taxes or exclusive of taxes. If the item's price has a tax behavior set, it will take precedence over the default tax behavior.
+        TaxBehavior: TaxProductResourceTaxSettingsDefaultsTaxBehavior option
+        /// Default [tax code](https://stripe.com/docs/tax/tax-categories) used to classify your products and prices.
+        TaxCode: string option
+    }
+
+type TaxProductResourceTaxSettingsHeadOffice = { Address: Address }
+
+type TaxProductResourceTaxSettingsStatusDetailsResourceActive =
+    { TaxProductResourceTaxSettingsStatusDetailsResourceActive: string option }
+
+type TaxProductResourceTaxSettingsStatusDetailsResourcePending =
+    {
+        /// The list of missing fields that are required to perform calculations. It includes the entry `head_office` when the status is `pending`. It is recommended to set the optional values even if they aren't listed as required for calculating taxes. Calculations can fail if missing fields aren't explicitly provided on every call.
+        MissingFields: string list option
+    }
+
+type TaxProductResourceTaxSettingsStatusDetails =
+    { Active: TaxProductResourceTaxSettingsStatusDetailsResourceActive option
+      Pending: TaxProductResourceTaxSettingsStatusDetailsResourcePending option }
+
+type TaxProductResourceTaxTransactionLineItemResourceReversal =
+    {
+        /// The `id` of the line item to reverse in the original transaction.
+        OriginalLineItem: string
+    }
+
+type TaxProductResourceTaxTransactionResourceReversal =
+    {
+        /// The `id` of the reversed `Transaction` object.
+        OriginalTransaction: string option
+    }
+
+[<Struct>]
+type TaxProductResourceTaxTransactionShippingCostTaxBehavior =
+    | Exclusive
+    | Inclusive
+
+type TaxProductResourceTaxTransactionShippingCost =
+    {
+        /// The shipping amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
+        Amount: int
+        /// The amount of tax calculated for shipping, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        AmountTax: int
+        /// The ID of an existing [ShippingRate](https://docs.stripe.com/api/shipping_rates/object).
+        ShippingRate: string option
+        /// Specifies whether the `amount` includes taxes. If `tax_behavior=inclusive`, then the amount includes taxes.
+        TaxBehavior: TaxProductResourceTaxTransactionShippingCostTaxBehavior
+        /// Detailed account of taxes relevant to shipping cost. (It is not populated for the transaction resource object and will be removed in the next API version.)
+        TaxBreakdown: TaxProductResourceLineItemTaxBreakdown list option
+        /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for shipping.
+        TaxCode: string
+    }
+
+[<Struct>]
+type TaxRegistrationStatus =
+    | Active
+    | Expired
+    | Scheduled
+
+/// A Tax `Registration` lets us know that your business is registered to collect tax on payments within a region, enabling you to [automatically collect tax](https://docs.stripe.com/tax).
+/// Stripe doesn't register on your behalf with the relevant authorities when you create a Tax `Registration` object. For more information on how to register to collect tax, see [our guide](https://docs.stripe.com/tax/registering).
+/// Related guide: [Using the Registrations API](https://docs.stripe.com/tax/registrations-api)
+type TaxRegistration =
+    {
+        /// Time at which the registration becomes active. Measured in seconds since the Unix epoch.
+        ActiveFrom: DateTime
+        /// Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        Country: IsoTypes.IsoCountryCode
+        CountryOptions: TaxProductRegistrationsResourceCountryOptions
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// If set, the registration stops being active at this time. If not set, the registration will be active indefinitely. Measured in seconds since the Unix epoch.
+        ExpiresAt: DateTime option
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// The status of the registration. This field is present for convenience and can be deduced from `active_from` and `expires_at`.
+        Status: TaxRegistrationStatus
+    }
+
+[<Struct>]
+type TaxSettingsStatus =
+    | Active
+    | Pending
+
+/// You can use Tax `Settings` to manage configurations used by Stripe Tax calculations.
+/// Related guide: [Using the Settings API](https://docs.stripe.com/tax/settings-api)
+type TaxSettings =
+    {
+        Defaults: TaxProductResourceTaxSettingsDefaults
+        /// The place where your business is located.
+        HeadOffice: TaxProductResourceTaxSettingsHeadOffice option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Whether these settings have the information Stripe Tax needs to calculate tax. It doesn't reflect whether your integration is ready to collect tax.
+        Status: TaxSettingsStatus
+        StatusDetails: TaxProductResourceTaxSettingsStatusDetails
+    }
+
+/// Occurs whenever tax settings is updated.
+type TaxSettingsUpdated = { Object: TaxSettings }
+
+[<Struct>]
+type TaxTransactionLineItemTaxBehavior =
+    | Exclusive
+    | Inclusive
+
+[<Struct>]
+type TaxTransactionLineItemType =
+    | Reversal
+    | Transaction
+
+/// A Tax Transaction Line Item represents an individual item in a Tax Transaction.
+type TaxTransactionLineItem =
+    {
+        /// The line item amount in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units). If `tax_behavior=inclusive`, then this amount includes taxes. Otherwise, taxes were calculated on top of this amount.
+        Amount: int
+        /// The amount of tax calculated for this line item, in the [smallest currency unit](https://docs.stripe.com/currencies#minor-units).
+        AmountTax: int
+        /// Unique identifier for the object.
+        Id: string
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// The ID of an existing [Product](https://docs.stripe.com/api/products/object).
+        Product: string option
+        /// The number of units of the item being purchased. For reversals, this is the quantity reversed.
+        Quantity: int
+        /// A custom identifier for this line item in the transaction.
+        Reference: string
+        /// If `type=reversal`, contains information about what was reversed.
+        Reversal: TaxProductResourceTaxTransactionLineItemResourceReversal option
+        /// Specifies whether the `amount` includes taxes. If `tax_behavior=inclusive`, then the amount includes taxes.
+        TaxBehavior: TaxTransactionLineItemTaxBehavior
+        /// The [tax code](https://docs.stripe.com/tax/tax-categories) ID used for this resource.
+        TaxCode: string
+        /// If `reversal`, this line item reverses an earlier transaction.
+        Type: TaxTransactionLineItemType
+    }
+
+/// The tax collected or refunded, by line item.
+type TaxTransactionLineItems =
+    {
+        /// Details about each object.
+        Data: TaxTransactionLineItem list
+        /// True if this list has another page of items after this one that can be fetched.
+        HasMore: bool
+        /// The URL where this list can be accessed.
+        Url: string
+    }
+
+[<Struct>]
+type TaxTransactionType =
+    | Reversal
+    | Transaction
+
+/// A Tax Transaction records the tax collected from or refunded to your customer.
+/// Related guide: [Calculate tax in your custom payment flow](https://docs.stripe.com/tax/custom#tax-transaction)
+type TaxTransaction =
+    {
+        /// Time at which the object was created. Measured in seconds since the Unix epoch.
+        Created: DateTime
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        /// The ID of an existing [Customer](https://docs.stripe.com/api/customers/object) used for the resource.
+        Customer: string option
+        CustomerDetails: TaxProductResourceCustomerDetails
+        /// Unique identifier for the transaction.
+        Id: string
+        /// The tax collected or refunded, by line item.
+        LineItems: TaxTransactionLineItems option
+        /// If the object exists in live mode, the value is `true`. If the object exists in test mode, the value is `false`.
+        Livemode: bool
+        /// Set of [key-value pairs](https://docs.stripe.com/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+        Metadata: Map<string, string> option
+        /// The Unix timestamp representing when the tax liability is assumed or reduced.
+        PostedAt: DateTime
+        /// A custom unique identifier, such as 'myOrder_123'.
+        Reference: string
+        /// If `type=reversal`, contains information about what was reversed.
+        Reversal: TaxProductResourceTaxTransactionResourceReversal option
+        /// The details of the ship from location, such as the address.
+        ShipFromDetails: TaxProductResourceShipFromDetails option
+        /// The shipping cost details for the transaction.
+        ShippingCost: TaxProductResourceTaxTransactionShippingCost option
+        /// The calculation uses the tax rules and rates that are in effect at this timestamp. You can use a date up to 31 days in the past or up to 31 days in the future. If you use a future date, Stripe doesn't guarantee that the expected tax rules and rate being used match the actual rules and rate that will be in effect on that date. We deploy tax changes before their effective date, but not within a fixed window.
+        TaxDate: DateTime
+        /// If `reversal`, this transaction reverses an earlier transaction.
+        Type: TaxTransactionType
+    }
+
 /// Occurs whenever a top-up is canceled.
 type TopupCanceled = { Object: Topup }
 
@@ -17643,6 +22676,17 @@ type AccountMonthlyEstimatedRevenue with
         {
             Amount = amount
             Currency = currency
+        }
+
+type Address with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode option, line1: string option, line2: string option, postalCode: string option, state: string option) =
+        {
+            City = city
+            Country = country
+            Line1 = line1
+            Line2 = line2
+            PostalCode = postalCode
+            State = state
         }
 
 type AccountBusinessProfile with
@@ -18200,6 +23244,187 @@ type SubscriptionBillingThresholds with
             ResetBillingCycleAnchor = resetBillingCycleAnchor
         }
 
+type DeletedProduct with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedProduct =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "product"
+
+type PackageDimensions with
+    static member New(height: decimal, length: decimal, weight: decimal, width: decimal) =
+        {
+            Height = height
+            Length = length
+            Weight = weight
+            Width = width
+        }
+
+type ProductMarketingFeature with
+    static member New(?lossMessage: string, ?name: string) =
+        {
+            LossMessage = lossMessage
+            Name = name
+        }
+
+type TaxProductTaxDetailsResourceTaxDetails with
+    static member New(performanceLocation: string option, taxCode: string option) =
+        {
+            PerformanceLocation = performanceLocation
+            TaxCode = taxCode
+        }
+
+type Product with
+    static member New(active: bool, created: DateTime, description: string option, id: string, images: string list, livemode: bool, marketingFeatures: ProductMarketingFeature list, metadata: Map<string, string>, name: string, packageDimensions: PackageDimensions option, shippable: bool option, taxDetails: TaxProductTaxDetailsResourceTaxDetails option, ``type``: ProductType, updated: DateTime, url: string option, ?defaultPrice: StripeId<Markers.Price> option, ?statementDescriptor: string option, ?taxCode: StripeId<Markers.TaxCode> option, ?unitLabel: string option) =
+        {
+            Active = active
+            Created = created
+            Description = description
+            Id = id
+            Images = images
+            Livemode = livemode
+            MarketingFeatures = marketingFeatures
+            Metadata = metadata
+            Name = name
+            PackageDimensions = packageDimensions
+            Shippable = shippable
+            TaxDetails = taxDetails
+            Type = ``type``
+            Updated = updated
+            Url = url
+            DefaultPrice = defaultPrice |> Option.flatten
+            StatementDescriptor = statementDescriptor |> Option.flatten
+            TaxCode = taxCode |> Option.flatten
+            UnitLabel = unitLabel |> Option.flatten
+        }
+
+module Product =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "product"
+
+type PlanTier with
+    static member New(flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
+        {
+            FlatAmount = flatAmount
+            FlatAmountDecimal = flatAmountDecimal
+            UnitAmount = unitAmount
+            UnitAmountDecimal = unitAmountDecimal
+            UpTo = upTo
+        }
+
+type TransformUsage with
+    static member New(divideBy: int, round: TransformUsageRound) =
+        {
+            DivideBy = divideBy
+            Round = round
+        }
+
+type Plan with
+    static member New(active: bool, amount: int option, amountDecimal: string option, billingScheme: PlanBillingScheme, created: DateTime, currency: IsoTypes.IsoCurrencyCode, id: string, interval: PlanInterval, intervalCount: int, livemode: bool, metadata: Map<string, string> option, meter: string option, nickname: string option, product: PlanProduct'AnyOf option, tiersMode: PlanTiersMode option, transformUsage: TransformUsage option, trialPeriodDays: int option, usageType: PlanUsageType, ?tiers: PlanTier list) =
+        {
+            Active = active
+            Amount = amount
+            AmountDecimal = amountDecimal
+            BillingScheme = billingScheme
+            Created = created
+            Currency = currency
+            Id = id
+            Interval = interval
+            IntervalCount = intervalCount
+            Livemode = livemode
+            Metadata = metadata
+            Meter = meter
+            Nickname = nickname
+            Product = product
+            TiersMode = tiersMode
+            TransformUsage = transformUsage
+            TrialPeriodDays = trialPeriodDays
+            UsageType = usageType
+            Tiers = tiers
+        }
+
+module Plan =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "plan"
+
+type CustomUnitAmount with
+    static member New(maximum: int option, minimum: int option, preset: int option) =
+        {
+            Maximum = maximum
+            Minimum = minimum
+            Preset = preset
+        }
+
+type PriceTier with
+    static member New(flatAmount: int option, flatAmountDecimal: string option, unitAmount: int option, unitAmountDecimal: string option, upTo: int option) =
+        {
+            FlatAmount = flatAmount
+            FlatAmountDecimal = flatAmountDecimal
+            UnitAmount = unitAmount
+            UnitAmountDecimal = unitAmountDecimal
+            UpTo = upTo
+        }
+
+type CurrencyOption with
+    static member New(customUnitAmount: CustomUnitAmount option, taxBehavior: CurrencyOptionTaxBehavior option, unitAmount: int option, unitAmountDecimal: string option, ?tiers: PriceTier list) =
+        {
+            CustomUnitAmount = customUnitAmount
+            TaxBehavior = taxBehavior
+            UnitAmount = unitAmount
+            UnitAmountDecimal = unitAmountDecimal
+            Tiers = tiers
+        }
+
+type Recurring with
+    static member New(interval: RecurringInterval, intervalCount: int, meter: string option, trialPeriodDays: int option, usageType: RecurringUsageType) =
+        {
+            Interval = interval
+            IntervalCount = intervalCount
+            Meter = meter
+            TrialPeriodDays = trialPeriodDays
+            UsageType = usageType
+        }
+
+type TransformQuantity with
+    static member New(divideBy: int, round: TransformQuantityRound) =
+        {
+            DivideBy = divideBy
+            Round = round
+        }
+
+type Price with
+    static member New(active: bool, billingScheme: PriceBillingScheme, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customUnitAmount: CustomUnitAmount option, id: string, livemode: bool, lookupKey: string option, metadata: Map<string, string>, nickname: string option, product: PriceProduct'AnyOf, recurring: Recurring option, taxBehavior: PriceTaxBehavior option, tiersMode: PriceTiersMode option, transformQuantity: TransformQuantity option, ``type``: PriceType, unitAmount: int option, unitAmountDecimal: string option, ?currencyOptions: Map<string, CurrencyOption>, ?tiers: PriceTier list) =
+        {
+            Active = active
+            BillingScheme = billingScheme
+            Created = created
+            Currency = currency
+            CustomUnitAmount = customUnitAmount
+            Id = id
+            Livemode = livemode
+            LookupKey = lookupKey
+            Metadata = metadata
+            Nickname = nickname
+            Product = product
+            Recurring = recurring
+            TaxBehavior = taxBehavior
+            TiersMode = tiersMode
+            TransformQuantity = transformQuantity
+            Type = ``type``
+            UnitAmount = unitAmount
+            UnitAmountDecimal = unitAmountDecimal
+            CurrencyOptions = currencyOptions
+            Tiers = tiers
+        }
+
+module Price =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "price"
+
 type SubscriptionItemBillingThresholds with
     static member New(usageGte: int option) =
         {
@@ -18387,21 +23612,6 @@ type InvoicePaymentMethodOptionsPayto with
             MandateOptions = mandateOptions
         }
 
-type InvoicePaymentMethodOptionsMandateOptionsUpi with
-    static member New(amount: int option, amountType: InvoicePaymentMethodOptionsMandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
-        {
-            Amount = amount
-            AmountType = amountType
-            Description = description
-            EndDate = endDate
-        }
-
-type InvoicePaymentMethodOptionsUpi with
-    static member New(?mandateOptions: InvoicePaymentMethodOptionsMandateOptionsUpi) =
-        {
-            MandateOptions = mandateOptions
-        }
-
 type InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFilters with
     static member New(?accountSubcategories: InvoicePaymentMethodOptionsUsBankAccountLinkedAccountOptionsFiltersAccountSubcategories list) =
         {
@@ -18500,8 +23710,23 @@ type SubscriptionPaymentMethodOptionsSepaDebit with
             SubscriptionPaymentMethodOptionsSepaDebit = subscriptionPaymentMethodOptionsSepaDebit |> Option.flatten
         }
 
+type InvoicePaymentMethodOptionsMandateOptionsUpi with
+    static member New(amount: int option, amountType: InvoicePaymentMethodOptionsMandateOptionsUpiAmountType option, description: string option, endDate: DateTime option) =
+        {
+            Amount = amount
+            AmountType = amountType
+            Description = description
+            EndDate = endDate
+        }
+
+type SubscriptionPaymentMethodOptionsUpi with
+    static member New(?mandateOptions: InvoicePaymentMethodOptionsMandateOptionsUpi) =
+        {
+            MandateOptions = mandateOptions
+        }
+
 type SubscriptionsResourcePaymentMethodOptions with
-    static member New(acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: SubscriptionPaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, payto: InvoicePaymentMethodOptionsPayto option, pix: SubscriptionPaymentMethodOptionsPix option, sepaDebit: SubscriptionPaymentMethodOptionsSepaDebit option, upi: InvoicePaymentMethodOptionsUpi option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option, ?billie: SubscriptionPaymentMethodOptionsBillie option, ?blik: SubscriptionPaymentMethodOptionsBlik option) =
+    static member New(acssDebit: InvoicePaymentMethodOptionsAcssDebit option, bancontact: InvoicePaymentMethodOptionsBancontact option, card: SubscriptionPaymentMethodOptionsCard option, customerBalance: InvoicePaymentMethodOptionsCustomerBalance option, konbini: InvoicePaymentMethodOptionsKonbini option, payto: InvoicePaymentMethodOptionsPayto option, pix: SubscriptionPaymentMethodOptionsPix option, sepaDebit: SubscriptionPaymentMethodOptionsSepaDebit option, upi: SubscriptionPaymentMethodOptionsUpi option, usBankAccount: InvoicePaymentMethodOptionsUsBankAccount option, ?billie: SubscriptionPaymentMethodOptionsBillie option, ?blik: SubscriptionPaymentMethodOptionsBlik option) =
         {
             AcssDebit = acssDebit
             Bancontact = bancontact
@@ -18564,6 +23789,54 @@ type InvoiceSettingCustomField with
             Name = name
             Value = value
         }
+
+type DeletedTaxId with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedTaxId =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax_id"
+
+type TaxIDsOwner with
+    static member New(customerAccount: string option, ``type``: TaxIDsOwnerType, ?account: StripeId<Markers.Account>, ?application: StripeId<Markers.Application>, ?customer: StripeId<Markers.Customer>) =
+        {
+            CustomerAccount = customerAccount
+            Type = ``type``
+            Account = account
+            Application = application
+            Customer = customer
+        }
+
+type TaxIdVerification with
+    static member New(status: TaxIdVerificationStatus, verifiedAddress: string option, verifiedName: string option) =
+        {
+            Status = status
+            VerifiedAddress = verifiedAddress
+            VerifiedName = verifiedName
+        }
+
+type TaxId with
+    static member New(country: IsoTypes.IsoCountryCode option, created: DateTime, customer: StripeId<Markers.Customer> option, customerAccount: string option, id: string, livemode: bool, owner: TaxIDsOwner option, ``type``: TaxIdType, value: string, verification: TaxIdVerification option) =
+        {
+            Country = country
+            Created = created
+            Customer = customer
+            CustomerAccount = customerAccount
+            Id = id
+            Livemode = livemode
+            Owner = owner
+            Type = ``type``
+            Value = value
+            Verification = verification
+        }
+
+module TaxId =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax_id"
 
 type SubscriptionsResourceSubscriptionInvoiceSettings with
     static member New(accountTaxIds: SubscriptionsResourceSubscriptionInvoiceSettingsAccountTaxIds'AnyOf list option, customFields: InvoiceSettingCustomField list option, description: string option, footer: string option, issuer: ConnectAccountReference) =
@@ -19587,11 +24860,240 @@ type PaymentFlowsAutomaticPaymentMethodsPaymentIntent with
             AllowRedirects = allowRedirects
         }
 
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryAffiliate with
+    static member New(?code: string, ?name: string) =
+        {
+            Code = code
+            Name = name
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDistance with
+    static member New(?amount: int, ?unit: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDistanceUnit) =
+        {
+            Amount = amount
+            Unit = unit
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDateOfBirth with
+    static member New(?day: int, ?month: int, ?year: int) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDriver with
+    static member New(?dateOfBirth: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDateOfBirth, ?driverIdentificationNumber: string, ?driverTaxNumber: string, ?name: string) =
+        {
+            DateOfBirth = dateOfBirth
+            DriverIdentificationNumber = driverIdentificationNumber
+            DriverTaxNumber = driverTaxNumber
+            Name = name
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryInsurance with
+    static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?insuranceCompanyName: string, ?insuranceType: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryInsuranceInsuranceType) =
+        {
+            Amount = amount
+            Currency = currency
+            InsuranceCompanyName = insuranceCompanyName
+            InsuranceType = insuranceType
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryLocation with
+    static member New(?address: Address, ?locationName: string, ?time: DateTime) =
+        {
+            Address = address
+            LocationName = locationName
+            Time = time
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDiscounts with
+    static member New(?corporateClientCode: string, ?coupon: string, ?maximumFreeMilesOrKilometers: int) =
+        {
+            CorporateClientCode = corporateClientCode
+            Coupon = coupon
+            MaximumFreeMilesOrKilometers = maximumFreeMilesOrKilometers
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryExtraCharge with
+    static member New(?amount: int, ?``type``: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryExtraChargeType) =
+        {
+            Amount = amount
+            Type = ``type``
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTaxItem with
+    static member New(?amount: int, ?rate: int, ?``type``: string) =
+        {
+            Amount = amount
+            Rate = rate
+            Type = ``type``
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTax with
+    static member New(?taxExemptIndicator: bool, ?taxItems: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTaxItem list) =
+        {
+            TaxExemptIndicator = taxExemptIndicator
+            TaxItems = taxItems
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTotal with
+    static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?discounts: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDiscounts, ?extraCharges: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryExtraCharge list, ?ratePerUnit: int, ?rateUnit: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTotalRateUnit, ?tax: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTax) =
+        {
+            Amount = amount
+            Currency = currency
+            Discounts = discounts
+            ExtraCharges = extraCharges
+            RatePerUnit = ratePerUnit
+            RateUnit = rateUnit
+            Tax = tax
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryVehicle with
+    static member New(?make: string, ?model: string, ?odometer: int, ?``type``: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryVehicleType, ?vehicleClass: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryVehicleVehicleClass, ?vehicleIdentificationNumber: string) =
+        {
+            Make = make
+            Model = model
+            Odometer = odometer
+            Type = ``type``
+            VehicleClass = vehicleClass
+            VehicleIdentificationNumber = vehicleIdentificationNumber
+        }
+
+type PaymentFlowsIndustryMetadataCarRentalDataResourceCarRental with
+    static member New(?affiliate: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryAffiliate, ?bookingNumber: string, ?carrierName: string, ?customerServicePhoneNumber: string, ?daysRented: int, ?distance: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDistance, ?drivers: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryDriver list, ?dropOff: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryLocation, ?insurances: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryInsurance list, ?noShowIndicator: bool, ?pickup: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryLocation, ?renterName: string, ?total: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryTotal, ?vehicle: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRentalSupplementaryVehicle) =
+        {
+            Affiliate = affiliate
+            BookingNumber = bookingNumber
+            CarrierName = carrierName
+            CustomerServicePhoneNumber = customerServicePhoneNumber
+            DaysRented = daysRented
+            Distance = distance
+            Drivers = drivers
+            DropOff = dropOff
+            Insurances = insurances
+            NoShowIndicator = noShowIndicator
+            Pickup = pickup
+            RenterName = renterName
+            Total = total
+            Vehicle = vehicle
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAccommodation with
+    static member New(accommodationType: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAccommodationAccommodationType option, ?bedType: string, ?dailyRateAmount: int, ?nights: int, ?numberOfRooms: int, ?rateType: string, ?smokingIndicator: bool) =
+        {
+            AccommodationType = accommodationType
+            BedType = bedType
+            DailyRateAmount = dailyRateAmount
+            Nights = nights
+            NumberOfRooms = numberOfRooms
+            RateType = rateType
+            SmokingIndicator = smokingIndicator
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAffiliate with
+    static member New(?code: string, ?name: string) =
+        {
+            Code = code
+            Name = name
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryGuest with
+    static member New(?name: string) =
+        {
+            Name = name
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryHost with
+    static member New(?address: Address, ?countryOfDomicile: string, ?hostReference: string, ?hostType: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryHostHostType, ?name: string, ?numberOfReservations: int, ?propertyPhoneNumber: string, ?registeredAt: DateTime) =
+        {
+            Address = address
+            CountryOfDomicile = countryOfDomicile
+            HostReference = hostReference
+            HostType = hostType
+            Name = name
+            NumberOfReservations = numberOfReservations
+            PropertyPhoneNumber = propertyPhoneNumber
+            RegisteredAt = registeredAt
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryInsurance with
+    static member New(?amount: int, ?currency: IsoTypes.IsoCurrencyCode, ?insuranceCompanyName: string, ?insuranceType: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryInsuranceInsuranceType) =
+        {
+            Amount = amount
+            Currency = currency
+            InsuranceCompanyName = insuranceCompanyName
+            InsuranceType = insuranceType
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryDiscount with
+    static member New(?corporateClientCode: string, ?coupon: string) =
+        {
+            CorporateClientCode = corporateClientCode
+            Coupon = coupon
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryExtraCharge with
+    static member New(?amount: int, ?``type``: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryExtraChargeType) =
+        {
+            Amount = amount
+            Type = ``type``
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTaxItem with
+    static member New(?amount: int, ?rate: int, ?``type``: string) =
+        {
+            Amount = amount
+            Rate = rate
+            Type = ``type``
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTax with
+    static member New(?taxExemptIndicator: bool, ?taxItems: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTaxItem list) =
+        {
+            TaxExemptIndicator = taxExemptIndicator
+            TaxItems = taxItems
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTotal with
+    static member New(?amount: int, ?cashAdvances: int, ?currency: IsoTypes.IsoCurrencyCode, ?discounts: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryDiscount, ?extraCharges: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryExtraCharge list, ?prepaidAmount: int, ?tax: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTax) =
+        {
+            Amount = amount
+            CashAdvances = cashAdvances
+            Currency = currency
+            Discounts = discounts
+            ExtraCharges = extraCharges
+            PrepaidAmount = prepaidAmount
+            Tax = tax
+        }
+
+type PaymentFlowsIndustryMetadataLodgingDataResourceLodging with
+    static member New(?accommodation: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAccommodation, ?affiliate: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryAffiliate, ?bookingNumber: string, ?checkinAt: DateTime, ?checkoutAt: DateTime, ?customerServicePhoneNumber: string, ?fireSafetyActComplianceIndicator: bool, ?guests: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryGuest list, ?host: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryHost, ?insurances: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryInsurance list, ?noShowIndicator: bool, ?renterIdNumber: string, ?renterName: string, ?total: PaymentFlowsIndustryMetadataLodgingDataResourceLodgingSupplementaryTotal) =
+        {
+            Accommodation = accommodation
+            Affiliate = affiliate
+            BookingNumber = bookingNumber
+            CheckinAt = checkinAt
+            CheckoutAt = checkoutAt
+            CustomerServicePhoneNumber = customerServicePhoneNumber
+            FireSafetyActComplianceIndicator = fireSafetyActComplianceIndicator
+            Guests = guests
+            Host = host
+            Insurances = insurances
+            NoShowIndicator = noShowIndicator
+            RenterIdNumber = renterIdNumber
+            RenterName = renterName
+            Total = total
+        }
+
 type PaymentFlowsPaymentDetails with
-    static member New(customerReference: string option, orderReference: string option) =
+    static member New(customerReference: string option, orderReference: string option, ?carRentalData: PaymentFlowsIndustryMetadataCarRentalDataResourceCarRental list, ?lodgingData: PaymentFlowsIndustryMetadataLodgingDataResourceLodging list) =
         {
             CustomerReference = customerReference
             OrderReference = orderReference
+            CarRentalData = carRentalData
+            LodgingData = lodgingData
         }
 
 type PaymentFlowsPaymentIntentAsyncWorkflowsResourceInputsResourceTax with
@@ -19664,6 +25166,89 @@ type PaymentIntentNextActionCashappHandleRedirectOrDisplayQrCode with
             HostedInstructionsUrl = hostedInstructionsUrl
             MobileAuthUrl = mobileAuthUrl
             QrCode = qrCode
+        }
+
+type FundingInstructionsBankTransferAbaRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string, accountNumber: string, accountType: string, bankAddress: Address, bankName: string, routingNumber: string) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            AccountNumber = accountNumber
+            AccountType = accountType
+            BankAddress = bankAddress
+            BankName = bankName
+            RoutingNumber = routingNumber
+        }
+
+type FundingInstructionsBankTransferIbanRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string, bankAddress: Address, bic: string, country: IsoTypes.IsoCountryCode, iban: string) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            BankAddress = bankAddress
+            Bic = bic
+            Country = country
+            Iban = iban
+        }
+
+type FundingInstructionsBankTransferSortCodeRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string, accountNumber: string, bankAddress: Address, sortCode: string) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            AccountNumber = accountNumber
+            BankAddress = bankAddress
+            SortCode = sortCode
+        }
+
+type FundingInstructionsBankTransferSpeiRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string, bankAddress: Address, bankCode: string, bankName: string, clabe: string) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            BankAddress = bankAddress
+            BankCode = bankCode
+            BankName = bankName
+            Clabe = clabe
+        }
+
+type FundingInstructionsBankTransferSwiftRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string, accountNumber: string, accountType: string, bankAddress: Address, bankName: string, swiftCode: string) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            AccountNumber = accountNumber
+            AccountType = accountType
+            BankAddress = bankAddress
+            BankName = bankName
+            SwiftCode = swiftCode
+        }
+
+type FundingInstructionsBankTransferZenginRecord with
+    static member New(accountHolderAddress: Address, accountHolderName: string option, accountNumber: string option, accountType: FundingInstructionsBankTransferZenginRecordAccountType option, bankAddress: Address, bankCode: string option, bankName: string option, branchCode: string option, branchName: string option) =
+        {
+            AccountHolderAddress = accountHolderAddress
+            AccountHolderName = accountHolderName
+            AccountNumber = accountNumber
+            AccountType = accountType
+            BankAddress = bankAddress
+            BankCode = bankCode
+            BankName = bankName
+            BranchCode = branchCode
+            BranchName = branchName
+        }
+
+type FundingInstructionsBankTransferFinancialAddress with
+    static member New(``type``: FundingInstructionsBankTransferFinancialAddressType, ?aba: FundingInstructionsBankTransferAbaRecord, ?iban: FundingInstructionsBankTransferIbanRecord, ?sortCode: FundingInstructionsBankTransferSortCodeRecord, ?spei: FundingInstructionsBankTransferSpeiRecord, ?supportedNetworks: FundingInstructionsBankTransferFinancialAddressSupportedNetworks list, ?swift: FundingInstructionsBankTransferSwiftRecord, ?zengin: FundingInstructionsBankTransferZenginRecord) =
+        {
+            Type = ``type``
+            Aba = aba
+            Iban = iban
+            SortCode = sortCode
+            Spei = spei
+            SupportedNetworks = supportedNetworks
+            Swift = swift
+            Zengin = zengin
         }
 
 type PaymentIntentNextActionDisplayBankTransferInstructions with
@@ -21712,6 +27297,13 @@ type RefundDestinationDetailsAfterpayClearpay with
             ReferenceStatus = referenceStatus
         }
 
+type RefundDestinationDetailsBizum with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsBizumReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
 type RefundDestinationDetailsBlik with
     static member New(networkDeclineCode: string option, reference: string option, referenceStatus: RefundDestinationDetailsBlikReferenceStatus option) =
         {
@@ -21821,6 +27413,13 @@ type RefundDestinationDetailsThBankTransfer with
             ReferenceStatus = referenceStatus
         }
 
+type RefundDestinationDetailsUpi with
+    static member New(reference: string option, referenceStatus: RefundDestinationDetailsUpiReferenceStatus option) =
+        {
+            Reference = reference
+            ReferenceStatus = referenceStatus
+        }
+
 type RefundDestinationDetailsUsBankTransfer with
     static member New(reference: string option, referenceStatus: RefundDestinationDetailsUsBankTransferReferenceStatus option) =
         {
@@ -21829,7 +27428,7 @@ type RefundDestinationDetailsUsBankTransfer with
         }
 
 type RefundDestinationDetails with
-    static member New(``type``: string, ?affirm: DestinationDetailsUnimplemented, ?afterpayClearpay: RefundDestinationDetailsAfterpayClearpay, ?alipay: DestinationDetailsUnimplemented, ?alma: DestinationDetailsUnimplemented, ?amazonPay: DestinationDetailsUnimplemented, ?auBankTransfer: DestinationDetailsUnimplemented, ?blik: RefundDestinationDetailsBlik, ?brBankTransfer: RefundDestinationDetailsBrBankTransfer, ?card: RefundDestinationDetailsCard, ?cashapp: DestinationDetailsUnimplemented, ?crypto: RefundDestinationDetailsCrypto, ?customerCashBalance: DestinationDetailsUnimplemented, ?eps: DestinationDetailsUnimplemented, ?euBankTransfer: RefundDestinationDetailsEuBankTransfer, ?gbBankTransfer: RefundDestinationDetailsGbBankTransfer, ?giropay: DestinationDetailsUnimplemented, ?grabpay: DestinationDetailsUnimplemented, ?jpBankTransfer: RefundDestinationDetailsJpBankTransfer, ?klarna: RefundDestinationDetailsKlarna, ?mbWay: RefundDestinationDetailsMbWay, ?multibanco: RefundDestinationDetailsMultibanco, ?mxBankTransfer: RefundDestinationDetailsMxBankTransfer, ?nzBankTransfer: DestinationDetailsUnimplemented, ?p24: RefundDestinationDetailsP24, ?paynow: DestinationDetailsUnimplemented, ?paypal: RefundDestinationDetailsPaypal, ?pix: DestinationDetailsUnimplemented, ?revolut: DestinationDetailsUnimplemented, ?scalapay: DestinationDetailsUnimplemented, ?sofort: DestinationDetailsUnimplemented, ?swish: RefundDestinationDetailsSwish, ?thBankTransfer: RefundDestinationDetailsThBankTransfer, ?twint: DestinationDetailsUnimplemented, ?usBankTransfer: RefundDestinationDetailsUsBankTransfer, ?wechatPay: DestinationDetailsUnimplemented, ?zip: DestinationDetailsUnimplemented) =
+    static member New(``type``: string, ?affirm: DestinationDetailsUnimplemented, ?afterpayClearpay: RefundDestinationDetailsAfterpayClearpay, ?alipay: DestinationDetailsUnimplemented, ?alma: DestinationDetailsUnimplemented, ?amazonPay: DestinationDetailsUnimplemented, ?auBankTransfer: DestinationDetailsUnimplemented, ?bizum: RefundDestinationDetailsBizum, ?blik: RefundDestinationDetailsBlik, ?brBankTransfer: RefundDestinationDetailsBrBankTransfer, ?card: RefundDestinationDetailsCard, ?cashapp: DestinationDetailsUnimplemented, ?crypto: RefundDestinationDetailsCrypto, ?customerCashBalance: DestinationDetailsUnimplemented, ?eps: DestinationDetailsUnimplemented, ?euBankTransfer: RefundDestinationDetailsEuBankTransfer, ?gbBankTransfer: RefundDestinationDetailsGbBankTransfer, ?giropay: DestinationDetailsUnimplemented, ?grabpay: DestinationDetailsUnimplemented, ?jpBankTransfer: RefundDestinationDetailsJpBankTransfer, ?klarna: RefundDestinationDetailsKlarna, ?mbWay: RefundDestinationDetailsMbWay, ?multibanco: RefundDestinationDetailsMultibanco, ?mxBankTransfer: RefundDestinationDetailsMxBankTransfer, ?nzBankTransfer: DestinationDetailsUnimplemented, ?p24: RefundDestinationDetailsP24, ?paynow: DestinationDetailsUnimplemented, ?paypal: RefundDestinationDetailsPaypal, ?pix: DestinationDetailsUnimplemented, ?revolut: DestinationDetailsUnimplemented, ?scalapay: DestinationDetailsUnimplemented, ?sofort: DestinationDetailsUnimplemented, ?swish: RefundDestinationDetailsSwish, ?thBankTransfer: RefundDestinationDetailsThBankTransfer, ?twint: DestinationDetailsUnimplemented, ?upi: RefundDestinationDetailsUpi, ?usBankTransfer: RefundDestinationDetailsUsBankTransfer, ?wechatPay: DestinationDetailsUnimplemented, ?zip: DestinationDetailsUnimplemented) =
         {
             Type = ``type``
             Affirm = affirm
@@ -21838,6 +27437,7 @@ type RefundDestinationDetails with
             Alma = alma
             AmazonPay = amazonPay
             AuBankTransfer = auBankTransfer
+            Bizum = bizum
             Blik = blik
             BrBankTransfer = brBankTransfer
             Card = card
@@ -21865,6 +27465,7 @@ type RefundDestinationDetails with
             Swish = swish
             ThBankTransfer = thBankTransfer
             Twint = twint
+            Upi = upi
             UsBankTransfer = usBankTransfer
             WechatPay = wechatPay
             Zip = zip
@@ -21892,9 +27493,10 @@ type RefundNextAction with
         }
 
 type Refund with
-    static member New(amount: int, balanceTransaction: StripeId<Markers.BalanceTransaction> option, charge: StripeId<Markers.Charge> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: RefundCustomer'AnyOf option, customerAccount: string option, id: string, metadata: Map<string, string> option, paymentIntent: StripeId<Markers.PaymentIntent> option, paymentMethod: StripeId<Markers.PaymentMethod> option, reason: RefundReason option, receiptNumber: string option, sourceTransferReversal: StripeId<Markers.TransferReversal> option, status: RefundStatus option, transferReversal: StripeId<Markers.TransferReversal> option, ?description: string, ?destinationDetails: RefundDestinationDetails, ?failureBalanceTransaction: StripeId<Markers.BalanceTransaction>, ?failureReason: RefundFailureReason, ?instructionsEmail: string, ?nextAction: RefundNextAction, ?pendingReason: RefundPendingReason, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails) =
+    static member New(amount: int, application: StripeId<Markers.Application> option, balanceTransaction: StripeId<Markers.BalanceTransaction> option, charge: StripeId<Markers.Charge> option, created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: RefundCustomer'AnyOf option, customerAccount: string option, id: string, metadata: Map<string, string> option, paymentIntent: StripeId<Markers.PaymentIntent> option, paymentMethod: StripeId<Markers.PaymentMethod> option, reason: RefundReason option, receiptNumber: string option, sourceTransferReversal: StripeId<Markers.TransferReversal> option, status: RefundStatus option, transferReversal: StripeId<Markers.TransferReversal> option, ?description: string, ?destinationDetails: RefundDestinationDetails, ?failureBalanceTransaction: StripeId<Markers.BalanceTransaction>, ?failureReason: RefundFailureReason, ?instructionsEmail: string, ?nextAction: RefundNextAction, ?pendingReason: RefundPendingReason, ?presentmentDetails: PaymentFlowsPaymentIntentPresentmentDetails) =
         {
             Amount = amount
+            Application = application
             BalanceTransaction = balanceTransaction
             Charge = charge
             Created = created
@@ -22161,10 +27763,46 @@ type PaymentMethodDetailsCardWalletGooglePay with
             PaymentMethodDetailsCardWalletGooglePay = paymentMethodDetailsCardWalletGooglePay |> Option.flatten
         }
 
+type PaymentMethodDetailsLinkFundingSourceCard with
+    static member New(amountAuthorized: int option, authorizationCode: string option, brand: PaymentMethodDetailsLinkFundingSourceCardBrand option, checks: PaymentMethodDetailsCardChecks option, country: IsoTypes.IsoCountryCode option, electronicCommerceIndicator: string option, expMonth: int, expYear: int, funding: PaymentMethodDetailsLinkFundingSourceCardFunding option, last4: string option, network: PaymentMethodDetailsLinkFundingSourceCardNetwork option, networkTransactionId: string option, regulatedStatus: PaymentMethodDetailsLinkFundingSourceCardRegulatedStatus option, threeDSecure: ThreeDSecureDetailsCharge option, transactionLinkId: string option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?networkToken: PaymentMethodDetailsCardNetworkToken option) =
+        {
+            AmountAuthorized = amountAuthorized
+            AuthorizationCode = authorizationCode
+            Brand = brand
+            Checks = checks
+            Country = country
+            ElectronicCommerceIndicator = electronicCommerceIndicator
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Funding = funding
+            Last4 = last4
+            Network = network
+            NetworkTransactionId = networkTransactionId
+            RegulatedStatus = regulatedStatus
+            ThreeDSecure = threeDSecure
+            TransactionLinkId = transactionLinkId
+            Description = description |> Option.flatten
+            Fingerprint = fingerprint |> Option.flatten
+            Iin = iin |> Option.flatten
+            Issuer = issuer |> Option.flatten
+            NetworkToken = networkToken |> Option.flatten
+        }
+
+type PaymentMethodDetailsLinkFundingSource with
+    static member New(card: PaymentMethodDetailsLinkFundingSourceCard) =
+        {
+            Card = card
+        }
+
+module PaymentMethodDetailsLinkFundingSource =
+    ///The type of funding source used for this Link payment.
+    let ``type`` = "card"
+
 type PaymentMethodDetailsCardWalletLink with
-    static member New(fundingSourceGroup: string option) =
+    static member New(fundingSourceGroup: string option, ?fundingSources: PaymentMethodDetailsLinkFundingSource list) =
         {
             FundingSourceGroup = fundingSourceGroup
+            FundingSources = fundingSources
         }
 
 type PaymentMethodDetailsCardWalletMasterpass with
@@ -22396,10 +28034,11 @@ type PaymentMethodDetailsKrCard with
         }
 
 type PaymentMethodDetailsLink with
-    static member New(country: IsoTypes.IsoCountryCode option, ?fundingSourceGroup: string) =
+    static member New(country: IsoTypes.IsoCountryCode option, ?fundingSourceGroup: string, ?fundingSources: PaymentMethodDetailsLinkFundingSource list) =
         {
             Country = country
             FundingSourceGroup = fundingSourceGroup
+            FundingSources = fundingSources
         }
 
 type PaymentMethodDetailsMbWay with
@@ -22504,9 +28143,9 @@ type PaymentMethodDetailsPaypal with
         }
 
 type PaymentMethodDetailsPaypay with
-    static member New(?paymentMethodDetailsPaypay: string option) =
+    static member New(fingerprint: string option) =
         {
-            PaymentMethodDetailsPaypay = paymentMethodDetailsPaypay |> Option.flatten
+            Fingerprint = fingerprint
         }
 
 type PaymentMethodDetailsPayto with
@@ -22978,9 +28617,10 @@ type DisputeEnhancedEvidence with
         }
 
 type DisputeEvidence with
-    static member New(accessActivityLog: string option, billingAddress: string option, cancellationPolicy: StripeId<Markers.File> option, cancellationPolicyDisclosure: string option, cancellationRebuttal: string option, customerCommunication: StripeId<Markers.File> option, customerEmailAddress: string option, customerName: string option, customerPurchaseIp: string option, customerSignature: StripeId<Markers.File> option, duplicateChargeDocumentation: StripeId<Markers.File> option, duplicateChargeExplanation: string option, duplicateChargeId: string option, enhancedEvidence: DisputeEnhancedEvidence, productDescription: string option, receipt: StripeId<Markers.File> option, refundPolicy: StripeId<Markers.File> option, refundPolicyDisclosure: string option, refundRefusalExplanation: string option, serviceDate: string option, serviceDocumentation: StripeId<Markers.File> option, shippingAddress: string option, shippingCarrier: string option, shippingDate: string option, shippingDocumentation: StripeId<Markers.File> option, shippingTrackingNumber: string option, uncategorizedFile: StripeId<Markers.File> option, uncategorizedText: string option, ?appeal: DisputeAppeal option) =
+    static member New(accessActivityLog: string option, appeal: DisputeAppeal option, billingAddress: string option, cancellationPolicy: StripeId<Markers.File> option, cancellationPolicyDisclosure: string option, cancellationRebuttal: string option, customerCommunication: StripeId<Markers.File> option, customerEmailAddress: string option, customerName: string option, customerPurchaseIp: string option, customerSignature: StripeId<Markers.File> option, duplicateChargeDocumentation: StripeId<Markers.File> option, duplicateChargeExplanation: string option, duplicateChargeId: string option, enhancedEvidence: DisputeEnhancedEvidence, productDescription: string option, receipt: StripeId<Markers.File> option, refundPolicy: StripeId<Markers.File> option, refundPolicyDisclosure: string option, refundRefusalExplanation: string option, serviceDate: string option, serviceDocumentation: StripeId<Markers.File> option, shippingAddress: string option, shippingCarrier: string option, shippingDate: string option, shippingDocumentation: StripeId<Markers.File> option, shippingTrackingNumber: string option, uncategorizedFile: StripeId<Markers.File> option, uncategorizedText: string option) =
         {
             AccessActivityLog = accessActivityLog
+            Appeal = appeal
             BillingAddress = billingAddress
             CancellationPolicy = cancellationPolicy
             CancellationPolicyDisclosure = cancellationPolicyDisclosure
@@ -23008,7 +28648,6 @@ type DisputeEvidence with
             ShippingTrackingNumber = shippingTrackingNumber
             UncategorizedFile = uncategorizedFile
             UncategorizedText = uncategorizedText
-            Appeal = appeal |> Option.flatten
         }
 
 type DisputeEnhancedEligibilityMastercardCompliance with
@@ -23275,6 +28914,247 @@ type IssuingAuthorizationVerificationData with
             PostalCode = postalCode
             ThreeDSecure = threeDSecure
         }
+
+type IssuingCardSpendingLimit with
+    static member New(amount: int, categories: IssuingCardSpendingLimitCategories list option, interval: IssuingCardSpendingLimitInterval) =
+        {
+            Amount = amount
+            Categories = categories
+            Interval = interval
+        }
+
+type IssuingCardAuthorizationControls with
+    static member New(allowedCardPresences: IssuingCardAuthorizationControlsAllowedCardPresences list option, allowedCategories: IssuingCardAuthorizationControlsAllowedCategories list option, allowedMerchantCountries: string list option, blockedCardPresences: IssuingCardAuthorizationControlsBlockedCardPresences list option, blockedCategories: IssuingCardAuthorizationControlsBlockedCategories list option, blockedMerchantCountries: string list option, spendingLimits: IssuingCardSpendingLimit list option, spendingLimitsCurrency: IsoTypes.IsoCurrencyCode option) =
+        {
+            AllowedCardPresences = allowedCardPresences
+            AllowedCategories = allowedCategories
+            AllowedMerchantCountries = allowedMerchantCountries
+            BlockedCardPresences = blockedCardPresences
+            BlockedCategories = blockedCategories
+            BlockedMerchantCountries = blockedMerchantCountries
+            SpendingLimits = spendingLimits
+            SpendingLimitsCurrency = spendingLimitsCurrency
+        }
+
+type IssuingCardFraudWarning with
+    static member New(startedAt: DateTime option, ``type``: IssuingCardFraudWarningType option) =
+        {
+            StartedAt = startedAt
+            Type = ``type``
+        }
+
+type IssuingCardLifecycleConditions with
+    static member New(paymentCount: int) =
+        {
+            PaymentCount = paymentCount
+        }
+
+type IssuingCardLifecycleControls with
+    static member New(cancelAfter: IssuingCardLifecycleConditions) =
+        {
+            CancelAfter = cancelAfter
+        }
+
+type IssuingCardShippingAddressValidation with
+    static member New(mode: IssuingCardShippingAddressValidationMode, normalizedAddress: Address option, result: IssuingCardShippingAddressValidationResult option) =
+        {
+            Mode = mode
+            NormalizedAddress = normalizedAddress
+            Result = result
+        }
+
+type IssuingCardShippingCustoms with
+    static member New(eoriNumber: string option) =
+        {
+            EoriNumber = eoriNumber
+        }
+
+type IssuingCardShipping with
+    static member New(address: Address, addressValidation: IssuingCardShippingAddressValidation option, businessName: string option, carrier: IssuingCardShippingCarrier option, customs: IssuingCardShippingCustoms option, deliveredAt: DateTime option, eta: DateTime option, name: string, phoneNumber: string option, requireSignature: bool option, service: IssuingCardShippingService, shippedAt: DateTime option, status: IssuingCardShippingStatus option, trackingNumber: string option, trackingUrl: string option, ``type``: IssuingCardShippingType) =
+        {
+            Address = address
+            AddressValidation = addressValidation
+            BusinessName = businessName
+            Carrier = carrier
+            Customs = customs
+            DeliveredAt = deliveredAt
+            Eta = eta
+            Name = name
+            PhoneNumber = phoneNumber
+            RequireSignature = requireSignature
+            Service = service
+            ShippedAt = shippedAt
+            Status = status
+            TrackingNumber = trackingNumber
+            TrackingUrl = trackingUrl
+            Type = ``type``
+        }
+
+type IssuingCardApplePay with
+    static member New(eligible: bool, ineligibleReason: IssuingCardApplePayIneligibleReason option) =
+        {
+            Eligible = eligible
+            IneligibleReason = ineligibleReason
+        }
+
+type IssuingCardGooglePay with
+    static member New(eligible: bool, ineligibleReason: IssuingCardGooglePayIneligibleReason option) =
+        {
+            Eligible = eligible
+            IneligibleReason = ineligibleReason
+        }
+
+type IssuingCardWallets with
+    static member New(applePay: IssuingCardApplePay, googlePay: IssuingCardGooglePay, primaryAccountIdentifier: string option) =
+        {
+            ApplePay = applePay
+            GooglePay = googlePay
+            PrimaryAccountIdentifier = primaryAccountIdentifier
+        }
+
+type IssuingCardholderAddress with
+    static member New(address: Address) =
+        {
+            Address = address
+        }
+
+type IssuingCardholderSpendingLimit with
+    static member New(amount: int, categories: IssuingCardholderSpendingLimitCategories list option, interval: IssuingCardholderSpendingLimitInterval) =
+        {
+            Amount = amount
+            Categories = categories
+            Interval = interval
+        }
+
+type IssuingCardholderAuthorizationControls with
+    static member New(allowedCardPresences: IssuingCardholderAuthorizationControlsAllowedCardPresences list option, allowedCategories: IssuingCardholderAuthorizationControlsAllowedCategories list option, allowedMerchantCountries: string list option, blockedCardPresences: IssuingCardholderAuthorizationControlsBlockedCardPresences list option, blockedCategories: IssuingCardholderAuthorizationControlsBlockedCategories list option, blockedMerchantCountries: string list option, spendingLimits: IssuingCardholderSpendingLimit list option, spendingLimitsCurrency: IsoTypes.IsoCurrencyCode option) =
+        {
+            AllowedCardPresences = allowedCardPresences
+            AllowedCategories = allowedCategories
+            AllowedMerchantCountries = allowedMerchantCountries
+            BlockedCardPresences = blockedCardPresences
+            BlockedCategories = blockedCategories
+            BlockedMerchantCountries = blockedMerchantCountries
+            SpendingLimits = spendingLimits
+            SpendingLimitsCurrency = spendingLimitsCurrency
+        }
+
+type IssuingCardholderCompany with
+    static member New(taxIdProvided: bool) =
+        {
+            TaxIdProvided = taxIdProvided
+        }
+
+type IssuingCardholderUserTermsAcceptance with
+    static member New(date: DateTime option, ip: string option, userAgent: string option) =
+        {
+            Date = date
+            Ip = ip
+            UserAgent = userAgent
+        }
+
+type IssuingCardholderCardIssuing with
+    static member New(userTermsAcceptance: IssuingCardholderUserTermsAcceptance option) =
+        {
+            UserTermsAcceptance = userTermsAcceptance
+        }
+
+type IssuingCardholderIndividualDob with
+    static member New(day: int option, month: int option, year: int option) =
+        {
+            Day = day
+            Month = month
+            Year = year
+        }
+
+type IssuingCardholderIdDocument with
+    static member New(back: StripeId<Markers.File> option, front: StripeId<Markers.File> option) =
+        {
+            Back = back
+            Front = front
+        }
+
+type IssuingCardholderVerification with
+    static member New(document: IssuingCardholderIdDocument option) =
+        {
+            Document = document
+        }
+
+type IssuingCardholderIndividual with
+    static member New(dob: IssuingCardholderIndividualDob option, firstName: string option, lastName: string option, verification: IssuingCardholderVerification option, ?cardIssuing: IssuingCardholderCardIssuing option) =
+        {
+            Dob = dob
+            FirstName = firstName
+            LastName = lastName
+            Verification = verification
+            CardIssuing = cardIssuing |> Option.flatten
+        }
+
+type IssuingCardholderRequirements with
+    static member New(disabledReason: IssuingCardholderRequirementsDisabledReason option, pastDue: IssuingCardholderRequirementsPastDue list option) =
+        {
+            DisabledReason = disabledReason
+            PastDue = pastDue
+        }
+
+type IssuingCardholder with
+    static member New(billing: IssuingCardholderAddress, company: IssuingCardholderCompany option, created: DateTime, email: string option, id: string, individual: IssuingCardholderIndividual option, livemode: bool, metadata: Map<string, string>, name: string, phoneNumber: string option, preferredLocales: IssuingCardholderPreferredLocales list option, requirements: IssuingCardholderRequirements, spendingControls: IssuingCardholderAuthorizationControls option, status: IssuingCardholderStatus, ``type``: IssuingCardholderType) =
+        {
+            Billing = billing
+            Company = company
+            Created = created
+            Email = email
+            Id = id
+            Individual = individual
+            Livemode = livemode
+            Metadata = metadata
+            Name = name
+            PhoneNumber = phoneNumber
+            PreferredLocales = preferredLocales
+            Requirements = requirements
+            SpendingControls = spendingControls
+            Status = status
+            Type = ``type``
+        }
+
+module IssuingCardholder =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "issuing.cardholder"
+
+type IssuingCard with
+    static member New(brand: string, cancellationReason: IssuingCardCancellationReason option, cardholder: IssuingCardholder, created: DateTime, currency: IsoTypes.IsoCurrencyCode, expMonth: int, expYear: int, id: string, last4: string, latestFraudWarning: IssuingCardFraudWarning option, lifecycleControls: IssuingCardLifecycleControls option, livemode: bool, metadata: Map<string, string>, personalizationDesign: StripeId<Markers.IssuingPersonalizationDesign> option, replacedBy: StripeId<Markers.IssuingCard> option, replacementFor: StripeId<Markers.IssuingCard> option, replacementReason: IssuingCardReplacementReason option, secondLine: string option, shipping: IssuingCardShipping option, spendingControls: IssuingCardAuthorizationControls, status: IssuingCardStatus, ``type``: IssuingCardType, wallets: IssuingCardWallets option, ?cvc: string, ?financialAccount: string option, ?number: string) =
+        {
+            Brand = brand
+            CancellationReason = cancellationReason
+            Cardholder = cardholder
+            Created = created
+            Currency = currency
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Id = id
+            Last4 = last4
+            LatestFraudWarning = latestFraudWarning
+            LifecycleControls = lifecycleControls
+            Livemode = livemode
+            Metadata = metadata
+            PersonalizationDesign = personalizationDesign
+            ReplacedBy = replacedBy
+            ReplacementFor = replacementFor
+            ReplacementReason = replacementReason
+            SecondLine = secondLine
+            Shipping = shipping
+            SpendingControls = spendingControls
+            Status = status
+            Type = ``type``
+            Wallets = wallets
+            Cvc = cvc
+            FinancialAccount = financialAccount |> Option.flatten
+            Number = number
+        }
+
+module IssuingCard =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "issuing.card"
 
 type IssuingTransactionAmountDetails with
     static member New(atmFee: int option, cashbackAmount: int option) =
@@ -24391,6 +30271,193 @@ type ChargeUpdated with
             Object = object
         }
 
+type ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline with
+    static member New(ipAddress: string option, userAgent: string option) =
+        {
+            IpAddress = ipAddress
+            UserAgent = userAgent
+        }
+
+type ConfirmationTokensResourceMandateDataResourceCustomerAcceptance with
+    static member New(online: ConfirmationTokensResourceMandateDataResourceCustomerAcceptanceResourceOnline option, ``type``: string) =
+        {
+            Online = online
+            Type = ``type``
+        }
+
+type ConfirmationTokensResourceMandateData with
+    static member New(customerAcceptance: ConfirmationTokensResourceMandateDataResourceCustomerAcceptance) =
+        {
+            CustomerAcceptance = customerAcceptance
+        }
+
+type ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment with
+    static member New(?plan: PaymentMethodDetailsCardInstallmentsPlan) =
+        {
+            Plan = plan
+        }
+
+type ConfirmationTokensResourcePaymentMethodOptionsResourceCard with
+    static member New(cvcToken: string option, ?installments: ConfirmationTokensResourcePaymentMethodOptionsResourceCardResourceInstallment) =
+        {
+            CvcToken = cvcToken
+            Installments = installments
+        }
+
+type ConfirmationTokensResourcePaymentMethodOptions with
+    static member New(card: ConfirmationTokensResourcePaymentMethodOptionsResourceCard option) =
+        {
+            Card = card
+        }
+
+type ConfirmationTokenPaymentMethodPreviewCardWalletLink with
+    static member New(?confirmationTokenPaymentMethodPreviewCardWalletLink: string option) =
+        {
+            ConfirmationTokenPaymentMethodPreviewCardWalletLink = confirmationTokenPaymentMethodPreviewCardWalletLink |> Option.flatten
+        }
+
+type ConfirmationTokenPaymentMethodPreviewCardWallet with
+    static member New(dynamicLast4: string option, ``type``: ConfirmationTokenPaymentMethodPreviewCardWalletType, ?amexExpressCheckout: PaymentMethodCardWalletAmexExpressCheckout, ?applePay: PaymentMethodCardWalletApplePay, ?googlePay: PaymentMethodCardWalletGooglePay, ?link: ConfirmationTokenPaymentMethodPreviewCardWalletLink, ?masterpass: PaymentMethodCardWalletMasterpass, ?samsungPay: PaymentMethodCardWalletSamsungPay, ?visaCheckout: PaymentMethodCardWalletVisaCheckout) =
+        {
+            DynamicLast4 = dynamicLast4
+            Type = ``type``
+            AmexExpressCheckout = amexExpressCheckout
+            ApplePay = applePay
+            GooglePay = googlePay
+            Link = link
+            Masterpass = masterpass
+            SamsungPay = samsungPay
+            VisaCheckout = visaCheckout
+        }
+
+type ConfirmationTokenPaymentMethodPreviewCard with
+    static member New(brand: ConfirmationTokenPaymentMethodPreviewCardBrand, checks: PaymentMethodCardChecks option, country: IsoTypes.IsoCountryCode option, displayBrand: string option, expMonth: int, expYear: int, funding: ConfirmationTokenPaymentMethodPreviewCardFunding, generatedFrom: PaymentMethodCardGeneratedCard option, last4: string, networks: Networks option, regulatedStatus: ConfirmationTokenPaymentMethodPreviewCardRegulatedStatus option, threeDSecureUsage: ThreeDSecureUsage option, wallet: ConfirmationTokenPaymentMethodPreviewCardWallet option, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option) =
+        {
+            Brand = brand
+            Checks = checks
+            Country = country
+            DisplayBrand = displayBrand
+            ExpMonth = expMonth
+            ExpYear = expYear
+            Funding = funding
+            GeneratedFrom = generatedFrom
+            Last4 = last4
+            Networks = networks
+            RegulatedStatus = regulatedStatus
+            ThreeDSecureUsage = threeDSecureUsage
+            Wallet = wallet
+            Description = description |> Option.flatten
+            Fingerprint = fingerprint |> Option.flatten
+            Iin = iin |> Option.flatten
+            Issuer = issuer |> Option.flatten
+        }
+
+type ConfirmationTokenPaymentMethodPreviewLink with
+    static member New(email: string option, ?persistentToken: string) =
+        {
+            Email = email
+            PersistentToken = persistentToken
+        }
+
+type ConfirmationTokensResourcePaymentMethodPreview with
+    static member New(billingDetails: BillingDetails, customer: StripeId<Markers.Customer> option, customerAccount: string option, ``type``: ConfirmationTokensResourcePaymentMethodPreviewType, ?acssDebit: PaymentMethodAcssDebit, ?affirm: PaymentMethodAffirm, ?afterpayClearpay: PaymentMethodAfterpayClearpay, ?alipay: PaymentFlowsPrivatePaymentMethodsAlipay, ?allowRedisplay: ConfirmationTokensResourcePaymentMethodPreviewAllowRedisplay, ?alma: PaymentMethodAlma, ?amazonPay: PaymentMethodAmazonPay, ?auBecsDebit: PaymentMethodAuBecsDebit, ?bacsDebit: PaymentMethodBacsDebit, ?bancontact: PaymentMethodBancontact, ?billie: PaymentMethodBillie, ?bizum: PaymentMethodBizum, ?blik: PaymentMethodBlik, ?boleto: PaymentMethodBoleto, ?card: ConfirmationTokenPaymentMethodPreviewCard, ?cardPresent: PaymentMethodCardPresent, ?cashapp: PaymentMethodCashapp, ?crypto: PaymentMethodCrypto, ?customerBalance: PaymentMethodCustomerBalance, ?eps: PaymentMethodEps, ?fpx: PaymentMethodFpx, ?giropay: PaymentMethodGiropay, ?grabpay: PaymentMethodGrabpay, ?ideal: PaymentMethodIdeal, ?interacPresent: PaymentMethodInteracPresent, ?kakaoPay: PaymentMethodKakaoPay, ?klarna: PaymentMethodKlarna, ?konbini: PaymentMethodKonbini, ?krCard: PaymentMethodKrCard, ?link: ConfirmationTokenPaymentMethodPreviewLink, ?mbWay: PaymentMethodMbWay, ?mobilepay: PaymentMethodMobilepay, ?multibanco: PaymentMethodMultibanco, ?naverPay: PaymentMethodNaverPay, ?nzBankAccount: PaymentMethodNzBankAccount, ?oxxo: PaymentMethodOxxo, ?p24: PaymentMethodP24, ?payByBank: PaymentMethodPayByBank, ?payco: PaymentMethodPayco, ?paynow: PaymentMethodPaynow, ?paypal: PaymentMethodPaypal, ?paypay: PaymentMethodPaypay, ?payto: PaymentMethodPayto, ?pix: PaymentMethodPix, ?promptpay: PaymentMethodPromptpay, ?revolutPay: PaymentMethodRevolutPay, ?samsungPay: PaymentMethodSamsungPay, ?satispay: PaymentMethodSatispay, ?scalapay: PaymentMethodScalapay, ?sepaDebit: PaymentMethodSepaDebit, ?sequra: PaymentMethodSequra, ?sofort: PaymentMethodSofort, ?sunbit: PaymentMethodSunbit, ?swish: PaymentMethodSwish, ?twint: PaymentMethodTwint, ?upi: PaymentMethodUpi, ?usBankAccount: PaymentMethodUsBankAccount, ?wechatPay: PaymentMethodWechatPay, ?zip: PaymentMethodZip) =
+        {
+            BillingDetails = billingDetails
+            Customer = customer
+            CustomerAccount = customerAccount
+            Type = ``type``
+            AcssDebit = acssDebit
+            Affirm = affirm
+            AfterpayClearpay = afterpayClearpay
+            Alipay = alipay
+            AllowRedisplay = allowRedisplay
+            Alma = alma
+            AmazonPay = amazonPay
+            AuBecsDebit = auBecsDebit
+            BacsDebit = bacsDebit
+            Bancontact = bancontact
+            Billie = billie
+            Bizum = bizum
+            Blik = blik
+            Boleto = boleto
+            Card = card
+            CardPresent = cardPresent
+            Cashapp = cashapp
+            Crypto = crypto
+            CustomerBalance = customerBalance
+            Eps = eps
+            Fpx = fpx
+            Giropay = giropay
+            Grabpay = grabpay
+            Ideal = ideal
+            InteracPresent = interacPresent
+            KakaoPay = kakaoPay
+            Klarna = klarna
+            Konbini = konbini
+            KrCard = krCard
+            Link = link
+            MbWay = mbWay
+            Mobilepay = mobilepay
+            Multibanco = multibanco
+            NaverPay = naverPay
+            NzBankAccount = nzBankAccount
+            Oxxo = oxxo
+            P24 = p24
+            PayByBank = payByBank
+            Payco = payco
+            Paynow = paynow
+            Paypal = paypal
+            Paypay = paypay
+            Payto = payto
+            Pix = pix
+            Promptpay = promptpay
+            RevolutPay = revolutPay
+            SamsungPay = samsungPay
+            Satispay = satispay
+            Scalapay = scalapay
+            SepaDebit = sepaDebit
+            Sequra = sequra
+            Sofort = sofort
+            Sunbit = sunbit
+            Swish = swish
+            Twint = twint
+            Upi = upi
+            UsBankAccount = usBankAccount
+            WechatPay = wechatPay
+            Zip = zip
+        }
+
+type ConfirmationTokensResourceShipping with
+    static member New(address: Address, name: string, phone: string option) =
+        {
+            Address = address
+            Name = name
+            Phone = phone
+        }
+
+type ConfirmationToken with
+    static member New(created: DateTime, expiresAt: DateTime option, id: string, livemode: bool, metadata: Map<string, string> option, paymentIntent: string option, paymentMethodOptions: ConfirmationTokensResourcePaymentMethodOptions option, paymentMethodPreview: ConfirmationTokensResourcePaymentMethodPreview option, returnUrl: string option, setupFutureUsage: ConfirmationTokenSetupFutureUsage option, setupIntent: string option, shipping: ConfirmationTokensResourceShipping option, useStripeSdk: bool, ?mandateData: ConfirmationTokensResourceMandateData option) =
+        {
+            Created = created
+            ExpiresAt = expiresAt
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            PaymentIntent = paymentIntent
+            PaymentMethodOptions = paymentMethodOptions
+            PaymentMethodPreview = paymentMethodPreview
+            ReturnUrl = returnUrl
+            SetupFutureUsage = setupFutureUsage
+            SetupIntent = setupIntent
+            Shipping = shipping
+            UseStripeSdk = useStripeSdk
+            MandateData = mandateData |> Option.flatten
+        }
+
+module ConfirmationToken =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "confirmation_token"
+
 type ConnectEmbeddedAccountFeaturesClaim with
     static member New(disableStripeUserAuthentication: bool, externalAccountCollection: bool) =
         {
@@ -24519,6 +30586,20 @@ type ConnectEmbeddedIssuingCardsListConfigClaim with
             Features = features
         }
 
+type ConnectEmbeddedNotificationBannerFeatures with
+    static member New(disableStripeUserAuthentication: bool, externalAccountCollection: bool) =
+        {
+            DisableStripeUserAuthentication = disableStripeUserAuthentication
+            ExternalAccountCollection = externalAccountCollection
+        }
+
+type ConnectEmbeddedNotificationBannerConfig with
+    static member New(enabled: bool, features: ConnectEmbeddedNotificationBannerFeatures) =
+        {
+            Enabled = enabled
+            Features = features
+        }
+
 type ConnectEmbeddedPaymentDisputesFeatures with
     static member New(destinationOnBehalfOfChargeManagement: bool, disputeManagement: bool, refundManagement: bool, smartDisputesManagement: bool) =
         {
@@ -24583,7 +30664,7 @@ type ConnectEmbeddedPayoutsConfig with
         }
 
 type ConnectEmbeddedAccountSessionCreateComponents with
-    static member New(accountManagement: ConnectEmbeddedAccountConfigClaim, accountOnboarding: ConnectEmbeddedAccountConfigClaim, balanceReport: ConnectEmbeddedBaseConfigClaim, balances: ConnectEmbeddedPayoutsConfig, disputesList: ConnectEmbeddedDisputesListConfig, documents: ConnectEmbeddedBaseConfigClaim, financialAccount: ConnectEmbeddedFinancialAccountConfigClaim, financialAccountTransactions: ConnectEmbeddedFinancialAccountTransactionsConfigClaim, instantPayoutsPromotion: ConnectEmbeddedInstantPayoutsPromotionConfig, issuingCard: ConnectEmbeddedIssuingCardConfigClaim, issuingCardsList: ConnectEmbeddedIssuingCardsListConfigClaim, notificationBanner: ConnectEmbeddedAccountConfigClaim, paymentDetails: ConnectEmbeddedPaymentsConfigClaim, paymentDisputes: ConnectEmbeddedPaymentDisputesConfig, paymentMethodSettings: ConnectEmbeddedPaymentMethodSettingsConfigClaim, payments: ConnectEmbeddedPaymentsConfigClaim, payoutDetails: ConnectEmbeddedBaseConfigClaim, payoutReconciliationReport: ConnectEmbeddedBaseConfigClaim, payouts: ConnectEmbeddedPayoutsConfig, payoutsList: ConnectEmbeddedBaseConfigClaim, reportingChart: ConnectEmbeddedBaseConfig, taxRegistrations: ConnectEmbeddedBaseConfigClaim, taxSettings: ConnectEmbeddedBaseConfigClaim, terminalHardwareOrders: ConnectEmbeddedBaseConfig, terminalHardwareShop: ConnectEmbeddedBaseConfig) =
+    static member New(accountManagement: ConnectEmbeddedAccountConfigClaim, accountOnboarding: ConnectEmbeddedAccountConfigClaim, balanceReport: ConnectEmbeddedBaseConfigClaim, balances: ConnectEmbeddedPayoutsConfig, disputesList: ConnectEmbeddedDisputesListConfig, documents: ConnectEmbeddedBaseConfigClaim, financialAccount: ConnectEmbeddedFinancialAccountConfigClaim, financialAccountTransactions: ConnectEmbeddedFinancialAccountTransactionsConfigClaim, instantPayoutsPromotion: ConnectEmbeddedInstantPayoutsPromotionConfig, issuingCard: ConnectEmbeddedIssuingCardConfigClaim, issuingCardsList: ConnectEmbeddedIssuingCardsListConfigClaim, notificationBanner: ConnectEmbeddedNotificationBannerConfig, paymentDetails: ConnectEmbeddedPaymentsConfigClaim, paymentDisputes: ConnectEmbeddedPaymentDisputesConfig, paymentMethodSettings: ConnectEmbeddedPaymentMethodSettingsConfigClaim, payments: ConnectEmbeddedPaymentsConfigClaim, payoutDetails: ConnectEmbeddedBaseConfigClaim, payoutReconciliationReport: ConnectEmbeddedBaseConfigClaim, payouts: ConnectEmbeddedPayoutsConfig, payoutsList: ConnectEmbeddedBaseConfigClaim, reportingChart: ConnectEmbeddedBaseConfig, taxRegistrations: ConnectEmbeddedBaseConfigClaim, taxSettings: ConnectEmbeddedBaseConfigClaim, terminalHardwareOrders: ConnectEmbeddedBaseConfig, terminalHardwareShop: ConnectEmbeddedBaseConfig) =
         {
             AccountManagement = accountManagement
             AccountOnboarding = accountOnboarding
@@ -24842,6 +30923,28 @@ type DeletedPerson with
 module DeletedPerson =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "person"
+
+type DeletedPlan with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedPlan =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "plan"
+
+type DeletedPrice with
+    static member New(deleted: bool, id: string) =
+        {
+            Deleted = deleted
+            Id = id
+        }
+
+module DeletedPrice =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "price"
 
 type DeletedSubscriptionItem with
     static member New(deleted: bool, id: string) =
@@ -25106,6 +31209,29 @@ module FinancialConnectionsTransaction =
     ///String representing the object's type. Objects of the same type share the same value.
     let object = "financial_connections.transaction"
 
+type FundingInstructionsBankTransfer with
+    static member New(country: IsoTypes.IsoCountryCode, financialAddresses: FundingInstructionsBankTransferFinancialAddress list, ``type``: FundingInstructionsBankTransferType) =
+        {
+            Country = country
+            FinancialAddresses = financialAddresses
+            Type = ``type``
+        }
+
+type FundingInstructions with
+    static member New(bankTransfer: FundingInstructionsBankTransfer, currency: IsoTypes.IsoCurrencyCode, livemode: bool) =
+        {
+            BankTransfer = bankTransfer
+            Currency = currency
+            Livemode = livemode
+        }
+
+module FundingInstructions =
+    ///The `funding_type` of the returned instructions
+    let fundingType = "bank_transfer"
+
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "funding_instructions"
+
 type InvoiceLineItemPeriod with
     static member New(``end``: DateTime, start: DateTime) =
         {
@@ -25250,6 +31376,12 @@ type InvoicePaymentMethodOptionsSepaDebit with
     static member New(?invoicePaymentMethodOptionsSepaDebit: string option) =
         {
             InvoicePaymentMethodOptionsSepaDebit = invoicePaymentMethodOptionsSepaDebit |> Option.flatten
+        }
+
+type InvoicePaymentMethodOptionsUpi with
+    static member New(?mandateOptions: InvoicePaymentMethodOptionsMandateOptionsUpi) =
+        {
+            MandateOptions = mandateOptions
         }
 
 type InvoicesPaymentMethodOptions with
@@ -25636,6 +31768,30 @@ type IssuingAuthorizationCreated with
 
 type IssuingAuthorizationUpdated with
     static member New(object: IssuingAuthorization) =
+        {
+            Object = object
+        }
+
+type IssuingCardCreated with
+    static member New(object: IssuingCard) =
+        {
+            Object = object
+        }
+
+type IssuingCardUpdated with
+    static member New(object: IssuingCard) =
+        {
+            Object = object
+        }
+
+type IssuingCardholderCreated with
+    static member New(object: IssuingCardholder) =
+        {
+            Object = object
+        }
+
+type IssuingCardholderUpdated with
+    static member New(object: IssuingCardholder) =
         {
             Object = object
         }
@@ -26416,9 +32572,9 @@ type PaymentMethodDetailsPaymentRecordPaynow with
         }
 
 type PaymentMethodDetailsPaymentRecordPaypay with
-    static member New(?paymentMethodDetailsPaymentRecordPaypay: string option) =
+    static member New(?fingerprint: string) =
         {
-            PaymentMethodDetailsPaymentRecordPaypay = paymentMethodDetailsPaymentRecordPaypay |> Option.flatten
+            Fingerprint = fingerprint
         }
 
 type PaymentMethodDetailsPaymentRecordPayto with
@@ -26602,12 +32758,13 @@ type PaymentPagesCheckoutSessionAfterExpiration with
         }
 
 type PaymentPagesCheckoutSessionAutomaticTax with
-    static member New(enabled: bool, liability: ConnectAccountReference option, provider: string option, status: PaymentPagesCheckoutSessionAutomaticTaxStatus option) =
+    static member New(enabled: bool, liability: ConnectAccountReference option, provider: string option, status: PaymentPagesCheckoutSessionAutomaticTaxStatus option, ?addressCollectionPrecision: PaymentPagesCheckoutSessionAutomaticTaxAddressCollectionPrecision option) =
         {
             Enabled = enabled
             Liability = liability
             Provider = provider
             Status = status
+            AddressCollectionPrecision = addressCollectionPrecision |> Option.flatten
         }
 
 type PaymentPagesCheckoutSessionBrandingSettingsIcon with
@@ -27020,7 +33177,7 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWal
         }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails with
-    static member New(authorizationCode: string option, brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsBrand option, checks: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsFunding option, installments: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments option, last4: string option, network: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsNetwork option, networkAdviceCode: string option, networkDeclineCode: string option, networkTransactionId: string option, threeDSecure: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure option, wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option, ?captureBefore: DateTime, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool option, ?networkToken: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken option, ?storedCredentialUsage: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage option) =
+    static member New(authorizationCode: string option, brand: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsBrand option, checks: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceChecks option, country: IsoTypes.IsoCountryCode option, expMonth: int option, expYear: int option, funding: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsFunding option, installments: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceInstallments option, last4: string option, network: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsNetwork option, networkAdviceCode: string option, networkDeclineCode: string option, networkTransactionId: string option, storedCredentialUsage: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsStoredCredentialUsage option, threeDSecure: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceThreeDSecure option, wallet: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceWallet option, ?captureBefore: DateTime, ?description: string option, ?fingerprint: string option, ?iin: string option, ?issuer: string option, ?moto: bool option, ?networkToken: PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetailsResourceNetworkToken option) =
         {
             AuthorizationCode = authorizationCode
             Brand = brand
@@ -27035,6 +33192,7 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails with
             NetworkAdviceCode = networkAdviceCode
             NetworkDeclineCode = networkDeclineCode
             NetworkTransactionId = networkTransactionId
+            StoredCredentialUsage = storedCredentialUsage
             ThreeDSecure = threeDSecure
             Wallet = wallet
             CaptureBefore = captureBefore
@@ -27044,7 +33202,6 @@ type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCardDetails with
             Issuer = issuer |> Option.flatten
             Moto = moto |> Option.flatten
             NetworkToken = networkToken |> Option.flatten
-            StoredCredentialUsage = storedCredentialUsage |> Option.flatten
         }
 
 type PaymentsPrimitivesPaymentRecordsResourcePaymentMethodCustomDetails with
@@ -27201,6 +33358,60 @@ type PersonDeleted with
 
 type PersonUpdated with
     static member New(object: Person) =
+        {
+            Object = object
+        }
+
+type PlanCreated with
+    static member New(object: Plan) =
+        {
+            Object = object
+        }
+
+type PlanDeleted with
+    static member New(object: Plan) =
+        {
+            Object = object
+        }
+
+type PlanUpdated with
+    static member New(object: Plan) =
+        {
+            Object = object
+        }
+
+type PriceCreated with
+    static member New(object: Price) =
+        {
+            Object = object
+        }
+
+type PriceDeleted with
+    static member New(object: Price) =
+        {
+            Object = object
+        }
+
+type PriceUpdated with
+    static member New(object: Price) =
+        {
+            Object = object
+        }
+
+type ProductCreated with
+    static member New(object: Product) =
+        {
+            Object = object
+        }
+
+type ProductDeleted with
+    static member New(object: Product) =
+        {
+            Object = object
+        }
+
+type ProductUpdated with
+    static member New(object: Product) =
         {
             Object = object
         }
@@ -27403,6 +33614,646 @@ type SubscriptionSchedulesResourcePauseSchedule with
             Pause = pause
             Resume = resume
         }
+
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted with
+    static member New(transaction: string) =
+        {
+            Transaction = transaction
+        }
+
+type TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored with
+    static member New(reason: TaxProductResourceTaxAssociationTransactionAttemptsResourceErroredReason) =
+        {
+            Reason = reason
+        }
+
+type TaxProductResourceTaxAssociationTransactionAttempts with
+    static member New(source: string, status: TaxProductResourceTaxAssociationTransactionAttemptsStatus, ?committed: TaxProductResourceTaxAssociationTransactionAttemptsResourceCommitted, ?errored: TaxProductResourceTaxAssociationTransactionAttemptsResourceErrored) =
+        {
+            Source = source
+            Status = status
+            Committed = committed
+            Errored = errored
+        }
+
+type TaxAssociation with
+    static member New(calculation: string, id: string, paymentIntent: string, taxTransactionAttempts: TaxProductResourceTaxAssociationTransactionAttempts list option) =
+        {
+            Calculation = calculation
+            Id = id
+            PaymentIntent = paymentIntent
+            TaxTransactionAttempts = taxTransactionAttempts
+        }
+
+module TaxAssociation =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.association"
+
+type TaxProductResourceJurisdiction with
+    static member New(country: IsoTypes.IsoCountryCode, displayName: string, level: TaxProductResourceJurisdictionLevel, state: string option) =
+        {
+            Country = country
+            DisplayName = displayName
+            Level = level
+            State = state
+        }
+
+type TaxProductResourceLineItemTaxRateDetails with
+    static member New(displayName: string, percentageDecimal: string, taxType: TaxProductResourceLineItemTaxRateDetailsTaxType) =
+        {
+            DisplayName = displayName
+            PercentageDecimal = percentageDecimal
+            TaxType = taxType
+        }
+
+type TaxProductResourceLineItemTaxBreakdown with
+    static member New(amount: int, jurisdiction: TaxProductResourceJurisdiction, sourcing: TaxProductResourceLineItemTaxBreakdownSourcing, taxRateDetails: TaxProductResourceLineItemTaxRateDetails option, taxabilityReason: TaxProductResourceLineItemTaxBreakdownTaxabilityReason, taxableAmount: int) =
+        {
+            Amount = amount
+            Jurisdiction = jurisdiction
+            Sourcing = sourcing
+            TaxRateDetails = taxRateDetails
+            TaxabilityReason = taxabilityReason
+            TaxableAmount = taxableAmount
+        }
+
+type TaxCalculationLineItem with
+    static member New(amount: int, amountTax: int, id: string, livemode: bool, metadata: Map<string, string> option, performanceLocation: string option, product: string option, quantity: int, reference: string, taxBehavior: TaxCalculationLineItemTaxBehavior, taxCode: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list option) =
+        {
+            Amount = amount
+            AmountTax = amountTax
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            PerformanceLocation = performanceLocation
+            Product = product
+            Quantity = quantity
+            Reference = reference
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            TaxBreakdown = taxBreakdown |> Option.flatten
+        }
+
+module TaxCalculationLineItem =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.calculation_line_item"
+
+type TaxCalculationLineItems with
+    static member New(data: TaxCalculationLineItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
+module TaxCalculationLineItems =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+type TaxProductResourceCustomerDetailsResourceTaxId with
+    static member New(``type``: TaxProductResourceCustomerDetailsResourceTaxIdType, value: string) =
+        {
+            Type = ``type``
+            Value = value
+        }
+
+type TaxProductResourcePostalAddress with
+    static member New(city: string option, country: IsoTypes.IsoCountryCode, line1: string option, line2: string option, postalCode: string option, state: string option) =
+        {
+            City = city
+            Country = country
+            Line1 = line1
+            Line2 = line2
+            PostalCode = postalCode
+            State = state
+        }
+
+type TaxProductResourceCustomerDetails with
+    static member New(address: TaxProductResourcePostalAddress option, addressSource: TaxProductResourceCustomerDetailsAddressSource option, ipAddress: string option, taxIds: TaxProductResourceCustomerDetailsResourceTaxId list, taxabilityOverride: TaxProductResourceCustomerDetailsTaxabilityOverride) =
+        {
+            Address = address
+            AddressSource = addressSource
+            IpAddress = ipAddress
+            TaxIds = taxIds
+            TaxabilityOverride = taxabilityOverride
+        }
+
+type TaxProductResourceShipFromDetails with
+    static member New(address: TaxProductResourcePostalAddress) =
+        {
+            Address = address
+        }
+
+type TaxProductResourceTaxRateDetails with
+    static member New(country: IsoTypes.IsoCountryCode option, flatAmount: TaxRateFlatAmount option, percentageDecimal: string, rateType: TaxProductResourceTaxRateDetailsRateType option, state: string option, taxType: TaxProductResourceTaxRateDetailsTaxType option) =
+        {
+            Country = country
+            FlatAmount = flatAmount
+            PercentageDecimal = percentageDecimal
+            RateType = rateType
+            State = state
+            TaxType = taxType
+        }
+
+type TaxProductResourceTaxBreakdown with
+    static member New(amount: int, inclusive: bool, taxRateDetails: TaxProductResourceTaxRateDetails, taxabilityReason: TaxProductResourceTaxBreakdownTaxabilityReason, taxableAmount: int) =
+        {
+            Amount = amount
+            Inclusive = inclusive
+            TaxRateDetails = taxRateDetails
+            TaxabilityReason = taxabilityReason
+            TaxableAmount = taxableAmount
+        }
+
+type TaxProductResourceTaxCalculationShippingCost with
+    static member New(amount: int, amountTax: int, taxBehavior: TaxProductResourceTaxCalculationShippingCostTaxBehavior, taxCode: string, ?shippingRate: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list) =
+        {
+            Amount = amount
+            AmountTax = amountTax
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            ShippingRate = shippingRate
+            TaxBreakdown = taxBreakdown
+        }
+
+type TaxCalculation with
+    static member New(amountTotal: int, currency: IsoTypes.IsoCurrencyCode, customer: string option, customerDetails: TaxProductResourceCustomerDetails, expiresAt: DateTime option, id: string option, livemode: bool, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxCalculationShippingCost option, taxAmountExclusive: int, taxAmountInclusive: int, taxBreakdown: TaxProductResourceTaxBreakdown list, taxDate: DateTime, ?lineItems: TaxCalculationLineItems option) =
+        {
+            AmountTotal = amountTotal
+            Currency = currency
+            Customer = customer
+            CustomerDetails = customerDetails
+            ExpiresAt = expiresAt
+            Id = id
+            Livemode = livemode
+            ShipFromDetails = shipFromDetails
+            ShippingCost = shippingCost
+            TaxAmountExclusive = taxAmountExclusive
+            TaxAmountInclusive = taxAmountInclusive
+            TaxBreakdown = taxBreakdown
+            TaxDate = taxDate
+            LineItems = lineItems |> Option.flatten
+        }
+
+module TaxCalculation =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.calculation"
+
+type TaxLocation with
+    static member New(address: Address, description: string option, id: string, livemode: bool) =
+        {
+            Address = address
+            Description = description
+            Id = id
+            Livemode = livemode
+        }
+
+module TaxLocation =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.location"
+
+    ///The type of tax location to be defined. Currently the only option is `performance`.
+    let ``type`` = "performance"
+
+type TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard with
+    static member New(province: string) =
+        {
+            Province = province
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsCanada with
+    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsCanadaType, ?provinceStandard: TaxProductRegistrationsResourceCountryOptionsCaProvinceStandard) =
+        {
+            Type = ``type``
+            ProvinceStandard = provinceStandard
+        }
+
+module TaxProductRegistrationsResourceCountryOptionsDefault =
+    ///Type of registration in `country`.
+    let ``type`` = "standard"
+
+type TaxProductRegistrationsResourceCountryOptionsDefaultStandard with
+    static member New(placeOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsDefaultStandardPlaceOfSupplyScheme) =
+        {
+            PlaceOfSupplyScheme = placeOfSupplyScheme
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods with
+    static member New(?standard: TaxProductRegistrationsResourceCountryOptionsDefaultStandard) =
+        {
+            Standard = standard
+        }
+
+module TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods =
+    ///Type of registration in `country`.
+    let ``type`` = "standard"
+
+type TaxProductRegistrationsResourceCountryOptionsEuStandard with
+    static member New(placeOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsEuStandardPlaceOfSupplyScheme) =
+        {
+            PlaceOfSupplyScheme = placeOfSupplyScheme
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsEurope with
+    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsEuropeType, ?standard: TaxProductRegistrationsResourceCountryOptionsEuStandard) =
+        {
+            Type = ``type``
+            Standard = standard
+        }
+
+module TaxProductRegistrationsResourceCountryOptionsSimplified =
+    ///Type of registration in `country`.
+    let ``type`` = "simplified"
+
+type TaxProductRegistrationsResourceCountryOptionsIgic with
+    static member New(placeOfSupplyScheme: TaxProductRegistrationsResourceCountryOptionsIgicPlaceOfSupplyScheme) =
+        {
+            PlaceOfSupplyScheme = placeOfSupplyScheme
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsSpain with
+    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsSpainType, ?igic: TaxProductRegistrationsResourceCountryOptionsIgic, ?standard: TaxProductRegistrationsResourceCountryOptionsEuStandard) =
+        {
+            Type = ``type``
+            Igic = igic
+            Standard = standard
+        }
+
+module TaxProductRegistrationsResourceCountryOptionsThailand =
+    ///Type of registration in `country`.
+    let ``type`` = "simplified"
+
+type TaxProductRegistrationsResourceCountryOptionsUsAdmissionsTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsAttendanceTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsEntertainmentTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsGrossReceiptsTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsHospitalityTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsLuxuryTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsMassTransitParkingTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsParkingTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsResortTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection with
+    static member New(``type``: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElectionType, ?jurisdiction: string) =
+        {
+            Type = ``type``
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax with
+    static member New(?elections: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTaxElection list) =
+        {
+            Elections = elections
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsTourismTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUsUtilityUsersTax with
+    static member New(jurisdiction: string) =
+        {
+            Jurisdiction = jurisdiction
+        }
+
+type TaxProductRegistrationsResourceCountryOptionsUnitedStates with
+    static member New(state: string, ``type``: TaxProductRegistrationsResourceCountryOptionsUnitedStatesType, ?admissionsTax: TaxProductRegistrationsResourceCountryOptionsUsAdmissionsTax, ?attendanceTax: TaxProductRegistrationsResourceCountryOptionsUsAttendanceTax, ?entertainmentTax: TaxProductRegistrationsResourceCountryOptionsUsEntertainmentTax, ?grossReceiptsTax: TaxProductRegistrationsResourceCountryOptionsUsGrossReceiptsTax, ?hospitalityTax: TaxProductRegistrationsResourceCountryOptionsUsHospitalityTax, ?localAmusementTax: TaxProductRegistrationsResourceCountryOptionsUsLocalAmusementTax, ?localLeaseTax: TaxProductRegistrationsResourceCountryOptionsUsLocalLeaseTax, ?luxuryTax: TaxProductRegistrationsResourceCountryOptionsUsLuxuryTax, ?massTransitParkingTax: TaxProductRegistrationsResourceCountryOptionsUsMassTransitParkingTax, ?parkingTax: TaxProductRegistrationsResourceCountryOptionsUsParkingTax, ?resortTax: TaxProductRegistrationsResourceCountryOptionsUsResortTax, ?stateSalesTax: TaxProductRegistrationsResourceCountryOptionsUsStateSalesTax, ?tourismTax: TaxProductRegistrationsResourceCountryOptionsUsTourismTax, ?utilityUsersTax: TaxProductRegistrationsResourceCountryOptionsUsUtilityUsersTax) =
+        {
+            State = state
+            Type = ``type``
+            AdmissionsTax = admissionsTax
+            AttendanceTax = attendanceTax
+            EntertainmentTax = entertainmentTax
+            GrossReceiptsTax = grossReceiptsTax
+            HospitalityTax = hospitalityTax
+            LocalAmusementTax = localAmusementTax
+            LocalLeaseTax = localLeaseTax
+            LuxuryTax = luxuryTax
+            MassTransitParkingTax = massTransitParkingTax
+            ParkingTax = parkingTax
+            ResortTax = resortTax
+            StateSalesTax = stateSalesTax
+            TourismTax = tourismTax
+            UtilityUsersTax = utilityUsersTax
+        }
+
+type TaxProductRegistrationsResourceCountryOptions with
+    static member New(?ae: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?al: TaxProductRegistrationsResourceCountryOptionsDefault, ?am: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ao: TaxProductRegistrationsResourceCountryOptionsDefault, ?at: TaxProductRegistrationsResourceCountryOptionsEurope, ?au: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?aw: TaxProductRegistrationsResourceCountryOptionsDefault, ?az: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ba: TaxProductRegistrationsResourceCountryOptionsDefault, ?bb: TaxProductRegistrationsResourceCountryOptionsDefault, ?bd: TaxProductRegistrationsResourceCountryOptionsDefault, ?be: TaxProductRegistrationsResourceCountryOptionsEurope, ?bf: TaxProductRegistrationsResourceCountryOptionsDefault, ?bg: TaxProductRegistrationsResourceCountryOptionsEurope, ?bh: TaxProductRegistrationsResourceCountryOptionsDefault, ?bj: TaxProductRegistrationsResourceCountryOptionsSimplified, ?bs: TaxProductRegistrationsResourceCountryOptionsDefault, ?bw: TaxProductRegistrationsResourceCountryOptionsSimplified, ?by: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ca: TaxProductRegistrationsResourceCountryOptionsCanada, ?cd: TaxProductRegistrationsResourceCountryOptionsDefault, ?ch: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?ci: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cl: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cm: TaxProductRegistrationsResourceCountryOptionsSimplified, ?co: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cv: TaxProductRegistrationsResourceCountryOptionsSimplified, ?cy: TaxProductRegistrationsResourceCountryOptionsEurope, ?cz: TaxProductRegistrationsResourceCountryOptionsEurope, ?de: TaxProductRegistrationsResourceCountryOptionsEurope, ?dk: TaxProductRegistrationsResourceCountryOptionsEurope, ?ec: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ee: TaxProductRegistrationsResourceCountryOptionsEurope, ?eg: TaxProductRegistrationsResourceCountryOptionsSimplified, ?es: TaxProductRegistrationsResourceCountryOptionsSpain, ?et: TaxProductRegistrationsResourceCountryOptionsDefault, ?fi: TaxProductRegistrationsResourceCountryOptionsEurope, ?fr: TaxProductRegistrationsResourceCountryOptionsEurope, ?gb: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?ge: TaxProductRegistrationsResourceCountryOptionsSimplified, ?gh: TaxProductRegistrationsResourceCountryOptionsSimplified, ?gn: TaxProductRegistrationsResourceCountryOptionsDefault, ?gr: TaxProductRegistrationsResourceCountryOptionsEurope, ?hr: TaxProductRegistrationsResourceCountryOptionsEurope, ?hu: TaxProductRegistrationsResourceCountryOptionsEurope, ?id: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ie: TaxProductRegistrationsResourceCountryOptionsEurope, ?``in``: TaxProductRegistrationsResourceCountryOptionsSimplified, ?is: TaxProductRegistrationsResourceCountryOptionsDefault, ?it: TaxProductRegistrationsResourceCountryOptionsEurope, ?jp: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?ke: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kg: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kh: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?kz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?la: TaxProductRegistrationsResourceCountryOptionsSimplified, ?lk: TaxProductRegistrationsResourceCountryOptionsSimplified, ?lt: TaxProductRegistrationsResourceCountryOptionsEurope, ?lu: TaxProductRegistrationsResourceCountryOptionsEurope, ?lv: TaxProductRegistrationsResourceCountryOptionsEurope, ?ma: TaxProductRegistrationsResourceCountryOptionsSimplified, ?md: TaxProductRegistrationsResourceCountryOptionsSimplified, ?me: TaxProductRegistrationsResourceCountryOptionsDefault, ?mk: TaxProductRegistrationsResourceCountryOptionsDefault, ?mr: TaxProductRegistrationsResourceCountryOptionsDefault, ?mt: TaxProductRegistrationsResourceCountryOptionsEurope, ?mu: TaxProductRegistrationsResourceCountryOptionsSimplified, ?mx: TaxProductRegistrationsResourceCountryOptionsSimplified, ?my: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ng: TaxProductRegistrationsResourceCountryOptionsSimplified, ?nl: TaxProductRegistrationsResourceCountryOptionsEurope, ?no: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?np: TaxProductRegistrationsResourceCountryOptionsSimplified, ?nz: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?om: TaxProductRegistrationsResourceCountryOptionsDefault, ?pe: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ph: TaxProductRegistrationsResourceCountryOptionsSimplified, ?pl: TaxProductRegistrationsResourceCountryOptionsEurope, ?pt: TaxProductRegistrationsResourceCountryOptionsEurope, ?ro: TaxProductRegistrationsResourceCountryOptionsEurope, ?rs: TaxProductRegistrationsResourceCountryOptionsDefault, ?ru: TaxProductRegistrationsResourceCountryOptionsSimplified, ?sa: TaxProductRegistrationsResourceCountryOptionsSimplified, ?se: TaxProductRegistrationsResourceCountryOptionsEurope, ?sg: TaxProductRegistrationsResourceCountryOptionsDefaultInboundGoods, ?si: TaxProductRegistrationsResourceCountryOptionsEurope, ?sk: TaxProductRegistrationsResourceCountryOptionsEurope, ?sn: TaxProductRegistrationsResourceCountryOptionsSimplified, ?sr: TaxProductRegistrationsResourceCountryOptionsDefault, ?th: TaxProductRegistrationsResourceCountryOptionsThailand, ?tj: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tr: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tw: TaxProductRegistrationsResourceCountryOptionsSimplified, ?tz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ua: TaxProductRegistrationsResourceCountryOptionsSimplified, ?ug: TaxProductRegistrationsResourceCountryOptionsSimplified, ?us: TaxProductRegistrationsResourceCountryOptionsUnitedStates, ?uy: TaxProductRegistrationsResourceCountryOptionsDefault, ?uz: TaxProductRegistrationsResourceCountryOptionsSimplified, ?vn: TaxProductRegistrationsResourceCountryOptionsSimplified, ?za: TaxProductRegistrationsResourceCountryOptionsDefault, ?zm: TaxProductRegistrationsResourceCountryOptionsSimplified, ?zw: TaxProductRegistrationsResourceCountryOptionsDefault) =
+        {
+            Ae = ae
+            Al = al
+            Am = am
+            Ao = ao
+            At = at
+            Au = au
+            Aw = aw
+            Az = az
+            Ba = ba
+            Bb = bb
+            Bd = bd
+            Be = be
+            Bf = bf
+            Bg = bg
+            Bh = bh
+            Bj = bj
+            Bs = bs
+            Bw = bw
+            By = by
+            Ca = ca
+            Cd = cd
+            Ch = ch
+            Ci = ci
+            Cl = cl
+            Cm = cm
+            Co = co
+            Cr = cr
+            Cv = cv
+            Cy = cy
+            Cz = cz
+            De = de
+            Dk = dk
+            Ec = ec
+            Ee = ee
+            Eg = eg
+            Es = es
+            Et = et
+            Fi = fi
+            Fr = fr
+            Gb = gb
+            Ge = ge
+            Gh = gh
+            Gn = gn
+            Gr = gr
+            Hr = hr
+            Hu = hu
+            Id = id
+            Ie = ie
+            In = ``in``
+            Is = is
+            It = it
+            Jp = jp
+            Ke = ke
+            Kg = kg
+            Kh = kh
+            Kr = kr
+            Kz = kz
+            La = la
+            Lk = lk
+            Lt = lt
+            Lu = lu
+            Lv = lv
+            Ma = ma
+            Md = md
+            Me = me
+            Mk = mk
+            Mr = mr
+            Mt = mt
+            Mu = mu
+            Mx = mx
+            My = my
+            Ng = ng
+            Nl = nl
+            No = no
+            Np = np
+            Nz = nz
+            Om = om
+            Pe = pe
+            Ph = ph
+            Pl = pl
+            Pt = pt
+            Ro = ro
+            Rs = rs
+            Ru = ru
+            Sa = sa
+            Se = se
+            Sg = sg
+            Si = si
+            Sk = sk
+            Sn = sn
+            Sr = sr
+            Th = th
+            Tj = tj
+            Tr = tr
+            Tw = tw
+            Tz = tz
+            Ua = ua
+            Ug = ug
+            Us = us
+            Uy = uy
+            Uz = uz
+            Vn = vn
+            Za = za
+            Zm = zm
+            Zw = zw
+        }
+
+type TaxProductResourceTaxSettingsDefaults with
+    static member New(provider: TaxProductResourceTaxSettingsDefaultsProvider, taxBehavior: TaxProductResourceTaxSettingsDefaultsTaxBehavior option, taxCode: string option) =
+        {
+            Provider = provider
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+        }
+
+type TaxProductResourceTaxSettingsHeadOffice with
+    static member New(address: Address) =
+        {
+            Address = address
+        }
+
+type TaxProductResourceTaxSettingsStatusDetailsResourceActive with
+    static member New(?taxProductResourceTaxSettingsStatusDetailsResourceActive: string option) =
+        {
+            TaxProductResourceTaxSettingsStatusDetailsResourceActive = taxProductResourceTaxSettingsStatusDetailsResourceActive |> Option.flatten
+        }
+
+type TaxProductResourceTaxSettingsStatusDetailsResourcePending with
+    static member New(missingFields: string list option) =
+        {
+            MissingFields = missingFields
+        }
+
+type TaxProductResourceTaxSettingsStatusDetails with
+    static member New(?active: TaxProductResourceTaxSettingsStatusDetailsResourceActive, ?pending: TaxProductResourceTaxSettingsStatusDetailsResourcePending) =
+        {
+            Active = active
+            Pending = pending
+        }
+
+type TaxProductResourceTaxTransactionLineItemResourceReversal with
+    static member New(originalLineItem: string) =
+        {
+            OriginalLineItem = originalLineItem
+        }
+
+type TaxProductResourceTaxTransactionResourceReversal with
+    static member New(originalTransaction: string option) =
+        {
+            OriginalTransaction = originalTransaction
+        }
+
+type TaxProductResourceTaxTransactionShippingCost with
+    static member New(amount: int, amountTax: int, taxBehavior: TaxProductResourceTaxTransactionShippingCostTaxBehavior, taxCode: string, ?shippingRate: string, ?taxBreakdown: TaxProductResourceLineItemTaxBreakdown list) =
+        {
+            Amount = amount
+            AmountTax = amountTax
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            ShippingRate = shippingRate
+            TaxBreakdown = taxBreakdown
+        }
+
+type TaxRegistration with
+    static member New(activeFrom: DateTime, country: IsoTypes.IsoCountryCode, countryOptions: TaxProductRegistrationsResourceCountryOptions, created: DateTime, expiresAt: DateTime option, id: string, livemode: bool, status: TaxRegistrationStatus) =
+        {
+            ActiveFrom = activeFrom
+            Country = country
+            CountryOptions = countryOptions
+            Created = created
+            ExpiresAt = expiresAt
+            Id = id
+            Livemode = livemode
+            Status = status
+        }
+
+module TaxRegistration =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.registration"
+
+type TaxSettings with
+    static member New(defaults: TaxProductResourceTaxSettingsDefaults, headOffice: TaxProductResourceTaxSettingsHeadOffice option, livemode: bool, status: TaxSettingsStatus, statusDetails: TaxProductResourceTaxSettingsStatusDetails) =
+        {
+            Defaults = defaults
+            HeadOffice = headOffice
+            Livemode = livemode
+            Status = status
+            StatusDetails = statusDetails
+        }
+
+module TaxSettings =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.settings"
+
+type TaxSettingsUpdated with
+    static member New(object: TaxSettings) =
+        {
+            Object = object
+        }
+
+type TaxTransactionLineItem with
+    static member New(amount: int, amountTax: int, id: string, livemode: bool, metadata: Map<string, string> option, product: string option, quantity: int, reference: string, reversal: TaxProductResourceTaxTransactionLineItemResourceReversal option, taxBehavior: TaxTransactionLineItemTaxBehavior, taxCode: string, ``type``: TaxTransactionLineItemType) =
+        {
+            Amount = amount
+            AmountTax = amountTax
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            Product = product
+            Quantity = quantity
+            Reference = reference
+            Reversal = reversal
+            TaxBehavior = taxBehavior
+            TaxCode = taxCode
+            Type = ``type``
+        }
+
+module TaxTransactionLineItem =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.transaction_line_item"
+
+type TaxTransactionLineItems with
+    static member New(data: TaxTransactionLineItem list, hasMore: bool, url: string) =
+        {
+            Data = data
+            HasMore = hasMore
+            Url = url
+        }
+
+module TaxTransactionLineItems =
+    ///String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    let object = "list"
+
+type TaxTransaction with
+    static member New(created: DateTime, currency: IsoTypes.IsoCurrencyCode, customer: string option, customerDetails: TaxProductResourceCustomerDetails, id: string, livemode: bool, metadata: Map<string, string> option, postedAt: DateTime, reference: string, reversal: TaxProductResourceTaxTransactionResourceReversal option, shipFromDetails: TaxProductResourceShipFromDetails option, shippingCost: TaxProductResourceTaxTransactionShippingCost option, taxDate: DateTime, ``type``: TaxTransactionType, ?lineItems: TaxTransactionLineItems option) =
+        {
+            Created = created
+            Currency = currency
+            Customer = customer
+            CustomerDetails = customerDetails
+            Id = id
+            Livemode = livemode
+            Metadata = metadata
+            PostedAt = postedAt
+            Reference = reference
+            Reversal = reversal
+            ShipFromDetails = shipFromDetails
+            ShippingCost = shippingCost
+            TaxDate = taxDate
+            Type = ``type``
+            LineItems = lineItems |> Option.flatten
+        }
+
+module TaxTransaction =
+    ///String representing the object's type. Objects of the same type share the same value.
+    let object = "tax.transaction"
 
 type TopupCanceled with
     static member New(object: Topup) =

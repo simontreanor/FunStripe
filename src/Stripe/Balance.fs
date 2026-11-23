@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type BalanceAmountBySourceType =
     {
         /// Amount coming from [legacy US ACH payments](https://docs.stripe.com/ach-deprecated).
@@ -33,6 +33,23 @@ type BalanceAmount =
     }
 
 type BalanceAmount with
+    static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?sourceTypes: BalanceAmountBySourceType) =
+        {
+            Amount = amount
+            Currency = currency
+            SourceTypes = sourceTypes
+        }
+
+type BalanceAmountAvailable =
+    {
+        /// Balance amount.
+        Amount: int
+        /// Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+        Currency: IsoTypes.IsoCurrencyCode
+        SourceTypes: BalanceAmountBySourceType option
+    }
+
+type BalanceAmountAvailable with
     static member New(amount: int, currency: IsoTypes.IsoCurrencyCode, ?sourceTypes: BalanceAmountBySourceType) =
         {
             Amount = amount
@@ -111,7 +128,7 @@ type BalanceDetailUngated with
 type Balance =
     {
         /// Available funds that you can transfer or pay out automatically by Stripe or explicitly through the [Transfers API](https://docs.stripe.com/api#transfers) or [Payouts API](https://docs.stripe.com/api#payouts). You can find the available balance for each currency and payment type in the `source_types` property.
-        Available: BalanceAmount list
+        Available: BalanceAmountAvailable list
         /// Funds held due to negative balances on connected accounts where [account.controller.requirement_collection](/api/accounts/object#account_object-controller-requirement_collection) is `application`, which includes Custom accounts. You can find the connect reserve balance for each currency and payment type in the `source_types` property.
         ConnectReserved: BalanceAmount list option
         /// Funds that you can pay out using Instant Payouts.
@@ -125,7 +142,7 @@ type Balance =
     }
 
 type Balance with
-    static member New(available: BalanceAmount list, livemode: bool, pending: BalanceAmount list, ?connectReserved: BalanceAmount list, ?instantAvailable: BalanceAmountNet list, ?issuing: BalanceDetail, ?refundAndDisputePrefunding: BalanceDetailUngated) =
+    static member New(available: BalanceAmountAvailable list, livemode: bool, pending: BalanceAmount list, ?connectReserved: BalanceAmount list, ?instantAvailable: BalanceAmountNet list, ?issuing: BalanceDetail, ?refundAndDisputePrefunding: BalanceDetailUngated) =
         {
             Available = available
             Livemode = livemode

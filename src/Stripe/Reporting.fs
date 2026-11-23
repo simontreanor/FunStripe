@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.File
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type FinancialReportingFinanceReportRunRunParametersTimezone =
     | IntervalStart
     | IntervalEnd
@@ -26,12 +26,14 @@ type FinancialReportingFinanceReportRunRunParameters =
         Payout: string option
         /// Category of balance transactions to be included in the report run.
         ReportingCategory: string option
+        /// The tax invoice month in YYYY-MM format.
+        TaxInvoiceMonth: string option
         /// Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.
         Timezone: FinancialReportingFinanceReportRunRunParametersTimezone option
     }
 
 type FinancialReportingFinanceReportRunRunParameters with
-    static member New(?columns: string list, ?connectedAccount: string, ?currency: IsoTypes.IsoCurrencyCode, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: string, ?timezone: FinancialReportingFinanceReportRunRunParametersTimezone) =
+    static member New(?columns: string list, ?connectedAccount: string, ?currency: IsoTypes.IsoCurrencyCode, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: string, ?taxInvoiceMonth: string, ?timezone: FinancialReportingFinanceReportRunRunParametersTimezone) =
         {
             Columns = columns
             ConnectedAccount = connectedAccount
@@ -40,6 +42,7 @@ type FinancialReportingFinanceReportRunRunParameters with
             IntervalStart = intervalStart
             Payout = payout
             ReportingCategory = reportingCategory
+            TaxInvoiceMonth = taxInvoiceMonth
             Timezone = timezone
         }
 
