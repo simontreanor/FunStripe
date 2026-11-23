@@ -4,7 +4,7 @@ open System.Text.Json.Serialization
 open FunStripe
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type CustomerBalanceTransactionType =
     | Adjustment
     | AppliedToInvoice

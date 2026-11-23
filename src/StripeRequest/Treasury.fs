@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module TreasuryCreditReversals =
 
     type ListOptions =
@@ -1671,19 +1671,19 @@ module TreasuryOutboundTransfers =
                 Type = type'
             }
 
-    type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork =
+    type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsParamApiParamsNetwork =
         | Ach
         | UsDomesticWire
 
-    type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions =
+    type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsParamApiParams =
         {
             /// Specifies the network rails to be used. If not set, will default to the PaymentMethod's preferred network. See the [docs](https://docs.stripe.com/treasury/money-movement/timelines) to learn more about money movement timelines for each network type.
             [<Config.Form>]
-            Network: Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork option
+            Network: Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsParamApiParamsNetwork option
         }
 
-    type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions with
-        static member New(?network: Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsNetwork) =
+    type Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsParamApiParams with
+        static member New(?network: Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsParamApiParamsNetwork) =
             {
                 Network = network
             }
@@ -1692,11 +1692,12 @@ module TreasuryOutboundTransfers =
         {
             /// Optional fields for `us_bank_account`.
             [<Config.Form>]
-            UsBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions,string> option
+            UsBankAccount:
+                Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsParamApiParams,string> option
         }
 
     type Create'DestinationPaymentMethodOptions with
-        static member New(?usBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptions,string>) =
+        static member New(?usBankAccount: Choice<Create'DestinationPaymentMethodOptionsUsBankAccountPaymentMethodOptionsParamApiParams,string>) =
             {
                 UsBankAccount = usBankAccount
             }

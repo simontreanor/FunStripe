@@ -5,7 +5,7 @@ open FunStripe
 open System
 open Stripe.FileLink
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type FilePurpose =
     | AccountRequirement
     | AdditionalVerification

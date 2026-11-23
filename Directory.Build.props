@@ -22,8 +22,8 @@
     opens a spec-update PR; for a manual release, edit them here and nowhere else.
   -->
   <PropertyGroup>
-    <FunStripeVersion>3.3.0</FunStripeVersion>
-    <StripeApiVersion>2026-10-28.endive</StripeApiVersion>
+    <FunStripeVersion>3.4.0</FunStripeVersion>
+    <StripeApiVersion>2026-11-18.endive</StripeApiVersion>
   </PropertyGroup>
 
 </Project>

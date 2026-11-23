@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.BillingPortal
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module BillingPortalConfigurations =
 
     type ListOptions =
@@ -347,7 +347,7 @@ module BillingPortalConfigurations =
             /// The list of up to 10 products that support subscription updates.
             [<Config.Form>]
             Products: Choice<Create'FeaturesSubscriptionUpdateProducts list,string> option
-            /// Determines how to handle prorations resulting from subscription updates. Valid values are `none`, `create_prorations`, and `always_invoice`.
+            /// Determines how to handle prorations resulting from subscription updates. Valid values are `none`, `create_prorations`, and `always_invoice`. Defaults to `none`.
             [<Config.Form>]
             ProrationBehavior: Create'FeaturesSubscriptionUpdateProrationBehavior option
             /// Setting to control when an update should be scheduled at the end of the period instead of applying immediately.
@@ -776,7 +776,7 @@ module BillingPortalConfigurations =
             /// The list of up to 10 products that support subscription updates.
             [<Config.Form>]
             Products: Choice<Update'FeaturesSubscriptionUpdateProducts list,string> option
-            /// Determines how to handle prorations resulting from subscription updates. Valid values are `none`, `create_prorations`, and `always_invoice`.
+            /// Determines how to handle prorations resulting from subscription updates. Valid values are `none`, `create_prorations`, and `always_invoice`. If omitted, the proration behavior is unchanged.
             [<Config.Form>]
             ProrationBehavior: Update'FeaturesSubscriptionUpdateProrationBehavior option
             /// Setting to control when an update should be scheduled at the end of the period instead of applying immediately.

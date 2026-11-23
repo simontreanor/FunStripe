@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module Subscriptions =
 
     type ListOptions =
@@ -1101,11 +1101,11 @@ module Subscriptions =
                 MandateOptions = mandateOptions
             }
 
-    type Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType =
+    type Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptionsAmountType =
         | Fixed
         | Maximum
 
-    type Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions =
+    type Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptions =
         {
             /// Amount to be charged for future payments.
             [<Config.Form>]
@@ -1113,7 +1113,7 @@ module Subscriptions =
             /// One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
             [<Config.Form>]
             AmountType:
-                Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType option
+                Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptionsAmountType option
             /// A description of the mandate or subscription that is meant to be displayed to the customer.
             [<Config.Form>]
             Description: string option
@@ -1122,8 +1122,8 @@ module Subscriptions =
             EndDate: DateTime option
         }
 
-    type Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions with
-        static member New(?amount: int, ?amountType: Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType, ?description: string, ?endDate: DateTime) =
+    type Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptions with
+        static member New(?amount: int, ?amountType: Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptionsAmountType, ?description: string, ?endDate: DateTime) =
             {
                 Amount = amount
                 AmountType = amountType
@@ -1131,15 +1131,16 @@ module Subscriptions =
                 EndDate = endDate
             }
 
-    type Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions =
+    type Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptions =
         {
             /// Configuration options for setting up an eMandate
             [<Config.Form>]
-            MandateOptions: Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions option
+            MandateOptions:
+                Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptions option
         }
 
-    type Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions with
-        static member New(?mandateOptions: Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions) =
+    type Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptions with
+        static member New(?mandateOptions: Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptions) =
             {
                 MandateOptions = mandateOptions
             }
@@ -1258,7 +1259,7 @@ module Subscriptions =
             SepaDebit: Choice<string,string> option
             /// This sub-hash contains details about the UPI payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
-            Upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string> option
+            Upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptions,string> option
             /// This sub-hash contains details about the ACH direct debit payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
             UsBankAccount:
@@ -1266,7 +1267,7 @@ module Subscriptions =
         }
 
     type Create'PaymentSettingsPaymentMethodOptions with
-        static member New(?acssDebit: Choice<Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions,string>, ?blik: Choice<Create'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions,string>, ?card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Create'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Create'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<Create'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions,string>, ?blik: Choice<Create'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions,string>, ?card: Choice<Create'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Create'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Create'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Create'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Create'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptions,string>, ?usBankAccount: Choice<Create'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Bancontact = bancontact
@@ -2656,11 +2657,11 @@ module Subscriptions =
                 MandateOptions = mandateOptions
             }
 
-    type Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType =
+    type Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptionsAmountType =
         | Fixed
         | Maximum
 
-    type Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions =
+    type Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptions =
         {
             /// Amount to be charged for future payments.
             [<Config.Form>]
@@ -2668,7 +2669,7 @@ module Subscriptions =
             /// One of `fixed` or `maximum`. If `fixed`, the `amount` param refers to the exact amount to be charged in future payments. If `maximum`, the amount charged can be up to the value passed for the `amount` param.
             [<Config.Form>]
             AmountType:
-                Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType option
+                Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptionsAmountType option
             /// A description of the mandate or subscription that is meant to be displayed to the customer.
             [<Config.Form>]
             Description: string option
@@ -2677,8 +2678,8 @@ module Subscriptions =
             EndDate: DateTime option
         }
 
-    type Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions with
-        static member New(?amount: int, ?amountType: Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptionsAmountType, ?description: string, ?endDate: DateTime) =
+    type Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptions with
+        static member New(?amount: int, ?amountType: Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptionsAmountType, ?description: string, ?endDate: DateTime) =
             {
                 Amount = amount
                 AmountType = amountType
@@ -2686,15 +2687,16 @@ module Subscriptions =
                 EndDate = endDate
             }
 
-    type Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions =
+    type Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptions =
         {
             /// Configuration options for setting up an eMandate
             [<Config.Form>]
-            MandateOptions: Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions option
+            MandateOptions:
+                Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptions option
         }
 
-    type Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions with
-        static member New(?mandateOptions: Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptionsMandateOptions) =
+    type Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptions with
+        static member New(?mandateOptions: Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptionsMandateOptions) =
             {
                 MandateOptions = mandateOptions
             }
@@ -2813,7 +2815,7 @@ module Subscriptions =
             SepaDebit: Choice<string,string> option
             /// This sub-hash contains details about the UPI payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
-            Upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string> option
+            Upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptions,string> option
             /// This sub-hash contains details about the ACH direct debit payment method options to pass to the invoice’s PaymentIntent.
             [<Config.Form>]
             UsBankAccount:
@@ -2821,7 +2823,7 @@ module Subscriptions =
         }
 
     type Update'PaymentSettingsPaymentMethodOptions with
-        static member New(?acssDebit: Choice<Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions,string>, ?blik: Choice<Update'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions,string>, ?card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiInvoicePaymentMethodOptions,string>, ?usBankAccount: Choice<Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
+        static member New(?acssDebit: Choice<Update'PaymentSettingsPaymentMethodOptionsAcssDebitInvoicePaymentMethodOptions,string>, ?bancontact: Choice<Update'PaymentSettingsPaymentMethodOptionsBancontactInvoicePaymentMethodOptions,string>, ?billie: Choice<Update'PaymentSettingsPaymentMethodOptionsBillieSubscriptionPaymentMethodOptions,string>, ?blik: Choice<Update'PaymentSettingsPaymentMethodOptionsBlikSubscriptionPaymentMethodOptions,string>, ?card: Choice<Update'PaymentSettingsPaymentMethodOptionsCardSubscriptionPaymentMethodOptions,string>, ?customerBalance: Choice<Update'PaymentSettingsPaymentMethodOptionsCustomerBalanceInvoicePaymentMethodOptions,string>, ?konbini: Choice<string,string>, ?payto: Choice<Update'PaymentSettingsPaymentMethodOptionsPaytoInvoicePaymentMethodOptions,string>, ?pix: Choice<Update'PaymentSettingsPaymentMethodOptionsPixSubscriptionPaymentMethodOptions,string>, ?sepaDebit: Choice<string,string>, ?upi: Choice<Update'PaymentSettingsPaymentMethodOptionsUpiSubscriptionPaymentMethodOptions,string>, ?usBankAccount: Choice<Update'PaymentSettingsPaymentMethodOptionsUsBankAccountInvoicePaymentMethodOptions,string>) =
             {
                 AcssDebit = acssDebit
                 Bancontact = bancontact

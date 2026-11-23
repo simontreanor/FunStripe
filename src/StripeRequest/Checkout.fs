@@ -6,7 +6,7 @@ open Stripe.Checkout
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module CheckoutSessions =
 
     type ListOptions =
@@ -169,6 +169,10 @@ module CheckoutSessions =
         | WechatPay
         | Zip
 
+    type Create'AutomaticTaxAddressCollectionPrecision =
+        | Full
+        | Minimal
+
     type Create'AutomaticTaxLiabilityType =
         | Account
         | Self
@@ -192,6 +196,11 @@ module CheckoutSessions =
 
     type Create'AutomaticTax =
         {
+            /// Controls how much address information Checkout collects when [automatic_tax](https://stripe.com/docs/api/checkout/sessions/object#checkout_session_object-automatic_tax-enabled) is enabled.
+            /// Defaults to `full`, which collects the address fields needed for the most accurate tax calculation. Set to `minimal` to collect only the fields required for tax in the buyer's country, accepting potentially less precise tax calculation in exchange for a streamlined form.
+            /// Only honored when `automatic_tax.enabled` is `true`, `billing_address_collection` is `auto`, the resolved tax address source is the session billing address, and `ui_mode` is `form`.
+            [<Config.Form>]
+            AddressCollectionPrecision: Create'AutomaticTaxAddressCollectionPrecision option
             /// Set to `true` to [calculate tax automatically](https://docs.stripe.com/tax) using the customer's location.
             /// Enabling this parameter causes Checkout to collect any billing address information necessary for tax calculation.
             [<Config.Form>]
@@ -202,8 +211,9 @@ module CheckoutSessions =
         }
 
     type Create'AutomaticTax with
-        static member New(?enabled: bool, ?liability: Create'AutomaticTaxLiability) =
+        static member New(?addressCollectionPrecision: Create'AutomaticTaxAddressCollectionPrecision, ?enabled: bool, ?liability: Create'AutomaticTaxLiability) =
             {
+                AddressCollectionPrecision = addressCollectionPrecision
                 Enabled = enabled
                 Liability = liability
             }
@@ -4791,6 +4801,7 @@ module CheckoutSessions =
         |> RestApi.getAsync<StripeList<CheckoutSession>> settings qs
 
     ///<p>Creates a Checkout Session object.</p>
+    ///<p>Validate requests on your server and protect your application’s Session-creation endpoint with access controls and limits on repeated creation. See <a href="https://docs.stripe.com/payments/accept-a-payment?payment-ui=elements&api-integration=checkout#protect-session-creation">Protect your Session-creation endpoint</a>.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/checkout/sessions"
         |> RestApi.postAsync<_, CheckoutSession> settings (Map.empty) options

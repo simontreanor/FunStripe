@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Reporting
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module ReportingReportRuns =
 
     type ListOptions =
@@ -700,13 +700,16 @@ module ReportingReportRuns =
             /// Category of balance transactions to be included in the report run.
             [<Config.Form>]
             ReportingCategory: Create'ParametersReportingCategory option
+            /// The tax invoice month in YYYY-MM format.
+            [<Config.Form>]
+            TaxInvoiceMonth: string option
             /// Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.
             [<Config.Form>]
             Timezone: Create'ParametersTimezone option
         }
 
     type Create'Parameters with
-        static member New(?columns: string list, ?connectedAccount: string, ?currency: IsoTypes.IsoCurrencyCode, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: Create'ParametersReportingCategory, ?timezone: Create'ParametersTimezone) =
+        static member New(?columns: string list, ?connectedAccount: string, ?currency: IsoTypes.IsoCurrencyCode, ?intervalEnd: DateTime, ?intervalStart: DateTime, ?payout: string, ?reportingCategory: Create'ParametersReportingCategory, ?taxInvoiceMonth: string, ?timezone: Create'ParametersTimezone) =
             {
                 Columns = columns
                 ConnectedAccount = connectedAccount
@@ -715,6 +718,7 @@ module ReportingReportRuns =
                 IntervalStart = intervalStart
                 Payout = payout
                 ReportingCategory = reportingCategory
+                TaxInvoiceMonth = taxInvoiceMonth
                 Timezone = timezone
             }
 

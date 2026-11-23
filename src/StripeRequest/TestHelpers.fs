@@ -2,9 +2,6 @@ namespace StripeRequest.TestHelpers
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.ConfirmationToken
-open Stripe.FundingInstructions
-open Stripe.IssuingCard
 open Stripe.IssuingPersonalizationDesign
 open Stripe.PaymentMethod
 open Stripe.Terminal
@@ -12,7 +9,7 @@ open Stripe.TestHelpers
 open Stripe.Treasury
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module TestHelpersConfirmationTokens =
 
     type Create'PaymentMethodDataAcssDebit =
@@ -4532,17 +4529,53 @@ module TestHelpersTreasuryInboundTransfersFail =
         | NoAccount
         | Other
 
+    type Fail'FailureDetailsNetworkDetailsAch =
+        {
+            /// NACHA ACH return code.
+            [<Config.Form>]
+            ReturnCode: string option
+        }
+
+    type Fail'FailureDetailsNetworkDetailsAch with
+        static member New(?returnCode: string) =
+            {
+                ReturnCode = returnCode
+            }
+
+    type Fail'FailureDetailsNetworkDetailsType = | Ach
+
+    type Fail'FailureDetailsNetworkDetails =
+        {
+            /// ACH network failure details.
+            [<Config.Form>]
+            Ach: Fail'FailureDetailsNetworkDetailsAch option
+            /// The network used to transfer funds.
+            [<Config.Form>]
+            Type: Fail'FailureDetailsNetworkDetailsType option
+        }
+
+    type Fail'FailureDetailsNetworkDetails with
+        static member New(?ach: Fail'FailureDetailsNetworkDetailsAch, ?type': Fail'FailureDetailsNetworkDetailsType) =
+            {
+                Ach = ach
+                Type = type'
+            }
+
     type Fail'FailureDetails =
         {
             /// Reason for the failure.
             [<Config.Form>]
             Code: Fail'FailureDetailsCode option
+            /// Network specific details for the failure.
+            [<Config.Form>]
+            NetworkDetails: Fail'FailureDetailsNetworkDetails option
         }
 
     type Fail'FailureDetails with
-        static member New(?code: Fail'FailureDetailsCode) =
+        static member New(?code: Fail'FailureDetailsCode, ?networkDetails: Fail'FailureDetailsNetworkDetails) =
             {
                 Code = code
+                NetworkDetails = networkDetails
             }
 
     type FailOptions =
@@ -4566,12 +4599,76 @@ module TestHelpersTreasuryInboundTransfersFail =
                 FailureDetails = failureDetails
             }
 
-    ///<p>Transitions a test mode created InboundTransfer to the <code>failed</code> status. The InboundTransfer must already be in the <code>processing</code> state.</p>
+    ///<p>Transitions a test <code>InboundTransfer</code> to the <code>failed</code> status. The <code>InboundTransfer</code> must already be in the <code>processing</code> state.</p>
     let Fail settings (options: FailOptions) =
         $"/v1/test_helpers/treasury/inbound_transfers/{options.Id}/fail"
         |> RestApi.postAsync<_, TreasuryInboundTransfer> settings (Map.empty) options
 
 module TestHelpersTreasuryInboundTransfersReturn =
+
+    type ReturnInboundTransfer'FailureDetailsCode =
+        | AccountClosed
+        | AccountFrozen
+        | BankAccountRestricted
+        | BankOwnershipChanged
+        | DebitNotAuthorized
+        | IncorrectAccountHolderAddress
+        | IncorrectAccountHolderName
+        | IncorrectAccountHolderTaxId
+        | InsufficientFunds
+        | InvalidAccountNumber
+        | InvalidCurrency
+        | NoAccount
+        | Other
+
+    type ReturnInboundTransfer'FailureDetailsNetworkDetailsAch =
+        {
+            /// NACHA ACH return code.
+            [<Config.Form>]
+            ReturnCode: string option
+        }
+
+    type ReturnInboundTransfer'FailureDetailsNetworkDetailsAch with
+        static member New(?returnCode: string) =
+            {
+                ReturnCode = returnCode
+            }
+
+    type ReturnInboundTransfer'FailureDetailsNetworkDetailsType = | Ach
+
+    type ReturnInboundTransfer'FailureDetailsNetworkDetails =
+        {
+            /// ACH network failure details.
+            [<Config.Form>]
+            Ach: ReturnInboundTransfer'FailureDetailsNetworkDetailsAch option
+            /// The network used to transfer funds.
+            [<Config.Form>]
+            Type: ReturnInboundTransfer'FailureDetailsNetworkDetailsType option
+        }
+
+    type ReturnInboundTransfer'FailureDetailsNetworkDetails with
+        static member New(?ach: ReturnInboundTransfer'FailureDetailsNetworkDetailsAch, ?type': ReturnInboundTransfer'FailureDetailsNetworkDetailsType) =
+            {
+                Ach = ach
+                Type = type'
+            }
+
+    type ReturnInboundTransfer'FailureDetails =
+        {
+            /// Reason for the failure.
+            [<Config.Form>]
+            Code: ReturnInboundTransfer'FailureDetailsCode option
+            /// Network specific details for the failure.
+            [<Config.Form>]
+            NetworkDetails: ReturnInboundTransfer'FailureDetailsNetworkDetails option
+        }
+
+    type ReturnInboundTransfer'FailureDetails with
+        static member New(?code: ReturnInboundTransfer'FailureDetailsCode, ?networkDetails: ReturnInboundTransfer'FailureDetailsNetworkDetails) =
+            {
+                Code = code
+                NetworkDetails = networkDetails
+            }
 
     type ReturnInboundTransferOptions =
         {
@@ -4581,16 +4678,20 @@ module TestHelpersTreasuryInboundTransfersReturn =
             /// Specifies which fields in the response should be expanded.
             [<Config.Form>]
             Expand: string list option
+            /// Details about a returned InboundTransfer.
+            [<Config.Form>]
+            FailureDetails: ReturnInboundTransfer'FailureDetails option
         }
 
     type ReturnInboundTransferOptions with
-        static member New(id: string, ?expand: string list) =
+        static member New(id: string, ?expand: string list, ?failureDetails: ReturnInboundTransfer'FailureDetails) =
             {
                 Id = id
                 Expand = expand
+                FailureDetails = failureDetails
             }
 
-    ///<p>Marks the test mode InboundTransfer object as returned and links the InboundTransfer to a ReceivedDebit. The InboundTransfer must already be in the <code>succeeded</code> state.</p>
+    ///<p>Marks the test <code>InboundTransfer</code> object as returned and links the <code>InboundTransfer</code> to a <code>ReceivedDebit</code>. The <code>InboundTransfer</code> must already be in the <code>succeeded</code> state.</p>
     let ReturnInboundTransfer settings (options: ReturnInboundTransferOptions) =
         $"/v1/test_helpers/treasury/inbound_transfers/{options.Id}/return"
         |> RestApi.postAsync<_, TreasuryInboundTransfer> settings (Map.empty) options
@@ -4614,7 +4715,7 @@ module TestHelpersTreasuryInboundTransfersSucceed =
                 Expand = expand
             }
 
-    ///<p>Transitions a test mode created InboundTransfer to the <code>succeeded</code> status. The InboundTransfer must already be in the <code>processing</code> state.</p>
+    ///<p>Transitions a test <code>InboundTransfer</code> to the <code>succeeded</code> status. The <code>InboundTransfer</code> must already be in the <code>processing</code> state.</p>
     let Succeed settings (options: SucceedOptions) =
         $"/v1/test_helpers/treasury/inbound_transfers/{options.Id}/succeed"
         |> RestApi.postAsync<_, TreasuryInboundTransfer> settings (Map.empty) options
@@ -4701,7 +4802,7 @@ module TestHelpersTreasuryOutboundPayments =
                 Expand = expand
             }
 
-    ///<p>Updates a test mode created OutboundPayment with tracking details. The OutboundPayment must not be cancelable, and cannot be in the <code>canceled</code> or <code>failed</code> states.</p>
+    ///<p>Updates a test <code>OutboundPayment</code> with tracking details. The <code>OutboundPayment</code> must not be cancelable, and can’t be in the <code>canceled</code> or <code>failed</code> states.</p>
     let Update settings (options: UpdateOptions) =
         $"/v1/test_helpers/treasury/outbound_payments/{options.Id}"
         |> RestApi.postAsync<_, TreasuryOutboundPayment> settings (Map.empty) options
@@ -4725,7 +4826,7 @@ module TestHelpersTreasuryOutboundPaymentsFail =
                 Expand = expand
             }
 
-    ///<p>Transitions a test mode created OutboundPayment to the <code>failed</code> status. The OutboundPayment must already be in the <code>processing</code> state.</p>
+    ///<p>Transitions a test <code>OutboundPayment</code> to the <code>failed</code> status. The <code>OutboundPayment</code> must already be in the <code>processing</code> state.</p>
     let Fail settings (options: FailOptions) =
         $"/v1/test_helpers/treasury/outbound_payments/{options.Id}/fail"
         |> RestApi.postAsync<_, TreasuryOutboundPayment> settings (Map.empty) options
@@ -4749,7 +4850,7 @@ module TestHelpersTreasuryOutboundPaymentsPost =
                 Expand = expand
             }
 
-    ///<p>Transitions a test mode created OutboundPayment to the <code>posted</code> status. The OutboundPayment must already be in the <code>processing</code> state.</p>
+    ///<p>Transitions a test <code>OutboundPayment</code> to the <code>posted</code> status. The <code>OutboundPayment</code> must already be in the <code>processing</code> state.</p>
     let Post settings (options: PostOptions) =
         $"/v1/test_helpers/treasury/outbound_payments/{options.Id}/post"
         |> RestApi.postAsync<_, TreasuryOutboundPayment> settings (Map.empty) options
@@ -4802,7 +4903,7 @@ module TestHelpersTreasuryOutboundPaymentsReturn =
                 ReturnedDetails = returnedDetails
             }
 
-    ///<p>Transitions a test mode created OutboundPayment to the <code>returned</code> status. The OutboundPayment must already be in the <code>processing</code> state.</p>
+    ///<p>Transitions a test <code>OutboundPayment</code> to the <code>returned</code> status. The <code>OutboundPayment</code> must already be in the <code>posted</code> state.</p>
     let ReturnOutboundPayment settings (options: ReturnOutboundPaymentOptions) =
         $"/v1/test_helpers/treasury/outbound_payments/{options.Id}/return"
         |> RestApi.postAsync<_, TreasuryOutboundPayment> settings (Map.empty) options
@@ -4889,7 +4990,7 @@ module TestHelpersTreasuryOutboundTransfers =
                 Expand = expand
             }
 
-    ///<p>Updates a test mode created OutboundTransfer with tracking details. The OutboundTransfer must not be cancelable, and cannot be in the <code>canceled</code> or <code>failed</code> states.</p>
+    ///<p>Updates a test <code>OutboundTransfer</code> with tracking details. The <code>OutboundTransfer</code> must not be cancelable, and can’t be in the <code>canceled</code> or <code>failed</code> states.</p>
     let Update settings (options: UpdateOptions) =
         $"/v1/test_helpers/treasury/outbound_transfers/{options.OutboundTransfer}"
         |> RestApi.postAsync<_, TreasuryOutboundTransfer> settings (Map.empty) options
@@ -4913,7 +5014,7 @@ module TestHelpersTreasuryOutboundTransfersFail =
                 Expand = expand
             }
 
-    ///<p>Transitions a test mode created OutboundTransfer to the <code>failed</code> status. The OutboundTransfer must already be in the <code>processing</code> state.</p>
+    ///<p>Transitions a test <code>OutboundTransfer</code> to the <code>failed</code> status. The <code>OutboundTransfer</code> must already be in the <code>processing</code> state.</p>
     let Fail settings (options: FailOptions) =
         $"/v1/test_helpers/treasury/outbound_transfers/{options.OutboundTransfer}/fail"
         |> RestApi.postAsync<_, TreasuryOutboundTransfer> settings (Map.empty) options
@@ -4937,7 +5038,7 @@ module TestHelpersTreasuryOutboundTransfersPost =
                 Expand = expand
             }
 
-    ///<p>Transitions a test mode created OutboundTransfer to the <code>posted</code> status. The OutboundTransfer must already be in the <code>processing</code> state.</p>
+    ///<p>Transitions a test <code>OutboundTransfer</code> to the <code>posted</code> status. The <code>OutboundTransfer</code> must already be in the <code>processing</code> state.</p>
     let Post settings (options: PostOptions) =
         $"/v1/test_helpers/treasury/outbound_transfers/{options.OutboundTransfer}/post"
         |> RestApi.postAsync<_, TreasuryOutboundTransfer> settings (Map.empty) options
@@ -4990,7 +5091,7 @@ module TestHelpersTreasuryOutboundTransfersReturn =
                 ReturnedDetails = returnedDetails
             }
 
-    ///<p>Transitions a test mode created OutboundTransfer to the <code>returned</code> status. The OutboundTransfer must already be in the <code>processing</code> state.</p>
+    ///<p>Transitions a test <code>OutboundTransfer</code> to the <code>returned</code> status. The <code>OutboundTransfer</code> must already be in the <code>posted</code> state.</p>
     let ReturnOutboundTransfer settings (options: ReturnOutboundTransferOptions) =
         $"/v1/test_helpers/treasury/outbound_transfers/{options.OutboundTransfer}/return"
         |> RestApi.postAsync<_, TreasuryOutboundTransfer> settings (Map.empty) options
@@ -5079,7 +5180,7 @@ module TestHelpersTreasuryReceivedCredits =
                 InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
             }
 
-    ///<p>Use this endpoint to simulate a test mode ReceivedCredit initiated by a third party. In live mode, you can’t directly create ReceivedCredits initiated by third parties.</p>
+    ///<p>Simulates a test <code>ReceivedCredit</code> initiated by a third party. In live mode, you can’t directly create <code>ReceivedCredit</code> objects initiated by third parties.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/test_helpers/treasury/received_credits"
         |> RestApi.postAsync<_, TreasuryReceivedCredit> settings (Map.empty) options
@@ -5165,7 +5266,7 @@ module TestHelpersTreasuryReceivedDebits =
                 InitiatingPaymentMethodDetails = initiatingPaymentMethodDetails
             }
 
-    ///<p>Use this endpoint to simulate a test mode ReceivedDebit initiated by a third party. In live mode, you can’t directly create ReceivedDebits initiated by third parties.</p>
+    ///<p>Simulates a test <code>ReceivedDebit</code> initiated by a third party. In live mode, you can’t directly create <code>ReceivedDebit</code> objects initiated by third parties.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/test_helpers/treasury/received_debits"
         |> RestApi.postAsync<_, TreasuryReceivedDebit> settings (Map.empty) options

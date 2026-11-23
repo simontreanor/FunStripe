@@ -3,9 +3,9 @@ namespace Stripe.ProductCatalog
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.Price
+open Stripe.PaymentMethod
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type ProductCatalogImplEndpointsTrialOfferResourceRelativeDuration =
     {
         /// The number of iterations of the price's interval for this trial offer.

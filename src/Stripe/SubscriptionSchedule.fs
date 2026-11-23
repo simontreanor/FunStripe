@@ -5,11 +5,9 @@ open FunStripe
 open System
 open Stripe.Application
 open Stripe.PaymentMethod
-open Stripe.Plan
-open Stripe.Price
 open Stripe.TaxRate
 
-[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<Struct; System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type SchedulesPhaseAutomaticTaxDisabledReason = | RequiresLocationInputs
 
 type SchedulesPhaseAutomaticTax =

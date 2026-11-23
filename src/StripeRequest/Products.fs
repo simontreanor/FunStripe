@@ -2,11 +2,11 @@ namespace StripeRequest.Products
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.Product
+open Stripe.PaymentMethod
 open Stripe.ProductFeature
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module Products =
 
     type ListOptions =
@@ -154,14 +154,18 @@ module Products =
 
     type Create'MarketingFeatures =
         {
+            /// Optional text that describes what a customer loses by canceling, shown for this marketing feature in the Customer Portal cancellation flow. Up to 80 characters long. If you omit it when you update `marketing_features`, Stripe keeps the message stored for the feature with the same name. Duplicate names are matched in order. Set it to an empty string to remove the override. When no override is stored, eligible cancellation flows use the marketing feature name. A renamed feature is treated as a new feature, so send the message again to keep it.
+            [<Config.Form>]
+            LossMessage: Choice<string,string> option
             /// The marketing feature name. Up to 80 characters long.
             [<Config.Form>]
             Name: string option
         }
 
     type Create'MarketingFeatures with
-        static member New(?name: string) =
+        static member New(?lossMessage: Choice<string,string>, ?name: string) =
             {
+                LossMessage = lossMessage
                 Name = name
             }
 
@@ -309,14 +313,18 @@ module Products =
 
     type Update'MarketingFeatures =
         {
+            /// Optional text that describes what a customer loses by canceling, shown for this marketing feature in the Customer Portal cancellation flow. Up to 80 characters long. If you omit it when you update `marketing_features`, Stripe keeps the message stored for the feature with the same name. Duplicate names are matched in order. Set it to an empty string to remove the override. When no override is stored, eligible cancellation flows use the marketing feature name. A renamed feature is treated as a new feature, so send the message again to keep it.
+            [<Config.Form>]
+            LossMessage: Choice<string,string> option
             /// The marketing feature name. Up to 80 characters long.
             [<Config.Form>]
             Name: string option
         }
 
     type Update'MarketingFeatures with
-        static member New(?name: string) =
+        static member New(?lossMessage: Choice<string,string>, ?name: string) =
             {
+                LossMessage = lossMessage
                 Name = name
             }
 

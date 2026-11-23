@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.ProductCatalog
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module ProductCatalogTrialOffers =
 
     type ListOptions =

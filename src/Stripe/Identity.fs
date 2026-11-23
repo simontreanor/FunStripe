@@ -3,10 +3,10 @@ namespace Stripe.Identity
 open System.Text.Json.Serialization
 open FunStripe
 open System
-open Stripe.FundingInstructions
+open Stripe.PaymentMethod
 
 /// Point in Time
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 type GelatoDataDocumentReportDateOfBirth =
     {
         /// Numerical day between 1 and 31.

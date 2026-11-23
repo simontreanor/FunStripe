@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Event
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module Events =
 
     type ListOptions =
@@ -66,7 +66,7 @@ module Events =
                 Expand = expand
             }
 
-    ///<p>List events, going back up to 30 days. Each event data is rendered according to Stripe API version at its creation time, specified in <a href="https://docs.stripe.com/api/events/object">event object</a> <code>api_version</code> attribute (not according to your current Stripe API version or <code>Stripe-Version</code> header).</p>
+    ///<p>List events, going back up to 30 days. Each event data is rendered according to Stripe API version at its creation time, specified in <a href="https://docs.stripe.com/api/events/object">event object</a> <code>api_version</code> attribute (not according to your current Stripe API version or <code>Stripe-Version</code> header). The list includes only events for the account that makes the request. A platform’s list doesn’t include events from its connected accounts. To list a connected account’s events, make the request <a href="https://docs.stripe.com/connect/authentication">as the connected account</a> using the <code>Stripe-Account</code> header.</p>
     let List settings (options: ListOptions) =
         let qs = [("created", options.Created |> box); ("delivery_success", options.DeliverySuccess |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("type", options.Type |> box); ("types", options.Types |> box)] |> Map.ofList
         $"/v1/events"

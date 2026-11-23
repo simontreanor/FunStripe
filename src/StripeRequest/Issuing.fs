@@ -2,16 +2,13 @@ namespace StripeRequest.Issuing
 
 open FunStripe
 open System.Text.Json.Serialization
-open Stripe.FundingInstructions
 open Stripe.Issuing
-open Stripe.IssuingCard
-open Stripe.IssuingCardholder
 open Stripe.IssuingPersonalizationDesign
 open Stripe.IssuingToken
 open Stripe.PaymentMethod
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module IssuingAuthorizations =
 
     type ListOptions =

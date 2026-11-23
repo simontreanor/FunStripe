@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Apps
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module AppsInstalls =
 
     type ListOptions =
@@ -130,13 +130,13 @@ module AppsInstalls =
                 Expand = expand
             }
 
-    ///<p>Returns a list of app installs. An app developer filtering by its own app with its own key sees that app’s installs across the accounts that installed it. An app developer acting on a connected account through <code>Stripe-Account</code> and filtering by its app sees that account’s installs of the app, and an embedding platform acting on a connected account sees only the installs it created there. Other callers see the installs on their own account. A live key lists live installs and a test key lists test installs; the key of an app’s managed sandbox filtering by <code>app</code> lists that app’s installs across every sandbox.</p>
+    ///<p>Returns a list of app installs. An app developer filtering by its own app with its own key sees that app’s installs across the accounts that installed it. An app developer acting on a connected account through <code>Stripe-Account</code> and filtering by its app sees that account’s installs of the app, and an embedding platform acting on a connected account sees only the installs it created there. Other callers see the installs on their own account. A live key lists live installs and a test key lists test installs; the key of an app’s managed sandbox filtering by <code>app</code> lists that app’s installs across every sandbox, and also that app’s legacy test mode installs when the developer has no legacy test mode.</p>
     let List settings (options: ListOptions) =
         let qs = [("account", options.Account |> box); ("app", options.App |> box); ("approval_required", options.ApprovalRequired |> box); ("channel", options.Channel |> box); ("created", options.Created |> box); ("created_by", options.CreatedBy |> box); ("ending_before", options.EndingBefore |> box); ("expand", options.Expand |> box); ("limit", options.Limit |> box); ("starting_after", options.StartingAfter |> box); ("status", options.Status |> box)] |> Map.ofList
         $"/v1/apps/installs"
         |> RestApi.getAsync<StripeList<AppsInstall>> settings qs
 
-    ///<p>Creates an app install. An account installs its own private app with its own key; public and testing installs are made from the Dashboard. An app developer acting on a connected account through <code>Stripe-Account</code> installs or reinstalls its app there, and an embedding platform can do the same once the app’s developer approves its request to embed the app. For a private app, creating an install installs the newest completed upload; when that version is already installed with nothing pending, the existing install is returned.</p>
+    ///<p>Creates an app install. An account installs its own private app with its own key; public and testing installs are made from the Dashboard. An app developer acting on a connected account through <code>Stripe-Account</code> installs or reinstalls its app there, and an embedding platform can do the same once the app’s developer approves its request to embed the app and the platform has accepted the Embedding Platform Terms and Conditions in the Dashboard. For a private app, creating an install installs the newest completed upload; when that version is already installed with nothing pending, the existing install is returned.</p>
     let Create settings (options: CreateOptions) =
         $"/v1/apps/installs"
         |> RestApi.postAsync<_, AppsInstall> settings (Map.empty) options

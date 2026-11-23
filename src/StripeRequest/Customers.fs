@@ -3,12 +3,10 @@ namespace StripeRequest.Customers
 open FunStripe
 open System.Text.Json.Serialization
 open Stripe.CustomerBalanceTransaction
-open Stripe.FundingInstructions
 open Stripe.PaymentMethod
-open Stripe.TaxId
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module Customers =
 
     type ListOptions =

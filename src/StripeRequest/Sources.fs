@@ -6,7 +6,7 @@ open Stripe.PaymentMethod
 open Stripe.SourceTransaction
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module Sources =
 
     type Create'Flow =

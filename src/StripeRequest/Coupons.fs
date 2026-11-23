@@ -5,7 +5,7 @@ open System.Text.Json.Serialization
 open Stripe.Coupon
 open System
 
-[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.3.0")>]
+[<System.CodeDom.Compiler.GeneratedCode("FunStripe", "3.4.0")>]
 module Coupons =
 
     type ListOptions =
@@ -39,7 +39,7 @@ module Coupons =
 
     type Create'AppliesTo =
         {
-            /// An array of Product IDs that this Coupon will apply to.
+            /// An array of up to 100 Product IDs that this Coupon will apply to.
             [<Config.Form>]
             Products: string list option
         }
