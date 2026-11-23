@@ -30,6 +30,10 @@ module StripeConverter =
 
     let private sharedNamingPolicy = SnakeCaseNamingPolicy()
 
+    /// Fails the read with a JsonException, as the serialiser's own failures do. JSON that can't be read is
+    /// then told from a fault in the library by the type of the exception.
+    let private unreadable (message: string) : 'a = raise (JsonException message)
+
     /// Read the [<JsonPropertyName>] attribute value for a union case, or fall back to
     /// snake_case of the case name.
     let private getUnionCaseName (uci: UnionCaseInfo) =
@@ -46,6 +50,9 @@ module StripeConverter =
     /// The largest Unix time in seconds that a DateTime can hold (the end of the year 9999)
     let private maxEpochSeconds = int64 (DateTime.MaxValue - epoch).TotalSeconds
 
+    /// The smallest Unix time in seconds that a DateTime can hold (the start of the year 1)
+    let private minEpochSeconds = int64 (DateTime.MinValue - epoch).TotalSeconds
+
     /// Deserializes DateTime from a Unix-epoch integer or ISO-8601 string.
     /// Serializes as a Unix-epoch integer (matching Stripe's wire format).
     /// A few Stripe timestamps are in milliseconds, such as a Terminal reader's `last_seen_at`,
@@ -58,14 +65,15 @@ module StripeConverter =
             match reader.TokenType with
             | JsonTokenType.Number ->
                 match reader.GetInt64() with
-                | seconds when seconds <= maxEpochSeconds -> epoch.AddSeconds(float seconds)
-                | milliseconds -> epoch.AddMilliseconds(float milliseconds)
+                | seconds when seconds >= minEpochSeconds && seconds <= maxEpochSeconds -> epoch.AddSeconds(float seconds)
+                | milliseconds when milliseconds > 0L && milliseconds / 1000L <= maxEpochSeconds -> epoch.AddMilliseconds(float milliseconds)
+                | other -> unreadable $"EpochDateTimeConverter: {other} is outside the dates a DateTime holds"
             | JsonTokenType.String ->
-                DateTime.Parse(
-                    reader.GetString(),
-                    Globalization.CultureInfo.InvariantCulture,
-                    Globalization.DateTimeStyles.RoundtripKind)
-            | t -> failwith $"EpochDateTimeConverter: unexpected token type {t}"
+                let text = reader.GetString()
+                match DateTime.TryParse(text, Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.RoundtripKind) with
+                | true, value -> value
+                | _ -> unreadable $"EpochDateTimeConverter: '{text}' is not a date"
+            | t -> unreadable $"EpochDateTimeConverter: unexpected token type {t}"
 
         override _.Write(writer, value, _) =
             writer.WriteNumberValue(int64 (value.ToUniversalTime() - epoch).TotalSeconds)
@@ -91,8 +99,8 @@ module StripeConverter =
                 if doc.RootElement.TryGetProperty("id", &idProp) && idProp.ValueKind = JsonValueKind.String then
                     mk (idProp.GetString())
                 else
-                    failwith "StripeIdConverter: expanded object has no string `id` field"
-            | t -> failwith $"StripeIdConverter: expected string or object, got {t}"
+                    unreadable "StripeIdConverter: expanded object has no string `id` field"
+            | t -> unreadable $"StripeIdConverter: expected string or object, got {t}"
 
         override _.Write(writer, value, _) =
             let (FunStripe.StripeIds.StripeId s) = value
@@ -155,7 +163,7 @@ module StripeConverter =
                     let matchedCase = unionCases |> Array.tryFind (fun c -> getUnionCaseName c = s)
                     match matchedCase with
                     | Some uci -> FSharpValue.MakeUnion(uci, [||]) :?> 'T
-                    | None -> failwith $"StripeUnionConverter: unknown case '{s}' for type {typeof<'T>.Name}"
+                    | None -> unreadable $"StripeUnionConverter: unknown case '{s}' for type {typeof<'T>.Name}"
                 else
                     // Mixed union: prefer an exact no-field case name match (string enums with an
                     // UnknownEnumValue catch-all land here), then fall back to the case wrapping
@@ -169,7 +177,7 @@ module StripeConverter =
                                 c.GetFields().Length = 1 && c.GetFields().[0].PropertyType = typeof<string>)
                         match stringCase with
                         | Some uci -> FSharpValue.MakeUnion(uci, [| s :> obj |]) :?> 'T
-                        | None -> failwith $"StripeUnionConverter: no string case in {typeof<'T>.Name} for value '{s}'"
+                        | None -> unreadable $"StripeUnionConverter: no string case in {typeof<'T>.Name} for value '{s}'"
 
             | JsonValueKind.Number ->
                 // Some Stripe fields are numeric enums in request types
@@ -182,17 +190,16 @@ module StripeConverter =
                     let json = element.GetRawText()
                     let innerValue = JsonSerializer.Deserialize(json, innerType, options)
                     FSharpValue.MakeUnion(uci, [| innerValue |]) :?> 'T
-                | None -> failwith $"StripeUnionConverter: no numeric case in {typeof<'T>.Name}"
+                | None -> unreadable $"StripeUnionConverter: no numeric case in {typeof<'T>.Name}"
 
             | JsonValueKind.Object ->
                 let json = element.GetRawText()
                 // Attempt to use the "object" field as a discriminator (Stripe's polymorphism pattern)
-                let mutable objectProp = Unchecked.defaultof<JsonElement>
                 let objectTypeName =
-                    if element.TryGetProperty("object", &objectProp) then
-                        Some (snakeToPascal (objectProp.GetString()))
-                    else
-                        None
+                    match element.TryGetProperty "object" with
+                    | true, name when name.ValueKind = JsonValueKind.String -> Some (snakeToPascal (name.GetString()))
+                    | true, name -> unreadable $"StripeUnionConverter: 'object' is {name.ValueKind}, not a string, in {typeof<'T>.Name}"
+                    | _ -> None
 
                 match objectTypeName with
                 | Some typeName ->
@@ -227,7 +234,7 @@ module StripeConverter =
                             let innerUnionValue = FSharpValue.MakeUnion(innerCase, [| leafValue |])
                             FSharpValue.MakeUnion(wrapperCase, [| innerUnionValue |]) :?> 'T
                         | None ->
-                            failwith $"StripeUnionConverter: no matching case for 'object'=\"{typeName}\" in {typeof<'T>.Name}"
+                            unreadable $"StripeUnionConverter: no matching case for 'object'=\"{typeName}\" in {typeof<'T>.Name}"
 
                 | None ->
                     // No "object" discriminator – try each case in order (untagged fallback)
@@ -242,14 +249,14 @@ module StripeConverter =
                                 with _ -> ()
                     match result with
                     | Some v -> v
-                    | None -> failwith $"StripeUnionConverter: could not deserialize {typeof<'T>.Name} from JSON object (no 'object' field)"
+                    | None -> unreadable $"StripeUnionConverter: could not deserialize {typeof<'T>.Name} from JSON object (no 'object' field)"
 
             | JsonValueKind.Null ->
                 // Should be handled upstream by option<'T>; reaching here is an error
-                failwith $"StripeUnionConverter: unexpected null for {typeof<'T>.Name}"
+                unreadable $"StripeUnionConverter: unexpected null for {typeof<'T>.Name}"
 
             | other ->
-                failwith $"StripeUnionConverter: unexpected JSON value kind {other} for {typeof<'T>.Name}"
+                unreadable $"StripeUnionConverter: unexpected JSON value kind {other} for {typeof<'T>.Name}"
 
         override _.Write(writer, value, options) =
             let uci, fields = FSharpValue.GetUnionFields(value, typeof<'T>)

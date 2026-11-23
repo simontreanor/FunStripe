@@ -10,10 +10,20 @@ Version numbers follow the `FunStripeLite` package from v1.0.0 onward. Where the
 
 ### Upgrade notes
 - Requests send the library's API version as their `Stripe-Version` header (see Changed). Where your account's default version is the library's, nothing changes. Where it differs, Stripe now handles each request under the library's version. The API version sets behaviour as well as the shape of responses: default parameters, payment flows and validation can change, and the compiler can't show you where. Read Stripe's upgrade notes for the versions between your account's default and the library's. To keep the account's version, set `StripeVersion = None` on the settings.
+- A call whose answer can't be read returns an `Error` where it threw (see Fixed). Code that caught an exception around a request (a `JsonException`, or a plain `Exception` for an enum value the models don't list) now finds the failure in the `Error`, by its `Code`: `funstripe_unreadable_success` for a 2xx, `funstripe_unreadable_error` otherwise. Don't send a request again after `funstripe_unreadable_success`: Stripe has done the work.
+- `Util.deserialise` and `Util.deserialiseRaw` (webhook events) fail with a `JsonException` for JSON the converters can't read, where they failed with a plain `Exception`. Code that catches `Exception` is unaffected.
 - This ships as a minor release. No signature changes, and the generated request and response types already target the library's version.
 
 ### Changed
 - **Requests send the API version the models were generated from.** `StripeApiSettings.New` sets `StripeVersion` to `Config.DefaultStripeApiVersion` unless given another `stripeVersion`. Without the header Stripe answered in the account's default version, whose responses can differ in shape from the models and fail to read. Webhook events still follow each endpoint's API version: the README shows how to set it.
+
+### Fixed
+- **An answer that can't be read is an `Error`, not an exception.** The request functions return a `Result`, but a body that isn't JSON (a proxy's HTML page, an empty body), an error body without an `error`, or an enum value the models don't list threw from the deserialiser. The `Error` has a fixed `Code`, `StripeError.UnreadableSuccessCode` (`funstripe_unreadable_success`) for a 2xx and `StripeError.UnreadableErrorCode` (`funstripe_unreadable_error`) for a 4xx or 5xx, and its `Metadata` has the `http_status` and, when Stripe sent one, the `request_id`. A 2xx has no `Type`, as Stripe has done the work and the request must not be sent again; a 4xx or 5xx is an `api_error`.
+- **Stripe's own error survives a value the models don't list.** An error embeds a payment intent, payment method, setup intent and source, and one unknown value in any of them failed the whole error, so a decline could not be told from a server error. Its `type`, `code`, `decline_code`, `message`, `param`, `doc_url`, `charge` and `payment_method_type` are then read on their own, without the embedded objects.
+- **The JSON converters fail with a `JsonException`**, as the serialiser's own failures do, where they failed with a plain `Exception`, a `FormatException` or an `ArgumentNullException`: an unknown enum value, an expanded object without an `id`, a date that can't be read, an `object` that is null. Any other exception from a request is a fault in the library.
+- **`WebhookSigning.verifySignature` refuses an empty secret.** An HMAC keyed with nothing is one anyone can compute, so a header signed that way verified. It is now a `SignatureMismatch`.
+- **`WebhookSigning.verifySignature` no longer throws on a missing header.** A null `Stripe-Signature` header gave a `NullReferenceException`; it is now an `InvalidHeader`, from `parseHeader` too.
+- **`WebhookSigning.verifySignature` no longer throws on a timestamp at the far end of its range.** A `t` such as now + `Int64.MinValue` overflowed the age calculation with an `OverflowException`; it is now `TimestampOutOfTolerance`.
 
 ## [3.3.0] - 2026-11-05
 
